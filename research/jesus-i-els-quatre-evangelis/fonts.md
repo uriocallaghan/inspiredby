@@ -30,8 +30,10 @@ Pau, 1Co 11,17–34; 15,1–11. https://bible.usccb.org/bible/1corinthians/0 (in
 Ireneu de Lió, Contra les heretgies III,11,8 (c. 180), trad. Alexander Roberts i William Rambaut, Ante-Nicene Fathers, vol. 1, 1885, ed. New Advent. https://www.newadvent.org/fathers/0103311.htm . Defensa normativament 4 evangelis; ho justifica per analogia amb els quatre vents. No tots els grups tenien necessàriament el mateix recull.
 Atanasi d'Alexandria, Carta festal 39, §5 (367), https://www.newadvent.org/fathers/2806039.htm . Llista 27 llibres; testimoni local d'una col·lecció; la data no converteix universalment el cristianisme.
 
-## Revisió abans de publicar
+## Revisió documental de l’edició visual
 
-Tres agents independents han llegit íntegrament el text i revisat les figures i la bibliografia. La revisió històrica ha distingit el testimoni primerenc de la resurrecció a 1Te de la primera llista conservada d'aparicions a 1Co. La revisió literària ha contrastat els setze passatges del comparador amb la BCI i ha distingit el moviment de la pedra en Mateu de la descoberta en Marc, Lluc i Joan. La revisió de les comunitats ha precisat el conflicte de Corint i ha distingit la recomanació de Febe de les salutacions a Prisca i Àquila. Correccions incorporades a l'edició publicada.
+La revisió del 18-11-2026 ha contrastat els setze passatges del comparador amb la BCI, separat la referència de 1Co 11 de la de 1Co 15 i distingit el moviment de la pedra en Mateu de la descoberta en Marc, Lluc i Joan. També ha substituït els punts de data única per finestres i ha qualificat Tàcit com a font posterior de procedència no identificada.
+
+Les figures de l’article són esquemes explicatius: les dates són marges, la geografia és relacional i el diagrama de fonts és una hipòtesi literària, no una reconstrucció de comunitats ni d’autors individuals. Abans de la publicació final convé que l’editor repassi la selecció de datacions, l’atribució de Q i el tractament de les aparicions.
 
 La cronologia adopta la seqüència de Gordon W. Lathrop, The Four Gospels on Sunday, Fortress Press, 2012, pp. 28–30, per a les datacions orientatives de Mateu i Lluc; per a Joan amplia el marge fins a la seva proposta de començament del segle II. https://ms.augsburgfortress.org/downloads/9780800698522Chapter1.pdf

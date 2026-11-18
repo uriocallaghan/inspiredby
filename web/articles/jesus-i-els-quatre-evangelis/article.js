@@ -260,16 +260,25 @@
         svg.append('line').attr('x1', x(group)).attr('x2', x(group)).attr('y1', 52).attr('y2', height - 20).attr('stroke', IBV.C.grid);
         IBV.t(svg, x(group), height - 2, group === 'més ferma' ? 'contrastable' : group === 'debatuda' ? 'reconstrucció' : 'creença', { size: 11, italic: true, anchor: 'middle' });
         const items = data.evidencia.filter(d => d.grau === group);
+        const shortLabels = {
+          'Jesús va existir i va ser crucificat': 'Existència i crucifixió',
+          'Va anunciar el Regne de Déu': 'Regne de Déu',
+          'Va ser considerat guaridor i exorcista': 'Guaridor i exorcista',
+          'Va rebre el baptisme de Joan': 'Baptisme de Joan',
+          'Data exacta del naixement': 'Data del naixement',
+          'Nombres, discursos i ordre de les escenes': 'Discursos i ordre',
+          'Què va passar després de la mort': 'Després de la mort'
+        };
         svg.selectAll(`.claim-${group.replace(/\\s/g, '')}`).data(items).join('g').attr('class', 'claim')
           .attr('transform', (_, i) => `translate(${x(group)},${65 + i * 80})`).attr('tabindex', 0).attr('role', 'button')
           .call(nodes => {
             nodes.append('circle').attr('r', 7).attr('fill', color).attr('stroke', IBV.C.ink);
-            IBV.t(nodes, 0, -14, d => d.nom, { size: width < 560 ? 11 : 12, anchor: 'middle', weight: 600 });
+            IBV.t(nodes, 0, -14, d => width < 560 ? shortLabels[d.nom] : d.nom, { size: width < 560 ? 11 : 12, anchor: 'middle', weight: 600 });
             nodes.each(function (d) {
               const node = this;
               const focus = () => {
                 svg.selectAll('.claim').style('opacity', function () { return this === node ? 1 : 0.17; }).select('circle').attr('r', function () { return this.parentNode === node ? 10 : 7; });
-                tip.show(`<b>${d.nom}</b><br>${d.text}<br><i>${d.refs}</i>`, x(group), +d3.select(node).attr('transform').match(/[\\d.]+\\)$/)?.[0].replace(')', '') || 80);
+                tip.show(`<b>${d.nom}</b><br>${d.text}<br><i>${d.refs}</i>`, x(group), 65 + items.indexOf(d) * 80);
                 output.textContent = `${d.nom} — ${d.text} Referències: ${d.refs}.`;
               };
               IBV.hover(this, focus, () => { tip.hide(); svg.selectAll('.claim').style('opacity', 1).select('circle').attr('r', 7); });
