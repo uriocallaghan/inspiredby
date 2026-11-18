@@ -46,3 +46,7 @@ Per afegir un article: carpeta `articles/<slug>/index.html` amb la mateixa capç
 ```bash
 python3 -m http.server 8000 --directory web
 ```
+
+## Publicació
+
+GitHub (`main`) és la versió de referència: tot el que s'hi fusiona es publica sol a Netlify i a GitHub Pages. Els canvis es fan en una branca amb pull request. Instruccions per a agents: `AGENTS.md`.
