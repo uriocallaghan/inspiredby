@@ -1,0 +1,21 @@
+{
+  "escenes": [
+    {"nom":"Temple","refs":["21,12–17","11,15–19","19,45–48","2,13–22"],"nota":"En Joan, el gest contra els venedors segueix el casament de Canà. Els sinòptics el reserven per a l’estada final a Jerusalem."},
+    {"nom":"Pa per a cinc mil","refs":["14,13–21","6,30–44","9,10–17","6,1–15"],"nota":"Tots quatre narren aquest àpat. En Joan, la multitud vol fer rei Jesús i ell es retira sol."},
+    {"nom":"Sopar de comiat","refs":["26,20–29","14,17–25","22,14–23","13,1–17"],"nota":"Mateu, Marc i Lluc relaten el pa i la copa. Joan dedica l’escena al rentament dels peus."},
+    {"nom":"Tomba oberta","refs":["28,1–10","16,1–8","24,1–12","20,1–18"],"nota":"En Mateu, un àngel fa rodolar la pedra. En Marc i Lluc, les dones ja la troben apartada. En Joan, Maria la veu apartada. En Mateu i Joan, Jesús s’apareix a prop del sepulcre. El final antic de Marc promet la trobada a Galilea."}
+  ],
+  "llibres":[["Mateu",28,1115],["Marc",16,1144],["Lluc",24,1161],["Joan",21,1186]],
+  "fites":[
+    ["Naixement","≈ 6–4 aC",-5,"Datació orientativa si es pren com a referència el regnat d’Herodes. El cens de Lluc crea una dificultat.","H"],
+    ["Joan al Jordà","≈ 28–29",29,"Lluc situa la predicació de Joan en el quinzè any de Tiberi. La data exacta del baptisme de Jesús és desconeguda.","G"],
+    ["Crucifixió","≈ 30",30,"Execució romana sota Pilat. El marge històric habitual comprèn diversos anys.","H"],
+    ["1 Tessalonicencs","≈ 50",50,"Una carta de Pau ja associa la mort i la resurrecció de Jesús amb el futur dels creients.","C"],
+    ["1 Corintis","≈ 54–55",55,"Pau recorda el sopar i transmet una tradició rebuda i enumera aparicions.","P"],
+    ["Caiguda del Temple","70",70,"L’exèrcit romà destrueix el santuari de Jerusalem durant la guerra de Judea.","H"],
+    ["Marc","≈ 70",70,"La proximitat a la guerra ajuda a datar el relat. Es discuteix si precedeix o segueix la destrucció.","M"],
+    ["Mateu","≈ 80–90",85,"Datació proposada a partir de la relació amb Marc i de la situació que pressuposa el text.","M"],
+    ["Lluc","≈ 90–100",95,"Una proposta de datació. Els estudiosos discrepen sobre quan es van compondre Lluc i els Fets.","M"],
+    ["Joan","≈ 90–110",100,"Finestra orientativa per a la forma escrita que coneixem. Altres propostes en separen diverses etapes.","M"]
+  ]
+}
