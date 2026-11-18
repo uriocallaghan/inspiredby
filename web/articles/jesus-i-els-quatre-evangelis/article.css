@@ -1,0 +1,17 @@
+.cit{display:block;margin-top:.38em;font:12px/1.45 var(--sans);color:#555}
+.cit a{text-decoration-color:#aaa}
+.fig{padding:24px 0;border-block:1px solid var(--hair);margin:54px auto}
+.vh{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 18px}
+.vh strong{font:600 26px/1.2 var(--serif)}
+.vh span,.fig details,.readout{font:14px/1.5 var(--sans);color:var(--ink-2)}
+.plot{position:relative;margin-top:20px}
+.plot svg{max-width:100%}
+.seg{flex-wrap:wrap;gap:4px 18px}
+.seg button{min-height:44px}
+.fig .readout{font:19px/1.4 var(--serif);min-height:3em;max-width:650px}
+.fig figcaption{text-align:left;max-width:none}
+.fig summary{cursor:pointer}
+.plot .row{cursor:pointer}
+.plot .row:focus-visible{outline-offset:-2px}
+.fn li{scroll-margin-top:30px}
+@media(max-width:600px){.vh strong{font-size:22px}.fig .readout{font-size:17px}}
