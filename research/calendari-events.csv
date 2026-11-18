@@ -1,0 +1,42 @@
+id,event,years_ago,years_ago_low,years_ago_high,calendar_datetime,source_short,source_url,status
+bigbang,Big Bang (start of cosmic expansion),1.3787e+10,1.3767e+10,1.3807e+10,Jan 01 00:00:00,"Planck Collaboration 2020, A&A 641, A6",https://doi.org/10.1051/0004-6361/201833910,original_ok
+cmb,"Recombination: first atoms, CMB released (~380 kyr after BB)",1.37866e+10,1.37866e+10,1.37866e+10,Jan 01 00:14:29,"Planck Collaboration 2020, A&A 641, A6",https://doi.org/10.1051/0004-6361/201833910,new
+firststars,"First stars (Population III) - theoretical/indirect, ~100-250 Myr after BB",1.3637e+10,1.3537e+10,1.3687e+10,Jan 04 23:18:25,"Bromm & Yoshida 2011, ARA&A 49, 373",https://doi.org/10.1146/annurev-astro-081710-102608,corrected
+firstgalaxies,Earliest spectroscopically confirmed galaxies (MoM-z14 z=14.44; JADES-GS-z14-0),1.3507e+10,1.3487e+10,1.3507e+10,Jan 08 09:54:24,"Naidu et al. 2026, OJAp 9; Carniani et al. 2024, Nature 633, 318",https://doi.org/10.33232/001c.156033,corrected
+milkyway,Milky Way: proto-galaxy/old thick disk begins forming,1.3e+10,1.2e+10,1.32e+10,Jan 21 20:02:41,"Xiang & Rix 2022, Nature 603, 599",https://doi.org/10.1038/s41586-022-04496-5,corrected
+gse,Milky Way's last major merger (Gaia-Enceladus/Sausage) - optional,1e+10,9e+09,1.1e+10,Apr 11 06:11:18,"Helmi et al. 2018, Nature 563, 85",https://doi.org/10.1038/s41586-018-0625-x,new
+sun,"Sun and Solar System form (oldest solids, CAIs)",4.5673e+09,4.5671e+09,4.5675e+09,Sep 02 02:01:25,"Connelly et al. 2012, Science 338, 651",https://doi.org/10.1126/science.1226919,corrected
+moon,Moon-forming giant impact,4.51e+09,4.35e+09,4.53e+09,Sep 03 14:25:51,"Barboni et al. 2017, Sci. Adv. 3, e1602365",https://doi.org/10.1126/sciadv.1602365,new
+zircon,Oldest Earth minerals (Jack Hills zircons),4.404e+09,4.396e+09,4.412e+09,Sep 06 09:46:52,"Wilde et al. 2001, Nature 409, 175",https://doi.org/10.1038/35051550,new
+luca,Last universal common ancestor (molecular clock),4.2e+09,4.09e+09,4.33e+09,Sep 11 19:23:56,"Moody et al. 2024, Nat. Ecol. Evol. 8, 1654",https://doi.org/10.1038/s41559-024-02461-1,new
+life,"Life on Earth: oldest widely accepted fossil evidence (stromatolites, Pilbara)",3.48e+09,3.43e+09,4.1e+09,Sep 30 20:52:24,"Djokic et al. 2017, Nat. Commun. 8, 15263; Allwood et al. 2006, Nature 441, 714",https://doi.org/10.1038/ncomms15263,corrected
+goe,Great Oxidation Event (onset),2.43e+09,2.22e+09,2.5e+09,Oct 28 16:01:25,"Poulton et al. 2021, Nature 592, 232; Gumsley et al. 2017, PNAS 114, 1811",https://doi.org/10.1038/s41586-021-03393-7,new
+eukaryotes,Oldest eukaryote fossils,1.65e+09,1.56e+09,1.75e+09,Nov 18 07:37:15,"Miao et al. 2019, Precambrian Res. 321, 172; Javaux & Lepot 2018, Earth-Sci. Rev. 176, 68",https://doi.org/10.1016/j.precamres.2018.11.019,new
+sex,Sexual reproduction: oldest fossil evidence (Bangiomorpha pubescens),1.047e+09,1.03e+09,1.06e+09,Dec 04 06:45:21,"Gibson et al. 2018, Geology 46, 135",https://doi.org/10.1130/G39829.1,corrected
+multicell,"Multicellular eukaryotes (decimetre-scale, Gaoyuzhuang Fm.)",1.56e+09,1.047e+09,2.1e+09,Nov 20 16:48:19,"Zhu et al. 2016, Nat. Commun. 7, 11500",https://doi.org/10.1038/ncomms11500,corrected
+snowball,"Snowball Earth (Cryogenian, start)",7.17e+08,6.35e+08,7.17e+08,Dec 13 00:25:54,"Hoffman et al. 2017, Sci. Adv. 3, e1600983",https://doi.org/10.1126/sciadv.1600983,new
+ediacara,First large complex animals (Ediacaran biota),5.74e+08,5.6e+08,5.8e+08,Dec 16 19:17:28,"Matthews et al. 2021, GSA Bulletin 133, 612",https://doi.org/10.1130/B35646.1,new
+cambrian,Cambrian explosion begins (base of Cambrian),5.388e+08,5.386e+08,5.39e+08,Dec 17 17:39:23,"Cohen et al., ICS International Chronostratigraphic Chart v2024/12",https://stratigraphy.org/chart,new
+landplants,Life leaves the sea (1): plants colonise land (cryptospores),4.7e+08,4.6e+08,5.15e+08,Dec 19 13:22:15,"Wellman et al. 2003, Nature 425, 282; Morris et al. 2018, PNAS 115, E2274",https://doi.org/10.1073/pnas.1719588115,corrected
+landanimals,Life leaves the sea (2): oldest land-animal fossil (millipede Kampecaris obanensis),4.25e+08,4.25e+08,4.28e+08,Dec 20 17:57:46,"Brookfield, Catlos & Suarez 2021, Hist. Biol. 33, 2014",https://doi.org/10.1080/08912963.2020.1762593,corrected
+tetrapods,Vertebrates on land: earliest tetrapod trackways (Zachelmie),3.95e+08,3.75e+08,3.97e+08,Dec 21 13:01:27,"Niedzwiedzki et al. 2010, Nature 463, 43",https://doi.org/10.1038/nature08623,new
+permian,End-Permian mass extinction (Great Dying),2.51941e+08,2.51917e+08,2.51965e+08,Dec 25 07:55:17,"Burgess, Bowring & Shen 2014, PNAS 111, 3316",https://doi.org/10.1073/pnas.1317692111,new
+dinos,First dinosaurs (Ischigualasto Fm.),2.314e+08,2.3e+08,2.33e+08,Dec 25 20:58:22,"Martinez et al. 2011, Science 331, 206",https://doi.org/10.1126/science.1198467,new
+mammals,First mammaliaforms (Morganucodon-grade),2.05e+08,2e+08,2.25e+08,Dec 26 13:44:48,"Luo 2007, Nature 450, 1011",https://doi.org/10.1038/nature06277,new
+flowers,"First flowers (oldest angiosperm fossils; Montsechia, Lleida)",1.3e+08,1.25e+08,1.4e+08,Dec 28 13:24:01,"Gomez et al. 2015, PNAS 112, 10985; Barba-Montoya et al. 2018, New Phytol. 218, 819",https://doi.org/10.1073/pnas.1509241112,original_ok
+kpg,Chicxulub impact; extinction of non-avian dinosaurs (K-Pg),6.6043e+07,6.6032e+07,6.6054e+07,Dec 30 06:02:15,"Renne et al. 2013, Science 339, 684",https://doi.org/10.1126/science.1230492,original_ok
+primates,Earliest primate-like mammals (Purgatorius),6.59e+07,6.5e+07,6.6e+07,Dec 30 06:07:42,"Wilson Mantilla et al. 2021, R. Soc. Open Sci. 8, 210050",https://doi.org/10.1098/rsos.210050,new
+homochimp,Human-chimpanzee lineage split,7e+06,5.5e+06,1e+07,Dec 31 19:33:08,"Langergraber et al. 2012, PNAS 109, 15716; Brunet et al. 2002, Nature 418, 145",https://doi.org/10.1073/pnas.1211740109,corrected
+tools,Oldest stone tools (Lomekwi 3),3.3e+06,3.2e+06,3.3e+06,Dec 31 21:54:11,"Harmand et al. 2015, Nature 521, 310",https://doi.org/10.1038/nature14464,new
+homo,Genus Homo (Ledi-Geraru mandible),2.8e+06,2.75e+06,2.8e+06,Dec 31 22:13:15,"Villmoare et al. 2015, Science 347, 1352",https://doi.org/10.1126/science.aaa1343,new
+fire_use,Control of fire: earliest accepted use (Wonderwerk Cave),1e+06,780000,1e+06,Dec 31 23:21:52,"Berna et al. 2012, PNAS 109, E1215; Goren-Inbar et al. 2004, Science 304, 725",https://doi.org/10.1073/pnas.1117620109,corrected
+fire_make,"Fire-making (Barnham, UK) / habitual fire use",400000,300000,400000,Dec 31 23:44:45,"Davis et al. 2025, Nature 649, 631; Roebroeks & Villa 2011, PNAS 108, 5209",https://doi.org/10.1038/s41586-025-09855-6,corrected
+sapiens,"Homo sapiens (oldest fossils, Jebel Irhoud, Morocco)",315000,281000,349000,Dec 31 23:47:59,"Richter et al. 2017, Nature 546, 293; Hublin et al. 2017, Nature 546, 289",https://doi.org/10.1038/nature22335,corrected
+neander,Neanderthal disappearance (Europe),40000,39260,41030,Dec 31 23:58:28,"Higham et al. 2014, Nature 512, 306",https://doi.org/10.1038/nature13621,corrected
+americas,Humans in the Americas (White Sands footprints),22000,21000,23000,Dec 31 23:59:09,"Bennett et al. 2021, Science 373, 1528; Pigati et al. 2023, Science 382, 73",https://doi.org/10.1126/science.adh5007,corrected
+agri,"Agriculture begins (Fertile Crescent, first of several centres)",11500,10500,11700,Dec 31 23:59:33,"Zeder 2011, Curr. Anthropol. 52, S221; Larson et al. 2014, PNAS 111, 6139",https://doi.org/10.1086/659307,original_ok
+writing,"Writing (proto-cuneiform, Uruk; Egyptian hieroglyphs)",5250,5100,5400,Dec 31 23:59:47,"Woods (ed.) 2010, Visible Language, Oriental Institute Museum Publ. 32",https://isac.uchicago.edu/sites/default/files/uploads/shared/docs/oimp32.pdf,corrected
+christ,Christianity emerges (c. 30-33 CE),1995,1993,1996,Dec 31 23:59:55.4,General historical consensus (no single primary source; unverified),,original_ok
+columbus,Columbus reaches the Caribbean (1492),534,534,534,Dec 31 23:59:58.7,Historical record,,original_ok
+frrev,French Revolution (1789),237,237,237,Dec 31 23:59:59.4,Historical record,,original_ok
+moonlanding,Apollo 11 Moon landing (1969),57,57,57,Dec 31 23:59:59.8,NASA,https://www.nasa.gov/mission/apollo-11/,new

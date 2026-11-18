@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>On va el CO₂ que emetem · Inspired by Magazine</title>
+<meta name="description" content="Cada any la humanitat aboca a l'aire més de 40.000 milions de tones de CO₂. De mitjana, menys de la meitat s'hi queda. Seguim la resta fins al mar i els boscos.">
+<meta property="og:title" content="On va el CO₂ que emetem">
+<meta property="og:description" content="Cada any la humanitat aboca a l'aire més de 40.000 milions de tones de CO₂. De mitjana, menys de la meitat s'hi queda. Seguim la resta fins al mar i els boscos.">
+<meta property="og:image" content="cover.jpg">
+<link rel="icon" sizes="192x192" href="../../assets/icon192.png">
+<link rel="apple-touch-icon" href="../../assets/icon192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../../assets/ib.css">
+<link rel="stylesheet" href="../../assets/article.css">
+<style>
+:root{--dry:#9A6326;--bio:#4C8A2E;--wet:#16786C;--sea:#E4ECF6}
+.k-a{color:var(--warm);font-weight:600}.k-o{color:var(--cold);font-weight:600}.k-l{color:var(--bio);font-weight:600}.k-f{color:var(--ink);font-weight:600}.k-u{color:var(--dry);font-weight:600}.k-i{color:var(--muted);font-weight:600}
+.gbox{margin:0 auto}
+.ghead{display:flex;justify-content:space-between;align-items:flex-end;gap:6px 18px;flex-wrap:wrap;font-family:var(--sans);margin-bottom:8px}
+.ghead strong{display:block;font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.005em;line-height:1.2}
+.ghead .val{display:block;font-size:14.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.lg{display:flex;flex-wrap:wrap;gap:4px 16px;font-family:var(--sans);font-size:12.5px;color:var(--ink-2);margin:8px 0 0}
+.lg span{white-space:nowrap}
+.lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0}
+.lg i.sq{border-radius:1px}
+.lg i.ring{background:none!important;border:1.3px dashed var(--muted)}
+.chartwrap{position:relative}
+.chartwrap svg{display:block;width:100%;overflow:visible}
+.axis text{font-family:var(--sans);font-size:11.5px;fill:var(--muted);font-variant-numeric:tabular-nums}
+.axis line,.axis path{stroke:var(--hair)}
+.lbl{font-family:var(--sans);font-size:12.5px;fill:var(--ink)}
+.lbl.b{font-weight:700}
+.lbl.m{fill:var(--muted)}
+.halo{paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}
+.ctlbar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 22px;font-family:var(--sans);font-size:13px;margin:0 0 10px}
+.seg{flex-wrap:wrap;gap:6px 18px}
+.seg button{min-height:30px}
+.yearpanel{font-family:var(--sans);font-size:14px;line-height:1.45;color:var(--ink-2);min-height:9.5em}
+.yearpanel h3{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--ink);margin:0 0 2px}
+.yearpanel .em{font-size:13px;color:var(--muted);margin:0 0 10px}
+.yp-rows{display:grid;grid-template-columns:minmax(0,1fr);gap:5px;margin:0 0 10px}
+.yp-row{display:grid;grid-template-columns:118px minmax(0,1fr) 96px;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.yp-row .bar{height:9px;background:var(--hair);position:relative;border-radius:1px}
+.yp-row .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:1px}
+.yp-row .v{text-align:right;color:var(--ink)}
+.yp-note{font-size:13.5px;margin:0;color:var(--ink-2)}
+.yearlay{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:28px;align-items:start}
+.fig .cap2{font-family:var(--sans);font-size:12.5px;color:var(--muted);margin:6px 0 0}
+.pers-out{font-family:var(--sans);font-size:14.5px;color:var(--ink-2);font-variant-numeric:tabular-nums;margin:2px 0 0;min-height:1.5em}
+.pers-out b{color:var(--ink)}
+.rngrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:10px}
+.mini{margin:18px 0 0}
+#scA .gbox,#scB .gbox{max-width:760px}
+#aCv,#bCv{display:block;width:100%}
+.step .src{font-family:var(--sans);font-size:12.5px;color:var(--muted);margin:0}
+.fn ol{margin:6px 0 0}
+.fn li{margin:0 0 .45em}
+.bigfig{font-family:var(--serif);font-weight:600;font-size:42px;line-height:1;margin:0;color:var(--ink)}
+@media (max-width:899px){
+  .ghead strong{font-size:17px}.ghead .val{font-size:12.5px}
+  .lg{font-size:11px;gap:2px 10px;margin-top:4px}
+  .yearlay{grid-template-columns:minmax(0,1fr);gap:12px}
+  .yearpanel{min-height:0}
+  .yp-row{grid-template-columns:96px minmax(0,1fr) 84px}
+  .axis text{font-size:10.5px}
+  .lbl{font-size:11px}
+  .step .src{font-size:11.5px}
+}
+@media (max-width:899px){#scA .lg{display:none}#scA .cap,#scB .cap{font-size:10.5px;margin-top:4px}}
+@media (max-width:899px) and (max-height:760px){
+  #scA .lg,#scB .lg{display:none}
+  .ghead{margin-bottom:4px}
+}
+</style>
+</head>
+<body class="ib-article">
+<header class="ib-bar">
+  <a href="../../" aria-label="Inspired by Magazine"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</header>
+<div class="ib-progress" aria-hidden="true"><span id="ibProgress"></span></div>
+
+<div class="page">
+  <header class="open col">
+    <p class="kicker">Clima</p>
+    <h1>On va el CO₂ que emetem</h1>
+    <p class="dek">Cada any la humanitat aboca a l'aire més de 40.000 milions de tones de CO₂. De mitjana, menys de la meitat s'hi queda. Hem seguit la resta fins al fons del mar i les fulles dels boscos.</p>
+    <p class="meta"><span id="rt">17 min de lectura</span> · Dades: Global Carbon Project (Global Carbon Budget 2026), NOAA · Actualitzat el 17 de novembre de 2026</p>
+  </header>
+
+  <section class="intro col">
+    <p class="dl">El març del 1958, el geoquímic Charles David Keeling, de l'Institut Scripps d'Oceanografia, va començar a mesurar el diòxid de carboni de l'aire al vessant nord del Mauna Loa, un volcà de Hawaii. L'observatori és a 3.397 metres, lluny de fàbriques i de boscos que puguin alterar la mesura. Aquell primer mes, l'aire tenia 315,7 parts per milió (ppm) de CO₂: de cada milió de molècules, unes 316 eren de diòxid de carboni.</p>
+    <p>En un article del 1960, Keeling ja descrivia dues coses. A l'hemisferi nord, el CO₂ pujava i baixava amb les estacions, com si el planeta respirés. I a l'Antàrtida, lluny de tot, la concentració augmentava de manera petita però persistent.</p>
+    <p>Des d'aleshores, la corba no ha deixat de pujar. El maig del 2026, el mateix observatori va registrar <b>432,3 ppm</b>, la mitjana mensual més alta des que hi ha mesures.</p>
+    <p>Però aquesta corba amaga un trencaclosques de comptabilitat. El 2025, la humanitat va emetre prou CO₂ per fer pujar la concentració de tota l'atmosfera <b>5,5 ppm</b>. Només va pujar <b>2,1</b>, de mitjana a tot el planeta. On és la resta?</p>
+    <p>Cada any, un equip internacional de més de cent científics, el <b>Global Carbon Project</b>, fa aquesta comptabilitat. L'última edició, el <i>Global Carbon Budget 2026</i>, es va presentar el 10 de novembre. Encara és una versió preliminar que revisen altres científics, i les xifres poden canviar lleugerament. Amb les seves dades seguirem el rastre del CO₂.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="quant-n-emetem">Quant n'emetem</h2>
+    <p>El CO₂ que afegim a l'aire surt de dos llocs. El primer, i de bon tros el més gran, és cremar carbó, petroli i gas, i fabricar ciment. El segon és tallar i cremar boscos per convertir-los en camps i pastures, el que els científics anomenen <b>canvi d'ús del sòl</b>.</p>
+    <p>Els comptes es fan en <b>gigatones</b> (Gt), mil milions de tones; aquí sempre parlarem de gigatones de CO₂. El 2025, entre les dues fonts, vam emetre <b>42,8 Gt de CO₂</b>. Baixa per veure on van anar a parar.</p>
+  </section>
+
+  <section class="scrolly" id="scA" aria-label="Un any d'emissions de CO₂ i on van a parar">
+    <div class="steps" id="aSteps">
+      <div class="step"><div class="step-in">
+        <h2>Cada punt, cent milions de tones</h2>
+        <p>En aquest dibuix, cada punt és 0,1 Gt de CO₂: cent milions de tones. Les emissions de tot el 2025 en fan <b>427</b>.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Les xemeneies</h2>
+        <p>La gran majoria, <b>384 punts</b>, surten de cremar combustibles fòssils i de fabricar ciment. El carbó n'és la font més gran, un 41%, seguit del petroli (33%) i del gas (21%).</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Els boscos que es tallen</h2>
+        <p>Els altres <b>43 punts</b> surten del <span class="k-u">canvi d'ús del sòl</span>: sobretot de tallar i cremar bosc tropical. Entre el 2016 i el 2025, el Brasil, Indonèsia i la República Democràtica del Congo van sumar més de la meitat d'aquestes emissions.</p>
+        <p class="note">És el càlcul net: inclou el CO₂ que tornen a absorbir els boscos que es replanten o que creixen en camps abandonats.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Si tot es quedés a l'aire</h2>
+        <p>Si tots aquests punts es quedessin a l'atmosfera, la concentració de CO₂ hauria pujat <b>5,5 ppm</b> en un sol any.</p>
+        <p>Les mesures diuen que la concentració mitjana mundial va pujar <b>2,1 ppm</b>. Més de la meitat del CO₂ que vam emetre ha desaparegut de l'aire. Però no ha desaparegut del planeta.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>L'oceà se n'empassa una quarta part</h2>
+        <p>Més d'una quarta part, <span class="k-o">117 punts</span>, es dissol a l'aigua del mar. L'oceà ho fa sense parar.</p>
+        <p class="note">Una part baixa cap al fons i s'hi queda de dècades a mil·lennis. Més avall expliquem com.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Les plantes, gairebé una tercera part</h2>
+        <p>Gairebé una tercera part, <span class="k-l">133 punts</span>, la xuclen els boscos, les praderies i els sòls, sense comptar-hi els que es tallen. Els científics en diuen <b>embornals</b>: llocs que treuen més CO₂ de l'aire del que n'hi tornen.</p>
+        <p class="note">El 2025 va ser un any excepcional per a la terra: segons el Global Carbon Budget, l'embornal terrestre més gran que s'ha registrat, just després de dos anys molt dolents.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>El que es queda a l'aire</h2>
+        <p>Al final, només <span class="k-a">160 punts</span> es queden a l'atmosfera. Són els que fan pujar la corba de Keeling i els que escalfen el planeta.</p>
+        <p>Els científics en diuen <b>fracció aerotransportada</b>: la part del que emetem que es queda a l'aire.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Una mica que no quadra</h2>
+        <p>I en sobren <span class="k-i">17</span> que no surten enlloc. Cada terme del balanç es calcula per separat, amb dades i models diferents, i la suma no surt exacta.</p>
+        <p>A aquesta diferència se'n diu <b>desquadrament del balanç</b>. Indica el que encara no sabem mesurar prou bé.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Un bon any, no un any típic</h2>
+        <p>El 2025, l'aire només es va quedar el 37%. Però de mitjana, entre el 2016 i el 2025, se'n va quedar el <span class="k-a">48%</span>: gairebé la meitat. L'oceà en va absorbir el 27% i la terra, el 22%.</p>
+        <p>D'un any a l'altre, aquesta part canvia molt.</p>
+      </div></div>
+    </div>
+    <div class="graphic" id="aGraphic">
+      <div class="gbox" id="aBox">
+        <div class="ghead"><div aria-live="polite"><strong id="aTitle">Emissions del 2025</strong><span class="val" id="aVal">427 punts · 1 punt = 0,1 Gt de CO₂</span></div></div>
+        <canvas id="aCv" role="img" aria-label="Esquema animat: 427 punts representen les 42,75 gigatones de CO₂ emeses el 2025. 384 surten de combustibles fòssils i 43 de la tala de boscos. 117 acaben a l'oceà, 133 a la vegetació i els sòls, 160 es queden a l'atmosfera i 17 són el desquadrament del balanç."></canvas>
+        <div class="lg" aria-hidden="true"><span><i style="background:var(--ink)"></i>Fòssil i ciment</span><span><i style="background:var(--dry)"></i>Ús del sòl</span><span><i style="background:var(--warm)"></i>Es queda a l'aire</span><span><i style="background:var(--cold)"></i>Oceà</span><span><i style="background:var(--bio)"></i>Terra</span><span><i class="ring"></i>Desquadrament</span></div>
+        <p class="cap">Esquema. Les quantitats són dades reals del Global Carbon Budget 2026 per a l'any 2025, arrodonides a la desena de gigatona.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="com-s-empassen-el-co2">Com s'empassen el CO₂ el mar i els boscos</h2>
+    <p>L'oceà i la vegetació fan la mateixa feina, treure CO₂ de l'aire, però de maneres molt diferents. L'oceà fa química. Les plantes, biologia. Cap dels dos no ho fa per generositat: absorbeixen més perquè a l'aire n'hi ha més.</p>
+  </section>
+
+  <section class="scrolly" id="scB" aria-label="Com absorbeixen CO₂ l'oceà i la vegetació">
+    <div class="steps" id="bSteps">
+      <div class="step"><div class="step-in">
+        <h2>El CO₂ es dissol</h2>
+        <p>A la superfície del mar, les molècules de CO₂ passen contínuament de l'aire a l'aigua i de l'aigua a l'aire. Com que ara a l'aire n'hi ha més que abans, en entren més de les que en surten.</p>
+        <p class="note">Passa com amb una ampolla de gasosa: com més CO₂ hi ha a sobre, més se'n dissol. I l'aigua freda n'aguanta més que la calenta, com la gasosa que es desbrava al sol: per això un mar més calent n'absorbeix menys.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>La química fa lloc</h2>
+        <p>Dins l'aigua, la major part del CO₂ deixa de ser CO₂. Reacciona amb l'aigua i amb els ions <b>carbonat</b> que ja hi ha i es converteix en <b>bicarbonat</b>. Així el mar en pot acceptar molt més del que cabria si fos un simple gas dissolt.</p>
+        <p>Però una part d'aquesta reacció allibera acidesa. Des de la Revolució Industrial, el pH de la superfície del mar ha baixat unes <b>0,1 unitats</b>, que vol dir un 26% més d'ions d'hidrogen, la mesura de l'acidesa (sovint s'arrodoneix a un 30%). Al Pacífic, al nord de Hawaii, les mesures el veuen baixar any rere any des de finals dels anys vuitanta.</p>
+        <p class="note">Amb menys ions carbonat, als coralls i als petits organismes que fan closca els costa més construir-la.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>El mar ho porta al fons</h2>
+        <p>La capa de superfície s'equilibra amb l'aire relativament de pressa. El que limita quant CO₂ pot absorbir l'oceà és la velocitat amb què aquesta aigua s'enfonsa i és substituïda per aigua del fons, que encara no n'ha rebut.</p>
+        <p>Allà baix el carboni hi queda guardat de dècades a mil·lennis, segons la fondària. A l'Atlàntic Nord i a l'oceà Antàrtic, l'acidificació ja ha superat els 2.000 metres.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>La bomba biològica</h2>
+        <p>El plàncton de la superfície fa la fotosíntesi i, quan mor, una part s'enfonsa com una neu de partícules, la <b>neu marina</b>. Aquesta <b>bomba biològica</b>, a la qual també contribueixen els animals que <a href="../migracio-vertical/">pugen i baixen cada nit</a>, mou cada any moltíssim carboni cap al fons.</p>
+        <p>Però sobretot és carboni natural, que ja circulava abans de la indústria. L'IPCC, el grup d'experts de l'ONU sobre el clima, descriu l'absorció del CO₂ que hi afegim els humans com un procés químic i físic: dissoldre's i baixar amb els corrents.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Les plantes respiren al revés</h2>
+        <p>A terra, les plantes agafen CO₂ per fer la fotosíntesi, i la respiració de les plantes, dels animals i dels microbis del sòl el torna a l'aire. Abans de la indústria, les dues coses gairebé es compensaven.</p>
+        <p>Amb més CO₂ a l'aire, moltes plantes fan més fotosíntesi i perden menys aigua. És l'efecte <b>fertilitzant del CO₂</b>. Entre el 2016 i el 2025 explica unes 12 Gt d'absorció l'any. El canvi i la variabilitat del clima, amb més calor i més sequeres, n'hi resten un 19%.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>La terra dona i pren</h2>
+        <p>La mateixa terra que absorbeix també emet. El 2025, la tala i la crema de boscos van tornar 4,4 Gt a l'aire, mentre la resta de vegetació n'absorbia 13,3.</p>
+        <p>Des del 1850, segons el Global Carbon Budget, la tala ha emès més carboni que el que ha absorbit la resta de la vegetació: en conjunt, la terra hauria estat una font neta d'unes 200 Gt de CO₂, no un embornal. Però la incertesa és tan gran (±240 Gt) que no es pot descartar un balanç gairebé nul.</p>
+        <p class="note">«Embornal» no vol dir «per sempre». El carboni d'un bosc pot tornar a l'aire en un incendi o una sequera.</p>
+      </div></div>
+    </div>
+    <div class="graphic" id="bGraphic">
+      <div class="gbox" id="bBox">
+        <div class="ghead"><div aria-live="polite"><strong id="bTitle">L'oceà</strong><span class="val" id="bVal">Absorbeix el CO₂ per química</span></div></div>
+        <canvas id="bCv" role="img" aria-label="Tall esquemàtic de la terra i l'oceà: el CO₂ es dissol a la superfície del mar, es converteix en bicarbonat, baixa amb l'aigua que s'enfonsa i amb la neu de plàncton; a terra, les plantes l'absorbeixen per fotosíntesi i la tala i els incendis el tornen a l'aire."></canvas>
+        <p class="cap">Esquema, no a escala. La fondària de l'oceà està molt exagerada respecte a l'amplada.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="la-terra-respira">La Terra respira</h2>
+    <p>Tornem al Mauna Loa. Si mires la corba de Keeling de prop, no és una línia: és una serra. Cada any, el CO₂ arriba al màxim cap al maig i baixa fins al mínim cap al setembre o l'octubre. La diferència, a Mauna Loa, és d'uns 6 a 7 ppm.</p>
+    <p>És la respiració de la vegetació de l'hemisferi nord, on hi ha la major part de la terra emergida. A la primavera i l'estiu, els boscos i els camps creixen i xuclen CO₂. A la tardor i l'hivern, les fulles cauen, es descomponen i el tornen a l'aire.</p>
+    <p>Arrossega la finestra sobre la corba sencera per veure qualsevol moment des del 1958.</p>
+  </section>
+  <figure class="fig wide" id="keelFig">
+    <div class="ctlbar"><div class="seg" id="kSeg" role="group" aria-label="Períodes"><button type="button" data-y="1958.2" aria-pressed="false">1958–1962</button><button type="button" data-y="1996" aria-pressed="false">1996–1999</button><button type="button" data-y="2022.75" aria-pressed="true">2022–2026</button></div></div>
+    <div class="chartwrap" id="kWrap"><svg id="kSvg" role="img" aria-label="Corba de Keeling: concentració mensual de CO₂ a Mauna Loa des del març del 1958, de 315,7 a 432,3 ppm, amb una ampliació que mostra el cicle estacional, amb el màxim al maig i el mínim al setembre o l'octubre."></svg><div class="tip" id="kTip"></div></div>
+    <figcaption>Mitjana mensual de CO₂ a l'observatori de Mauna Loa (3.397 m), en parts per milió. La línia grisa de l'ampliació és la mateixa sèrie sense el cicle estacional. Entre el desembre del 2022 i el juliol del 2023, per l'erupció del volcà, les mesures es van fer a Maunakea, a 34 km. Dades: NOAA Global Monitoring Laboratory i Scripps (fins al 1974), fins al setembre del 2026.</figcaption>
+  </figure>
+  <section class="col">
+    <p>La serra ha crescut. Mesures fetes amb avions entre 3 i 6 km d'altura mostren que, al nord dels 45 graus, l'amplitud del cicle era el 2009–2011 un 50% més gran que a finals dels anys cinquanta. Els ecosistemes del nord, sobretot els boscos boreals, intercanvien amb l'aire entre un 30 i un 60% més de CO₂ cada estació. A Mauna Loa, en canvi, l'amplitud va créixer fins als anys vuitanta i des de llavors gairebé no ha canviat.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="anys-bons-i-anys-dolents">Anys bons i anys dolents</h2>
+    <p>Les emissions canvien poc d'un any a l'altre. Els embornals, molt. Per això la part que es queda a l'aire salta: des del 19% del 1992, l'any després de l'erupció del Pinatubo, fins al 76% del 1987.</p>
+    <p>El culpable principal és <a href="../el-nino/">El Niño</a>. Quan el Pacífic tropical s'escalfa, plou menys a l'Amazònia i a Indonèsia, fa més calor i cremen més boscos. La vegetació tropical absorbeix menys i en perd més. L'oceà, en canvi, fa el contrari: al Pacífic oriental puja menys aigua profunda carregada de CO₂ i el mar n'absorbeix una mica més. Però no compensa.</p>
+    <p>L'efecte arriba amb retard: el gran salt de CO₂ sovint es nota l'any següent a un El Niño fort. El 1997, quan El Niño s'enfilava, el CO₂ mundial va pujar 2,0 ppm; el 1998, 2,8.</p>
+    <p>Tria un any al gràfic per veure com es van repartir les emissions.</p>
+  </section>
+  <figure class="fig wide" id="yearFig">
+    <div class="ctlbar"><div class="seg" id="ySeg" role="group" aria-label="Anys destacats"><button type="button" data-y="1987" aria-pressed="false">1987</button><button type="button" data-y="1992" aria-pressed="false">1992</button><button type="button" data-y="1998" aria-pressed="false">1998</button><button type="button" data-y="2023" aria-pressed="false">2023</button><button type="button" data-y="2024" aria-pressed="false">2024</button><button type="button" data-y="2025" aria-pressed="true">2025</button></div></div>
+    <div class="yearlay">
+      <div class="chartwrap" id="yWrap"><svg id="ySvg" tabindex="0" role="img" aria-label="Gràfic de barres del 1959 al 2026: per a cada any, el CO₂ que es va quedar a l'atmosfera, el que va absorbir l'oceà i el que va absorbir la terra, i una línia amb les emissions totals. A sota, l'índex d'El Niño de cada any. Fes servir les fletxes per canviar d'any."></svg><div class="tip" id="yTip"></div></div>
+      <div class="yearpanel" id="yPanel" aria-live="polite"></div>
+    </div>
+    <div class="lg" aria-hidden="true"><span><i class="sq" style="background:var(--warm)"></i>Es queda a l'aire</span><span><i class="sq" style="background:var(--cold)"></i>Oceà</span><span><i class="sq" style="background:var(--bio)"></i>Terra</span><span><i class="sq" style="background:var(--ink);height:2px;width:14px;vertical-align:3px"></i>Emissions totals</span><span><i class="sq" style="background:linear-gradient(90deg,#2C5DA8,#E4E4E2,#C8442A);width:26px"></i>Índex El Niño (ONI)</span></div>
+    <figcaption>Fonts i embornals de CO₂ per any, en gigatones de CO₂. Quan les barres no arriben a la línia, o la passen, la diferència és el desquadrament del balanç. El 2026 és una projecció. Dades: Global Carbon Budget 2026 (Friedlingstein et al.); índex ONI: NOAA Climate Prediction Center, mitjana de l'any (el 2026, fins a l'octubre).</figcaption>
+  </figure>
+  <section class="col">
+    <p>El 2023 i el 2024 van ser dos anys dolents seguits. El 2023, una anàlisi ràpida feta per un equip internacional va estimar que l'embornal terrestre net havia caigut fins a 1,6 Gt de CO₂, el més feble des del 2003. Hi van pesar la sequera de l'Amazònia a la segona meitat de l'any i els incendis rècord del Canadà, que van emetre per si sols unes 2,1 Gt de CO₂.</p>
+    <p>El 2024, amb El Niño encara actiu, la concentració mitjana mundial de CO₂ va pujar <b>3,8 ppm</b>, el rècord des que hi ha mesures. Els models de vegetació no reprodueixen bé aquests anys extrems: el Global Carbon Budget creu que subestimen quant s'afebleix la terra amb El Niño, i per això el 2024 les barres passen de la línia.</p>
+    <p class="note">Ara mateix el Pacífic viu un altre El Niño fort. Segons el Global Carbon Budget 2026, el seu efecte sobre el CO₂ es notarà sobretot el 2027.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="s-estan-cansant-els-embornals">S'estan cansant els embornals?</h2>
+    <p>Fins ara, el que absorbeixen l'oceà i la terra ha crescut al mateix ritme que les nostres emissions. L'IPCC calcula que en les últimes sis dècades, de mitjana, la part que es queda a l'aire s'ha mantingut gairebé constant, al voltant del 44%. L'última dècada, amb un 48%, queda una mica per sobre, sobretot pels anys dolents del 2023 i el 2024.</p>
+    <p>Però hi ha senyals de cansament. Segons el Global Carbon Budget 2026, l'embornal oceànic està estancat des del 2016 i el terrestre, des del 2000, sobretot per la variabilitat del clima i per l'escalfament mateix. Entre el 2016 i el 2025, el canvi i la variabilitat del clima van reduir l'absorció de l'oceà un 8% i la de la terra, un 19%.</p>
+    <p>Sumat des del 1960, aquest afebliment ha fet que el mar i la terra absorbissin unes 100 Gt de CO₂ menys (±77). No tot s'ha quedat a l'aire, perquè com més CO₂ hi ha, més n'absorbeixen el mar i la terra. Segons el Global Carbon Budget, el resultat són uns 7 ppm (±4,5) de més a la corba de Keeling des del 1960, un 7% de tota la pujada. És un cercle viciós: el CO₂ escalfa el planeta i l'escalfament fa que els embornals n'absorbeixin menys.</p>
+    <p>L'IPCC preveu, amb confiança alta, que els embornals continuaran absorbint més CO₂ a mesura que n'hi hagi més a l'aire, però que la <b>proporció</b> que absorbeixen anirà baixant. Amb emissions molt altes, més enllà del 2100, la terra podria passar a emetre més del que absorbeix.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="des-del-1850">Des del 1850</h2>
+    <p>Si sumem tot el CO₂ que hem emès des del 1850, surten <b>2.765 Gt de CO₂</b>. Més d'un terç s'ha emès des de l'any 2000.</p>
+    <p>Durant molt de temps, la font principal no van ser les xemeneies sinó les destrals: fins a mitjan segle XX, la tala de boscos emetia més CO₂ que tots els combustibles fòssils junts.</p>
+    <p>A la part de dalt del gràfic hi ha el que hem emès; a la de baix, on ha anat a parar. Passa el ratolí o el dit per sobre per veure cada any, i canvia a la vista acumulada.</p>
+  </section>
+  <figure class="fig wide" id="histFig">
+    <div class="ctlbar"><div class="seg" id="hSeg" role="group" aria-label="Vista"><button type="button" data-v="0" aria-pressed="true">Cada any</button><button type="button" data-v="1" aria-pressed="false">Acumulat des del 1850</button></div></div>
+    <div class="chartwrap" id="hWrap"><svg id="hSvg" role="img" aria-label="Fonts i destins del CO₂ del 1850 al 2026. A dalt, emissions fòssils i per canvi d'ús del sòl; a baix, el CO₂ que s'acumula a l'atmosfera, a l'oceà i a la terra. Del 1850 al 2025 es van emetre 2.765 gigatones de CO₂: un 39% es va quedar a l'aire, un 26% a l'oceà i un 25% a la terra."></svg><div class="tip" id="hTip"></div></div>
+    <div class="lg" aria-hidden="true"><span><i class="sq" style="background:var(--ink)"></i>Fòssil i ciment</span><span><i class="sq" style="background:var(--dry)"></i>Ús del sòl</span><span><i class="sq" style="background:var(--warm)"></i>Atmosfera</span><span><i class="sq" style="background:var(--cold)"></i>Oceà</span><span><i class="sq" style="background:var(--bio)"></i>Terra</span></div>
+    <figcaption>Gigatones de CO₂. Abans del 1959, el creixement atmosfèric es reconstrueix a partir de les bombolles d'aire atrapades al gel, i per això la corba és més suau. Els embornals de l'oceà i de la terra surten sempre, en bona part, de models. El 2026 és una projecció. La diferència entre la part de dalt i la de baix és el desquadrament: un 9% del total des del 1850. Dades: Global Carbon Budget 2026 (Friedlingstein et al.).</figcaption>
+  </figure>
+  <section class="col">
+    <p>Del total acumulat, l'atmosfera se n'ha quedat un <span class="k-a">39%</span>, l'oceà un <span class="k-o">26%</span> i la terra un <span class="k-l">25%</span>. El 9% que falta és el desquadrament: o bé les emissions antigues estan una mica sobreestimades, o bé els embornals han absorbit una mica més del que creiem.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="quant-de-temps-s-hi-queda">Quant de temps s'hi queda</h2>
+    <p>Sovint es pregunta quina és la «vida» del CO₂ a l'aire. La resposta curta és que no en té una de sola.</p>
+    <p>Una molècula concreta de CO₂ canvia de lloc en pocs anys: entra en una fulla, en surt, es dissol al mar, en torna a sortir. Però el que importa no és cada molècula sinó l'excés. És com una banyera amb l'aixeta i el desguàs oberts: l'aigua es renova constantment, però si hi aboques una galleda de més, el nivell triga molt a tornar a baixar.</p>
+    <p>Per saber com baixa, els científics simulen una emissió sobtada de 100 gigatones de carboni (unes 366 Gt de CO₂, més de vuit anys d'emissions al ritme actual) i miren quant en queda a l'aire amb el temps. Arrossega el control.</p>
+  </section>
+  <figure class="fig wide" id="persFig">
+    <div class="chartwrap" id="pWrap"><svg id="pSvg" role="img" aria-label="Model de la mitjana de molts models del cicle del carboni: d'una emissió sobtada de CO₂, al cap de 20 anys en queda a l'aire un 60%, al cap de 100 anys un 41% i al cap de 1.000 anys un 25%. La resta ha anat a l'oceà i a la terra. Més enllà dels 1.000 anys, la reacció amb els carbonats del fons del mar i la meteorització de les roques n'eliminen la resta en desenes o centenars de milers d'anys."></svg></div>
+    <div class="rngrow"><label for="pRng">Anys després de l'emissió</label><input class="rng" id="pRng" type="range" min="0" max="300" step="1" value="200" aria-label="Anys després de l'emissió, en escala logarítmica"></div>
+    <p class="pers-out" id="pOut" aria-live="polite"></p>
+    <figcaption>Model, no dades mesurades. La corba és l'ajust a la mitjana de 15 models d'una emissió de 100 gigatones de carboni afegida a una atmosfera amb 389 ppm (Joos et al. 2013), vàlid fins als 1.000 anys. L'ajust dona un 23,5% a l'aire als 1.000 anys; la mitjana dels models és del 25 ± 9%. Les franges de sota són els temps aproximats dels processos que retiren el CO₂ (IPCC, 5è informe, Box 6.1); els anys són en escala logarítmica.</figcaption>
+  </figure>
+  <section class="col">
+    <p>La primera part va de pressa: al cap de vint anys, a l'aire només en queda un 60%; la resta l'han absorbit la terra i la superfície del mar. Després s'alenteix, perquè el que limita és el ritme al qual el mar profund es barreja amb el de superfície. Als cent anys en queda un 41% (segons els models, entre un 28 i un 54%), i als mil, aproximadament una quarta part.</p>
+    <p>I no és el final. Una revisió de diversos models feta el 2009 concloïa que, un cop l'oceà s'ha equilibrat amb l'aire, al cap de dos a vint segles, encara hi queda entre un 20 i un 35% del CO₂ emès. El mar el neutralitza lentament dissolent carbonats del fons, en uns quants milers d'anys. La resta només desapareix quan la pluja desgasta les roques i el carboni torna a la pedra: centenars de milers d'anys.</p>
+    <p class="note">Com més CO₂ s'emet, més gran és la part que es queda a l'aire durant mil·lennis: l'oceà perd capacitat per neutralitzar-lo.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="el-compte-que-queda">El compte que queda</h2>
+    <p>La corba de Keeling deixarà de pujar quan les emissions baixin fins al nivell del que poden absorbir el mar i la terra. Durant l'última dècada, les emissions n'han estat aproximadament el doble.</p>
+    <p>El 2026, segons les projeccions del Global Carbon Budget, les emissions fòssils probablement baixaran una mica, un 0,4%, tot i que el marge va d'una baixada de l'1,5% a una pujada del 0,6%. El total, en canvi, pujarà fins a 43,3 Gt per l'augment de les emissions per ús del sòl. La concentració mitjana mundial de l'any arribarà a 427,7 ppm, un 54% més que abans de la indústria.</p>
+    <p>Per tenir un 50% de probabilitats de no passar d'1,5 °C d'escalfament, a partir del gener del 2027 només es podrien emetre unes 150 Gt de CO₂ més: menys de quatre anys al ritme actual. I les tècniques noves per treure CO₂ de l'aire, com capturar-lo directament o enterrar biocarbó, en retiren tan poc que equival a menys de 30 minuts de les emissions fòssils d'un any.</p>
+    <p>El mar i els boscos ens han fet de matalàs durant més d'un segle. Però el matalàs té un preu, un mar més àcid, i té forats: un estiu de sequera i d'incendis pot tornar a l'aire el carboni que un bosc havia guardat durant dècades.</p>
+  </section>
+
+  <section class="close col">
+    <h2>Paraules clau</h2>
+    <dl class="gl">
+      <dt>ppm</dt><dd>Parts per milió. 420 ppm vol dir que, de cada milió de molècules d'aire, 420 són de CO₂. A l'atmosfera, 1 ppm de CO₂ són 2,124 gigatones de carboni.</dd>
+      <dt>Gt de CO₂ i Gt de C</dt><dd>Gigatones, mil milions de tones. Es poden comptar en tones de CO₂ o en tones del carboni que conté: 1 Gt de carboni equival a 3,664 Gt de CO₂.</dd>
+      <dt>Embornal</dt><dd>Allò que treu més CO₂ de l'aire del que hi torna: l'oceà, la vegetació i els sòls. No vol dir que el guardi per sempre.</dd>
+      <dt>Canvi d'ús del sòl</dt><dd>Emissions netes per tallar, cremar o convertir boscos i altres ecosistemes en camps, pastures o ciutats, descomptant el que tornen a absorbir els boscos que es regeneren.</dd>
+      <dt>Fracció aerotransportada</dt><dd>La part del CO₂ emès en un any que es queda a l'atmosfera. De mitjana, al voltant del 44% en les últimes sis dècades.</dd>
+      <dt>Desquadrament del balanç</dt><dd>La diferència entre les emissions i la suma del que es mesura a l'aire, a l'oceà i a la terra. Indica errors de mesura i processos que encara no s'entenen bé.</dd>
+      <dt>Fertilització per CO₂</dt><dd>L'augment de la fotosíntesi i de l'eficiència en l'ús de l'aigua de les plantes quan hi ha més CO₂ a l'aire.</dd>
+      <dt>Bomba biològica</dt><dd>El conjunt de processos que porten el carboni fixat pel fitoplàncton cap a l'oceà profund: partícules que s'enfonsen i animals que el baixen.</dd>
+      <dt>Acidificació</dt><dd>La baixada del pH de l'aigua del mar a mesura que s'hi dissol més CO₂.</dd>
+      <dt>Corba de Keeling</dt><dd>La sèrie de mesures de CO₂ de l'aire a Mauna Loa, començada el 1958 per Charles David Keeling.</dd>
+      <dt>El Niño</dt><dd>L'escalfament irregular del Pacífic equatorial, cada dos a set anys. Porta sequeres i incendis als tròpics i fa pujar més de pressa el CO₂ de l'aire.</dd>
+    </dl>
+    <div class="fn">
+      <p><b>Metodologia.</b> Les xifres d'emissions i d'embornals són les del Global Carbon Budget 2026 (versió preliminar presentada el 10 de novembre del 2026, encara en revisió per altres científics), convertides de gigatones de carboni a gigatones de CO₂ multiplicant per 3,664. Les emissions fòssils ja descompten el poc CO₂ que el ciment torna a absorbir a mesura que envelleix (unes 0,6 Gt el 2025), com fa el Global Carbon Budget. Els percentatges de cada any es calculen sobre les emissions totals d'aquell any. L'embornal terrestre és la mitjana de 23 models de vegetació, i el de l'oceà combina models i observacions; la incertesa d'un any és d'entre ±2,6 i ±3,3 Gt de CO₂ (±0,7 a ±0,9 Gt de carboni), amb un 68% de probabilitat que el valor real hi sigui dins. Les dades del 2026 són projeccions. Els dibuixos animats de les dues seccions de desplaçament són esquemes; el primer reparteix 427 punts en proporció a les dades reals del 2025. La corba de Keeling i l'índex ONI són dades mesurades. La figura de la persistència del CO₂ és un model (un ajust a la mitjana de models), no una mesura. Les xifres de l'anàlisi del 2023 de Ke i col·laboradors fan servir un mètode diferent del Global Carbon Budget i no es poden comparar directament.</p>
+      <p><b>Fonts.</b></p>
+      <ol>
+        <li>Friedlingstein, P. et al. (2026). Global Carbon Budget 2026. <i>Earth System Science Data Discussions</i> (preprint). <a href="https://doi.org/10.5194/essd-2026-895" target="_blank" rel="noopener">doi.org/10.5194/essd-2026-895</a>. Dades: <a href="https://doi.org/10.18160/GCP-2026" target="_blank" rel="noopener">doi.org/10.18160/GCP-2026</a>.</li>
+        <li>Global Carbon Project. «Fossil CO₂ emissions decrease in 2026», 10 de novembre de 2026. <a href="https://globalcarbonbudget.org/fossil-co2-emissions-decrease-in-2026/" target="_blank" rel="noopener">globalcarbonbudget.org</a>.</li>
+        <li>NOAA Global Monitoring Laboratory. Trends in Atmospheric Carbon Dioxide, Mauna Loa (dades mensuals, versió del 9 d'octubre de 2026). <a href="https://gml.noaa.gov/ccgg/trends/" target="_blank" rel="noopener">gml.noaa.gov/ccgg/trends</a>.</li>
+        <li>Keeling, C. D. (1960). The concentration and isotopic abundances of carbon dioxide in the atmosphere. <i>Tellus</i> 12, 200–203. <a href="https://doi.org/10.3402/tellusa.v12i2.9366" target="_blank" rel="noopener">doi.org/10.3402/tellusa.v12i2.9366</a>.</li>
+        <li>Canadell, J. G. et al. (2021). Global Carbon and other Biogeochemical Cycles and Feedbacks. A: IPCC, <i>Climate Change 2021: The Physical Science Basis</i>, capítol 5. <a href="https://www.ipcc.ch/report/ar6/wg1/chapter/chapter-5/" target="_blank" rel="noopener">ipcc.ch/report/ar6/wg1/chapter/chapter-5</a>.</li>
+        <li>Ciais, P. et al. (2013). Carbon and Other Biogeochemical Cycles. A: IPCC, <i>Climate Change 2013: The Physical Science Basis</i>, capítol 6, Box 6.1. <a href="https://www.ipcc.ch/report/ar5/wg1/carbon-and-other-biogeochemical-cycles/" target="_blank" rel="noopener">ipcc.ch/report/ar5/wg1</a>.</li>
+        <li>Joos, F. et al. (2013). Carbon dioxide and climate impulse response functions for the computation of greenhouse gas metrics: a multi-model analysis. <i>Atmospheric Chemistry and Physics</i> 13, 2793–2825. <a href="https://doi.org/10.5194/acp-13-2793-2013" target="_blank" rel="noopener">doi.org/10.5194/acp-13-2793-2013</a>.</li>
+        <li>Archer, D. et al. (2009). Atmospheric lifetime of fossil fuel carbon dioxide. <i>Annual Review of Earth and Planetary Sciences</i> 37, 117–134. <a href="https://doi.org/10.1146/annurev.earth.031208.100206" target="_blank" rel="noopener">doi.org/10.1146/annurev.earth.031208.100206</a>.</li>
+        <li>Ke, P. et al. (2024). Low latency carbon budget analysis reveals a large decline of the land carbon sink in 2023. <i>National Science Review</i> 11, nwae367. <a href="https://doi.org/10.1093/nsr/nwae367" target="_blank" rel="noopener">doi.org/10.1093/nsr/nwae367</a>.</li>
+        <li>Dore, J. E. et al. (2009). Physical and biogeochemical modulation of ocean acidification in the central North Pacific. <i>PNAS</i> 106, 12235–12240. <a href="https://doi.org/10.1073/pnas.0906044106" target="_blank" rel="noopener">doi.org/10.1073/pnas.0906044106</a>.</li>
+        <li>NOAA. Ocean acidification. <a href="https://www.noaa.gov/education/resource-collections/ocean-coasts/ocean-acidification" target="_blank" rel="noopener">noaa.gov</a>.</li>
+        <li>Graven, H. D. et al. (2013). Enhanced seasonal exchange of CO₂ by northern ecosystems since 1960. <i>Science</i> 341, 1085–1089. <a href="https://doi.org/10.1126/science.1239207" target="_blank" rel="noopener">doi.org/10.1126/science.1239207</a>.</li>
+        <li>Wang, K. et al. (2020). Causes of slowing-down seasonal CO₂ amplitude at Mauna Loa. <i>Global Change Biology</i> 26, 4462–4477. <a href="https://doi.org/10.1111/gcb.15162" target="_blank" rel="noopener">doi.org/10.1111/gcb.15162</a>.</li>
+        <li>NOAA Climate Prediction Center. Índex ONI. <a href="https://www.cpc.ncep.noaa.gov/data/indices/oni.ascii.txt" target="_blank" rel="noopener">cpc.ncep.noaa.gov</a>.</li>
+        <li>NOAA GML. Mauna Loa Observatory. <a href="https://gml.noaa.gov/obop/mlo/" target="_blank" rel="noopener">gml.noaa.gov/obop/mlo</a>.</li>
+      </ol>
+    </div>
+  </section>
+</div>
+
+<footer class="ib-foot">
+  <a href="../../"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="../../assets/scrolly.js"></script>
+<script src="dades.js"></script>
+<script src="on-va-el-co2.js"></script>
+<script src="../../assets/ib.js"></script>
+</body>
+</html>

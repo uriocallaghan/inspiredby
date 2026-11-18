@@ -1,0 +1,1020 @@
+{
+ "slug": "virus-i-bacteris",
+ "vp": "d",
+ "mode": "rm",
+ "steps": [
+  {
+   "i": 0,
+   "j": 0,
+   "pos": {
+    "on": 0,
+    "contentTop": 217,
+    "contentBottom": 683
+   },
+   "on": 0,
+   "gh": 900,
+   "gTop": 135,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "inf",
+     "w": 760,
+     "h": 593,
+     "top": 284,
+     "role": "img",
+     "aria": 174,
+     "ariaHidden": null,
+     "ink": 19.8,
+     "hash": 668283,
+     "bw": 760,
+     "bh": 593
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 0,
+   "j": 1,
+   "pos": {
+    "on": 1,
+    "contentTop": 262,
+    "contentBottom": 638
+   },
+   "on": 1,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "inf",
+     "w": 760,
+     "h": 593,
+     "top": 149,
+     "role": "img",
+     "aria": 174,
+     "ariaHidden": null,
+     "ink": 32.1,
+     "hash": 110920,
+     "bw": 760,
+     "bh": 593
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 0,
+   "j": 2,
+   "pos": {
+    "on": 2,
+    "contentTop": 290,
+    "contentBottom": 609
+   },
+   "on": 2,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "inf",
+     "w": 760,
+     "h": 593,
+     "top": 149,
+     "role": "img",
+     "aria": 174,
+     "ariaHidden": null,
+     "ink": 49.4,
+     "hash": 818655,
+     "bw": 760,
+     "bh": 593
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 0,
+   "j": 3,
+   "pos": {
+    "on": 3,
+    "contentTop": 297,
+    "contentBottom": 602
+   },
+   "on": 3,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "inf",
+     "w": 760,
+     "h": 593,
+     "top": 149,
+     "role": "img",
+     "aria": 174,
+     "ariaHidden": null,
+     "ink": 49.1,
+     "hash": 955762,
+     "bw": 760,
+     "bh": 593
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 0,
+   "j": 4,
+   "pos": {
+    "on": 4,
+    "contentTop": 276,
+    "contentBottom": 623
+   },
+   "on": 4,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "inf",
+     "w": 760,
+     "h": 593,
+     "top": 149,
+     "role": "img",
+     "aria": 174,
+     "ariaHidden": null,
+     "ink": 27.8,
+     "hash": 512891,
+     "bw": 760,
+     "bh": 593
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 0,
+   "j": 5,
+   "pos": {
+    "on": 5,
+    "contentTop": 283,
+    "contentBottom": 616
+   },
+   "on": 5,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "inf",
+     "w": 760,
+     "h": 593,
+     "top": 149,
+     "role": "img",
+     "aria": 174,
+     "ariaHidden": null,
+     "ink": 13.6,
+     "hash": 530541,
+     "bw": 760,
+     "bh": 593
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 0,
+   "j": 6,
+   "pos": {
+    "on": 6,
+    "contentTop": 248,
+    "contentBottom": 652
+   },
+   "on": 6,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "inf",
+     "w": 760,
+     "h": 593,
+     "top": 149,
+     "role": "img",
+     "aria": 174,
+     "ariaHidden": null,
+     "ink": 22.1,
+     "hash": 821982,
+     "bw": 760,
+     "bh": 593
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 0,
+   "j": 7,
+   "pos": {
+    "on": 7,
+    "contentTop": 290,
+    "contentBottom": 609
+   },
+   "on": 7,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "inf",
+     "w": 760,
+     "h": 593,
+     "top": 149,
+     "role": "img",
+     "aria": 174,
+     "ariaHidden": null,
+     "ink": 11.1,
+     "hash": 636956,
+     "bw": 760,
+     "bh": 593
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 0,
+   "j": 8,
+   "pos": {
+    "on": 8,
+    "contentTop": 269,
+    "contentBottom": 631
+   },
+   "on": 8,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "inf",
+     "w": 760,
+     "h": 593,
+     "top": 149,
+     "role": "img",
+     "aria": 174,
+     "ariaHidden": null,
+     "ink": 18.4,
+     "hash": 963140,
+     "bw": 760,
+     "bh": 593
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 0,
+   "j": 9,
+   "pos": {
+    "on": 9,
+    "contentTop": 383,
+    "contentBottom": 517
+   },
+   "on": 9,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "inf",
+     "w": 760,
+     "h": 593,
+     "top": 149,
+     "role": "img",
+     "aria": 174,
+     "ariaHidden": null,
+     "ink": 47.8,
+     "hash": 665820,
+     "bw": 760,
+     "bh": 593
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 0,
+   "pos": {
+    "on": 0,
+    "contentTop": 262,
+    "contentBottom": 637
+   },
+   "on": 0,
+   "gh": 900,
+   "gTop": 135,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "cr",
+     "w": 760,
+     "h": 547,
+     "top": 317,
+     "role": "img",
+     "aria": 240,
+     "ariaHidden": null,
+     "ink": 67.6,
+     "hash": 875693,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 1,
+   "j": 1,
+   "pos": {
+    "on": 1,
+    "contentTop": 290,
+    "contentBottom": 609
+   },
+   "on": 1,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "cr",
+     "w": 760,
+     "h": 547,
+     "top": 182,
+     "role": "img",
+     "aria": 240,
+     "ariaHidden": null,
+     "ink": 68.4,
+     "hash": 782957,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 2,
+   "pos": {
+    "on": 2,
+    "contentTop": 262,
+    "contentBottom": 637
+   },
+   "on": 2,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "cr",
+     "w": 760,
+     "h": 547,
+     "top": 182,
+     "role": "img",
+     "aria": 240,
+     "ariaHidden": null,
+     "ink": 68.3,
+     "hash": 578515,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 3,
+   "pos": {
+    "on": 3,
+    "contentTop": 311,
+    "contentBottom": 588
+   },
+   "on": 3,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "cr",
+     "w": 760,
+     "h": 547,
+     "top": 182,
+     "role": "img",
+     "aria": 240,
+     "ariaHidden": null,
+     "ink": 67.8,
+     "hash": 77048,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 4,
+   "pos": {
+    "on": 4,
+    "contentTop": 276,
+    "contentBottom": 623
+   },
+   "on": 4,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "cr",
+     "w": 760,
+     "h": 547,
+     "top": 182,
+     "role": "img",
+     "aria": 240,
+     "ariaHidden": null,
+     "ink": 67.7,
+     "hash": 888888,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 5,
+   "pos": {
+    "on": 5,
+    "contentTop": 276,
+    "contentBottom": 623
+   },
+   "on": 5,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "cr",
+     "w": 760,
+     "h": 547,
+     "top": 182,
+     "role": "img",
+     "aria": 240,
+     "ariaHidden": null,
+     "ink": 68.3,
+     "hash": 188870,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 6,
+   "pos": {
+    "on": 6,
+    "contentTop": 248,
+    "contentBottom": 652
+   },
+   "on": 6,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "cr",
+     "w": 760,
+     "h": 547,
+     "top": 182,
+     "role": "img",
+     "aria": 240,
+     "ariaHidden": null,
+     "ink": 68.4,
+     "hash": 471002,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 7,
+   "pos": {
+    "on": 7,
+    "contentTop": 248,
+    "contentBottom": 652
+   },
+   "on": 7,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "cr",
+     "w": 760,
+     "h": 547,
+     "top": 182,
+     "role": "img",
+     "aria": 240,
+     "ariaHidden": null,
+     "ink": 60.9,
+     "hash": 841625,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "animating": true
+  }
+ ],
+ "figs": [
+  {
+   "k": 0,
+   "id": "",
+   "animating": false
+  },
+  {
+   "k": 1,
+   "id": "",
+   "animating": false
+  },
+  {
+   "k": 2,
+   "id": "",
+   "animating": false
+  },
+  {
+   "k": 3,
+   "id": "",
+   "animating": false
+  },
+  {
+   "k": 4,
+   "id": "",
+   "animating": true
+  },
+  {
+   "k": 5,
+   "id": "",
+   "animating": false
+  }
+ ],
+ "page": {
+  "W": 1440,
+  "H": 900,
+  "sw": 1440,
+  "docH": 31560,
+  "wide": [],
+  "scrolly": [
+   {
+    "i": 0,
+    "id": "",
+    "aria": "El cicle d'infecció d'un fag, pas a pas",
+    "steps": 10,
+    "g": "graphic"
+   },
+   {
+    "i": 1,
+    "id": "",
+    "aria": "Com funciona el CRISPR, pas a pas",
+    "steps": 8,
+    "g": "graphic"
+   }
+  ],
+  "figs": [
+   {
+    "i": 0,
+    "id": "",
+    "cls": "fig",
+    "h": 665,
+    "cap": "Totes les formes estan dibuixades a escala, amb les mides típiques de cada cèl·lula. Fonts",
+    "ctrls": 7
+   },
+   {
+    "i": 1,
+    "id": "",
+    "cls": "fig",
+    "h": 791,
+    "cap": "Dades reals: 5.671 parells de mesures de 25 campanyes oceanogràfiques, compilades per Wigi",
+    "ctrls": 4
+   },
+   {
+    "i": 2,
+    "id": "",
+    "cls": "fig",
+    "h": 496,
+    "cap": "Esquema, no dades: el gruix de les fletxes és il·lustratiu. Basat en Wilhelm i Suttle 1999",
+    "ctrls": 2
+   },
+   {
+    "i": 3,
+    "id": "",
+    "cls": "fig",
+    "h": 626,
+    "cap": "Dades reals: 21.738 genomes complets de bacteris i arqueus analitzats amb l'eina DefenseFi",
+    "ctrls": 2
+   },
+   {
+    "i": 4,
+    "id": "",
+    "cls": "fig wide",
+    "h": 499,
+    "cap": "Simulació amb un model molt simplificat, no dades reals. Les probabilitats estan exagerade",
+    "ctrls": 5
+   },
+   {
+    "i": 5,
+    "id": "",
+    "cls": "fig",
+    "h": 289,
+    "cap": "",
+    "ctrls": 2
+   }
+  ],
+  "controls": [
+   {
+    "t": "BUTTON:button",
+    "id": "scPlay",
+    "label": "Reprodueix el zoom",
+    "hasAria": false,
+    "pressed": null,
+    "h": 20,
+    "w": 106,
+    "fs": "12.5px",
+    "valuetext": null
+   },
+   {
+    "t": "INPUT:range",
+    "id": "scRng",
+    "label": "Nivell de zoom",
+    "hasAria": true,
+    "pressed": null,
+    "h": 28,
+    "w": 920,
+    "fs": "19px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Òvul",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 27,
+    "w": 28,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Cèl·lula humana",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 27,
+    "w": 90,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Glòbul vermell",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 27,
+    "w": 82,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Bacteri",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 27,
+    "w": 40,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Fag",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 27,
+    "w": 20,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Lític (T4)",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 73,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Lisogènic (lambda)",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 130,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "iPlay",
+    "label": "Reprodueix",
+    "hasAria": false,
+    "pressed": null,
+    "h": 20,
+    "w": 62,
+    "fs": "12.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Totes",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 27,
+    "w": 32,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "0–100 m",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 27,
+    "w": 47,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "100–1.000 m",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 27,
+    "w": 71,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Més de 1.000 m",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 27,
+    "w": 86,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Sense virus",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 26,
+    "w": 61,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Amb virus",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 26,
+    "w": 57,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Quins",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 26,
+    "w": 33,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Quants per genoma",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 26,
+    "w": 107,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Virus A",
+    "hasAria": false,
+    "pressed": null,
+    "h": 30,
+    "w": 230,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Virus B",
+    "hasAria": false,
+    "pressed": null,
+    "h": 30,
+    "w": 230,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Virus A mutant",
+    "hasAria": false,
+    "pressed": null,
+    "h": 30,
+    "w": 230,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Virus A amb anti-CRISPR",
+    "hasAria": false,
+    "pressed": null,
+    "h": 30,
+    "w": 230,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "simReset",
+    "label": "Torna a començar",
+    "hasAria": false,
+    "pressed": null,
+    "h": 20,
+    "w": 95,
+    "fs": "12.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "tlPrev",
+    "label": "← Anterior",
+    "hasAria": false,
+    "pressed": null,
+    "h": 20,
+    "w": 59,
+    "fs": "12.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "tlNext",
+    "label": "Següent →",
+    "hasAria": false,
+    "pressed": null,
+    "h": 20,
+    "w": 59,
+    "fs": "12.5px",
+    "valuetext": null
+   }
+  ],
+  "tabbableSvg": [
+   "tline"
+  ],
+  "smallHtml": [],
+  "colorsUsed": {
+   "#DADADA": 5,
+   "#7A7A7A": 14,
+   "#121212": 47,
+   "#4A4A4A": 25,
+   "#16786C": 11,
+   "#ADADAD": 14,
+   "#FFF": 13,
+   "#C8442A": 3
+  },
+  "styleVars": [
+   "--dry:#9A6326",
+   "--wet:#16786C",
+   "--bio:#4C8A2E"
+  ]
+ },
+ "resources": [
+  {
+   "u": "https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap",
+   "kb": 0,
+   "dkb": 22,
+   "ms": 4
+  },
+  {
+   "u": "/assets/ib.css",
+   "kb": 0,
+   "dkb": 6,
+   "ms": 4
+  },
+  {
+   "u": "/assets/article.css",
+   "kb": 0,
+   "dkb": 7,
+   "ms": 4
+  },
+  {
+   "u": "/assets/scrolly.js",
+   "kb": 0,
+   "dkb": 1,
+   "ms": 4
+  },
+  {
+   "u": "/assets/logo.png",
+   "kb": 0,
+   "dkb": 20,
+   "ms": 5
+  },
+  {
+   "u": "/articles/virus-i-bacteris/dades.js",
+   "kb": 111,
+   "dkb": 111,
+   "ms": 7
+  },
+  {
+   "u": "https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js",
+   "kb": 0,
+   "dkb": 273,
+   "ms": 7
+  },
+  {
+   "u": "/assets/ib.js",
+   "kb": 0,
+   "dkb": 1,
+   "ms": 5
+  },
+  {
+   "u": "/articles/virus-i-bacteris/virus-i-bacteris.js",
+   "kb": 40,
+   "dkb": 40,
+   "ms": 6
+  },
+  {
+   "u": "/articles/virus-i-bacteris/crispr.js",
+   "kb": 31,
+   "dkb": 31,
+   "ms": 9
+  },
+  {
+   "u": "DOC",
+   "dkb": 54
+  }
+ ],
+ "logs": [],
+ "failed": [],
+ "endOverflow": {
+  "sw": 1440,
+  "W": 1440
+ }
+}

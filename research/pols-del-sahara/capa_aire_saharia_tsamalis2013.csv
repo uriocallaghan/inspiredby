@@ -1,0 +1,8 @@
+# Altura i latitud de la capa d'aire del Sàhara (SAL) segons CALIPSO, juny 2006 - maig 2011
+# Font: Tsamalis et al. 2013, Atmos. Chem. Phys. 13, 11235-11257, resum. doi:10.5194/acp-13-11235-2013
+estacio,lloc,altura_km_min,altura_km_max,lat_min,lat_max
+hivern,costa africana,0,3,-5,15
+hivern,prop de Sud-amèrica (50W),0,2,-5,10
+estiu,costa africana,1,5,5,30
+estiu,golf de Mèxic / 50W,0,2,10,25
+# Primavera i tardor: valors intermedis. A l'estiu, per sota de la SAL hi ha aire marí sense pols fins a uns 50W.

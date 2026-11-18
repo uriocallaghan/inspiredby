@@ -1,0 +1,66 @@
+year,population,source
+0,232268832,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+100,237052192,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+200,240762160,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+300,227702848,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+400,241697008,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+500,253395808,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+600,271638944,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+700,278346080,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+800,285870176,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+900,311142688,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1000,323462624,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1100,397889888,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1200,444653984,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1300,456248096,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1400,442309216,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1500,503051104,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1600,516147616,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1700,595456896,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1710,617975872,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1720,648184768,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1730,670899968,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1740,702227776,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1750,753279296,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1760,788254976,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1770,827951488,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1780,900945152,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1790,942261696,HYDE 3.3 (Klein Goldewijk et al.) via OWID population dataset
+1800,983104755,Gapminder v7 via OWID population dataset
+1810,1020150076,Gapminder v7 via OWID population dataset
+1820,1089507052,Gapminder v7 via OWID population dataset
+1830,1162497339,Gapminder v7 via OWID population dataset
+1840,1219617217,Gapminder v7 via OWID population dataset
+1850,1275602897,Gapminder v7 via OWID population dataset
+1860,1298027373,Gapminder v7 via OWID population dataset
+1870,1340168478,Gapminder v7 via OWID population dataset
+1880,1414583216,Gapminder v7 via OWID population dataset
+1890,1520891633,Gapminder v7 via OWID population dataset
+1900,1627273655,Gapminder v7 via OWID population dataset
+1910,1767417985,Gapminder v7 via OWID population dataset
+1920,1895426673,Gapminder v7 via OWID population dataset
+1930,2071786711,Gapminder v7 via OWID population dataset
+1940,2291979566,Gapminder v7 via OWID population dataset
+1950,2493092852,UN World Population Prospects 2024 (estimates) via OWID
+1960,3015470889,UN World Population Prospects 2024 (estimates) via OWID
+1970,3694683794,UN World Population Prospects 2024 (estimates) via OWID
+1980,4447606240,UN World Population Prospects 2024 (estimates) via OWID
+1990,5327803106,UN World Population Prospects 2024 (estimates) via OWID
+2000,6171702992,UN World Population Prospects 2024 (estimates) via OWID
+2010,7021732143,UN World Population Prospects 2024 (estimates) via OWID
+2020,7887001289,UN World Population Prospects 2024 (estimates) via OWID
+2021,7954448387,UN World Population Prospects 2024 (estimates) via OWID
+2022,8021407196,UN World Population Prospects 2024 (estimates) via OWID
+2023,8091734933,UN World Population Prospects 2024 (estimates) via OWID
+2024,8161972574,"UN World Population Prospects 2024, medium-variant PROJECTION via OWID"
+2025,8231613067,"UN World Population Prospects 2024, medium-variant PROJECTION via OWID"
+2026,8300678396,"UN World Population Prospects 2024, medium-variant PROJECTION via OWID"
+2030,8569124917,"UN World Population Prospects 2024, medium-variant PROJECTION via OWID"
+2040,9177190199,"UN World Population Prospects 2024, medium-variant PROJECTION via OWID"
+2050,9664378585,"UN World Population Prospects 2024, medium-variant PROJECTION via OWID"
+2060,9989232293,"UN World Population Prospects 2024, medium-variant PROJECTION via OWID"
+2070,10189241950,"UN World Population Prospects 2024, medium-variant PROJECTION via OWID"
+2080,10283078027,"UN World Population Prospects 2024, medium-variant PROJECTION via OWID"
+2084,10289315239,"UN World Population Prospects 2024, medium-variant PROJECTION via OWID"
+2090,10271565066,"UN World Population Prospects 2024, medium-variant PROJECTION via OWID"
+2100,10180160744,"UN World Population Prospects 2024, medium-variant PROJECTION via OWID"

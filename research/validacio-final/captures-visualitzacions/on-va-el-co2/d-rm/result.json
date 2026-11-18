@@ -1,0 +1,757 @@
+{
+ "slug": "on-va-el-co2",
+ "vp": "d",
+ "mode": "rm",
+ "steps": [
+  {
+   "i": 0,
+   "j": 0,
+   "pos": {
+    "on": 0,
+    "contentTop": 319,
+    "contentBottom": 581
+   },
+   "on": 0,
+   "gh": 900,
+   "gTop": 135,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 303,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 45.9,
+     "hash": 363917,
+     "bw": 760,
+     "bh": 562
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 0,
+   "j": 1,
+   "pos": {
+    "on": 1,
+    "contentTop": 312,
+    "contentBottom": 589
+   },
+   "on": 1,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 48.5,
+     "hash": 89275,
+     "bw": 760,
+     "bh": 562
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 0,
+   "j": 2,
+   "pos": {
+    "on": 2,
+    "contentTop": 284,
+    "contentBottom": 617
+   },
+   "on": 2,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 48.7,
+     "hash": 636,
+     "bw": 760,
+     "bh": 562
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 0,
+   "j": 3,
+   "pos": {
+    "on": 3,
+    "contentTop": 319,
+    "contentBottom": 581
+   },
+   "on": 3,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 48.9,
+     "hash": 929142,
+     "bw": 760,
+     "bh": 562
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 0,
+   "j": 4,
+   "pos": {
+    "on": 4,
+    "contentTop": 339,
+    "contentBottom": 562
+   },
+   "on": 4,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 47.9,
+     "hash": 165965,
+     "bw": 760,
+     "bh": 562
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 0,
+   "j": 5,
+   "pos": {
+    "on": 5,
+    "contentTop": 286,
+    "contentBottom": 615
+   },
+   "on": 5,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 47,
+     "hash": 418250,
+     "bw": 760,
+     "bh": 562
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 0,
+   "j": 6,
+   "pos": {
+    "on": 6,
+    "contentTop": 319,
+    "contentBottom": 581
+   },
+   "on": 6,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 47,
+     "hash": 837240,
+     "bw": 760,
+     "bh": 562
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 0,
+   "j": 7,
+   "pos": {
+    "on": 7,
+    "contentTop": 291,
+    "contentBottom": 610
+   },
+   "on": 7,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 47.4,
+     "hash": 546708,
+     "bw": 760,
+     "bh": 562
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 0,
+   "j": 8,
+   "pos": {
+    "on": 8,
+    "contentTop": 305,
+    "contentBottom": 596
+   },
+   "on": 8,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 53.6,
+     "hash": 659343,
+     "bw": 760,
+     "bh": 562
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 1,
+   "j": 0,
+   "pos": {
+    "on": 0,
+    "contentTop": 273,
+    "contentBottom": 627
+   },
+   "on": 0,
+   "gh": 900,
+   "gTop": 135,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bCv",
+     "w": 760,
+     "h": 547,
+     "top": 324,
+     "role": "img",
+     "aria": 262,
+     "ariaHidden": null,
+     "ink": 67.6,
+     "hash": 159252,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 1,
+   "j": 1,
+   "pos": {
+    "on": 1,
+    "contentTop": 163,
+    "contentBottom": 738
+   },
+   "on": 1,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bCv",
+     "w": 760,
+     "h": 547,
+     "top": 189,
+     "role": "img",
+     "aria": 262,
+     "ariaHidden": null,
+     "ink": 58.1,
+     "hash": 486822,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 1,
+   "j": 2,
+   "pos": {
+    "on": 2,
+    "contentTop": 248,
+    "contentBottom": 652
+   },
+   "on": 2,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bCv",
+     "w": 760,
+     "h": 547,
+     "top": 189,
+     "role": "img",
+     "aria": 262,
+     "ariaHidden": null,
+     "ink": 66.1,
+     "hash": 391512,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 3,
+   "pos": {
+    "on": 3,
+    "contentTop": 248,
+    "contentBottom": 652
+   },
+   "on": 3,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bCv",
+     "w": 760,
+     "h": 547,
+     "top": 189,
+     "role": "img",
+     "aria": 262,
+     "ariaHidden": null,
+     "ink": 66.6,
+     "hash": 406882,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 4,
+   "pos": {
+    "on": 4,
+    "contentTop": 234,
+    "contentBottom": 667
+   },
+   "on": 4,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bCv",
+     "w": 760,
+     "h": 547,
+     "top": 189,
+     "role": "img",
+     "aria": 262,
+     "ariaHidden": null,
+     "ink": 53.5,
+     "hash": 101340,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 5,
+   "pos": {
+    "on": 5,
+    "contentTop": 191,
+    "contentBottom": 709
+   },
+   "on": 5,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bCv",
+     "w": 760,
+     "h": 547,
+     "top": 189,
+     "role": "img",
+     "aria": 262,
+     "ariaHidden": null,
+     "ink": 53.8,
+     "hash": 960700,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "animating": true
+  }
+ ],
+ "figs": [
+  {
+   "k": 0,
+   "id": "keelFig",
+   "animating": false
+  },
+  {
+   "k": 1,
+   "id": "yearFig",
+   "animating": false
+  },
+  {
+   "k": 2,
+   "id": "histFig",
+   "animating": false
+  },
+  {
+   "k": 3,
+   "id": "persFig",
+   "animating": false
+  }
+ ],
+ "page": {
+  "W": 1440,
+  "H": 900,
+  "sw": 1440,
+  "docH": 23800,
+  "wide": [],
+  "scrolly": [
+   {
+    "i": 0,
+    "id": "scA",
+    "aria": "Un any d'emissions de CO2 i on van a parar",
+    "steps": 9,
+    "g": "graphic"
+   },
+   {
+    "i": 1,
+    "id": "scB",
+    "aria": "Com absorbeixen CO2 l'oceà i la vegetació",
+    "steps": 6,
+    "g": "graphic"
+   }
+  ],
+  "figs": [
+   {
+    "i": 0,
+    "id": "keelFig",
+    "cls": "fig wide",
+    "h": 663,
+    "cap": "Mitjana mensual de CO₂ a l'observatori de Mauna Loa (3.397 m), en parts per milió. La líni",
+    "ctrls": 3
+   },
+   {
+    "i": 1,
+    "id": "yearFig",
+    "cls": "fig wide",
+    "h": 501,
+    "cap": "Fonts i embornals de CO₂ per any, en gigatones de CO₂. Quan les barres no arriben a la lín",
+    "ctrls": 6
+   },
+   {
+    "i": 2,
+    "id": "histFig",
+    "cls": "fig wide",
+    "h": 621,
+    "cap": "Gigatones de CO₂. Abans del 1959, el creixement atmosfèric es reconstrueix a partir de les",
+    "ctrls": 2
+   },
+   {
+    "i": 3,
+    "id": "persFig",
+    "cls": "fig wide",
+    "h": 560,
+    "cap": "Model, no dades mesurades. La corba és l'ajust a la mitjana de 15 models d'una emissió de ",
+    "ctrls": 1
+   }
+  ],
+  "controls": [
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "1958–1961",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 60,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "1996–1999",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 60,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "2022–2026",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 30,
+    "w": 64,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "1987",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 27,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "1992",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 27,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "1998",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 27,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "2023",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 27,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "2024",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 27,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "2025",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 30,
+    "w": 29,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Cada any",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 30,
+    "w": 54,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Acumulat des del 1850",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 126,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "INPUT:range",
+    "id": "pRng",
+    "label": "Anys després de l'emissió, en escala log",
+    "hasAria": true,
+    "pressed": null,
+    "h": 28,
+    "w": 974,
+    "fs": "12.5px",
+    "valuetext": null
+   }
+  ],
+  "tabbableSvg": [
+   "ySvg"
+  ],
+  "smallHtml": [],
+  "colorsUsed": {
+   "#DADADA": 26,
+   "#121212": 52,
+   "#C8442A": 79,
+   "#7A7A7A": 2,
+   "#4C8A2E": 80,
+   "#2C5DA8": 71,
+   "#9A6326": 2,
+   "#FFF": 2,
+   "#6F8FC0": 1
+  },
+  "styleVars": [
+   "--dry:#9A6326",
+   "--bio:#4C8A2E",
+   "--wet:#16786C",
+   "--sea:#E4ECF6"
+  ]
+ },
+ "resources": [
+  {
+   "u": "https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap",
+   "kb": 0,
+   "dkb": 22,
+   "ms": 3
+  },
+  {
+   "u": "/assets/ib.css",
+   "kb": 0,
+   "dkb": 6,
+   "ms": 4
+  },
+  {
+   "u": "/assets/article.css",
+   "kb": 0,
+   "dkb": 7,
+   "ms": 4
+  },
+  {
+   "u": "/assets/logo.png",
+   "kb": 0,
+   "dkb": 20,
+   "ms": 6
+  },
+  {
+   "u": "/assets/scrolly.js",
+   "kb": 0,
+   "dkb": 1,
+   "ms": 6
+  },
+  {
+   "u": "/assets/ib.js",
+   "kb": 0,
+   "dkb": 1,
+   "ms": 7
+  },
+  {
+   "u": "https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js",
+   "kb": 0,
+   "dkb": 273,
+   "ms": 7
+  },
+  {
+   "u": "/articles/on-va-el-co2/dades.js",
+   "kb": 20,
+   "dkb": 20,
+   "ms": 8
+  },
+  {
+   "u": "/articles/on-va-el-co2/on-va-el-co2.js",
+   "kb": 53,
+   "dkb": 52,
+   "ms": 10
+  },
+  {
+   "u": "DOC",
+   "dkb": 39
+  }
+ ],
+ "logs": [],
+ "failed": [],
+ "endOverflow": {
+  "sw": 1440,
+  "W": 1440
+ }
+}

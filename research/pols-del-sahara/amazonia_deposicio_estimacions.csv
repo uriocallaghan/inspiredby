@@ -1,0 +1,11 @@
+# Estimacions publicades de pols africana dipositada a l'Amazònia (Tg/any). Les regions i els anys no són iguals entre estudis.
+# Font principal de la taula: Yu et al. 2015 GRL, Taula 2 (doi:10.1002/2015GL063040); Prospero et al. 2020 GBC (doi:10.1029/2020GB006536); Koren et al. 2006 ERL (doi:10.1088/1748-9326/1/1/014005)
+estudi,metode,Tg_any,min,max,periode,nota
+Swap et al. 1992,mesures in situ,13,9,19,1987,Amazònia central (àrea petita)
+Kaufman et al. 2005,satèl·lit MODIS,50,,,2001,rectangle 20S-10N 35W-75W (inclou oceà)
+Koren et al. 2006,satèl·lit MODIS,40,,,,"xifra aproximada citada a l'article; meitat del Bodélé"
+Ridley et al. 2012,model GEOS-Chem,17,,,2006-2008,10S-10N només terra
+Zhao et al. 2013 (via Yu 2015),model WRF-Chem,19,,,2011-2013,mateixa regió que Yu
+Chin et al. 2014 (via Yu 2015),model GOCART,26,,,1980-2009,mateixa regió que Yu
+Yu et al. 2015,satèl·lit CALIPSO,27.7,8,48,2007-2013,12S-8N; 75W-40/50W; 9.6e8 ha
+Prospero et al. 2020,mesures a Caiena + model MERRA-2,9,8,10,2002-2017,"8-10 Tg; màxim al nord i nord-est"

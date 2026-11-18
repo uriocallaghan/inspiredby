@@ -1,0 +1,826 @@
+{
+ "slug": "pols-del-sahara",
+ "vp": "d",
+ "mode": "rm",
+ "steps": [
+  {
+   "i": 0,
+   "j": 0,
+   "pos": {
+    "on": 0,
+    "contentTop": 304,
+    "contentBottom": 595
+   },
+   "on": 0,
+   "gh": 900,
+   "gTop": 135,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bcv",
+     "w": 884,
+     "h": 583,
+     "top": 316,
+     "role": "img",
+     "aria": 252,
+     "ariaHidden": null,
+     "ink": 99.5,
+     "hash": 452921,
+     "bw": 884,
+     "bh": 583,
+     "html": {
+      "n": 3,
+      "minFs": 12.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 0,
+   "j": 1,
+   "pos": {
+    "on": 1,
+    "contentTop": 306,
+    "contentBottom": 593
+   },
+   "on": 1,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bcv",
+     "w": 884,
+     "h": 583,
+     "top": 182,
+     "role": "img",
+     "aria": 252,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 866912,
+     "bw": 884,
+     "bh": 583,
+     "html": {
+      "n": 2,
+      "minFs": 12.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 0,
+   "j": 2,
+   "pos": {
+    "on": 2,
+    "contentTop": 306,
+    "contentBottom": 593
+   },
+   "on": 2,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bcv",
+     "w": 884,
+     "h": 583,
+     "top": 182,
+     "role": "img",
+     "aria": 252,
+     "ariaHidden": null,
+     "ink": 99.9,
+     "hash": 509596,
+     "bw": 884,
+     "bh": 583,
+     "html": {
+      "n": 3,
+      "minFs": 12.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 0,
+   "j": 3,
+   "pos": {
+    "on": 3,
+    "contentTop": 262,
+    "contentBottom": 637
+   },
+   "on": 3,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bcv",
+     "w": 884,
+     "h": 583,
+     "top": 182,
+     "role": "img",
+     "aria": 252,
+     "ariaHidden": null,
+     "ink": 98.9,
+     "hash": 80132,
+     "bw": 884,
+     "bh": 583,
+     "html": {
+      "n": 6,
+      "minFs": 12.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "animating": false
+  },
+  {
+   "i": 0,
+   "j": 4,
+   "pos": {
+    "on": 4,
+    "contentTop": 231,
+    "contentBottom": 668
+   },
+   "on": 4,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bcv",
+     "w": 884,
+     "h": 583,
+     "top": 182,
+     "role": "img",
+     "aria": 252,
+     "ariaHidden": null,
+     "ink": 99.8,
+     "hash": 948689,
+     "bw": 884,
+     "bh": 583,
+     "html": {
+      "n": 6,
+      "minFs": 12.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 0,
+   "j": 5,
+   "pos": {
+    "on": 5,
+    "contentTop": 262,
+    "contentBottom": 638
+   },
+   "on": 5,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bcv",
+     "w": 884,
+     "h": 583,
+     "top": 182,
+     "role": "img",
+     "aria": 252,
+     "ariaHidden": null,
+     "ink": 99.6,
+     "hash": 594081,
+     "bw": 884,
+     "bh": 583,
+     "html": {
+      "n": 4,
+      "minFs": 12.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 0,
+   "pos": {
+    "on": 0,
+    "contentTop": 260,
+    "contentBottom": 640
+   },
+   "on": 0,
+   "gh": 900,
+   "gTop": 135,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "mcv",
+     "w": 884,
+     "h": 548,
+     "top": 294,
+     "role": "img",
+     "aria": 228,
+     "ariaHidden": null,
+     "ink": 99.7,
+     "hash": 326350,
+     "bw": 884,
+     "bh": 548,
+     "html": {
+      "n": 5,
+      "minFs": 12.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 1,
+   "pos": {
+    "on": 1,
+    "contentTop": 288,
+    "contentBottom": 612
+   },
+   "on": 1,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "mcv",
+     "w": 884,
+     "h": 548,
+     "top": 159,
+     "role": "img",
+     "aria": 228,
+     "ariaHidden": null,
+     "ink": 99.6,
+     "hash": 462674,
+     "bw": 884,
+     "bh": 548,
+     "html": {
+      "n": 7,
+      "minFs": 12.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 2,
+   "pos": {
+    "on": 2,
+    "contentTop": 292,
+    "contentBottom": 608
+   },
+   "on": 2,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "mcv",
+     "w": 884,
+     "h": 548,
+     "top": 159,
+     "role": "img",
+     "aria": 228,
+     "ariaHidden": null,
+     "ink": 99.8,
+     "hash": 782297,
+     "bw": 884,
+     "bh": 548,
+     "html": {
+      "n": 3,
+      "minFs": 12.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 3,
+   "pos": {
+    "on": 3,
+    "contentTop": 246,
+    "contentBottom": 654
+   },
+   "on": 3,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "mcv",
+     "w": 884,
+     "h": 548,
+     "top": 159,
+     "role": "img",
+     "aria": 228,
+     "ariaHidden": null,
+     "ink": 99.9,
+     "hash": 809750,
+     "bw": 884,
+     "bh": 548,
+     "html": {
+      "n": 2,
+      "minFs": 12.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 4,
+   "pos": {
+    "on": 4,
+    "contentTop": 278,
+    "contentBottom": 622
+   },
+   "on": 4,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "mcv",
+     "w": 884,
+     "h": 548,
+     "top": 159,
+     "role": "img",
+     "aria": 228,
+     "ariaHidden": null,
+     "ink": 99.8,
+     "hash": 8165,
+     "bw": 884,
+     "bh": 548,
+     "html": {
+      "n": 6,
+      "minFs": 12.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 5,
+   "pos": {
+    "on": 5,
+    "contentTop": 319,
+    "contentBottom": 581
+   },
+   "on": 5,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "mcv",
+     "w": 884,
+     "h": 548,
+     "top": 159,
+     "role": "img",
+     "aria": 228,
+     "ariaHidden": null,
+     "ink": 99.6,
+     "hash": 47836,
+     "bw": 884,
+     "bh": 548,
+     "html": {
+      "n": 3,
+      "minFs": 12.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "animating": true
+  },
+  {
+   "i": 1,
+   "j": 6,
+   "pos": {
+    "on": 6,
+    "contentTop": 333,
+    "contentBottom": 567
+   },
+   "on": 6,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "mcv",
+     "w": 884,
+     "h": 548,
+     "top": 159,
+     "role": "img",
+     "aria": 228,
+     "ariaHidden": null,
+     "ink": 99.5,
+     "hash": 918571,
+     "bw": 884,
+     "bh": 548,
+     "html": {
+      "n": 4,
+      "minFs": 12.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "animating": true
+  }
+ ],
+ "figs": [
+  {
+   "k": 0,
+   "id": "",
+   "animating": true
+  },
+  {
+   "k": 1,
+   "id": "",
+   "animating": false
+  },
+  {
+   "k": 2,
+   "id": "",
+   "animating": false
+  },
+  {
+   "k": 3,
+   "id": "",
+   "animating": false
+  }
+ ],
+ "page": {
+  "W": 1440,
+  "H": 900,
+  "sw": 1440,
+  "docH": 22425,
+  "wide": [],
+  "scrolly": [
+   {
+    "i": 0,
+    "id": "",
+    "aria": "La depressió del Bodélé, pas a pas",
+    "steps": 6,
+    "g": "graphic"
+   },
+   {
+    "i": 1,
+    "id": "",
+    "aria": "El viatge de la pols a través de l'Atlàntic",
+    "steps": 7,
+    "g": "graphic"
+   }
+  ],
+  "figs": [
+   {
+    "i": 0,
+    "id": "",
+    "cls": "fig",
+    "h": 560,
+    "cap": "Esquema basat en les mesures del satèl·lit CALIPSO (Tsamalis et al. 2013, juny 2006 – maig",
+    "ctrls": 5
+   },
+   {
+    "i": 1,
+    "id": "",
+    "cls": "fig",
+    "h": 468,
+    "cap": "Cada icona representa 20.000 camions de 25 tones (500.000 tones). Quantitats anuals de Yu ",
+    "ctrls": 6
+   },
+   {
+    "i": 2,
+    "id": "",
+    "cls": "fig",
+    "h": 575,
+    "cap": "Estimacions publicades recollides per Yu et al. 2015 i Prospero et al. 2020 (regions i any",
+    "ctrls": 1
+   },
+   {
+    "i": 3,
+    "id": "",
+    "cls": "fig",
+    "h": 432,
+    "cap": "Pols que creua cada meridià entre 10° S i 30° N, en milions de tones l'any. La línia és la",
+    "ctrls": 0
+   }
+  ],
+  "controls": [
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Hivern",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 30,
+    "w": 40,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Primavera",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 58,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Estiu",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 28,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Tardor",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 37,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "salPlay",
+    "label": "Reprodueix l'any",
+    "hasAria": false,
+    "pressed": null,
+    "h": 20,
+    "w": 91,
+    "fs": "12.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "mPlay",
+    "label": "Reprodueix",
+    "hasAria": false,
+    "pressed": null,
+    "h": 20,
+    "w": 62,
+    "fs": "12.5px",
+    "valuetext": null
+   },
+   {
+    "t": "INPUT:range",
+    "id": "mRng",
+    "label": "Mes de l'any",
+    "hasAria": true,
+    "pressed": null,
+    "h": 28,
+    "w": 806,
+    "fs": "12.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Surt d'Àfrica",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 30,
+    "w": 74,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "A mig oceà",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 61,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Al Carib",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 43,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Cau a l'Amazònia",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 96,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "El fòsfor",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 46,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "tPlay",
+    "label": "Reprodueix el viatge",
+    "hasAria": false,
+    "pressed": null,
+    "h": 20,
+    "w": 109,
+    "fs": "12.5px",
+    "valuetext": null
+   },
+   {
+    "t": "INPUT:range",
+    "id": "bRng",
+    "label": "Pols africana que cau a l'Amazònia cada ",
+    "hasAria": true,
+    "pressed": null,
+    "h": 28,
+    "w": 920,
+    "fs": "19px",
+    "valuetext": "27,7 milions de tones; 22,5 grams de fòsfor per hectàrea"
+   }
+  ],
+  "tabbableSvg": [
+   "years"
+  ],
+  "smallHtml": [
+   "11px SPAN. «gen»",
+   "11px SPAN. «mar»",
+   "11px SPAN. «mai»",
+   "11px SPAN. «jul»",
+   "11px SPAN. «set»",
+   "11px SPAN. «nov»"
+  ],
+  "colorsUsed": {
+   "#F1EFEA": 364,
+   "#121212": 21,
+   "#DADADA": 24,
+   "#7A7A7A": 45,
+   "#4A4A4A": 10,
+   "#FFF": 27,
+   "#B07434": 19,
+   "#2C5DA8": 3,
+   "#4C8A2E": 1,
+   "#9A6326": 9,
+   "#D2A574": 9
+  },
+  "styleVars": [
+   "--dust:#B07434",
+   "--dry:#9A6326",
+   "--bio:#4C8A2E",
+   "--wet:#16786C",
+   "--sea:#E6EDF5"
+  ]
+ },
+ "resources": [
+  {
+   "u": "https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap",
+   "kb": 0,
+   "dkb": 22,
+   "ms": 5
+  },
+  {
+   "u": "/assets/ib.css",
+   "kb": 0,
+   "dkb": 6,
+   "ms": 5
+  },
+  {
+   "u": "/assets/article.css",
+   "kb": 0,
+   "dkb": 7,
+   "ms": 7
+  },
+  {
+   "u": "/assets/logo.png",
+   "kb": 0,
+   "dkb": 20,
+   "ms": 7
+  },
+  {
+   "u": "https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js",
+   "kb": 0,
+   "dkb": 273,
+   "ms": 8
+  },
+  {
+   "u": "/assets/scrolly.js",
+   "kb": 0,
+   "dkb": 1,
+   "ms": 6
+  },
+  {
+   "u": "/assets/ib.js",
+   "kb": 0,
+   "dkb": 1,
+   "ms": 6
+  },
+  {
+   "u": "/articles/pols-del-sahara/pols-del-sahara.js",
+   "kb": 51,
+   "dkb": 51,
+   "ms": 9
+  },
+  {
+   "u": "https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js",
+   "kb": 3,
+   "dkb": 7,
+   "ms": 72
+  },
+  {
+   "u": "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json",
+   "kb": 201,
+   "dkb": 739,
+   "ms": 173
+  },
+  {
+   "u": "DOC",
+   "dkb": 41
+  }
+ ],
+ "logs": [],
+ "failed": [],
+ "endOverflow": {
+  "sw": 1440,
+  "W": 1440
+ }
+}

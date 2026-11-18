@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>La cinta transportadora de l'Atlàntic · Inspired by Magazine</title>
+<meta name="description" content="Un corrent invisible porta calor cap al nord i aigua freda cap al sud, a quilòmetres de fondària. Com funciona, què en diu el passat i per què preocupa el seu futur.">
+<meta property="og:title" content="La cinta transportadora de l'Atlàntic">
+<meta property="og:description" content="Un corrent invisible porta calor cap al nord i aigua freda cap al sud, a quilòmetres de fondària. Com funciona, què en diu el passat i per què preocupa el seu futur.">
+<meta property="og:image" content="cover.jpg">
+<link rel="icon" sizes="192x192" href="../../assets/icon192.png">
+<link rel="apple-touch-icon" href="../../assets/icon192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../../assets/ib.css">
+<link rel="stylesheet" href="../../assets/article.css">
+<style>
+:root{--salt:#16786C;--deep:#1F3F73}
+.k-s{color:var(--salt);font-weight:600}
+.step b,.col b{font-weight:600}
+.page{overflow-x:clip}
+
+/* sticky graphic heads */
+.ghead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;font-family:var(--sans);margin-bottom:8px;min-height:44px}
+.ghead .st{display:flex;flex-direction:column;min-width:0}
+.ghead strong{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.005em;line-height:1.15}
+.ghead .sub{font-size:13.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.ramp{display:grid;grid-template-columns:repeat(3,1fr);gap:3px 0;width:170px;flex:none;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ramp .t{grid-column:1/-1;font-size:12px;color:var(--ink-2)}
+.ramp .bar{grid-column:1/-1;height:6px}
+.ramp span:nth-of-type(3){text-align:center}.ramp span:nth-of-type(4){text-align:right}
+.lgline{display:flex;flex-wrap:wrap;gap:4px 16px;font-family:var(--sans);font-size:12px;color:var(--ink-2);margin-top:6px}
+.lgline i{display:inline-block;width:18px;height:0;border-top:2px solid currentColor;vertical-align:3px;margin-right:6px}
+.lgline i.d{border-top-style:dashed}
+.lgline .dot{width:9px;height:9px;border-radius:50%;border:0;background:currentColor;vertical-align:-1px}
+
+.gwrap{position:relative;margin:0 auto}
+.gwrap canvas{display:block;width:100%}
+.ov{position:absolute;inset:0;pointer-events:none}
+.ann{left:0;top:0;transition:opacity .45s ease;max-width:150px}
+.ann.r{text-align:right}.ann.c{text-align:center}
+.ann .v{font-variant-numeric:tabular-nums}
+.gcap{font-family:var(--sans);font-size:12px;color:var(--muted);margin:8px 0 0}
+
+/* figures */
+.fig .gh{flex-wrap:wrap}
+.btns{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--sans);font-size:13.5px}
+.btns button{border:0;background:none;padding:4px 0;cursor:pointer;color:var(--ink-2);border-bottom:1px solid transparent}
+.btns button[aria-pressed="true"]{font-weight:700;color:var(--ink);border-bottom-color:currentColor}
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.ax text{font-family:var(--sans);font-size:11.5px;fill:var(--muted)}
+.ax line,.ax path{stroke:var(--hair)}
+.lab{font-family:var(--sans);font-size:12px;fill:var(--ink)}
+.lab.m{fill:var(--muted)}
+.lab.b{font-weight:700}
+
+/* density explorer */
+.den{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px;align-items:start}
+.den .panel{min-width:0}
+.den .ptitle{font-family:var(--sans);font-size:13px;font-weight:700;margin:0 0 6px}
+.den .ptitle span{font-weight:400;color:var(--muted)}
+.read{font-family:var(--sans);display:flex;flex-wrap:wrap;gap:4px 22px;align-items:baseline;margin:2px 0 10px}
+.read strong{font-family:var(--serif);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.read span{font-size:13.5px;color:var(--ink-2)}
+.verdict{font-family:var(--serif);font-size:17px;line-height:1.45;min-height:3em;margin:0 0 8px;text-wrap:pretty}
+.sl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px 24px;margin-top:6px}
+.sl .lbl{font-family:var(--sans);font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+.sl .lbl b{color:var(--ink);font-variant-numeric:tabular-nums}
+.presets{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--sans);font-size:13px;margin:10px 0 0}
+.presets button{border:0;background:none;padding:4px 0;cursor:pointer;color:var(--ink-2);border-bottom:1px solid transparent;text-align:left}
+.presets button[aria-pressed="true"]{color:var(--ink);font-weight:700;border-bottom-color:currentColor}
+#ts{touch-action:none;cursor:crosshair}
+#colc{display:block;width:100%}
+
+/* flow */
+.units{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.urow{display:grid;grid-template-columns:200px minmax(0,1fr);gap:16px;align-items:start;font-family:var(--sans)}
+.urow .nm{font-size:13.5px;line-height:1.3}
+.urow .nm b{display:block;font-size:14px}
+.urow .nm span{color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums}
+.ugrid{display:flex;flex-wrap:wrap;gap:2px}
+.ugrid i{width:9px;height:9px;display:block;background:var(--hair);transform:scale(0);transition:transform .25s ease,background .25s}
+.ugrid i.on{transform:scale(1)}
+.ugrid i.half{clip-path:inset(0 50% 0 0)}
+
+/* stommel */
+.stm{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:28px;align-items:start}
+.stm .side{font-family:var(--sans);font-size:14px;line-height:1.45;color:var(--ink-2)}
+.stm .side strong{display:block;font-family:var(--serif);font-size:20px;color:var(--ink);margin-bottom:4px}
+
+/* projections */
+.pj-read{font-family:var(--sans);display:grid;grid-template-columns:200px minmax(0,1fr);gap:4px 24px;margin-top:10px;align-items:start}
+.pj-read .big{font-family:var(--serif);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.pj-read .big small{display:block;font-family:var(--sans);font-size:12.5px;font-weight:400;color:var(--muted)}
+.pj-read p{margin:0;font-family:var(--serif);font-size:16.5px;line-height:1.5;color:var(--ink)}
+.pj-read ul{margin:6px 0 0;padding-left:1.1em;font-size:13.5px;color:var(--ink-2);line-height:1.45}
+
+.den .mb{display:none}
+.den .ptitle .tt{font-weight:700;color:var(--ink)}
+.playb{padding:6px 0}
+
+.fn ol li{margin-bottom:.45em}
+dl.gl dt{font-weight:700}
+
+@media (max-width:899px){
+  .ghead{min-height:0;margin-bottom:4px}
+  .ghead strong{font-size:17px}
+  .ghead .sub{font-size:12px}
+  .ramp{width:120px}
+  .ramp .t{display:none}
+  .lgline{font-size:10.5px;gap:2px 10px;margin-top:2px}
+  #ggraphic .gcap{display:none}
+  #ggraphic .lgline::after{content:"Corrents: esquema";color:var(--muted)}
+  .ann{font-size:10.5px;max-width:112px}
+  .ann.hm{display:none}
+  .gcap{font-size:10.5px;margin-top:4px}
+  /* density explorer: diagram and Labrador column side by side, controls right below */
+  .den{grid-template-columns:minmax(0,1fr) 112px;grid-template-areas:"tst colt" "tsc colw" "read read" "ver ver" "sl sl" "pre pre";gap:4px 10px}
+  .den .panel{display:contents}
+  .den .tst{grid-area:tst}.den .tsc{grid-area:tsc}.den .colt{grid-area:colt}.den .colw{grid-area:colw}
+  .den .read{grid-area:read;margin:8px 0 2px}.den .verdict{grid-area:ver;font-size:15.5px;min-height:2.9em;margin:0}
+  .den .sl{grid-area:sl}.den .presets{grid-area:pre;margin-top:4px}
+  .den .tst span,.den .dsk{display:none}.den .mb{display:inline}
+  .den .ptitle{font-size:12px;margin:0}
+  .read strong{font-size:19px}.read span{font-size:12.5px}
+  #gov .ann{background:rgba(255,255,255,.8);padding:1px 4px;border-radius:2px}
+  .urow{grid-template-columns:minmax(0,1fr);gap:6px}
+  .ugrid i{width:7px;height:7px}
+  .stm{grid-template-columns:minmax(0,1fr);gap:12px}
+  .pj-read{grid-template-columns:minmax(0,1fr)}
+  .sl{gap:2px 16px}
+  .rng::-webkit-slider-thumb{width:22px;height:22px;margin-top:-11px}
+  .rng{height:36px}
+}
+@media (max-width:899px) and (max-height:760px){
+  .gcap{display:none}
+  .lgline{display:none}
+}
+</style>
+</head>
+<body class="ib-article">
+<header class="ib-bar">
+  <a href="../../" aria-label="Inspired by Magazine"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</header>
+<div class="ib-progress" aria-hidden="true"><span id="ibProgress"></span></div>
+<div class="page">
+  <header class="open col">
+    <p class="kicker">Clima</p>
+    <h1>La cinta transportadora de l'Atlàntic</h1>
+    <p class="dek">Un corrent que no es veu porta calor cap al nord i aigua freda cap al sud, a quilòmetres de fondària. Mou catorze vegades més aigua que tots els rius del món junts. I els científics discuteixen si s'està afeblint.</p>
+    <p class="meta"><span id="rt">18 min de lectura</span> · Dades: RAPID (26,5° N), NOAA World Ocean Atlas, NCEP/NCAR, IPCC · Actualitzat el 17 de novembre de 2026</p>
+  </header>
+  <section class="intro col">
+    <p class="dl">El 1768, a Londres, Benjamin Franklin, que era un dels administradors del correu de les colònies britàniques d'Amèrica, va haver d'explicar per què els vaixells correu trigaven unes dues setmanes més a arribar a Nova York que els mercants a Rhode Island. El seu cosí Timothy Folger, capità de Nantucket, li va donar la resposta: els balleners de l'illa coneixien un corrent que els capitans del correu remuntaven sense saber-ho. Franklin li va demanar que el dibuixés, i en va sortir un dels primers mapes del <b>corrent del Golf</b>, el riu d'aigua calenta que surt del golf de Mèxic i travessa l'oceà.</p>
+    <p>Aquell riu és només la meitat visible d'una cosa més gran. L'aigua que puja cap al nord cedeix la seva calor a l'aire, s'enfonsa a prop de Groenlàndia i torna cap al sud a quilòmetres de fondària, tan a poc a poc que poden passar segles abans que torni a veure el sol.</p>
+    <p>Els oceanògrafs en diuen <b>circulació de bolcada meridional de l'Atlàntic</b>, o AMOC. El 1987, el geoquímic Wallace Broecker la va dibuixar com una cinta transportadora, i el nom s'ha quedat. És una imatge simplificada: l'aigua no viatja en una cinta contínua, sinó per molts camins, empesa també pels remolins i el vent. La pregunta d'ara és si s'està alentint, i si es podria aturar.</p>
+  </section>
+  <section class="col">
+    <h2 class="sh" id="per-que-l-aigua-s-enfonsa">Per què l'aigua s'enfonsa</h2>
+    <p>La cinta no la mou una sola cosa. Una regla senzilla n'explica la forma: l'aigua més densa baixa i la més lleugera queda a sobre, com l'oli damunt del vinagre. Però l'energia que la manté en marxa ve sobretot del vent i de les marees, que remenen l'oceà i fan pujar l'aigua del fons. Quant hi posa cada peça encara es discuteix.</p>
+    <p>La densitat de l'aigua de mar depèn de la <span class="k-w">temperatura</span> (com més freda, més densa) i de la <span class="k-s">sal</span> (com més salada, més densa). Un litre d'aigua del corrent del Golf, davant de Florida, pesa uns 1.024 grams. Un litre de l'aigua freda que omple el fons de l'Atlàntic, pujat a la superfície sense escalfar-lo, en pesaria uns 1.028 (allà baix, comprimit per la pressió, encara en pesa més).</p>
+    <p>Sembla poca cosa, però aquests quatre grams decideixen on s'enfonsa l'aigua. Tria una aigua, o canvia'n la temperatura i la sal, i mira fins on baixaria al mar del Labrador.</p>
+  </section>
+  <figure class="fig wide" id="denfig">
+    <div class="den">
+      <div class="panel">
+        <p class="ptitle tst">Temperatura i salinitat</p>
+        <div class="chart tsc" id="tsw"><svg id="ts" role="img" aria-label="Diagrama de temperatura i salinitat amb línies d'igual densitat. Un punt mòbil representa l'aigua triada; els punts grisos són l'aigua de superfície de tot el món i la línia blava, la columna del mar del Labrador a l'hivern."></svg><div class="tip" id="tstip"></div></div>
+        <div class="sl">
+          <div><div class="lbl"><label for="dT">Temperatura</label><b id="dTv">27,0 °C</b></div><input class="rng" id="dT" type="range" min="-1.9" max="30" step="0.1" value="27"></div>
+          <div><div class="lbl"><label for="dS">Salinitat</label><b id="dSv">36,15</b></div><input class="rng" id="dS" type="range" min="31" max="38" step="0.01" value="36.15"></div>
+        </div>
+        <div class="presets" id="dpre">
+          <button type="button" data-t="27.0" data-s="36.15" aria-pressed="true">Corrent del Golf (Florida)</button>
+          <button type="button" data-t="12.3" data-s="35.42" aria-pressed="false">Davant d'Irlanda</button>
+          <button type="button" data-t="2.7" data-s="34.57" aria-pressed="false">Mar del Labrador, a l'hivern</button>
+          <button type="button" data-t="-0.3" data-s="34.79" aria-pressed="false">Mar de Groenlàndia, a l'hivern</button>
+          <button type="button" data-t="-0.3" data-s="33.79" aria-pressed="false">El mateix, amb més aigua dolça</button>
+        </div>
+      </div>
+      <div class="panel">
+        <p class="ptitle colt"><span class="dsk tt">Mar del Labrador a l'hivern</span><span class="mb tt">Labrador, hivern</span><span class="dsk"> · densitat per fondària</span></p>
+        <div class="read" aria-live="polite"><strong id="dRho">1.023,6 kg/m³</strong><span id="dSig"></span></div>
+        <p class="verdict" id="dVer"></p>
+        <div class="chart colw"><canvas id="colc" role="img" aria-label="Columna d'aigua del mar del Labrador a l'hivern, de la superfície fins a 3.600 metres, acolorida segons la densitat. L'aigua triada baixa fins a la fondària on troba aigua de la seva mateixa densitat."></canvas></div>
+      </div>
+    </div>
+    <figcaption>Cada línia grisa uneix aigües de la mateixa densitat (EOS-80, a la pressió de superfície). Dades: World Ocean Atlas 2023 (NOAA). Punts grisos: superfície de tots els oceans, mitjana anual. Columna: perfil mitjà de gener a març al mar del Labrador; amb aquesta mitjana, l'aigua de superfície només es barreja amb els primers cent metres, i la barreja profunda arriba els hiverns més freds. L'última opció és l'aigua de Groenlàndia amb una unitat menys de salinitat.</figcaption>
+  </figure>
+  <section class="col">
+    <p>D'aquí en surten dues lliçons. L'aigua tropical és tan lleugera que, tal com arriba, no s'enfonsaria enlloc: primer s'ha de refredar molt. I en aigua tèbia mana la temperatura, però en aigua gairebé gelada la sal hi pesa tant com el fred: ho veus en les línies grises, que a baix es tornen gairebé verticals. Per això, al nord, una mica més d'aigua dolça, de pluja, de rius o de gel fos, pot bastar perquè l'aigua deixi d'enfonsar-se.</p>
+  </section>
+  <section class="col">
+    <h2 class="sh" id="el-viatge-de-l-aigua">El viatge de l'aigua</h2>
+    <p>Amb aquesta regla, el circuit s'entén sol. Al mapa, els punts són mesures reals i les línies que es mouen, un esquema dels corrents.</p>
+  </section>
+  <section class="scrolly" aria-label="El viatge de l'aigua per l'Atlàntic">
+    <div class="steps" id="gsteps">
+      <div class="step"><div class="step-in">
+        <h2>Un oceà de pol a pol</h2>
+        <p>L'Atlàntic va de l'Àrtic a l'Antàrtida. Als tròpics, el sol escalfa la superfície fins a gairebé 30 °C. Cap als pols, l'aigua és a prop del punt de congelació de l'aigua de mar, uns −1,9 °C.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Un riu calent cap al nord</h2>
+        <p>Entre Florida i les Bahames, el <span class="k-w">corrent del Golf</span> (en aquest tram, corrent de Florida) mou de mitjana uns <b>32 milions de metres cúbics per segon</b>. Després s'enfila per la costa americana i travessa l'oceà fins a Irlanda i Noruega.</p>
+        <p class="note">Una part torna cap al sud fent un gran remolí. La resta és la branca de dalt de la cinta.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Una aigua molt salada</h2>
+        <p>Els colors ara mostren la <span class="k-s">salinitat</span>. A l'Atlàntic subtropical el sol i el vent sec evaporen molta aigua i la sal es queda: s'arriba a uns 37,4 grams per quilo. El corrent del Golf porta aquesta aigua calenta i salada cap al nord.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>L'aigua cedeix la calor</h2>
+        <p>Al nord, sobretot a l'hivern, l'oceà cedeix calor a l'aire sense parar. L'aigua que sortia de Florida a 27 °C arriba davant de Noruega a uns 8 o 9 °C.</p>
+        <p>Per això es parla del corrent del Golf com de la «calefacció d'Europa», tot i que, com veurem, és més complicat.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Més freda, més densa</h2>
+        <p>Ara el mapa mostra la <b>densitat</b>. L'aigua que arriba al nord és freda i encara salada: de les aigües de superfície més denses del planeta. Al mar de Groenlàndia arriba a uns 1.028 kg/m³, gairebé com l'aigua de sota. Una mica més de fred, o de vent, i comença a baixar.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>I s'enfonsa</h2>
+        <p>En uns pocs llocs (els mars nòrdics, el mar d'Irminger, la conca d'Islàndia i el mar del Labrador) l'aigua de superfície es barreja cap avall a l'hivern i alimenta la capa freda que omple el fons.</p>
+        <p>Les mesures d'OSNAP, des del 2014, mostren que la major part de la bolcada passa a l'est de Groenlàndia: uns 16 milions de m³/s, i uns 3 al Labrador.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>El camí de tornada, pel fons</h2>
+        <p>L'aigua enfonsada, l'<span class="k-c">aigua profunda de l'Atlàntic nord</span>, baixa cap al sud entre 1.500 i 4.000 metres: una part arran de la costa americana i una part, potser la major, per camins tortuosos pel mig de l'oceà. A l'oceà Antàrtic, els vents de l'oest l'ajuden a tornar a pujar.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Una volta al món</h2>
+        <p>Des d'allà, l'aigua es reparteix pels altres oceans i, amb els segles, torna a l'Atlàntic per dalt. Segons la NOAA, una gota triga de l'ordre de <b>1.000 anys</b> a fer la volta, tot i que cada gota fa un camí diferent.</p>
+      </div></div>
+    </div>
+    <div class="graphic" id="ggraphic">
+      <div class="gbox" id="gbox">
+        <div class="ghead">
+          <div class="st" aria-live="polite"><strong id="gName">Temperatura del mar</strong><span class="sub" id="gSub">Mitjana anual de la superfície</span></div>
+          <div class="ramp" id="gRamp"></div>
+        </div>
+        <div class="gwrap" id="gwrap">
+          <canvas id="globe" role="img" aria-label="Globus centrat a l'oceà Atlàntic, amb la temperatura, la salinitat o la densitat de la superfície del mar en punts de colors, i un esquema dels corrents: el corrent del Golf porta aigua calenta cap al nord, l'aigua s'enfonsa als mars del nord i torna cap al sud pel fons."></canvas>
+          <div class="ov" id="gov"></div>
+        </div>
+        <div class="lgline" aria-hidden="true"><span style="color:var(--warm)"><i></i>Corrent de superfície</span><span style="color:var(--cold)"><i class="d"></i>Corrent de fons</span><span style="color:var(--ink)"><i class="dot"></i>On s'enfonsa l'aigua</span></div>
+        <p class="gcap">Punts: World Ocean Atlas 2023 (NOAA), mitjana anual. Corrents: esquema simplificat, no dades.</p>
+      </div>
+    </div>
+  </section>
+  <section class="col">
+    <h2 class="sh" id="l-atlantic-tallat-per-la-meitat">L'Atlàntic tallat per la meitat</h2>
+    <p>Per veure el camí de tornada cal tallar l'Atlàntic de dalt a baix, de l'Antàrtida a Islàndia. Els colors són mitjanes de mesures de vaixells i boies del 1955 al 2022.</p>
+  </section>
+  <section class="scrolly" aria-label="Tall de l'Atlàntic">
+    <div class="steps" id="xsteps">
+      <div class="step"><div class="step-in">
+        <h2>Una capa calenta molt prima</h2>
+        <p>L'aigua calenta és només una pell. Per sota d'uns 1.000 metres és a menys de 10 °C a tot arreu, i per sota de 2.000, entre −1 i 4 °C. Gairebé tot l'oceà és fred.</p>
+              </div></div>
+      <div class="step"><div class="step-in">
+        <h2>La llengua salada</h2>
+        <p>Amb la <span class="k-s">salinitat</span> apareix el rastre de la cinta: una llengua una mica més salada surt del nord i s'estira cap al sud entre 1.500 i 4.000 metres, fins més enllà de l'equador. És l'aigua profunda de l'Atlàntic nord, a uns 3 °C.</p>
+        <p>La taca més fosca, cap als 1.000 metres a l'altura de la península Ibèrica, és una altra cosa: aigua de la Mediterrània, que surt per l'estret de Gibraltar.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Les aigües del sud</h2>
+        <p>Per sobre i per sota hi ha dues aigües antàrtiques: a uns 800 metres, l'aigua intermèdia, <b>menys salada</b>, que avança cap al nord; i arran del fons, la més freda de totes, per sota de 0,5 °C. L'oceà és un pastís de capes, cadascuna amb el seu origen.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>La cinta, de costat</h2>
+        <p>Amb les fletxes, el circuit queda clar: l'aigua calenta va cap al nord per dalt, s'enfonsa, torna cap al sud pel mig i a l'oceà Antàrtic torna a pujar.</p>
+        <p class="note">Les fletxes són un esquema. Els colors de sota són dades.</p>
+      </div></div>
+    </div>
+    <div class="graphic" id="xgraphic">
+      <div class="gbox" id="xbox">
+        <div class="ghead">
+          <div class="st" aria-live="polite"><strong id="xName">Temperatura</strong><span class="sub">Tall per 25,5° O, de l'Antàrtida a Islàndia</span></div>
+          <div class="ramp" id="xRamp"></div>
+        </div>
+        <div class="gwrap" id="xwrap">
+          <canvas id="sec" role="img" aria-label="Tall vertical de l'oceà Atlàntic per 25,5 graus oest, de 70 graus sud a 64 graus nord i de la superfície fins a 5.500 metres, amb la temperatura o la salinitat mesurades. Mostra la capa calenta de superfície, la llengua salada de l'aigua profunda de l'Atlàntic nord, l'aigua mediterrània cap als 1.000 metres i les aigües antàrtiques."></canvas>
+          <div class="ov" id="xov"></div>
+          <div class="tip" id="xtip"></div>
+        </div>
+        <p class="gcap">Dades: World Ocean Atlas 2023 (NOAA), mitjana anual. Escala vertical no lineal. Passa o toca per llegir els valors.</p>
+      </div>
+    </div>
+  </section>
+  <section class="col">
+    <h2 class="sh" id="quanta-aigua-i-quanta-calor">Quanta aigua, i quanta calor</h2>
+    <p>Els oceanògrafs mesuren aquests corrents en <b>sverdrups</b> (Sv): un milió de metres cúbics per segon. Del 2004 al 2024, la cinta ha mogut de mitjana <b>17 Sv</b> cap al nord a 26,5° N, i els mateixos cap al sud pel fons.</p>
+    <p>Tots els rius del món junts aboquen al mar uns 1,2 Sv: la cinta en mou catorze vegades més, o unes vuitanta Amazones.</p>
+    <p>I amb l'aigua viatja calor: uns <b>1,2 petawatts</b> (1.200 terawatts) cap al nord, al voltant del 60 % de la que porten tots els oceans a aquesta latitud i unes seixanta vegades l'energia que consumeix la humanitat.</p>
+  </section>
+  <figure class="fig" id="flowfig">
+    <div class="gh"><strong id="flowT">Aigua que es mou cada segon</strong><div class="btns" role="group" aria-label="Què es compara"><button type="button" data-k="w" aria-pressed="true">Aigua</button><button type="button" data-k="h" aria-pressed="false">Calor</button></div></div>
+    <div class="units" id="units" role="img" aria-label="Comparació en quadradets. Aigua: cada quadradet és 0,1 milions de metres cúbics per segon; l'Amazones en té 2, tots els rius del món 12, la cinta de l'Atlàntic 170 i el corrent de Florida 317. Calor: cada quadradet és 10 terawatts; l'energia que consumeix la humanitat en té 2 i la calor que porta l'Atlàntic a 26,5 graus nord, 120."></div>
+    <figcaption id="flowCap">Cada quadradet és 0,1 Sv (100.000 m³/s). Rius: Dai i Trenberth (2002). Cinta i corrent de Florida: mitjanes de RAPID, abril del 2004 a març del 2024.</figcaption>
+  </figure>
+  <section class="col">
+    <h2 class="sh" id="per-que-a-noruega-no-fa-tant-de-fred">Per què a Noruega no fa tant de fred</h2>
+    <p>Bergen, a la costa de Noruega, és a la mateixa latitud que la badia de Hudson. Però al gener, a Bergen la mitjana ronda els 2 °C, i a la badia de Hudson baixa de −25 °C. El mapa mostra quants graus més calent o més fred és cada lloc que la mitjana de la seva latitud.</p>
+  </section>
+  <figure class="fig wide" id="winfig">
+    <div class="gh"><strong id="winT">Al gener, respecte a la mitjana de la latitud</strong><div class="btns" role="group" aria-label="Mes"><button type="button" data-m="jan" aria-pressed="true">Gener</button><button type="button" data-m="jul" aria-pressed="false">Juliol</button></div></div>
+    <div class="chart" id="winw"><canvas id="win" role="img" aria-label="Mapa de l'hemisferi nord amb la temperatura de l'aire a prop de la superfície respecte a la mitjana de cada latitud. Al gener, el nord-oest d'Europa i el mar de Noruega són fins a més de 20 graus més calents que la mitjana; l'est del Canadà i Sibèria, més de 15 graus més freds; la costa d'Alaska també és més calenta."></canvas><div class="ov" id="winov"></div><div class="tip" id="wintip"></div></div>
+    <div class="ramp" id="winRamp" style="width:220px;margin-top:10px"></div>
+    <figcaption>Temperatura de l'aire a prop de la superfície, mitjana 1991–2020, menys la mitjana de la seva latitud. Dades: reanàlisi NCEP/NCAR (NOAA PSL). Passa o toca el mapa per llegir els valors.</figcaption>
+  </figure>
+  <section class="col">
+    <p>Al gener, el mar de Noruega és més de 20 graus més calent que la mitjana. És temptador donar-ne tot el mèrit a la cinta, però el 2002 un equip de la Universitat de Colúmbia encapçalat per Richard Seager va mostrar que és més complicat.</p>
+    <p>Mira el Pacífic: la costa d'Alaska també és molt més suau que l'interior, i allà l'aigua de superfície no arriba a enfonsar-se fins al fons. Les dues costes tenen en comú el <b>vent</b> de l'oest, que porta cap a terra l'aire d'un mar que a l'hivern encara guarda la calor de l'estiu.</p>
+    <p>Segons Seager, el contrast entre Europa i l'est del Canadà ve sobretot dels vents: a Europa arriben del mar; al Canadà, de l'interior glaçat. Al seu model, sense la calor que porten els oceans, l'oest d'Europa es refredava uns 3 °C al gener, igual que l'est d'Amèrica del Nord. Al nord dels 60 graus l'oceà pesava més: en mantenir el mar lliure de gel, explicava una quarta part del contrast.</p>
+    <p class="note">Aquell model mantenia fix el gel marí; els més recents, en què la cinta s'atura i el gel avança, donen refredaments molt més grans. El debat continua.</p>
+  </section>
+  <section class="col">
+    <h2 class="sh" id="ja-s-havia-aturat-abans">Ja s'havia aturat abans</h2>
+    <p>Que la cinta pot canviar de cop ha quedat escrit al gel de Groenlàndia, on la proporció entre dues formes de l'oxigen indica la temperatura que feia, i al fang del fons del mar.</p>
+    <p>Al fang, la proporció entre protoactini i tori, dos elements radioactius, indica quanta aigua profunda hi passava. El protoactini triga més a caure al fons, i una cinta forta se l'emporta lluny, com un corrent que s'emporta la sorra fina i deixa la grava. Si la cinta s'atura, tots dos cauen on es formen i la proporció puja fins a 0,093.</p>
+  </section>
+  <figure class="fig wide" id="paleofig">
+    <div class="chart" id="paleow"><svg id="paleo" role="img" aria-label="Dos gràfics dels últims 20.000 anys. A dalt, la temperatura de Groenlàndia segons el gel de NGRIP: freda fins fa 14.700 anys, un salt calent, un retorn al fred durant el Dryas recent i un altre salt fa 11.700 anys. A sota, la intensitat de la circulació segons el protoactini i el tori del fang de les Bermudes: gairebé aturada fa 17.500 anys, recuperada fa 14.700 anys, afeblida durant el Dryas recent i estable des de llavors."></svg><div class="tip" id="ptip"></div></div>
+    <figcaption>A dalt: isòtops d'oxigen (δ¹⁸O) del gel de NGRIP, escala GICC05. A sota: ràtio ²³¹Pa/²³⁰Th d'un nucli de 4.550 m de fondària a prop de les Bermudes (McManus et al., 2004), amb l'eix invertit: amunt, circulació més forta. Dades: NOAA NCEI. H1: Heinrich 1; B-A: Bølling-Allerød; DR: Dryas recent.</figcaption>
+  </figure>
+  <section class="col">
+    <p>Fa uns 17.500 anys, al final de l'última glaciació, una allau d'icebergs es va desprendre del gel del Canadà i va deixar capes de pedres al fons de l'Atlàntic: és un dels <b>esdeveniments de Heinrich</b>. Al fang de les Bermudes, el protoactini s'enfila fins gairebé el màxim: la cinta va quedar gairebé o del tot aturada. L'aigua dolça dels icebergs hi va contribuir, però potser no en va ser la causa: alguns estudis troben que el fred va començar abans que arribessin.</p>
+    <p>Fa uns 14.700 anys la cinta es va tornar a engegar, i Groenlàndia es va escalfar en poques dècades. Fa uns 12.900 anys el nord va tornar de cop al fred durant més de mil anys, i la cinta es va afeblir de nou: és el <b>Dryas recent</b> (Younger Dryas, en anglès). Fa 11.700 anys va començar l'Holocè, el clima relativament estable en què vivim.</p>
+    <p class="note">Les causes de cada episodi es discuteixen, i el protoactini no depèn només de la circulació. Segons l'IPCC, el grup d'experts de l'ONU sobre el clima, els últims 8.000 anys la cinta ha estat relativament estable.</p>
+  </section>
+  <section class="col">
+    <h2 class="sh" id="com-es-mesura-un-corrent-que-no-es-veu">Com es mesura un corrent que no es veu</h2>
+    <p>Mesurar la cinta és difícil: és ampla i fonda com tot l'oceà. Fins al 2004 només hi havia mesures puntuals fetes des de vaixells. Aquell any es va posar en marxa <b>RAPID</b>, una filera d'amarratges (cables ancorats al fons amb instruments) a 26,5° N, entre les Bahames i les Canàries. Des del 2014, <b>OSNAP</b> la mesura més al nord, entre el Canadà, Groenlàndia i Escòcia.</p>
+    <p>La cinta és la suma de tres peces: el <b>corrent de Florida</b>, mesurat amb un cable submarí des del 1982; el corrent que el <b>vent</b> empeny a la capa de dalt; i el de <b>l'oceà obert</b> fins a 1.100 metres, que surt de les densitats mesurades als amarratges. Tria quines peces vols veure.</p>
+  </section>
+  <figure class="fig wide" id="rapidfig">
+    <div class="gh"><strong>La cinta a 26,5° N, mes a mes</strong><div class="btns" id="rbtn" role="group" aria-label="Components"><button type="button" data-k="moc" aria-pressed="true">Total</button><button type="button" data-k="gs" aria-pressed="false">Corrent de Florida</button><button type="button" data-k="ek" aria-pressed="false">Vent</button><button type="button" data-k="umo" aria-pressed="false">Oceà obert</button></div></div>
+    <div class="chart" id="rapidw"><svg id="rapid" role="img" aria-label="Sèrie temporal de la cinta a 26,5 graus nord, de l'abril del 2004 al març del 2024, en milions de metres cúbics per segon. Mitjana de 17. Una caiguda forta el 2009 i el 2010, fins a valors mensuals de 8, i valors una mica més baixos després del 2008 que abans."></svg><div class="tip" id="rtip"></div></div>
+    <figcaption>Mitjanes mensuals de RAPID-MOCHA-WBTS (v2024.1a), de l'abril del 2004 al març del 2024; la línia gruixuda és la mitjana mòbil de 12 mesos. Amb aquesta versió de les dades, les mitjanes d'alguns períodes difereixen unes dècimes de les publicades. Font: rapid.ac.uk.</figcaption>
+  </figure>
+  <section class="col">
+    <p>La primera lliçó va ser que la cinta és molt nerviosa: hi ha mesos amb 25 Sv i mesos amb menys de 10. Entre el 2009 i el 2010 va caure un 30 % durant un any, de 18,5 a 12,8 Sv, en part per vents anòmals. Aquesta caiguda, sumada a uns vents i unes pressions poc habituals, va fer pujar 128 mil·límetres en dos anys el nivell del mar al nord de Nova York, un salt sense precedents.</p>
+  </section>
+  <section class="col">
+    <h2 class="sh" id="s-esta-afeblint">S'està afeblint?</h2>
+    <p>Els models de clima preveuen que l'escalfament afebleixi la cinta: l'aigua del nord s'escalfa i hi arriba més aigua dolça (més pluja, més rius, més gel fos de Groenlàndia), i totes dues coses la fan més lleugera. Però, està passant ja?</p>
+    <p><b>Les mesures directes</b> diuen que, des del 2004, la cinta ha baixat una mica: de 18,8 Sv del 2004 al 2008 a uns 16 després. Una anàlisi del 2025 hi calcula una baixada d'1 Sv per dècada (entre 0,4 i 1,6), coherent amb els models però no amb un col·lapse a mitjan segle. Tot i així, vint anys són pocs per separar una tendència d'una oscil·lació natural.</p>
+    <p><b>Les reconstruccions</b> que van més enrere no es posen d'acord. El 2018, un estudi a <i>Nature</i> va deduir un afebliment del 15 % des de mitjan segle XX a partir d'una «empremta»: una taca al sud de Groenlàndia que s'ha refredat mentre la resta de l'oceà s'escalfava. Un altre, amb sediments, la trobava més feble els últims 150 anys que en els 1.500 anteriors. Però el 2025, un estudi basat en la calor que l'oceà cedeix a l'aire no hi va trobar cap disminució entre el 1963 i el 2017, i va mostrar amb 24 models que la temperatura del mar no basta per reconstruir la cinta.</p>
+    <p>L'IPCC ho resumia el 2021 així: la <b>confiança és baixa</b> en els canvis de la cinta al segle XX, perquè les reconstruccions i els models no coincideixen en la tendència.</p>
+  </section>
+  <section class="col">
+    <h2 class="sh" id="un-interruptor-amb-memoria">Un interruptor amb memòria</h2>
+    <p>El que preocupa més és que la cinta tingui un <b>punt de no retorn</b>. La idea és de l'oceanògraf Henry Stommel, el 1961, i neix d'un cercle viciós.</p>
+    <p>La cinta porta sal cap al nord, i la sal ajuda l'aigua a enfonsar-se. Si arriba prou aigua dolça per afeblir-la, la cinta porta menys sal, l'aigua del nord es torna encara més dolça i la cinta s'afebleix encara més. Passat un cert punt, el cercle es dispara sol.</p>
+    <p>El model més senzill que ho mostra té dues caixes d'aigua, una al nord i una al sud. Afegeix aigua dolça al nord amb el control, o reprodueix l'experiment.</p>
+  </section>
+  <figure class="fig wide" id="stfig">
+    <div class="stm">
+      <div class="chart" id="stw"><svg id="stom" role="img" aria-label="Gràfic del model de Stommel. Eix horitzontal: aigua dolça que arriba al nord. Eix vertical: intensitat de la cinta. Hi ha una branca superior estable on la cinta funciona, que s'acaba en un punt de no retorn, i una branca inferior on la cinta queda aturada. Un punt mostra l'estat actual del model."></svg></div>
+      <div class="side">
+        <strong id="stState">La cinta funciona</strong>
+        <span id="stTxt"></span>
+        <div class="ctl">
+          <div class="lbl"><label for="stF">Aigua dolça que arriba al nord</label><button class="playb" id="stPlay" type="button">Reprodueix</button></div>
+          <input class="rng" id="stF" type="range" min="0" max="0.34" step="0.001" value="0.08">
+        </div>
+      </div>
+    </div>
+    <figcaption>Model conceptual de dues caixes de Stommel (1961), en unitats adimensionals. No és una predicció. La línia de punts és l'equilibri inestable que separa els dos estats.</figcaption>
+  </figure>
+  <section class="col">
+    <p>Fixa't en el que passa quan tornes enrere: un cop la cinta s'ha aturat, no n'hi ha prou de treure l'aigua dolça per tornar-la a engegar. És la <b>histèresi</b>. Passa com amb un caiac: si t'hi inclines una mica, es redreça sol; passat un punt, bolca, i per redreçar-lo no n'hi ha prou de deixar d'inclinar-se. Per això preocupa tant un col·lapse: desfer-lo costaria molt més que provocar-lo.</p>
+    <p>La pregunta clau és a quina distància som del punt de no retorn, i aquí els científics no estan d'acord.</p>
+  </section>
+  <section class="col">
+    <h2 class="sh" id="quant-s-afeblira">Quant s'afeblirà?</h2>
+    <p>L'últim gran informe de l'IPCC, del 2021, diu que és <b>molt probable</b> que la cinta s'afebleixi aquest segle en tots els escenaris: cap al 2100, entre un 24 % i un 39 % segons les emissions, amb rangs molt amples. I té <b>confiança mitjana</b> que no col·lapsarà de manera brusca abans del 2100.</p>
+    <p>Diversos estudis posteriors ho han afinat comparant els models amb les observacions. Arrossega el control per veure quins inclouen cada nivell d'afebliment.</p>
+  </section>
+  <figure class="fig wide" id="pjfig">
+    <div class="chart" id="pjw"><svg id="pj" role="img" aria-label="Rangs d'afebliment de la cinta cap al 2100 segons l'IPCC i quatre estudis posteriors, en percentatge. IPCC emissions baixes: 24 per cent, de 4 a 46. IPCC emissions molt altes: 39 per cent, de 17 a 55. Weijer i col·legues 2020: de 34 a 45. Bonan i col·legues 2025: de 18 a 43. Portmann i col·legues 2026: de 43 a 59. A la dreta, la zona de col·lapse."></svg></div>
+    <div class="ctl" style="border-top:0;margin-top:2px;padding-top:0">
+      <input class="rng" id="pjR" type="range" min="0" max="90" step="1" value="30" aria-label="Afebliment de la cinta cap al 2100, en percentatge">
+    </div>
+    <div class="pj-read" aria-live="polite">
+      <div class="big" id="pjBig"></div>
+      <div><p id="pjTxt"></p><ul id="pjList"></ul></div>
+    </div>
+    <figcaption>Afebliment cap al 2100 respecte al clima recent, segons cada font (les referències no són idèntiques); els sverdrups són una conversió aproximada des dels 17 Sv de RAPID. Fonts: IPCC AR6, capítol 9; Weijer et al. (2020), restringit amb RAPID; Bonan et al. (2025); Portmann et al. (2026), escenari intermedi, interval del 90 %. La zona de col·lapse és per sota d'uns 6 Sv, el llindar de diversos estudis.</figcaption>
+  </figure>
+  <section class="col">
+    <h2 class="sh" id="quan-podria-passar">Quan podria passar?</h2>
+    <p>Hi ha tres maneres de mirar-s'ho, i donen respostes diferents.</p>
+    <p><b>Els senyals d'alerta estadístics.</b> A prop d'un punt de no retorn, un sistema triga més a recuperar-se de les sacsejades. El 2023, Peter i Susanne Ditlevsen van buscar aquest rastre en 150 anys de temperatures del mar al sud de Groenlàndia: si les emissions continuaven com fins ara, el col·lapse arribaria cap a mitjan segle. El 2025 van corregir un error del codi, i ara diuen el 2065 (entre el 2037 i el 2109). Altres científics hi objecten que aquella temperatura no depèn només de la cinta i que les incerteses són massa grans per donar una data.</p>
+    <p><b>Els indicadors físics.</b> El 2024, René van Westen i Henk Dijkstra, de la Universitat d'Utrecht, van fer col·lapsar la cinta en un model complex i hi van trobar un senyal d'alerta: l'aigua dolça que la cinta porta a l'extrem sud de l'Atlàntic. Les reanàlisis, reconstruccions que combinen observacions i models, indiquen que la cinta real va en aquesta direcció, però són massa curtes per dir a quina distància és. El 2025, amb un altre indicador i 25 models, van situar l'inici del col·lapse cap al 2063 amb emissions intermèdies, en un rang ampli, del 2026 al 2095.</p>
+    <p><b>Els models de clima.</b> Cap dels models de l'IPCC no mostra un col·lapse brusc aquest segle, i un estudi del 2025 amb 34 models troba que els vents de l'oceà Antàrtic mantenen la cinta en marxa, afeblida. Però allargant les simulacions més enllà del 2100, amb emissions molt altes la cinta acaba molt feble en tots. I l'IPCC admet que els models tendeixen a ser massa estables.</p>
+  </section>
+  <figure class="fig wide" id="tipfig">
+    <div class="chart" id="tipw"><svg id="tip" role="img" aria-label="Línia del temps del 2020 al 2200 amb les estimacions publicades sobre un col·lapse de la cinta: Ditlevsen 2023 corregit, 2065 amb un interval del 2037 al 2109; van Westen 2025, inici cap al 2063 amb un rang del 2026 al 2095 amb emissions intermèdies i cap al 2055 amb emissions molt altes; Drijfhout 2025, aturada després del 2100 en simulacions allargades; Baker 2025 i l'IPCC, col·lapse improbable abans del 2100."></svg><div class="tip" id="tiptip"></div></div>
+    <figcaption>Estimacions publicades, no prediccions d'aquest article; cada mètode respon una pregunta una mica diferent. Passa o toca cada fila per veure'n el detall.</figcaption>
+  </figure>
+  <section class="col">
+    <p>Si passés, què canviaria? Segons l'IPCC, molt probablement el cinturó de pluges tropicals es desplaçaria cap al sud, els monsons de l'Àfrica i de l'Àsia s'afeblirien i Europa s'assecaria. Al model d'Utrecht, sense escalfament global, el nord-oest d'Europa es refredava més d'1 °C per dècada, i a l'Amazònia l'estació seca i la humida s'intercanviaven. Amb l'escalfament de fons el refredament seria menor, però els hiverns extrems del nord-oest d'Europa serien més freds.</p>
+    <p>La cinta ja s'havia aturat o gairebé aturat abans, i quan ho va fer el clima del nord va canviar en poques dècades. L'escalfament l'empeny en la mateixa direcció. Si arribarà al punt de no retorn aquest segle, ningú no ho pot dir encara. Per això RAPID i OSNAP la continuen mesurant cada dia, des del fons de l'oceà.</p>
+  </section>
+  <section class="close col">
+    <h2>Paraules clau</h2>
+    <dl class="gl">
+      <dt>AMOC</dt><dd>Circulació de bolcada meridional de l'Atlàntic (en anglès, <i>Atlantic Meridional Overturning Circulation</i>). L'aigua calenta va cap al nord per dalt i l'aigua freda torna cap al sud pel fons. És la «cinta transportadora».</dd>
+      <dt>Bolcada</dt><dd>Moviment en què l'aigua de superfície s'enfonsa i l'aigua de fons acaba pujant: l'oceà es «capgira» lentament.</dd>
+      <dt>Sverdrup (Sv)</dt><dd>Unitat per mesurar corrents: un milió de metres cúbics d'aigua per segon.</dd>
+      <dt>Petawatt (PW)</dt><dd>Mil bilions de watts (10<sup>15</sup> W). L'Atlàntic porta uns 1,2 PW de calor cap al nord a 26,5° N, la major part gràcies a la cinta.</dd>
+      <dt>Punt de no retorn</dt><dd>Llindar a partir del qual un sistema passa a un altre estat per si sol, i no torna enrere encara que s'elimini la causa.</dd>
+      <dt>Histèresi</dt><dd>Quan el camí d'anada i el de tornada no coincideixen: per tornar a l'estat inicial cal retrocedir molt més del que s'ha avançat.</dd>
+      <dt>Dryas recent</dt><dd>Retorn brusc al fred a l'hemisferi nord fa entre uns 12.900 i 11.700 anys, al final de l'última glaciació.</dd>
+      
+    </dl>
+    <div class="fn">
+      <p><b>Metodologia.</b> Són <b>dades reals</b> la temperatura i la salinitat del globus, del tall i de l'explicador de densitat (World Ocean Atlas 2023), la sèrie de RAPID, el mapa de temperatures de l'aire (reanàlisi NCEP/NCAR, 1991–2020) i les dues sèries del passat (NGRIP i McManus et al. 2004). Són <b>esquemes</b> els camins dels corrents, les fletxes del tall i els llocs on s'enfonsa l'aigua. El model de Stommel és conceptual, no una predicció. Les projeccions i les dates de col·lapse són les publicades per cada font; només hem convertit els percentatges a sverdrups. Les comparacions amb els rius i amb el consum d'energia són divisions simples.</p>
+      <p><b>Fonts.</b></p>
+      <ol>
+        <li>Moat, B. I. et al. Atlantic meridional overturning circulation observed by the RAPID-MOCHA-WBTS array at 26°N, 2004–2024 (v2024.1a). NERC EDS BODC. <a href="https://doi.org/10.5285/48d0bf43-0598-ceb2-e063-7086abc062f1">doi:10.5285/48d0bf43-0598-ceb2-e063-7086abc062f1</a>. Dades: <a href="https://rapid.ac.uk/">rapid.ac.uk</a>.</li>
+        <li>McCarthy, G. D. et al. (2015). Measuring the Atlantic Meridional Overturning Circulation at 26°N. <i>Progress in Oceanography</i> 130, 91–111. <a href="https://doi.org/10.1016/j.pocean.2014.10.006">doi:10.1016/j.pocean.2014.10.006</a></li>
+        <li>NOAA NCEI. World Ocean Atlas 2023, temperatura i salinitat, mitjanes 1955–2022. <a href="https://www.ncei.noaa.gov/products/world-ocean-atlas">ncei.noaa.gov/products/world-ocean-atlas</a></li>
+        <li>Kalnay, E. et al. NCEP/NCAR Reanalysis 1, temperatura a 0,995 sigma, mitjanes mensuals 1991–2020. NOAA PSL. <a href="https://psl.noaa.gov/data/gridded/data.ncep.reanalysis.derived.html">psl.noaa.gov</a></li>
+        <li>Millero, F. J. i Poisson, A. (1981). International one-atmosphere equation of state of seawater. <i>Deep-Sea Research</i> 28A, 625–629. <a href="https://doi.org/10.1016/0198-0149(81)90122-9">doi:10.1016/0198-0149(81)90122-9</a></li>
+        <li>Yashayaev, I. i Clarke, A. (2008). Evolution of North Atlantic water masses inferred from Labrador Sea salinity series. <i>Oceanography</i> 21(1), 30–45. <a href="https://doi.org/10.5670/oceanog.2008.65">doi:10.5670/oceanog.2008.65</a></li>
+        <li>Broecker, W. S. (1991). The great ocean conveyor. <i>Oceanography</i> 4(2), 79–89. <a href="https://doi.org/10.5670/oceanog.1991.07">doi:10.5670/oceanog.1991.07</a></li>
+        <li>Lozier, M. S. (2010). Deconstructing the conveyor belt. <i>Science</i> 328, 1507–1511. <a href="https://doi.org/10.1126/science.1189250">doi:10.1126/science.1189250</a>; i Bower, A. S. et al. (2009). Interior pathways of the North Atlantic meridional overturning circulation. <i>Nature</i> 459, 243–247. <a href="https://doi.org/10.1038/nature07979">doi:10.1038/nature07979</a></li>
+        <li>Wunsch, C. i Ferrari, R. (2004). Vertical mixing, energy, and the general circulation of the oceans. <i>Annual Review of Fluid Mechanics</i> 36, 281–314. <a href="https://doi.org/10.1146/annurev.fluid.36.050802.122121">doi:10.1146/annurev.fluid.36.050802.122121</a>; i Kuhlbrodt, T. et al. (2007). On the driving processes of the Atlantic meridional overturning circulation. <i>Reviews of Geophysics</i> 45, RG2001. <a href="https://doi.org/10.1029/2004RG000166">doi:10.1029/2004RG000166</a></li>
+        <li>Library of Congress. Benjamin Franklin: In His Own Words, i carta Franklin-Folger del corrent del Golf. <a href="https://www.loc.gov/exhibits/franklin/franklin-scientist.html">loc.gov/exhibits/franklin</a>; <a href="https://www.loc.gov/item/2004627238">loc.gov/item/2004627238</a>. Richardson, P. L. (1980). Benjamin Franklin and Timothy Folger's first printed chart of the Gulf Stream. <i>Science</i> 207, 643–645. <a href="https://doi.org/10.1126/science.207.4431.643">doi:10.1126/science.207.4431.643</a>; Franklin a Anthony Todd, 29 d'octubre del 1768: <a href="https://founders.archives.gov/documents/Franklin/01-15-02-0138">founders.archives.gov</a></li>
+        <li>NOAA Ocean Service. What is the Atlantic Meridional Overturning Circulation? <a href="https://oceanservice.noaa.gov/facts/amoc.html">oceanservice.noaa.gov/facts/amoc.html</a></li>
+        <li>Lozier, M. S. et al. (2019). A sea change in our view of overturning in the subpolar North Atlantic. <i>Science</i> 363, 516–521. <a href="https://doi.org/10.1126/science.aau6592">doi:10.1126/science.aau6592</a>; mitjanes 2014–2020: <a href="https://www.o-snap.org/observations/data/">o-snap.org</a>; i Fu, Y. et al. (2023). Seasonality of the Meridional Overturning Circulation in the subpolar North Atlantic. <i>Communications Earth &amp; Environment</i> 4, 181. <a href="https://doi.org/10.1038/s43247-023-00848-9">doi:10.1038/s43247-023-00848-9</a></li>
+        <li>Johns, W. E. et al. (2023). Towards two decades of Atlantic Ocean mass and heat transports at 26.5° N. <i>Phil. Trans. R. Soc. A</i> 381, 20220188. <a href="https://doi.org/10.1098/rsta.2022.0188">doi:10.1098/rsta.2022.0188</a></li>
+        <li>Dai, A. i Trenberth, K. E. (2002). Estimates of freshwater discharge from continents. <i>Journal of Hydrometeorology</i> 3, 660–687. <a href="https://doi.org/10.1175/1525-7541(2002)003%3C0660:EOFDFC%3E2.0.CO;2">doi:10.1175/1525-7541(2002)003&lt;0660:EOFDFC&gt;2.0.CO;2</a></li>
+        <li>Energy Institute (2026). Statistical Review of World Energy 2026: «Total energy supply exceeded 600 EJ in 2025». <a href="https://www.energyinst.org/statistical-review">energyinst.org/statistical-review</a></li>
+        <li>Seager, R. et al. (2002). Is the Gulf Stream responsible for Europe's mild winters? <i>Q. J. R. Meteorol. Soc.</i> 128, 2563–2586. <a href="https://doi.org/10.1256/qj.01.128">doi:10.1256/qj.01.128</a></li>
+        <li>Palter, J. B. (2015). The role of the Gulf Stream in European climate. <i>Annual Review of Marine Science</i> 7, 113–137. <a href="https://doi.org/10.1146/annurev-marine-010814-015656">doi:10.1146/annurev-marine-010814-015656</a></li>
+        <li>McManus, J. F. et al. (2004). Collapse and rapid resumption of Atlantic meridional circulation linked to deglacial climate changes. <i>Nature</i> 428, 834–837. <a href="https://doi.org/10.1038/nature02494">doi:10.1038/nature02494</a></li>
+        <li>Rasmussen, S. O. et al. (2006). A new Greenland ice core chronology for the last glacial termination. <i>J. Geophys. Res.</i> 111, D06102. <a href="https://doi.org/10.1029/2005JD006079">doi:10.1029/2005JD006079</a>; i Rasmussen, S. O. et al. (2014), <i>Quaternary Science Reviews</i> 106, 14–28. <a href="https://doi.org/10.1016/j.quascirev.2014.09.007">doi:10.1016/j.quascirev.2014.09.007</a>. Dades NGRIP GICC05: <a href="https://www.ncei.noaa.gov/pub/data/paleo/icecore/greenland/summit/ngrip/">NOAA NCEI</a></li>
+        <li>Heinrich, H. (1988). Origin and consequences of cyclic ice rafting in the Northeast Atlantic Ocean during the past 130,000 years. <i>Quaternary Research</i> 29, 142–152. <a href="https://doi.org/10.1016/0033-5894(88)90057-9">doi:10.1016/0033-5894(88)90057-9</a>; Hemming, S. R. (2004), <i>Reviews of Geophysics</i> 42. <a href="https://doi.org/10.1029/2003RG000128">doi:10.1029/2003RG000128</a></li>
+        <li>Barker, S. et al. (2015). Icebergs not the trigger for North Atlantic cold events. <i>Nature</i> 520, 333–336. <a href="https://doi.org/10.1038/nature14330">doi:10.1038/nature14330</a></li>
+        <li>Lynch-Stieglitz, J. (2017). The Atlantic Meridional Overturning Circulation and abrupt climate change. <i>Annual Review of Marine Science</i> 9, 83–104. <a href="https://doi.org/10.1146/annurev-marine-010816-060415">doi:10.1146/annurev-marine-010816-060415</a></li>
+        <li>McCarthy, G. D. et al. (2012). Observed interannual variability of the Atlantic meridional overturning circulation at 26.5°N. <i>Geophys. Res. Lett.</i> 39. <a href="https://doi.org/10.1029/2012GL052933">doi:10.1029/2012GL052933</a></li>
+        <li>Goddard, P. B. et al. (2015). An extreme event of sea-level rise along the Northeast coast of North America in 2009–2010. <i>Nature Communications</i> 6, 6346. <a href="https://doi.org/10.1038/ncomms7346">doi:10.1038/ncomms7346</a></li>
+        <li>Smeed, D. A. et al. (2018). The North Atlantic Ocean is in a state of reduced overturning. <i>Geophys. Res. Lett.</i> 45, 1527–1533. <a href="https://doi.org/10.1002/2017GL076350">doi:10.1002/2017GL076350</a></li>
+        <li>McCarthy, G. D. et al. (2025). Signal and noise in the Atlantic Meridional Overturning Circulation at 26°N. <i>Geophys. Res. Lett.</i> 52, e2025GL115055. <a href="https://doi.org/10.1029/2025GL115055">doi:10.1029/2025GL115055</a></li>
+        <li>Volkov, D. L. et al. (2024). Florida Current transport observations reveal four decades of steady state. <i>Nature Communications</i> 15, 7780. <a href="https://doi.org/10.1038/s41467-024-51879-5">doi:10.1038/s41467-024-51879-5</a></li>
+        <li>Caesar, L. et al. (2018). Observed fingerprint of a weakening Atlantic Ocean overturning circulation. <i>Nature</i> 556, 191–196. <a href="https://doi.org/10.1038/s41586-018-0006-5">doi:10.1038/s41586-018-0006-5</a></li>
+        <li>Thornalley, D. J. R. et al. (2018). Anomalously weak Labrador Sea convection and Atlantic overturning during the past 150 years. <i>Nature</i> 556, 227–230. <a href="https://doi.org/10.1038/s41586-018-0007-4">doi:10.1038/s41586-018-0007-4</a></li>
+        <li>Terhaar, J., Vogt, L. i Foukal, N. P. (2025). Atlantic overturning inferred from air-sea heat fluxes indicates no decline since the 1960s. <i>Nature Communications</i> 16, 222. <a href="https://doi.org/10.1038/s41467-024-55297-5">doi:10.1038/s41467-024-55297-5</a></li>
+        <li>IPCC (2021). Climate Change 2021: The Physical Science Basis. Resum per a responsables polítics (C.3.4), Resum tècnic i capítol 9 (Fox-Kemper, B. et al., secció 9.2.3.1). <a href="https://www.ipcc.ch/report/ar6/wg1/">ipcc.ch/report/ar6/wg1</a></li>
+        <li>Weijer, W. et al. (2020). CMIP6 models predict significant 21st century decline of the Atlantic Meridional Overturning Circulation. <i>Geophys. Res. Lett.</i> 47, e2019GL086075. <a href="https://doi.org/10.1029/2019GL086075">doi:10.1029/2019GL086075</a></li>
+        <li>Bonan, D. B. et al. (2025). Observational constraints imply limited future Atlantic meridional overturning circulation weakening. <i>Nature Geoscience</i> 18, 479–487. <a href="https://doi.org/10.1038/s41561-025-01709-0">doi:10.1038/s41561-025-01709-0</a></li>
+        <li>Portmann, V. et al. (2026). Observational constraints project a ~50% AMOC weakening by the end of this century. <i>Science Advances</i> 12, eadx4298. <a href="https://doi.org/10.1126/sciadv.adx4298">doi:10.1126/sciadv.adx4298</a></li>
+        <li>Stommel, H. (1961). Thermohaline convection with two stable regimes of flow. <i>Tellus</i> 13, 224–230. <a href="https://doi.org/10.3402/tellusa.v13i2.9491">doi:10.3402/tellusa.v13i2.9491</a></li>
+        <li>Ditlevsen, P. i Ditlevsen, S. (2023). Warning of a forthcoming collapse of the Atlantic meridional overturning circulation. <i>Nature Communications</i> 14, 4254. <a href="https://doi.org/10.1038/s41467-023-39810-w">doi:10.1038/s41467-023-39810-w</a>; correcció (2025): <a href="https://doi.org/10.1038/s41467-025-63201-y">doi:10.1038/s41467-025-63201-y</a></li>
+        <li>Ben-Yami, M. et al. (2024). Uncertainties too large to predict tipping times of major Earth system components from historical data. <i>Science Advances</i> 10, eadl4841. <a href="https://doi.org/10.1126/sciadv.adl4841">doi:10.1126/sciadv.adl4841</a></li>
+        <li>van Westen, R. M., Kliphuis, M. i Dijkstra, H. A. (2024). Physics-based early warning signal shows that AMOC is on tipping course. <i>Science Advances</i> 10, eadk1189. <a href="https://doi.org/10.1126/sciadv.adk1189">doi:10.1126/sciadv.adk1189</a></li>
+        <li>van Westen, R. M. et al. (2025). Physics-based indicators for the onset of an AMOC collapse under climate change. <i>J. Geophys. Res. Oceans</i> 130, e2025JC022651. <a href="https://doi.org/10.1029/2025JC022651">doi:10.1029/2025JC022651</a></li>
+        <li>van Westen, R. M. i Baatsen, M. L. J. (2025). European temperature extremes under different AMOC scenarios in the Community Earth System Model. <i>Geophys. Res. Lett.</i> 52, e2025GL114611. <a href="https://doi.org/10.1029/2025GL114611">doi:10.1029/2025GL114611</a></li>
+        <li>Baker, J. A. et al. (2025). Continued Atlantic overturning circulation even under climate extremes. <i>Nature</i> 638, 987–994. <a href="https://doi.org/10.1038/s41586-024-08544-0">doi:10.1038/s41586-024-08544-0</a></li>
+        <li>Drijfhout, S. et al. (2025). Shutdown of northern Atlantic overturning after 2100 following deep mixing collapse in CMIP6 projections. <i>Environ. Res. Lett.</i> 20, 094062. <a href="https://doi.org/10.1088/1748-9326/adfa3b">doi:10.1088/1748-9326/adfa3b</a></li>
+        <li>van Westen, R. M. i Dijkstra, H. A. (2026). Abrupt Gulf Stream path changes are a precursor to a collapse of the Atlantic Meridional Overturning Circulation. <i>Communications Earth &amp; Environment</i> 7, 197. <a href="https://doi.org/10.1038/s43247-026-03309-1">doi:10.1038/s43247-026-03309-1</a></li>
+        <li>Dijkstra, H. A. i van Westen, R. M. (2026). The probability of an AMOC collapse onset in the twenty-first century. <i>Annual Review of Marine Science</i> 18, 23–46. <a href="https://doi.org/10.1146/annurev-marine-040324-024822">doi:10.1146/annurev-marine-040324-024822</a></li>
+      </ol>
+      <p>Cartografia: Natural Earth, via world-atlas.</p>
+    </div>
+  </section>
+</div>
+<footer class="ib-foot">
+  <a href="../../"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script src="../../assets/scrolly.js"></script>
+<script src="dades.js"></script>
+<script src="cinta-transportadora.js"></script>
+<script src="../../assets/ib.js"></script>
+</body>
+</html>

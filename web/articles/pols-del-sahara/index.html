@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>La pols que adoba l'Amazònia · Inspired by Magazine</title>
+<meta name="description" content="Cada any, el vent s'endú milions de tones de pols del Sàhara a l'altra banda de l'Atlàntic. Una part cau sobre l'Amazònia i li porta fòsfor, el nutrient que més li falta. Quant, encara es discuteix.">
+<meta property="og:title" content="La pols que adoba l'Amazònia">
+<meta property="og:description" content="Cada any, el vent s'endú milions de tones de pols del Sàhara a l'altra banda de l'Atlàntic. Una part cau sobre l'Amazònia i li porta fòsfor, el nutrient que més li falta. Quant, encara es discuteix.">
+<meta property="og:image" content="cover.jpg">
+<link rel="icon" sizes="192x192" href="../../assets/icon192.png">
+<link rel="apple-touch-icon" href="../../assets/icon192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../../assets/ib.css">
+<link rel="stylesheet" href="../../assets/article.css">
+<style>
+:root{--dust:#B07434;--dry:#9A6326;--bio:#4C8A2E;--wet:#16786C;--sea:#E6EDF5}
+.k-d{color:var(--dry);font-weight:600}.k-b{color:var(--bio);font-weight:600}
+.page{overflow-x:clip}
+.step b{font-weight:600}
+.ghead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:10px;font-family:var(--sans)}
+.state{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+.state strong{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.005em;line-height:1.2}
+.state .val{font-size:14.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.state .src{font-size:12.5px;color:var(--muted)}
+.lg{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--ink-2);flex:none}
+.lg span{display:flex;align-items:center;gap:7px}
+.lg i{display:inline-block;width:16px;height:9px;border-radius:2px}
+.lg .dd{background:radial-gradient(circle,var(--dust) 1.3px,transparent 1.6px) 0 0/4.5px 4.5px}
+.map{position:relative}
+.map canvas{display:block;width:100%;-webkit-mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent),linear-gradient(to bottom,transparent,#000 7%,#000 93%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent),linear-gradient(to bottom,transparent,#000 7%,#000 93%,transparent);mask-composite:intersect}
+.ov{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.ann{left:0;top:0;transition:opacity .45s ease;will-change:transform}
+.ann.r{text-align:right}.ann.c{text-align:center}
+.ann .n{font-variant-numeric:tabular-nums}
+.ann.big b{font-family:var(--serif);font-size:19px;font-weight:600;line-height:1.1}
+.cap2{font-family:var(--sans);font-size:12px;color:var(--muted);margin:8px 0 0}
+.ctl2{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--hair);font-family:var(--sans);font-size:12.5px;color:var(--ink-2)}
+.ctl2 .lbl{grid-column:1/-1;display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
+.months{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);grid-column:2;margin-top:-6px;font-variant-numeric:tabular-nums}
+.fig .gh{flex-wrap:wrap}
+.figbox{position:relative}
+.segrow{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between;margin:0 0 12px;font-family:var(--sans)}
+.seg{flex-wrap:wrap;gap:6px 16px}
+.seg button{min-height:30px}
+.readout{font-family:var(--sans);font-size:14px;color:var(--ink-2);margin:0 0 10px;font-variant-numeric:tabular-nums;min-height:2.8em}
+.readout b{color:var(--ink);font-weight:600}
+.readout .big{display:block;font-family:var(--serif);font-size:26px;font-weight:600;color:var(--ink);line-height:1.2}
+#sal,#trucks,#budget,#years{display:block;width:100%}
+#years{overflow:visible}
+.estm{font-family:var(--sans)}
+.estm .row{cursor:pointer}
+.estm .row:hover text,.estm .row:focus text{fill:var(--ink)}
+.verdict{font-family:var(--sans);font-size:15px;line-height:1.45;margin:12px 0 0;min-height:3em}
+.verdict b{font-weight:700}
+.sl-row{display:grid;grid-template-columns:minmax(0,1fr);gap:2px;font-family:var(--sans)}
+.sl-row .lbl{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;color:var(--muted)}
+.sl-row .lbl output{font-size:14px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.tipx{position:absolute;left:0;top:0;background:var(--paper);border:1px solid var(--hair);font-family:var(--sans);font-size:12.5px;line-height:1.4;padding:6px 9px;pointer-events:none;opacity:0;transition:opacity .12s;z-index:5;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tipx b{font-weight:700}
+.mk{font-family:var(--sans);font-size:11.5px}
+.playb{padding:6px 0}
+#years:focus:not(:focus-visible){outline:none}
+@media (max-width:899px){
+  .ghead{margin-bottom:4px;gap:10px}
+  .state strong{font-size:17px}
+  .state .val{font-size:12.5px}
+  .state .src,.lg{display:none}
+  .ann{font-size:10.5px;max-width:118px}
+  .ann.big b{font-size:15px}
+  .ann.hm{display:none}
+  .cap2{font-size:10.5px;margin-top:4px}
+  .ctl2{margin-top:4px;padding-top:4px;gap:0 10px}
+  .ctl2 .lbl{display:none}
+  .months{margin-top:-4px;font-size:11px}
+  .readout .big{font-size:21px}
+  .readout{font-size:13px}
+  .seg{font-size:13px;gap:4px 14px}
+  .rng{height:34px}
+  .playb{min-height:32px}
+}
+@media (max-width:899px) and (max-height:760px){
+  .state .val{display:none}
+  .cap2{display:none}
+}
+</style>
+</head>
+<body class="ib-article">
+<header class="ib-bar">
+  <a href="../../" aria-label="Inspired by Magazine"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</header>
+<div class="ib-progress" aria-hidden="true"><span id="ibProgress"></span></div>
+
+<div class="page">
+  <header class="open col">
+    <p class="kicker">Planeta</p>
+    <h1>La pols que adoba l'Amazònia</h1>
+    <p class="dek">Cada any, el vent s'endú del Sàhara milions de tones de pols cap a l'altra banda de l'Atlàntic. Una part cau sobre la selva més gran del món i li porta una mica del que la pluja li treu.</p>
+    <p class="meta"><span id="rt">15 min de lectura</span> · Dades: NASA (satèl·lit CALIPSO), Yu et al. 2015, Prospero et al. 2020 · Actualitzat el 17 de novembre de 2026</p>
+  </header>
+
+  <section class="intro col">
+    <p class="dl">El gener del 1832, el Beagle s'acostava a les illes de Cap Verd, davant de la costa d'Àfrica. Feia dies que l'aire era tèrbol. Just abans d'ancorar a Praia, un naturalista de 22 anys, Charles Darwin, va trobar una pols marró finíssima enganxada a la gasa del penell, dalt del pal.</p>
+    <p>Anys després, el microscopista alemany Christian Ehrenberg va examinar aquella pols i la d'altres vaixells. Hi va trobar 67 formes de vida microscòpica, gairebé totes d'aigua dolça. Restes de llacs i rius, enmig de l'oceà.</p>
+    <p>Darwin va reunir notícies de pluges de pols a centenars de quilòmetres de la costa, i alguna molt més lluny, enmig de l'oceà. Va concloure que venia d'Àfrica. Tenia raó.</p>
+    <p>Avui els satèl·lits la segueixen. Cada any surten del Sàhara cap a l'Atlàntic uns <b>180 milions de tones</b> de pols. Una part travessa l'oceà en menys d'una setmana i cau sobre l'Amazònia, la selva tropical més gran del món. I li porta una cosa que li falta: <b>fòsfor</b>.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="d-on-surt">D'on surt la pols</h2>
+    <p>El Sàhara és la font de pols més gran del món. Però la pols no surt de tot arreu igual. Les fonts més actives són zones baixes on fa temps hi havia aigua: llacs, rius i aiguamolls que es van assecar i van deixar un fons de sediments fins i solts.</p>
+    <p>La més gran de totes és en un racó del Txad. Baixa per veure com es va formar.</p>
+  </section>
+
+  <section class="scrolly" aria-label="La depressió del Bodélé, pas a pas">
+    <div class="steps" id="bsteps">
+      <div class="step"><div class="step-in">
+        <h2>Un racó del Txad</h2>
+        <p>Al nord del Txad, entre muntanyes, hi ha una depressió d'uns 150 quilòmetres de costat: el <b>Bodélé</b>. Ocupa només un 0,2% del Sàhara.</p>
+        <p>Tot i així, és la font de pols més gran del planeta. Segons alguns càlculs, en surt fins a la meitat de tota la pols del Sàhara.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <span class="when">Fa entre 11.500 i 5.000 anys</span>
+        <h2>Un mar enmig del desert</h2>
+        <p>Durant milers d'anys, el Sàhara va ser verd. El monsó africà hi portava prou pluja per omplir un llac immens, el <b>Megatxad</b>: uns 361.000 km², onze vegades Catalunya, i fins a 160 metres de fondària.</p>
+        <p>Era el llac més gran d'Àfrica.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <span class="when">Fa 5.000 anys i fa 1.000 anys</span>
+        <h2>El llac s'asseca</h2>
+        <p>Fa uns 5.000 anys les pluges es van retirar i el nivell del llac va caure de pressa. El llac Txad d'avui n'és una petita resta.</p>
+        <p>La part nord, on ara hi ha el Bodélé, es va acabar d'assecar fa només <b>uns mil anys</b>.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Un fons de closques de vidre</h2>
+        <p>Al llac hi vivien incomptables <b>diatomees</b>, unes algues microscòpiques que es fabriquen una closca de sílice, com de vidre. Quan morien, s'acumulaven al fons.</p>
+        <p>Avui formen una roca blanca, la <b>diatomita</b>: lleugera i tan fràgil que es desfà amb el vent. Són organismes d'aigua dolça, com els que Ehrenberg va veure a la pols de Darwin.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Un embut de vent</h2>
+        <p>Del desembre al març bufa l'<b>harmattan</b>, un vent sec del nord-est. Quan passa entre el massís del Tibesti i l'altiplà de l'Ennedi, s'estreny i s'accelera, com l'aire en un embut.</p>
+        <p>Arran de terra, la diatomita es trenca i s'enlaira. Hi ha tempesta de pols uns <b>cent dies l'any</b>, i cadascuna s'endú, de mitjana, unes <b>700.000 tones</b>.</p>
+        <p class="note">El vent ja s'ha menjat fins a quatre metres de fons de llac des que es va assecar.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Cap a l'oceà</h2>
+        <p>Aquesta pols viatja cap al sud-oest, per sobre de Nigèria, fins al golf de Guinea i l'Atlàntic. Allà es barreja amb la pols d'altres punts del desert.</p>
+        <p>Un estudi del 2006 va calcular que gairebé la meitat de la pols que arriba a l'Amazònia surt d'aquest racó del Txad.</p>
+        <p class="note">Com que el Bodélé només fa pols des de fa uns mil anys, alguns geòlegs creuen que el seu paper s'ha exagerat, o que és molt recent. I les mesures de Caiena apunten que la pols que hi arriba a la primavera ve sobretot del Sahel.</p>
+      </div></div>
+    </div>
+    <div class="graphic" id="bgraphic">
+      <div class="gbox" id="bbox">
+        <div class="ghead">
+          <div class="state" aria-live="polite"><strong id="bName">Avui</strong><span class="val" id="bVal">El Bodélé, al nord del Txad</span></div>
+          <div class="lg"><span><i style="background:#9DBBDD"></i>Llac Megatxad (contorn aproximat)</span><span><i style="background:#F4F1E8;border:1px solid #CFC7B4"></i>Diatomita</span><span><i class="dd"></i>Pols</span></div>
+        </div>
+        <div class="map" id="bmap">
+          <canvas id="bcv" role="img" aria-label="Mapa del nord d'Àfrica. Mostra la depressió del Bodélé al Txad, l'antic llac Megatxad que la cobria, el fons de diatomita que va deixar, el vent harmattan que s'accelera entre el Tibesti i l'Ennedi i la pols que surt cap al golf de Guinea i l'Atlàntic."></canvas>
+          <div class="ov" id="bov"></div>
+        </div>
+        <p class="cap2">Esquema sobre un mapa real. El contorn del llac és aproximat. Fonts: Washington et al. 2009; Armitage et al. 2015; Bristow et al. 2010.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="un-riu-d-aire">Un riu d'aire calent</h2>
+    <p>A l'estiu, el terra del Sàhara és una planxa. L'aire de sobre s'escalfa tant que puja i es remou fins a 5 o 6 quilòmetres d'altura, i s'emporta la pols amunt.</p>
+    <p>Quan arriba a la costa, aquest aire calent i sec no es barreja amb l'aire del mar, que és més fresc i humit. Com que és més fresc, és més dens, i l'aire del Sàhara hi passa per sobre, com l'aire calent que es queda a dalt d'una habitació mentre a terra fa fresca. Els meteoròlegs en diuen <b>capa d'aire del Sàhara</b> (SAL, en anglès). La van descriure per primer cop Toby Carlson i Joseph Prospero el 1972.</p>
+    <p>A l'hivern la capa és més baixa i va més cap al sud. La pols viatja gairebé arran de mar, dins els vents alisis, i apunta cap a Sud-amèrica. Tria una estació per veure-ho de costat.</p>
+  </section>
+  <figure class="fig">
+    <div class="segrow">
+      <div class="seg" id="salSeg" role="group" aria-label="Estació"><button type="button" data-w="0" aria-pressed="true">Hivern</button><button type="button" data-w="1" aria-pressed="false">Primavera</button><button type="button" data-w="2" aria-pressed="false">Estiu</button><button type="button" data-w="3" aria-pressed="false">Tardor</button></div>
+      <button class="playb" id="salPlay" type="button">Reprodueix l'any</button>
+    </div>
+    <p class="readout" id="salOut" aria-live="polite"></p>
+    <div class="figbox"><canvas id="sal" role="img" aria-label="Tall vertical de l'atmosfera des del Sàhara fins a Amèrica. La capa d'aire del Sàhara, calenta, seca i plena de pols, va de 0 a 3 km a l'hivern i d'1 a 5 km a l'estiu a la costa africana, i baixa a mesura que s'acosta a Amèrica."></canvas></div>
+    <figcaption>Esquema basat en les mesures del satèl·lit CALIPSO (Tsamalis et al. 2013, juny 2006 – maig 2011). Altura molt exagerada respecte a la distància. Els percentatges són dades reals de Yu et al. 2015 (mitjana 2007–2013).</figcaption>
+  </figure>
+
+  <section class="col">
+    <h2 class="sh" id="el-viatge">El viatge</h2>
+    <p>Baixa per seguir la pols a través de l'oceà, mes a mes.</p>
+  </section>
+
+  <section class="scrolly" aria-label="El viatge de la pols a través de l'Atlàntic">
+    <div class="steps" id="msteps">
+      <div class="step"><div class="step-in">
+        <h2>Surten 182 milions de tones</h2>
+        <p>Cada any, de mitjana, creuen el meridià 15° oest, a l'altura de la costa africana, uns <b>182 milions de tones</b> de pols.</p>
+        <p>Ho va calcular un equip de la NASA amb el satèl·lit CALIPSO, que fins al 2023 va escanejar l'atmosfera amb un làser i veia a quina altura viatjava la pols. Són mitjanes del 2007 al 2013.</p>
+        <p class="note">És una estimació, amb un marge d'error d'entre el 45% i el 70%.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Una setmana per creuar l'oceà</h2>
+        <p>Empesa pels alisis, la pols triga de <b>5 a 7 dies</b> a arribar al Carib, a més de 4.000 quilòmetres.</p>
+        <p>Pel camí en va caient. A mig oceà, a 35° oest, en queden 132 milions de tones. A 75° oest, a l'altura de l'est de Cuba, en passen 43.</p>
+        <p class="note">La major part cau a l'oceà, i també l'adoba.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <span class="when">De desembre a maig</span>
+        <h2>A l'hivern, cap al sud</h2>
+        <p>A l'hivern i la primavera, la pols viatja baixa, per sota dels 3 quilòmetres, i més al sud, entre l'equador i els 10 graus nord. Va de dret cap a la costa de Sud-amèrica.</p>
+        <p>A Caiena, a la Guaiana Francesa, l'aire porta més pols de gener a maig que la resta de l'any.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Pluja de pols sobre la selva</h2>
+        <p>És l'època de pluges al nord de l'Amazònia, i la pluja arrossega la pols cap a terra. Segons els models, la major part hi arriba dins les gotes d'aigua: és el que els científics en diuen deposició humida.</p>
+        <p>Cada any cauen sobre l'Amazònia uns <b>28 milions de tones</b>, sobretot a la meitat nord. És una estimació amb molt marge: podrien ser només 8 o arribar a 48.</p>
+        <p class="note">A l'estiu i la tardor gairebé no n'hi arriba.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <span class="when">De juny a agost</span>
+        <h2>A l'estiu, cap al Carib</h2>
+        <p>A l'estiu, la pols surt més amunt, entre 1 i 5 quilòmetres, i més al nord. Passa per sobre de les Antilles i arriba a Florida i al golf de Mèxic.</p>
+        <p>És quan en surt més: gairebé la meitat de tota la pols de l'any.</p>
+        <p class="note">El juny del 2020 va sortir cap a Amèrica el núvol de pols més dens mai mesurat per satèl·lit.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>I alguns dies, cap aquí</h2>
+        <p>De tant en tant, el vent del sud la desvia cap a Europa i la porta fins a casa nostra.</p>
+        <p>Al nord-est peninsular passa, de mitjana, una mica més d'<b>un de cada sis dies</b>.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Mes a mes</h2>
+        <p>Arrossega el control per passar d'un mes a un altre, o prem «Reprodueix» per veure tot l'any.</p>
+        <p>Fixa't com la pols puja cap al nord a l'estiu i baixa cap al sud a l'hivern, quan cau sobre l'Amazònia.</p>
+      </div></div>
+    </div>
+    <div class="graphic" id="mgraphic">
+      <div class="gbox" id="mbox">
+        <div class="ghead">
+          <div class="state" aria-live="polite"><strong id="mName">Gener</strong><span class="val" id="mVal"></span><span class="src" id="mSrc"></span></div>
+          <div class="lg"><span><i class="dd"></i>Pols a l'aire</span><span><i style="background:var(--dry);opacity:.55"></i>Pols que cau</span><span><i style="border:1px dashed var(--bio);background:none"></i>Conca amazònica (rectangle de l'estudi)</span></div>
+        </div>
+        <div class="map" id="mmap">
+          <canvas id="mcv" role="img" aria-label="Mapa de l'Atlàntic tropical amb la pols del Sàhara que viatja cap a Amèrica: cap a Sud-amèrica i l'Amazònia a l'hivern i la primavera, cap al Carib, Florida i el golf de Mèxic a l'estiu, i alguns dies cap a la península Ibèrica."></canvas>
+          <div class="ov" id="mov"></div>
+        </div>
+        <div class="ctl2">
+          <div class="lbl"><label for="mRng">Mes de l'any</label><span>Recorregut esquemàtic · quantitats reals</span></div>
+          <button class="playb" id="mPlay" type="button">Reprodueix</button>
+          <input class="rng" id="mRng" type="range" min="0" max="11.99" step="0.01" value="0.5" aria-label="Mes de l'any">
+          <div class="months" aria-hidden="true"><span>gen</span><span>mar</span><span>mai</span><span>jul</span><span>set</span><span>nov</span></div>
+        </div>
+        <p class="cap2">Recorregut i altura segons Tsamalis et al. 2013 i Yu et al. 2015. La quantitat de pols segueix els percentatges per estació de CALIPSO, repartits entre els mesos.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="quant-es">Quant són 28 milions de tones?</h2>
+    <p>Si carreguéssim en camions de 25 tones la pols que cau cada any sobre l'Amazònia, en caldrien 1,1 milions: uns <b>3.000 camions cada dia</b>. Posats en fila, l'un tocant a l'altre, farien 18.000 quilòmetres, gairebé mitja volta a la Terra.</p>
+    <p>I tanmateix, escampada sobre una superfície tan gran, és una capa que no es veu: uns 3 grams per metre quadrat en tot un any. Del fòsfor, que és el que importa, en cauen unes 22.000 tones. Cabrien en 880 camions.</p>
+  </section>
+  <figure class="fig">
+    <div class="segrow">
+      <div class="seg" id="tSeg" role="group" aria-label="Etapa del viatge"><button type="button" data-i="0" aria-pressed="true">Surt d'Àfrica</button><button type="button" data-i="1" aria-pressed="false">A mig oceà</button><button type="button" data-i="2" aria-pressed="false">Cau a l'Amazònia</button><button type="button" data-i="3" aria-pressed="false">Al Carib</button><button type="button" data-i="4" aria-pressed="false">El fòsfor</button></div>
+      <button class="playb" id="tPlay" type="button">Reprodueix el viatge</button>
+    </div>
+    <p class="readout" id="tOut" aria-live="polite"></p>
+    <div class="figbox"><svg id="trucks" role="img" aria-label="Camions de pols: cada icona són 20.000 camions de 25 tones. 182 milions de tones surten d'Àfrica i 132 arriben a mig oceà. D'aquí, 28 cauen a l'Amazònia i una altra part, 43, arriba al Carib. El fòsfor que cau a l'Amazònia equival a 880 camions, una 23a part d'una icona."></svg></div>
+    <figcaption>Cada icona representa 20.000 camions de 25 tones (500.000 tones). La pols que cau a l'Amazònia no surt de la que arriba al Carib: cau abans, entre els 40–50° i els 75° oest. Quantitats anuals de Yu et al. 2015; càlcul de camions propi.</figcaption>
+  </figure>
+
+  <section class="col">
+    <h2 class="sh" id="per-que-fosfor">Per què una selva necessita pols</h2>
+    <p>Sembla una paradoxa: la selva més exuberant del món creix sobre uns dels sòls més pobres. La pluja fa molt de temps que els renta, i se n'ha endut bona part dels nutrients. El que més hi falta és el <b>fòsfor</b>, un element que tots els éssers vius necessiten per fer ADN i per moure energia dins les cèl·lules.</p>
+    <p>El 2022 se'n va tenir la prova directa. Un equip va adobar parcel·les d'una selva madura, en un sòl com el d'un 60% de l'Amazònia, amb nitrogen, amb fòsfor o amb altres nutrients. Només el fòsfor la va fer més productiva: en dos anys, un 29% més d'arrels fines i un 19% més de fulles i branques noves, tot i que els troncs no van créixer més de pressa.</p>
+    <p>La selva sobreviu perquè gairebé no en perd. Les fulles cauen, es descomponen i les arrels en recuperen el fòsfor. Cada any hi circulen entre 1.400 i 4.100 grams per hectàrea. Però l'aigua que s'escola cap als rius se n'emporta una mica: de <b>8 a 40 grams</b> per hectàrea i any.</p>
+    <p>És com un compte corrent on els diners es mouen sense parar, però cada mes el banc cobra una petita comissió. Si no hi entrés mai cap ingrés, el compte s'aniria buidant a poc a poc. La pols del Sàhara és un d'aquests ingressos: petit, però arriba cada any de l'altra banda de l'oceà.</p>
+  </section>
+  <figure class="fig">
+    <div class="sl-row">
+      <div class="lbl"><label for="bRng">Pols africana que cau a l'Amazònia cada any</label><output id="bOutD" for="bRng">28 milions de tones</output></div>
+      <input class="rng" id="bRng" type="range" min="0" max="55" step="0.1" value="27.7">
+    </div>
+    <div class="figbox"><svg id="budget" role="img" aria-label="Balanç de fòsfor de l'Amazònia. A dalt, les estimacions publicades de la pols que hi cau, de 9 a 50 milions de tones l'any. A baix, el fòsfor que aporta la pols comparat amb el que es perd pels rius, de 8 a 40 grams per hectàrea i any, amb tot el fòsfor que cau de l'aire, de 161 a 300 grams, i amb el que recicla la selva, de 1.400 a 4.100 grams."></svg><div class="tipx" id="bTip"></div></div>
+    <p class="verdict" id="bVerdict" aria-live="polite"></p>
+    <figcaption>Estimacions publicades recollides per Yu et al. 2015 i Prospero et al. 2020 (regions i anys diferents). Fòsfor com a Yu et al.: pols × 780 parts per milió ÷ 9,6 milions de km². Pèrdues, reciclatge i fòsfor que cau de l'aire: Vitousek i Sanford 1986, via Yu et al. 2015.</figcaption>
+  </figure>
+  <section class="col">
+    <p>Amb els números del satèl·lit, l'ingrés i la comissió s'assemblen molt: unes 22.000 tones de fòsfor l'any, uns 23 grams per hectàrea (entre 7 i 39). Per això els autors creuen que, sense la pols, el sòl de la selva s'aniria empobrint en qüestió de dècades o segles. Però avisen que encara no se sap quanta pols necessita de debò.</p>
+    <p>Tampoc no és l'únic ingrés. Del cel hi cauen cada any entre 161 i 300 grams de fòsfor per hectàrea, i la pols africana n'és, segons el mateix estudi, un 13% com a màxim. La resta és sobretot fum d'incendis i partícules biològiques, com pol·len i espores. Però molt d'això surt de la mateixa selva: és com passar diners entre dos comptes del mateix titular. La pols, en canvi, és fòsfor que ve de fora.</p>
+    <p>El 2020, Joseph Prospero, el mateix científic que mesura la pols a Barbados des del 1965, va publicar setze anys de mesures diàries a Caiena. Segons els seus càlculs, a l'Amazònia només hi cauen de <b>8 a 10 milions de tones</b> l'any, tres vegades menys, i sobretot a la vora nord i nord-est, no al centre de la selva. Si té raó, la pols només paga una part de la comissió.</p>
+    <p>El 2019, un equip va descobrir que el fum dels incendis de l'Àfrica austral també creua l'oceà i porta fòsfor, un fòsfor més fàcil d'aprofitar que el de la pols. Segons el seu model, aporta fins a la meitat del fòsfor que arriba a l'Amazònia des d'Àfrica.</p>
+    <p class="note">Encara es debat quanta pols cau, on cau i quina part del fòsfor poden fer servir les plantes. Ningú no discuteix que una part del que alimenta la selva ve de l'altra banda de l'oceà.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="tambe-el-mar">També adoba el mar</h2>
+    <p>La major part de la pols no arriba a terra. Un càlcul anterior, fet amb un altre satèl·lit per a l'any 2001, donava xifres més altes: de cada 240 milions de tones que van sortir d'Àfrica, unes 140 van caure a l'Atlàntic.</p>
+    <p>Al mar obert hi falta sovint ferro, i la pols del desert en porta. En una expedició a l'Atlàntic tropical, uns investigadors van afegir pols del Sàhara a mostres d'aigua: els microbis que fixen el nitrogen de l'aire es van activar, probablement gràcies al ferro i al fòsfor que portava.</p>
+    <p>A l'altra banda, la pols també ha fet terra. Les illes de les Bahames i els illots de Florida (els Keys) són de roca calcària, sense gaire material per fer sòl. Els seus sòls s'han format, sobretot, amb pols africana acumulada amb el temps.</p>
+    <h2 class="sh" id="huracans-i-aire">Huracans i aire brut</h2>
+    <p>Quan la capa d'aire del Sàhara engoleix una tempesta tropical, el seu aire sec, la capa calenta que fa de tapa i el vent fort que l'acompanya poden impedir que es converteixi en un huracà. Els anys amb més pols sobre l'Atlàntic solen tenir menys huracans.</p>
+    <p class="note">No està clar si la pols frena els huracans o si només coincideix amb condicions que ja els són poc favorables.</p>
+    <p>La pols també es respira. A Caiena i a Guadalupe, la pols africana fa superar el límit diari de partícules que recomanava l'OMS (50 micrograms per metre cúbic) gairebé un de cada deu dies.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="i-a-casa">I també arriba aquí</h2>
+    <p>Arriba quan una baixa pressió es queda aturada a l'oest o al sud-oest de la Península i un anticicló bloqueja Europa: el vent del sud puja la pols cap al nord. El cel es torna blanquinós o groguenc. Si plou, cau <b>pluja de fang</b> i els cotxes queden tacats.</p>
+    <p>Entre el 2001 i el 2011, al nord-est peninsular, com al sud-est de França i al nord d'Itàlia, hi va haver pols africana el 17% o el 18% dels dies, sobretot a l'estiu. És menys que al sud: a Sicília hi arriba el 37% dels dies. De mitjana és poca cosa, d'1,1 a 1,5 micrograms per metre cúbic més de PM10, les partícules fines que respirem. El problema són els episodis forts.</p>
+    <p>Entre el 2020 i el 2022 hi va haver sis episodis com no se n'havien mesurat mai des del 2000. El més fort, del 14 al 20 de març del 2022, va cobrir gairebé tota la Península: a Almeria, la mitjana diària de partícules va arribar a valors d'entre 1.500 i 3.100 micrograms per metre cúbic, segons l'estació. En un episodi normal sol quedar per sota de 100.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="cada-any">Un adob que canvia cada any</h2>
+    <p>La quantitat de pols que creua l'oceà no és mai la mateixa. El 2007, segons CALIPSO, en van sortir d'Àfrica 227 milions de tones; el 2011, 133. La que cau a l'Amazònia també canvia: segons l'any, s'aparta fins a un 29% de la mitjana. Passa el cursor o toca el gràfic per veure cada any.</p>
+  </section>
+  <figure class="fig">
+    <div class="figbox"><svg id="years" role="img" aria-label="Pols africana que creua l'Atlàntic cada any del 2007 al 2013 a tres meridians. A 15 graus oest va de 133 a 227 milions de tones, a 35 graus oest de 106 a 175 i a 75 graus oest de 28 a 51. El 2011 és l'any amb menys pols."></svg><div class="tipx" id="yTip"></div></div>
+    <figcaption>Pols que creua cada meridià entre 10° S i 30° N, en milions de tones l'any. La línia és la millor estimació i la franja, l'interval entre els dos escenaris del càlcul. Dades: Yu et al. 2015, Remote Sensing of Environment (taula 2).</figcaption>
+  </figure>
+  <section class="col">
+    <p>Una de les claus és al Sahel, la franja semiàrida al sud del Sàhara: els anys que hi plou poc, l'any següent creua l'oceà més pols. Ja ho mostraven les mesures de Barbados, on la pols va créixer molt amb les grans sequeres dels anys setanta. El mecanisme exacte encara no s'entén del tot.</p>
+    <p>I el futur? Una reconstrucció de 160 anys indica que hi va haver molta pols entre el 1910 i el 1940 i entre el 1970 i el 1980, i poca als anys 2000. Els models climàtics apunten que, amb l'escalfament, el vent que l'aixeca s'afeblirà i n'hi haurà menys. Però altres simulacions preveuen més pols al Bodélé a final de segle. No hi ha acord.</p>
+    <p>Darwin va veure caure la pols sobre el Beagle i va endevinar d'on venia. No podia imaginar que el fons d'un llac sec, a gairebé 9.000 quilòmetres, acabaria adobant, a poc a poc, els arbres de l'Amazònia.</p>
+  </section>
+
+  <section class="close col">
+    <h2>Paraules clau</h2>
+    <dl class="gl">
+      <dt>Bodélé</dt><dd>Depressió del nord del Txad, fons sec de l'antic llac Megatxad. És la font de pols més gran del planeta.</dd>
+      <dt>Megatxad</dt><dd>Llac gegant que fa entre 11.500 i 5.000 anys ocupava uns 361.000 km² al sud del Sàhara. L'actual llac Txad n'és una resta.</dd>
+      <dt>Diatomees</dt><dd>Algues microscòpiques amb una closca de sílice. Les seves restes formen la diatomita, una roca blanca i lleugera que el vent esmicola.</dd>
+      <dt>Harmattan</dt><dd>Vent sec i polsós del nord-est que bufa sobre l'Àfrica occidental, sobretot de desembre a març.</dd>
+      <dt>Alisis</dt><dd>Vents constants que bufen de l'est als tròpics. Porten la pols cap a Amèrica.</dd>
+      <dt>Capa d'aire del Sàhara</dt><dd>Capa d'aire calent, sec i polsós que surt d'Àfrica i viatja per sobre de l'aire del mar, més fresc. En anglès, SAL.</dd>
+      <dt>CALIPSO</dt><dd>Satèl·lit de la NASA i l'agència espacial francesa (2006–2023) que portava un lidar, un làser que mesurava a quina altura hi ha pols i núvols.</dd>
+      <dt>Fòsfor</dt><dd>Nutrient imprescindible per a tots els éssers vius. Als sòls vells i rentats per la pluja, com els de l'Amazònia, n'hi ha molt poc.</dd>
+      <dt>Deposició</dt><dd>La caiguda de la pols a terra o al mar. Pot ser seca (cau pel seu pes) o humida (l'arrossega la pluja).</dd>
+      <dt>Sahel</dt><dd>Franja semiàrida al sud del Sàhara, que també aporta pols.</dd>
+      <dt>PM10</dt><dd>Partícules de menys de 10 micròmetres que suren a l'aire i es respiren. La pols del desert n'és una font important.</dd>
+    </dl>
+    <div class="fn">
+      <p><b>Metodologia.</b> Les xifres de pols són estimacions publicades. Les principals surten del satèl·lit CALIPSO (Yu et al. 2015): els fluxos de pols tenen un marge d'error d'entre el 45% i el 70%, i la pols que cau a l'Amazònia va de 8 a 48 milions de tones l'any (millor estimació, 28). El model validat amb mesures a terra de Prospero et al. (2020) dona una deposició unes tres vegades menor, i l'article ho presenta com a debat obert. Són dades reals: el gràfic d'anys (2007–2013), els percentatges per estació, les estimacions de la pols que cau a l'Amazònia i els fluxos de fòsfor. Són esquemes: el mapa del Bodélé (el contorn del llac Megatxad és aproximat), el tall de la capa d'aire i el recorregut de les partícules als mapes, que segueix les latituds i altures mesurades però no és una simulació meteorològica; la quantitat de cada mes reparteix els percentatges per estació. El fòsfor del gràfic interactiu es calcula amb la fórmula de Yu et al. (780 parts per milió dividit per la superfície de la regió segons els autors, 9,6 milions de km²); per a altres estudis és només aproximat, perquè fan servir regions diferents. Els camions (25 tones i 16,5 metres) són un càlcul propi.</p>
+      <p><b>Fonts.</b></p>
+      <ol>
+        <li>Yu, H. et al. (2015). The fertilizing role of African dust in the Amazon rainforest: A first multiyear assessment based on data from CALIPSO. <i>Geophysical Research Letters</i> 42, 1984–1991. <a href="https://doi.org/10.1002/2015GL063040" target="_blank" rel="noopener">doi.org/10.1002/2015GL063040</a></li>
+        <li>Yu, H. et al. (2015). Quantification of trans-Atlantic dust transport from seven-year (2007–2013) record of CALIPSO lidar measurements. <i>Remote Sensing of Environment</i> 159, 232–249. <a href="https://doi.org/10.1016/j.rse.2014.12.010" target="_blank" rel="noopener">doi.org/10.1016/j.rse.2014.12.010</a></li>
+        <li>NASA (2015). NASA Satellite Reveals How Much Saharan Dust Feeds Amazon's Plants. <a href="https://www.nasa.gov/missions/calipso/nasa-satellite-reveals-how-much-saharan-dust-feeds-amazons-plants/" target="_blank" rel="noopener">nasa.gov</a></li>
+        <li>Prospero, J. M. et al. (2020). Characterizing and quantifying African dust transport and deposition to South America: Implications for the phosphorus budget in the Amazon Basin. <i>Global Biogeochemical Cycles</i> 34, e2020GB006536. <a href="https://doi.org/10.1029/2020GB006536" target="_blank" rel="noopener">doi.org/10.1029/2020GB006536</a></li>
+        <li>Mahowald, N. M. et al. (2005). Impacts of biomass burning emissions and land use change on Amazonian atmospheric phosphorus cycling and deposition. <i>Global Biogeochemical Cycles</i> 19(4). <a href="https://doi.org/10.1029/2005GB002541" target="_blank" rel="noopener">doi.org/10.1029/2005GB002541</a></li>
+        <li>Barkley, A. E. et al. (2019). African biomass burning is a substantial source of phosphorus deposition to the Amazon, Tropical Atlantic Ocean, and Southern Ocean. <i>PNAS</i> 116, 16216–16221. <a href="https://doi.org/10.1073/pnas.1906091116" target="_blank" rel="noopener">doi.org/10.1073/pnas.1906091116</a></li>
+        <li>Koren, I. et al. (2006). The Bodélé depression: a single spot in the Sahara that provides most of the mineral dust to the Amazon forest. <i>Environmental Research Letters</i> 1, 014005. <a href="https://doi.org/10.1088/1748-9326/1/1/014005" target="_blank" rel="noopener">doi.org/10.1088/1748-9326/1/1/014005</a></li>
+        <li>Washington, R. et al. (2009). Dust as a tipping element: The Bodélé Depression, Chad. <i>PNAS</i> 106, 20564–20571. <a href="https://doi.org/10.1073/pnas.0711850106" target="_blank" rel="noopener">doi.org/10.1073/pnas.0711850106</a></li>
+        <li>Armitage, S. J. et al. (2015). West African monsoon dynamics inferred from abrupt fluctuations of Lake Mega-Chad. <i>PNAS</i> 112, 8543–8548. <a href="https://doi.org/10.1073/pnas.1417655112" target="_blank" rel="noopener">doi.org/10.1073/pnas.1417655112</a></li>
+        <li>Bristow, C. S., Hudson-Edwards, K. A. i Chappell, A. (2010). Fertilizing the Amazon and equatorial Atlantic with West African dust. <i>Geophysical Research Letters</i> 37, L14807. <a href="https://doi.org/10.1029/2010GL043486" target="_blank" rel="noopener">doi.org/10.1029/2010GL043486</a></li>
+        <li>Bristow, C. S., Drake, N. i Armitage, S. (2009). Deflation in the dustiest place on Earth: The Bodélé Depression, Chad. <i>Geomorphology</i> 105, 50–58. <a href="https://doi.org/10.1016/j.geomorph.2007.12.014" target="_blank" rel="noopener">doi.org/10.1016/j.geomorph.2007.12.014</a></li>
+        <li>Tsamalis, C. et al. (2013). The seasonal vertical distribution of the Saharan Air Layer and its modulation by the wind. <i>Atmospheric Chemistry and Physics</i> 13, 11235–11257. <a href="https://doi.org/10.5194/acp-13-11235-2013" target="_blank" rel="noopener">doi.org/10.5194/acp-13-11235-2013</a></li>
+        <li>Carlson, T. N. i Prospero, J. M. (1972). The large-scale movement of Saharan air outbreaks over the northern equatorial Atlantic. <i>Journal of Applied Meteorology</i> 11, 283–297. <a href="https://doi.org/10.1175/1520-0450(1972)011%3C0283:TLSMOS%3E2.0.CO;2" target="_blank" rel="noopener">doi.org/10.1175/1520-0450(1972)011&lt;0283:TLSMOS&gt;2.0.CO;2</a></li>
+        <li>Velasco-Merino, C. et al. (2018). Impact of long-range transport over the Atlantic Ocean on Saharan dust optical and microphysical properties based on AERONET data. <i>Atmospheric Chemistry and Physics</i> 18, 9411–9424. <a href="https://doi.org/10.5194/acp-18-9411-2018" target="_blank" rel="noopener">doi.org/10.5194/acp-18-9411-2018</a></li>
+        <li>Darwin, C. R. (1846). An account of the fine dust which often falls on vessels in the Atlantic ocean. <i>Quarterly Journal of the Geological Society of London</i> 2, 26–30; i <i>Journal of Researches</i> (1845), cap. I. <a href="https://darwin-online.org.uk/converted/published/1846_dust_F1672.html" target="_blank" rel="noopener">darwin-online.org.uk</a></li>
+        <li>Cunha, H. F. V. et al. (2022). Direct evidence for phosphorus limitation on Amazon forest productivity. <i>Nature</i> 608, 558–562. <a href="https://doi.org/10.1038/s41586-022-05085-2" target="_blank" rel="noopener">doi.org/10.1038/s41586-022-05085-2</a></li>
+        <li>Vitousek, P. M. i Sanford, R. L. (1986). Nutrient cycling in moist tropical forest. <i>Annual Review of Ecology and Systematics</i> 17, 137–167. <a href="https://doi.org/10.1146/annurev.es.17.110186.001033" target="_blank" rel="noopener">doi.org/10.1146/annurev.es.17.110186.001033</a></li>
+        <li>Ridley, D. A., Heald, C. L. i Ford, B. (2012). North African dust export and deposition: A satellite and model perspective. <i>Journal of Geophysical Research: Atmospheres</i> 117. <a href="https://doi.org/10.1029/2011JD016794" target="_blank" rel="noopener">doi.org/10.1029/2011JD016794</a></li>
+        <li>Swap, R. et al. (1992). Saharan dust in the Amazon Basin. <i>Tellus B</i> 44, 133–149. <a href="https://doi.org/10.3402/tellusb.v44i2.15434" target="_blank" rel="noopener">doi.org/10.3402/tellusb.v44i2.15434</a></li>
+        <li>Kaufman, Y. J. et al. (2005). Dust transport and deposition observed from the Terra-MODIS spacecraft over the Atlantic Ocean. <i>Journal of Geophysical Research</i> 110, D10S12. <a href="https://doi.org/10.1029/2003JD004436" target="_blank" rel="noopener">doi.org/10.1029/2003JD004436</a></li>
+        <li>Mills, M. M. et al. (2004). Iron and phosphorus co-limit nitrogen fixation in the eastern tropical North Atlantic. <i>Nature</i> 429, 292–294. <a href="https://doi.org/10.1038/nature02550" target="_blank" rel="noopener">doi.org/10.1038/nature02550</a></li>
+        <li>Jickells, T. D. et al. (2005). Global iron connections between desert dust, ocean biogeochemistry, and climate. <i>Science</i> 308, 67–71. <a href="https://doi.org/10.1126/science.1105959" target="_blank" rel="noopener">doi.org/10.1126/science.1105959</a></li>
+        <li>Muhs, D. R. et al. (2007). Geochemical evidence for African dust inputs to soils of western Atlantic islands: Barbados, the Bahamas, and Florida. <i>Journal of Geophysical Research</i> 112, F02009. <a href="https://doi.org/10.1029/2005JF000445" target="_blank" rel="noopener">doi.org/10.1029/2005JF000445</a></li>
+        <li>Dunion, J. P. i Velden, C. S. (2004). The impact of the Saharan Air Layer on Atlantic tropical cyclone activity. <i>Bulletin of the American Meteorological Society</i> 85, 353–366. <a href="https://doi.org/10.1175/BAMS-85-3-353" target="_blank" rel="noopener">doi.org/10.1175/BAMS-85-3-353</a></li>
+        <li>Evan, A. T. et al. (2006). New evidence for a relationship between Atlantic tropical cyclone activity and African dust outbreaks. <i>Geophysical Research Letters</i> 33, L19813. <a href="https://doi.org/10.1029/2006GL026408" target="_blank" rel="noopener">doi.org/10.1029/2006GL026408</a></li>
+        <li>Braun, S. A. (2010). Reevaluating the role of the Saharan Air Layer in Atlantic tropical cyclogenesis and evolution. <i>Monthly Weather Review</i> 138, 2007–2037. <a href="https://doi.org/10.1175/2009MWR3135.1" target="_blank" rel="noopener">doi.org/10.1175/2009MWR3135.1</a></li>
+        <li>Francis, D. et al. (2020). The atmospheric drivers of the major Saharan dust storm in June 2020. <i>Geophysical Research Letters</i> 47, e2020GL090102. <a href="https://doi.org/10.1029/2020GL090102" target="_blank" rel="noopener">doi.org/10.1029/2020GL090102</a></li>
+        <li>Prospero, J. M. et al. (2014). Characterizing the annual cycle of African dust transport to the Caribbean Basin and South America and its impact on the environment and air quality. <i>Global Biogeochemical Cycles</i> 28, 757–773. <a href="https://doi.org/10.1002/2013GB004802" target="_blank" rel="noopener">doi.org/10.1002/2013GB004802</a></li>
+        <li>Prospero, J. M. i Lamb, P. J. (2003). African droughts and dust transport to the Caribbean: Climate change implications. <i>Science</i> 302, 1024–1027. <a href="https://doi.org/10.1126/science.1089915" target="_blank" rel="noopener">doi.org/10.1126/science.1089915</a></li>
+        <li>Evan, A. T. et al. (2016). The past, present and future of African dust. <i>Nature</i> 531, 493–495. <a href="https://doi.org/10.1038/nature17149" target="_blank" rel="noopener">doi.org/10.1038/nature17149</a></li>
+        <li>Pey, J. et al. (2013). African dust outbreaks over the Mediterranean Basin during 2001–2011: PM10 concentrations, phenomenology and trends, and its relation with synoptic and mesoscale meteorology. <i>Atmospheric Chemistry and Physics</i> 13, 1395–1410. <a href="https://doi.org/10.5194/acp-13-1395-2013" target="_blank" rel="noopener">doi.org/10.5194/acp-13-1395-2013</a></li>
+        <li>Rodríguez, S. i López-Darias, J. (2024). Extreme Saharan dust events expand northward over the Atlantic and Europe, prompting record-breaking PM10 and PM2.5 episodes. <i>Atmospheric Chemistry and Physics</i> 24, 12031–12053. <a href="https://doi.org/10.5194/acp-24-12031-2024" target="_blank" rel="noopener">doi.org/10.5194/acp-24-12031-2024</a></li>
+        <li>Prospero, J. M. et al. (2002). Environmental characterization of global sources of atmospheric soil dust identified with the Nimbus 7 TOMS absorbing aerosol product. <i>Reviews of Geophysics</i> 40, 1002. <a href="https://doi.org/10.1029/2000RG000095" target="_blank" rel="noopener">doi.org/10.1029/2000RG000095</a></li>
+      </ol>
+    </div>
+  </section>
+</div>
+
+<footer class="ib-foot">
+  <a href="../../"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script src="../../assets/scrolly.js"></script>
+<script src="pols-del-sahara.js"></script>
+<script src="../../assets/ib.js"></script>
+</body>
+</html>

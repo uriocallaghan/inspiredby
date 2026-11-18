@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>La gran migració de cada nit · Inspired by Magazine</title>
+<meta name="description" content="Cada vespre, una multitud d'animals puja centenars de metres des de la penombra de l'oceà per menjar, i abans de l'alba torna a baixar. Sovint es descriu com el moviment d'animals més gran del planeta, si es compta en tones.">
+<meta property="og:title" content="La gran migració de cada nit">
+<meta property="og:description" content="Cada vespre, una multitud d'animals puja centenars de metres des de la penombra de l'oceà per menjar, i abans de l'alba torna a baixar.">
+<meta property="og:image" content="cover.jpg">
+<link rel="icon" sizes="192x192" href="../../assets/icon192.png">
+<link rel="apple-touch-icon" href="../../assets/icon192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../../assets/ib.css">
+<link rel="stylesheet" href="../../assets/article.css">
+<style>
+:root{--mig:#D9822B;--bio:#4C8A2E;--deep:#0E1B2C}
+.k-m{color:var(--mig);font-weight:600}.k-b{color:var(--bio);font-weight:600}
+.ghead{display:flex;justify-content:space-between;align-items:baseline;gap:4px 16px;font-family:var(--sans);margin-bottom:8px;flex-wrap:wrap}
+.ghead strong{font-family:var(--serif);font-weight:600;font-size:24px;letter-spacing:-.005em;font-variant-numeric:tabular-nums}
+.ghead span{font-size:13.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.gbox{position:relative}
+.cvwrap{position:relative}
+.cvwrap canvas{display:block;width:100%}
+.octl{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;margin-top:10px;font-family:var(--sans);font-size:12.5px;color:var(--muted)}
+.octl label{white-space:nowrap}
+.octl output{font-variant-numeric:tabular-nums;color:var(--ink-2);min-width:3.2em;text-align:right}
+.lgd{display:flex;flex-wrap:wrap;gap:4px 16px;font-family:var(--sans);font-size:12px;color:var(--ink-2);margin-top:8px}
+.lgd i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:0}
+.lgd .dash{width:16px;height:0;border-top:1.5px dashed var(--ink-2);border-radius:0;vertical-align:3px}
+.fig .cap{text-align:left}
+.playb{padding:6px 0}
+.seg{flex-wrap:wrap;row-gap:6px}
+.fighead{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px 20px;margin:0 0 10px;font-family:var(--sans)}
+.fighead .t{font-family:var(--serif);font-size:20px;font-weight:600}
+.chart{position:relative}
+.chart svg{display:block;width:100%;overflow:visible}
+.chart text{font-family:var(--sans)}
+/* size comparison */
+.size{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:28px;align-items:stretch}
+.size .lab{font-family:var(--sans);font-size:13px;color:var(--ink-2);margin:0 0 6px}
+.size .lab b{color:var(--ink)}
+.szout{font-family:var(--serif);font-size:21px;line-height:1.4;margin:6px 0 4px;min-height:2.8em;text-wrap:pretty}
+.szout b{font-weight:600}
+.szctl{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;font-family:var(--sans);font-size:13px;color:var(--muted);margin-top:10px}
+.szctl output{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+/* echogram */
+.echo-ctl{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 18px;margin-bottom:10px}
+.echo-note{font-family:var(--sans);font-size:13.5px;color:var(--ink-2);min-height:2.9em;margin:8px 0 0;max-width:720px}
+@media (max-width:899px){
+  .ghead strong{font-size:19px}.ghead span{font-size:12px}
+  .octl{gap:10px;margin-top:6px}
+  .lgd{font-size:11px;gap:2px 10px;margin-top:4px}
+  .size{grid-template-columns:minmax(0,1fr);gap:16px}
+  .szout{font-size:18px}
+  .fighead .t{font-size:18px}
+}
+@media (min-width:900px){.sch{display:none}}
+.sch{color:var(--muted);font-style:italic}
+@media (max-width:899px){.graphic .cap{display:none}.graphic .lgd{margin-top:2px}.graphic .ghead{margin-bottom:4px}}
+@media (max-width:899px) and (max-height:700px){.graphic .lgd span:not(.sch){display:none}}
+</style>
+</head>
+<body class="ib-article">
+<header class="ib-bar">
+  <a href="../../" aria-label="Inspired by Magazine"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</header>
+<div class="ib-progress" aria-hidden="true"><span id="ibProgress"></span></div>
+
+<div class="page">
+  <header class="open col">
+    <p class="kicker">Oceà</p>
+    <h1>La gran migració de cada nit</h1>
+    <p class="dek">Quan es pon el sol, una multitud d'animals puja centenars de metres des de la penombra de l'oceà per menjar. Abans de l'alba, tornen a baixar. Ho fan cada dia, a tots els mars, i ho vam descobrir per error.</p>
+    <p class="meta"><span id="rt">15 min de lectura</span> · Dades: expedició Malaspina (Klevjer et al. 2016), Bianchi i Mislan 2016 · Actualitzat el 17 de novembre de 2026</p>
+  </header>
+
+  <section class="intro col">
+    <p class="dl">L'estiu del 1942, en plena Segona Guerra Mundial, un petit vaixell de l'armada dels Estats Units, el <i>Jasper</i>, provava sonars davant de San Diego, a Califòrnia. A bord, tres científics, Carl Eyring, Ralph Christensen i Russell Raitt, enviaven polsos de so a l'aigua i cronometraven els ecos.</p>
+    <p>Hi havia una cosa que no quadrava. Lluny de la costa, on el fons era molt més avall, el so rebotava a unes 300 iardes, uns 275 metres. Com si hi hagués un fons. De vegades s'esvaïa i, al vespre, tornava a aparèixer de cop.</p>
+    <p>Les ecosondes d'altres vaixells també el veien, i el prenien per bancs desconeguts. Centenars d'aquestes lectures van acabar a les cartes nàutiques amb dues lletres, <b>ED</b>, «existència dubtosa», i algunes encara hi són. Després de la guerra, l'oceanògraf Martin Johnson, de l'Institut Scripps d'Oceanografia, va calar xarxes a diferents fondàries i va resoldre el misteri. El fals fons era viu.</p>
+    <p>Era una capa immensa d'animals, que els oceanògrafs van batejar com a <b>capa de dispersió profunda</b>, i es movia amunt i avall amb el sol. Avui en diem <b>migració vertical diària</b>, i sovint es descriu com el moviment d'animals més gran del planeta, si es compta en tones.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="primer-la-llum">Primer, la llum</h2>
+    <p>Per entendre aquest viatge cal començar per la llum. L'aigua se la menja molt de pressa. Segons la NOAA, l'agència oceànica dels Estats Units, per sota dels 200 metres en queda molt poca, i a partir dels 1.000 metres ja no se'n detecta gens.</p>
+    <p>Per això els oceanògrafs divideixen l'oceà en franges. Els primers 200 metres són la <b>zona il·luminada</b>: n'hi ha prou perquè unes algues microscòpiques, el <span class="k-b">fitoplàncton</span>, facin la fotosíntesi. Són la base de gairebé tot el que menja al mar obert.</p>
+    <p>Entre els 200 i els 1.000 metres hi ha la <b>zona crepuscular</b>, una penombra blava que es va enfosquint. Ocupa prop d'una cinquena part del volum de tots els oceans. És on passen el dia els protagonistes d'aquesta història. Baixa per veure què hi passa al llarg de 24 hores.</p>
+  </section>
+
+  <section class="scrolly" aria-label="Un dia a l'oceà, de migdia a migdia">
+    <div class="steps" id="osteps">
+      <div class="step"><div class="step-in">
+        <h2>Migdia</h2>
+        <p>És migdia sobre un oceà tropical. El sol és a dalt de tot i la llum arriba més avall que en cap altre moment del dia.</p>
+        <p>A uns 450 metres, en plena zona crepuscular, hi ha una capa densa d'<span class="k-m">animals</span>. Cada punt del gràfic en representa una multitud.</p>
+        <p class="note">És la capa que els sonars confonien amb el fons. Molts dels peixos que hi viuen tenen una bufeta plena de gas que fa rebotar el so.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Qui hi ha</h2>
+        <p>Una barreja de tot: <b>copèpodes</b>, uns crustacis de pocs mil·límetres; <b>krill</b>; <b>peixos llanterna</b>, que fan llum amb el cos; <b>calamars</b>; <b>meduses</b> i altres animals gelatinosos, com els sifonòfors.</p>
+        <p>Els peixos llanterna, o mictòfids, produeixen bona part de l'eco que veu el sonar, juntament amb els sifonòfors, que també porten una bombolla de gas. Però no viatgen sols: les xarxes troben tots aquests animals junts, a les mateixes fondàries.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Per què s'amaguen tan avall</h2>
+        <p>A dalt hi ha el menjar, però també el perill. Molts depredadors cacen amb la vista, i de dia un animal petit prop de la superfície és fàcil de veure.</p>
+        <p>A 450 metres, en la penombra, és gairebé invisible. Allà s'hi està tot el dia, en dejú.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Capvespre: comença la pujada</h2>
+        <p>La capa puja a uns 6,5 centímetres per segon, uns 230 metres per hora. Per arribar a dalt poc després de la posta, ha de sortir una hora i mitja abans que es pongui el sol.</p>
+        <p class="note">Mesures de sonar de tot el món diuen que la capa arriba a la superfície, de mitjana, 17 minuts després de la posta.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Nit: a sopar</h2>
+        <p>De nit, la capa s'escampa pels primers cent metres, entre el <span class="k-b">fitoplàncton</span>. Els més petits mengen algues. Els més grans es mengen els petits.</p>
+        <p>La foscor els protegeix.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Alba: tothom avall</h2>
+        <p>La capa deixa la superfície uns 20 minuts abans que surti el sol, i baixa una mica més de pressa que no ha pujat: uns 7,6 centímetres per segon.</p>
+        <p>Quan el sol ja és alt, torna a ser a 450 metres, a punt per passar-hi el dia.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>No tothom fa el viatge</h2>
+        <p>Una part de la capa es queda a baix. L'expedició Malaspina, que va fer la volta al món el 2010 i el 2011, va mesurar que, de mitjana, només <b>la meitat</b> del senyal del sonar pujava cada nit.</p>
+        <p>En gris, els <span style="color:#7E8A97;font-weight:600">animals que es queden</span>. Segons la regió, els que pugen van d'un 20% a un 90%.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Com saben quan han de pujar?</h2>
+        <p>Sobretot per la llum. Molts animals de la capa es comporten com si busquessin sempre la mateixa penombra. Quan el sol baixa, aquesta penombra puja. La línia de punts és el nivell de llum on és la capa a migdia: els científics en diuen <b>isoluma</b>. És com qui, en un dia de calor, va movent la tovallola per quedar-se sempre a l'ombra.</p>
+        <p>Però la llum no ho explica tot. Molts migradors també tenen un rellotge intern que els marca el ritme encara que no vegin el sol.</p>
+        <p class="note">Copèpodes tancats a les fosques en un vaixell continuaven canviant de dia i de nit les proteïnes del metabolisme, com si portessin un rellotge intern.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Mou el rellotge</h2>
+        <p>Arrossega el rellotge per moure't per les 24 hores, o deixa que el dia passi sol.</p>
+      </div></div>
+    </div>
+    <div class="graphic" id="ograph">
+      <div class="gbox" id="obox">
+        <div class="ghead" aria-live="polite"><strong id="oTime">12:00</strong><span id="oState">Migdia · la capa que migra és a 450 m</span></div>
+        <div class="cvwrap"><canvas id="ocean" role="img" aria-label="Tall de l'oceà de la superfície fins a 1.100 metres al llarg d'un dia. De dia, la capa d'animals és a uns 450 metres, a la zona crepuscular. Al capvespre puja fins als primers cent metres, on passa la nit menjant, i abans de l'alba torna a baixar."></canvas></div>
+        <div class="octl">
+          <button class="playb" id="oPlay" type="button">Reprodueix</button>
+          <input class="rng" id="oRng" type="range" min="0" max="24" step="0.05" value="12" aria-label="Hora del dia" aria-valuetext="12:00">
+          <output id="oOut" for="oRng">12:00</output>
+        </div>
+        <div class="lgd ocean-lgd" aria-hidden="true"><span><i style="background:var(--mig)"></i>Animals que migren</span><span><i style="background:#8D99A6"></i>Animals que es queden</span><span><i style="background:var(--bio)"></i>Fitoplàncton</span><span class="sch">Esquema</span></div>
+        <div class="cap">Esquema. Horaris i velocitats: mitjanes mesurades amb sonar a tot el món (Bianchi i Mislan, 2016). Fondària de dia: valor típic (200 a 650 m segons la regió).</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="quant-de-lluny">Com caminar 170 quilòmetres abans de sopar</h2>
+    <p>Centenars de metres no semblen gaire. Però cal mirar-ho a la seva escala. El copèpode <i>Pleuromamma xiphias</i>, que viu a tots els oceans, fa uns 5 mil·límetres. Cada vespre puja uns 500 metres per menjar prop de la superfície, i abans de l'alba els torna a baixar.</p>
+    <p>Són <b>100.000 vegades</b> la llargada del seu cos, només d'anada. Fes-ne el càlcul amb la teva alçada.</p>
+  </section>
+  <figure class="fig" id="sizefig">
+    <div class="size">
+      <div>
+        <p class="lab"><b>El copèpode</b> · 5 mm</p>
+        <div class="chart"><svg id="szCop" role="img" aria-label="Una columna d'aigua de 500 metres. El copèpode, de 5 mil·límetres, la recorre de baix a dalt cada vespre."></svg></div>
+      </div>
+      <div>
+        <p class="lab"><b>Tu</b>, a la mateixa escala</p>
+        <p class="szout" id="szOut" aria-live="polite"></p>
+        <div class="chart"><svg id="szHum" role="img" aria-label="La mateixa distància a escala humana, comparada amb maratons i amb distàncies en línia recta des de Barcelona."></svg></div>
+        <div class="szctl"><label for="szRng">La teva alçada</label><input class="rng" id="szRng" type="range" min="1" max="2.1" step="0.01" value="1.7" aria-valuetext="1,70 m"><output id="szVal" for="szRng">1,70 m</output></div>
+      </div>
+    </div>
+    <figcaption>Llargada i migració de <i>P. xiphias</i>: Timmins-Schiffman et al. (2024). Distàncies des de Barcelona en línia recta, calculades amb les coordenades de cada ciutat. Una marató fa 42,195 km.</figcaption>
+  </figure>
+
+  <section class="col">
+    <h2 class="sh" id="on-es-queden-de-dia">No a tot arreu baixen igual</h2>
+    <p>Entre el desembre del 2010 i el juliol del 2011, el vaixell oceanogràfic <i>Hespérides</i> va fer la volta al món amb l'expedició Malaspina, amb una ecosonda encesa dia i nit. Va trobar la capa a tots els oceans que va creuar, però no a la mateixa fondària ni amb el mateix comportament.</p>
+    <p>Al sud de l'Índic, la capa es quedava de dia a gairebé 600 metres, però només en pujava una cinquena part. Al Pacífic oriental, davant d'Amèrica, es quedava molt més amunt, a uns 350 metres, i en canvi hi pujava gairebé tota.</p>
+    <p>La diferència va lligada, sobretot, a l'<b>oxigen</b>, tot i que també hi compten la temperatura i la transparència de l'aigua. Al Pacífic oriental, a pocs centenars de metres, hi ha una gran massa d'aigua gairebé sense oxigen. Els migradors baixen just fins al seu límit, i molts s'hi fiquen a dins durant el dia. Una hipòtesi és que els serveix d'amagatall: els seus depredadors, més grans i més actius, necessiten més oxigen i no els hi poden seguir.</p>
+  </section>
+  <figure class="fig" id="regfig">
+    <div class="fighead"><span class="t">On és la capa de dia i on és de nit</span><span class="seg" id="regSeg"><button type="button" data-v="day" aria-pressed="true">De dia</button><button type="button" data-v="night" aria-pressed="false">De nit</button><button type="button" class="playb" id="regPlay">Reprodueix</button></span></div>
+    <div class="chart" id="regwrap"><svg id="reg" role="img" aria-label="Fondària mitjana de la capa de dia i de nit en cinc regions de l'expedició Malaspina. Sud de l'Índic: 591 metres de dia, 470 de nit, migra el 20 per cent. Atlàntic nord: 484 i 319 metres, 38 per cent. Pacífic oriental: 348 i 97 metres, 91 per cent. Pacífic occidental: 520 i 259 metres, 62 per cent. Altres zones: 478 i 331 metres, 35 per cent. Totes les zones: 486 i 303 metres, 46 per cent."></svg><div class="tip" id="regTip"></div></div>
+    <figcaption>Fondària mitjana ponderada de tot el senyal acústic entre 0 i 1.000 m (38 kHz), de dia i de nit, i proporció del senyal mesopelàgic que migra. Dades reals: expedició Malaspina 2010–2011, 105 parells de mesures de dia i de nit (Klevjer et al., 2016, taula 1). La franja grisa és l'interval de fondàries de dia trobat amb sonars de 389 campanyes entre el 1990 i el 2011 (Bianchi et al., 2013). Aquell estudi no va comptar les migracions de menys de 150–200 m.</figcaption>
+  </figure>
+  <section class="col">
+    <p>Amb dades de sonar de 389 campanyes oceanogràfiques, entre el 1990 i el 2011, un altre estudi va dibuixar el mapa de tot el planeta. De dia, la capa es queda entre els 200 i els 650 metres. Les més fondes, als grans remolins dels oceans subtropicals, on l'aigua és molt clara. Les més someres, al nord del Pacífic i de l'Atlàntic, al nord de l'Índic i al Pacífic tropical oriental. El factor que millor ho explica és, de nou, l'oxigen.</p>
+    <p>El 2019, un equip va mostrar que la migració també es pot veure des de l'espai: el làser del satèl·lit CALIPSO, en servei fins al 2023, detectava de nit el senyal dels animals que havien arribat a la superfície. Deu anys de dades mostren que als oceans subtropicals, molt clars, els migradors són una part més gran del plàncton, però que on n'hi ha més, en total, és on hi ha més menjar.</p>
+    <p class="note">Aquestes capes d'animals fan de desenes a centenars de metres de gruix, però poden continuar sense interrupció durant milers de quilòmetres.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="quan-la-llum-enganya">La lluna, els núvols i la nit polar</h2>
+    <p>Si la llum marca el ritme, tot el que canvia la llum hauria de moure la capa. I la mou. Els oceanògrafs ho veuen en els <b>ecogrames</b>, els gràfics que fan les ecosondes: el temps va d'esquerra a dreta, la fondària de dalt a baix, i com més fosc és un punt, més animals hi ha.</p>
+    <p>Amb <b>lluna plena</b>, la capa no arriba tan amunt. Un <b>núvol</b> que tapa el sol la fa pujar uns metres. I a l'<b>Àrtic</b>, durant la nit polar, el zooplàncton continua pujant i baixant amb una llum que nosaltres gairebé no veuríem, i quan hi ha lluna, la segueix. Tria un cas per veure-ho.</p>
+  </section>
+  <figure class="fig wide" id="echofig">
+    <div class="echo-ctl">
+      <span class="seg" id="echoSeg"><button type="button" data-v="nova" aria-pressed="true">Lluna nova</button><button type="button" data-v="plena" aria-pressed="false">Lluna plena</button><button type="button" data-v="nuvols" aria-pressed="false">Dia de núvols</button><button type="button" data-v="polar" aria-pressed="false">Nit polar</button></span>
+      <button type="button" class="playb" id="echoPlay">Torna-ho a dibuixar</button>
+    </div>
+    <div class="cvwrap" id="echowrap"><canvas id="echo" role="img" aria-label="Ecograma simulat: el temps d'esquerra a dreta i la fondària de dalt a baix. La capa d'animals puja de nit i baixa de dia. Es pot triar entre lluna nova, lluna plena, un dia de núvols i la nit polar."></canvas><div class="tip" id="echoTip"></div></div>
+    <p class="echo-note" id="echoNote"></p>
+    <figcaption>Simulació, no dades reals. Un model senzill en què la capa intenta seguir sempre el mateix nivell de llum (una isoluma) i no pot nedar més de pressa que les velocitats mitjanes mesurades (6,5 cm/s amunt, 7,6 cm/s avall), que el model usa com a límit. Els comportaments que reprodueix estan descrits als estudis citats: lluna (Benoit-Bird et al., 2009), núvols (Omand et al., 2021) i nit polar (Berge et al., 2009; Last et al., 2016). En el cas de la lluna, el model simplifica: l'estudi de Benoit-Bird et al. (2009) va trobar que la capa no seguia exactament una isoluma.</figcaption>
+  </figure>
+  <section class="col">
+    <p>Amb la lluna, la història és més subtil. En un estudi que va seguir una capa d'animals petits davant de la costa de Hawaii durant sis cicles de lluna, la capa pujava més a prop de la superfície les nits fosques que les clares. Però no seguia exactament la llum: la fase de la lluna explicava més que la llum mesurada, com si els animals tinguessin també un calendari lunar intern.</p>
+    <p>Al Pacífic nord-est, una capa que passava el dia a 300 metres pujava i baixava fins a 60 metres seguint l'ombra dels núvols, amb uns cinc minuts de retard. Al llarg del dia, aquests petits viatges sumaven com a mínim un 36% del recorregut d'anada i tornada de la migració diària.</p>
+    <p>A l'Àrtic, uns sonars ancorats a Svalbard, a 79 i 80 graus de latitud, van demostrar que la migració no s'atura durant la nit polar. I quan la lluna és sobre l'horitzó, el ritme canvia: ja no és de 24 hores sinó de 24,8, el que triga la lluna a tornar al mateix lloc del cel. Cada 29,5 dies, amb la lluna plena, el zooplàncton s'enfonsa i s'acumula a uns 50 metres.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="un-ascensor-de-carboni">Un ascensor de carboni</h2>
+    <p>Aquest viatge no només importa als animals. També mou carboni cap al fons. Els científics en diuen la <b>bomba biològica</b>, i els migradors en són una peça.</p>
+  </section>
+
+  <section class="scrolly" aria-label="Com la migració porta carboni cap al fons">
+    <div class="steps" id="csteps">
+      <div class="step"><div class="step-in">
+        <h2>El carboni entra per dalt</h2>
+        <p>A la zona il·luminada, el <span class="k-b">fitoplàncton</span> fa la fotosíntesi amb el CO<sub>2</sub> dissolt a l'aigua, que l'oceà pren de l'aire. El carboni passa a formar part de les algues.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>La pluja lenta</h2>
+        <p>Algues mortes, excrements i restes s'enganxen i s'enfonsen. És la <b>neu marina</b>, que baixa de deu a cent metres al dia. Pel camí, els bacteris i altres animals se'n mengen la major part.</p>
+        <p>És la via clàssica de la bomba biològica: la gravetat.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>L'ascensor de cada nit</h2>
+        <p>Els <span class="k-m">migradors</span> fan una drecera. Mengen a dalt durant la nit i, abans de l'alba, baixen centenars de metres en un parell d'hores, amb el menjar a la panxa.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>I el deixen a baix</h2>
+        <p>Durant el dia, a la zona crepuscular, respiren i alliberen <b>CO<sub>2</sub></b>, deixen anar excrements que s'enfonsen més de pressa que la neu marina, i alguns són menjats o moren allà. El carboni que havien menjat a dalt es queda a baix.</p>
+        <p class="note">Respirar també gasta oxigen. Per això, segons un estudi del 2013, la migració fa més extremes les zones pobres en oxigen de l'oceà.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Com més avall, més temps</h2>
+        <p>El CO<sub>2</sub> alliberat a poca fondària torna aviat a la superfície. Com més avall queda, més anys triga a tornar a tocar l'aire.</p>
+        <p>Segons una revisió publicada a <i>Nature</i> el 2019, el que deixen els migradors fins a uns 600 metres pot quedar-se a l'oceà fins a 250 anys. Per sota dels 1.000 metres, segles.</p>
+      </div></div>
+    </div>
+    <div class="graphic" id="cgraph">
+      <div class="gbox" id="cbox">
+        <div class="ghead"><strong id="cTitle">El carboni entra per dalt</strong><span id="cSub"></span></div>
+        <div class="cvwrap"><canvas id="carb" role="img" aria-label="Esquema de la bomba biològica: el fitoplàncton absorbeix CO₂ a la superfície; la neu marina s'enfonsa lentament; els animals migradors mengen a dalt de nit i baixen abans de l'alba; de dia respiren CO₂ i deixen excrements a centenars de metres de fondària. El carboni que torna a la capa de mescla d'hivern torna a l'aire en menys d'un any; el que deixen els migradors fins a 600 metres pot quedar-se fins a 250 anys a l'oceà, i per sota dels 1.000 metres, segles."></canvas></div>
+        <div class="lgd" aria-hidden="true"><span><i style="background:var(--bio)"></i>Fitoplàncton</span><span><i style="background:var(--mig)"></i>Migradors</span><span><i style="background:#B9B4AA"></i>Neu marina</span><span><i style="background:#5A4A3A"></i>Excrements</span><span><i style="background:none;border:1px solid var(--ink-2)"></i>CO₂</span><span class="sch">Esquema, no a escala</span></div>
+        <div class="cap">Esquema, no a escala. Temps de segrest: Boyd et al. (2019).</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="quant-carboni">Quant carboni?</h2>
+    <p>Mesurar el carboni que baixa dins de milions d'animals que es mouen és molt més difícil que atrapar la neu marina amb una trampa. Cada estudi compta coses diferents, i les xifres van d'unes dècimes a uns quants <b>petagrams</b> de carboni l'any. Un petagram són 1.000 milions de tones.</p>
+    <p>Part del problema és que no sabem bé quants animals hi ha. El 1980 es calculava que al món hi havia uns 1.000 milions de tones de peixos de la zona crepuscular. Amb les dades acústiques de la Malaspina, el 2014 un equip va estimar que, només entre els 40 graus nord i sud, n'hi podria haver deu vegades més, tot i que amb molta incertesa. Estimacions posteriors donen entre uns 2.000 i 16.000 milions de tones: la xifra encara es discuteix.</p>
+    <p>Un model global del 2019, que els mateixos autors presenten com un experiment de pensament, calcula que la migració del zooplàncton aporta de mitjana un 16% de tot el carboni que baixa per sota de la zona il·luminada. Un recull d'estudis del 2021 atribueix als peixos, entre el que baixa en excrements i el que porten nedant, un 16% semblant, amb un marge enorme (d'un 3% a un 29%) i calculat sobre un total diferent.</p>
+  </section>
+  <figure class="fig" id="estfig">
+    <div class="chart" id="estwrap"><svg id="est" role="img" aria-label="Estimacions del carboni que transporten cap avall els animals, en petagrams de carboni l'any. Zooplàncton migrador: uns 1,0, càlcul nostre a partir del 16% de mitjana del model global del 2019, sense interval. Peixos, recull del 2021: 1,5, amb un marge de 0,3 a 2,7. Migradors de la zona crepuscular, recull d'estimacions del 2019: de 0,9 a 3,6. Per comparar, tot el carboni exportat per sota de la zona il·luminada segons el model del 2019: 6,5."></svg><div class="tip" id="estTip"></div></div>
+    <figcaption>Estimacions globals publicades, excepte la del zooplàncton, que és un càlcul nostre a partir d'un model. No se sumen: cada una compta grups i camins diferents, i en part se superposen. Fonts: Archibald, Siegel i Doney (2019); Saba et al. (2021); Boyd et al. (2019).</figcaption>
+  </figure>
+  <section class="col">
+    <p>Per fer-se'n una idea: segons les projeccions del Global Carbon Budget, el 2026 els combustibles fòssils i el ciment emetran uns 38.200 milions de tones de CO<sub>2</sub>, que contenen uns 10.400 milions de tones de carboni, 10,4 petagrams. (A <a href="../on-va-el-co2/">On va el CO₂ que emetem</a> expliquem on van a parar.) No és una comparació directa. La bomba biològica és un cicle natural que ja funcionava molt abans que nosaltres: no s'endú les nostres emissions. Però, en guardar carboni lluny de l'aire durant dècades o segles, és una de les peces que regulen quant CO<sub>2</sub> hi ha a l'atmosfera.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="i-amb-l-escalfament">I amb l'escalfament?</h2>
+    <p>La gran pregunta és com canviarà la migració amb l'escalfament. Un estudi del 2017 preveu que, cap al 2100, les comunitats de la zona crepuscular s'assemblaran més entre elles i que la seva biomassa podria créixer un 17%. És una projecció d'un model. Cada vespre, quan es pon el sol, el viatge torna a començar.</p>
+  </section>
+
+  <section class="close col">
+    <h2>Paraules clau</h2>
+    <dl class="gl">
+      <dt>Migració vertical diària</dt><dd>El viatge que fan cada dia molts animals marins: de nit pugen cap a la superfície per menjar i de dia baixen a la penombra per amagar-se.</dd>
+      <dt>Zona crepuscular</dt><dd>La franja de l'oceà entre els 200 i els 1.000 metres, on arriba poca llum. També se'n diu zona mesopelàgica.</dd>
+      <dt>Capa de dispersió profunda</dt><dd>La capa d'animals que els sonars veuen com un eco a centenars de metres de fondària. Al principi es va confondre amb el fons del mar.</dd>
+      <dt>Ecosonda</dt><dd>Aparell que envia polsos de so cap avall i mesura els ecos. Serveix per veure el fons i també els animals.</dd>
+      <dt>Fitoplàncton</dt><dd>Algues microscòpiques que suren a la zona il·luminada i fan la fotosíntesi.</dd>
+      <dt>Zooplàncton</dt><dd>Animals petits que van a la deriva, com els copèpodes i el krill.</dd>
+      <dt>Copèpode</dt><dd>Crustaci petit, normalment d'uns pocs mil·límetres, molt abundant a tots els mars.</dd>
+      <dt>Peixos llanterna</dt><dd>Mictòfids: peixos petits de la zona crepuscular, amb òrgans que fan llum. La seva bufeta de gas produeix bona part de l'eco que veu el sonar.</dd>
+      <dt>Isoluma</dt><dd>Línia imaginària que uneix els punts amb el mateix nivell de llum. Molts migradors semblen seguir-ne una.</dd>
+      <dt>Zona de mínim d'oxigen</dt><dd>Massa d'aigua, a pocs centenars de metres de fondària, amb molt poc oxigen. N'hi ha de grans al Pacífic oriental i al nord de l'Índic.</dd>
+      <dt>Bomba biològica</dt><dd>El conjunt de processos que porten el carboni fixat pel fitoplàncton cap a l'oceà profund.</dd>
+      <dt>Neu marina</dt><dd>Partícules d'algues mortes, excrements i restes que s'enfonsen lentament.</dd>
+      <dt>Petagram</dt><dd>1.000 milions de tones. Les xifres del cicle del carboni es donen sovint en petagrams de carboni (PgC).</dd>
+    </dl>
+    <div class="fn">
+      <p><b>Metodologia.</b> Són <b>dades reals</b> el gràfic «On és la capa de dia i on és de nit» (taula 1 de Klevjer et al., 2016) i les estimacions de carboni publicades, excepte la xifra del zooplàncton (uns 1,0 PgC l'any), que és un càlcul nostre: el 16% de mitjana aplicat als 6,5 PgC del model del 2019. El tall de l'oceà de 24 hores és un <b>esquema</b> d'un oceà tropical a l'equinocci: la fondària de dia (450 m) és un valor típic, la proporció de la capa que migra (50%) és la mitjana del senyal acústic de la Malaspina (46% a la taula 1), i els horaris i les velocitats són mitjanes mesurades amb sonar (Bianchi i Mislan, 2016). L'ecograma és una <b>simulació</b>: la capa intenta seguir sempre el mateix nivell de llum, calculat a partir de l'altura del sol i de la lluna, sense superar les velocitats mitjanes; reprodueix comportaments descrits als estudis, no valors exactes.</p>
+      <p><b>Fonts.</b></p>
+      <ol>
+        <li>WHOI Ocean Twilight Zone. «The mysterious false bottom of the twilight zone». <a href="https://twilightzone.whoi.edu/the-mysterious-false-bottom-of-the-twilight-zone/" target="_blank" rel="noopener">twilightzone.whoi.edu</a></li>
+        <li>Eyring, C. F., Christensen, R. J. i Raitt, R. W. (1948). Reverberation in the sea. <i>J. Acoust. Soc. Am.</i> 20, 462–475. <a href="https://doi.org/10.1121/1.1906399" target="_blank" rel="noopener">doi.org/10.1121/1.1906399</a></li>
+        <li>Johnson, M. W. (1948). Sound as a tool in marine ecology, from data on biological noises and the deep scattering layer. <i>J. Mar. Res.</i> 7, 443–458. <a href="https://elischolar.library.yale.edu/journal_of_marine_research/681/" target="_blank" rel="noopener">elischolar.library.yale.edu</a></li>
+        <li>NOAA Ocean Exploration. «What is the deep scattering layer?» <a href="https://oceanexplorer.noaa.gov/facts/dsl.html" target="_blank" rel="noopener">oceanexplorer.noaa.gov/facts/dsl.html</a></li>
+        <li>NOAA Ocean Service. «How far does light travel in the ocean?» <a href="https://oceanservice.noaa.gov/facts/light_travel.html" target="_blank" rel="noopener">oceanservice.noaa.gov/facts/light_travel.html</a></li>
+        <li>Proud, R., Cox, M. J. i Brierley, A. S. (2017). Biogeography of the global ocean's mesopelagic zone. <i>Current Biology</i> 27, 113–119. <a href="https://doi.org/10.1016/j.cub.2016.11.003" target="_blank" rel="noopener">doi.org/10.1016/j.cub.2016.11.003</a></li>
+        <li>Hays, G. C. (2003). A review of the adaptive significance and ecosystem consequences of zooplankton diel vertical migrations. <i>Hydrobiologia</i> 503, 163–170. <a href="https://doi.org/10.1023/B:HYDR.0000008476.23617.b0" target="_blank" rel="noopener">doi.org/10.1023/B:HYDR.0000008476.23617.b0</a></li>
+        <li>Klevjer, T. A. et al. (2016). Large scale patterns in vertical distribution and behaviour of mesopelagic scattering layers. <i>Scientific Reports</i> 6, 19873. <a href="https://doi.org/10.1038/srep19873" target="_blank" rel="noopener">doi.org/10.1038/srep19873</a></li>
+        <li>Bianchi, D., Galbraith, E. D., Carozza, D. A., Mislan, K. A. S. i Stock, C. A. (2013). Intensification of open-ocean oxygen depletion by vertically migrating animals. <i>Nature Geoscience</i> 6, 545–548. <a href="https://doi.org/10.1038/ngeo1837" target="_blank" rel="noopener">doi.org/10.1038/ngeo1837</a></li>
+        <li>Bianchi, D. i Mislan, K. A. S. (2016). Global patterns of diel vertical migration times and velocities from acoustic data. <i>Limnology and Oceanography</i> 61, 353–364. <a href="https://doi.org/10.1002/lno.10219" target="_blank" rel="noopener">doi.org/10.1002/lno.10219</a></li>
+        <li>Timmins-Schiffman, E. et al. (2024). Removal of exogenous stimuli reveals a canalization of circadian physiology in a vertically migrating copepod. <i>Journal of Proteome Research</i> 23, 2112–2123. <a href="https://doi.org/10.1021/acs.jproteome.4c00086" target="_blank" rel="noopener">doi.org/10.1021/acs.jproteome.4c00086</a></li>
+        <li>Omand, M. M. et al. (2021). Cloud shadows drive vertical migrations of deep-dwelling marine life. <i>PNAS</i> 118, e2022977118. <a href="https://doi.org/10.1073/pnas.2022977118" target="_blank" rel="noopener">doi.org/10.1073/pnas.2022977118</a></li>
+        <li>Røstad, A., Kaartvedt, S. i Aksnes, D. L. (2016). Light comfort zones of mesopelagic acoustic scattering layers in two contrasting optical environments. <i>Deep-Sea Research I</i> 113, 1–6. <a href="https://doi.org/10.1016/j.dsr.2016.02.020" target="_blank" rel="noopener">doi.org/10.1016/j.dsr.2016.02.020</a></li>
+        <li>Benoit-Bird, K. J., Au, W. W. L. i Wisdom, D. W. (2009). Nocturnal light and lunar cycle effects on diel migration of micronekton. <i>Limnology and Oceanography</i> 54, 1789–1800. <a href="https://doi.org/10.4319/lo.2009.54.5.1789" target="_blank" rel="noopener">doi.org/10.4319/lo.2009.54.5.1789</a></li>
+        <li>Berge, J. et al. (2009). Diel vertical migration of Arctic zooplankton during the polar night. <i>Biology Letters</i> 5, 69–72. <a href="https://doi.org/10.1098/rsbl.2008.0484" target="_blank" rel="noopener">doi.org/10.1098/rsbl.2008.0484</a></li>
+        <li>Last, K. S. et al. (2016). Moonlight drives ocean-scale mass vertical migration of zooplankton during the Arctic winter. <i>Current Biology</i> 26, 244–251. <a href="https://doi.org/10.1016/j.cub.2015.11.038" target="_blank" rel="noopener">doi.org/10.1016/j.cub.2015.11.038</a></li>
+        <li>Boyd, P. W., Claustre, H., Levy, M., Siegel, D. A. i Weber, T. (2019). Multi-faceted particle pumps drive carbon sequestration in the ocean. <i>Nature</i> 568, 327–335. <a href="https://doi.org/10.1038/s41586-019-1098-2" target="_blank" rel="noopener">doi.org/10.1038/s41586-019-1098-2</a></li>
+        <li>Archibald, K. M., Siegel, D. A. i Doney, S. C. (2019). Modeling the impact of zooplankton diel vertical migration on the carbon export flux of the biological pump. <i>Global Biogeochemical Cycles</i> 33, 181–199. <a href="https://doi.org/10.1029/2018GB005983" target="_blank" rel="noopener">doi.org/10.1029/2018GB005983</a></li>
+        <li>Bianchi, D., Stock, C., Galbraith, E. D. i Sarmiento, J. L. (2013). Diel vertical migration: ecological controls and impacts on the biological pump in a one-dimensional ocean model. <i>Global Biogeochemical Cycles</i> 27, 478–491. <a href="https://doi.org/10.1002/gbc.20031" target="_blank" rel="noopener">doi.org/10.1002/gbc.20031</a></li>
+        <li>Saba, G. K. et al. (2021). Toward a better understanding of fish-based contribution to ocean carbon flux. <i>Limnology and Oceanography</i> 66, 1639–1664. <a href="https://doi.org/10.1002/lno.11709" target="_blank" rel="noopener">doi.org/10.1002/lno.11709</a></li>
+        <li>Irigoien, X. et al. (2014). Large mesopelagic fishes biomass and trophic efficiency in the open ocean. <i>Nature Communications</i> 5, 3271. <a href="https://doi.org/10.1038/ncomms4271" target="_blank" rel="noopener">doi.org/10.1038/ncomms4271</a></li>
+        <li>Proud, R., Handegard, N. O., Kloser, R. J., Cox, M. J. i Brierley, A. S. (2019). From siphonophores to deep scattering layers: uncertainty ranges for the estimation of global mesopelagic fish biomass. <i>ICES Journal of Marine Science</i> 76, 718–733. <a href="https://doi.org/10.1093/icesjms/fsy037" target="_blank" rel="noopener">doi.org/10.1093/icesjms/fsy037</a></li>
+        <li>Behrenfeld, M. J. et al. (2019). Global satellite-observed daily vertical migrations of ocean animals. <i>Nature</i> 576, 257–261. <a href="https://doi.org/10.1038/s41586-019-1796-9" target="_blank" rel="noopener">doi.org/10.1038/s41586-019-1796-9</a></li>
+        <li>Smithsonian Ocean. «Bioluminescence». <a href="https://ocean.si.edu/ocean-life/fish/bioluminescence" target="_blank" rel="noopener">ocean.si.edu/ocean-life/fish/bioluminescence</a></li>
+        <li>Global Carbon Budget 2026. Nota de premsa de la Universitat d'Exeter, 9 de novembre de 2026. <a href="https://www.eurekalert.org/news-releases/1150611" target="_blank" rel="noopener">eurekalert.org/news-releases/1150611</a></li>
+      </ol>
+    </div>
+  </section>
+</div>
+
+<footer class="ib-foot">
+  <a href="../../"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="../../assets/scrolly.js"></script>
+<script src="migracio.js"></script>
+<script src="../../assets/ib.js"></script>
+</body>
+</html>

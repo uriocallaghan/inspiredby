@@ -1,0 +1,6 @@
+# Percentatge del flux anual de pols que passa per cada meridià en cada estació (mitjana 2007-2013, escenari LDF)
+# Font: Yu et al. 2015, Remote Sensing of Environment 159, 232-249, Taula 1. doi:10.1016/j.rse.2014.12.010
+lon,flux_anual_LDF_Tg,DJF,MAM,JJA,SON
+15W,156,23,21,46,10
+35W,100,23,27,38,12
+75W,29,11,16,61,12

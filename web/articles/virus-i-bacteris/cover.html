@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ca"><head><meta charset="utf-8"><title>Portada · La guerra invisible</title>
+<style>html,body{margin:0;background:#fff}svg{display:block}</style></head>
+<body>
+<svg id="cv" xmlns="http://www.w3.org/2000/svg" width="1680" height="720" viewBox="0 0 1680 720"></svg>
+<script>
+(function(){
+const S=document.getElementById("cv"),NS="http://www.w3.org/2000/svg";
+const el=(n,a,p)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);(p||S).appendChild(e);return e};
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646};
+el("rect",{x:0,y:0,width:1680,height:720,fill:"#FFFFFF"});
+/* T4 (nm units: head 115x85, sheath 92.5, baseplate 27x52, fibres 145). g at baseplate bottom, scale s px/nm */
+function t4(x,y,s,rot,o){o=o||{};const g=el("g",{transform:`translate(${x} ${y}) rotate(${rot||0}) scale(${s})`,opacity:o.a==null?1:o.a});
+  const legs=o.legs==null?1:o.legs;
+  [[-1,0],[1,0],[-1,1],[1,1]].forEach(([d,k])=>{const kx=d*(36+(70+k*8-36)*legs),ky=-85+(29+k*4)*legs,tx=d*(18+k*6+(100+k*8)*legs);el("polyline",{points:`${d*22},-15 ${kx},${ky} ${tx},${-6+6*legs}`,fill:"none",stroke:k?"#9A9A9A":"#4A4A4A","stroke-width":2.2/ (s>0?1:1),"stroke-linejoin":"round","stroke-linecap":"round"},g)});
+  el("path",{d:"M-26 0 L26 0 L19 -27 L-19 -27 Z",fill:"#3E3E3E"},g);
+  el("rect",{x:-12,y:-119.5,width:24,height:92.5,fill:"#5C5C5C"},g);
+  for(let i=1;i<22;i++)el("line",{x1:-12,x2:12,y1:-119.5+i*4.2,y2:-119.5+i*4.2,stroke:"rgba(255,255,255,.45)","stroke-width":1},g);
+  el("rect",{x:-8,y:-127.5,width:16,height:8,fill:"#4A4A4A"},g);
+  const hb=-127.5,ht=hb-115;
+  el("path",{d:`M0 ${hb+2} L42.5 ${hb-20} L42.5 ${ht+20} L0 ${ht} L-42.5 ${ht+20} L-42.5 ${hb-20} Z`,fill:o.fill||"#E9D4CC",stroke:"#121212","stroke-width":2.4,"stroke-linejoin":"round"},g);
+  if(!o.empty)for(let r=8;r<=32;r+=6)el("ellipse",{cx:0,cy:(hb+ht)/2,rx:r,ry:r*1.32,fill:"none",stroke:"#C8442A","stroke-width":1.6,opacity:.75},g);
+  return g}
+/* small background phages */
+for(let i=0;i<70;i++){const x=rnd()*1680,y=rnd()*720,s=.12+rnd()*.32;if(x>760&&y>300)continue;t4(x,y,s,(rnd()-.5)*360,{a:.18+rnd()*.35,legs:0,fill:"#F2D8CE"})}
+/* the bacterium: huge capsule, partly off canvas */
+const cx=1140,cy=760,L=1500,R=330;
+const cap=(r,ex)=>`M${cx-L/2+R} ${cy-r} L${cx+L/2-R} ${cy-r} A${r} ${r} 0 0 1 ${cx+L/2-R} ${cy+r} L${cx-L/2+R} ${cy+r} A${r} ${r} 0 0 1 ${cx-L/2+R} ${cy-r} Z`;
+el("path",{d:cap(R),fill:"#EEF3F9",stroke:"#2C5DA8","stroke-width":10});
+el("path",{d:cap(R-22),fill:"none",stroke:"#86A9D6","stroke-width":6});
+el("path",{d:cap(R-11),fill:"none",stroke:"#B9CCE6","stroke-width":3,"stroke-dasharray":"10 8"});
+/* chromosome with the CRISPR array */
+let d="";for(let i=0;i<=200;i++){const a=i/200*Math.PI*2;const w=1+.07*Math.sin(5*a)+.05*Math.sin(9*a+1);const x=cx+60+Math.cos(a)*470*w,y=cy+60+Math.sin(a)*170*w;d+=(i?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)}
+el("path",{d:d+"Z",fill:"none",stroke:"#2C5DA8","stroke-width":7,"stroke-linejoin":"round"});
+/* array on a straight stretch */
+const ay=575;let ax=900;el("line",{x1:860,x2:1520,y1:ay-7,y2:ay-7,stroke:"#2C5DA8","stroke-width":3});el("line",{x1:860,x2:1520,y1:ay+7,y2:ay+7,stroke:"#2C5DA8","stroke-width":3});
+["#7FB3AB","#7FB3AB","#16786C","#7FB3AB"].forEach((c,i)=>{const w=[34,36,50,30][i];el("path",{d:`M${ax} ${ay-13} L${ax+w-8} ${ay-13} L${ax+w} ${ay} L${ax+w-8} ${ay+13} L${ax} ${ay+13} Z`,fill:c});ax+=w+4});
+ax+=14;el("rect",{x:ax,y:ay-14,width:30,height:28,fill:"#D7D2C8"});ax+=36;
+["#C8442A","#E08A6E","#9DB0C8","#C9B79C","#A9C3A0","#C6A9B6"].forEach(c=>{el("path",{d:`M${ax} ${ay} L${ax+9} ${ay-15} L${ax+18} ${ay} L${ax+9} ${ay+15} Z`,fill:"#8C8C8C"});ax+=22;el("rect",{x:ax,y:ay-12,width:56,height:24,fill:c});ax+=60});
+el("path",{d:`M${ax} ${ay} L${ax+9} ${ay-15} L${ax+18} ${ay} L${ax+9} ${ay+15} Z`,fill:"#8C8C8C"});
+/* injected phage DNA inside */
+let dd="";for(let i=0;i<=120;i++){const u=i/120*Math.PI*2;const x=720+120*Math.sin(3*u+.4)*Math.cos(.5*u),y=560+70*Math.sin(4*u+.9);dd+=(i?"L":"M")+x.toFixed(1)+" "+y.toFixed(1)}
+el("path",{d:dd,fill:"none",stroke:"#C8442A","stroke-width":4,opacity:.85});
+/* phages landing on the surface (top edge of the capsule at y = cy - R = 430) */
+const top=cy-R-5;
+t4(560,top+40,1.05,-14,{legs:1});
+t4(800,top,1.35,0,{legs:1,empty:true,fill:"#F4F1EE"});
+el("line",{x1:800,y1:top+8,x2:800,y2:top+70,stroke:"#5C5C5C","stroke-width":12});
+el("path",{d:`M800 ${top+70} C 780 ${top+100}, 760 ${top+110}, 740 ${top+125}`,fill:"none",stroke:"#C8442A","stroke-width":4});
+t4(1040,top,1.2,6,{legs:1});
+t4(1290,top,1.0,-4,{legs:.6});
+/* phages arriving */
+t4(330,300,.9,-28,{legs:0});t4(210,560,.6,18,{legs:0,a:.8});t4(1450,210,.75,22,{legs:0,a:.9});t4(940,160,.55,-12,{legs:0,a:.8});
+})();
+</script>
+</body></html>

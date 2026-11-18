@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>La guerra invisible · Inspired by Magazine</title>
+<meta name="description" content="En cada gota de mar, virus i bacteris lliuren una guerra sense treva. D'aquesta guerra va sortir el CRISPR.">
+<meta property="og:title" content="La guerra invisible">
+<meta property="og:description" content="En cada gota de mar, virus i bacteris lliuren una guerra sense treva. D'aquesta guerra va sortir el CRISPR.">
+<meta property="og:image" content="cover.jpg">
+<link rel="icon" sizes="192x192" href="../../assets/icon192.png">
+<link rel="apple-touch-icon" href="../../assets/icon192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../../assets/ib.css">
+<link rel="stylesheet" href="../../assets/article.css">
+<style>
+:root{--dry:#9A6326;--wet:#16786C;--bio:#4C8A2E}
+.k-v{color:var(--warm);font-weight:600}.k-b{color:var(--cold);font-weight:600}.k-m{color:var(--wet);font-weight:600}
+.page{overflow-x:clip}
+.gh{flex-wrap:wrap;gap:2px 16px}
+.gh strong{font-size:21px}
+.gh span{font-size:13px}
+.box{position:relative}
+.box canvas{display:block;width:100%}
+.ctl-row{margin-top:10px}
+.ctl-row .lbl{font-size:12px;color:var(--muted)}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font-family:var(--sans);font-size:13px;font-weight:600;border:1px solid var(--ink);background:var(--paper);color:var(--ink);padding:6px 11px;border-radius:2px;cursor:pointer;line-height:1.2}
+.btn:hover{background:#F4F3F0}
+.btn.v{border-color:var(--warm);color:var(--warm)}
+.btn.d{border-color:var(--dry);color:var(--dry)}
+.btn.m{border-color:var(--wet);color:var(--wet)}
+.btn[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.v[aria-pressed="true"]{background:var(--warm);border-color:var(--warm)}
+.btn.m[aria-pressed="true"]{background:var(--wet);border-color:var(--wet)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 24px;font-family:var(--sans);margin:0 0 16px;max-width:640px}
+.stats div{border-top:2px solid var(--ink);padding-top:6px}
+.stats b{display:block;font-family:var(--serif);font-weight:600;font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.stats span{font-size:13px;color:var(--ink-2);line-height:1.35;display:block;margin-top:2px}
+.stats .v b{color:var(--warm)}.stats .b b{color:var(--cold)}
+#scRng{max-width:none}
+.sc-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:var(--sans);margin-bottom:6px;flex-wrap:wrap}
+.sc-head strong{font-family:var(--serif);font-weight:600;font-size:21px}
+.sc-head span{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+#igraphic .gbox,#cgraphic .gbox{max-width:760px;margin:0 auto}
+.istate{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:var(--sans);margin-bottom:6px}
+.istate strong{font-family:var(--serif);font-weight:600;font-size:20px}
+.istate span{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ictl{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--hair);font-family:var(--sans);font-size:12.5px;color:var(--muted)}
+.simwrap{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:18px 28px;align-items:start}
+.simside{font-family:var(--sans);font-size:13px;color:var(--ink-2)}
+.simside h3{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--muted);margin:0 0 6px}
+.simside .btns{margin-bottom:16px}
+.simside .btns .btn{flex:1 1 100%;text-align:left}
+.cnt{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:4px;font-variant-numeric:tabular-nums}
+.cnt li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid var(--hair);padding:3px 0}
+.cnt i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+#simMsg{font-family:var(--serif);font-size:16px;line-height:1.45;color:var(--ink);min-height:4.4em;margin:12px 0 0}
+#simChart{display:block;width:100%;height:140px;margin-top:10px}
+.tlcard{max-width:640px;margin:14px auto 0;font-family:var(--sans);font-size:15px;line-height:1.5;color:var(--ink-2);min-height:9.5em}
+.tlcard .y{font-family:var(--serif);font-weight:600;font-size:26px;color:var(--ink);margin-right:10px}
+.tlcard h3{font-family:var(--sans);font-size:16px;margin:2px 0 6px;color:var(--ink)}
+.tlcard p{margin:0 0 6px}
+.tlcard .src{font-size:12.5px;color:var(--muted)}
+.tlnav{display:flex;justify-content:space-between;max-width:640px;margin:8px auto 0}
+#tline{display:block;width:100%;cursor:pointer;touch-action:pan-y}
+.defnote{font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:6px}
+.legend .sq{border-radius:1px}
+.playb{padding:6px 0}
+.sc-head{min-height:2.7em;align-content:flex-start}
+.shfacts{margin:14px 0 0;max-width:none}
+.shfacts b{font-size:24px}
+.simleg{margin:8px 0 0;gap:4px 14px;font-size:12px}
+.simleg i{width:12px;height:12px;vertical-align:-2px}
+.simleg i.ring{border-radius:50%;background:#EEF3F9;border:1.2px solid #2C5DA8;box-sizing:border-box}
+.simleg i.ring.inf{background:#F6DCD3;border:2px solid #C8442A}
+.simleg i.ring.dead{background:#fff;border:1px solid #D4D4D2}
+.simleg i.ring.cut{background:#fff;border:2.4px solid #16786C}
+.simleg i.strip{width:4px;height:12px;margin-right:1px;border-radius:0}
+.simleg i.strip+i.strip+i.strip{margin-right:6px}
+@media (max-width:899px){
+  .gh strong{font-size:18px}
+  .stats{grid-template-columns:minmax(0,1fr);gap:8px}
+  .stats b{font-size:24px}
+  .istate strong{font-size:16px}.istate span{font-size:11.5px}
+  .ictl{margin-top:4px;padding-top:4px;gap:6px 10px}
+  .ictl .lbl{display:none}
+  .btn{font-size:12.5px;padding:5px 9px}
+  .simwrap{grid-template-columns:minmax(0,1fr)}
+  .simside .btns .btn{flex:1 1 auto}
+  .simside{order:-1}.simwrap{display:flex;flex-direction:column;gap:10px}
+  .simside .btns{margin-bottom:8px}
+  .cnt{grid-template-columns:1fr 1fr;column-gap:16px;font-size:12px;margin-bottom:6px}
+  #simMsg{min-height:3em;font-size:15px;margin-top:6px}
+  .tlcard{min-height:12em;font-size:14.5px}
+  .shfacts b{font-size:21px}
+  .sc-head{min-height:3.6em}
+}
+@media (max-width:899px) and (max-height:760px){
+  .istate{margin-bottom:2px}
+  .step p{font-size:16px;line-height:1.5}
+}
+</style>
+</head>
+<body class="ib-article">
+<header class="ib-bar">
+  <a href="../../" aria-label="Inspired by Magazine"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</header>
+<div class="ib-progress" aria-hidden="true"><span id="ibProgress"></span></div>
+
+<div class="page">
+  <header class="open col">
+    <p class="kicker">Biologia</p>
+    <h1>La guerra invisible</h1>
+    <p class="dek">En cada gota de mar, centenars de milers de virus ataquen bacteris i els bacteris es defensen. D'aquesta guerra sense treva, la ciència en va treure el CRISPR.</p>
+    <p class="meta"><span id="rt">18 min de lectura</span> · Dades: Wigington et al. 2016, Tesson et al. 2022 · Actualitzat el 17 de novembre de 2026</p>
+  </header>
+
+  <section class="intro col">
+    <p class="dl">Omple un got d'aigua al mar, a qualsevol platja. És transparent i sembla buida. Però si és com la mostra típica d'aigua de mar de superfície, en aquest quart de litre hi neden uns 1.700 milions de virus. I uns 135 milions de bacteris.</p>
+    <p>No ens fan res a nosaltres: gairebé tots ataquen bacteris. Es diuen <b>bacteriòfags</b>, o simplement <b>fags</b>: «menjadors de bacteris». Són les entitats biològiques més abundants del planeta. Se'n calculen uns 10<sup>31</sup>: un 1 seguit de 31 zeros.</p>
+    <p>Entre els fags i els bacteris hi ha una guerra que no s'atura mai. Cada segon, a l'oceà, hi ha unes 10<sup>23</sup> infeccions: un 1 seguit de 23 zeros. Els bacteris han inventat desenes de sistemes de defensa, i els virus, maneres de saltar-se'ls. Un d'aquests sistemes, una mena de memòria amb què el bacteri recorda els virus que l'han atacat, el va descobrir i en va intuir la funció un microbiòleg de la Universitat d'Alacant. Avui és l'eina amb què ja s'editen cèl·lules de persones malaltes per tractar-les.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="que-es-un-fag">Què és un fag</h2>
+    <p>El 1917, el microbiòleg autodidacte Félix d'Hérelle va deduir que el que desfeia alguns cultius de bacteris havia de ser un paràsit dels mateixos bacteris, massa petit per veure'l. El va batejar amb el nom de <b>bacteriòfag</b>. Dos anys abans, el metge britànic Frederick Twort ja havia publicat observacions semblants.</p>
+    <p>Un fag és poca cosa: una closca de proteïna amb material genètic a dins i una màquina per injectar-lo en un bacteri. No menja, no respira i no es pot reproduir sol. Fora d'una cèl·lula és inert, com un llapis de memòria sense ordinador. Només quan entra en un bacteri es converteix en una fàbrica.</p>
+    <p>I és minúscul: només es veu amb un microscopi electrònic. Baixa amb el control des d'un òvul humà, la cèl·lula més gran del nostre cos, fins a un fag aterrat sobre un bacteri.</p>
+  </section>
+  <figure class="fig">
+    <div class="sc-head"><strong id="scName">Un òvul humà</strong><span id="scVal">Amplada de la imatge: 300 µm</span></div>
+    <div class="box"><canvas id="scale" role="img" aria-label="Comparació de mides a escala: un òvul humà de 120 micres, una cèl·lula humana de 20 micres, un glòbul vermell de 8 micres, un bacteri E. coli de 2 micres de llarg i un fag T4 d'uns 0,2 micres aterrat a la seva superfície."></canvas></div>
+    <div class="ctl" style="max-width:none">
+      <div class="lbl"><label for="scRng">Apropa't</label><button class="playb" id="scPlay" type="button">Reprodueix el zoom</button></div>
+      <input class="rng" id="scRng" type="range" min="0" max="1000" step="1" value="0" aria-label="Nivell de zoom">
+      <div class="seg" id="scSeg" style="flex-wrap:wrap;gap:6px 16px"></div>
+    </div>
+    <figcaption>Totes les formes estan dibuixades a escala, amb les mides típiques de cada cèl·lula. Fonts: Milo i Phillips, <i>Cell Biology by the Numbers</i> (cèl·lules); Yap i Rossmann 2014 (fag T4).</figcaption>
+  </figure>
+
+  <section class="col">
+    <h2 class="sh" id="com-ataca-un-fag">Com ataca un fag</h2>
+    <p>El <b>T4</b>, un dels fags més estudiats, infecta el bacteri <i>Escherichia coli</i>, el de l'intestí. Sembla un mòdul lunar: un cap allargat ple d'ADN, una cua que es pot contraure i sis potes llargues i primes. Baixa per veure com funciona. El fag i el bacteri estan dibuixats a escala; el que passa a dins és un esquema.</p>
+  </section>
+
+  <section class="scrolly" aria-label="El cicle d'infecció d'un fag, pas a pas">
+    <div class="steps" id="isteps">
+      <div class="step"><div class="step-in">
+        <h2>Un injector d'ADN</h2>
+        <p>Un nanòmetre és una milionèsima de mil·límetre. El cap del T4 fa 115 nanòmetres de llarg, una novena part de l'amplada del bacteri que ataca. A dins hi porta el seu ADN, enrotllat com el fil d'una bobina: unes <b>169.000 lletres</b> de codi genètic. Desplegat, faria 57 micres, unes 500 vegades la llargada del cap.</p>
+        <p>A sota hi ha una cua buida per dins i sis fibres llargues: els sensors que busquen la presa.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>L'aterratge</h2>
+        <p>El fag no neda: va a la deriva fins que topa amb un bacteri. Les puntes de les fibres reconeixen una molècula concreta de la superfície: segons la soca, un sucre o una proteïna de la membrana exterior. És com una clau i un pany: si el bacteri no té aquest pany, el fag no hi pot entrar.</p>
+        <p>Quan almenys tres de les sis fibres s'han enganxat, la placa de la base canvia de forma: passa d'hexàgon a estrella. És el senyal per disparar.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>La injecció</h2>
+        <p>La beina de la cua es contrau, de 92,5 a 42 nanòmetres, i empeny un tub intern a través de la paret del bacteri. El cap gira gairebé una volta sencera i el tub hi entra com una broca. A la punta porta un enzim que dissol la capa dura de la paret.</p>
+        <p>Pel tub hi passa tot l'ADN del fag. La closca buida es queda a fora.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>El segrest</h2>
+        <p>Els gens del fag prenen el control. Apaguen els gens del bacteri, i l'ADN del bacteri acaba trossejat i reaprofitat com a matèria primera. Tota la maquinària de la cèl·lula treballa ara per al virus.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>La fàbrica</h2>
+        <p>La cèl·lula copia l'ADN del virus una vegada i una altra i fabrica per separat caps, cues i fibres. Després els munta, com en una cadena de muntatge, i omple cada cap amb una còpia de l'ADN.</p>
+        <p>En un experiment típic a 37 °C, el primer fag complet apareix al cap d'uns 15 minuts. A partir d'aquí, en surten uns 8 de nous cada minut.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>L'esclat</h2>
+        <p>Cap als 30 minuts, dues proteïnes del virus foraden la membrana i desfan la paret. El bacteri esclata (els biòlegs en diuen <b>lisi</b>) i allibera un centenar llarg de fags nous, a punt per buscar la propera víctima. Aquest camí es diu <b>cicle lític</b>.</p>
+        <p class="note">Les xifres canvien molt segons com estigui de ben alimentat el bacteri. Quan creix poc, el fag triga més i en surten menys.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>L'altre camí: amagar-se</h2>
+        <p>No tots els fags maten de seguida. Alguns, com el <b>fag lambda</b>, poden triar. Un cop dins, el seu ADN s'insereix al cromosoma del bacteri i s'hi queda quiet. Una proteïna del virus, un repressor, manté apagats els gens que el farien multiplicar.</p>
+        <p>Aquest ADN amagat es diu <b>pròfag</b>, i el camí, <b>cicle lisogènic</b>.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Un passatger que viatja gratis</h2>
+        <p>Cada vegada que el bacteri es divideix, copia el seu cromosoma i, amb ell, el pròfag. Les dues filles hereten el virus. Així el fag es multiplica sense matar ningú, generació rere generació.</p>
+        <p>És molt habitual: gairebé la meitat dels bacteris amb el genoma seqüenciat porten algun pròfag.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Fins que el vaixell s'enfonsa</h2>
+        <p>Si el bacteri pateix un dany greu a l'ADN, per exemple per llum ultraviolada, s'activa una alarma de reparació. Aquesta alarma trenca el repressor del virus. El pròfag se separa del cromosoma i torna al cicle lític: abandona la cèl·lula abans que mori.</p>
+        <p class="note">Esther Lederberg el va descobrir el 1951, amagat dins de la soca d'<i>E. coli</i> K-12, la que feien servir molts laboratoris.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Tria un camí</h2>
+        <p>Tria un dels dos cicles i prem «Reprodueix» per veure'l sencer, amb el rellotge en marxa.</p>
+      </div></div>
+    </div>
+    <div class="graphic" id="igraphic">
+      <div class="gbox" id="ibox">
+        <div class="istate" aria-live="polite"><strong id="iName">El fag T4</strong><span id="iClock"></span></div>
+        <div class="box"><canvas id="inf" role="img" aria-label="Dibuix d'un fag T4, a escala, que aterra sobre un bacteri, hi injecta el seu ADN, es multiplica a dins i el fa esclatar; i esquema d'un fag lambda que s'amaga al cromosoma del bacteri."></canvas></div>
+        <div class="ictl"><span class="lbl">Cicle</span><div class="btns" id="iSeg"><button class="btn v" type="button" data-c="lit" aria-pressed="false">Lític (T4)</button><button class="btn" type="button" data-c="lis" aria-pressed="false">Lisogènic (lambda)</button></div><button class="playb" id="iPlay" type="button">Reprodueix</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="quants-n-hi-ha">Quants n'hi ha?</h2>
+    <p>Ningú no els ha comptat, és clar. El 10<sup>31</sup> és l'anomenat «producte de Hendrix», pel biòleg Roger Hendrix, que el va deixar implícit als seus treballs de finals dels anys noranta, sense escriure'l mai amb aquestes xifres. Multiplica el nombre de bacteris i arqueus (uns microbis semblants als bacteris) de la Terra, uns 5 × 10<sup>30</sup>, per la proporció habitual d'unes deu partícules de fag per cèl·lula a les mostres naturals.</p>
+    <p>El 2020, el biòleg Arcady Mushegian el va revisar amb dades més noves i va concloure que la xifra continua sent bona: difícilment és gaire més gran o gaire més petita.</p>
+    <p>Només a l'oceà se'n calculen uns 10<sup>30</sup>. Si els posessis l'un darrere l'altre, la filera faria uns 10 milions d'anys llum: quatre vegades la distància fins a la galàxia d'Andròmeda. Però, d'on surt aquesta proporció de deu virus per bacteri? I es compleix sempre?</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="una-gota-de-mar">Una gota de mar</h2>
+    <p>Els virus d'una mostra d'aigua es poden comptar un a un, amb microscopis o fent passar l'aigua per davant d'un làser. El 2016, un equip va reunir milers de mesures d'aquest tipus, de l'Àrtic a l'Índic i de la superfície fins a gairebé 6.000 metres de fondària. El 2017 en van corregir la compilació: tres dels conjunts de dades eren d'aigua dolça, no de mar. Sense aquests, queden <b>5.508 mesures</b> de 22 campanyes.</p>
+    <p>Cada punt és una mostra d'aigua: com més a la dreta, més bacteris; com més amunt, més virus. Les diagonals marquen quants virus hi ha per bacteri.</p>
+  </section>
+  <figure class="fig">
+    <div class="stats" id="seaStats">
+      <div class="v"><b>6,8 milions</b><span>de virus en un mil·lilitre d'aigua dels primers 100 metres (mediana)</span></div>
+      <div class="b"><b>540.000</b><span>bacteris en el mateix mil·lilitre</span></div>
+      <div><b>11 a 1</b><span>virus per cada bacteri en aquests 100 metres, de mediana. Però en 8 de cada 10 mostres va d'unes 5 a unes 70</span></div>
+    </div>
+    <div class="gh"><strong>Virus i bacteris en 5.508 mostres d'aigua de mar</strong><span id="seaN">Totes les fondàries</span></div>
+    <div class="box" id="seaBox"><canvas id="sea" role="img" aria-label="Gràfic de dispersió logarítmic amb 5.508 mostres d'aigua de mar: bacteris per mil·lilitre a l'eix horitzontal, de 5.000 a 18 milions, i virus per mil·lilitre a l'eix vertical, de 100.000 a 600 milions. La majoria de punts queden entre les línies d'1 i de 100 virus per bacteri; les mostres profundes tenen menys cèl·lules però més virus per cèl·lula."></canvas><div class="tip" id="seaTip"></div></div>
+    <div class="ctl-row" style="justify-content:space-between">
+      <div class="seg" id="seaSeg"><button type="button" data-d="all" aria-pressed="true">Totes</button><button type="button" data-d="0" aria-pressed="false">0–100 m</button><button type="button" data-d="1" aria-pressed="false">100–1.000 m</button><button type="button" data-d="2" aria-pressed="false">Més de 1.000 m</button></div>
+      <div class="legend" style="margin-top:0"><span><i style="background:#2C5DA8"></i>0–100 m</span><span><i style="background:#86A9D6"></i>100–1.000 m</span><span><i style="background:#9A6326"></i>Més de 1.000 m</span></div>
+    </div>
+    <figcaption>Dades reals: 5.508 parells de mesures de 22 campanyes, compilades per Wigington et al. 2016 (<i>Nature Microbiology</i>), amb la correcció del 2017, que en va treure tres conjunts d'aigua dolça. Medianes i tendència: càlcul propi. Passa o toca sobre un punt per veure'n els valors.</figcaption>
+  </figure>
+  <section class="col">
+    <p>La regla de «deu virus per bacteri» funciona com a mitjana, però amaga molt. En aigües de superfície, plenes de vida, la proporció sol ser més baixa. Per sota dels 1.000 metres, on hi ha pocs bacteris, la mediana passa de 30 virus per cèl·lula.</p>
+    <p>A més, els virus no creixen al mateix ritme que els bacteris. Si ajuntem totes les mesures, una mostra amb deu vegades més bacteris que una altra només té unes cinc vegades més virus (càlcul propi). Els autors, que analitzen cada campanya per separat, també ho veuen, i conclouen que el 10 a 1 no serveix per calcular quants virus hi ha a cada lloc. El 10<sup>31</sup> és un ordre de magnitud, no un recompte.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="una-matanca-cada-dia">Una matança cada dia</h2>
+    <p>Tots aquests virus maten. A l'oceà, segons una estimació del viròleg marí Curtis Suttle, els virus maten cada dia aproximadament <b>el 20% de la biomassa microbiana</b>. En alguns llocs maten tants bacteris com els protists, els microorganismes que se'ls mengen; en d'altres, són la primera causa de mort.</p>
+    <p>Quan un bacteri o una alga microscòpica esclata, el seu contingut queda dissolt a l'aigua: carboni, nitrogen, fòsfor. Això no arriba directament als peixos: ho consumeixen sobretot altres bacteris. Els oceanògrafs en diuen el <b>curtcircuit viral</b>.</p>
+  </section>
+  <figure class="fig">
+    <div class="gh"><strong>On va a parar el carboni del plàncton</strong><span class="seg" id="shSeg"><button type="button" data-v="0" aria-pressed="false">Sense virus</button><button type="button" data-v="1" aria-pressed="true">Amb virus</button></span></div>
+    <div class="box"><canvas id="shunt" role="img" aria-label="Esquema de la xarxa alimentària marina. El carboni que fixen les algues microscòpiques passa al zooplàncton i als peixos, o es dissol a l'aigua i el consumeixen els bacteris. Quan hi ha virus, una part de les algues i dels bacteris esclata i el seu carboni torna a l'aigua dissolt: es recicla més carboni entre els microbis i en puja menys cap als peixos."></canvas></div>
+    <div class="stats shfacts">
+      <div class="v"><b>~20%</b><span>de la biomassa microbiana de l'oceà mor cada dia per culpa dels virus (estimació de Suttle 2007).</span></div>
+      <div><b>56° N</b><span>A l'Atlàntic Nord, al sud d'aquesta latitud els virus són una causa important de mort de les algues; al nord, hi mana el zooplàncton (Mojica et al. 2016).</span></div>
+      <div><b>?</b><span>Quant carboni passa pel curtcircuit a escala mundial encara no se sap: hi ha molt poques mesures directes (Weitz i Wilhelm 2012).</span></div>
+    </div>
+    <figcaption>Esquema, no dades: el gruix de les fletxes és il·lustratiu i només indica cap a on canvien els fluxos quan hi ha virus, segons el model de Weitz et al. 2015.</figcaption>
+  </figure>
+  <section class="col">
+    <p>Així, una part dels nutrients es queda circulant entre els microbis de la capa de dalt de l'oceà, en lloc de pujar per la cadena alimentària. Segons els models, amb virus les algues fins i tot creixen més, perquè tenen més nutrients a l'abast.</p>
+    <p>Els virus també mantenen la diversitat. Cada fag ataca un tipus concret de bacteri: quan una espècie es fa massa abundant, els seus virus troben víctimes a cada pas. La guanyadora no pot acaparar-ho tot. Els ecòlegs en diuen «matar el guanyador».</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="com-es-defensa-un-bacteri">Com es defensa un bacteri</h2>
+    <p>Amb aquesta pressió, els bacteris han acumulat defenses de molts tipus.</p>
+    <p><b>Canviar el pany.</b> La defensa més simple és modificar la molècula on s'enganxa el fag. Si la clau no entra, no hi ha infecció.</p>
+    <p><b>Tisores i etiquetes.</b> Molts bacteris tenen <b>enzims de restricció</b>, unes tisores moleculars que tallen l'ADN allà on troben una seqüència concreta de lletres. El bacteri marca el seu propi ADN amb una etiqueta química perquè no el tallin. L'ADN d'un virus que entra no porta l'etiqueta, i les tisores el trossegen. El seu descobriment va valer el Nobel de Medicina del 1978.</p>
+    <p><b>Sacrificar-se.</b> Quan detecten un virus, la cèl·lula infectada se suïcida abans que el fag acabi de fabricar còpies. Mor un bacteri, però el virus no s'escampa per la resta de la colònia. Es diu <b>infecció avortiva</b>. Un d'aquests sistemes, el CBASS, s'assembla tant a una via d'alarma antiviral de les nostres cèl·lules que els investigadors creuen que totes dues tenen un origen comú molt antic.</p>
+    <p>El 2018, un equip de l'Institut Weizmann, a Israel, en va descobrir deu de cop i els va posar noms de déus protectors: Thoeris, Gabija, Zorya, Hachiman… Des de llavors n'han aparegut desenes més.</p>
+  </section>
+  <figure class="fig">
+    <div class="gh"><strong id="defTitle">Quins sistemes de defensa porten bacteris i arqueus</strong><span class="seg" id="defSeg"><button type="button" data-v="0" aria-pressed="true">Quins</button><button type="button" data-v="1" aria-pressed="false">Quants per genoma</button></span></div>
+    <div class="box" id="defBox"><svg id="def" role="img" aria-label="Percentatge de genomes de bacteris i arqueus que porten cada família de sistemes antivirals: restricció-modificació al 83%, CRISPR-Cas al 39%, Gabija al 15%, i la resta per sota del 15%. En una segona vista, la distribució de quants sistemes té cada genoma, amb una mitjana de 5."></svg><div class="tip" id="defTip"></div></div>
+    <div class="legend"><span><i class="sq" style="background:#121212"></i>Restricció-modificació i CRISPR-Cas</span><span><i class="sq" style="background:#16786C"></i>Descrits el 2018 (Doron et al.)</span><span><i class="sq" style="background:#ADADAD"></i>Altres sistemes</span></div>
+    <figcaption>Dades reals: 21.738 genomes complets de bacteris i arqueus (Tesson et al. 2022, <i>Nature Communications</i>). Es mostren les 25 famílies més freqüents de les 60 detectades. Passa o toca una barra per veure'n el detall.</figcaption>
+  </figure>
+  <section class="col">
+    <p>Les tisores de restricció són les més esteses: les porten més de vuit de cada deu genomes. De mitjana, cada genoma de bacteri o d'arqueu té cinc sistemes antivirals de tres famílies diferents, però la variació és enorme: n'hi ha que no en tenen cap i n'hi ha un que en té 57.</p>
+    <p>Totes aquestes defenses tenen un punt feble: reaccionen igual davant de qualsevol virus, conegut o nou. Però en el 39% dels genomes n'hi ha una que és diferent. Aprèn.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="la-memoria-del-bacteri">La memòria del bacteri</h2>
+    <p>A principis dels anys noranta, el microbiòleg Francisco Mojica, de la Universitat d'Alacant, estudiava l'arqueu <i>Haloferax mediterranei</i>, que viu en unes salines prop d'Alacant. Al seu ADN hi va trobar un patró que no havia vist mai: un tros de 30 lletres que es repetia 14 vegades, gairebé idèntic, separat cada vegada per trossos diferents de la mateixa llargada.</p>
+    <p>Mojica va descobrir que aquestes repeticions eren a molts microbis diferents. El 2002, un grup holandès les va batejar amb un nom que ha fet fortuna: <b>CRISPR</b>, sigla anglesa de «repeticions palindròmiques curtes agrupades i regularment espaiades».</p>
+    <p>La pregunta era què hi feien els trossos del mig, els <b>espaiadors</b>. Comparant-los amb totes les seqüències d'ADN conegudes, l'equip de Mojica va trobar que alguns coincidien amb l'ADN de virus i de plasmidis (petits anells d'ADN que passen d'un bacteri a un altre). I que aquests virus i plasmidis no aconseguien infectar les soques que portaven l'espaiador corresponent. Els espaiadors semblaven un arxiu de retrats de vells enemics: una memòria immunitària. Ho va publicar el febrer del 2005, i aquell any dos equips francesos hi van arribar pel seu compte.</p>
+    <p>La prova va arribar el 2007, d'un lloc inesperat: l'empresa d'ingredients alimentaris Danisco. Hi estudiaven <i>Streptococcus thermophilus</i>, el bacteri del iogurt, que els fags ataquen sovint. L'equip de Rodolphe Barrangou i Philippe Horvath va veure que els bacteris que sobrevivien a un atac havien afegit a l'arxiu espaiadors nous, copiats del virus. Si els treien l'espaiador, perdien la immunitat. Si n'hi posaven un, la guanyaven.</p>
+    <p>Baixa per veure com funciona aquesta memòria.</p>
+  </section>
+
+  <section class="scrolly" aria-label="Com funciona el CRISPR, pas a pas">
+    <div class="steps" id="csteps">
+      <div class="step"><div class="step-in">
+        <h2>Un arxiu al cromosoma</h2>
+        <p>A l'ADN del bacteri hi ha un arxiu: <b>repeticions</b> idèntiques (els rombes grisos) separades per <b>espaiadors</b>, cadascun diferent. Al costat hi ha els <b>gens cas</b>, que fabriquen les proteïnes que fan funcionar el sistema.</p>
+        <p>Cada espaiador és un retrat: un tros d'unes 30 lletres copiat d'un virus, o d'un altre ADN invasor, que va atacar algun avantpassat del bacteri.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Arriba un virus nou</h2>
+        <p>Un fag que el bacteri no ha vist mai hi injecta el seu ADN, en <span class="k-v">vermell</span>. No hi ha cap espaiador que hi coincideixi, així que l'arxiu no serveix de res.</p>
+        <p>Gairebé sempre, el bacteri mor. Però en una població de milions de bacteris, de tant en tant algun sobreviu a l'atac.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Un retrat de l'invasor</h2>
+        <p>Si el bacteri sobreviu, les proteïnes Cas1 i Cas2, amb l'ajuda d'altres proteïnes, capturen un fragment d'unes 30 lletres de l'ADN del virus. Trien un tros que tingui al costat una seqüència curta i concreta, el <b>PAM</b>. Aquest detall importa: dins l'arxiu, els espaiadors no tenen PAM al costat, i per això el sistema no ataca el seu propi arxiu.</p>
+        <p>Després enganxen el retrat nou a l'arxiu, gairebé sempre a la mateixa punta, la del principi. L'arxiu queda ordenat per dates.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Una memòria que s'hereta</h2>
+        <p>Quan el bacteri es divideix, les dues filles reben una còpia de tot el cromosoma, arxiu inclòs. Tota la descendència recordarà aquest virus.</p>
+        <p class="note">És una diferència important amb la nostra immunitat: la memòria que guarden els nostres limfòcits no queda escrita a l'ADN i no l'hereten els fills. La del CRISPR, sí.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Retrats en patrulla</h2>
+        <p>El bacteri copia l'arxiu en una molècula llarga d'ARN, la mena de còpia de treball que les cèl·lules fan servir per llegir els seus gens, i després la talla en trossos petits. Cada tros conté un sol espaiador: és un <b>ARN guia</b>.</p>
+        <p>Cada ARN guia s'uneix a una proteïna tallant. En el sistema més famós, aquesta proteïna es diu <b class="k-m">Cas9</b>. Moltes Cas9, cadascuna amb el seu retrat, patrullen la cèl·lula.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>El virus torna</h2>
+        <p>Quan el mateix fag torna a atacar, una Cas9 que porta el retrat corresponent repassa l'ADN invasor. Primer busca el PAM i, al costat, comprova si les lletres coincideixen amb la seva guia.</p>
+        <p>Si coincideixen, talla les dues cadenes de l'ADN del virus. Un ADN tallat no serveix per fabricar res. La infecció s'atura abans de començar.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>La resposta del virus</h2>
+        <p>Però els virus muten molt de pressa. N'hi ha prou que un fag canviï una sola lletra a la zona que reconeix la guia, o al PAM, perquè Cas9 no el reconegui. El 2008, el mateix equip del iogurt ho va veure: els fags s'escapaven així.</p>
+        <p>I el bacteri respon com abans: si en sobreviu algun, guarda un retrat nou. Afegir espaiadors l'un darrere l'altre el fa encara més resistent.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Del bacteri al laboratori</h2>
+        <p>El 2012, Emmanuelle Charpentier i Jennifer Doudna van demostrar que Cas9 es pot programar: n'hi ha prou de canviar les lletres de l'ARN guia perquè Cas9 talli l'ADN que tu vulguis, sempre que tingui un PAM al costat.</p>
+        <p>L'arma d'un bacteri contra els virus s'havia convertit en un editor de gens. Funciona en plantes, animals i cèl·lules humanes.</p>
+      </div></div>
+    </div>
+    <div class="graphic" id="cgraphic">
+      <div class="gbox" id="cbox">
+        <div class="istate" aria-live="polite"><strong id="cName">L'arxiu CRISPR</strong><span id="cSub">Esquema</span></div>
+        <div class="box"><canvas id="cr" role="img" aria-label="Esquema d'un bacteri amb l'arxiu CRISPR al cromosoma. Un virus injecta ADN, el bacteri en guarda un fragment com a espaiador nou, el transmet a les filles, el converteix en ARN guia i, quan el virus torna, la proteïna Cas9 talla el seu ADN."></canvas></div>
+        <div class="cap" style="margin-top:6px">Esquema, no a escala. Les mides i les quantitats de molècules no són reals.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="prova-la-memoria">Prova la memòria</h2>
+    <p>Aquesta és una colònia de bacteris de mentida: cada cercle és un bacteri, i cada franja de color, un espaiador guardat. Allibera un virus, mira què passa i torna-hi. Després prova amb un mutant, o amb un virus que porti un anti-CRISPR (en parlem tot seguit).</p>
+    <p class="note">També pots tocar la colònia per deixar-hi caure un virus A.</p>
+  </section>
+  <figure class="fig wide">
+    <div class="simwrap">
+      <div>
+        <div class="box"><canvas id="sim" role="img" aria-label="Simulació d'una colònia de bacteris. Quan s'allibera un virus, infecta i mata bacteris; alguns supervivents guarden un espaiador i es tornen immunes, i la colònia es refà amb bacteris que recorden el virus."></canvas></div>
+        <div class="legend simleg" aria-hidden="true">
+          <span><i class="ring"></i>Bacteri viu</span>
+          <span><i class="ring inf"></i>Infectat</span>
+          <span><i class="ring dead"></i>Mort (lloc buit)</span>
+          <span><i class="strip" style="background:#C8442A"></i><i class="strip" style="background:#9A6326"></i><i class="strip" style="background:#EFB9A8"></i>Espaiadors: A, B, mutant</span>
+          <span><i class="ring cut"></i>Ha reconegut el virus i l'ha tallat</span>
+        </div>
+        <canvas id="simChart" aria-hidden="true"></canvas>
+      </div>
+      <div class="simside">
+        <h3>Allibera</h3>
+        <div class="btns" id="simBtns">
+          <button class="btn v" type="button" data-v="0">Virus A</button>
+          <button class="btn d" type="button" data-v="1">Virus B</button>
+          <button class="btn v" type="button" data-v="2" style="border-color:#EFB9A8">Virus A mutant</button>
+          <button class="btn" type="button" data-v="3">Virus A amb anti-CRISPR</button>
+        </div>
+        <h3>Colònia</h3>
+        <ul class="cnt" id="simCnt"></ul>
+        <button class="playb" id="simReset" type="button">Torna a començar</button>
+        <p id="simMsg" aria-live="polite">La colònia encara no ha vist cap virus. Cap bacteri no té espaiadors.</p>
+      </div>
+    </div>
+    <figcaption>Simulació amb un model molt simplificat, no dades reals. Les probabilitats estan exagerades: a la natura, només una fracció molt petita dels bacteris atacats sobreviu i guarda un espaiador.</figcaption>
+  </figure>
+
+  <section class="col">
+    <h2 class="sh" id="el-contraatac-dels-fags">El contraatac dels fags</h2>
+    <p>Si els bacteris tenen desenes d'armes, els fags tenen desenes de maneres de desactivar-les. Una ja l'hem vista: canviar una lletra per esquivar el CRISPR. És una cursa d'armaments: cada defensa nova afavoreix els virus capaços de saltar-se-la, i al revés.</p>
+    <p><b>Disfressar l'ADN.</b> El T4 fabrica el seu ADN amb una lletra modificada i decorada amb sucres. Les tisores de restricció del bacteri no la reconeixen i no la tallen.</p>
+    <p><b>Anti-CRISPR.</b> El 2013, un equip de la Universitat de Toronto va trobar fags de <i>Pseudomonas aeruginosa</i> amb gens que desactiven el sistema CRISPR del bacteri: els primers <b>anti-CRISPR</b>.</p>
+    <p><b>Construir un búnquer.</b> Alguns fags gegants de <i>Pseudomonas</i> aixequen, dins del bacteri, una closca de proteïna semblant al nucli de les nostres cèl·lules. El seu ADN s'hi copia a dins, fora de l'abast de Cas9, de les tisores de restricció i de moltes altres defenses que tallen ADN. Però no de les que tallen ARN.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="del-laboratori-al-nobel">Del laboratori al Nobel</h2>
+    <p>De la prova del iogurt al Nobel van passar tretze anys. Recorre la línia del temps.</p>
+  </section>
+  <figure class="fig">
+    <svg id="tline" role="img" aria-label="Línia del temps del CRISPR del 1987 al 2023: repeticions a E. coli, Mojica a Alacant, el nom CRISPR, l'origen víric dels espaiadors, la prova experimental, Cas9 com a eina, el Nobel del 2020 i el primer medicament el 2023."></svg>
+    <div class="tlnav"><button class="playb" id="tlPrev" type="button">← Anterior</button><button class="playb" id="tlNext" type="button">Següent →</button></div>
+    <div class="tlcard" id="tlCard" aria-live="polite"></div>
+  </figure>
+  <section class="col">
+    <p>El Nobel de Química del 2020 va ser per a Charpentier i Doudna, «pel desenvolupament d'un mètode per editar genomes». L'informe científic de l'Acadèmia sueca repassa tota la història i cita quatre treballs de Mojica, però el premi no el va incloure.</p>
+    <p>El 15 de novembre del 2023 (ho va anunciar l'endemà), el Regne Unit va aprovar el primer medicament basat en CRISPR, el Casgevy, per a l'anèmia de cèl·lules falciformes i la beta-talassèmia dependent de transfusions, a partir dels 12 anys. Es treuen cèl·lules mare de la medul·la òssia del pacient, s'editen al laboratori i se li tornen a infondre.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="fags-contra-superbacteris">Fags contra superbacteris</h2>
+    <p>Hi ha una altra manera de fer servir aquesta guerra al nostre favor: enviar els fags contra els bacteris que ens infecten. D'Hérelle ja ho va fer el 1919 amb nens que tenien disenteria. Després de la Segona Guerra Mundial va arribar la penicil·lina, i a l'Occident la teràpia amb fags es va abandonar. A Geòrgia i a Polònia, en canvi, no es va abandonar mai: l'Institut Eliava de Tbilisi, fundat el 1923, i l'Institut Hirszfeld de Wrocław encara la fan servir.</p>
+    <p>Ha tornat per culpa dels bacteris resistents als antibiòtics. El 2017, metges de San Diego van publicar el cas d'un pacient de 68 anys amb una infecció d'<i>Acinetobacter baumannii</i> resistent als antibiòtics que es va recuperar després de rebre un còctel de nou fags.</p>
+    <p>Però les històries d'èxit no són proves. Un consorci belga ha recollit els 100 primers casos de teràpia personalitzada que ha coordinat: el 77% de les infeccions van millorar, però sense un grup de comparació no se sap quants s'haurien curat igualment. I els pocs assaigs aleatoritzats han decebut: el 2017 se'n va aturar un amb cremats a França i Bèlgica perquè els fags funcionaven pitjor que el tractament habitual (en part, per una dosi massa baixa).</p>
+    <p>Avui, cap teràpia amb fags no té autorització de comercialització a la Unió Europea ni als Estats Units. Es fan servir en assaigs clínics o com a ús compassiu, quan ja no queda cap altra opció. El 2026, una empresa nord-americana preparava un assaig en fase 3, l'última abans de demanar l'aprovació.</p>
+  </section>
+
+  <section class="close col">
+    <h2>Paraules clau</h2>
+    <dl class="gl">
+      <dt>Bacteriòfag (fag)</dt><dd>Virus que infecta bacteris. El nom vol dir «menjador de bacteris».</dd>
+      <dt>Cicle lític</dt><dd>El fag es multiplica dins del bacteri i el fa esclatar per sortir.</dd>
+      <dt>Cicle lisogènic</dt><dd>L'ADN del fag s'amaga al cromosoma del bacteri i passa de generació en generació.</dd>
+      <dt>Pròfag</dt><dd>L'ADN d'un fag integrat al cromosoma del bacteri.</dd>
+      <dt>Lisi</dt><dd>La ruptura de la cèl·lula que allibera els virus nous.</dd>
+      <dt>Curtcircuit viral</dt><dd>El retorn a l'aigua, en forma dissolta, del carboni i els nutrients dels microbis morts pels virus, que aprofiten altres bacteris en lloc dels nivells superiors de la cadena alimentària.</dd>
+      <dt>Enzim de restricció</dt><dd>Proteïna bacteriana que talla l'ADN en una seqüència concreta. El bacteri protegeix el seu propi ADN marcant-lo químicament.</dd>
+      <dt>Infecció avortiva</dt><dd>Defensa en què la cèl·lula infectada mor abans que el virus acabi de multiplicar-se, per protegir les veïnes.</dd>
+      <dt>CRISPR</dt><dd>Arxiu de repeticions i espaiadors a l'ADN de molts bacteris i arqueus, que guarda fragments de virus antics per reconèixer-los.</dd>
+      <dt>Espaiador</dt><dd>Cadascun dels fragments d'unes 30 lletres guardats entre les repeticions del CRISPR.</dd>
+      <dt>PAM</dt><dd>Seqüència curta de l'ADN del virus, just al costat del tros copiat, que les proteïnes Cas necessiten per capturar-lo i per tallar-lo.</dd>
+      <dt>Cas9</dt><dd>Proteïna que, guiada per un ARN, talla l'ADN que coincideix amb la guia. És la base de l'edició genètica CRISPR.</dd>
+      <dt>Anti-CRISPR</dt><dd>Proteïna d'un fag que bloqueja el sistema CRISPR del bacteri.</dd>
+    </dl>
+    <div class="fn">
+      <p><b>Metodologia.</b> Són dades reals el gràfic de virus i bacteris a l'aigua de mar i el de sistemes de defensa. El primer fa servir el fitxer suplementari de Wigington et al. 2016 sense els tres conjunts d'aigua dolça (ELA, TROUT i SWAT; 163 mesures) que l'article va retirar en la correcció del 2017; el fitxer que encara ofereix l'editorial és el de la versió original. Les medianes per fondària i la línia de tendència són càlcul propi, amb un ajust per mínims quadrats en escala logarítmica de totes les mesures juntes; l'article original ajusta cada campanya per separat. El segon fa servir el fitxer de dades d'origen de Tesson et al. 2022. La comparació de mides i el fag T4 estan dibuixats a escala amb les mides publicades; la resta del cicle d'infecció, el fag lambda, el curtcircuit viral i el CRISPR són esquemes. La colònia de bacteris és una simulació amb regles simplificades i probabilitats exagerades. Són càlculs propis les xifres del got d'aigua (250 mil·lilitres per les medianes dels primers 100 metres: 6,8 milions de virus i 540.000 bacteris per mil·lilitre) i la filera de virus (10<sup>30</sup> virus d'uns 100 nanòmetres; Andròmeda és a uns 2,5 milions d'anys llum).</p>
+      <p><b>Fonts.</b></p>
+      <ol>
+        <li>Mushegian AR (2020). Are there 10<sup>31</sup> virus particles on Earth, or more, or fewer? <i>J Bacteriol</i> 202:e00052-20. <a href="https://doi.org/10.1128/JB.00052-20">doi.org/10.1128/JB.00052-20</a></li>
+        <li>Hendrix RW et al. (1999). Evolutionary relationships among diverse bacteriophages and prophages: all the world's a phage. <i>PNAS</i> 96:2192. <a href="https://doi.org/10.1073/pnas.96.5.2192">doi.org/10.1073/pnas.96.5.2192</a></li>
+        <li>Whitman WB, Coleman DC, Wiebe WJ (1998). Prokaryotes: the unseen majority. <i>PNAS</i> 95:6578. <a href="https://doi.org/10.1073/pnas.95.12.6578">doi.org/10.1073/pnas.95.12.6578</a></li>
+        <li>Suttle CA (2007). Marine viruses — major players in the global ecosystem. <i>Nat Rev Microbiol</i> 5:801. <a href="https://doi.org/10.1038/nrmicro1750">doi.org/10.1038/nrmicro1750</a></li>
+        <li>Suttle CA (2005). Viruses in the sea. <i>Nature</i> 437:356. <a href="https://doi.org/10.1038/nature04160">doi.org/10.1038/nature04160</a></li>
+        <li>Wigington CH et al. (2016). Re-examination of the relationship between marine virus and microbial cell abundances. <i>Nat Microbiol</i> 1:15024. <a href="https://doi.org/10.1038/nmicrobiol.2015.24">doi.org/10.1038/nmicrobiol.2015.24</a>. Versió corregida el 3 d'octubre del 2017 (5.508 mesures de 22 campanyes).</li>
+        <li>Wilhelm SW, Suttle CA (1999). Viruses and nutrient cycles in the sea. <i>BioScience</i> 49:781. <a href="https://doi.org/10.2307/1313569">doi.org/10.2307/1313569</a></li>
+        <li>Weitz JS, Wilhelm SW (2012). Ocean viruses and their effects on microbial communities and biogeochemical cycles. <i>F1000 Biol Rep</i> 4:17. <a href="https://doi.org/10.3410/B4-17">doi.org/10.3410/B4-17</a></li>
+        <li>Weitz JS et al. (2015). A multitrophic model to quantify the effects of marine viruses on microbial food webs and ecosystem processes. <i>ISME J</i> 9:1352. <a href="https://doi.org/10.1038/ismej.2014.220">doi.org/10.1038/ismej.2014.220</a></li>
+        <li>Mojica KDA et al. (2016). Latitudinal variation in virus-induced mortality of phytoplankton across the North Atlantic Ocean. <i>ISME J</i> 10:500. <a href="https://doi.org/10.1038/ismej.2015.130">doi.org/10.1038/ismej.2015.130</a></li>
+        <li>Thingstad TF (2000). Elements of a theory for the mechanisms controlling abundance, diversity, and biogeochemical role of lytic bacterial viruses in aquatic systems. <i>Limnol Oceanogr</i> 45:1320. <a href="https://doi.org/10.4319/lo.2000.45.6.1320">doi.org/10.4319/lo.2000.45.6.1320</a></li>
+        <li>Strathdee SA et al. (2023). Phage therapy: from biological mechanisms to future directions. <i>Cell</i> 186:17. <a href="https://doi.org/10.1016/j.cell.2022.11.017">doi.org/10.1016/j.cell.2022.11.017</a></li>
+        <li>Twort FW (1915). An investigation on the nature of ultra-microscopic viruses. <i>Lancet</i> 186:1241. <a href="https://doi.org/10.1016/S0140-6736(01)20383-3">doi.org/10.1016/S0140-6736(01)20383-3</a></li>
+        <li>Yap ML, Rossmann MG (2014). Structure and function of bacteriophage T4. <i>Future Microbiol</i> 9:1319. <a href="https://doi.org/10.2217/fmb.14.91">doi.org/10.2217/fmb.14.91</a></li>
+        <li>Miller ES et al. (2003). Bacteriophage T4 genome. <i>Microbiol Mol Biol Rev</i> 67:86. <a href="https://doi.org/10.1128/MMBR.67.1.86-156.2003">doi.org/10.1128/MMBR.67.1.86-156.2003</a></li>
+        <li>Rabinovitch A et al. (1999). Model for bacteriophage T4 development in <i>Escherichia coli</i>. <i>J Bacteriol</i> 181:1677. <a href="https://doi.org/10.1128/JB.181.5.1677-1683.1999">doi.org/10.1128/JB.181.5.1677-1683.1999</a></li>
+        <li>Casjens SR, Hendrix RW (2015). Bacteriophage lambda: early pioneer and still relevant. <i>Virology</i> 479–480:310. <a href="https://doi.org/10.1016/j.virol.2015.02.010">doi.org/10.1016/j.virol.2015.02.010</a></li>
+        <li>Lederberg EM, Lederberg J (1953). Genetic studies of lysogenicity in <i>Escherichia coli</i>. <i>Genetics</i> 38:51. <a href="https://doi.org/10.1093/genetics/38.1.51">doi.org/10.1093/genetics/38.1.51</a></li>
+        <li>Campbell PL et al. (2020). Mobile loops and electrostatic interactions maintain the flexible tail tube of bacteriophage lambda. <i>J Mol Biol</i> 432:384. <a href="https://doi.org/10.1016/j.jmb.2019.10.031">doi.org/10.1016/j.jmb.2019.10.031</a></li>
+        <li>Touchon M, Bernheim A, Rocha EPC (2016). Genetic and life-history traits associated with the distribution of prophages in bacteria. <i>ISME J</i> 10:2744. <a href="https://doi.org/10.1038/ismej.2016.47">doi.org/10.1038/ismej.2016.47</a></li>
+        <li>Milo R, Phillips R. <i>Cell Biology by the Numbers</i>. <a href="https://book.bionumbers.org/">book.bionumbers.org</a></li>
+        <li>Tesson F et al. (2022). Systematic and quantitative view of the antiviral arsenal of prokaryotes. <i>Nat Commun</i> 13:2561. <a href="https://doi.org/10.1038/s41467-022-30269-9">doi.org/10.1038/s41467-022-30269-9</a></li>
+        <li>Doron S et al. (2018). Systematic discovery of antiphage defense systems in the microbial pangenome. <i>Science</i> 359:eaar4120. <a href="https://doi.org/10.1126/science.aar4120">doi.org/10.1126/science.aar4120</a></li>
+        <li>Cohen D et al. (2019). Cyclic GMP–AMP signalling protects bacteria against viral infection. <i>Nature</i> 574:691. <a href="https://doi.org/10.1038/s41586-019-1605-5">doi.org/10.1038/s41586-019-1605-5</a></li>
+        <li>Lopatina A, Tal N, Sorek R (2020). Abortive infection: bacterial suicide as an antiviral immune strategy. <i>Annu Rev Virol</i> 7:371. <a href="https://doi.org/10.1146/annurev-virology-011620-040628">doi.org/10.1146/annurev-virology-011620-040628</a></li>
+        <li>Nobel Prize in Physiology or Medicine 1978 (Arber, Nathans, Smith). <a href="https://www.nobelprize.org/prizes/medicine/1978/summary/">nobelprize.org</a></li>
+        <li>Ishino Y et al. (1987). <i>J Bacteriol</i> 169:5429. <a href="https://doi.org/10.1128/jb.169.12.5429-5433.1987">doi.org/10.1128/jb.169.12.5429-5433.1987</a></li>
+        <li>Mojica FJ, Juez G, Rodríguez-Valera F (1993). <i>Mol Microbiol</i> 9:613. <a href="https://doi.org/10.1111/j.1365-2958.1993.tb01721.x">doi.org/10.1111/j.1365-2958.1993.tb01721.x</a></li>
+        <li>Mojica FJ et al. (2000). Biological significance of a family of regularly spaced repeats in the genomes of Archaea, Bacteria and mitochondria. <i>Mol Microbiol</i> 36:244. <a href="https://doi.org/10.1046/j.1365-2958.2000.01838.x">doi.org/10.1046/j.1365-2958.2000.01838.x</a></li>
+        <li>Jansen R et al. (2002). Identification of genes that are associated with DNA repeats in prokaryotes. <i>Mol Microbiol</i> 43:1565. <a href="https://doi.org/10.1046/j.1365-2958.2002.02839.x">doi.org/10.1046/j.1365-2958.2002.02839.x</a></li>
+        <li>Mojica FJ et al. (2005). Intervening sequences of regularly spaced prokaryotic repeats derive from foreign genetic elements. <i>J Mol Evol</i> 60:174. <a href="https://doi.org/10.1007/s00239-004-0046-3">doi.org/10.1007/s00239-004-0046-3</a></li>
+        <li>Pourcel C, Salvignol G, Vergnaud G (2005). <i>Microbiology</i> 151:653. <a href="https://doi.org/10.1099/mic.0.27437-0">doi.org/10.1099/mic.0.27437-0</a>; Bolotin A et al. (2005). <i>Microbiology</i> 151:2551. <a href="https://doi.org/10.1099/mic.0.28048-0">doi.org/10.1099/mic.0.28048-0</a></li>
+        <li>Mojica FJ, Rodríguez-Valera F (2016). The discovery of CRISPR in archaea and bacteria. <i>FEBS J</i> 283:3162. <a href="https://doi.org/10.1111/febs.13766">doi.org/10.1111/febs.13766</a></li>
+        <li>Barrangou R et al. (2007). CRISPR provides acquired resistance against viruses in prokaryotes. <i>Science</i> 315:1709. <a href="https://doi.org/10.1126/science.1138140">doi.org/10.1126/science.1138140</a></li>
+        <li>Deveau H et al. (2008). Phage response to CRISPR-encoded resistance in <i>Streptococcus thermophilus</i>. <i>J Bacteriol</i> 190:1390. <a href="https://doi.org/10.1128/JB.01412-07">doi.org/10.1128/JB.01412-07</a></li>
+        <li>Brouns SJ et al. (2008). <i>Science</i> 321:960. <a href="https://doi.org/10.1126/science.1159689">doi.org/10.1126/science.1159689</a>; Marraffini LA, Sontheimer EJ (2008). <i>Science</i> 322:1843. <a href="https://doi.org/10.1126/science.1165771">doi.org/10.1126/science.1165771</a></li>
+        <li>Garneau JE et al. (2010). <i>Nature</i> 468:67. <a href="https://doi.org/10.1038/nature09523">doi.org/10.1038/nature09523</a></li>
+        <li>Deltcheva E et al. (2011). <i>Nature</i> 471:602. <a href="https://doi.org/10.1038/nature09886">doi.org/10.1038/nature09886</a></li>
+        <li>Jinek M et al. (2012). A programmable dual-RNA–guided DNA endonuclease in adaptive bacterial immunity. <i>Science</i> 337:816. <a href="https://doi.org/10.1126/science.1225829">doi.org/10.1126/science.1225829</a></li>
+        <li>Gasiunas G et al. (2012). Cas9–crRNA ribonucleoprotein complex mediates specific DNA cleavage for adaptive immunity in bacteria. <i>PNAS</i> 109:E2579. <a href="https://doi.org/10.1073/pnas.1208507109">doi.org/10.1073/pnas.1208507109</a></li>
+        <li>Cong L et al. (2013). <i>Science</i> 339:819. <a href="https://doi.org/10.1126/science.1231143">doi.org/10.1126/science.1231143</a>; Mali P et al. (2013). <i>Science</i> 339:823. <a href="https://doi.org/10.1126/science.1232033">doi.org/10.1126/science.1232033</a></li>
+        <li>Reial Acadèmia Sueca de Ciències (2020). Scientific background on the Nobel Prize in Chemistry 2020. <a href="https://www.nobelprize.org/uploads/2020/10/advanced-chemistryprize2020.pdf">nobelprize.org</a>; nota de premsa del 7 d'octubre del 2020. <a href="https://www.nobelprize.org/prizes/chemistry/2020/press-release/">nobelprize.org</a></li>
+        <li>Makarova KS et al. (2020). Evolutionary classification of CRISPR–Cas systems. <i>Nat Rev Microbiol</i> 18:67. <a href="https://doi.org/10.1038/s41579-019-0299-x">doi.org/10.1038/s41579-019-0299-x</a></li>
+        <li>MHRA (16/11/2023; autorització del 15/11/2023). MHRA authorises world-first gene therapy that aims to cure sickle-cell disease and transfusion-dependent β-thalassemia. <a href="https://www.gov.uk/government/news/mhra-authorises-world-first-gene-therapy-that-aims-to-cure-sickle-cell-disease-and-transfusion-dependent-thalassemia">gov.uk</a></li>
+        <li>Bondy-Denomy J et al. (2013). Bacteriophage genes that inactivate the CRISPR/Cas bacterial immune system. <i>Nature</i> 493:429. <a href="https://doi.org/10.1038/nature11723">doi.org/10.1038/nature11723</a></li>
+        <li>Bondy-Denomy J et al. (2015). Multiple mechanisms for CRISPR–Cas inhibition by anti-CRISPR proteins. <i>Nature</i> 526:136. <a href="https://doi.org/10.1038/nature15254">doi.org/10.1038/nature15254</a></li>
+        <li>Mendoza SD et al. (2020). A bacteriophage nucleus-like compartment shields DNA from CRISPR nucleases. <i>Nature</i> 577:244. <a href="https://doi.org/10.1038/s41586-019-1786-y">doi.org/10.1038/s41586-019-1786-y</a></li>
+        <li>Żaczek M et al. (2020). Phage therapy in Poland – a centennial journey to the first ethically approved treatment facility in Europe. <i>Front Microbiol</i> 11:1056. <a href="https://doi.org/10.3389/fmicb.2020.01056">doi.org/10.3389/fmicb.2020.01056</a></li>
+        <li>Schooley RT et al. (2017). <i>Antimicrob Agents Chemother</i> 61:e00954-17. <a href="https://doi.org/10.1128/AAC.00954-17">doi.org/10.1128/AAC.00954-17</a></li>
+        <li>Pirnay JP et al. (2024). Personalized bacteriophage therapy outcomes for 100 consecutive cases. <i>Nat Microbiol</i> 9:1434. <a href="https://doi.org/10.1038/s41564-024-01705-x">doi.org/10.1038/s41564-024-01705-x</a></li>
+        <li>Jault P et al. (2019). PhagoBurn. <i>Lancet Infect Dis</i> 19:35. <a href="https://doi.org/10.1016/S1473-3099(18)30482-1">doi.org/10.1016/S1473-3099(18)30482-1</a></li>
+        <li>Fuerst-Wilmes M et al. (2025). Regulation of phage therapy medicinal products: developments, challenges, and opportunities. <i>Front Cell Infect Microbiol</i> 15:1631359. <a href="https://doi.org/10.3389/fcimb.2025.1631359">doi.org/10.3389/fcimb.2025.1631359</a></li>
+        <li>Armata Pharmaceuticals (13/01/2026). Nota de premsa sobre la reunió de final de fase 2 amb la FDA. <a href="https://investor.armatapharma.com/2026-01-13-Armata-Pharmaceuticals-Announces-End-of-Phase-2-Meeting-with-FDA-and-Plans-to-Advance-AP-SA02-to-a-Phase-3-Superiority-Study-in-Complicated-Staphylococcus-aureus-Bacteremia">investor.armatapharma.com</a></li>
+      </ol>
+    </div>
+  </section>
+</div>
+
+<footer class="ib-foot">
+  <a href="../../"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="../../assets/scrolly.js"></script>
+<script src="dades.js"></script>
+<script src="virus-i-bacteris.js"></script>
+<script src="crispr.js"></script>
+<script src="../../assets/ib.js"></script>
+</body>
+</html>

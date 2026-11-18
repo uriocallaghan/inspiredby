@@ -1,0 +1,11 @@
+# Càlculs propis per a les comparacions d'escala (camió de 25 t de càrrega i 16,5 m de llargada)
+quantitat,tones_any,camions_any,camions_dia
+Pols que surt d'Àfrica (15W),182000000,7280000,19932
+Pols a mig oceà (35W),132000000,5280000,14456
+Pols que arriba al Carib (75W),43000000,1720000,4709
+Pols que cau a l'Amazònia,27700000,1108000,3034
+Fòsfor que cau a l'Amazònia,22000,880,2.4
+# Filera de camions de l'Amazònia: 1.108.000 x 16,5 m = 18.282 km
+# Mitjana per segon: 27,7e6 t / 31.557.600 s = 0,88 t/s
+# Per metre quadrat: 28,9 kg/ha = 2,9 g/m2 de pols; 23 g/ha = 2,3 mg/m2 de fòsfor
+# Distàncies ortodròmiques: Dakar-Barbados 4.550 km; Bodélé-Caiena 7.760 km; Bodélé-Manaus 8.840 km

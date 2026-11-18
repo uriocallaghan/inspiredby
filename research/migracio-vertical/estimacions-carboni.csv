@@ -1,0 +1,5 @@
+id,etiqueta,minim_PgC_any,central_PgC_any,maxim_PgC_any,font,doi,nota
+dvm_zoo,Zooplàncton migrador (càlcul propi a partir del model global 60N-60S),,1.04,,Archibald Siegel Doney 2019 Global Biogeochem Cycles 33:181,10.1029/2018GB005983,"CÀLCUL PROPI, no publicat: 0,16 × 6,5 PgC/any. El ± 0,04 de la font és la desviació estàndard espacial i estacional d'una proporció local, no una incertesa del total global, i per això el gràfic no dibuixa cap interval. Els autors presenten el model com un «thought experiment»."
+peixos,Peixos (flux passiu + migrador),0.3,1.5,2.7,Saba et al. 2021 Limnol Oceanogr 66:1639,10.1002/lno.11709,"16,1 % ± 13 % del flux total; 1,5 ± 1,2 PgC/any"
+mmp,Bomba de migrants mesopelàgics (recull d'estimacions),0.9,,3.6,Boyd et al. 2019 Nature 568:327,10.1038/s41586-019-1098-2,"Interval de les estimacions globals publicades recollides per la revisió (Supplementary Table 1)"
+total_export,Exportació total de carboni (model amb migració),,6.5,,Archibald Siegel Doney 2019,10.1029/2018GB005983,"Exportació total des de la base de la zona eufòtica (inclou el transport actiu), 60N-60S"

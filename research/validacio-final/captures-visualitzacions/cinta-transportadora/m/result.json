@@ -1,0 +1,1969 @@
+{
+ "slug": "cinta-transportadora",
+ "vp": "m",
+ "mode": "full",
+ "steps": [
+  {
+   "i": 0,
+   "j": 0,
+   "pos": {
+    "on": 0,
+    "contentTop": 479,
+    "contentBottom": 783
+   },
+   "on": 0,
+   "gh": 419,
+   "gTop": 0,
+   "ghPct": 50,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "globe",
+     "w": 320,
+     "h": 320,
+     "top": 53,
+     "role": "img",
+     "aria": 271,
+     "ariaHidden": null,
+     "ink": 57.4,
+     "hash": 499777,
+     "bw": 320,
+     "bh": 320,
+     "html": {
+      "n": 4,
+      "minFs": 10.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "fps": {
+    "fps": 60,
+    "worstFrame": 17
+   }
+  },
+  {
+   "i": 0,
+   "j": 1,
+   "pos": {
+    "on": 1,
+    "contentTop": 445,
+    "contentBottom": 819
+   },
+   "on": 1,
+   "gh": 419,
+   "gTop": 0,
+   "ghPct": 50,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "globe",
+     "w": 320,
+     "h": 320,
+     "top": 53,
+     "role": "img",
+     "aria": 271,
+     "ariaHidden": null,
+     "ink": 68.2,
+     "hash": 826709,
+     "bw": 320,
+     "bh": 320,
+     "html": {
+      "n": 3,
+      "minFs": 10.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 2,
+   "pos": {
+    "on": 2,
+    "contentTop": 479,
+    "contentBottom": 783
+   },
+   "on": 2,
+   "gh": 439,
+   "gTop": 0,
+   "ghPct": 52,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "globe",
+     "w": 320,
+     "h": 320,
+     "top": 72,
+     "role": "img",
+     "aria": 271,
+     "ariaHidden": null,
+     "ink": 69.6,
+     "hash": 517209,
+     "bw": 320,
+     "bh": 320,
+     "html": {
+      "n": 3,
+      "minFs": 10.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 3,
+   "pos": {
+    "on": 3,
+    "contentTop": 462,
+    "contentBottom": 820
+   },
+   "on": 3,
+   "gh": 419,
+   "gTop": 0,
+   "ghPct": 50,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "globe",
+     "w": 320,
+     "h": 320,
+     "top": 53,
+     "role": "img",
+     "aria": 271,
+     "ariaHidden": null,
+     "ink": 73.7,
+     "hash": 613587,
+     "bw": 320,
+     "bh": 320,
+     "html": {
+      "n": 4,
+      "minFs": 10.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 4,
+   "pos": {
+    "on": 4,
+    "contentTop": 466,
+    "contentBottom": 797
+   },
+   "on": 4,
+   "gh": 439,
+   "gTop": 0,
+   "ghPct": 52,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "globe",
+     "w": 320,
+     "h": 320,
+     "top": 72,
+     "role": "img",
+     "aria": 271,
+     "ariaHidden": null,
+     "ink": 74.3,
+     "hash": 325719,
+     "bw": 320,
+     "bh": 320,
+     "html": {
+      "n": 3,
+      "minFs": 10.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "fps": {
+    "fps": 61,
+    "worstFrame": 17
+   }
+  },
+  {
+   "i": 0,
+   "j": 5,
+   "pos": {
+    "on": 5,
+    "contentTop": 435,
+    "contentBottom": 847
+   },
+   "on": 5,
+   "gh": 439,
+   "gTop": 0,
+   "ghPct": 52,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "globe",
+     "w": 320,
+     "h": 320,
+     "top": 72,
+     "role": "img",
+     "aria": 271,
+     "ariaHidden": null,
+     "ink": 73.6,
+     "hash": 225125,
+     "bw": 320,
+     "bh": 320,
+     "html": {
+      "n": 5,
+      "minFs": 10.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 6,
+   "pos": {
+    "on": 6,
+    "contentTop": 476,
+    "contentBottom": 807
+   },
+   "on": 6,
+   "gh": 419,
+   "gTop": 0,
+   "ghPct": 50,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "globe",
+     "w": 320,
+     "h": 320,
+     "top": 53,
+     "role": "img",
+     "aria": 271,
+     "ariaHidden": null,
+     "ink": 60.1,
+     "hash": 130230,
+     "bw": 320,
+     "bh": 320,
+     "html": {
+      "n": 3,
+      "minFs": 10.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 7,
+   "pos": {
+    "on": 7,
+    "contentTop": 497,
+    "contentBottom": 766
+   },
+   "on": 7,
+   "gh": 419,
+   "gTop": 0,
+   "ghPct": 50,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "globe",
+     "w": 320,
+     "h": 320,
+     "top": 53,
+     "role": "img",
+     "aria": 271,
+     "ariaHidden": null,
+     "ink": 37.8,
+     "hash": 346623,
+     "bw": 320,
+     "bh": 320,
+     "html": {
+      "n": 2,
+      "minFs": 10.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 8,
+   "pos": {
+    "on": 8,
+    "contentTop": 479,
+    "contentBottom": 784
+   },
+   "on": 8,
+   "gh": 419,
+   "gTop": 0,
+   "ghPct": 50,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "globe",
+     "w": 320,
+     "h": 320,
+     "top": 53,
+     "role": "img",
+     "aria": 271,
+     "ariaHidden": null,
+     "ink": 73.1,
+     "hash": 219702,
+     "bw": 320,
+     "bh": 320,
+     "html": {
+      "n": 3,
+      "minFs": 10.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "hover": [
+    {
+     "id": "globe",
+     "tag": "CANVAS",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  },
+  {
+   "i": 1,
+   "j": 0,
+   "pos": {
+    "on": 0,
+    "contentTop": 451,
+    "contentBottom": 722
+   },
+   "on": 0,
+   "gh": 330,
+   "gTop": 0,
+   "ghPct": 39,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "sec",
+     "w": 350,
+     "h": 231,
+     "top": 53,
+     "role": "img",
+     "aria": 291,
+     "ariaHidden": null,
+     "ink": 79,
+     "hash": 153198,
+     "bw": 350,
+     "bh": 231,
+     "html": {
+      "n": 3,
+      "minFs": 10.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "fps": {
+    "fps": 60,
+    "worstFrame": 17
+   }
+  },
+  {
+   "i": 1,
+   "j": 1,
+   "pos": {
+    "on": 1,
+    "contentTop": 422,
+    "contentBottom": 753
+   },
+   "on": 1,
+   "gh": 330,
+   "gTop": 0,
+   "ghPct": 39,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "sec",
+     "w": 350,
+     "h": 231,
+     "top": 53,
+     "role": "img",
+     "aria": 291,
+     "ariaHidden": null,
+     "ink": 78.7,
+     "hash": 425502,
+     "bw": 350,
+     "bh": 231,
+     "html": {
+      "n": 3,
+      "minFs": 10.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ]
+  },
+  {
+   "i": 1,
+   "j": 2,
+   "pos": {
+    "on": 2,
+    "contentTop": 435,
+    "contentBottom": 739
+   },
+   "on": 2,
+   "gh": 330,
+   "gTop": 0,
+   "ghPct": 39,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "sec",
+     "w": 350,
+     "h": 231,
+     "top": 53,
+     "role": "img",
+     "aria": 291,
+     "ariaHidden": null,
+     "ink": 78.7,
+     "hash": 425502,
+     "bw": 350,
+     "bh": 231,
+     "html": {
+      "n": 4,
+      "minFs": 10.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "fps": {
+    "fps": 60,
+    "worstFrame": 17
+   }
+  },
+  {
+   "i": 1,
+   "j": 3,
+   "pos": {
+    "on": 3,
+    "contentTop": 451,
+    "contentBottom": 723
+   },
+   "on": 3,
+   "gh": 330,
+   "gTop": 0,
+   "ghPct": 39,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "sec",
+     "w": 350,
+     "h": 231,
+     "top": 53,
+     "role": "img",
+     "aria": 291,
+     "ariaHidden": null,
+     "ink": 77.7,
+     "hash": 82491,
+     "bw": 350,
+     "bh": 231,
+     "html": {
+      "n": 5,
+      "minFs": 10.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ]
+  },
+  {
+   "i": 1,
+   "hover": [
+    {
+     "id": "sec",
+     "tag": "CANVAS",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  }
+ ],
+ "figs": [
+  {
+   "k": 0,
+   "id": "denfig",
+   "gfx": [
+    {
+     "tag": "svg",
+     "id": "ts",
+     "w": 350,
+     "h": 273,
+     "top": 47,
+     "role": "img",
+     "aria": 224,
+     "ariaHidden": null,
+     "nTxt": 25,
+     "minFs": 11.5,
+     "minTxt": "31",
+     "nSmall": 0,
+     "overlaps": [
+      "1.024 | kg/m³",
+      "1.027 | 1.027,5"
+     ],
+     "nOverl": 2,
+     "clipped": []
+    },
+    {
+     "tag": "CANVAS",
+     "id": "colc",
+     "w": 350,
+     "h": 235,
+     "top": 744,
+     "role": "img",
+     "aria": 200,
+     "ariaHidden": null,
+     "ink": 75.9,
+     "hash": 57641,
+     "bw": 350,
+     "bh": 235
+    }
+   ],
+   "fps": {
+    "fps": 61,
+    "worstFrame": 17
+   },
+   "ctrls": [
+    {
+     "n": 0,
+     "tag": "INPUT",
+     "type": "range",
+     "id": "dT",
+     "txt": "",
+     "min": "-1.9",
+     "max": "30",
+     "val": "27",
+     "gfx_min": [
+      {
+       "tag": "svg",
+       "id": "ts",
+       "w": 350,
+       "h": 273,
+       "top": 47,
+       "role": "img",
+       "aria": 224,
+       "ariaHidden": null,
+       "nTxt": 25,
+       "minFs": 11.5,
+       "minTxt": "31",
+       "nSmall": 0,
+       "overlaps": [
+        "1.024 | kg/m³",
+        "1.027 | 1.027,5"
+       ],
+       "nOverl": 2,
+       "clipped": []
+      },
+      {
+       "tag": "CANVAS",
+       "id": "colc",
+       "w": 350,
+       "h": 235,
+       "top": 744,
+       "role": "img",
+       "aria": 200,
+       "ariaHidden": null,
+       "ink": 75.7,
+       "hash": 112838,
+       "bw": 350,
+       "bh": 235
+      }
+     ],
+     "gfx_max": [
+      {
+       "tag": "svg",
+       "id": "ts",
+       "w": 350,
+       "h": 273,
+       "top": 47,
+       "role": "img",
+       "aria": 224,
+       "ariaHidden": null,
+       "nTxt": 25,
+       "minFs": 11.5,
+       "minTxt": "31",
+       "nSmall": 0,
+       "overlaps": [
+        "1.024 | kg/m³",
+        "1.027 | 1.027,5"
+       ],
+       "nOverl": 2,
+       "clipped": []
+      },
+      {
+       "tag": "CANVAS",
+       "id": "colc",
+       "w": 350,
+       "h": 235,
+       "top": 744,
+       "role": "img",
+       "aria": 200,
+       "ariaHidden": null,
+       "ink": 75.8,
+       "hash": 74162,
+       "bw": 350,
+       "bh": 235
+      }
+     ],
+     "kbAfter": "27.2 (from 27) focused=true valuetext=null aria=null labelledby=null labels=1"
+    },
+    {
+     "n": 1,
+     "tag": "INPUT",
+     "type": "range",
+     "id": "dS",
+     "txt": "",
+     "min": "31",
+     "max": "38",
+     "val": "36.15",
+     "gfx_min": [
+      {
+       "tag": "svg",
+       "id": "ts",
+       "w": 350,
+       "h": 273,
+       "top": 47,
+       "role": "img",
+       "aria": 224,
+       "ariaHidden": null,
+       "nTxt": 25,
+       "minFs": 11.5,
+       "minTxt": "31",
+       "nSmall": 0,
+       "overlaps": [
+        "1.024 | kg/m³",
+        "1.027 | 1.027,5"
+       ],
+       "nOverl": 2,
+       "clipped": []
+      },
+      {
+       "tag": "CANVAS",
+       "id": "colc",
+       "w": 350,
+       "h": 235,
+       "top": 744,
+       "role": "img",
+       "aria": 200,
+       "ariaHidden": null,
+       "ink": 75.9,
+       "hash": 57641,
+       "bw": 350,
+       "bh": 235
+      }
+     ],
+     "gfx_max": [
+      {
+       "tag": "svg",
+       "id": "ts",
+       "w": 350,
+       "h": 273,
+       "top": 47,
+       "role": "img",
+       "aria": 224,
+       "ariaHidden": null,
+       "nTxt": 25,
+       "minFs": 11.5,
+       "minTxt": "31",
+       "nSmall": 0,
+       "overlaps": [
+        "1.024 | kg/m³",
+        "1.027 | 1.027,5"
+       ],
+       "nOverl": 2,
+       "clipped": []
+      },
+      {
+       "tag": "CANVAS",
+       "id": "colc",
+       "w": 350,
+       "h": 235,
+       "top": 744,
+       "role": "img",
+       "aria": 200,
+       "ariaHidden": null,
+       "ink": 75.9,
+       "hash": 57641,
+       "bw": 350,
+       "bh": 235
+      }
+     ],
+     "kbAfter": "36.17 (from 36.15) focused=true valuetext=null aria=null labelledby=null labels=1"
+    },
+    {
+     "n": 2,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Corrent del Golf (Florida)",
+     "val": "",
+     "before": "false",
+     "after": "true txt=Corrent del Golf (Florida",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "ts",
+       "w": 350,
+       "h": 273,
+       "top": 47,
+       "role": "img",
+       "aria": 224,
+       "ariaHidden": null,
+       "nTxt": 25,
+       "minFs": 11.5,
+       "minTxt": "31",
+       "nSmall": 0,
+       "overlaps": [
+        "1.024 | kg/m³",
+        "1.027 | 1.027,5"
+       ],
+       "nOverl": 2,
+       "clipped": []
+      },
+      {
+       "tag": "CANVAS",
+       "id": "colc",
+       "w": 350,
+       "h": 235,
+       "top": 744,
+       "role": "img",
+       "aria": 200,
+       "ariaHidden": null,
+       "ink": 75.9,
+       "hash": 57641,
+       "bw": 350,
+       "bh": 235
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Davant d'Irlanda",
+     "val": "",
+     "before": "false",
+     "after": "true txt=Davant d'Irlanda",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "ts",
+       "w": 350,
+       "h": 273,
+       "top": 47,
+       "role": "img",
+       "aria": 224,
+       "ariaHidden": null,
+       "nTxt": 25,
+       "minFs": 11.5,
+       "minTxt": "31",
+       "nSmall": 0,
+       "overlaps": [
+        "1.024 | kg/m³",
+        "1.027 | 1.027,5"
+       ],
+       "nOverl": 2,
+       "clipped": []
+      },
+      {
+       "tag": "CANVAS",
+       "id": "colc",
+       "w": 350,
+       "h": 235,
+       "top": 744,
+       "role": "img",
+       "aria": 200,
+       "ariaHidden": null,
+       "ink": 75.9,
+       "hash": 57641,
+       "bw": 350,
+       "bh": 235
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Mar del Labrador, a l'hivern",
+     "val": "",
+     "before": "false",
+     "after": "true txt=Mar del Labrador, a l'hiv",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "ts",
+       "w": 350,
+       "h": 273,
+       "top": 47,
+       "role": "img",
+       "aria": 224,
+       "ariaHidden": null,
+       "nTxt": 25,
+       "minFs": 11.5,
+       "minTxt": "31",
+       "nSmall": 0,
+       "overlaps": [
+        "1.024 | kg/m³",
+        "1.027 | 1.027,5"
+       ],
+       "nOverl": 2,
+       "clipped": []
+      },
+      {
+       "tag": "CANVAS",
+       "id": "colc",
+       "w": 350,
+       "h": 235,
+       "top": 744,
+       "role": "img",
+       "aria": 200,
+       "ariaHidden": null,
+       "ink": 75.9,
+       "hash": 45595,
+       "bw": 350,
+       "bh": 235
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Mar de Groenlàndia, a l'hivern",
+     "val": "",
+     "before": "false",
+     "after": "true txt=Mar de Groenlàndia, a l'h",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "ts",
+       "w": 350,
+       "h": 273,
+       "top": 47,
+       "role": "img",
+       "aria": 224,
+       "ariaHidden": null,
+       "nTxt": 25,
+       "minFs": 11.5,
+       "minTxt": "31",
+       "nSmall": 0,
+       "overlaps": [
+        "1.024 | kg/m³",
+        "1.027 | 1.027,5"
+       ],
+       "nOverl": 2,
+       "clipped": []
+      },
+      {
+       "tag": "CANVAS",
+       "id": "colc",
+       "w": 350,
+       "h": 235,
+       "top": 744,
+       "role": "img",
+       "aria": 200,
+       "ariaHidden": null,
+       "ink": 75.7,
+       "hash": 110907,
+       "bw": 350,
+       "bh": 235
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "El mateix, amb més aigua dolça",
+     "val": "",
+     "before": "false",
+     "after": "true txt=El mateix, amb més aigua ",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "ts",
+       "w": 350,
+       "h": 273,
+       "top": 47,
+       "role": "img",
+       "aria": 224,
+       "ariaHidden": null,
+       "nTxt": 25,
+       "minFs": 11.5,
+       "minTxt": "31",
+       "nSmall": 0,
+       "overlaps": [
+        "1.024 | kg/m³",
+        "1.027 | 1.027,5"
+       ],
+       "nOverl": 2,
+       "clipped": []
+      },
+      {
+       "tag": "CANVAS",
+       "id": "colc",
+       "w": 350,
+       "h": 235,
+       "top": 744,
+       "role": "img",
+       "aria": 200,
+       "ariaHidden": null,
+       "ink": 75.9,
+       "hash": 63033,
+       "bw": 350,
+       "bh": 235
+      }
+     ]
+    }
+   ],
+   "hover": [
+    {
+     "id": "ts",
+     "tag": "svg",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    },
+    {
+     "id": "colc",
+     "tag": "CANVAS",
+     "tried": 10,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  },
+  {
+   "k": 1,
+   "id": "flowfig",
+   "gfx": [],
+   "fps": {
+    "fps": 61,
+    "worstFrame": 17
+   },
+   "ctrls": [
+    {
+     "n": 0,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Aigua",
+     "val": "",
+     "before": "true",
+     "after": "true txt=Aigua",
+     "gfx": []
+    },
+    {
+     "n": 1,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Calor",
+     "val": "",
+     "before": "false",
+     "after": "true txt=Calor",
+     "gfx": []
+    }
+   ],
+   "hover": []
+  },
+  {
+   "k": 2,
+   "id": "winfig",
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "win",
+     "w": 350,
+     "h": 133,
+     "top": 347,
+     "role": "img",
+     "aria": 318,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 495267,
+     "bw": 350,
+     "bh": 133,
+     "html": {
+      "n": 4,
+      "minFs": 10.5,
+      "overlaps": [],
+      "nOverl": 0,
+      "clipped": []
+     }
+    }
+   ],
+   "fps": {
+    "fps": 61,
+    "worstFrame": 17
+   },
+   "ctrls": [
+    {
+     "n": 0,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Gener",
+     "val": "",
+     "before": "true",
+     "after": "true txt=Gener",
+     "gfx": [
+      {
+       "tag": "CANVAS",
+       "id": "win",
+       "w": 350,
+       "h": 133,
+       "top": 347,
+       "role": "img",
+       "aria": 318,
+       "ariaHidden": null,
+       "ink": 100,
+       "hash": 495267,
+       "bw": 350,
+       "bh": 133,
+       "html": {
+        "n": 4,
+        "minFs": 10.5,
+        "overlaps": [],
+        "nOverl": 0,
+        "clipped": []
+       }
+      }
+     ]
+    },
+    {
+     "n": 1,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Juliol",
+     "val": "",
+     "before": "false",
+     "after": "true txt=Juliol",
+     "gfx": [
+      {
+       "tag": "CANVAS",
+       "id": "win",
+       "w": 350,
+       "h": 133,
+       "top": 318,
+       "role": "img",
+       "aria": 318,
+       "ariaHidden": null,
+       "ink": 100,
+       "hash": 890142,
+       "bw": 350,
+       "bh": 133,
+       "html": {
+        "n": 4,
+        "minFs": 10.5,
+        "overlaps": [],
+        "nOverl": 0,
+        "clipped": []
+       }
+      }
+     ]
+    }
+   ],
+   "hover": [
+    {
+     "id": "win",
+     "tag": "CANVAS",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  },
+  {
+   "k": 3,
+   "id": "paleofig",
+   "gfx": [
+    {
+     "tag": "svg",
+     "id": "paleo",
+     "w": 350,
+     "h": 360,
+     "top": 185,
+     "role": "img",
+     "aria": 430,
+     "ariaHidden": null,
+     "nTxt": 22,
+     "minFs": 11.5,
+     "minTxt": "20.000",
+     "nSmall": 0,
+     "overlaps": [
+      "Avui | anys enrere"
+     ],
+     "nOverl": 1,
+     "clipped": []
+    }
+   ],
+   "fps": {
+    "fps": 60,
+    "worstFrame": 17
+   },
+   "ctrls": [],
+   "hover": [
+    {
+     "id": "paleo",
+     "tag": "svg",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  },
+  {
+   "k": 4,
+   "id": "rapidfig",
+   "gfx": [
+    {
+     "tag": "svg",
+     "id": "rapid",
+     "w": 350,
+     "h": 300,
+     "top": 236,
+     "role": "img",
+     "aria": 260,
+     "ariaHidden": null,
+     "nTxt": 13,
+     "minFs": 11.5,
+     "minTxt": "2005",
+     "nSmall": 0,
+     "overlaps": [],
+     "nOverl": 0,
+     "clipped": []
+    }
+   ],
+   "fps": {
+    "fps": 60,
+    "worstFrame": 17
+   },
+   "ctrls": [
+    {
+     "n": 0,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Total",
+     "val": "",
+     "before": "true",
+     "after": "true txt=Total",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "rapid",
+       "w": 350,
+       "h": 300,
+       "top": 236,
+       "role": "img",
+       "aria": 260,
+       "ariaHidden": null,
+       "nTxt": 13,
+       "minFs": 11.5,
+       "minTxt": "2005",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ]
+    },
+    {
+     "n": 1,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Corrent de Florida",
+     "val": "",
+     "before": "false",
+     "after": "true txt=Corrent de Florida",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "rapid",
+       "w": 350,
+       "h": 300,
+       "top": 236,
+       "role": "img",
+       "aria": 260,
+       "ariaHidden": null,
+       "nTxt": 17,
+       "minFs": 11.5,
+       "minTxt": "2005",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Vent",
+     "val": "",
+     "before": "false",
+     "after": "true txt=Vent",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "rapid",
+       "w": 350,
+       "h": 300,
+       "top": 236,
+       "role": "img",
+       "aria": 260,
+       "ariaHidden": null,
+       "nTxt": 14,
+       "minFs": 11.5,
+       "minTxt": "2005",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Oceà obert",
+     "val": "",
+     "before": "false",
+     "after": "true txt=Oceà obert",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "rapid",
+       "w": 350,
+       "h": 300,
+       "top": 236,
+       "role": "img",
+       "aria": 260,
+       "ariaHidden": null,
+       "nTxt": 17,
+       "minFs": 11.5,
+       "minTxt": "2005",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ]
+    }
+   ],
+   "hover": [
+    {
+     "id": "rapid",
+     "tag": "svg",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "id": "stfig",
+   "gfx": [
+    {
+     "tag": "svg",
+     "id": "stom",
+     "w": 350,
+     "h": 240,
+     "top": 159,
+     "role": "img",
+     "aria": 298,
+     "ariaHidden": null,
+     "nTxt": 8,
+     "minFs": 12,
+     "minTxt": "cinta aturada",
+     "nSmall": 0,
+     "overlaps": [],
+     "nOverl": 0,
+     "clipped": []
+    }
+   ],
+   "fps": {
+    "fps": 61,
+    "worstFrame": 17
+   },
+   "ctrls": [
+    {
+     "n": 0,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "stPlay",
+     "txt": "Reprodueix",
+     "val": "",
+     "before": null,
+     "after": "null txt=Atura",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "stom",
+       "w": 350,
+       "h": 240,
+       "top": 159,
+       "role": "img",
+       "aria": 298,
+       "ariaHidden": null,
+       "nTxt": 8,
+       "minFs": 12,
+       "minTxt": "cinta aturada",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ]
+    },
+    {
+     "n": 1,
+     "tag": "INPUT",
+     "type": "range",
+     "id": "stF",
+     "txt": "",
+     "min": "0",
+     "max": "0.34",
+     "val": "0.08",
+     "gfx_min": [
+      {
+       "tag": "svg",
+       "id": "stom",
+       "w": 350,
+       "h": 240,
+       "top": 159,
+       "role": "img",
+       "aria": 298,
+       "ariaHidden": null,
+       "nTxt": 8,
+       "minFs": 12,
+       "minTxt": "cinta aturada",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ],
+     "gfx_max": [
+      {
+       "tag": "svg",
+       "id": "stom",
+       "w": 350,
+       "h": 240,
+       "top": 159,
+       "role": "img",
+       "aria": 298,
+       "ariaHidden": null,
+       "nTxt": 8,
+       "minFs": 12,
+       "minTxt": "cinta aturada",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ],
+     "kbAfter": "0.082 (from 0.08) focused=true valuetext=null aria=null labelledby=null labels=1"
+    }
+   ],
+   "hover": [
+    {
+     "id": "stom",
+     "tag": "svg",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  },
+  {
+   "k": 6,
+   "id": "pjfig",
+   "gfx": [
+    {
+     "tag": "svg",
+     "id": "pj",
+     "w": 350,
+     "h": 266,
+     "top": 27,
+     "role": "img",
+     "aria": 349,
+     "ariaHidden": null,
+     "nTxt": 11,
+     "minFs": 11.5,
+     "minTxt": "−0 %",
+     "nSmall": 0,
+     "overlaps": [],
+     "nOverl": 0,
+     "clipped": [
+      "−0 %"
+     ]
+    }
+   ],
+   "fps": {
+    "fps": 60,
+    "worstFrame": 17
+   },
+   "ctrls": [
+    {
+     "n": 0,
+     "tag": "INPUT",
+     "type": "range",
+     "id": "pjR",
+     "txt": "Afebliment de la cinta cap al ",
+     "min": "0",
+     "max": "90",
+     "val": "30",
+     "gfx_min": [
+      {
+       "tag": "svg",
+       "id": "pj",
+       "w": 350,
+       "h": 266,
+       "top": 27,
+       "role": "img",
+       "aria": 349,
+       "ariaHidden": null,
+       "nTxt": 11,
+       "minFs": 11.5,
+       "minTxt": "−0 %",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": [
+        "−0 %"
+       ]
+      }
+     ],
+     "gfx_max": [
+      {
+       "tag": "svg",
+       "id": "pj",
+       "w": 350,
+       "h": 266,
+       "top": 27,
+       "role": "img",
+       "aria": 349,
+       "ariaHidden": null,
+       "nTxt": 11,
+       "minFs": 11.5,
+       "minTxt": "−0 %",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": [
+        "−0 %"
+       ]
+      }
+     ],
+     "kbAfter": "32 (from 30) focused=true valuetext=null aria=Afebliment de la cinta cap al 2100, en percentatge labelledby=null labels=0"
+    }
+   ],
+   "hover": [
+    {
+     "id": "pj",
+     "tag": "svg",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  },
+  {
+   "k": 7,
+   "id": "tipfig",
+   "gfx": [
+    {
+     "tag": "svg",
+     "id": "tip",
+     "w": 350,
+     "h": 324,
+     "top": 203,
+     "role": "img",
+     "aria": 415,
+     "ariaHidden": null,
+     "nTxt": 15,
+     "minFs": 11.5,
+     "minTxt": "2050",
+     "nSmall": 0,
+     "overlaps": [],
+     "nOverl": 0,
+     "clipped": []
+    }
+   ],
+   "fps": {
+    "fps": 61,
+    "worstFrame": 17
+   },
+   "ctrls": [],
+   "hover": [
+    {
+     "id": "tip",
+     "tag": "svg",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  }
+ ],
+ "page": {
+  "W": 390,
+  "H": 844,
+  "sw": 390,
+  "docH": 35523,
+  "wide": [],
+  "scrolly": [
+   {
+    "i": 0,
+    "id": "",
+    "aria": "El viatge de l'aigua per l'Atlàntic",
+    "steps": 9,
+    "g": "graphic"
+   },
+   {
+    "i": 1,
+    "id": "",
+    "aria": "Tall de l'Atlàntic",
+    "steps": 4,
+    "g": "graphic"
+   }
+  ],
+  "figs": [
+   {
+    "i": 0,
+    "id": "denfig",
+    "cls": "fig wide",
+    "h": 1135,
+    "cap": "Densitat calculada amb l'equació d'estat internacional de l'aigua de mar (EOS-80) a la pre",
+    "ctrls": 7
+   },
+   {
+    "i": 1,
+    "id": "flowfig",
+    "cls": "fig",
+    "h": 469,
+    "cap": "Cada quadradet és 0,1 Sv (100.000 m³/s). Rius: Dai i Trenberth (2002). Cinta i corrent de ",
+    "ctrls": 2
+   },
+   {
+    "i": 2,
+    "id": "winfig",
+    "cls": "fig wide",
+    "h": 375,
+    "cap": "Temperatura de l'aire a prop de la superfície, mitjana 1991–2020, menys la mitjana de tota",
+    "ctrls": 2
+   },
+   {
+    "i": 3,
+    "id": "paleofig",
+    "cls": "fig wide",
+    "h": 474,
+    "cap": "A dalt: isòtops d'oxigen (δ¹⁸O) del gel de NGRIP, escala de temps GICC05, valors cada 100 ",
+    "ctrls": 0
+   },
+   {
+    "i": 4,
+    "id": "rapidfig",
+    "cls": "fig wide",
+    "h": 539,
+    "cap": "Mitjanes mensuals de les dades RAPID-MOCHA-WBTS (versió v2024.1a), de l'abril del 2004 al ",
+    "ctrls": 4
+   },
+   {
+    "i": 5,
+    "id": "stfig",
+    "cls": "fig wide",
+    "h": 527,
+    "cap": "Model conceptual de dues caixes de Stommel (1961), en unitats adimensionals. No és una pre",
+    "ctrls": 2
+   },
+   {
+    "i": 6,
+    "id": "pjfig",
+    "cls": "fig wide",
+    "h": 789,
+    "cap": "Percentatge d'afebliment cap al 2100 respecte al clima recent, segons cada font (les refer",
+    "ctrls": 1
+   },
+   {
+    "i": 7,
+    "id": "tipfig",
+    "cls": "fig wide",
+    "h": 438,
+    "cap": "Estimacions publicades, no prediccions d'aquest article. Cada mètode respon una pregunta u",
+    "ctrls": 0
+   }
+  ],
+  "controls": [
+   {
+    "t": "INPUT:range",
+    "id": "dT",
+    "label": "Temperatura",
+    "hasAria": true,
+    "pressed": null,
+    "h": 36,
+    "w": 350,
+    "fs": "18px",
+    "valuetext": null
+   },
+   {
+    "t": "INPUT:range",
+    "id": "dS",
+    "label": "Salinitat",
+    "hasAria": true,
+    "pressed": null,
+    "h": 36,
+    "w": 350,
+    "fs": "18px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Corrent del Golf (Florida)",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 30,
+    "w": 143,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Davant d'Irlanda",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 90,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Mar del Labrador, a l'hivern",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 147,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Mar de Groenlàndia, a l'hivern",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 162,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "El mateix, amb més aigua dolça",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 170,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Aigua",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 31,
+    "w": 33,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Calor",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 31,
+    "w": 30,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Gener",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 31,
+    "w": 36,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Juliol",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 31,
+    "w": 31,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Total",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 31,
+    "w": 30,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Corrent de Florida",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 31,
+    "w": 102,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Vent",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 31,
+    "w": 25,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Oceà obert",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 31,
+    "w": 62,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "stPlay",
+    "label": "Reprodueix",
+    "hasAria": false,
+    "pressed": null,
+    "h": 18,
+    "w": 62,
+    "fs": "12.5px",
+    "valuetext": null
+   },
+   {
+    "t": "INPUT:range",
+    "id": "stF",
+    "label": "Aigua dolça que arriba al nord",
+    "hasAria": true,
+    "pressed": null,
+    "h": 36,
+    "w": 350,
+    "fs": "14px",
+    "valuetext": null
+   },
+   {
+    "t": "INPUT:range",
+    "id": "pjR",
+    "label": "Afebliment de la cinta cap al 2100, en p",
+    "hasAria": true,
+    "pressed": null,
+    "h": 36,
+    "w": 346,
+    "fs": "18px",
+    "valuetext": null
+   }
+  ],
+  "tabbableSvg": [],
+  "smallHtml": [
+   "11px SPAN. «−2 °C»",
+   "11px SPAN. «14 °C»",
+   "11px SPAN. «30 °C»",
+   "10.5px DIV.ann c «Uns 27 °Cals tròpics»",
+   "10.5px B. «Uns 27 °C»",
+   "10.5px DIV.ann c «Uns 7 °Cal sud d'Islàndia»",
+   "10.5px B. «Uns 7 °C»",
+   "10.5px SPAN. «Equador»",
+   "10.5px SPAN. «Corrent de superfície»",
+   "10.5px SPAN. «Corrent de fons»",
+   "10.5px SPAN. «On s'enfonsa l'aigua»",
+   "11px SPAN. «−1 °C»",
+   "11px SPAN. «13 °C»",
+   "11px SPAN. «27 °C»",
+   "10.5px DIV.ann c «Capa calentanomés uns centenar»"
+  ],
+  "colorsUsed": {
+   "#C9C9C9": 9,
+   "#B9B9B9": 1,
+   "#DADADA": 3,
+   "#7A7A7A": 15,
+   "#2C5DA8": 138,
+   "#121212": 18,
+   "#FFFFFF": 2,
+   "#EEEEEC": 20,
+   "#C8442A": 12,
+   "#1F3F73": 1,
+   "#4A4A4A": 2,
+   "#FFF": 2
+  },
+  "styleVars": [
+   "--salt:#16786C",
+   "--deep:#1F3F73"
+  ]
+ },
+ "resources": [
+  {
+   "u": "https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap",
+   "kb": 0,
+   "dkb": 22,
+   "ms": 6
+  },
+  {
+   "u": "/assets/ib.css",
+   "kb": 0,
+   "dkb": 6,
+   "ms": 7
+  },
+  {
+   "u": "/assets/article.css",
+   "kb": 0,
+   "dkb": 7,
+   "ms": 7
+  },
+  {
+   "u": "/assets/logo.png",
+   "kb": 0,
+   "dkb": 20,
+   "ms": 8
+  },
+  {
+   "u": "https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js",
+   "kb": 0,
+   "dkb": 273,
+   "ms": 10
+  },
+  {
+   "u": "https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js",
+   "kb": 0,
+   "dkb": 7,
+   "ms": 10
+  },
+  {
+   "u": "/assets/scrolly.js",
+   "kb": 0,
+   "dkb": 1,
+   "ms": 10
+  },
+  {
+   "u": "/assets/ib.js",
+   "kb": 0,
+   "dkb": 1,
+   "ms": 10
+  },
+  {
+   "u": "/articles/cinta-transportadora/cinta-transportadora.js",
+   "kb": 67,
+   "dkb": 66,
+   "ms": 11
+  },
+  {
+   "u": "/articles/cinta-transportadora/dades.js",
+   "kb": 285,
+   "dkb": 285,
+   "ms": 12
+  },
+  {
+   "u": "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-110m.json",
+   "kb": 18,
+   "dkb": 54,
+   "ms": 52
+  },
+  {
+   "u": "DOC",
+   "dkb": 60
+  }
+ ],
+ "logs": [],
+ "failed": [],
+ "endOverflow": {
+  "sw": 390,
+  "W": 390
+ }
+}

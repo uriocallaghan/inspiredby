@@ -1,0 +1,1364 @@
+{
+ "slug": "on-va-el-co2",
+ "vp": "d",
+ "mode": "full",
+ "steps": [
+  {
+   "i": 0,
+   "j": 0,
+   "pos": {
+    "on": 0,
+    "contentTop": 319,
+    "contentBottom": 581
+   },
+   "on": 0,
+   "gh": 900,
+   "gTop": 135,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 303,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 45.9,
+     "hash": 363934,
+     "bw": 760,
+     "bh": 562
+    }
+   ],
+   "fps": {
+    "fps": 61,
+    "worstFrame": 17
+   }
+  },
+  {
+   "i": 0,
+   "j": 1,
+   "pos": {
+    "on": 1,
+    "contentTop": 312,
+    "contentBottom": 589
+   },
+   "on": 1,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 48.1,
+     "hash": 227483,
+     "bw": 760,
+     "bh": 562
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 2,
+   "pos": {
+    "on": 2,
+    "contentTop": 284,
+    "contentBottom": 617
+   },
+   "on": 2,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 48.7,
+     "hash": 2152,
+     "bw": 760,
+     "bh": 562
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 3,
+   "pos": {
+    "on": 3,
+    "contentTop": 319,
+    "contentBottom": 581
+   },
+   "on": 3,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 48.9,
+     "hash": 925091,
+     "bw": 760,
+     "bh": 562
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 4,
+   "pos": {
+    "on": 4,
+    "contentTop": 339,
+    "contentBottom": 562
+   },
+   "on": 4,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 48,
+     "hash": 163086,
+     "bw": 760,
+     "bh": 562
+    }
+   ],
+   "fps": {
+    "fps": 60,
+    "worstFrame": 17
+   }
+  },
+  {
+   "i": 0,
+   "j": 5,
+   "pos": {
+    "on": 5,
+    "contentTop": 286,
+    "contentBottom": 615
+   },
+   "on": 5,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 47.1,
+     "hash": 398505,
+     "bw": 760,
+     "bh": 562
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 6,
+   "pos": {
+    "on": 6,
+    "contentTop": 319,
+    "contentBottom": 581
+   },
+   "on": 6,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 47,
+     "hash": 834948,
+     "bw": 760,
+     "bh": 562
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 7,
+   "pos": {
+    "on": 7,
+    "contentTop": 291,
+    "contentBottom": 610
+   },
+   "on": 7,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 47.4,
+     "hash": 543293,
+     "bw": 760,
+     "bh": 562
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 8,
+   "pos": {
+    "on": 8,
+    "contentTop": 305,
+    "contentBottom": 596
+   },
+   "on": 8,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "aCv",
+     "w": 760,
+     "h": 562,
+     "top": 167,
+     "role": "img",
+     "aria": 264,
+     "ariaHidden": null,
+     "ink": 53.6,
+     "hash": 659056,
+     "bw": 760,
+     "bh": 562
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "hover": [
+    {
+     "id": "aCv",
+     "tag": "CANVAS",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  },
+  {
+   "i": 1,
+   "j": 0,
+   "pos": {
+    "on": 0,
+    "contentTop": 273,
+    "contentBottom": 627
+   },
+   "on": 0,
+   "gh": 900,
+   "gTop": 135,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bCv",
+     "w": 760,
+     "h": 547,
+     "top": 324,
+     "role": "img",
+     "aria": 262,
+     "ariaHidden": null,
+     "ink": 67.5,
+     "hash": 166472,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "fps": {
+    "fps": 61,
+    "worstFrame": 17
+   }
+  },
+  {
+   "i": 1,
+   "j": 1,
+   "pos": {
+    "on": 1,
+    "contentTop": 163,
+    "contentBottom": 738
+   },
+   "on": 1,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bCv",
+     "w": 760,
+     "h": 547,
+     "top": 189,
+     "role": "img",
+     "aria": 262,
+     "ariaHidden": null,
+     "ink": 58,
+     "hash": 515524,
+     "bw": 760,
+     "bh": 547
+    }
+   ]
+  },
+  {
+   "i": 1,
+   "j": 2,
+   "pos": {
+    "on": 2,
+    "contentTop": 248,
+    "contentBottom": 652
+   },
+   "on": 2,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bCv",
+     "w": 760,
+     "h": 547,
+     "top": 189,
+     "role": "img",
+     "aria": 262,
+     "ariaHidden": null,
+     "ink": 66.1,
+     "hash": 393025,
+     "bw": 760,
+     "bh": 547
+    }
+   ]
+  },
+  {
+   "i": 1,
+   "j": 3,
+   "pos": {
+    "on": 3,
+    "contentTop": 248,
+    "contentBottom": 652
+   },
+   "on": 3,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bCv",
+     "w": 760,
+     "h": 547,
+     "top": 189,
+     "role": "img",
+     "aria": 262,
+     "ariaHidden": null,
+     "ink": 66.6,
+     "hash": 405507,
+     "bw": 760,
+     "bh": 547
+    }
+   ],
+   "fps": {
+    "fps": 60,
+    "worstFrame": 17
+   }
+  },
+  {
+   "i": 1,
+   "j": 4,
+   "pos": {
+    "on": 4,
+    "contentTop": 234,
+    "contentBottom": 667
+   },
+   "on": 4,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bCv",
+     "w": 760,
+     "h": 547,
+     "top": 189,
+     "role": "img",
+     "aria": 262,
+     "ariaHidden": null,
+     "ink": 53.6,
+     "hash": 54533,
+     "bw": 760,
+     "bh": 547
+    }
+   ]
+  },
+  {
+   "i": 1,
+   "j": 5,
+   "pos": {
+    "on": 5,
+    "contentTop": 191,
+    "contentBottom": 709
+   },
+   "on": 5,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "bCv",
+     "w": 760,
+     "h": 547,
+     "top": 189,
+     "role": "img",
+     "aria": 262,
+     "ariaHidden": null,
+     "ink": 53.8,
+     "hash": 945542,
+     "bw": 760,
+     "bh": 547
+    }
+   ]
+  },
+  {
+   "i": 1,
+   "hover": [
+    {
+     "id": "bCv",
+     "tag": "CANVAS",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  }
+ ],
+ "figs": [
+  {
+   "k": 0,
+   "id": "keelFig",
+   "gfx": [
+    {
+     "tag": "svg",
+     "id": "kSvg",
+     "w": 1120,
+     "h": 530,
+     "top": 159,
+     "role": "img",
+     "aria": 209,
+     "ariaHidden": null,
+     "nTxt": 34,
+     "minFs": 11,
+     "minTxt": "mesures a Maunakea",
+     "nSmall": 0,
+     "overlaps": [
+      "315,7 ppm | març del 1958",
+      "432,3 ppm → | maig del 2026"
+     ],
+     "nOverl": 2,
+     "clipped": [
+      "ppm"
+     ]
+    }
+   ],
+   "fps": {
+    "fps": 61,
+    "worstFrame": 17
+   },
+   "ctrls": [
+    {
+     "n": 0,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "1958–1961",
+     "val": "",
+     "before": "false",
+     "after": "true txt=1958–1961",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "kSvg",
+       "w": 1120,
+       "h": 530,
+       "top": 159,
+       "role": "img",
+       "aria": 209,
+       "ariaHidden": null,
+       "nTxt": 37,
+       "minFs": 11.5,
+       "minTxt": "1960",
+       "nSmall": 0,
+       "overlaps": [
+        "315,7 ppm | març del 1958",
+        "432,3 ppm → | maig del 2026"
+       ],
+       "nOverl": 2,
+       "clipped": [
+        "ppm"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 1,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "1996–1999",
+     "val": "",
+     "before": "false",
+     "after": "true txt=1996–1999",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "kSvg",
+       "w": 1120,
+       "h": 530,
+       "top": 159,
+       "role": "img",
+       "aria": 209,
+       "ariaHidden": null,
+       "nTxt": 40,
+       "minFs": 11.5,
+       "minTxt": "1960",
+       "nSmall": 0,
+       "overlaps": [
+        "315,7 ppm | març del 1958",
+        "432,3 ppm → | maig del 2026",
+        "1996 | 358"
+       ],
+       "nOverl": 3,
+       "clipped": [
+        "ppm"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "2022–2026",
+     "val": "",
+     "before": "false",
+     "after": "true txt=2022–2026",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "kSvg",
+       "w": 1120,
+       "h": 530,
+       "top": 159,
+       "role": "img",
+       "aria": 209,
+       "ariaHidden": null,
+       "nTxt": 34,
+       "minFs": 11,
+       "minTxt": "mesures a Maunakea",
+       "nSmall": 0,
+       "overlaps": [
+        "315,7 ppm | març del 1958",
+        "432,3 ppm → | maig del 2026"
+       ],
+       "nOverl": 2,
+       "clipped": [
+        "ppm"
+       ]
+      }
+     ]
+    }
+   ],
+   "hover": [
+    {
+     "id": "kSvg",
+     "tag": "svg",
+     "tried": 20,
+     "hits": 15,
+     "outside": 0,
+     "sample": [
+      {
+       "cls": "tip",
+       "txt": "abril 2023: 423,35 ppmsense cicle estacional: 420,83",
+       "l": 262,
+       "r": 434,
+       "t": 327,
+       "b": 375,
+       "out": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "k": 1,
+   "id": "yearFig",
+   "gfx": [
+    {
+     "tag": "svg",
+     "id": "ySvg",
+     "w": 802,
+     "h": 361,
+     "top": 240,
+     "role": "img",
+     "aria": 263,
+     "ariaHidden": null,
+     "nTxt": 16,
+     "minFs": 11.5,
+     "minTxt": "0",
+     "nSmall": 0,
+     "overlaps": [],
+     "nOverl": 0,
+     "clipped": []
+    }
+   ],
+   "fps": {
+    "fps": 61,
+    "worstFrame": 17
+   },
+   "ctrls": [
+    {
+     "n": 0,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "1987",
+     "val": "",
+     "before": "false",
+     "after": "true txt=1987",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "ySvg",
+       "w": 802,
+       "h": 361,
+       "top": 240,
+       "role": "img",
+       "aria": 263,
+       "ariaHidden": null,
+       "nTxt": 16,
+       "minFs": 11.5,
+       "minTxt": "0",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ]
+    },
+    {
+     "n": 1,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "1992",
+     "val": "",
+     "before": "false",
+     "after": "true txt=1992",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "ySvg",
+       "w": 802,
+       "h": 361,
+       "top": 240,
+       "role": "img",
+       "aria": 263,
+       "ariaHidden": null,
+       "nTxt": 16,
+       "minFs": 11.5,
+       "minTxt": "0",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "1998",
+     "val": "",
+     "before": "false",
+     "after": "true txt=1998",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "ySvg",
+       "w": 802,
+       "h": 361,
+       "top": 240,
+       "role": "img",
+       "aria": 263,
+       "ariaHidden": null,
+       "nTxt": 16,
+       "minFs": 11.5,
+       "minTxt": "0",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "2023",
+     "val": "",
+     "before": "false",
+     "after": "true txt=2023",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "ySvg",
+       "w": 802,
+       "h": 361,
+       "top": 240,
+       "role": "img",
+       "aria": 263,
+       "ariaHidden": null,
+       "nTxt": 16,
+       "minFs": 11.5,
+       "minTxt": "0",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "2024",
+     "val": "",
+     "before": "false",
+     "after": "true txt=2024",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "ySvg",
+       "w": 802,
+       "h": 361,
+       "top": 240,
+       "role": "img",
+       "aria": 263,
+       "ariaHidden": null,
+       "nTxt": 16,
+       "minFs": 11.5,
+       "minTxt": "0",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "2025",
+     "val": "",
+     "before": "false",
+     "after": "true txt=2025",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "ySvg",
+       "w": 802,
+       "h": 361,
+       "top": 240,
+       "role": "img",
+       "aria": 263,
+       "ariaHidden": null,
+       "nTxt": 16,
+       "minFs": 11.5,
+       "minTxt": "0",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ]
+    }
+   ],
+   "hover": [
+    {
+     "id": "ySvg",
+     "tag": "svg",
+     "tried": 20,
+     "hits": 20,
+     "outside": 0,
+     "sample": [
+      {
+       "cls": "tip",
+       "txt": "1967 · a l'aire 26%",
+       "l": 233,
+       "r": 348,
+       "t": 411,
+       "b": 442,
+       "out": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "k": 2,
+   "id": "histFig",
+   "gfx": [
+    {
+     "tag": "svg",
+     "id": "hSvg",
+     "w": 1120,
+     "h": 460,
+     "top": 180,
+     "role": "img",
+     "aria": 280,
+     "ariaHidden": null,
+     "nTxt": 29,
+     "minFs": 11,
+     "minTxt": "Des del 1959: mesures dir",
+     "nSmall": 0,
+     "overlaps": [
+      "Fòssil i ciment | 38,4 Gt",
+      "Ús del sòl | 4,4 Gt",
+      "Atmosfera | 16,0 Gt",
+      "Oceà | 11,7 Gt",
+      "Terra | 13,3 Gt"
+     ],
+     "nOverl": 5,
+     "clipped": []
+    }
+   ],
+   "fps": {
+    "fps": 61,
+    "worstFrame": 17
+   },
+   "ctrls": [
+    {
+     "n": 0,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Cada any",
+     "val": "",
+     "before": "true",
+     "after": "true txt=Cada any",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "hSvg",
+       "w": 1120,
+       "h": 460,
+       "top": 180,
+       "role": "img",
+       "aria": 280,
+       "ariaHidden": null,
+       "nTxt": 29,
+       "minFs": 11,
+       "minTxt": "Des del 1959: mesures dir",
+       "nSmall": 0,
+       "overlaps": [
+        "Fòssil i ciment | 38,4 Gt",
+        "Ús del sòl | 4,4 Gt",
+        "Atmosfera | 16,0 Gt",
+        "Oceà | 11,7 Gt",
+        "Terra | 13,3 Gt"
+       ],
+       "nOverl": 5,
+       "clipped": []
+      }
+     ]
+    },
+    {
+     "n": 1,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Acumulat des del 1850",
+     "val": "",
+     "before": "false",
+     "after": "true txt=Acumulat des del 1850",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "hSvg",
+       "w": 1120,
+       "h": 460,
+       "top": 180,
+       "role": "img",
+       "aria": 280,
+       "ariaHidden": null,
+       "nTxt": 28,
+       "minFs": 11,
+       "minTxt": "Total 1850–2025",
+       "nSmall": 0,
+       "overlaps": [
+        "3.000 | 1850",
+        "Fòssil i ciment | 1.866 Gt",
+        "Ús del sòl | 898 Gt",
+        "Atmosfera | 1.084 Gt · 39%",
+        "Oceà | 728 Gt · 26%",
+        "Terra | 692 Gt · 25%"
+       ],
+       "nOverl": 6,
+       "clipped": []
+      }
+     ]
+    }
+   ],
+   "hover": [
+    {
+     "id": "hSvg",
+     "tag": "svg",
+     "tried": 20,
+     "hits": 20,
+     "outside": 0,
+     "sample": [
+      {
+       "cls": "tip",
+       "txt": "1850–1875 · Gt de CO₂■ Fòssil i ciment: 10■ Ús del sòl: 72■ Atmosfera: 20■ Oceà:",
+       "l": 363,
+       "r": 499,
+       "t": 198,
+       "b": 330,
+       "out": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "k": 3,
+   "id": "persFig",
+   "gfx": [
+    {
+     "tag": "svg",
+     "id": "pSvg",
+     "w": 1120,
+     "h": 404,
+     "top": 170,
+     "role": "img",
+     "aria": 396,
+     "ariaHidden": null,
+     "nTxt": 24,
+     "minFs": 11.5,
+     "minTxt": "0%",
+     "nSmall": 0,
+     "overlaps": [],
+     "nOverl": 0,
+     "clipped": [
+      "1.000.000"
+     ]
+    }
+   ],
+   "fps": {
+    "fps": 60,
+    "worstFrame": 17
+   },
+   "ctrls": [
+    {
+     "n": 0,
+     "tag": "INPUT",
+     "type": "range",
+     "id": "pRng",
+     "txt": "Anys després de l'emissió, en ",
+     "min": "0",
+     "max": "300",
+     "val": "200",
+     "gfx_min": [
+      {
+       "tag": "svg",
+       "id": "pSvg",
+       "w": 1120,
+       "h": 404,
+       "top": 170,
+       "role": "img",
+       "aria": 396,
+       "ariaHidden": null,
+       "nTxt": 24,
+       "minFs": 11.5,
+       "minTxt": "0%",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": [
+        "1.000.000"
+       ]
+      }
+     ],
+     "gfx_max": [
+      {
+       "tag": "svg",
+       "id": "pSvg",
+       "w": 1120,
+       "h": 404,
+       "top": 170,
+       "role": "img",
+       "aria": 396,
+       "ariaHidden": null,
+       "nTxt": 24,
+       "minFs": 11.5,
+       "minTxt": "0%",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": [
+        "1.000.000"
+       ]
+      }
+     ],
+     "kbAfter": "202 (from 200) focused=true valuetext=null aria=Anys després de l'emissió, en escala logarítmica labelledby=null labels=1"
+    }
+   ],
+   "hover": [
+    {
+     "id": "pSvg",
+     "tag": "svg",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  }
+ ],
+ "page": {
+  "W": 1440,
+  "H": 900,
+  "sw": 1440,
+  "docH": 23800,
+  "wide": [],
+  "scrolly": [
+   {
+    "i": 0,
+    "id": "scA",
+    "aria": "Un any d'emissions de CO2 i on van a parar",
+    "steps": 9,
+    "g": "graphic"
+   },
+   {
+    "i": 1,
+    "id": "scB",
+    "aria": "Com absorbeixen CO2 l'oceà i la vegetació",
+    "steps": 6,
+    "g": "graphic"
+   }
+  ],
+  "figs": [
+   {
+    "i": 0,
+    "id": "keelFig",
+    "cls": "fig wide",
+    "h": 663,
+    "cap": "Mitjana mensual de CO₂ a l'observatori de Mauna Loa (3.397 m), en parts per milió. La líni",
+    "ctrls": 3
+   },
+   {
+    "i": 1,
+    "id": "yearFig",
+    "cls": "fig wide",
+    "h": 501,
+    "cap": "Fonts i embornals de CO₂ per any, en gigatones de CO₂. Quan les barres no arriben a la lín",
+    "ctrls": 6
+   },
+   {
+    "i": 2,
+    "id": "histFig",
+    "cls": "fig wide",
+    "h": 621,
+    "cap": "Gigatones de CO₂. Abans del 1959, el creixement atmosfèric es reconstrueix a partir de les",
+    "ctrls": 2
+   },
+   {
+    "i": 3,
+    "id": "persFig",
+    "cls": "fig wide",
+    "h": 560,
+    "cap": "Model, no dades mesurades. La corba és l'ajust a la mitjana de 15 models d'una emissió de ",
+    "ctrls": 1
+   }
+  ],
+  "controls": [
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "1958–1961",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 60,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "1996–1999",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 60,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "2022–2026",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 30,
+    "w": 64,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "1987",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 27,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "1992",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 27,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "1998",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 27,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "2023",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 27,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "2024",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 27,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "2025",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 30,
+    "w": 29,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Cada any",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 30,
+    "w": 54,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Acumulat des del 1850",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 30,
+    "w": 126,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "INPUT:range",
+    "id": "pRng",
+    "label": "Anys després de l'emissió, en escala log",
+    "hasAria": true,
+    "pressed": null,
+    "h": 28,
+    "w": 974,
+    "fs": "12.5px",
+    "valuetext": null
+   }
+  ],
+  "tabbableSvg": [
+   "ySvg"
+  ],
+  "smallHtml": [],
+  "colorsUsed": {
+   "#DADADA": 26,
+   "#121212": 52,
+   "#C8442A": 79,
+   "#7A7A7A": 2,
+   "#4C8A2E": 80,
+   "#2C5DA8": 71,
+   "#9A6326": 2,
+   "#FFF": 2,
+   "#6F8FC0": 1
+  },
+  "styleVars": [
+   "--dry:#9A6326",
+   "--bio:#4C8A2E",
+   "--wet:#16786C",
+   "--sea:#E4ECF6"
+  ]
+ },
+ "resources": [
+  {
+   "u": "https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap",
+   "kb": 0,
+   "dkb": 22,
+   "ms": 5
+  },
+  {
+   "u": "/assets/logo.png",
+   "kb": 0,
+   "dkb": 20,
+   "ms": 8
+  },
+  {
+   "u": "/assets/ib.css",
+   "kb": 0,
+   "dkb": 6,
+   "ms": 16
+  },
+  {
+   "u": "/assets/article.css",
+   "kb": 0,
+   "dkb": 7,
+   "ms": 18
+  },
+  {
+   "u": "/assets/scrolly.js",
+   "kb": 0,
+   "dkb": 1,
+   "ms": 9
+  },
+  {
+   "u": "https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js",
+   "kb": 0,
+   "dkb": 273,
+   "ms": 10
+  },
+  {
+   "u": "/assets/ib.js",
+   "kb": 0,
+   "dkb": 1,
+   "ms": 10
+  },
+  {
+   "u": "/articles/on-va-el-co2/dades.js",
+   "kb": 20,
+   "dkb": 20,
+   "ms": 19
+  },
+  {
+   "u": "/articles/on-va-el-co2/on-va-el-co2.js",
+   "kb": 53,
+   "dkb": 52,
+   "ms": 20
+  },
+  {
+   "u": "DOC",
+   "dkb": 39
+  }
+ ],
+ "logs": [],
+ "failed": [],
+ "endOverflow": {
+  "sw": 1440,
+  "W": 1440
+ }
+}

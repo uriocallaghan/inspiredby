@@ -1,0 +1,8 @@
+# Balanç de fòsfor de la selva amazònica (g de P per hectàrea i any)
+# Font: Yu et al. 2015 GRL (doi:10.1002/2015GL063040), que cita Vitousek & Sanford 1986 (doi:10.1146/annurev.es.17.110186.001033)
+flux,min,millor,max,nota
+Entrada de pols africana (Yu 2015),7,23,39,"0,022 (0,006-0,037) Tg P/any; contingut de P de la pols 780 ppm (Bristow et al. 2010); àrea 9,6e8 ha"
+Pèrdua hidrològica (rius i aigua del sòl),8,,40,Vitousek & Sanford 1986
+Reciclatge per la fullaraca,1400,,4100,Vitousek & Sanford 1986
+Deposició atmosfèrica total (pols + aerosols biogènics + fum),161,,300,Vitousek & Sanford 1986; la pols n'és com a màxim el 13%
+# Fórmula del gràfic interactiu: P (g/ha/any) = pols (Tg/any) x 1e12 g x 780e-6 / 9,6e8 ha = 0,8125 x pols(Tg)

@@ -1,0 +1,1307 @@
+{
+ "slug": "migracio-vertical",
+ "vp": "d",
+ "mode": "full",
+ "steps": [
+  {
+   "i": 0,
+   "j": 0,
+   "pos": {
+    "on": 0,
+    "contentTop": 262,
+    "contentBottom": 638
+   },
+   "on": 0,
+   "gh": 900,
+   "gTop": 135,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "ocean",
+     "w": 884,
+     "h": 650,
+     "top": 234,
+     "role": "img",
+     "aria": 247,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 475661,
+     "bw": 884,
+     "bh": 650
+    }
+   ],
+   "fps": {
+    "fps": 60,
+    "worstFrame": 17
+   }
+  },
+  {
+   "i": 0,
+   "j": 1,
+   "pos": {
+    "on": 1,
+    "contentTop": 276,
+    "contentBottom": 624
+   },
+   "on": 1,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "ocean",
+     "w": 884,
+     "h": 650,
+     "top": 99,
+     "role": "img",
+     "aria": 247,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 155920,
+     "bw": 884,
+     "bh": 650
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 2,
+   "pos": {
+    "on": 2,
+    "contentTop": 319,
+    "contentBottom": 581
+   },
+   "on": 2,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "ocean",
+     "w": 884,
+     "h": 650,
+     "top": 99,
+     "role": "img",
+     "aria": 247,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 423951,
+     "bw": 884,
+     "bh": 650
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 3,
+   "pos": {
+    "on": 3,
+    "contentTop": 312,
+    "contentBottom": 588
+   },
+   "on": 3,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "ocean",
+     "w": 884,
+     "h": 650,
+     "top": 99,
+     "role": "img",
+     "aria": 247,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 752589,
+     "bw": 884,
+     "bh": 650
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 4,
+   "pos": {
+    "on": 4,
+    "contentTop": 305,
+    "contentBottom": 595
+   },
+   "on": 4,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "ocean",
+     "w": 884,
+     "h": 650,
+     "top": 99,
+     "role": "img",
+     "aria": 247,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 682626,
+     "bw": 884,
+     "bh": 650
+    }
+   ],
+   "fps": {
+    "fps": 60,
+    "worstFrame": 17
+   }
+  },
+  {
+   "i": 0,
+   "j": 5,
+   "pos": {
+    "on": 5,
+    "contentTop": 319,
+    "contentBottom": 581
+   },
+   "on": 5,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "ocean",
+     "w": 884,
+     "h": 650,
+     "top": 99,
+     "role": "img",
+     "aria": 247,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 134338,
+     "bw": 884,
+     "bh": 650
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 6,
+   "pos": {
+    "on": 6,
+    "contentTop": 291,
+    "contentBottom": 609
+   },
+   "on": 6,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "ocean",
+     "w": 884,
+     "h": 650,
+     "top": 99,
+     "role": "img",
+     "aria": 247,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 481086,
+     "bw": 884,
+     "bh": 650
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 7,
+   "pos": {
+    "on": 7,
+    "contentTop": 193,
+    "contentBottom": 707
+   },
+   "on": 7,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "ocean",
+     "w": 884,
+     "h": 650,
+     "top": 99,
+     "role": "img",
+     "aria": 247,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 546662,
+     "bw": 884,
+     "bh": 650
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "j": 8,
+   "pos": {
+    "on": 8,
+    "contentTop": 383,
+    "contentBottom": 517
+   },
+   "on": 8,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "ocean",
+     "w": 884,
+     "h": 650,
+     "top": 99,
+     "role": "img",
+     "aria": 247,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 274627,
+     "bw": 884,
+     "bh": 650
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "ctrls": [
+    {
+     "k": 0,
+     "c": "BUTTON:oPlay",
+     "pressed": null,
+     "txt": "Reprodueix",
+     "gfx": {
+      "on": 8,
+      "gh": 900,
+      "gTop": 0,
+      "ghPct": 100,
+      "gfx": [
+       {
+        "tag": "CANVAS",
+        "id": "ocean",
+        "w": 884,
+        "h": 650,
+        "top": 99,
+        "role": "img",
+        "aria": 247,
+        "ariaHidden": null,
+        "ink": 100,
+        "hash": 241518,
+        "bw": 884,
+        "bh": 650
+       }
+      ]
+     }
+    },
+    {
+     "k": 1,
+     "c": "INPUT:oRng",
+     "range": true,
+     "v0": "13.8",
+     "min": "0",
+     "max": "24",
+     "gfx": {
+      "on": 8,
+      "gh": 900,
+      "gTop": 0,
+      "ghPct": 100,
+      "gfx": [
+       {
+        "tag": "CANVAS",
+        "id": "ocean",
+        "w": 884,
+        "h": 650,
+        "top": 99,
+        "role": "img",
+        "aria": 247,
+        "ariaHidden": null,
+        "ink": 100,
+        "hash": 620441,
+        "bw": 884,
+        "bh": 650
+       }
+      ]
+     },
+     "kb": "12",
+     "kbAfter": "12.1 active=oRng valuetext=null"
+    }
+   ]
+  },
+  {
+   "i": 0,
+   "hover": [
+    {
+     "id": "ocean",
+     "tag": "CANVAS",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  },
+  {
+   "i": 1,
+   "j": 0,
+   "pos": {
+    "on": 0,
+    "contentTop": 353,
+    "contentBottom": 547
+   },
+   "on": 0,
+   "gh": 900,
+   "gTop": 135,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "carb",
+     "w": 884,
+     "h": 670,
+     "top": 243,
+     "role": "img",
+     "aria": 243,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 91533,
+     "bw": 884,
+     "bh": 670
+    }
+   ],
+   "fps": {
+    "fps": 60,
+    "worstFrame": 17
+   }
+  },
+  {
+   "i": 1,
+   "j": 1,
+   "pos": {
+    "on": 1,
+    "contentTop": 305,
+    "contentBottom": 595
+   },
+   "on": 1,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "carb",
+     "w": 884,
+     "h": 670,
+     "top": 108,
+     "role": "img",
+     "aria": 243,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 57724,
+     "bw": 884,
+     "bh": 670
+    }
+   ]
+  },
+  {
+   "i": 1,
+   "j": 2,
+   "pos": {
+    "on": 2,
+    "contentTop": 355,
+    "contentBottom": 545
+   },
+   "on": 2,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "carb",
+     "w": 884,
+     "h": 670,
+     "top": 108,
+     "role": "img",
+     "aria": 243,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 134910,
+     "bw": 884,
+     "bh": 670
+    }
+   ],
+   "fps": {
+    "fps": 61,
+    "worstFrame": 17
+   }
+  },
+  {
+   "i": 1,
+   "j": 3,
+   "pos": {
+    "on": 3,
+    "contentTop": 282,
+    "contentBottom": 618
+   },
+   "on": 3,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "carb",
+     "w": 884,
+     "h": 670,
+     "top": 108,
+     "role": "img",
+     "aria": 243,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 199981,
+     "bw": 884,
+     "bh": 670
+    }
+   ]
+  },
+  {
+   "i": 1,
+   "j": 4,
+   "pos": {
+    "on": 4,
+    "contentTop": 289,
+    "contentBottom": 611
+   },
+   "on": 4,
+   "gh": 900,
+   "gTop": 0,
+   "ghPct": 100,
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "carb",
+     "w": 884,
+     "h": 670,
+     "top": 108,
+     "role": "img",
+     "aria": 243,
+     "ariaHidden": null,
+     "ink": 100,
+     "hash": 293114,
+     "bw": 884,
+     "bh": 670
+    }
+   ]
+  },
+  {
+   "i": 1,
+   "hover": [
+    {
+     "id": "carb",
+     "tag": "CANVAS",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  }
+ ],
+ "figs": [
+  {
+   "k": 0,
+   "id": "sizefig",
+   "gfx": [
+    {
+     "tag": "svg",
+     "id": "szCop",
+     "w": 200,
+     "h": 330,
+     "top": 273,
+     "role": "img",
+     "aria": 105,
+     "ariaHidden": null,
+     "nTxt": 3,
+     "minFs": 11.5,
+     "minTxt": "A aquesta escala, elcopèp",
+     "nSmall": 0,
+     "overlaps": [],
+     "nOverl": 0,
+     "clipped": [
+      "A aquesta escala, elcopèp"
+     ]
+    },
+    {
+     "tag": "svg",
+     "id": "szHum",
+     "w": 692,
+     "h": 132,
+     "top": 336,
+     "role": "img",
+     "aria": 110,
+     "ariaHidden": null,
+     "nTxt": 10,
+     "minFs": 11,
+     "minTxt": "marató 1",
+     "nSmall": 0,
+     "overlaps": [],
+     "nOverl": 0,
+     "clipped": []
+    }
+   ],
+   "fps": {
+    "fps": 60,
+    "worstFrame": 17
+   },
+   "ctrls": [
+    {
+     "n": 0,
+     "tag": "INPUT",
+     "type": "range",
+     "id": "szRng",
+     "txt": "",
+     "min": "1",
+     "max": "2.1",
+     "val": "1.7",
+     "gfx_min": [
+      {
+       "tag": "svg",
+       "id": "szCop",
+       "w": 200,
+       "h": 330,
+       "top": 273,
+       "role": "img",
+       "aria": 105,
+       "ariaHidden": null,
+       "nTxt": 3,
+       "minFs": 11.5,
+       "minTxt": "A aquesta escala, elcopèp",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": [
+        "A aquesta escala, elcopèp"
+       ]
+      },
+      {
+       "tag": "svg",
+       "id": "szHum",
+       "w": 692,
+       "h": 132,
+       "top": 336,
+       "role": "img",
+       "aria": 110,
+       "ariaHidden": null,
+       "nTxt": 10,
+       "minFs": 11,
+       "minTxt": "marató 1",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ],
+     "gfx_max": [
+      {
+       "tag": "svg",
+       "id": "szCop",
+       "w": 200,
+       "h": 330,
+       "top": 273,
+       "role": "img",
+       "aria": 105,
+       "ariaHidden": null,
+       "nTxt": 3,
+       "minFs": 11.5,
+       "minTxt": "A aquesta escala, elcopèp",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": [
+        "A aquesta escala, elcopèp"
+       ]
+      },
+      {
+       "tag": "svg",
+       "id": "szHum",
+       "w": 692,
+       "h": 132,
+       "top": 336,
+       "role": "img",
+       "aria": 110,
+       "ariaHidden": null,
+       "nTxt": 10,
+       "minFs": 11,
+       "minTxt": "marató 1",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": []
+      }
+     ],
+     "kbAfter": "1.72 (from 1.7) focused=true valuetext=null aria=null labelledby=null labels=1"
+    }
+   ],
+   "hover": [
+    {
+     "id": "szCop",
+     "tag": "svg",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    },
+    {
+     "id": "szHum",
+     "tag": "svg",
+     "tried": 20,
+     "hits": 0,
+     "outside": 0,
+     "sample": null
+    }
+   ]
+  },
+  {
+   "k": 1,
+   "id": "regfig",
+   "gfx": [
+    {
+     "tag": "svg",
+     "id": "reg",
+     "w": 920,
+     "h": 460,
+     "top": 195,
+     "role": "img",
+     "aria": 388,
+     "ariaHidden": null,
+     "nTxt": 32,
+     "minFs": 11.5,
+     "minTxt": "Interval mundial de fondà",
+     "nSmall": 0,
+     "overlaps": [],
+     "nOverl": 0,
+     "clipped": [
+      "Proporció del senyal de l"
+     ]
+    }
+   ],
+   "fps": {
+    "fps": 61,
+    "worstFrame": 17
+   },
+   "ctrls": [
+    {
+     "n": 0,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "De dia",
+     "val": "",
+     "before": "true",
+     "after": "true txt=De dia",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "reg",
+       "w": 920,
+       "h": 460,
+       "top": 195,
+       "role": "img",
+       "aria": 388,
+       "ariaHidden": null,
+       "nTxt": 32,
+       "minFs": 11.5,
+       "minTxt": "Interval mundial de fondà",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": [
+        "Proporció del senyal de l"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 1,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "De nit",
+     "val": "",
+     "before": "false",
+     "after": "true txt=De nit",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "reg",
+       "w": 920,
+       "h": 460,
+       "top": 195,
+       "role": "img",
+       "aria": 388,
+       "ariaHidden": null,
+       "nTxt": 32,
+       "minFs": 11.5,
+       "minTxt": "Interval mundial de fondà",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": [
+        "Proporció del senyal de l"
+       ]
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "regPlay",
+     "txt": "Pausa",
+     "val": "",
+     "before": null,
+     "after": "null txt=Pausa",
+     "gfx": [
+      {
+       "tag": "svg",
+       "id": "reg",
+       "w": 920,
+       "h": 460,
+       "top": 195,
+       "role": "img",
+       "aria": 388,
+       "ariaHidden": null,
+       "nTxt": 32,
+       "minFs": 11.5,
+       "minTxt": "Interval mundial de fondà",
+       "nSmall": 0,
+       "overlaps": [],
+       "nOverl": 0,
+       "clipped": [
+        "Proporció del senyal de l"
+       ]
+      }
+     ]
+    }
+   ],
+   "hover": [
+    {
+     "id": "reg",
+     "tag": "svg",
+     "tried": 20,
+     "hits": 16,
+     "outside": 0,
+     "sample": [
+      {
+       "cls": "tip",
+       "txt": "Pacífic orientalDe dia: 348 m · de nit: 97 mAmplitud: 251 m · migra el 91 %12 pa",
+       "l": 390,
+       "r": 573,
+       "t": 259,
+       "b": 341,
+       "out": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "k": 2,
+   "id": "echofig",
+   "gfx": [
+    {
+     "tag": "CANVAS",
+     "id": "echo",
+     "w": 1120,
+     "h": 440,
+     "top": 178,
+     "role": "img",
+     "aria": 198,
+     "ariaHidden": null,
+     "ink": 27.3,
+     "hash": 97760,
+     "bw": 1120,
+     "bh": 440
+    }
+   ],
+   "fps": {
+    "fps": 61,
+    "worstFrame": 17
+   },
+   "ctrls": [
+    {
+     "n": 0,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Lluna nova",
+     "val": "",
+     "before": "true",
+     "after": "true txt=Lluna nova",
+     "gfx": [
+      {
+       "tag": "CANVAS",
+       "id": "echo",
+       "w": 1120,
+       "h": 440,
+       "top": 178,
+       "role": "img",
+       "aria": 198,
+       "ariaHidden": null,
+       "ink": 23.1,
+       "hash": 590177,
+       "bw": 1120,
+       "bh": 440
+      }
+     ]
+    },
+    {
+     "n": 1,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Lluna plena",
+     "val": "",
+     "before": "false",
+     "after": "true txt=Lluna plena",
+     "gfx": [
+      {
+       "tag": "CANVAS",
+       "id": "echo",
+       "w": 1120,
+       "h": 440,
+       "top": 178,
+       "role": "img",
+       "aria": 198,
+       "ariaHidden": null,
+       "ink": 24,
+       "hash": 875833,
+       "bw": 1120,
+       "bh": 440
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Dia de núvols",
+     "val": "",
+     "before": "false",
+     "after": "true txt=Dia de núvols",
+     "gfx": [
+      {
+       "tag": "CANVAS",
+       "id": "echo",
+       "w": 1120,
+       "h": 440,
+       "top": 178,
+       "role": "img",
+       "aria": 198,
+       "ariaHidden": null,
+       "ink": 24,
+       "hash": 822839,
+       "bw": 1120,
+       "bh": 440
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "",
+     "txt": "Nit polar",
+     "val": "",
+     "before": "false",
+     "after": "true txt=Nit polar",
+     "gfx": [
+      {
+       "tag": "CANVAS",
+       "id": "echo",
+       "w": 1120,
+       "h": 440,
+       "top": 178,
+       "role": "img",
+       "aria": 198,
+       "ariaHidden": null,
+       "ink": 14.1,
+       "hash": 428684,
+       "bw": 1120,
+       "bh": 440
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "tag": "BUTTON",
+     "type": "button",
+     "id": "echoPlay",
+     "txt": "Torna-ho a dibuixar",
+     "val": "",
+     "before": null,
+     "after": "null txt=Torna-ho a dibuixar",
+     "gfx": [
+      {
+       "tag": "CANVAS",
+       "id": "echo",
+       "w": 1120,
+       "h": 440,
+       "top": 178,
+       "role": "img",
+       "aria": 198,
+       "ariaHidden": null,
+       "ink": 23.4,
+       "hash": 205066,
+       "bw": 1120,
+       "bh": 440
+      }
+     ]
+    }
+   ],
+   "hover": [
+    {
+     "id": "echo",
+     "tag": "CANVAS",
+     "tried": 20,
+     "hits": 20,
+     "outside": 0,
+     "sample": [
+      {
+       "cls": "tip",
+       "txt": "Dia 1, 19:00Capa que migra: 55 mLlum en superfície: lluna",
+       "l": 361,
+       "r": 508,
+       "t": 214,
+       "b": 279,
+       "out": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "k": 3,
+   "id": "estfig",
+   "gfx": [
+    {
+     "tag": "svg",
+     "id": "est",
+     "w": 920,
+     "h": 230,
+     "top": 309,
+     "role": "img",
+     "aria": 462,
+     "ariaHidden": null,
+     "nTxt": 19,
+     "minFs": 11.5,
+     "minTxt": "0",
+     "nSmall": 0,
+     "overlaps": [],
+     "nOverl": 0,
+     "clipped": []
+    }
+   ],
+   "fps": {
+    "fps": 60,
+    "worstFrame": 17
+   },
+   "ctrls": [],
+   "hover": [
+    {
+     "id": "est",
+     "tag": "svg",
+     "tried": 20,
+     "hits": 20,
+     "outside": 0,
+     "sample": [
+      {
+       "cls": "tip",
+       "txt": "Zooplàncton migradorUn 16 % de l'exportació total de 6,5 PgC l'any. La franja és",
+       "l": 457,
+       "r": 717,
+       "t": 386,
+       "b": 467,
+       "out": false
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "page": {
+  "W": 1440,
+  "H": 900,
+  "sw": 1440,
+  "docH": 22076,
+  "wide": [],
+  "scrolly": [
+   {
+    "i": 0,
+    "id": "",
+    "aria": "Un dia a l'oceà, de migdia a migdia",
+    "steps": 9,
+    "g": "graphic"
+   },
+   {
+    "i": 1,
+    "id": "",
+    "aria": "Com la migració porta carboni cap al fons",
+    "steps": 5,
+    "g": "graphic"
+   }
+  ],
+  "figs": [
+   {
+    "i": 0,
+    "id": "sizefig",
+    "cls": "fig",
+    "h": 408,
+    "cap": "Llargada i migració de P. xiphias: Timmins-Schiffman et al. (2024). Distàncies des de Barc",
+    "ctrls": 1
+   },
+   {
+    "i": 1,
+    "id": "regfig",
+    "cls": "fig",
+    "h": 596,
+    "cap": "Fondària mitjana ponderada de tot el senyal acústic entre 0 i 1.000 m (38 kHz), de dia i d",
+    "ctrls": 3
+   },
+   {
+    "i": 2,
+    "id": "echofig",
+    "cls": "fig wide",
+    "h": 617,
+    "cap": "Simulació, no dades reals. Un model senzill en què la capa intenta seguir sempre el mateix",
+    "ctrls": 5
+   },
+   {
+    "i": 3,
+    "id": "estfig",
+    "cls": "fig",
+    "h": 282,
+    "cap": "Estimacions globals publicades. No se sumen: cada una compta grups i camins diferents, i e",
+    "ctrls": 0
+   }
+  ],
+  "controls": [
+   {
+    "t": "BUTTON:button",
+    "id": "oPlay",
+    "label": "Reprodueix",
+    "hasAria": false,
+    "pressed": null,
+    "h": 20,
+    "w": 62,
+    "fs": "12.5px",
+    "valuetext": null
+   },
+   {
+    "t": "INPUT:range",
+    "id": "oRng",
+    "label": "Hora del dia",
+    "hasAria": true,
+    "pressed": null,
+    "h": 28,
+    "w": 754,
+    "fs": "12.5px",
+    "valuetext": null
+   },
+   {
+    "t": "INPUT:range",
+    "id": "szRng",
+    "label": "La teva alçada",
+    "hasAria": true,
+    "pressed": null,
+    "h": 28,
+    "w": 554,
+    "fs": "13px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "De dia",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 27,
+    "w": 37,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "De nit",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 27,
+    "w": 33,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "regPlay",
+    "label": "Reprodueix",
+    "hasAria": false,
+    "pressed": null,
+    "h": 27,
+    "w": 62,
+    "fs": "12.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Lluna nova",
+    "hasAria": false,
+    "pressed": "true",
+    "h": 27,
+    "w": 65,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Lluna plena",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 27,
+    "w": 66,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Dia de núvols",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 27,
+    "w": 75,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "",
+    "label": "Nit polar",
+    "hasAria": false,
+    "pressed": "false",
+    "h": 27,
+    "w": 49,
+    "fs": "13.5px",
+    "valuetext": null
+   },
+   {
+    "t": "BUTTON:button",
+    "id": "echoPlay",
+    "label": "Torna-ho a dibuixar",
+    "hasAria": false,
+    "pressed": null,
+    "h": 20,
+    "w": 105,
+    "fs": "12.5px",
+    "valuetext": null
+   }
+  ],
+  "tabbableSvg": [],
+  "smallHtml": [],
+  "colorsUsed": {
+   "#4A4A4A": 24,
+   "#7A7A7A": 31,
+   "#F0A852": 2,
+   "#D9822B": 19,
+   "#FFF": 21,
+   "#DADADA": 23,
+   "#121212": 36,
+   "#F1F0EC": 1,
+   "#2C5DA8": 2
+  },
+  "styleVars": [
+   "--mig:#D9822B",
+   "--bio:#4C8A2E",
+   "--deep:#0E1B2C"
+  ]
+ },
+ "resources": [
+  {
+   "u": "https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap",
+   "kb": 1,
+   "dkb": 22,
+   "ms": 197
+  },
+  {
+   "u": "/assets/ib.css",
+   "kb": 6,
+   "dkb": 6,
+   "ms": 18
+  },
+  {
+   "u": "/assets/article.css",
+   "kb": 8,
+   "dkb": 7,
+   "ms": 20
+  },
+  {
+   "u": "/assets/logo.png",
+   "kb": 20,
+   "dkb": 20,
+   "ms": 23
+  },
+  {
+   "u": "/assets/scrolly.js",
+   "kb": 2,
+   "dkb": 1,
+   "ms": 23
+  },
+  {
+   "u": "/assets/ib.js",
+   "kb": 1,
+   "dkb": 1,
+   "ms": 24
+  },
+  {
+   "u": "/articles/migracio-vertical/migracio.js",
+   "kb": 46,
+   "dkb": 45,
+   "ms": 23
+  },
+  {
+   "u": "https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js",
+   "kb": 76,
+   "dkb": 273,
+   "ms": 243
+  },
+  {
+   "u": "/assets/icon192.png",
+   "kb": 1,
+   "dkb": 1,
+   "ms": 4
+  },
+  {
+   "u": "DOC",
+   "dkb": 37
+  }
+ ],
+ "logs": [],
+ "failed": [],
+ "endOverflow": {
+  "sw": 1440,
+  "W": 1440
+ }
+}

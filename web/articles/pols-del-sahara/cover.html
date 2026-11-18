@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<title>Portada · La pols que adoba l'Amazònia</title>
+<style>html,body{margin:0;background:#E6EDF5}svg{display:block}</style>
+</head>
+<body>
+<svg id="c" width="1680" height="720" viewBox="0 0 1680 720" xmlns="http://www.w3.org/2000/svg"></svg>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script>
+/* Portada sense text: l'Atlàntic tropical amb la pols del Sàhara viatjant cap a l'Amazònia. */
+(async function(){
+  const W=1680,H=720,svg=d3.select("#c");
+  const proj=d3.geoEquirectangular().rotate([30,0]).scale(W/(150*Math.PI/180)).translate([W/2,H/2-H*0.02]);
+  proj.center([0,9]);
+  const w=await fetch("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json").then(r=>r.json());
+  const land=topojson.feature(w,w.objects.land),path=d3.geoPath(proj);
+  svg.append("rect").attr("width",W).attr("height",H).attr("fill","#E6EDF5");
+  svg.append("path").attr("d",path(land)).attr("fill","#ECEBE8").attr("stroke","#fff").attr("stroke-width",1);
+  /* selva amazònica: taca verda suau retallada a la terra */
+  svg.append("clipPath").attr("id","cl").append("path").attr("d",path(land));
+  const gr=svg.append("defs").append("radialGradient").attr("id","gr");gr.append("stop").attr("offset","0").attr("stop-color","#4C8A2E").attr("stop-opacity",.34);gr.append("stop").attr("offset","1").attr("stop-color","#4C8A2E").attr("stop-opacity",0);
+  const ac=proj([-62,-3]);svg.append("ellipse").attr("clip-path","url(#cl)").attr("cx",ac[0]).attr("cy",ac[1]).attr("rx",260).attr("ry",150).attr("fill","url(#gr)");
+  let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};const gs=()=>rnd()+rnd()+rnd()-1.5;
+  function lerp(a,b,t){return a+(b-a)*Math.max(0,Math.min(1,t))}
+  const g=svg.append("g");
+  const SRC=[[17.7,17.2,.4],[-6,21,.2],[0,23,.2],[5,19,.2]];
+  for(let i=0;i<5600;i++){
+    const winter=rnd()<.5;let r=rnd(),s=SRC[0];for(const q of SRC){r-=q[2];if(r<=0){s=q;break}}
+    const exitLat=winter?5+gs()*6:16+gs()*7;
+    const lon=s[0]-Math.pow(rnd(),0.8)*((winter?75:95)+s[0]);
+    let la;
+    if(lon>-17){la=lerp(s[1],exitLat,(s[0]-lon)/(s[0]+17))+gs()*.8}
+    else{const t=(-17-lon);la=winter?exitLat-t*0.06:exitLat+(t>45?(t-45)*0.12:0)}
+    if(winter&&lon<-50&&la<7)continue;
+    const p=proj([lon,la]);const a=lon>-17?.6:Math.max(.08,.6-(-17-lon)/110);
+    g.append("rect").attr("x",p[0]).attr("y",p[1]).attr("width",8+rnd()*14).attr("height",1.6).attr("fill","#B07434").attr("opacity",a*.9);
+  }
+  /* pols dipositada a l'Amazònia */
+  for(let i=0;i<700;i++){const lon=-56+gs()*9,la=2+gs()*5,p=proj([lon,la]);g.append("circle").attr("cx",p[0]).attr("cy",p[1]).attr("r",1.6).attr("fill","#9A6326").attr("opacity",.4)}
+  /* el Bodélé */
+  const b=proj([17.7,17.2]);svg.append("circle").attr("cx",b[0]).attr("cy",b[1]).attr("r",9).attr("fill","none").attr("stroke","#C8442A").attr("stroke-width",2.5);
+  document.body.setAttribute("data-ready","1");
+})();
+</script>
+</body>
+</html>

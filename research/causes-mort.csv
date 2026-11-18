@@ -1,0 +1,59 @@
+cause,deaths,share_pct,per_100_decimal,per_100_rounded,year,dataset,source_url
+TOTAL (all causes),60044438,100.00,100.0,100,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/share-of-deaths-by-cause
+Cardiovascular diseases,19139018,31.87,31.9,32,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Cancers,10558585,17.58,17.6,18,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Chronic respiratory diseases,4154452,6.92,6.9,7,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Lower respiratory infections,2501138,4.17,4.2,4,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Alzheimer's disease and other dementias,2208098,3.68,3.7,4,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Digestive diseases,2416075,4.02,4.0,4,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Neonatal disorders,1627962,2.71,2.7,3,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Diabetes,2003072,3.34,3.3,3,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Chronic kidney disease,1519732,2.53,2.5,3,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Road injuries,1343047,2.24,2.2,2,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Diarrheal diseases,1107128,1.84,1.8,2,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Tuberculosis,1010463,1.68,1.7,2,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+COVID-19,846983,1.41,1.4,1,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+HIV/AIDS,833175,1.39,1.4,1,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Suicide (self-harm),767616,1.28,1.3,1,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Malaria,669960,1.12,1.1,1,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Homicide (interpersonal violence),435674,0.73,0.7,1,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Conflict and terrorism,159052,0.26,0.3,0,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Drowning,291140,0.48,0.5,1,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+"Fire, heat and hot substances",150653,0.25,0.3,0,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Natural disasters (forces of nature),88594,0.15,0.1,0,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Parkinson's disease,426724,0.71,0.7,1,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Meningitis,258798,0.43,0.4,0,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Alcohol use disorders,171565,0.29,0.3,0,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Drug use disorders,172508,0.29,0.3,0,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Poisonings,69805,0.12,0.1,0,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+All other causes,5113420,8.52,8.5,9,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",computed: total minus listed causes
+"Liver disease (cirrhosis; SUBSET of digestive, not additive)",1281863,2.13,2.1,,2023,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/share-of-deaths-by-cause
+TOTAL (all causes),55160031,100.00,100.0,100,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/share-of-deaths-by-cause
+Cardiovascular diseases,17642038,31.98,32.0,32,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Cancers,9348942,16.95,16.9,17,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Chronic respiratory diseases,3757600,6.81,6.8,7,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Lower respiratory infections,2549792,4.62,4.6,5,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Alzheimer's disease and other dementias,1913357,3.47,3.5,4,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Digestive diseases,2375058,4.31,4.3,4,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Neonatal disorders,1804719,3.27,3.3,3,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Diabetes,1749142,3.17,3.2,3,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Chronic kidney disease,1322287,2.40,2.4,2,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Road injuries,1252787,2.27,2.3,2,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Diarrheal diseases,1255275,2.28,2.3,2,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Tuberculosis,1150684,2.09,2.1,2,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+COVID-19,0,0.00,0.0,0,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+HIV/AIDS,912196,1.65,1.7,2,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Suicide (self-harm),736949,1.34,1.3,1,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Malaria,649455,1.18,1.2,1,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Homicide (interpersonal violence),427605,0.78,0.8,1,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Conflict and terrorism,96643,0.18,0.2,0,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Drowning,297131,0.54,0.5,1,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+"Fire, heat and hot substances",135115,0.24,0.2,0,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Natural disasters (forces of nature),9662,0.02,0.0,0,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Parkinson's disease,359994,0.65,0.7,1,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Meningitis,280430,0.51,0.5,1,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Alcohol use disorders,156913,0.28,0.3,0,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Drug use disorders,131278,0.24,0.2,0,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+Poisonings,70424,0.13,0.1,0,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/annual-number-of-deaths-by-cause
+All other causes,4774556,8.66,8.7,9,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",computed: total minus listed causes
+"Liver disease (cirrhosis; SUBSET of digestive, not additive)",1266271,2.30,2.3,,2019,"IHME GBD 2023 (released Oct 2025; via Our World in Data, updated 2026-02-07)",https://ourworldindata.org/grapher/share-of-deaths-by-cause

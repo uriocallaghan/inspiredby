@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>De què mor el món? · Inspired by Magazine</title>
+<meta name="description" content="Si el món fos un poble de cent persones, de què moririen? Les principals causes de mort del planeta, amb les dades més recents.">
+<meta property="og:title" content="De què mor el món?">
+<meta property="og:description" content="Si el món fos un poble de cent persones, de què moririen?">
+<meta property="og:image" content="cover.jpg">
+<link rel="icon" sizes="192x192" href="../../assets/icon192.png">
+<link rel="apple-touch-icon" href="../../assets/icon192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../../assets/ib.css">
+<link rel="stylesheet" href="../../assets/article.css">
+<style>
+.ghead{position:absolute;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--sans);text-align:center;transition:top .5s ease}
+#ppbox{padding-bottom:64px}
+.ghead strong{font-family:var(--serif);font-weight:400;font-size:34px;line-height:1.1;letter-spacing:-.005em;white-space:nowrap}
+.ghead span{font-size:15px;font-weight:600;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--sans);font-size:12.5px;color:var(--ink-2);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:-1px}
+.chartwrap{position:relative}
+.seg{margin:0 0 10px}
+.ticker{max-width:640px;margin:32px auto 0;border-top:2px solid var(--ink);padding-top:16px;font-family:var(--sans)}
+.tk-big{font-family:var(--serif);font-weight:600;font-size:46px;line-height:1;margin:0 0 6px;font-variant-numeric:tabular-nums}
+.tk-sub{font-size:15px;color:var(--ink-2);margin:0 0 14px}
+.tk-list{list-style:none;margin:0;padding:0}
+.tk-list li{display:flex;justify-content:space-between;border-top:1px solid var(--hair);padding:7px 0;font-size:15px}
+.tk-list b{font-variant-numeric:tabular-nums}
+.cap-h{font-family:var(--sans);font-weight:700;font-size:17px;text-align:center;margin:56px 0 0}
+.capfig{max-width:760px;margin:18px auto 22px}
+.upd{max-width:640px;margin:20px auto 18px;font-family:var(--sans)}
+.upd-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 16px;border-top:1px solid var(--hair);padding:12px 0}
+.upd-row:last-child{border-bottom:1px solid var(--hair)}
+.upd-n{font-weight:700;font-size:15.5px}
+.upd-v{font-family:var(--serif);font-weight:600;font-size:22px;text-align:right;font-variant-numeric:tabular-nums}
+.upd-d{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--ink-2)}
+.upd-c{font-weight:700;white-space:nowrap}
+.help{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--ink-2);border-left:2px solid var(--hair);padding:4px 0 4px 14px;margin:24px 0}
+@media (max-width:899px){.ghead strong{font-size:20px}.ghead span{font-size:12px}.tk-big{font-size:36px}}
+</style>
+</head>
+<body class="ib-article">
+<header class="ib-bar">
+  <a href="../../" aria-label="Inspired by Magazine"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</header>
+<div class="ib-progress" aria-hidden="true"><span id="ibProgress"></span></div>
+
+<div class="page">
+  <header class="open col">
+    <p class="kicker">Societat</p>
+    <h1>De què mor el món?</h1>
+    <p class="dek">Si al món només hi visquessin cent persones, de què moririen? De guerres? De gana? Les respostes no són les que solem imaginar.</p>
+    <p class="meta">7 min de lectura · Dades: IHME, Global Burden of Disease 2023; Nacions Unides; OMS; UCDP · Actualitzat el 17 de novembre de 2026</p>
+  </header>
+
+  <section class="intro col">
+    <p class="dl">Nosaltres, <i>Homo sapiens</i>, vam ser una vegada el que avui consideraríem una espècie en perill d'extinció. La genètica suggereix que durant gran part de la nostra història vam tenir la diversitat genètica d'una població d'uns 10.000 reproductors. El nombre real de persones devia ser més gran, repartit per tota l'Àfrica, però era una xifra petitíssima.</p>
+    <p>Avui, uns <b>8.300 milions</b> d'aquells mateixos animals africans habiten el planeta Terra. Les Nacions Unides calculen que el 2050 serem uns 9.700 milions.</p>
+  </section>
+
+  <figure class="fig wide">
+    <div class="chartwrap" id="popbox"><svg id="pop" role="img" aria-label="Població mundial de l'any 0 al 2100. Durant 1.700 anys es manté entre 200 i 600 milions. A partir del 1800 creix de pressa: 1.000 milions cap al 1804, 2.000 milions el 1927, 4.000 milions el 1974 i 8.000 milions el 2022. L'ONU preveu un màxim de 10.300 milions cap al 2084."></svg><div class="tip" id="popTip"></div></div>
+    <figcaption>Població mundial, en milions de persones. Fonts: HYDE 3.3 (fins al 1800), Gapminder (1800–1950) i Nacions Unides, World Population Prospects 2024 (des del 1950, i projecció mitjana fins al 2100), via Our World in Data. Les xifres anteriors al 1800 són molt incertes: per a l'any 1 les estimacions van de 170 a 300 milions.</figcaption>
+  </figure>
+
+  <section class="col">
+    <p>La clau de l'èxit, per dir-ho d'alguna manera, és la gran reducció de la mortalitat. Durant la major part de la nostra història, tant la natalitat com la mortalitat han estat molt elevades, però gairebé sempre equivalents: la població creixia molt poc, o gens. Només a partir de la Revolució Industrial la població mundial creix per primera vegada a un ritme molt alt, gràcies als avenços en tecnologia, salut, agricultura i higiene.</p>
+    <p>Des del 1950, a més, també cauen els naixements. La distància entre les dues línies és el que fa créixer la població. Segons les projeccions de l'ONU, cap al 2084 les dues línies es creuaran i la població mundial deixarà de créixer.</p>
+  </section>
+  <figure class="fig">
+    <div class="chartwrap" id="bdbox"><svg id="bd" role="img" aria-label="Naixements i morts per cada 1.000 habitants al món, del 1950 al 2100. Els naixements baixen de 37 a 16 per mil el 2023; les morts, de 19 a 8. Segons la projecció, les dues taxes es creuen cap al 2084."></svg><div class="tip" id="bdTip"></div></div>
+    <figcaption>Taxes brutes de natalitat i de mortalitat del món, per cada 1.000 habitants. No hi ha una sèrie mundial fiable anterior al 1950. Font: Nacions Unides, World Population Prospects 2024 (estimacions i projecció mitjana), via Our World in Data.</figcaption>
+  </figure>
+
+  <section class="col">
+    <p>Si les malalties, la gana i les guerres eren les principals causes de mort en el passat, de què mor el món ara?</p>
+    <p>Per respondre-ho, hem fet un exercici mental: reduir els milions de morts que hi ha cada any al món a només cent persones, proporcionalment. Si la Terra estigués poblada per cent habitants, de què moririen?</p>
+  </section>
+
+  <section class="scrolly" aria-label="El món en cent persones">
+    <div class="steps" id="ppsteps">
+      <div class="step"><div class="step-in">
+        <h2>El món en cent persones</h2>
+        <p>Cada any moren al món uns <b>60 milions</b> de persones. Si fossin només cent, cada un d'aquests punts representaria unes 600.000 morts reals.</p>
+        <p class="note">Dades del 2023, l'any més recent de l'estudi Global Burden of Disease de l'IHME.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Malalties cardiovasculars · 32</h2>
+        <p><b>32 de cada 100</b> persones moririen de malalties del cor i dels vasos sanguinis, com els infarts i els ictus. Més de <b>19 milions</b> de persones moren cada any per problemes cardiovasculars. És la primera causa de mort al món.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Càncers · 18</h2>
+        <p><b>18 de cada 100</b> persones moririen per la suma dels diferents tipus de càncer. Causen <b>10,6 milions</b> de morts l'any: la població de més de sis ciutats com Barcelona. És la segona causa de mort al món.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Malalties respiratòries · 11</h2>
+        <p><b>11 de cada 100</b> persones moririen per dues causes que afecten els pulmons. <b>7</b>, per malalties respiratòries cròniques, com la malaltia pulmonar obstructiva crònica (MPOC). I <b>4</b>, per infeccions de les vies respiratòries, com la pneumònia.</p>
+        <p>En total, <b>6,7 milions</b> de morts l'any.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Malalties digestives i demència · 4 i 4</h2>
+        <p><b>4 de cada 100</b> moririen per la suma de les diferents malalties digestives, com la cirrosi del fetge: <b>2,4 milions</b> de morts l'any.</p>
+        <p><b>4 més</b> moririen de <b>demència</b>, un deteriorament de la memòria i de la ment causat per diferents malalties que afecten el cervell, com l'alzheimer: <b>2,2 milions</b> de morts l'any.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Les 31 restants</h2>
+        <p>Les altres <b>31 persones</b> moririen per causes molt més petites: cadascuna mata només unes poques persones de cada cent, o fins i tot menys d'una.</p>
+        <p class="note">Les veiem una per una més avall.</p>
+      </div></div>
+      <div class="step"><div class="step-in">
+        <h2>Tot junt</h2>
+        <p>Si es miren totes juntes, les causes de mort més grans del món no són les que solem imaginar. Com a mínim set de cada deu morts són per <b>malalties no transmissibles</b>, com les del cor, el càncer o la diabetis.</p>
+      </div></div>
+    </div>
+    <div class="graphic" id="ppgraphic">
+      <div class="gbox" id="ppbox">
+        <svg id="pp" role="img" aria-label="Cent punts que representen les morts al món el 2023. Malalties cardiovasculars, 32; càncers, 18; malalties respiratòries cròniques, 7; infeccions respiratòries, 4; digestives, 4; demència, 4; diabetis, 3; neonatals, 3; renals, 3; trànsit, 2; diarrea, 2; tuberculosi, 2; COVID-19, VIH, suïcidi, malària, violència i ofegaments, foc i desastres, 1 cadascuna; altres causes, 10."></svg>
+        <div class="ghead" id="ppHead" aria-live="polite"><strong id="ppBig">100 persones</strong><span id="ppSub"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="les-causes-petites">Les causes més petites</h2>
+    <p>En un món de cent habitants, algunes causes de mort només en matarien tres, dues o una. I d'altres, menys d'una.</p>
+    <h3 class="cap-h">Causes de mort de tres persones</h3>
+  </section>
+  <figure class="fig capfig"><svg id="cap3" role="img" aria-label="Diabetis, 3 persones; trastorns neonatals, 3; malalties renals, 3."></svg></figure>
+  <section class="col">
+    <p><b>3</b> moririen de <b>diabetis</b>, i <b>3</b> més de <b>malalties renals</b>.</p>
+    <p>I <b>gairebé 3 de cada 100</b> morts al món són de <b>nadons</b> que moren per complicacions del naixement durant el seu primer mes de vida, com la prematuritat. Són <b>1,6 milions</b> de vides l'any.</p>
+    <h3 class="cap-h">Causes de mort de dues persones</h3>
+  </section>
+  <figure class="fig capfig"><svg id="cap2" role="img" aria-label="Accidents de trànsit, 2 persones; diarrea, 2; tuberculosi, 2."></svg></figure>
+  <section class="col">
+    <p>Els <b>accidents de trànsit</b> matarien <b>2</b> persones.</p>
+    <p>La <b>diarrea</b>, <b>2</b> més. La majoria d'aquestes morts es produeixen en països on molta gent no té accés a aigua potable segura: l'aigua contaminada transmet malalties com la diarrea. Una de cada quatre persones del món, <b>2.100 milions</b>, no té aigua potable gestionada de manera segura a casa. És un tipus de mort perfectament evitable.</p>
+    <p>I la <b>tuberculosi</b>, una malaltia curable, <b>2</b> més.</p>
+    <h3 class="cap-h">Causes de mort d'una persona</h3>
+  </section>
+  <figure class="fig capfig"><svg id="cap1" role="img" aria-label="COVID-19, 1 persona; VIH/sida, 1; suïcidi, 1; malària, 1."></svg></figure>
+  <section class="col">
+    <p>La <b>COVID-19</b>, que el 2021 va causar més de 14 de cada 100 morts, el 2023 ja n'era <b>1</b>. També en causarien una cadascun el <b>VIH/sida</b>, el <b>suïcidi</b> i la <b>malària</b>.</p>
+    <h3 class="cap-h">Menys d'una persona</h3>
+  </section>
+  <figure class="fig capfig"><svg id="capViol" role="img" aria-label="Homicidis, 0,73 persones, més guerres i terrorisme, 0,26: en total, 0,99 persones."></svg></figure>
+  <section class="col">
+    <p>Així és. En un món de cent persones, el 2023 la suma de morts per <b>homicidis</b>, <b>terrorisme</b> i <b>conflictes armats</b> faria <b>gairebé una sola mort</b>. El 2025, amb més guerres, ja en seria una de sencera. Tot i així, mor més gent per suïcidi que per homicidi.</p>
+  </section>
+  <figure class="fig capfig"><svg id="capNat" role="img" aria-label="Ofegaments, 0,48 persones; foc, 0,25; desastres naturals, 0,15: en total, 0,88 persones."></svg></figure>
+  <section class="col">
+    <p>Els <b>ofegaments</b>, el <b>foc</b> i els <b>desastres naturals</b>, junts, tampoc no arriben a una persona. Els desastres, però, varien molt d'un any a l'altre: el 2023 hi va haver el terratrèmol de Turquia i Síria.</p>
+    <h3 class="cap-h">…i la resta?</h3>
+    <p>Les últimes <b>10 persones</b> moririen per la suma de totes les altres causes, cadascuna amb menys d'1 de cada 100. Algunes d'elles:</p>
+  </section>
+  <figure class="fig capfig"><svg id="capRest" role="img" aria-label="Parkinson, 0,71 persones; meningitis, 0,43; drogues, 0,29; alcohol, 0,29; enverinaments, 0,12."></svg></figure>
+  <section class="col">
+    <p>Amb el Parkinson, la meningitis, l'alcohol, les drogues i els enverinaments, hi ha també les complicacions de l'embaràs i el part, la desnutrició i moltes altres causes minoritàries.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="des-del-2023">Què ha canviat des del 2023</h2>
+    <p>El recompte complet de totes les causes de mort, el que permet fer els cent punts, arriba fins al 2023: recollir i comparar les dades de més de dos-cents països porta anys. Però per a algunes causes sí que hi ha xifres oficials del 2024 i del 2025. El canvi més gran són les guerres.</p>
+  </section>
+  <figure class="fig">
+    <div id="warbox"><svg id="war" role="img" aria-label="Morts en violència organitzada al món. 2024: unes 187.000, de les quals 155.000 en conflictes amb algun estat, 17.700 entre grups armats i 14.300 en violència directa contra civils. 2025: 244.600, de les quals 153.600, 14.500 i 76.500."></svg></div>
+    <figcaption>Morts en violència organitzada: conflictes en què participa algun estat, combats entre grups armats i violència deliberada contra civils. Només compta les morts directes que es poden verificar, així que és una xifra prudent. Font: Uppsala Conflict Data Program, «Organized violence 1989–2025», <i>Journal of Peace Research</i> (juny del 2026).</figcaption>
+  </figure>
+  <section class="col">
+    <p>El 2025, les guerres i la violència contra civils van matar unes <b>244.600 persones</b>, un 31 % més que l'any anterior. És un dels anys més mortífers des del genocidi de Ruanda, el 1994, sobretot per Ucraïna, el Sudan i Gaza. Les morts per violència deliberada contra civils es van multiplicar per cinc.</p>
+    <p>Per a altres causes, les xifres més recents són aquestes:</p>
+  </section>
+  <div class="fig upd" id="upd"></div>
+  <section class="col">
+    <p class="note">Cada xifra és de l'organisme que la vigila, amb els seus propis mètodes. Per això no es poden sumar ni comparar directament amb els cent punts del 2023, que són d'un sol estudi.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="el-que-temem">El que temem i el que ens mata</h2>
+    <p>Algunes de les causes més minoritàries ocupen els telenotícies cada dia, i això fa que les vegem com amenaces més grans del que són. El 2023, al món van morir més persones de meningitis que no pas per guerres i terrorisme junts, i moltes més per infeccions respiratòries que per les drogues. Les guerres, però, varien molt: el 2025 ja van causar gairebé tantes morts com la meningitis. I l'alcohol mata molt més que les guerres: si es compten totes les morts que causa, per cirrosi, càncers, malalties del cor, accidents o violència, l'OMS en calcula uns <b>2,6 milions l'any</b>, més de deu vegades les morts per guerres del 2025.</p>
+  </section>
+  <figure class="fig">
+    <div class="seg" id="fearYr" role="group" aria-label="Any"><button type="button" data-y="2023" aria-pressed="true">2023</button><button type="button" data-y="2019" aria-pressed="false">2019, abans de la COVID-19</button></div>
+    <div id="fearbox"><svg id="fear" role="img" aria-label="Morts a l'any al món per causa. 2023: infeccions respiratòries, 2,5 milions; suïcidi, 768.000; homicidis, 436.000; ofegaments, 291.000; meningitis, 259.000; drogues, 173.000; alcohol, 172.000; guerres i terrorisme, 159.000; desastres naturals, 89.000."></svg></div>
+    <figcaption>Morts a l'any al món, segons l'estudi Global Burden of Disease (l'últim any disponible és el 2023). «Alcohol» i «drogues» compten només les morts per trastorns d'ús i intoxicacions; les malalties causades per l'alcohol, com algunes cirrosis o càncers, són a les seves categories. Les morts per guerres i desastres naturals varien molt d'un any a l'altre. Font: IHME, Global Burden of Disease 2023, via Our World in Data.</figcaption>
+  </figure>
+
+  <section class="col">
+    <p>En el món en què vivim, avui mor més gent per suïcidi que per homicidi.</p>
+    <p class="help">Si tens pensaments de suïcidi o coneixes algú que en tingui, pots trucar al <b>024</b>, la línia d'atenció a la conducta suïcida. És gratuïta, confidencial i funciona les 24 hores.</p>
+  </section>
+
+  <section class="col">
+    <h2 class="sh" id="mentre-llegeixes">Mentre llegeixes</h2>
+    <p>Seixanta milions de morts l'any són gairebé dues persones cada segon.</p>
+    <div class="ticker" id="tick" aria-live="off"></div>
+  </section>
+
+  <section class="close col">
+    <div class="fn">
+      <p><b>Metodologia.</b> Les causes de mort són les de l'estudi Global Burden of Disease 2023 de l'IHME per a l'any 2023: 60,0 milions de morts en total. Cada causa es compta una sola vegada i totes juntes sumen el total. Per passar a cent persones hem arrodonit amb el mètode del residu més gran, de manera que el total sigui exactament 100. Els grups «violència» (0,99) i «ofegaments, foc i desastres» (0,88) tenen menys d'una persona i els arrodonim a una. El comptador fa servir la mitjana anual: és una estimació, no un recompte en temps real.</p>
+      <p><b>Per què el 2023.</b> És l'any més recent amb dades completes i comparables de tot el món. Les noves estimacions de l'Organització Mundial de la Salut, publicades l'octubre del 2026, també arriben fins al 2023 i hi coincideixen: uns 61 milions de morts, amb les malalties del cor, l'ictus i la malaltia pulmonar obstructiva crònica com a primeres causes. Per a algunes causes hi ha xifres oficials més recents, del 2024 i el 2025: les recollim a l'apartat «Què ha canviat des del 2023». Les dades de població són de l'edició del 2024 de les Nacions Unides; la següent s'ha ajornat al 2027.</p>
+      <p><b>Fonts.</b></p>
+      <ol>
+        <li>GBD 2023 Causes of Death Collaborators (2025). <i>The Lancet</i>, 406, 1811–1872. doi:<a href="https://doi.org/10.1016/S0140-6736(25)01917-8">10.1016/S0140-6736(25)01917-8</a>. Dades via Our World in Data (actualització del 7 de febrer de 2026).</li>
+        <li>Dattani, S., Spooner, F., Ritchie, H. i Roser, M. (2023). «Causes of Death». Our World in Data. <a href="https://ourworldindata.org/causes-of-death">ourworldindata.org/causes-of-death</a></li>
+        <li>Organització Mundial de la Salut (2026). <i>Global Health Estimates 2023: leading causes of death</i>. <a href="https://www.who.int/data/gho/data/themes/mortality-and-global-health-estimates/ghe-leading-causes-of-death">who.int</a></li>
+        <li>Davies, S., Pettersson, T. i Öberg, M. (2026). «Organized violence 1989–2025, and violent political protests». <i>Journal of Peace Research</i>. Uppsala Conflict Data Program. <a href="https://www.uu.se/en/press/press-releases/2026/2026-06-09-ucdp-record-number-of-conflicts-between-states">uu.se</a></li>
+        <li>Organització Mundial de la Salut (2024). <i>Global status report on alcohol and health and treatment of substance use disorders</i>. Dades del 2019. <a href="https://www.who.int/news/item/25-06-2024-over-3-million-annual-deaths-due-to-alcohol-and-drug-use-majority-among-men">who.int</a></li>
+        <li>Organització Mundial de la Salut (2026). <i>Global Tuberculosis Report 2026</i>. <a href="https://www.who.int/teams/global-programme-on-tuberculosis-and-lung-health/tb-reports">who.int</a></li>
+        <li>ONUSIDA (2026). <i>Global HIV statistics: fact sheet 2026</i>. <a href="https://www.unaids.org/en/resources/fact-sheet">unaids.org</a></li>
+        <li>Organització Mundial de la Salut (2025). <i>World Malaria Report 2025</i>. <a href="https://www.who.int/teams/global-malaria-programme/reports/world-malaria-report-2025">who.int</a></li>
+        <li>CRED, UCLouvain (2026). <i>2025 Disasters in Numbers</i>. EM-DAT. <a href="https://files.emdat.be/reports/2025_EMDAT_report.pdf">emdat.be</a></li>
+        <li>Nacions Unides, DESA, Divisió de Població (2024). <i>World Population Prospects 2024</i>. <a href="https://population.un.org/wpp/">population.un.org/wpp</a></li>
+        <li>Klein Goldewijk, K. et al. HYDE 3.3, i Gapminder v7, via Our World in Data, «Population». <a href="https://ourworldindata.org/grapher/population">ourworldindata.org/grapher/population</a></li>
+        <li>OMS i UNICEF (2025). <i>Progress on household drinking water, sanitation and hygiene 2000–2024</i>. JMP. <a href="https://data.unicef.org/resources/jmp-report-2025/">data.unicef.org/resources/jmp-report-2025</a></li>
+        <li>UN IGME (2025). <i>Levels and Trends in Child Mortality: Report 2024</i>. UNICEF. <a href="https://data.unicef.org/resources/levels-and-trends-in-child-mortality-2024/">data.unicef.org</a></li>
+        <li>Idescat (2026). <i>El municipi en xifres: Barcelona</i>. Població a 1 de gener de 2025: 1.713.247 habitants. <a href="https://www.idescat.cat/emex/?id=080193">idescat.cat</a></li>
+        <li>Hublin, J.-J. et al. (2017). «New fossils from Jebel Irhoud, Morocco and the pan-African origin of <i>Homo sapiens</i>». <i>Nature</i>, 546, 289–292. doi:10.1038/nature22336</li>
+        <li>Scerri, E. M. L. et al. (2018). «Did our species evolve in subdivided populations across Africa, and why does it matter?». <i>Trends in Ecology &amp; Evolution</i>, 33, 582–594.</li>
+        <li>Organització Mundial de la Salut (2023). <i>Preventing suicide: a resource for media professionals, update 2023</i>. Ginebra: OMS.</li>
+      </ol>
+    </div>
+  </section>
+</div>
+
+<footer class="ib-foot">
+  <a href="../../"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="../../assets/scrolly.js"></script>
+<script src="morts.js"></script>
+<script src="../../assets/ib.js"></script>
+</body>
+</html>

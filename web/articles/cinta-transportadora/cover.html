@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<title>Portada · La cinta transportadora de l'Atlàntic</title>
+<style>html,body{margin:0;background:#FFFFFF}svg{display:block}</style>
+</head>
+<body>
+<svg id="c" width="1680" height="720" viewBox="0 0 1680 720" xmlns="http://www.w3.org/2000/svg"></svg>
+<script src="dades.js"></script>
+<script>
+/* Portada sense text: la superfície real de l'Atlàntic nord (WOA23, temperatura) en punts,
+   amb la branca calenta de la cinta cap al nord i la freda tornant pel fons. */
+(function(){
+  const D=window.CT_DATA.sfc,svg=document.getElementById("c"),NS="http://www.w3.org/2000/svg";
+  const hx=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+  const st=[[-2,"#1F4A8E"],[3,"#4F7DBD"],[9,"#A9C3E2"],[15,"#E4E4E2"],[20,"#F0C3A6"],[24,"#E58B66"],[27,"#C8442A"],[30,"#8A2216"]].map(([v,h])=>[v,hx(h)]);
+  const col=v=>{if(v<=st[0][0])return st[0][1];for(let i=1;i<st.length;i++)if(v<=st[i][0]){const a=st[i-1],b=st[i],t=(v-a[0])/(b[0]-a[0]);return a[1].map((c,k)=>c+(b[1][k]-c)*t)}return st[st.length-1][1]};
+  const LON0=-100,LON1=30,LAT0=0,LAT1=80,K=Math.cos(45*Math.PI/180);
+  const sx=(1680)/((LON1-LON0)*K),X=lon=>(lon-LON0)*K*sx,Y=lat=>720-(lat-LAT0)*(720/(LAT1-LAT0));
+  const add=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);svg.appendChild(e);return e};
+  add("rect",{x:0,y:0,width:1680,height:720,fill:"#FFFFFF"});
+  for(let i=0;i<D.nlat;i++)for(let j=0;j<D.nlon;j++){const lat=D.lat0+i*D.d,lon=D.lon0+j*D.d;if(lon<LON0-2||lon>LON1+2||lat<LAT0-2||lat>LAT1+2)continue;const t=D.t[i*D.nlon+j];const x=X(lon),y=Y(lat);
+    if(t==null){add("circle",{cx:x,cy:y,r:6.4,fill:"#E9E7E2"});continue}const c=col(t);add("circle",{cx:x,cy:y,r:7.2,fill:`rgb(${c.map(v=>v|0).join(",")})`})}
+  const line=(pts,stroke,w,dash)=>{const d=pts.map((p,i)=>(i?"L":"M")+X(p[0]).toFixed(1)+" "+Y(p[1]).toFixed(1)).join(" ");add("path",{d,fill:"none",stroke:"#FFFFFF","stroke-width":w+7,"stroke-linecap":"round","stroke-linejoin":"round",opacity:.85});add("path",{d,fill:"none",stroke,"stroke-width":w,"stroke-linecap":"round","stroke-linejoin":"round","stroke-dasharray":dash||"none"})};
+  line([[-86,22.5],[-80.6,24.6],[-79.9,29],[-76.5,34],[-70,37.6],[-63,39.5],[-55,41.5],[-48,43.5],[-43,47],[-37,50],[-28,52.5],[-20,55],[-13,58],[-7,60.5],[-1,63],[4,65.5],[9,68.5],[14,71.2],[19,73]],"#C8442A",7);
+  line([[-37,50],[-33,54],[-30,58],[-31.5,61.5],[-36,63.5],[-40,61.5],[-43,59.8],[-47.5,60.8],[-51,63]],"#C8442A",5);
+  line([[2,74],[-4,71],[-12,68.5],[-20,67],[-26,66],[-30,64.5],[-35,62.5],[-39,60.5],[-43,59],[-47,58.5],[-51,57.5],[-54,55],[-53,51.5],[-50,47.5],[-52,44],[-57,42],[-64,39.5],[-70,36.5],[-73.5,33],[-75,29],[-72.5,24.5],[-66,20.5],[-58,16],[-50,9],[-44,2.5],[-40,-2]],"#1F4A8E",6,"16 12");
+  [[-2,74.5],[-37,61],[-24,59.5],[-53,57.5]].forEach(([lo,la])=>{[26,16,7].forEach((r,i)=>add("circle",{cx:X(lo),cy:Y(la),r,fill:"none",stroke:"#121212","stroke-width":1.6,opacity:.25+.3*i}));add("circle",{cx:X(lo),cy:Y(la),r:4,fill:"#121212"})});
+})();
+</script>
+</body>
+</html>

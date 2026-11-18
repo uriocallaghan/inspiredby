@@ -1,0 +1,19 @@
+{
+  "nota": "Paràmetres de les simulacions de l'article. Les velocitats i horaris són mitjanes mesurades; la resta són supòsits de l'esquema.",
+  "horari_tropics_equinocci": {"sortida_sol_h": 6.0, "posta_sol_h": 18.0, "font": "càlcul astronòmic, equador a l'equinocci"},
+  "capa_deixa_superficie_abans_alba_min": {"valor": 21, "desviacio": 20, "font": "Bianchi & Mislan 2016, doi:10.1002/lno.10219"},
+  "capa_arriba_superficie_despres_posta_min": {"valor": 17, "desviacio": 23, "font": "Bianchi & Mislan 2016"},
+  "velocitat_baixada_cm_s": {"valor": 7.6, "desviacio": 3.6, "font": "Bianchi & Mislan 2016"},
+  "velocitat_pujada_cm_s": {"valor": 6.5, "desviacio": 3.5, "font": "Bianchi & Mislan 2016"},
+  "fondaria_dia_m": {"valor": 450, "interval_observat": [200, 650], "font": "Bianchi et al. 2013 (200-650 m); Klevjer et al. 2016 (WMD 348-591 m)"},
+  "proporcio_migrant": {"valor": 0.5, "interval_observat": [0.2, 0.9], "font": "Klevjer et al. 2016 (~50 % de mitjana)"},
+  "model_isoluma": {
+    "descripcio": "Ecograma simulat: la capa segueix una isoluma (nivell de llum constant) amb velocitat màxima de 6,5 cm/s amunt i 7,6 cm/s avall. Llum en superfície aproximada a partir de l'altura del sol i de la lluna; atenuació exponencial.",
+    "Kd_m-1_tropics": 0.035,
+    "Kd_m-1_artic": 0.06,
+    "llum_superficie": "log10(lux) interpolat: sol a 0 graus ~700 lux, -6 graus ~3 lux, -12 graus ~0,008 lux, -18 graus ~0,0008 lux; dia: 700 + 100000·sin(altura); lluna plena ~0,25·sin(altura) lux",
+    "font_concepte": "Omand et al. 2021 (model d'isoluma), Benoit-Bird et al. 2009 i Last et al. 2016 (efecte de la lluna), Berge et al. 2009 (nit polar)",
+    "avis": "Esquema il·lustratiu, no dades mesurades"
+  },
+  "comparacio_mida": {"animal": "Pleuromamma xiphias", "llargada_mm": 5, "migracio_m": 500, "font": "Timmins-Schiffman et al. 2024, J Proteome Res 23:2112, doi:10.1021/acs.jproteome.4c00086", "cossos": 100000}
+}
