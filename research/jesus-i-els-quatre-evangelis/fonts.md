@@ -37,3 +37,24 @@ La revisió del 18-11-2026 ha contrastat els setze passatges del comparador amb 
 Les figures de l’article són esquemes explicatius: les dates són marges, la geografia és relacional i el diagrama de fonts és una hipòtesi literària, no una reconstrucció de comunitats ni d’autors individuals. Abans de la publicació final convé que l’editor repassi la selecció de datacions, l’atribució de Q i el tractament de les aparicions.
 
 La cronologia adopta la seqüència de Gordon W. Lathrop, The Four Gospels on Sunday, Fortress Press, 2012, pp. 28–30, per a les datacions orientatives de Mateu i Lluc; per a Joan amplia el marge fins a la seva proposta de començament del segle II. https://ms.augsburgfortress.org/downloads/9780800698522Chapter1.pdf
+
+## Reconstrucció visual del 18-11-2026
+
+L'article s'ha reescrit i tots els gràfics s'han refet. Dades i com s'han obtingut:
+
+- **Text grec.** MorphGNT SBLGNT 6.12 (J. K. Tauber, 2017, DOI 10.5281/zenodo.376200), descarregat de https://github.com/morphgnt/sblgnt . Marc es compta fins a 16,8: es descarten 16,9–20 i el final breu que l'SBLGNT imprimeix dins del verset 16,8 (les 18 primeres paraules de 16,8 són el text). Joan 7,53–8,11 no és a l'SBLGNT.
+  - `scripts/gnt.py` → `gnt.json`: paraules per llibre i per capítol, posició de nou escenes (primer verset de cada una), recompte de set lemes, trams de temps de Marc 11–16. Resultats clau: Mt 18.329, Mc 11.085, Lc 19.446, Jn 15.438 paraules; Mc 11,1–16,8 = 36 % de Marc; Mc 14,12–15,47 = 15 %; εὐθύς 42 vegades a Marc i 17 a la resta del NT; παραβολή 0 vegades a Joan.
+  - `scripts/llocs.py` → `llocs.json`: mencions de quinze poblacions (lemes de topònims; no adjectius). Jerusalem = Ἱεροσόλυμα + Ἰερουσαλήμ (Lc 31, Mc 10). Es treu Betània de Jn 1,28 (altra banda del Jordà) i el «mar de Tiberíades» (Jn 6,1 i 21,1).
+  - `scripts/par.py` → `par.json`: Mc 2,1–12, Mt 9,1–8, Lc 5,17–26; subseqüència comuna més llarga sobre formes normalitzades sense accents. 77 de 126 paraules de Mateu i 79 de 212 de Lluc coincideixen amb Marc en el mateix ordre.
+- **Taules d'Eusebi.** Edició de domini públic de K. P. Edgecomb alineada amb l'SBLGNT, https://github.com/adamb924/eusebian-canons (commit ad27f9c). Contrastada amb https://github.com/yekesys/eusebian_canons (NA26). Mt 355, Mc 233 (+8 del final llarg sense taula), Lc 342, Jn 232 seccions. Diferències conegudes: la secció Jn 98, codificada com a 0, apareix a les taules I i IV i s'hi assigna la I. `scripts/eus.py`. Percentatge de paraules amb paral·lel: Mc 94 %, Mt 76 %, Lc 66 %, Jn 24 %.
+- **Josep, Ant. XX, 267** (data de l'obra, tretzè any de Domicià = 93/94): text grec de Niese a Perseus, https://github.com/PerseusDL/canonical-greekLit (tlg0526.tlg001.perseus-grc2.xml), obert i llegit.
+- **Justí, 1 Apol. 66–67**: text grec de Rauschen (1911), https://github.com/OpenGreekAndLatin/First1KGreek (tlg0645.tlg001.1st1K-grc1.xml), obert i llegit. «Mitjan segle II» segons la guia de Yale.
+- **Mapes.** Natural Earth 1:10m (terra, llacs, rius) retallat a Palestina i 1:50m a la Mediterrània, amb mapshaper. Coordenades dels jaciments: identificació habitual; Betsaida (et-Tell), Canà (Khirbet Qana) i Sicar (Askar), discutides i marcades així. Distàncies de cercle màxim calculades a `scripts/make.py`.
+- **Text de l'article**: `scripts/src.html` amb les notes en línia; `scripts/notes.py` les numera i genera els enllaços a la BCI; `scripts/page.py` munta `index.html`.
+
+### No verificat i, per tant, no fet servir
+
+- Dates dels papirs P52, P66, P75 i dels còdexs Sinaític i Vaticà: només se n'han pogut veure resums de cercadors, no les pàgines de les institucions. Fora de l'article.
+- La frase de Martin Kähler («relats de la passió amb una introducció llarga»): no s'ha pogut comprovar la redacció ni la pàgina. Fora de l'article.
+- Data de composició dels *Annals* de Tàcit: no verificada; l'article diu «començament del segle II» i el gràfic ho marca com a aproximat (105–120).
+- Reconstrucció de Séforis per Antipes i la pedra de Pilat a Cesarea: no verificades; fora de l'article.
