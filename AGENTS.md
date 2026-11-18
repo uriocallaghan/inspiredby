@@ -5,7 +5,7 @@ Revista web d'articles visuals per entendre el món, en català. Llegeix aquest 
 ## Com es publica
 
 - **GitHub és la versió de referència.** La branca `main` de `uriocallaghan/inspiredby` és el que es veu a la web.
-- **Tot el que entra a `main` es publica sol** a Netlify (https://inspiredby-magazine.netlify.app) i a GitHub Pages (https://uriocallaghan.github.io/inspiredby/). No publiquis a mà (res de `netlify deploy`).
+- **Tot el que entra a `main` es publica sol** a Netlify (https://inspiredby-magazine.netlify.app), que està connectat al repositori. No publiquis a mà (res de `netlify deploy`).
 - **No treballis directament a `main`.** Crea una branca (`article/<slug>`, `sistema/<canvi>`, `fix/<què>`), fes-hi els commits i obre una pull request. Netlify en fa una previsualització (deploy preview) amb un enllaç propi: és el que l'editor revisa. L'editor és qui fusiona.
 - No reescriguis l'historial de `main` ni facis `push --force` a `main`.
 
