@@ -1,0 +1,27 @@
+.ib-planet [hidden]{display:none}
+.ib-planet .fig{max-width:720px}
+.ib-planet .planet-views .cap{font-size:15px;color:var(--ink-2)}
+.ib-planet .planet-views svg,.ib-planet .graphic svg{height:auto}
+.ib-planet .seg button{min-height:44px}
+.ib-planet:not(.planet-ready) .step{min-height:0;padding:12px 0}
+.ib-planet:not(.planet-ready) .step-in{opacity:1}
+.ib-planet:not(.planet-ready) .steps{padding-bottom:0}
+.ib-planet.planet-ready [data-frame]:not([hidden]){animation:planet-in .38s ease-out both}
+@keyframes planet-in{from{opacity:.45;transform:translateY(4px)}}
+@media (prefers-reduced-motion:reduce){
+  .ib-planet.planet-ready [data-frame]:not([hidden]){animation:none}
+}
+.ib-planet .scrolly .step{min-height:64vh}
+.ib-planet .scrolly .step:first-child{min-height:52vh}
+.ib-planet:not(.planet-ready) .scrolly .step{min-height:0}
+@media (max-width:899px){
+  .ib-planet .scrolly .step,.ib-planet .scrolly .step:first-child{min-height:42vh;padding-bottom:3vh}
+  .ib-planet:not(.planet-ready) .scrolly .step{min-height:0}
+  .ib-planet .steps{padding-bottom:20vh}
+}
+.ib-planet .seg{flex-wrap:wrap;gap:0 18px}
+.ib-planet .ctl-row .playb{min-height:44px}
+.ib-planet.planet-ready [data-view]:not([hidden]) svg{animation:planet-in .38s ease-out both}
+@media (prefers-reduced-motion:reduce){
+  .ib-planet.planet-ready [data-view]:not([hidden]) svg{animation:none}
+}
