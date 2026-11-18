@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sistema infogràfic · Inspired by Magazine</title>
+<meta name="description" content="Principis, colors, components i les cinquanta-quatre peces infogràfiques que fan servir els articles d'Inspired by Magazine.">
+<meta name="robots" content="noindex">
+<link rel="icon" sizes="192x192" href="../assets/icon192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../assets/ib.css">
+<link rel="stylesheet" href="../assets/article.css">
+<link rel="stylesheet" href="sistema.css">
+<link rel="stylesheet" href="mapes-a.css">
+<link rel="stylesheet" href="mapes-b.css">
+<link rel="stylesheet" href="creatives-a.css">
+<link rel="stylesheet" href="creatives-b.css">
+</head>
+<body class="ib-article">
+<header class="ib-bar">
+  <a href="../" aria-label="Inspired by Magazine"><img src="../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</header>
+<div class="ib-progress" aria-hidden="true"><span id="ibProgress"></span></div>
+
+<div class="page">
+<div class="wrap">
+  <header class="open lead">
+    <p class="kicker">Ús intern</p>
+    <h1>Sistema infogràfic</h1>
+    <p class="dek">Com són els gràfics de la revista: deu principis, els colors i la tipografia, els components de cada figura i cinquanta-quatre peces animades, amb nom i número, per construir els articles nous.</p>
+    <p class="meta">Model: «El Niño i La Niña» i una selecció de referències de premsa i disseny · Codi: <code>assets/ib-viz.js</code> · Guia per a agents: <code>research/sistema-infografic.md</code> · 18 de novembre de 2026</p>
+  </header>
+
+  <ol class="toc" aria-label="Contingut">
+    <li class="fam"><a href="#principis">Principis</a></li>
+    <li><a href="#colors">Colors</a> · <a href="#tipografia">Tipografia</a></li>
+    <li><a href="#components">Components C-01 a C-08</a></li>
+    <li class="fam">Temps</li>
+    <li><a href="#ib-01"><b>IB-01</b>Feix d'anys</a></li>
+    <li><a href="#ib-02"><b>IB-02</b>Índex de pulsacions</a></li>
+    <li><a href="#ib-03"><b>IB-03</b>Franja de distribució</a></li>
+    <li><a href="#ib-04"><b>IB-04</b>Files de bombolles</a></li>
+    <li><a href="#ib-05"><b>IB-05</b>Espiral anual</a></li>
+    <li><a href="#ib-06"><b>IB-06</b>Rosa horària</a></li>
+    <li class="fam">Quantitat i relació</li>
+    <li><a href="#ib-07"><b>IB-07</b>Núvol amb protagonistes</a></li>
+    <li><a href="#ib-08"><b>IB-08</b>Pols de punts</a></li>
+    <li><a href="#ib-09"><b>IB-09</b>Mosaic hexagonal</a></li>
+    <li><a href="#ib-10"><b>IB-10</b>Escala amb llindar</a></li>
+    <li><a href="#ib-11"><b>IB-11</b>Reixa d'unitats</a></li>
+    <li class="fam">Lloc</li>
+    <li><a href="#ib-12"><b>IB-12</b>Camp de punts sobre mapa</a></li>
+    <li><a href="#ib-13"><b>IB-13</b>Trajectòries</a></li>
+    <li><a href="#ib-14"><b>IB-14</b>Anells proporcionals</a></li>
+    <li><a href="#ib-15"><b>IB-15</b>Isolínies sobre camp</a></li>
+    <li><a href="#ib-16"><b>IB-16</b>Tall</a></li>
+    <li class="fam">Estructura</li>
+    <li><a href="#ib-17"><b>IB-17</b>Esclat radial</a></li>
+    <li><a href="#ib-18"><b>IB-18</b>Arcs d'enllaç</a></li>
+    <li><a href="#ib-19"><b>IB-19</b>Topografia de densitat</a></li>
+    <li><a href="#ib-20"><b>IB-20</b>Petits múltiples</a></li>
+    <li class="fam">Mapes</li>
+    <li><a href="#ib-21"><b>IB-21</b>Mosaic de quadrats</a></li>
+    <li><a href="#ib-22"><b>IB-22</b>Cartograma de cercles</a></li>
+    <li><a href="#ib-23"><b>IB-23</b>Densitat de punts</a></li>
+    <li><a href="#ib-24"><b>IB-24</b>Arcs de flux</a></li>
+    <li><a href="#ib-25"><b>IB-25</b>Mapa de pics</a></li>
+    <li><a href="#ib-26"><b>IB-26</b>Mapa de crestes</a></li>
+    <li><a href="#ib-27"><b>IB-27</b>Globus que gira</a></li>
+    <li><a href="#ib-28"><b>IB-28</b>Camp de vent animat</a></li>
+    <li><a href="#ib-29"><b>IB-29</b>Mapa bivariant</a></li>
+    <li><a href="#ib-30"><b>IB-30</b>Distància des d'un punt</a></li>
+    <li><a href="#ib-31"><b>IB-31</b>Abans i després</a></li>
+    <li><a href="#ib-32"><b>IB-32</b>Mapa en franja</a></li>
+    <li><a href="#ib-33"><b>IB-33</b>Hexàgons en el temps</a></li>
+    <li><a href="#ib-34"><b>IB-34</b>Mapa amb lupa</a></li>
+    <li class="fam">Formes inesperades</li>
+    <li><a href="#ib-35"><b>IB-35</b>Zoom d'escala</a></li>
+    <li><a href="#ib-36"><b>IB-36</b>Màquina de Galton</a></li>
+    <li><a href="#ib-37"><b>IB-37</b>Calendari de calor</a></li>
+    <li><a href="#ib-38"><b>IB-38</b>Crestes</a></li>
+    <li><a href="#ib-39"><b>IB-39</b>Eixam de forces</a></li>
+    <li><a href="#ib-40"><b>IB-40</b>Flux amb partícules</a></li>
+    <li><a href="#ib-41"><b>IB-41</b>Bombolles niades</a></li>
+    <li><a href="#ib-42"><b>IB-42</b>Pendents</a></li>
+    <li><a href="#ib-43"><b>IB-43</b>Quadrats d'escala</a></li>
+    <li><a href="#ib-44"><b>IB-44</b>Horitzó</a></li>
+    <li><a href="#ib-45"><b>IB-45</b>Flors de dades</a></li>
+    <li><a href="#ib-46"><b>IB-46</b>Corda</a></li>
+    <li><a href="#ib-47"><b>IB-47</b>Corrent apilat</a></li>
+    <li><a href="#ib-48"><b>IB-48</b>Un dia en un minut</a></li>
+    <li><a href="#ib-49"><b>IB-49</b>Temps profund</a></li>
+    <li><a href="#ib-50"><b>IB-50</b>Coordenades paral·leles</a></li>
+    <li><a href="#ib-51"><b>IB-51</b>Barra que es trenca</a></li>
+    <li><a href="#ib-52"><b>IB-52</b>Mentre llegeixes</a></li>
+    <li><a href="#ib-53"><b>IB-53</b>Anell de l'any</a></li>
+    <li><a href="#ib-54"><b>IB-54</b>Bombolles en moviment</a></li>
+  </ol>
+
+  <!-- ===================== PRINCIPIS ===================== -->
+  <h2 class="part" id="principis">Principis</h2>
+  <p class="part-d">El que tenen en comú El Niño i les referències. Cada gràfic nou els ha de complir tots.</p>
+  <ol class="prin">
+    <li><b><span>P1</span>El fons és el paper</b>Cap gràfic pinta fons, panells, targetes ni ombres. El blanc de la pàgina és el fons de tot. L'única superfície pintada és la terra dels mapes (gris càlid), i només perquè és informació.<em>Totes les referències: el dibuix sura sobre el blanc.</em></li>
+    <li><b><span>P2</span>Gris per al context, color per a la història</b>Tot el que no és el protagonista va en gris fi: els altres anys, els altres països, les altres observacions. Un o dos colors, i cada color vol dir sempre el mateix dins l'article.<em>El Niño (anys en gris, el 2026 en vermell), «The Worst Games Ever Made», terratrèmols.</em></li>
+    <li><b><span>P3</span>Molts elements, petits i translúcids</b>Quan hi ha milers de dades, es dibuixen totes: punts petits, línies fines, opacitat baixa. La densitat es veu sola i els patrons (o les trampes) surten a la llum.<em>Eleccions russes, incendis al Perú, icebergs, foques.</em></li>
+    <li><b><span>P4</span>Anotar dins del gràfic</b>Les idees s'escriuen al lloc on passen, amb una línia guia fina: títol en negreta i una línia de detall. La llegenda només explica la codificació; la història la expliquen les anotacions.<em>«The sweet spot» (zones), terratrèmols (fletxes corbes), El Niño.</em></li>
+    <li><b><span>P5</span>Escales honestes i explicades</b>La llegenda va a dalt, a la capçalera, i diu cap a on és «més» (◀ menys · més ▶). Unitats al primer valor de l'eix, el zero marcat, escales logarítmiques anunciades al títol de l'eix.<em>FiveThirtyEight, El Niño.</em></li>
+    <li><b><span>P6</span>Una sola jerarquia de text</b>Títol del gràfic en serif, subtítol i etiquetes en sans, números tabulars, cursiva per a zones i noms secundaris, font a sota en gris. Res per sota d'11 px a la pantalla.<em>Tipografia de l'apartat següent.</em></li>
+    <li><b><span>P7</span>La forma segueix el fenomen</b>El temps cíclic (un any, un dia) va en cercle; el temps lineal, en línia. El lloc va en mapa quan el lloc explica alguna cosa. Un mecanisme va en tall o en esquema.<em>Parcs nacionals, rosa horària, tall d'El Niño.</em></li>
+    <li><b><span>P8</span>Petits múltiples abans que espaguetis de colors</b>Si hi ha més de quatre sèries, es fan gràfics petits amb la mateixa escala, un al costat de l'altre. Mai més de sis colors categòrics.<em>Parcs nacionals, seqüència «Building strategy».</em></li>
+    <li><b><span>P9</span>Dada, simulació o esquema, sempre dit</b>Cada figura diu al peu què és: dades reals (amb font i any), una simulació (amb el model) o un esquema. Mai una forma inventada que sembli una dada.<em>Peus de figura d'El Niño.</em></li>
+    <li><b><span>P10</span>Es toca, es mou i cap a 390 px</b>Tooltip amb el ratolí, amb el teclat i amb el dit. Moviment suau i amb sentit, que es para amb <code>prefers-reduced-motion</code>. Cap scroll horitzontal: a mòbil, menys etiquetes, no més petites.<em>Validació de visualitzacions (T1–T5).</em></li>
+  </ol>
+
+  <!-- ===================== COLORS ===================== -->
+  <h2 class="part" id="colors">Colors</h2>
+  <p class="part-d">Tinta per al text i l'estructura, i només tres colors: vermell, blau i groc, amb els seus tons clars i foscos. Variables a <code>IBV.C</code>.</p>
+  <div class="sw ink">
+    <div><i style="background:#121212"></i><b>ink</b><span>#121212 · text, dada clau</span></div>
+    <div><i style="background:#4A4A4A"></i><b>ink2</b><span>#4A4A4A · subtítols</span></div>
+    <div><i style="background:#7A7A7A"></i><b>muted</b><span>#7A7A7A · eixos, fonts</span></div>
+    <div><i style="background:#C9C9C9"></i><b>ghost</b><span>#C9C9C9 · context</span></div>
+    <div><i style="background:#DADADA"></i><b>hair / grid</b><span>#DADADA · #EAEAEA</span></div>
+    <div><i style="background:#ECEBE8"></i><b>land</b><span>#ECEBE8 · terra</span></div>
+  </div>
+  <div class="sw sw3" style="margin-top:26px">
+    <div><i style="background:#C8442A"></i><b>1 · vermell</b><span>#C8442A · calent, destacat, el protagonista</span></div>
+    <div><i style="background:#2C5DA8"></i><b>2 · blau</b><span>#2C5DA8 · fred, aigua, la comparació</span></div>
+    <div><i style="background:#F5C518"></i><b>3 · groc</b><span>#F5C518 · llum, sol, sec. Mai per a text</span></div>
+  </div>
+  <div class="sw" style="margin-top:14px">
+    <div><i style="background:#E9A391"></i><b>vermellClar</b><span>#E9A391</span></div>
+    <div><i style="background:#9DB6DD"></i><b>blauClar</b><span>#9DB6DD</span></div>
+    <div><i style="background:#FBE38E"></i><b>grocClar</b><span>#FBE38E</span></div>
+    <div><i style="background:#7A2312"></i><b>vermellFosc</b><span>#7A2312</span></div>
+    <div><i style="background:#173A70"></i><b>blauFosc</b><span>#173A70</span></div>
+    <div><i style="background:#E0A800"></i><b>grocFosc</b><span>#E0A800</span></div>
+  </div>
+  <div class="ramps">
+    <div>Divergent: fred · neutre · calent (<code>IBV.div(max)</code>)<i style="background:linear-gradient(90deg,#173A70,#2C5DA8,#9FB6DA,#ECE9E4,#E8AB98,#C8442A,#7A2312)"></i><span>Per a anomalies i res que tingui un zero amb sentit. El centre sempre és gris.</span></div>
+    <div>Calor: groc → vermell (<code>IBV.heat(domini)</code>)<i style="background:linear-gradient(90deg,#FFF8DC,#FBE38E,#F5C518,#D9702A,#C8442A,#7A2312)"></i><span>Per a intensitats: foc, calor, densitat, risc.</span></div>
+    <div>Seqüencial blava (<code>IBV.seq(IBV.C.blau, domini)</code>)<i style="background:linear-gradient(90deg,#F6F4F0,#2C5DA8,#0d2550)"></i><span>Per a quantitats d'aigua, fred o neutres. Clar = poc, fosc = molt.</span></div>
+    <div>Seqüencial vermella (<code>IBV.seq(IBV.C.vermell, domini)</code>)<i style="background:linear-gradient(90deg,#F6F4F0,#C8442A,#5e1608)"></i><span>Per a quantitats que són el protagonista. Mai arc de Sant Martí.</span></div>
+  </div>
+  <p class="src" style="margin-top:18px">Vermell, blau i groc passen la validació de daltonisme entre tots tres (ΔE ≥ 18 per a protan, deutan i tritan). El groc té poc contrast sobre blanc (1,7:1): mai el facis servir per a text ni per a línies de menys de 2 px. Si calen més de tres categories, el secundari va en gris; si no n'hi ha prou, els tons clars i foscos de dalt (<code>IBV.CAT6</code>), sempre amb etiqueta directa. El text va sempre en tinta, no amb el color de la sèrie.</p>
+
+  <!-- ===================== TIPOGRAFIA ===================== -->
+  <h2 class="part" id="tipografia">Tipografia</h2>
+  <div class="type">
+    <div><span class="k">Títol del gràfic<br>Serif 600 · 22 px (19 a mòbil)</span><span style="font-family:var(--serif);font-weight:600;font-size:22px">Temperatura de la zona Niño 3.4</span></div>
+    <div><span class="k">Subtítol, valor actual<br>Sans 400 · 13,5 px · ink2</span><span style="font-family:var(--sans);font-size:13.5px;color:var(--ink-2)">Anomalia respecte al normal 1996–2025, mitjana de tres mesos</span></div>
+    <div><span class="k">Anotació<br>Sans 700 + 400 · 12,5 px · halo blanc</span><span style="font-family:var(--sans);font-size:12.5px;line-height:1.3"><b>El Niño 2026</b><br>+2,5 °C a l'octubre</span></div>
+    <div><span class="k">Zona o nom secundari<br>Sans cursiva · 12,5 px</span><span style="font-family:var(--sans);font-size:12.5px;font-style:italic;color:var(--ink-2)">Oceà Pacífic · Aigua freda · Llindar</span></div>
+    <div><span class="k">Eixos i llegendes<br>Sans 400 · 11,5 px · muted · tabulars</span><span style="font-family:var(--sans);font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums">−2 · −1 · 0 · +1 · +2 °C · 1.000 · 10.000</span></div>
+    <div><span class="k">Font i metodologia<br>Sans 400 · 12,5–13 px · muted</span><span style="font-family:var(--sans);font-size:12.5px;color:var(--muted)">Font: NOAA Climate Prediction Center. Simulació, no dades reals.</span></div>
+  </div>
+  <p class="src" style="margin-top:14px">Números en català: coma decimal, punt de milers, signe menys tipogràfic (−) i signe + a les anomalies. Fes servir <code>IBV.fmt(",.1f")</code> i <code>IBV.signed(v)</code>.</p>
+
+  <!-- ===================== COMPONENTS ===================== -->
+  <h2 class="part" id="components">Components</h2>
+  <p class="part-d">Les peces petites de què està fet cada gràfic. Totes són a <code>assets/ib-viz.js</code>.</p>
+  <div class="comp">
+    <section class="pc" id="c-01"><div class="pc-h"><span class="pc-n">C-01</span><h4>Capçalera</h4></div>
+      <p class="pc-d">Títol serif i subtítol a l'esquerra, llegenda a la dreta. Mai a sota del gràfic.</p>
+      <div class="plot" data-c="1"></div></section>
+    <section class="pc" id="c-02"><div class="pc-h"><span class="pc-n">C-02</span><h4>Llegenda de rampa</h4></div>
+      <p class="pc-d">Barra fina amb el zero marcat i el sentit escrit: ◀ menys · més ▶.</p>
+      <div class="plot" data-c="2"></div></section>
+    <section class="pc" id="c-03"><div class="pc-h"><span class="pc-n">C-03</span><h4>Llegenda de mida</h4></div>
+      <p class="pc-d">Cercles discontinus amb el valor a dins, en cursiva. Àrea proporcional al valor.</p>
+      <div class="plot" data-c="3"></div></section>
+    <section class="pc" id="c-04"><div class="pc-h"><span class="pc-n">C-04</span><h4>Llegenda de categories</h4></div>
+      <p class="pc-d">Punt, línia, anell o cercle buit, igual que al gràfic. Si hi ha quatre sèries o menys, també s'etiqueten directament.</p>
+      <div class="plot" data-c="4"></div></section>
+    <section class="pc" id="c-05"><div class="pc-h"><span class="pc-n">C-05</span><h4>Anotacions</h4></div>
+      <p class="pc-d">Colze, fletxa corba, caixa discontínua i llindar puntejat. Línia de 0,8 px en tinta i text amb halo blanc.</p>
+      <div class="plot" data-c="5"></div></section>
+    <section class="pc" id="c-06"><div class="pc-h"><span class="pc-n">C-06</span><h4>Eixos i quadrícula</h4></div>
+      <p class="pc-d">Sense línia d'eix. Quadrícula molt clara, valors a sobre de la línia, unitat al valor de dalt, zero en tinta.</p>
+      <div class="plot" data-c="6"></div></section>
+    <section class="pc" id="c-07"><div class="pc-h"><span class="pc-n">C-07</span><h4>Controls</h4></div>
+      <p class="pc-d">Lliscant d'1 px, segments subratllats i «Reprodueix». Sempre a sota del gràfic, separats per una línia.</p>
+      <div class="plot" data-c="7" style="min-height:0"></div></section>
+    <section class="pc" id="c-08"><div class="pc-h"><span class="pc-n">C-08</span><h4>Tooltip</h4></div>
+      <p class="pc-d">Requadre blanc amb vora fina, sense ombra. Negreta per a qui és, números tabulars. S'obre també amb un toc.</p>
+      <div class="plot" data-c="8"></div></section>
+  </div>
+
+  <!-- ===================== PECES ===================== -->
+  <h2 class="part" id="peces">Peces</h2>
+  <p class="part-d">Cinquanta-quatre maneres de mostrar dades, cadascuna amb nom i número: sèries temporals, quantitats, dinou mapes i vint formes inesperades. Quan escriguis un article, tria-les per número («IB-12 per al mapa, IB-01 per a la sèrie»). Les que porten dades reals ho diuen al peu; la resta fan servir dades d'exemple generades, només per mostrar la forma.</p>
+
+  <h3 class="fam">Temps</h3>
+
+  <section class="pc" id="ib-01">
+    <div class="pc-h"><span class="pc-n">IB-01</span><h4>Feix d'anys</h4></div>
+    <p class="pc-d">Cada any és una línia gris i fina; l'any que explica la història, en color. El lector veu de cop què és normal i quant se n'allunya el protagonista.</p>
+    <div class="vh"><div><strong>Temperatura de la zona Niño 3.4</strong><span>Anomalia (°C) respecte al normal, mitjana de tres mesos centrada en cada mes</span></div><div class="lgs" data-lg="1"></div></div>
+    <div class="plot" data-p="1"></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA Climate Prediction Center, índex ONI 1950–2026 (el 2026 fins a agost–octubre). Passa o toca per veure cada any.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Comparar un any (o un cas) amb tots els altres en un cicle que es repeteix: temperatures, pluja, preus per mes.</p></div><div><h5>Regles</h5><ul><li>Context: 1 px, gris <code>ghost</code>, opacitat 0,6.</li><li>Protagonista: 2,2 px en color, amb punt i etiqueta al final.</li><li>Com a màxim un segon destacat, en tinta.</li></ul></div><div><h5>Ve de</h5><p>El Niño (normal i 2026); «Seasonal Temperature Change».</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-02">
+    <div class="pc-h"><span class="pc-n">IB-02</span><h4>Índex de pulsacions</h4></div>
+    <p class="pc-d">Una sèrie llarga que oscil·la al voltant de zero, amb barres verticals molt fines. Per sobre i per sota del llindar, color; entre mig, gris. Els episodis grans porten el nom.</p>
+    <div class="vh"><div><strong>Episodis d'El Niño i La Niña</strong><span>Índex ONI mensual, 1950–2026</span></div><div class="lgs" data-lg="2"></div></div>
+    <div class="plot" data-p="2"></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA Climate Prediction Center (ONI). Llindars de ±0,5 °C.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Dècades d'una variable amb signe: anomalies, balanços, excés i dèficit.</p></div><div><h5>Regles</h5><ul><li>Barra ≤ 2 px, sense separació si no hi cap.</li><li>Etiquetes només als 5–7 extrems.</li><li>Línia del zero en tinta; llindars puntejats.</li></ul></div><div><h5>Ve de</h5><p>Índex d'El Niño (1950–2026) a l'article.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-03">
+    <div class="pc-h"><span class="pc-n">IB-03</span><h4>Franja de distribució</h4></div>
+    <p class="pc-d">Per a cada moment del cicle, totes les observacions apilades com a cel·les: com més fosca, més anys hi cauen. A sobre, la mediana i l'any actual. Una finestra mostra el màxim, la mediana i el mínim.</p>
+    <div class="vh"><div><strong>On cau cada any, mes a mes</strong><span>Anomalia de la zona Niño 3.4, 1950–2025, i el 2026</span></div><div class="lgs" data-lg="3"></div></div>
+    <div class="plot" data-p="3"></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA CPC (ONI). Cel·les de 0,25 °C. Passa o toca un mes per moure la finestra.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Mostrar la variabilitat normal d'un cicle sense dibuixar 70 línies: estacions, hores del dia, setmanes.</p></div><div><h5>Regles</h5><ul><li>Rampa seqüencial blava per al recompte.</li><li>Mediana en tinta amb punts; l'any actual en vermell.</li><li>Finestra amb vora fina i tres valors.</li></ul></div><div><h5>Ve de</h5><p>«Seasonal Temperature Change».</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-04">
+    <div class="pc-h"><span class="pc-n">IB-04</span><h4>Files de bombolles</h4></div>
+    <p class="pc-d">Una fila per any o per cas, el temps d'esquerra a dreta i cada esdeveniment com un cercle translúcid de mida proporcional. Les superposicions fan de densitat.</p>
+    <div class="vh"><div><strong>Temporada alta, any rere any</strong><span>Esdeveniments per setmana, 2014–2026</span></div><div class="lgs" data-lg="4"></div></div>
+    <div class="plot" data-p="4"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Temporades (incendis, tempestes, epidèmies), rèpliques d'un terratrèmol, qualsevol recompte per setmana o per dia en diversos anys o casos.</p></div><div><h5>Regles</h5><ul><li>Àrea proporcional (<code>d3.scaleSqrt</code>).</li><li>Opacitat 0,4–0,5, sense vora.</li><li>El màxim de cada fila, un to més fosc.</li><li>Llegenda de mida (C-03).</li></ul></div><div><h5>Ve de</h5><p>«Incendios en Perú 2012–2024», «Major quakes and their aftershocks».</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-05">
+    <div class="pc-h"><span class="pc-n">IB-05</span><h4>Espiral anual</h4></div>
+    <p class="pc-d">El cicle d'un any al voltant d'un cercle (gener a dalt), i la distància al centre és el valor. Cada volta és un any: la tendència fa que l'espiral s'obri.</p>
+    <div class="vh"><div><strong>CO₂ a Mauna Loa</strong><span>Concentració mensual (ppm), 1958–2026</span></div><div class="lgs" data-lg="5"></div></div>
+    <div class="plot" data-p="5"></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA Global Monitoring Laboratory, mitjana mensual a Mauna Loa (Hawaii).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Cicles anuals (o diaris) que es repeteixen i canvien a poc a poc: CO₂, gel marí, visitants, temperatura.</p></div><div><h5>Regles</h5><ul><li>Mesos amb inicial al voltant, gener a dalt, en sentit horari.</li><li>Rampa seqüencial pel temps; l'últim any en vermell.</li><li>Cercles de referència molt clars, amb el valor.</li></ul></div><div><h5>Ve de</h5><p>Parcs nacionals dels EUA (visitants per mes).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-06">
+    <div class="pc-h"><span class="pc-n">IB-06</span><h4>Rosa horària</h4></div>
+    <p class="pc-d">Sectors al voltant d'un rellotge de 24 hores, superposats i translúcids. Dues o tres sèries com a màxim, i la mateixa escala per a totes.</p>
+    <div class="vh"><div><strong>Quan s'omple cada espai</strong><span>Ocupació per hores, de 0 a 100 %</span></div><div class="lgs" data-lg="6"></div></div>
+    <div class="plot" data-p="6"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Ritmes diaris: activitat animal, trànsit, consum elèctric, migració vertical.</p></div><div><h5>Regles</h5><ul><li>Radi amb <code>d3.scaleSqrt</code> (l'àrea mana).</li><li>Farciment 0,3 i contorn d'1,2 px.</li><li>Hores a 0, 6, 12 i 18; mitjanit a dalt.</li></ul></div><div><h5>Ve de</h5><p>«Public / private typology demand».</p></div></div>
+  </section>
+
+  <h3 class="fam">Quantitat i relació</h3>
+
+  <section class="pc" id="ib-07">
+    <div class="pc-h"><span class="pc-n">IB-07</span><h4>Núvol amb protagonistes</h4></div>
+    <p class="pc-d">Milers de punts translúcids d'un sol color fan el núvol; uns pocs casos, buits i amb nom en cursiva, expliquen la història. L'eix logarítmic s'anuncia.</p>
+    <div class="vh"><div><strong>Els casos que se'n van</strong><span>Valoració mitjana segons el nombre de valoracions</span></div><div class="lgs" data-lg="7"></div></div>
+    <div class="plot" data-p="7"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Relació entre dues variables amb molts casos, quan importen els extrems: països, espècies, mostres.</p></div><div><h5>Regles</h5><ul><li>Punts de 2–3 px, opacitat 0,15–0,25.</li><li>Protagonistes: cercle buit en tinta + nom en cursiva.</li><li>Màxim 6–8 noms.</li></ul></div><div><h5>Ve de</h5><p>«The Worst Games Ever Made».</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-08">
+    <div class="pc-h"><span class="pc-n">IB-08</span><h4>Pols de punts</h4></div>
+    <p class="pc-d">Desenes de milers de punts minúsculs gairebé transparents. No es veu cap punt: es veu on s'acumulen. Una caixa discontínua i una nota assenyalen el patró.</p>
+    <div class="vh"><div><strong>Un patró que només surt amb molts punts</strong><span>1 punt = 1 observació · 60.000 observacions</span></div><div class="lgs" data-lg="8"></div></div>
+    <div class="plot" data-p="8"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Dibuixat en canvas.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Conjunts molt grans on la forma de la distribució és la notícia: cens, estacions de mesura, mostres de satèl·lit.</p></div><div><h5>Regles</h5><ul><li>Canvas, punts d'1 px, opacitat 0,04–0,08.</li><li>Un sol color.</li><li>Valors de l'eix vertical a la dreta, subratllats.</li></ul></div><div><h5>Ve de</h5><p>«Fair and square?» (The Economist).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-09">
+    <div class="pc-h"><span class="pc-n">IB-09</span><h4>Mosaic hexagonal</h4></div>
+    <p class="pc-d">El pla dividit en hexàgons; cada hexàgon pren el color de la mitjana del que hi cau, amb la rampa divergent. Línies puntejades separen les zones, amb nom en cursiva.</p>
+    <div class="vh"><div><strong>On rendeix més</strong><span>Valor mitjà segons l'angle i la velocitat</span></div><div class="lgs" data-lg="9"></div></div>
+    <div class="plot" data-p="9"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Mínim de cinc casos per hexàgon.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Una tercera variable en funció de dues: rendiment, risc, temperatura segons latitud i altitud.</p></div><div><h5>Regles</h5><ul><li>Rampa divergent amb el zero = la mitjana.</li><li>Hexàgons sense vora, separats 1 px.</li><li>Zones amb ▲ ▼ i nom en cursiva.</li></ul></div><div><h5>Ve de</h5><p>«The sweet spot» (FiveThirtyEight).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-10">
+    <div class="pc-h"><span class="pc-n">IB-10</span><h4>Escala amb llindar</h4></div>
+    <p class="pc-d">Una sola variable en una regla de color, amb una zona de llindar marcada, els llocs o casos clau col·locats a sobre i una fletxa del canvi.</p>
+    <div class="vh"><div><strong>A partir de quina temperatura plou fort</strong><span>Temperatura de l'aigua del mar (°C)</span></div><div class="lgs" data-lg="10"></div></div>
+    <div class="plot" data-p="10"></div>
+    <p class="src"><b>Esquema</b> (els núvols no són dades). Valors d'El Niño: llindar de 26–28 °C; costa del Perú ≈ 21 °C, Indonèsia ≈ 30 °C, zona Niño 3.4 de 26,8 °C (normal) a 29,2 °C (2026).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Llindars físics o legals: punt d'ebullició, nivell d'alerta, renda mínima. Posar casos concrets sobre una escala.</p></div><div><h5>Regles</h5><ul><li>Regla de 10–12 px amb la rampa del fenomen.</li><li>Zona de llindar en gris pàl·lid, amb nom.</li><li>Fletxa corba per al canvi (abans → ara).</li></ul></div><div><h5>Ve de</h5><p>El Niño, «L'aigua calenta fa ploure».</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-11">
+    <div class="pc-h"><span class="pc-n">IB-11</span><h4>Reixa d'unitats</h4></div>
+    <p class="pc-d">Cent punts, un per cada 1 %, en una reixa. Les proporcions es compten amb els ulls. Botons per passar d'una agrupació a una altra.</p>
+    <div class="vh"><div><strong>Si fossin cent</strong><span>1 punt = 1 % del total</span></div><div class="lgs" data-lg="11"></div></div>
+    <div class="plot" data-p="11"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Agrupació" data-seg="11"><button aria-pressed="true" data-k="0">Junts</button><button aria-pressed="false" data-k="1">Per grup</button></div></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Proporcions que el lector ha d'entendre com a persones o casos: causes de mort, fonts d'energia, destinació del CO₂.</p></div><div><h5>Regles</h5><ul><li>Màxim cinc grups, en l'ordre de la paleta.</li><li>Etiqueta directa del grup i del percentatge.</li><li>Transició quan canvia l'agrupació.</li></ul></div><div><h5>Ve de</h5><p>«De què mor el món?» (2020 i 2026).</p></div></div>
+  </section>
+
+  <h3 class="fam">Lloc</h3>
+
+  <section class="pc" id="ib-12">
+    <div class="pc-h"><span class="pc-n">IB-12</span><h4>Camp de punts sobre mapa</h4></div>
+    <p class="pc-d">Un camp continu (temperatura, pluja, densitat) dibuixat com una trama de punts hexagonal sobre el mapa. El color i la mida del punt diuen el valor; el mar queda blanc.</p>
+    <div class="vh"><div><strong>Com es veu una anomalia a l'oceà</strong><span>Temperatura del mar respecte al normal</span></div><div class="lgs" data-lg="12"></div></div>
+    <div class="plot" data-p="12"></div>
+    <p class="src"><b>Simulació</b>, no dades reals: un camp suau que imita El Niño per mostrar la forma. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Qualsevol camp sobre el planeta: anomalies, pluja, clorofil·la, pols.</p></div><div><h5>Regles</h5><ul><li>Terra <code>land</code> amb fronteres blanques; mar sense color.</li><li>Punts on el valor és gairebé zero: no es dibuixen.</li><li>Noms d'oceà en cursiva, de país en sans petita.</li></ul></div><div><h5>Ve de</h5><p>El Niño (mapa del Pacífic, portada de la revista).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-13">
+    <div class="pc-h"><span class="pc-n">IB-13</span><h4>Trajectòries</h4></div>
+    <p class="pc-d">Centenars de recorreguts en línies molt fines i translúcides, sobre un globus en projecció ortogràfica. Els camins repetits fan autopistes; un recorregut destacat s'anota.</p>
+    <div class="vh"><div><strong>Camins al voltant de l'Antàrtida</strong><span>Recorreguts simulats que segueixen el corrent circumpolar</span></div><div class="lgs" data-lg="13"></div></div>
+    <div class="plot" data-p="13"></div>
+    <div class="ctlbar"><button class="playb" data-play="13">Reprodueix</button></div>
+    <p class="src"><b>Simulació</b>, no dades reals. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Moviments: icebergs, animals marcats, boies, vaixells, tempestes, vents.</p></div><div><h5>Regles</h5><ul><li>Línia de 0,6–0,8 px, opacitat 0,25–0,4.</li><li>Un recorregut destacat en vermell, amb inici i final.</li><li>Fletxes grises molt suaus per al sentit del corrent.</li></ul></div><div><h5>Ve de</h5><p>«Iceberg alley», mapa de biodiversitat antàrtica (foques).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-14">
+    <div class="pc-h"><span class="pc-n">IB-14</span><h4>Anells proporcionals</h4></div>
+    <p class="pc-d">Cada lloc és un cercle fet d'anells concèntrics: un anell per cas. La mida diu quants n'hi ha i el color, la categoria. Les rutes, en blanc gruixut sota els anells.</p>
+    <div class="vh"><div><strong>On passa, i per què</strong><span>Casos per lloc i categoria</span></div><div class="lgs" data-lg="14"></div></div>
+    <div class="plot" data-p="14"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Recomptes per lloc quan cada cas importa: víctimes, rescats, observacions d'espècies.</p></div><div><h5>Regles</h5><ul><li>Un anell per cas (fins a ~40; a partir d'aquí, 1 anell = N).</li><li>Màxim tres categories.</li><li>Rutes blanques de 3–5 px sobre la terra.</li></ul></div><div><h5>Ve de</h5><p>«A sea of sand and sickness» (Creu Roja britànica).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-15">
+    <div class="pc-h"><span class="pc-n">IB-15</span><h4>Isolínies sobre camp</h4></div>
+    <p class="pc-d">Dues variables al mateix mapa: una com a camp de color per franges, l'altra com a corbes de nivell etiquetades sobre la mateixa línia.</p>
+    <div class="vh"><div><strong>Pluja i temperatura</strong><span>Precipitació anual (camp) i temperatura mitjana (línies)</span></div><div class="lgs" data-lg="15"></div></div>
+    <div class="plot" data-p="15"></div>
+    <p class="src"><b>Simulació</b>, no dades reals: camps suaus per mostrar la forma, retallats a la silueta d'Austràlia. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Climes, altituds, pressions; qualsevol mapa on dues magnituds es creuen.</p></div><div><h5>Regles</h5><ul><li>Camp seqüencial en 6–8 franges, sense vores.</li><li>Isolínies d'1,4 px, etiqueta tallant la línia.</li><li>Ciutats: punt de 3 px i nom amb halo.</li></ul></div><div><h5>Ve de</h5><p>«Germany – average rainfall and temperature».</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-16">
+    <div class="pc-h"><span class="pc-n">IB-16</span><h4>Tall</h4></div>
+    <p class="pc-d">Una secció vertical del mar, l'aire o el terra, amb capes de color i etiquetes a dins. L'escala vertical exagerada es diu.</p>
+    <div class="vh"><div><strong>El Pacífic, tallat per l'equador</strong><span>Capes d'aigua d'oest a est · escala vertical exagerada</span></div><div class="lgs" data-lg="16"></div></div>
+    <div class="plot" data-p="16"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Estat" data-seg="16"><button aria-pressed="false" data-k="-1">La Niña</button><button aria-pressed="true" data-k="0">Normal</button><button aria-pressed="false" data-k="1">El Niño</button></div></div>
+    <p class="src"><b>Esquema</b>, no dades reals.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Explicar mecanismes: termoclina, capes de l'atmosfera, un sòl, una cèl·lula, l'interior d'una màquina.</p></div><div><h5>Regles</h5><ul><li>Capes amb la rampa del fenomen, sense contorns negres.</li><li>Fletxes fines per al moviment.</li><li>Noms a dins de cada capa, en sans 12,5.</li></ul></div><div><h5>Ve de</h5><p>El Niño (tall de l'oceà); «Building strategy».</p></div></div>
+  </section>
+
+  <h3 class="fam">Estructura</h3>
+
+  <section class="pc" id="ib-17">
+    <div class="pc-h"><span class="pc-n">IB-17</span><h4>Esclat radial</h4></div>
+    <p class="pc-d">Un centre i molts radis. Cada punt és un element; la distància al centre és un valor i el color, la categoria. Uns quants s'etiqueten amb línies puntejades fins al marge.</p>
+    <div class="vh"><div><strong>Tot surt d'un mateix lloc</strong><span>Elements segons categoria i distància</span></div><div class="lgs" data-lg="17"></div></div>
+    <div class="plot" data-p="17"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Un tema i les seves parts: disciplines d'un camp, espècies d'un ecosistema, fonts d'una notícia.</p></div><div><h5>Regles</h5><ul><li>Radis d'1 px en tinta, opacitat 0,6.</li><li>Dues categories (blau i groc).</li><li>Etiquetes en sans 700, amb línia puntejada fins al marge (sense majúscules decoratives).</li></ul></div><div><h5>Ve de</h5><p>«Technology / Ecology».</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-18">
+    <div class="pc-h"><span class="pc-n">IB-18</span><h4>Arcs d'enllaç</h4></div>
+    <p class="pc-d">Dues columnes d'elements i corbes que en connecten els parells. El gruix pot dir la quantitat. Passa per sobre d'un element per veure només els seus enllaços.</p>
+    <div class="vh"><div><strong>Què connecta amb què</strong><span>Origen a l'esquerra, destinació a la dreta</span></div><div class="lgs" data-lg="18"></div></div>
+    <div class="plot" data-p="18"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Relacions entre dues llistes: països i destinacions, causes i efectes, espècies i hàbitats.</p></div><div><h5>Regles</h5><ul><li>Corbes de Bézier horitzontals, 1 px, opacitat 0,5.</li><li>Nodes: cercle buit de 3 px.</li><li>Ressaltat en passar-hi: la resta a 0,1.</li></ul></div><div><h5>Ve de</h5><p>«Concept diagram of the masterplan» (Senezh), músics de rock (La Lettura).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-19">
+    <div class="pc-h"><span class="pc-n">IB-19</span><h4>Topografia de densitat</h4></div>
+    <p class="pc-d">On s'acumulen els punts, corbes de nivell concèntriques molt fines, com un mapa topogràfic. Es veuen els nuclis i com es fonen entre ells.</p>
+    <div class="vh"><div><strong>Nuclis que es toquen</strong><span>Densitat d'observacions</span></div><div class="lgs" data-lg="19"></div></div>
+    <div class="plot" data-p="19"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. <code>d3.contourDensity</code>.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Agrupacions en l'espai: colònies, focus d'un brot, punts calents d'observacions.</p></div><div><h5>Regles</h5><ul><li>20–30 nivells, 0,6 px.</li><li>Rampa seqüencial d'un to aplicada a la línia, no al farciment.</li><li>La corba exterior una mica més gruixuda.</li></ul></div><div><h5>Ve de</h5><p>«Building strategy» (punts atractors), Senezh.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-20">
+    <div class="pc-h"><span class="pc-n">IB-20</span><h4>Petits múltiples</h4></div>
+    <p class="pc-d">El mateix gràfic repetit, petit i amb la mateixa escala, un per dècada, lloc o cas. Es comparen d'un cop d'ull. Qualsevol peça es pot fer en petits múltiples.</p>
+    <div class="vh"><div><strong>El cicle anual del CO₂, dècada a dècada</strong><span>Concentració a Mauna Loa respecte a la mitjana de cada any (ppm)</span></div><div class="lgs" data-lg="20"></div></div>
+    <div class="plot" data-p="20"></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA Global Monitoring Laboratory, Mauna Loa. Cada línia gris és un any; la negra, la mitjana de la dècada.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Més de quatre sèries, o comparacions entre llocs i èpoques.</p></div><div><h5>Regles</h5><ul><li>Mateixa escala a tots; s'escriu només al primer.</li><li>Títol de cada panell en serif 600 de 16 px.</li><li>Quatre per fila a escriptori, dos a mòbil.</li></ul></div><div><h5>Ve de</h5><p>Parcs nacionals dels EUA; seqüència «Attractor points → Field → Amalgamation».</p></div></div>
+  </section>
+
+
+  <h3 class="fam">Mapes</h3>
+
+  <section class="pc" id="ib-21">
+    <div class="pc-h"><span class="pc-n">IB-21</span><h4>Mosaic de quadrats</h4></div>
+    <p class="pc-d">Cada país és un quadrat igual en una reixa que recorda la geografia. Els països petits pesen el mateix que els grans i el color es llegeix sense distraccions. Un botó desfà el mapa i el converteix en un rànquing ordenat, i el torna a muntar.</p>
+    <div class="vh"><div><strong>Com més a l'est, més fred fa a l'hivern</strong><span>Temperatura mitjana de l'aire al gener, 1991–2020</span></div><div class="lgs" data-lg="21"></div></div>
+    <div class="plot" data-p="21"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Vista" data-seg="21"><button aria-pressed="true" data-k="0">Mapa</button><button aria-pressed="false" data-k="1">Rànquing</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA PSL, reanàlisi NCEP/NCAR R1, temperatura de l'aire a prop de la superfície (nivell sigma 0,995), mitjana de gener 1991–2020, graella de 2,5°. Mitjana de cada país calculada per Inspired by: camp interpolat dins de la frontera (Natural Earth 1:50m) i ponderat per l'àrea; només el territori europeu (Rússia, a l'oest dels Urals, 60° E). Amb una graella tan ampla, la xifra és una mitjana suau, no la temperatura d'una ciutat.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Un valor per país o regió quan els petits compten tant com els grans: Europa, comunitats, comarques, estats.</p></div><div><h5>Regles</h5><ul><li>Quadrats iguals, 3 px de separació, codi de dues lletres a dins.</li><li>Rampa divergent si hi ha un zero amb sentit; si no, seqüencial.</li><li>El rànquing comparteix colors i ordre de lectura amb el mapa.</li></ul></div><div><h5>Ve de</h5><p>Els mapes de quadrats de la premsa electoral i de dades.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-22">
+    <div class="pc-h"><span class="pc-n">IB-22</span><h4>Cartograma de cercles</h4></div>
+    <p class="pc-d">Del mapa als cercles: cada país es converteix en un cercle d'àrea proporcional al valor i una simulació de forces els separa sense allunyar-los gaire del seu lloc. Aquí el valor és la superfície real, i el canvi desemmascara el mapa de Mercator.</p>
+    <div class="vh"><div><strong>La mida que el mapa no diu</strong><span>Mapa de Mercator i superfície real de cada país, a la mateixa escala que a l'equador</span></div><div class="lgs" data-lg="22"></div></div>
+    <div class="plot" data-p="22"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Vista" data-seg="22"><button aria-pressed="true" data-k="0">Mapa de Mercator</button><button aria-pressed="false" data-k="1">Mida real</button></div></div>
+    <p class="src"><b>Dades reals.</b> Superfície de cada país calculada per Inspired by a partir de la geometria de Natural Earth 1:110m (world-atlas 2.0.2); és aproximada, perquè el contorn està simplificat. Sense l'Antàrtida. La inflació és l'àrea que el país ocupa al mapa de Mercator dividida per la que ocuparia a l'escala de l'equador.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Quantitats per país (població, emissions, superfície) quan la mida del territori enganya.</p></div><div><h5>Regles</h5><ul><li>Àrea del cercle proporcional al valor; clau de mida dins del gràfic.</li><li>Els cercles surten del seu país i hi tornen.</li><li>Etiqueta només els cercles que caben; la resta, al tooltip.</li></ul></div><div><h5>Ve de</h5><p>Els cartogrames de cercles de Danny Dorling.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-23">
+    <div class="pc-h"><span class="pc-n">IB-23</span><h4>Densitat de punts</h4></div>
+    <p class="pc-d">Un punt per cada N unitats, escampats només dins de la frontera de cada regió i on és més probable que hi siguin (mètode dasimètric). La densitat es veu sola, sense rampa de color, i passar per una regió en dona el total.</p>
+    <div class="vh"><div><strong>On s'acumulen</strong><span>Unitats per regió, en punts</span></div><div class="lgs" data-lg="23"></div></div>
+    <div class="plot" data-p="23"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma: les fronteres són reals (Natural Earth 1:110m), però els totals i la posició dels punts dins de cada país, no. Projecció azimutal d'àrees iguals, perquè la densitat sigui comparable.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Recomptes grans per regió: població, habitatges, explotacions, espècies observades.</p></div><div><h5>Regles</h5><ul><li>Un sol color, punts d'1–1,5 px, opacitat alta.</li><li>«1 punt = …» a la llegenda; la mateixa N a totes les amplades.</li><li>Projecció d'àrees iguals.</li></ul></div><div><h5>Ve de</h5><p>Els mapes de punts de població (p. ex. «The Racial Dot Map»).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-24">
+    <div class="pc-h"><span class="pc-n">IB-24</span><h4>Arcs de flux</h4></div>
+    <p class="pc-d">Orígens i destinacions units per arcs que segueixen el cercle màxim, amb partícules que hi circulen en el sentit del flux. El gruix és el volum. Passa per una ciutat per quedar-te només amb els seus fluxos.</p>
+    <div class="vh"><div><strong>Què va d'on a on</strong><span>Fluxos entre ciutats; el gruix és el volum</span></div><div class="lgs" data-lg="24"></div></div>
+    <div class="plot" data-p="24"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma: les ciutats i la seva posició són reals; els fluxos i els volums, no. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Moviments entre llocs: migracions, comerç, vols, animals marcats, pols i espècies.</p></div><div><h5>Regles</h5><ul><li>Arcs de cercle màxim amb una petita separació per a cada sentit.</li><li>Gruix de 0,6 a 5 px; partícules més ràpides que llegibles, mai al revés.</li><li>Sortides en vermell, arribades en blau quan se'n destaca una.</li></ul></div><div><h5>Ve de</h5><p>«Flight Patterns» (Aaron Koblin) i els mapes de migració de la premsa.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-25">
+    <div class="pc-h"><span class="pc-n">IB-25</span><h4>Mapa de pics</h4></div>
+    <p class="pc-d">Un pic prim a cada lloc, que creix des del terra amb l'alçada proporcional al valor. El mapa s'inclina una mica per donar profunditat. Es veu de seguida on es concentra tot i on no hi ha res.</p>
+    <div class="vh"><div><strong>On s'han comptat els virus del mar</strong><span>Mesures de virus per mil·lilitre en cada lloc de mostreig (cel·la d'1°)</span></div><div class="lgs" data-lg="25"></div></div>
+    <div class="plot" data-p="25"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Alçada" data-seg="25"><button aria-pressed="true" data-k="0">Nombre de mesures</button><button aria-pressed="false" data-k="1">Virus per mil·lilitre</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: Wigington et al. 2016, <i>Nature Microbiology</i> 1:15024, amb la correcció del 2017 (5.508 mesures de 22 campanyes, sense els tres conjunts d'aigua dolça retirats). Agrupació per lloc i mediana calculades per Inspired by. Escala lineal.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Recomptes o quantitats per punt quan els extrems són la notícia: població, mesures, terratrèmols, captures.</p></div><div><h5>Regles</h5><ul><li>Pics de base estreta i dues cares (llum i ombra); de darrere cap endavant.</li><li>Escala lineal amb un pic de referència dins del gràfic.</li><li>Etiqueta de 3 a 5 pics, els més alts.</li></ul></div><div><h5>Ve de</h5><p>Els mapes de pics de població («spike maps») de la premsa.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-26">
+    <div class="pc-h"><span class="pc-n">IB-26</span><h4>Mapa de crestes</h4></div>
+    <p class="pc-d">El planeta dibuixat només amb línies horitzontals, una per latitud, que s'aixequen on el valor és alt i s'enfonsen on és baix. Cada línia tapa les de darrere i els continents apareixen sols, sense dibuixar-los.</p>
+    <div class="vh"><div><strong>On fa més calor del que toca</strong><span>Temperatura de l'aire respecte a la mitjana de la seva latitud</span></div><div class="lgs" data-lg="26"></div></div>
+    <div class="plot" data-p="26"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Mes" data-seg="26"><button aria-pressed="true" data-k="0">Gener</button><button aria-pressed="false" data-k="1">Juliol</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA PSL, reanàlisi NCEP/NCAR R1, temperatura de l'aire a prop de la superfície (sigma 0,995), mitjana 1991–2020, graella de 2,5°. Diferència amb la mitjana de tota la latitud calculada per Inspired by. A les muntanyes (Tibet, Andes) l'aire és fred sobretot per l'altitud.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Un camp global o continental amb un patró per latitud: temperatura, pluja, població, relleu.</p></div><div><h5>Regles</h5><ul><li>Línies d'1 px en tinta amb farciment blanc a sota; les del sud tapen les del nord.</li><li>Una escala vertical dibuixada dins del gràfic.</li><li>Latitud a l'esquerra, només cada 30°.</li></ul></div><div><h5>Ve de</h5><p>La portada d'«Unknown Pleasures» (Joy Division) i els mapes de població en línies.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-27">
+    <div class="pc-h"><span class="pc-n">IB-27</span><h4>Globus que gira</h4></div>
+    <p class="pc-d">El planeta en projecció ortogràfica, que gira sol com la Terra i es pot arrossegar amb el ratolí o el dit. A sobre, un camp de punts de color; la nit, en una ombra suau amb el terminador.</p>
+    <div class="vh"><div><strong>On glaça i on no</strong><span>Temperatura mitjana de l'aire a prop de la superfície, 1991–2020</span></div><div class="lgs" data-lg="27"></div></div>
+    <div class="plot" data-p="27"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Mes" data-seg="27"><button aria-pressed="true" data-k="0">Gener</button><button aria-pressed="false" data-k="1">Juliol</button></div><button class="playb" data-play="27">Atura</button></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA PSL, reanàlisi NCEP/NCAR R1, temperatura de l'aire a prop de la superfície (sigma 0,995), mitjana 1991–2020, graella de 2,5°. La nit és un <b>esquema</b>: la posició del sol a mitjan mes, amb el gir accelerat. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Fenòmens globals on importa la forma de la Terra: polar, estacional, dia i nit, rutes llargues.</p></div><div><h5>Regles</h5><ul><li>Gir lent (un tomb cada 40 s); s'atura en passar-hi, en arrossegar i amb <code>prefers-reduced-motion</code>.</li><li>Gratícula de 15° en gris finíssim, costa en tinta clara.</li><li>Arrossegar en horitzontal a mòbil, perquè la pàgina continuï fent scroll.</li></ul></div><div><h5>Ve de</h5><p>Els globus ortogràfics de D3 (Mike Bostock) i el mapa de portada d'El Niño.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-28">
+    <div class="pc-h"><span class="pc-n">IB-28</span><h4>Camp de vent animat</h4></div>
+    <p class="pc-d">Milers de partícules que es deixen portar pel vent i deixen una estela que s'esvaeix. El color i la velocitat diuen la intensitat; en passar-hi el ratolí o el dit, apareix la línia de corrent que passa per aquell punt, amb la direcció i la velocitat.</p>
+    <div class="vh"><div><strong>Com circula un vent de l'oest sobre l'Atlàntic</strong><span>Cada traç és una partícula arrossegada pel vent simulat</span></div><div class="lgs" data-lg="28"></div></div>
+    <div class="plot" data-p="28"></div>
+    <div class="ctlbar"><button class="playb" data-play="28" aria-pressed="false">Atura</button></div>
+    <p class="src"><b>Simulació</b>, no dades reals: un camp de vent idealitzat (una franja de vents de l'oest que ondula, dues borrasques, un anticicló i vents de l'est al sud) per mostrar la forma. Partícules dibuixades en canvas. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Qualsevol camp vectorial: vent, corrents marins, migracions, fluxos de gent sobre un territori.</p></div><div><h5>Regles</h5><ul><li>Canvas, 1.500–4.000 partícules d'1 px amb estela de 10–14 punts.</li><li>Un sol to (rampa seqüencial blava) per a la velocitat.</li><li>En passar-hi, les partícules baixen a 0,3 i surt la línia de corrent en tinta.</li><li>Botó per aturar el moviment; amb moviment reduït, estela fixa.</li></ul></div><div><h5>Ve de</h5><p>«Wind Map» (Viégas i Wattenberg, 2012); earth.nullschool.net.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-29">
+    <div class="pc-h"><span class="pc-n">IB-29</span><h4>Mapa bivariant</h4></div>
+    <p class="pc-d">Dues variables al mateix mapa amb una reixa de 3 × 3 colors: vermell per a una, blau per a l'altra, gris on totes dues són baixes i fosc on totes dues són altes. La llegenda és un quadrat girat; en passar per una cel·la, només queden encesos els països d'aquella combinació.</p>
+    <div class="vh"><div><strong>Calor i estacions, país per país</strong><span>Mitjana de gener i juliol i diferència entre tots dos mesos · terços dels països</span></div><div class="lgs" data-lg="29"></div></div>
+    <div class="plot" data-p="29"></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA PSL, reanàlisi NCEP/NCAR R1, temperatura de l'aire a prop de la superfície, mitjanes de gener i juliol 1991–2020, graella de 2,5°. Valor de cada país: mitjana de les cel·les que hi cauen (ponderada per la latitud); als països massa petits per a la graella, el valor del seu punt central. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Dues variables que interessen juntes: renda i desigualtat, pluja i temperatura, vot i participació.</p></div><div><h5>Regles</h5><ul><li>Reixa 3 × 3 entre el vermell i el blau sobre gris; les cantonades són els colors purs.</li><li>Talls per terços, escrits a la llegenda.</li><li>Llegenda girada 45° amb el nom dels dos eixos i el sentit.</li><li>Hover recíproc: cel·la → països, país → cel·la.</li></ul></div><div><h5>Ve de</h5><p>Mapes bivariants de Joshua Stevens; coroplètics del NYT.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-30">
+    <div class="pc-h"><span class="pc-n">IB-30</span><h4>Distància des d'un punt</h4></div>
+    <p class="pc-d">Projecció azimutal equidistant: totes les distàncies des del centre són reals i qualsevol recta que en surt és el camí més curt. Anells cada 2.000 km. Un clic en una ciutat o en qualsevol lloc hi porta el centre, amb la Terra girant.</p>
+    <div class="vh"><div><strong>Lluny de Barcelona</strong><span>El món vist des d'una sola ciutat · clic per canviar el centre</span></div><div class="lgs" data-lg="30"></div></div>
+    <div class="plot" data-p="30"></div>
+    <div class="ctlbar"><div class="seg ibx-wrap" role="group" aria-label="Centre del mapa" data-seg="30"><button aria-pressed="true" data-k="Barcelona">Barcelona</button><button aria-pressed="false" data-k="Nova York">Nova York</button><button aria-pressed="false" data-k="Buenos Aires">Buenos Aires</button><button aria-pressed="false" data-k="Nairobi">Nairobi</button><button aria-pressed="false" data-k="Tòquio">Tòquio</button><button aria-pressed="false" data-k="Sydney">Sydney</button><button aria-pressed="false" data-k="Reykjavík">Reykjavík</button></div></div>
+    <p class="src"><b>Geometria real.</b> Distàncies de cercle màxim sobre una esfera de 6.371 km de radi. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Preguntes de «quant de lluny»: rutes aèries, abast d'un míssil o d'un senyal, d'on venen els visitants.</p></div><div><h5>Regles</h5><ul><li>Anells puntejats cada 2.000 km; el de 10.000, més fosc.</li><li>Rectes des del centre en vermell fi; la ressaltada, de 2 px.</li><li>Etiquetes radials, sense solapar-se; a mòbil, menys.</li><li>Recentrar amb una transició de 1,3 s pel cercle màxim.</li></ul></div><div><h5>Ve de</h5><p>Projecció de Postel (segle XVI); emblema de les Nacions Unides.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-31">
+    <div class="pc-h"><span class="pc-n">IB-31</span><h4>Abans i després</h4></div>
+    <p class="pc-d">Dos estats del mateix mapa, l'un sobre l'altre, separats per un divisor que s'arrossega amb el ratolí, amb el dit o amb les fletxes del teclat. Les etiquetes i les anotacions de cada estat segueixen el divisor.</p>
+    <div class="vh"><div><strong>On fa més calor del que toca, al gener i al juliol</strong><span>Temperatura de l'aire respecte a la mitjana de tota la seva latitud</span></div><div class="lgs" data-lg="31"></div></div>
+    <div class="plot ibx-ba" data-p="31"></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA PSL, reanàlisi NCEP/NCAR R1 (air.sig995, mitjanes mensuals 1991–2020), graella de 2,5°. Anomalia zonal: temperatura menys la mitjana de tots els punts de la mateixa latitud. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Comparar dos moments o dos escenaris del mateix lloc: estiu i hivern, abans i després d'un incendi, avui i el 2100.</p></div><div><h5>Regles</h5><ul><li>Els dos mapes, idèntics en projecció i escala.</li><li>Etiquetes dels dos estats (abans / després, o els dos mesos) enganxades al divisor.</li><li>El divisor és un control: ratolí, dit i teclat, amb <code>aria-valuetext</code>.</li><li>Entrada: el divisor escombra fins al mig.</li></ul></div><div><h5>Ve de</h5><p>Comparadors d'imatges de satèl·lit del NYT i de Reuters.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-32">
+    <div class="pc-h"><span class="pc-n">IB-32</span><h4>Mapa en franja</h4></div>
+    <p class="pc-d">Un recorregut desplegat en línia recta: el mapa es gira perquè el camí quedi horitzontal, amb els llocs al llarg, els països que travessa i una variable a sota. Un globus petit diu on ets mentre hi passes el ratolí o mentre es reprodueix el viatge.</p>
+    <div class="vh"><div><strong>De Barcelona a Tòquio pel camí més curt</strong><span>El mapa, girat perquè el camí quedi recte</span></div><div class="lgs" data-lg="32"></div></div>
+    <div class="plot" data-p="32"></div>
+    <div class="ctlbar"><button class="playb" data-play="32">Reprodueix el viatge</button></div>
+    <p class="src"><b>Dades reals.</b> Temperatura: NOAA PSL, reanàlisi NCEP/NCAR R1, mitjanes de gener i juliol 1991–2020, interpolades cada 20 km al llarg del camí. Mapa: Natural Earth (world-atlas 110m). Distàncies sobre una esfera de 6.371 km.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Rius, rutes, costes, línies de tren o de vol: tot el que es llegeix d'un extrem a l'altre.</p></div><div><h5>Regles</h5><ul><li>El recorregut, recte i en vermell; el mapa es gira, no es deforma el camí.</li><li>Vores de la franja que s'esvaeixen, sense marc.</li><li>Variable a sota amb la mateixa escala horitzontal; línia guia comuna.</li><li>Mini mapa de situació sempre visible.</li></ul></div><div><h5>Ve de</h5><p>«Britannia» de John Ogilby (1675); mapes de ruta en franja.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-33">
+    <div class="pc-h"><span class="pc-n">IB-33</span><h4>Hexàgons en el temps</h4></div>
+    <p class="pc-d">La terra coberta d'hexàgons iguals que canvien de color mes a mes amb un lliscant o amb «Reprodueix». Una línia fina marca on el valor creua el zero i es mou amb el temps.</p>
+    <div class="vh"><div><strong>El fred avança i es retira</strong><span>Temperatura de l'aire mes a mes · gener i juliol, reals</span></div><div class="lgs" data-lg="33"></div></div>
+    <div class="plot" data-p="33"></div>
+    <div class="ctlbar ibx-time"><button class="playb" data-play="33" aria-pressed="false">Reprodueix</button>
+      <div class="ibx-rngw"><div class="lbl ibx-lbl"><span>Mes</span><span data-v="33">Gener · dada real</span></div>
+        <input class="rng" type="range" min="0" max="11" step="1" value="0" data-rng="33" aria-label="Mes" aria-valuetext="gener (dada real)">
+        <div class="ibx-months" aria-hidden="true"><span><b>gen</b><i>G</i></span><span><b>feb</b><i>F</i></span><span><b>març</b><i>M</i></span><span><b>abr</b><i>A</i></span><span><b>maig</b><i>M</i></span><span><b>juny</b><i>J</i></span><span><b>jul</b><i>J</i></span><span><b>ag</b><i>A</i></span><span><b>set</b><i>S</i></span><span><b>oct</b><i>O</i></span><span><b>nov</b><i>N</i></span><span><b>des</b><i>D</i></span></div></div></div>
+    <p class="src"><b>Simulació</b> a partir de dades reals: el gener i el juliol són la temperatura mitjana 1991–2020 de la reanàlisi NCEP/NCAR R1 (NOAA PSL); els altres deu mesos són una interpolació sinusoidal entre tots dos, no una mesura. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Fenòmens que es mouen sobre el territori al llarg del temps: gelades, sequera, floració, una epidèmia.</p></div><div><h5>Regles</h5><ul><li>Hexàgons iguals, separats 1 px; només sobre terra.</li><li>Rampa divergent amb el zero en gris; la línia del zero, en tinta.</li><li>El mes, gran i en serif dins del mapa.</li><li>Lliscant amb <code>aria-valuetext</code> i botó que s'atura.</li></ul></div><div><h5>Ve de</h5><p>Mapes d'hexàgons de la premsa de dades; «Major quakes and their aftershocks» (Reuters) per al temps.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-34">
+    <div class="pc-h"><span class="pc-n">IB-34</span><h4>Mapa amb lupa</h4></div>
+    <p class="pc-d">Un mapa de context tènue i una lupa circular que segueix el ratolí o el dit. Dins la lupa, el mapa és tres vegades més gran, amb costes detallades, una dada per cada grau i isotermes; fora, només el contorn.</p>
+    <div class="vh"><div><strong>La temperatura del mar, grau a grau</strong><span>Passa-hi el ratolí o el dit: la lupa amplia tres vegades</span></div><div class="lgs" data-lg="34"></div></div>
+    <div class="plot" data-p="34"></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA World Ocean Atlas 2023, temperatura de la superfície del mar, mitjana anual 1955–2022, graella d'1°, Atlàntic. Mapa: Natural Earth (world-atlas 110m fora de la lupa, 50m a dins).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Dades massa denses per a la mida de la pàgina: estacions, parcel·les, municipis, un camp a alta resolució.</p></div><div><h5>Regles</h5><ul><li>Fora de la lupa, el mapa a 0,55 d'opacitat.</li><li>Vora en tinta d'1,2 px i un anell exterior fi; el factor d'ampliació escrit al costat.</li><li>Lectura del punt central sota la lupa.</li><li>La lupa s'hi queda quan el ratolí surt.</li></ul></div><div><h5>Ve de</h5><p>Els requadres de detall ampliat de les cartes impreses; les lupes dels mapes interactius de premsa.</p></div></div>
+  </section>
+
+  <h3 class="fam">Formes inesperades</h3>
+
+  <section class="pc" id="ib-35">
+    <div class="pc-h"><span class="pc-n">IB-35</span><h4>Zoom d'escala</h4></div>
+    <p class="pc-d">Cercles niats, cadascun deu vegades més ample que el de dins. Un lliscant fa un zoom continu i suau d'un ordre de magnitud al següent, i les etiquetes apareixen i desapareixen quan el cercle hi cap.</p>
+    <div class="vh"><div><strong>D'un nanòmetre a un milió de quilòmetres</strong><span>Potències de deu en metres: cada cercle és deu vegades més ample que el de dins</span></div><div class="lgs" data-lg="35"></div></div>
+    <div class="plot" data-p="35"></div>
+    <div class="ctl">
+      <div class="lbl"><span>Escala: <b data-v35>1 metre</b></span><button class="playb" type="button" data-play="35">Fes el viatge sencer</button></div>
+      <input class="rng" type="range" min="-9" max="9" step="0.01" value="0" data-r35 aria-label="Escala del zoom" aria-valuetext="1 metre">
+      <div class="lbl"><span>1 nanòmetre</span><span>1 metre</span><span>1 milió de km</span></div>
+    </div>
+    <p class="src"><b>Esquema</b> amb mides exactes: cada cercle és una potència de deu del metre. Els cercles vermells són longituds fixades per definició (la polzada des del 1959, la milla nàutica, la distància oficial de la marató i el segon-llum).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Fer sentir escales que no caben al cap: mides, distàncies, temps geològic, xifres astronòmiques, pressupostos.</p></div><div><h5>Regles</h5><ul><li>Cada pas multiplica per una quantitat fixa (10) i es diu.</li><li>Només marques amb una mida exacta o ben establerta.</li><li>Les etiquetes només es veuen quan el cercle és prou gran.</li></ul></div><div><h5>Ve de</h5><p>«Powers of Ten» (Charles i Ray Eames, 1977); «Scale of the Universe».</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-36">
+    <div class="pc-h"><span class="pc-n">IB-36</span><h4>Màquina de Galton</h4></div>
+    <p class="pc-d">Mil boles cauen per una reixa de claus i, a cada clau, reboten a la dreta o a l'esquerra. S'apilen als calaixos i, a poc a poc, dibuixen la campana. El lliscant canvia la probabilitat de rebotar a la dreta i la campana s'inclina.</p>
+    <div class="vh"><div><strong>L'atzar fa campanes</strong><span>Dotze fileres de claus, tretze calaixos, mil boles</span></div><div class="lgs" data-lg="36"></div></div>
+    <div class="plot" data-p="36"></div>
+    <div class="ctl">
+      <div class="lbl"><span>Probabilitat de rebotar a la dreta: <b data-v36>50 %</b></span><button class="playb" type="button" data-play="36">Torna a començar</button></div>
+      <input class="rng" type="range" min="0.1" max="0.9" step="0.05" value="0.5" data-r36 aria-label="Probabilitat de rebotar a la dreta" aria-valuetext="50 % de probabilitat de rebotar a la dreta">
+      <div class="lbl"><span>10 %</span><span>50 %</span><span>90 %</span></div>
+    </div>
+    <p class="src"><b>Simulació</b>, no dades reals: cada bola tria a l'atzar a cada clau. La corba és la distribució binomial amb n = 12.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Explicar l'atzar i les distribucions: per què les mitjanes s'agrupen, què és una probabilitat, com d'improbables són els extrems.</p></div><div><h5>Regles</h5><ul><li>Simulació en canvas; la teoria, una línia en tinta per sobre.</li><li>El comptador diu quantes boles han caigut.</li><li>Amb moviment reduït, el resultat final directe.</li></ul></div><div><h5>Ve de</h5><p>El «quincunx» de Francis Galton («Natural Inheritance», 1889).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-37">
+    <div class="pc-h"><span class="pc-n">IB-37</span><h4>Calendari de calor</h4></div>
+    <p class="pc-d">Cada dia és un quadrat en una reixa de setmanes per dies de la setmana, i el color en dona el valor. Es veuen d'un cop el cicle de l'any, els caps de setmana, les vacances i els dies estranys.</p>
+    <div class="vh"><div><strong>Tres anys, dia a dia</strong><span>Registres per dia, 2023–2025</span></div><div class="lgs" data-lg="37"></div></div>
+    <div class="plot" data-p="37"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. El calendari (dies de la setmana i mesos) és el real d'aquells anys.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Valors diaris durant anys: visites, trucades, contaminació, pluja, temperatura, casos.</p></div><div><h5>Regles</h5><ul><li>Rampa de calor (groc → vermell) per a intensitats; el zero, gairebé blanc.</li><li>Vora fina per als mesos; setmana que comença en dilluns.</li><li>A mòbil, els anys en columnes i les setmanes cap avall.</li></ul></div><div><h5>Ve de</h5><p>Calendaris de calor de d3 (Mike Bostock); el registre d'activitat de GitHub.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-38">
+    <div class="pc-h"><span class="pc-n">IB-38</span><h4>Crestes</h4></div>
+    <p class="pc-d">Una distribució per fila, apilades i encavalcades com una serralada. Es compara la forma de cada grup d'una ullada; en passar-hi per sobre, la cresta s'aixeca i en dona la mediana.</p>
+    <div class="vh"><div><strong>Com es reparteix l'ONI</strong><span>Distribució de l'anomalia mensual de la zona Niño 3.4 (°C)</span></div><div class="lgs" data-lg="38"></div></div>
+    <div class="plot" data-p="38"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Agrupació" data-seg="38"><button type="button" aria-pressed="true" data-k="dec">Per dècada</button><button type="button" aria-pressed="false" data-k="est">Per estació</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA Climate Prediction Center, índex ONI 1950–2026 (2026 fins a ag–oct). Densitat de nucli gaussià (amplada 0,22 °C); les ratlletes de sota són els mesos.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Comparar la forma de moltes distribucions: temperatures per dècada, edats per país, temps per tipus.</p></div><div><h5>Regles</h5><ul><li>Mateixa escala de densitat a totes les files.</li><li>Color per valor (la rampa de la història), contorn en tinta.</li><li>Entre 5 i 15 files; la mediana marcada.</li></ul></div><div><h5>Ve de</h5><p>La portada d'«Unknown Pleasures» (Joy Division, 1979), feta amb les dades del púlsar CP 1919.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-39">
+    <div class="pc-h"><span class="pc-n">IB-39</span><h4>Eixam de forces</h4></div>
+    <p class="pc-d">Centenars de punts, un per cas, que s'empenyen sense trepitjar-se. Quan tries una agrupació, l'eixam es desfà i es torna a fer en grups, i les proporcions es veuen per la mida de cada grup.</p>
+    <div class="vh"><div><strong>Cada mes des del 1950</strong><span>Índex ONI de cada mes: un punt per mes, 1950–2026</span></div><div class="lgs" data-lg="39"></div></div>
+    <div class="plot" data-p="39"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Agrupació" data-seg="39"><button type="button" aria-pressed="true" data-k="tot">Per valor</button><button type="button" aria-pressed="false" data-k="fase">Per fase</button><button type="button" aria-pressed="false" data-k="dec">Per dècada</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA Climate Prediction Center, índex ONI (mitjana de tres mesos). El Niño ≥ +0,5 °C; La Niña ≤ −0,5 °C.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Mostrar que cada punt és un cas i reagrupar-los per categories: persones, municipis, espècies, mesos.</p></div><div><h5>Regles</h5><ul><li>Entre 200 i 2.000 punts, sense vora.</li><li>Etiqueta de grup amb el recompte o el percentatge.</li><li>En passar per un punt, s'il·luminen els del mateix grup (aquí, el mateix any).</li></ul></div><div><h5>Ve de</h5><p>«Four Ways to Slice Obama's 2013 Budget Proposal» (The New York Times, 2012).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-40">
+    <div class="pc-h"><span class="pc-n">IB-40</span><h4>Flux amb partícules</h4></div>
+    <p class="pc-d">Un diagrama de flux d'on surt una quantitat, per on passa i on acaba. Les bandes tenen l'amplada del volum, i per dins hi circulen partícules en la mateixa proporció. En passar per una banda, se n'il·lumina el camí sencer.</p>
+    <div class="vh"><div><strong>On ha anat el carboni que hem emès</strong><span>Carboni acumulat 1850–2025, en gigatones de carboni (GtC)</span></div><div class="lgs" data-lg="40"></div></div>
+    <div class="plot" data-p="40"></div>
+    <div class="ctlbar"><button class="playb" type="button" data-play="40" aria-pressed="false">Atura les partícules</button></div>
+    <p class="src"><b>Dades reals.</b> Font: Global Carbon Project, Global Carbon Budget 2026 (Friedlingstein et al. 2026), full «Historical Budget». Fòssils sense la carbonatació del ciment, que es compta com a embornal. El desquadrament és la part del balanç que els models i les mesures no expliquen.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Balanços i recorreguts: d'on ve l'energia i on es perd, el pressupost d'un país, on va el carboni, l'aigua o els residus.</p></div><div><h5>Regles</h5><ul><li>Columnes que sumen el mateix; amplada proporcional al volum.</li><li>Color per a la destinació que explica la història; el camí d'origen, en gris.</li><li>Partícules de 2 px, ni massa ni massa ràpides; s'aturen amb moviment reduït.</li></ul></div><div><h5>Ve de</h5><p>Els diagrames de Matthew Sankey (1898) i el mapa de Charles Minard (1869).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-41">
+    <div class="pc-h"><span class="pc-n">IB-41</span><h4>Bombolles niades</h4></div>
+    <p class="pc-d">Cercles dins de cercles: el total, els grans grups i cada cas, amb l'àrea proporcional al valor. Un clic en un grup (amb el dit, dos tocs: el primer l'assenyala) hi fa zoom i hi apareixen els noms petits; un altre clic torna a la vista sencera.</p>
+    <div class="vh"><div><strong>De què mor el món</strong><span>Morts per causa, en milions (M)</span></div><div class="lgs" data-lg="41"></div></div>
+    <div class="plot" data-p="41"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Any" data-seg="41"><button type="button" aria-pressed="false" data-k="2019">2019</button><button type="button" aria-pressed="true" data-k="2023">2023</button></div><button class="playb" type="button" data-zoom41>Torna a la vista sencera</button></div>
+    <p class="src"><b>Dades reals.</b> Font: IHME, Global Burden of Disease 2023, via Our World in Data. Grups com a «De què mor el món?». Cada punt són 50.000 morts.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Jerarquies amb dos o tres nivells: pressupostos per partida, espècies per família, emissions per sector i país.</p></div><div><h5>Regles</h5><ul><li>Àrea proporcional; el grup només amb la vora.</li><li>Noms només si hi caben; la resta, al tooltip o fent zoom.</li><li>Un color per grup, en l'ordre de la paleta.</li></ul></div><div><h5>Ve de</h5><p>«Zoomable circle packing» (Mike Bostock); els treballs de Federica Fragapane.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-42">
+    <div class="pc-h"><span class="pc-n">IB-42</span><h4>Pendents</h4></div>
+    <p class="pc-d">Dos moments, dues columnes i una línia per cas: el pendent diu si puja o baixa i quant. Les etiquetes se separen soles perquè no es trepitgin.</p>
+    <div class="vh"><div><strong>Què ha canviat en quatre anys</strong><span>Causes de mort, 2019 i 2023 · escala logarítmica</span></div><div class="lgs" data-lg="42"></div></div>
+    <div class="plot" data-p="42"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Mesura" data-seg="42"><button type="button" aria-pressed="true" data-k="pct">Percentatge del total</button><button type="button" aria-pressed="false" data-k="abs">Nombre de morts</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: IHME, Global Burden of Disease 2023, via Our World in Data. No s'hi mostra «altres causes» (8,5 % el 2023). Morts totals: 55,2 milions el 2019 i 60,0 milions el 2023.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Abans i després de molts casos: rànquings, enquestes, preus, vots entre dues eleccions.</p></div><div><h5>Regles</h5><ul><li>Vermell si puja, blau si baixa, gris si gairebé no canvia.</li><li>Etiquetes a les dues bandes, separades amb una guia fina.</li><li>Escala logarítmica anunciada si els valors són molt diferents.</li></ul></div><div><h5>Ve de</h5><p>Edward Tufte, «The Visual Display of Quantitative Information» (1983).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-43">
+    <div class="pc-h"><span class="pc-n">IB-43</span><h4>Quadrats d'escala</h4></div>
+    <p class="pc-d">Quadrats niats a la mateixa cantonada, amb l'àrea proporcional a la quantitat, que creixen un darrere l'altre des del més petit. Serveix per fer sentir la diferència entre milers, milions i milers de milions.</p>
+    <div class="vh"><div><strong>La pols del Sàhara i el seu fòsfor</strong><span>Tones l'any, mitjana 2007–2013</span></div><div class="lgs" data-lg="43"></div></div>
+    <div class="plot" data-p="43"></div>
+    <div class="ctlbar"><button class="playb" type="button" data-play="43">Torna a fer-los créixer</button></div>
+    <p class="src"><b>Dades reals.</b> Fonts: Yu et al. 2015, <i>Remote Sensing of Environment</i> 159 (pols a 15°, 35° i 75° O, satèl·lit CALIPSO) i <i>Geophysical Research Letters</i> 42 (dipòsit a l'Amazònia i fòsfor, amb un 0,078 % de fòsfor a la pols).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Comparar quantitats de magnituds molt diferents: pressupostos, poblacions, distàncies, fortunes.</p></div><div><h5>Regles</h5><ul><li>Àrea proporcional, mai el costat.</li><li>Tots a la mateixa cantonada, del més gran al més petit.</li><li>El protagonista diminut amb color i anotació.</li></ul></div><div><h5>Ve de</h5><p>«The Billion Dollar-o-Gram» (David McCandless, Information is Beautiful, 2009).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-44">
+    <div class="pc-h"><span class="pc-n">IB-44</span><h4>Horitzó</h4></div>
+    <p class="pc-d">Moltes sèries llargues en files molt primes. Els valors es tallen en bandes i es pleguen una sobre l'altra: com més fosc, més intens. Una línia vertical travessa totes les files i en dona els valors.</p>
+    <div class="vh"><div><strong>Setanta-set anys d'El Niño i La Niña</strong><span>Índex ONI mes a mes, una fila per dècada</span></div><div class="lgs" data-lg="44"></div></div>
+    <div class="plot" data-p="44"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Vista" data-seg="44"><button type="button" aria-pressed="true" data-k="1">Plegat</button><button type="button" aria-pressed="false" data-k="0">Desplegat</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA Climate Prediction Center, índex ONI 1950–2026 (2026 fins a ag–oct). Els valors negatius es pleguen cap amunt, en blau.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Moltes sèries temporals llargues alhora: anomalies per dècada, preus de moltes accions, temperatura de moltes ciutats.</p></div><div><h5>Regles</h5><ul><li>Dues o tres bandes de la rampa divergent, de la mateixa amplada.</li><li>Files de 30–40 px, amb el mateix eix x.</li><li>La línia de hover dona tots els valors alhora.</li></ul></div><div><h5>Ve de</h5><p>Heer, Kong i Agrawala, «Sizing the Horizon» (CHI, 2009).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-45">
+    <div class="pc-h"><span class="pc-n">IB-45</span><h4>Flors de dades</h4></div>
+    <p class="pc-d">Cada cas és una flor i cada pètal, una variable: com més llarg, més valor; el color en diu el tipus. Una ullada a la reixa i es veu quines flors són plenes, quines són coixes i de quin costat.</p>
+    <div class="vh"><div><strong>Com és cada ciutat, en sis indicadors</strong><span>Puntuació de 0 a 100 · l'àrea del pètal és proporcional al valor</span></div><div class="lgs" data-lg="45"></div></div>
+    <div class="plot" data-p="45"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Ordena les flors" data-seg="45"><button aria-pressed="true" data-k="id">Per nom</button><button aria-pressed="false" data-k="tot">Per mitjana</button><button aria-pressed="false" data-k="hab">Per habitatge</button><button aria-pressed="false" data-k="aire">Per aire</button></div></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Passa o toca una flor per ampliar-la i veure'n els valors.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Comparar molts casos en 4–8 variables alhora quan el que importa és el perfil: ciutats, països, productes, espècies.</p></div><div><h5>Regles</h5><ul><li>Llargada del pètal amb <code>d3.scaleSqrt</code> (l'àrea mana).</li><li>Màxim tres tipus de color; pètals a 0,5 amb contorn de 0,8 px (el groc, a 0,7 i sense contorn).</li><li>Cercle discontinu = 100; clau de la flor a la llegenda.</li></ul></div><div><h5>Ve de</h5><p>Glifs florals de Federica Fragapane i de La Lettura.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-46">
+    <div class="pc-h"><span class="pc-n">IB-46</span><h4>Corda</h4></div>
+    <p class="pc-d">Els elements, en un cercle; les cintes que els uneixen, el que va de l'un a l'altre. El gruix de cada extrem és el que surt d'aquell costat, així que es llegeixen els dos sentits d'una sola cinta.</p>
+    <div class="vh"><div><strong>Qui envia a qui</strong><span>Fluxos entre sis regions, en unitats · el gruix de cada extrem és el que surt d'aquella regió; cada marca de l'arc, 20 unitats</span></div><div class="lgs" data-lg="46"></div></div>
+    <div class="plot" data-p="46"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Passa o toca un arc per deixar només les seves cintes; una cinta, per veure'n els dos sentits.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Fluxos entre un grup petit d'elements (4–10): migracions, comerç, transferències, trajectes entre barris.</p></div><div><h5>Regles</h5><ul><li>Cintes a 0,4 amb el color de qui n'envia més.</li><li>Marques fines a l'arc cada 20 unitats.</li><li>En passar-hi, la resta de cintes a 0,05.</li></ul></div><div><h5>Ve de</h5><p>Diagrames de cordes de migracions (Abel i Sander, <i>Science</i>, 2014); «Circos».</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-47">
+    <div class="pc-h"><span class="pc-n">IB-47</span><h4>Corrent apilat</h4></div>
+    <p class="pc-d">Diverses sèries apilades com un riu que s'eixampla i s'estreny. Tres maneres d'apilar responen tres preguntes: la forma (centrada), el total (sobre zero) i el repartiment (percentatge).</p>
+    <div class="vh"><div><strong>Cinc corrents en mig segle</strong><span>Unitats per any, 1970–2026</span></div><div class="lgs" data-lg="47"></div></div>
+    <div class="plot" data-p="47"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Manera d'apilar" data-seg="47"><button aria-pressed="true" data-k="0">Centrada</button><button aria-pressed="false" data-k="1">Sobre zero</button><button aria-pressed="false" data-k="2">Percentatge</button></div></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Passa o toca una capa per veure'n el valor a cada any.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Com canvia la composició d'un total amb el temps: gèneres musicals, fonts d'energia, causes, idiomes.</p></div><div><h5>Regles</h5><ul><li>Màxim cinc capes, amb etiqueta dins de la capa quan hi cap.</li><li>Corbes suaus (<code>curveBasis</code>) i separació blanca de 0,7 px.</li><li>En la vista centrada, barra d'escala en lloc d'eix.</li></ul></div><div><h5>Ve de</h5><p>«The Ebb and Flow of Movies» (The New York Times, 2008); Lee Byron.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-48">
+    <div class="pc-h"><span class="pc-n">IB-48</span><h4>Un dia en un minut</h4></div>
+    <p class="pc-d">Un rellotge de 24 hores on l'agulla fa la volta en un minut. Cada esdeveniment s'encén a la seva hora i els comptadors pugen: el ritme del dia es veu passar.</p>
+    <div class="vh"><div><strong>Un dia sencer, comprimit</strong><span>Esdeveniments per hora del dia · mitjanit a dalt</span></div><div class="lgs" data-lg="48"></div></div>
+    <div class="plot" data-p="48"></div>
+    <div class="ctlbar"><button class="playb" data-play="48">Reprodueix</button></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. 24 hores en 60 segons. Passa o toca una hora per veure'n els recomptes.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Ritmes diaris amb esdeveniments individuals: trucades d'emergència, naixements, trànsit, observacions d'animals.</p></div><div><h5>Regles</h5><ul><li>Mitjanit a dalt, sentit horari; un anell per categoria (màxim tres).</li><li>Cada esdeveniment nou fa una ona que s'apaga.</li><li>Amb moviment reduït, el dia sencer de cop.</li></ul></div><div><h5>Ve de</h5><p>«A Day in the Life of Americans» (Nathan Yau, FlowingData).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-49">
+    <div class="pc-h"><span class="pc-n">IB-49</span><h4>Temps profund</h4></div>
+    <p class="pc-d">Del Big Bang a avui en una sola línia. En escala logarítmica cada salt és deu vegades més a prop d'avui i tot hi cap; en escala lineal, tota la història humana desapareix a la vora dreta.</p>
+    <div class="vh"><div><strong>13.787 milions d'anys en una línia</strong><span>Anys enrere · els fets amb ≈ tenen un interval ampli</span></div><div class="lgs" data-lg="49"></div></div>
+    <div class="plot" data-p="49"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Escala" data-seg="49"><button aria-pressed="true" data-k="log">Logarítmica</button><button aria-pressed="false" data-k="lin">Lineal</button></div>
+      <div class="ibx-rng"><span class="ibx-rng-l">Zoom cap a avui</span><input class="rng" type="range" min="0" max="1000" step="1" value="0" data-rng="49" aria-label="Inici de la finestra de temps" aria-valuetext="Des del Big Bang"><output data-out="49">Des del Big Bang</output></div></div>
+    <p class="src"><b>Dades reals.</b> Edats de la validació del Calendari còsmic de la revista (17-11-2026): Planck 2020, Wilde et al. 2001, Djokic et al. 2017, ICS 2024, Burgess et al. 2014, Renne et al. 2013, Villmoare et al. 2015, Richter et al. 2017, Zeder 2011 i altres. Passa o toca un fet per veure'n l'interval i la font. Ctrl + roda o pessic per fer zoom.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Escales de temps que van de milers de milions d'anys a dècades: geologia, evolució, història de la tecnologia.</p></div><div><h5>Regles</h5><ul><li>L'escala logarítmica s'anuncia a l'eix.</li><li>Etiquetes en carrils que no se solapen; les que no hi caben, només punt.</li><li>Dates aproximades amb ≈ i interval al tooltip.</li></ul></div><div><h5>Ve de</h5><p>El Calendari còsmic de Carl Sagan; línies de temps logarítmiques.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-50">
+    <div class="pc-h"><span class="pc-n">IB-50</span><h4>Coordenades paral·leles</h4></div>
+    <p class="pc-d">Cada cas és una línia que travessa tants eixos com variables té. Centenars de línies fines fan visibles les relacions: on es creuen, van en sentit contrari; on corren paral·leles, van juntes. Arrossegant sobre un eix es filtra.</p>
+    <div class="vh"><div><strong>Cinc-cents habitatges, sis variables</strong><span>Arrossega amunt o avall sobre qualsevol eix per quedar-te només amb les línies que hi passen</span></div><div class="lgs" data-lg="50"></div></div>
+    <div class="plot" data-p="50"></div>
+    <div class="ctlbar"><output class="ibx-out" data-out="50" aria-live="polite"></output><button class="playb" data-reset="50">Treu els filtres</button></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Dibuixat en canvas.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Explorar casos amb moltes variables: habitatges, cotxes, espècies, municipis. Trobar perfils i excepcions.</p></div><div><h5>Regles</h5><ul><li>Línies de 0,75 px a 0,25; les filtrades, en gris.</li><li>Corbes suaus entre eixos; mínim, mig i màxim a cada eix.</li><li>En passar per sobre, la línia en tinta amb els valors.</li></ul></div><div><h5>Ve de</h5><p>Alfred Inselberg; «Nutrient Contents» (Kai Chang).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-51">
+    <div class="pc-h"><span class="pc-n">IB-51</span><h4>Barra que es trenca</h4></div>
+    <p class="pc-d">Un total que sembla una sola cosa es trenca en les unitats que el formen, i les unitats volen a agrupar-se. Per ensenyar què hi ha dins d'una xifra gran.</p>
+    <div class="vh"><div><strong>Què hi ha dins del total</strong><span>240 unitats repartides en cinc grups</span></div><div class="lgs" data-lg="51"></div></div>
+    <div class="plot" data-p="51"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Vista" data-seg="51"><button aria-pressed="false" data-k="0">Sencera</button><button aria-pressed="true" data-k="1">Per grup</button><button aria-pressed="false" data-k="2">En reixa</button></div></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Passa o toca un quadradet per veure el seu grup.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Desfer una xifra: un pressupost, les emissions d'un país, les víctimes d'un any, els vots d'una elecció.</p></div><div><h5>Regles</h5><ul><li>A la barra sencera, un sol color i cap separació.</li><li>Cada unitat vola en arc, amb un petit retard per columna.</li><li>Màxim cinc grups, en l'ordre de la paleta.</li></ul></div><div><h5>Ve de</h5><p>«Object constancy» (Mike Bostock); IB-11, Reixa d'unitats.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-52">
+    <div class="pc-h"><span class="pc-n">IB-52</span><h4>Mentre llegeixes</h4></div>
+    <p class="pc-d">Comptadors que comencen quan la peça apareix i pugen al ritme real de cada fenomen. Cada esdeveniment és un punt que s'encén. Les xifres anuals es tornen tangibles.</p>
+    <div class="vh"><div><strong>Des que has arribat aquí</strong><span>Esdeveniments segons la seva taxa per segon · es para quan no la veus</span></div><div class="lgs" data-lg="52"></div></div>
+    <div class="plot" data-p="52"></div>
+    <div class="ctlbar"><button class="playb" data-play="52">Pausa</button><button class="playb" data-reset="52">Torna a zero</button></div>
+    <p class="src"><b>Taxes d'exemple</b>, no dades reals: només per mostrar la forma. Les arribades segueixen un procés de Poisson amb la taxa de cada fila.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Fer sentir una taxa: naixements al món, tones de CO₂, terratrèmols, hectàrees cremades mentre el lector llegeix.</p></div><div><h5>Regles</h5><ul><li>Només corre quan la peça és a la pantalla.</li><li>Cada punt nou s'encén i fa una ona.</li><li>Taxa escrita a cada fila, amb la font al peu.</li></ul></div><div><h5>Ve de</h5><p>Comptadors en directe («Worldometer», «The World Counts»).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-53">
+    <div class="pc-h"><span class="pc-n">IB-53</span><h4>Anell de l'any</h4></div>
+    <p class="pc-d">L'any al voltant d'un cercle, un sector per mes, i a cada sector una barra fina per any que neix d'un anell interior. Cap enfora, més calent; cap endins, més fred. Es veu en quina època del cicle el fenomen és més fort.</p>
+    <div class="vh"><div><strong>En quins mesos són més forts els episodis</strong><span>Anomalia de la zona Niño 3.4 (°C), una barra per any 1950–2026 a cada mes</span></div><div class="lgs" data-lg="53"></div></div>
+    <div class="plot" data-p="53"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Ordre dins de cada mes" data-seg="53"><button aria-pressed="true" data-k="0">Per any</button><button aria-pressed="false" data-k="1">Per valor</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA Climate Prediction Center, índex ONI 1950–2026 (mitjana de tres mesos centrada en cada mes; el 2026 fins a ag–oct). Llindars de ±0,5 °C puntejats. Al centre, la mitjana de l'anomalia en valor absolut per mes. Passa o toca una barra per veure aquell any.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Cicles anuals amb molts anys: temperatura, pluja, CO₂, casos de grip. Funciona igual amb 365 dies.</p></div><div><h5>Regles</h5><ul><li>Gener a dalt, sentit horari, mesos a fora.</li><li>Anell interior = zero, en tinta; barres amb la rampa divergent.</li><li>En passar-hi, l'any sencer ressaltat i l'etiqueta al centre.</li></ul></div><div><h5>Ve de</h5><p>Espirals del clima d'Ed Hawkins; IB-05, Espiral anual.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-54">
+    <div class="pc-h"><span class="pc-n">IB-54</span><h4>Bombolles en moviment</h4></div>
+    <p class="pc-d">Una dispersió que es mou amb el temps: cada bombolla és un lloc, la mida és la població i l'any passa gran i pàl·lid al fons. En passar per sobre d'una bombolla en surt el rastre.</p>
+    <div class="vh"><div><strong>Mig segle de moviment</strong><span>Ingressos per persona i esperança de vida, 1980–2026</span></div><div class="lgs" data-lg="54"></div></div>
+    <div class="plot" data-p="54"></div>
+    <div class="ctlbar"><button class="playb" data-play="54">Reprodueix</button>
+      <div class="ibx-rng"><span class="ibx-rng-l">Any</span><input class="rng" type="range" min="1980" max="2026" step="1" value="1980" data-rng="54" aria-label="Any" aria-valuetext="1980"><output data-out="54">1980</output></div></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Els noms dels llocs són genèrics.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Com es mouen molts casos en dues variables alhora al llarg del temps: països, ciutats, empreses.</p></div><div><h5>Regles</h5><ul><li>Àrea proporcional; bombolles a 0,55 amb contorn fosc.</li><li>L'any en serif gran, en el gris de la quadrícula.</li><li>Estela amb un punt per any i l'any cada dècada.</li></ul></div><div><h5>Ve de</h5><p>Gapminder (Hans Rosling).</p></div></div>
+  </section>
+
+  <div class="fn">
+    <p><b>Com fer-ho servir.</b> Carrega <code>assets/ib-viz.js</code> després de d3 (i de <code>topojson-client</code> si hi ha mapes). Cada peça d'aquesta pàgina és una funció de <code>sistema/sistema.js</code> que pots copiar i adaptar. Les regles completes per als agents són a <code>research/sistema-infografic.md</code>.</p>
+    <p><b>Dades.</b> ONI: NOAA Climate Prediction Center. CO₂: NOAA Global Monitoring Laboratory (Mauna Loa). Mapes: Natural Earth via world-atlas 2.0.2. Totes les altres dades d'aquesta pàgina són d'exemple i no representen res real.</p>
+  </div>
+</div>
+</div>
+
+<footer class="ib-foot">
+  <a href="../"><img src="../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script src="../assets/ib-viz.js"></script>
+<script src="dades.js"></script>
+<script src="sistema.js"></script>
+<script src="dades-mapes-a.js"></script>
+<script src="mapes-a.js"></script>
+<script src="dades-mapes-b.js"></script>
+<script src="mapes-b.js"></script>
+<script src="dades-creatives-a.js"></script>
+<script src="creatives-a.js"></script>
+<script src="dades-creatives-b.js"></script>
+<script src="creatives-b.js"></script>
+<script src="../assets/ib.js"></script>
+</body>
+</html>

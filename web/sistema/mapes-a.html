@@ -1,0 +1,69 @@
+  <h3 class="fam">Mapes</h3>
+
+  <section class="pc" id="ib-21">
+    <div class="pc-h"><span class="pc-n">IB-21</span><h4>Mosaic de quadrats</h4></div>
+    <p class="pc-d">Cada país és un quadrat igual en una reixa que recorda la geografia. Els països petits pesen el mateix que els grans i el color es llegeix sense distraccions. Un botó desfà el mapa i el converteix en un rànquing ordenat, i el torna a muntar.</p>
+    <div class="vh"><div><strong>Com més a l'est, més fred fa a l'hivern</strong><span>Temperatura mitjana de l'aire al gener, 1991–2020</span></div><div class="lgs" data-lg="21"></div></div>
+    <div class="plot" data-p="21"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Vista" data-seg="21"><button aria-pressed="true" data-k="0">Mapa</button><button aria-pressed="false" data-k="1">Rànquing</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA PSL, reanàlisi NCEP/NCAR R1, temperatura de l'aire a prop de la superfície (nivell sigma 0,995), mitjana de gener 1991–2020, graella de 2,5°. Mitjana de cada país calculada per Inspired by: camp interpolat dins de la frontera (Natural Earth 1:50m) i ponderat per l'àrea; només el territori europeu (Rússia, a l'oest dels Urals, 60° E). Amb una graella tan ampla, la xifra és una mitjana suau, no la temperatura d'una ciutat.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Un valor per país o regió quan els petits compten tant com els grans: Europa, comunitats, comarques, estats.</p></div><div><h5>Regles</h5><ul><li>Quadrats iguals, 3 px de separació, codi de dues lletres a dins.</li><li>Rampa divergent si hi ha un zero amb sentit; si no, seqüencial.</li><li>El rànquing comparteix colors i ordre de lectura amb el mapa.</li></ul></div><div><h5>Ve de</h5><p>Els mapes de quadrats de la premsa electoral i de dades.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-22">
+    <div class="pc-h"><span class="pc-n">IB-22</span><h4>Cartograma de cercles</h4></div>
+    <p class="pc-d">Del mapa als cercles: cada país es converteix en un cercle d'àrea proporcional al valor i una simulació de forces els separa sense allunyar-los gaire del seu lloc. Aquí el valor és la superfície real, i el canvi desemmascara el mapa de Mercator.</p>
+    <div class="vh"><div><strong>La mida que el mapa no diu</strong><span>Mapa de Mercator i superfície real de cada país, a la mateixa escala que a l'equador</span></div><div class="lgs" data-lg="22"></div></div>
+    <div class="plot" data-p="22"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Vista" data-seg="22"><button aria-pressed="true" data-k="0">Mapa de Mercator</button><button aria-pressed="false" data-k="1">Mida real</button></div></div>
+    <p class="src"><b>Dades reals.</b> Superfície de cada país calculada per Inspired by a partir de la geometria de Natural Earth 1:110m (world-atlas 2.0.2); és aproximada, perquè el contorn està simplificat. Sense l'Antàrtida. La inflació és l'àrea que el país ocupa al mapa de Mercator dividida per la que ocuparia a l'escala de l'equador.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Quantitats per país (població, emissions, superfície) quan la mida del territori enganya.</p></div><div><h5>Regles</h5><ul><li>Àrea del cercle proporcional al valor; clau de mida dins del gràfic.</li><li>Els cercles surten del seu país i hi tornen.</li><li>Etiqueta només els cercles que caben; la resta, al tooltip.</li></ul></div><div><h5>Ve de</h5><p>Els cartogrames de cercles de Danny Dorling.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-23">
+    <div class="pc-h"><span class="pc-n">IB-23</span><h4>Densitat de punts</h4></div>
+    <p class="pc-d">Un punt per cada N unitats, escampats només dins de la frontera de cada regió i on és més probable que hi siguin (mètode dasimètric). La densitat es veu sola, sense rampa de color, i passar per una regió en dona el total.</p>
+    <div class="vh"><div><strong>On s'acumulen</strong><span>Unitats per regió, en punts</span></div><div class="lgs" data-lg="23"></div></div>
+    <div class="plot" data-p="23"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma: les fronteres són reals (Natural Earth 1:110m), però els totals i la posició dels punts dins de cada país, no. Projecció azimutal d'àrees iguals, perquè la densitat sigui comparable.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Recomptes grans per regió: població, habitatges, explotacions, espècies observades.</p></div><div><h5>Regles</h5><ul><li>Un sol color, punts d'1–1,5 px, opacitat alta.</li><li>«1 punt = …» a la llegenda; la mateixa N a totes les amplades.</li><li>Projecció d'àrees iguals.</li></ul></div><div><h5>Ve de</h5><p>Els mapes de punts de població (p. ex. «The Racial Dot Map»).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-24">
+    <div class="pc-h"><span class="pc-n">IB-24</span><h4>Arcs de flux</h4></div>
+    <p class="pc-d">Orígens i destinacions units per arcs que segueixen el cercle màxim, amb partícules que hi circulen en el sentit del flux. El gruix és el volum. Passa per una ciutat per quedar-te només amb els seus fluxos.</p>
+    <div class="vh"><div><strong>Què va d'on a on</strong><span>Fluxos entre ciutats; el gruix és el volum</span></div><div class="lgs" data-lg="24"></div></div>
+    <div class="plot" data-p="24"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma: les ciutats i la seva posició són reals; els fluxos i els volums, no. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Moviments entre llocs: migracions, comerç, vols, animals marcats, pols i espècies.</p></div><div><h5>Regles</h5><ul><li>Arcs de cercle màxim amb una petita separació per a cada sentit.</li><li>Gruix de 0,6 a 5 px; partícules més ràpides que llegibles, mai al revés.</li><li>Sortides en vermell, arribades en blau quan se'n destaca una.</li></ul></div><div><h5>Ve de</h5><p>«Flight Patterns» (Aaron Koblin) i els mapes de migració de la premsa.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-25">
+    <div class="pc-h"><span class="pc-n">IB-25</span><h4>Mapa de pics</h4></div>
+    <p class="pc-d">Un pic prim a cada lloc, que creix des del terra amb l'alçada proporcional al valor. El mapa s'inclina una mica per donar profunditat. Es veu de seguida on es concentra tot i on no hi ha res.</p>
+    <div class="vh"><div><strong>On s'han comptat els virus del mar</strong><span>Mesures de virus per mil·lilitre en cada lloc de mostreig (cel·la d'1°)</span></div><div class="lgs" data-lg="25"></div></div>
+    <div class="plot" data-p="25"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Alçada" data-seg="25"><button aria-pressed="true" data-k="0">Nombre de mesures</button><button aria-pressed="false" data-k="1">Virus per mil·lilitre</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: Wigington et al. 2016, <i>Nature Microbiology</i> 1:15024, amb la correcció del 2017 (5.508 mesures de 22 campanyes, sense els tres conjunts d'aigua dolça retirats). Agrupació per lloc i mediana calculades per Inspired by. Escala lineal.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Recomptes o quantitats per punt quan els extrems són la notícia: població, mesures, terratrèmols, captures.</p></div><div><h5>Regles</h5><ul><li>Pics de base estreta i dues cares (llum i ombra); de darrere cap endavant.</li><li>Escala lineal amb un pic de referència dins del gràfic.</li><li>Etiqueta de 3 a 5 pics, els més alts.</li></ul></div><div><h5>Ve de</h5><p>Els mapes de pics de població («spike maps») de la premsa.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-26">
+    <div class="pc-h"><span class="pc-n">IB-26</span><h4>Mapa de crestes</h4></div>
+    <p class="pc-d">El planeta dibuixat només amb línies horitzontals, una per latitud, que s'aixequen on el valor és alt i s'enfonsen on és baix. Cada línia tapa les de darrere i els continents apareixen sols, sense dibuixar-los.</p>
+    <div class="vh"><div><strong>On fa més calor del que toca</strong><span>Temperatura de l'aire respecte a la mitjana de la seva latitud</span></div><div class="lgs" data-lg="26"></div></div>
+    <div class="plot" data-p="26"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Mes" data-seg="26"><button aria-pressed="true" data-k="0">Gener</button><button aria-pressed="false" data-k="1">Juliol</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA PSL, reanàlisi NCEP/NCAR R1, temperatura de l'aire a prop de la superfície (sigma 0,995), mitjana 1991–2020, graella de 2,5°. Diferència amb la mitjana de tota la latitud calculada per Inspired by. A les muntanyes (Tibet, Andes) l'aire és fred sobretot per l'altitud.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Un camp global o continental amb un patró per latitud: temperatura, pluja, població, relleu.</p></div><div><h5>Regles</h5><ul><li>Línies d'1 px en tinta amb farciment blanc a sota; les del sud tapen les del nord.</li><li>Una escala vertical dibuixada dins del gràfic.</li><li>Latitud a l'esquerra, només cada 30°.</li></ul></div><div><h5>Ve de</h5><p>La portada d'«Unknown Pleasures» (Joy Division) i els mapes de població en línies.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-27">
+    <div class="pc-h"><span class="pc-n">IB-27</span><h4>Globus que gira</h4></div>
+    <p class="pc-d">El planeta en projecció ortogràfica, que gira sol com la Terra i es pot arrossegar amb el ratolí o el dit. A sobre, un camp de punts de color; la nit, en una ombra suau amb el terminador.</p>
+    <div class="vh"><div><strong>On glaça i on no</strong><span>Temperatura mitjana de l'aire a prop de la superfície, 1991–2020</span></div><div class="lgs" data-lg="27"></div></div>
+    <div class="plot" data-p="27"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Mes" data-seg="27"><button aria-pressed="true" data-k="0">Gener</button><button aria-pressed="false" data-k="1">Juliol</button></div><button class="playb" data-play="27">Atura</button></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA PSL, reanàlisi NCEP/NCAR R1, temperatura de l'aire a prop de la superfície (sigma 0,995), mitjana 1991–2020, graella de 2,5°. La nit és un <b>esquema</b>: la posició del sol a mitjan mes, amb el gir accelerat. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Fenòmens globals on importa la forma de la Terra: polar, estacional, dia i nit, rutes llargues.</p></div><div><h5>Regles</h5><ul><li>Gir lent (un tomb cada 40 s); s'atura en passar-hi, en arrossegar i amb <code>prefers-reduced-motion</code>.</li><li>Gratícula de 15° en gris finíssim, costa en tinta clara.</li><li>Arrossegar en horitzontal a mòbil, perquè la pàgina continuï fent scroll.</li></ul></div><div><h5>Ve de</h5><p>Els globus ortogràfics de D3 (Mike Bostock) i el mapa de portada d'El Niño.</p></div></div>
+  </section>

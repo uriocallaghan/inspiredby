@@ -1,0 +1,5 @@
+/* Formes inesperades (IB-35 a IB-44): només el que no hi ha a sistema.css */
+.ibx-an,.ibx-nl,.ibx-lt,.ibx-q{pointer-events:auto}
+[data-p="41"] svg.ibv{cursor:pointer}
+[data-zoom41]{margin-left:auto}
+.ctl .lbl b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}

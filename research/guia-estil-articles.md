@@ -26,10 +26,12 @@ La revista: *articles visuals per entendre el món*. Cada article explica una q�
 
 ## 3. Disseny (copia el sistema, no l'inventis)
 
+**Els gràfics segueixen el sistema infogràfic:** `research/sistema-infografic.md` (principis, paleta vermell-blau-groc, tipografia, components, hover, lleugeresa i les peces IB-01 a IB-54) i el mostrari `web/sistema/`. Fes servir `assets/ib-viz.js` i copia la peça que necessitis de `web/sistema/` (`sistema.js`, `mapes-a.js`, `mapes-b.js`, `creatives-a.js`, `creatives-b.js`). Si aquesta guia i el sistema no coincideixen en un detall gràfic, mana el sistema.
+
 - Tipografia dels articles: **Source Serif 4** (text) i **Source Sans 3** (etiquetes, gràfics), via Google Fonts (mateix `<link>` que El Niño). La portada de la revista fa servir Helvetica; **no la toquis**.
 - Fons blanc, un sol tema clar, com una làmina impresa. Columna de lectura de 640 px (`.col`).
 - Paleta (de `assets/article.css`): `--ink #121212`, `--ink-2 #4A4A4A`, `--muted #7A7A7A`, `--hair #DADADA`, `--land #ECEBE8`, `--warm #C8442A` (calent / destacat), `--cold #2C5DA8` (fred / aigua), i a El Niño també `--dry #9A6326`, `--wet #16786C`, `--bio #4C8A2E`. Rampes divergents blau–gris–vermell com la d'El Niño. Pocs colors, amb significat constant dins l'article.
-- Base comuna: `assets/ib.css` (barra i peu de la revista), `assets/article.css` (tipografia, `.scrolly`, `.step`, `.fig`, `.cap`, `.tip`, `.rng`, `.playb`, `.ctl`, `.legend`, `.gh`, `.ann`, `dl.gl`, `.fn`), `assets/scrolly.js` (`IB.scrolly(stepsEl, graphicEl, onStep)`, `IB.reduced`, `IB.fmt`). **No modifiquis aquests fitxers compartits**: si necessites estils propis, posa'ls en un `<style>` a la pàgina.
+- Base comuna: `assets/ib-viz.js` (helpers dels gràfics, `IBV`), `assets/ib.css` (barra i peu de la revista), `assets/article.css` (tipografia, `.scrolly`, `.step`, `.fig`, `.cap`, `.tip`, `.rng`, `.playb`, `.ctl`, `.legend`, `.gh`, `.ann`, `dl.gl`, `.fn`), `assets/scrolly.js` (`IB.scrolly(stepsEl, graphicEl, onStep)`, `IB.reduced`, `IB.fmt`). **No modifiquis aquests fitxers compartits**: si necessites estils propis, posa'ls en un `<style>` a la pàgina.
 - Llibreries: **d3 7.9.0** de `https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js`; si cal un mapa, `topojson-client@3.1.0` de jsdelivr i un mapa del món (p. ex. `world-atlas@2.0.2` de jsdelivr). Res més sense una raó molt bona. Canvas per a animacions amb moltes partícules; SVG per a gràfics de dades.
 
 ### Gràfics: el que fa bo El Niño

@@ -1,0 +1,100 @@
+  <section class="pc" id="ib-45">
+    <div class="pc-h"><span class="pc-n">IB-45</span><h4>Flors de dades</h4></div>
+    <p class="pc-d">Cada cas és una flor i cada pètal, una variable: com més llarg, més valor; el color en diu el tipus. Una ullada a la reixa i es veu quines flors són plenes, quines són coixes i de quin costat.</p>
+    <div class="vh"><div><strong>Com és cada ciutat, en sis indicadors</strong><span>Puntuació de 0 a 100 · l'àrea del pètal és proporcional al valor</span></div><div class="lgs" data-lg="45"></div></div>
+    <div class="plot" data-p="45"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Ordena les flors" data-seg="45"><button aria-pressed="true" data-k="id">Per nom</button><button aria-pressed="false" data-k="tot">Per mitjana</button><button aria-pressed="false" data-k="hab">Per habitatge</button><button aria-pressed="false" data-k="aire">Per aire</button></div></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Passa o toca una flor per ampliar-la i veure'n els valors.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Comparar molts casos en 4–8 variables alhora quan el que importa és el perfil: ciutats, països, productes, espècies.</p></div><div><h5>Regles</h5><ul><li>Llargada del pètal amb <code>d3.scaleSqrt</code> (l'àrea mana).</li><li>Màxim tres tipus de color; pètals a 0,5 amb contorn de 0,8 px (el groc, a 0,7 i sense contorn).</li><li>Cercle discontinu = 100; clau de la flor a la llegenda.</li></ul></div><div><h5>Ve de</h5><p>Glifs florals de Federica Fragapane i de La Lettura.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-46">
+    <div class="pc-h"><span class="pc-n">IB-46</span><h4>Corda</h4></div>
+    <p class="pc-d">Els elements, en un cercle; les cintes que els uneixen, el que va de l'un a l'altre. El gruix de cada extrem és el que surt d'aquell costat, així que es llegeixen els dos sentits d'una sola cinta.</p>
+    <div class="vh"><div><strong>Qui envia a qui</strong><span>Fluxos entre sis regions, en unitats · el gruix de cada extrem és el que surt d'aquella regió; cada marca de l'arc, 20 unitats</span></div><div class="lgs" data-lg="46"></div></div>
+    <div class="plot" data-p="46"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Passa o toca un arc per deixar només les seves cintes; una cinta, per veure'n els dos sentits.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Fluxos entre un grup petit d'elements (4–10): migracions, comerç, transferències, trajectes entre barris.</p></div><div><h5>Regles</h5><ul><li>Cintes a 0,4 amb el color de qui n'envia més.</li><li>Marques fines a l'arc cada 20 unitats.</li><li>En passar-hi, la resta de cintes a 0,05.</li></ul></div><div><h5>Ve de</h5><p>Diagrames de cordes de migracions (Abel i Sander, <i>Science</i>, 2014); «Circos».</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-47">
+    <div class="pc-h"><span class="pc-n">IB-47</span><h4>Corrent apilat</h4></div>
+    <p class="pc-d">Diverses sèries apilades com un riu que s'eixampla i s'estreny. Tres maneres d'apilar responen tres preguntes: la forma (centrada), el total (sobre zero) i el repartiment (percentatge).</p>
+    <div class="vh"><div><strong>Cinc corrents en mig segle</strong><span>Unitats per any, 1970–2026</span></div><div class="lgs" data-lg="47"></div></div>
+    <div class="plot" data-p="47"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Manera d'apilar" data-seg="47"><button aria-pressed="true" data-k="0">Centrada</button><button aria-pressed="false" data-k="1">Sobre zero</button><button aria-pressed="false" data-k="2">Percentatge</button></div></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Passa o toca una capa per veure'n el valor a cada any.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Com canvia la composició d'un total amb el temps: gèneres musicals, fonts d'energia, causes, idiomes.</p></div><div><h5>Regles</h5><ul><li>Màxim cinc capes, amb etiqueta dins de la capa quan hi cap.</li><li>Corbes suaus (<code>curveBasis</code>) i separació blanca de 0,7 px.</li><li>En la vista centrada, barra d'escala en lloc d'eix.</li></ul></div><div><h5>Ve de</h5><p>«The Ebb and Flow of Movies» (The New York Times, 2008); Lee Byron.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-48">
+    <div class="pc-h"><span class="pc-n">IB-48</span><h4>Un dia en un minut</h4></div>
+    <p class="pc-d">Un rellotge de 24 hores on l'agulla fa la volta en un minut. Cada esdeveniment s'encén a la seva hora i els comptadors pugen: el ritme del dia es veu passar.</p>
+    <div class="vh"><div><strong>Un dia sencer, comprimit</strong><span>Esdeveniments per hora del dia · mitjanit a dalt</span></div><div class="lgs" data-lg="48"></div></div>
+    <div class="plot" data-p="48"></div>
+    <div class="ctlbar"><button class="playb" data-play="48">Reprodueix</button></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. 24 hores en 60 segons. Passa o toca una hora per veure'n els recomptes.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Ritmes diaris amb esdeveniments individuals: trucades d'emergència, naixements, trànsit, observacions d'animals.</p></div><div><h5>Regles</h5><ul><li>Mitjanit a dalt, sentit horari; un anell per categoria (màxim tres).</li><li>Cada esdeveniment nou fa una ona que s'apaga.</li><li>Amb moviment reduït, el dia sencer de cop.</li></ul></div><div><h5>Ve de</h5><p>«A Day in the Life of Americans» (Nathan Yau, FlowingData).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-49">
+    <div class="pc-h"><span class="pc-n">IB-49</span><h4>Temps profund</h4></div>
+    <p class="pc-d">Del Big Bang a avui en una sola línia. En escala logarítmica cada salt és deu vegades més a prop d'avui i tot hi cap; en escala lineal, tota la història humana desapareix a la vora dreta.</p>
+    <div class="vh"><div><strong>13.787 milions d'anys en una línia</strong><span>Anys enrere · els fets amb ≈ tenen un interval ampli</span></div><div class="lgs" data-lg="49"></div></div>
+    <div class="plot" data-p="49"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Escala" data-seg="49"><button aria-pressed="true" data-k="log">Logarítmica</button><button aria-pressed="false" data-k="lin">Lineal</button></div>
+      <div class="ibx-rng"><span class="ibx-rng-l">Zoom cap a avui</span><input class="rng" type="range" min="0" max="1000" step="1" value="0" data-rng="49" aria-label="Inici de la finestra de temps" aria-valuetext="Des del Big Bang"><output data-out="49">Des del Big Bang</output></div></div>
+    <p class="src"><b>Dades reals.</b> Edats de la validació del Calendari còsmic de la revista (17-11-2026): Planck 2020, Wilde et al. 2001, Djokic et al. 2017, ICS 2024, Burgess et al. 2014, Renne et al. 2013, Villmoare et al. 2015, Richter et al. 2017, Zeder 2011 i altres. Passa o toca un fet per veure'n l'interval i la font. Ctrl + roda o pessic per fer zoom.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Escales de temps que van de milers de milions d'anys a dècades: geologia, evolució, història de la tecnologia.</p></div><div><h5>Regles</h5><ul><li>L'escala logarítmica s'anuncia a l'eix.</li><li>Etiquetes en carrils que no se solapen; les que no hi caben, només punt.</li><li>Dates aproximades amb ≈ i interval al tooltip.</li></ul></div><div><h5>Ve de</h5><p>El Calendari còsmic de Carl Sagan; línies de temps logarítmiques.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-50">
+    <div class="pc-h"><span class="pc-n">IB-50</span><h4>Coordenades paral·leles</h4></div>
+    <p class="pc-d">Cada cas és una línia que travessa tants eixos com variables té. Centenars de línies fines fan visibles les relacions: on es creuen, van en sentit contrari; on corren paral·leles, van juntes. Arrossegant sobre un eix es filtra.</p>
+    <div class="vh"><div><strong>Cinc-cents habitatges, sis variables</strong><span>Arrossega amunt o avall sobre qualsevol eix per quedar-te només amb les línies que hi passen</span></div><div class="lgs" data-lg="50"></div></div>
+    <div class="plot" data-p="50"></div>
+    <div class="ctlbar"><output class="ibx-out" data-out="50" aria-live="polite"></output><button class="playb" data-reset="50">Treu els filtres</button></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Dibuixat en canvas.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Explorar casos amb moltes variables: habitatges, cotxes, espècies, municipis. Trobar perfils i excepcions.</p></div><div><h5>Regles</h5><ul><li>Línies de 0,75 px a 0,25; les filtrades, en gris.</li><li>Corbes suaus entre eixos; mínim, mig i màxim a cada eix.</li><li>En passar per sobre, la línia en tinta amb els valors.</li></ul></div><div><h5>Ve de</h5><p>Alfred Inselberg; «Nutrient Contents» (Kai Chang).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-51">
+    <div class="pc-h"><span class="pc-n">IB-51</span><h4>Barra que es trenca</h4></div>
+    <p class="pc-d">Un total que sembla una sola cosa es trenca en les unitats que el formen, i les unitats volen a agrupar-se. Per ensenyar què hi ha dins d'una xifra gran.</p>
+    <div class="vh"><div><strong>Què hi ha dins del total</strong><span>240 unitats repartides en cinc grups</span></div><div class="lgs" data-lg="51"></div></div>
+    <div class="plot" data-p="51"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Vista" data-seg="51"><button aria-pressed="false" data-k="0">Sencera</button><button aria-pressed="true" data-k="1">Per grup</button><button aria-pressed="false" data-k="2">En reixa</button></div></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Passa o toca un quadradet per veure el seu grup.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Desfer una xifra: un pressupost, les emissions d'un país, les víctimes d'un any, els vots d'una elecció.</p></div><div><h5>Regles</h5><ul><li>A la barra sencera, un sol color i cap separació.</li><li>Cada unitat vola en arc, amb un petit retard per columna.</li><li>Màxim cinc grups, en l'ordre de la paleta.</li></ul></div><div><h5>Ve de</h5><p>«Object constancy» (Mike Bostock); IB-11, Reixa d'unitats.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-52">
+    <div class="pc-h"><span class="pc-n">IB-52</span><h4>Mentre llegeixes</h4></div>
+    <p class="pc-d">Comptadors que comencen quan la peça apareix i pugen al ritme real de cada fenomen. Cada esdeveniment és un punt que s'encén. Les xifres anuals es tornen tangibles.</p>
+    <div class="vh"><div><strong>Des que has arribat aquí</strong><span>Esdeveniments segons la seva taxa per segon · es para quan no la veus</span></div><div class="lgs" data-lg="52"></div></div>
+    <div class="plot" data-p="52"></div>
+    <div class="ctlbar"><button class="playb" data-play="52">Pausa</button><button class="playb" data-reset="52">Torna a zero</button></div>
+    <p class="src"><b>Taxes d'exemple</b>, no dades reals: només per mostrar la forma. Les arribades segueixen un procés de Poisson amb la taxa de cada fila.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Fer sentir una taxa: naixements al món, tones de CO₂, terratrèmols, hectàrees cremades mentre el lector llegeix.</p></div><div><h5>Regles</h5><ul><li>Només corre quan la peça és a la pantalla.</li><li>Cada punt nou s'encén i fa una ona.</li><li>Taxa escrita a cada fila, amb la font al peu.</li></ul></div><div><h5>Ve de</h5><p>Comptadors en directe («Worldometer», «The World Counts»).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-53">
+    <div class="pc-h"><span class="pc-n">IB-53</span><h4>Anell de l'any</h4></div>
+    <p class="pc-d">L'any al voltant d'un cercle, un sector per mes, i a cada sector una barra fina per any que neix d'un anell interior. Cap enfora, més calent; cap endins, més fred. Es veu en quina època del cicle el fenomen és més fort.</p>
+    <div class="vh"><div><strong>En quins mesos són més forts els episodis</strong><span>Anomalia de la zona Niño 3.4 (°C), una barra per any 1950–2026 a cada mes</span></div><div class="lgs" data-lg="53"></div></div>
+    <div class="plot" data-p="53"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Ordre dins de cada mes" data-seg="53"><button aria-pressed="true" data-k="0">Per any</button><button aria-pressed="false" data-k="1">Per valor</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA Climate Prediction Center, índex ONI 1950–2026 (mitjana de tres mesos centrada en cada mes; el 2026 fins a ag–oct). Llindars de ±0,5 °C puntejats. Al centre, la mitjana de l'anomalia en valor absolut per mes. Passa o toca una barra per veure aquell any.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Cicles anuals amb molts anys: temperatura, pluja, CO₂, casos de grip. Funciona igual amb 365 dies.</p></div><div><h5>Regles</h5><ul><li>Gener a dalt, sentit horari, mesos a fora.</li><li>Anell interior = zero, en tinta; barres amb la rampa divergent.</li><li>En passar-hi, l'any sencer ressaltat i l'etiqueta al centre.</li></ul></div><div><h5>Ve de</h5><p>Espirals del clima d'Ed Hawkins; IB-05, Espiral anual.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-54">
+    <div class="pc-h"><span class="pc-n">IB-54</span><h4>Bombolles en moviment</h4></div>
+    <p class="pc-d">Una dispersió que es mou amb el temps: cada bombolla és un lloc, la mida és la població i l'any passa gran i pàl·lid al fons. En passar per sobre d'una bombolla en surt el rastre.</p>
+    <div class="vh"><div><strong>Mig segle de moviment</strong><span>Ingressos per persona i esperança de vida, 1980–2026</span></div><div class="lgs" data-lg="54"></div></div>
+    <div class="plot" data-p="54"></div>
+    <div class="ctlbar"><button class="playb" data-play="54">Reprodueix</button>
+      <div class="ibx-rng"><span class="ibx-rng-l">Any</span><input class="rng" type="range" min="1980" max="2026" step="1" value="1980" data-rng="54" aria-label="Any" aria-valuetext="1980"><output data-out="54">1980</output></div></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Els noms dels llocs són genèrics.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Com es mouen molts casos en dues variables alhora al llarg del temps: països, ciutats, empreses.</p></div><div><h5>Regles</h5><ul><li>Àrea proporcional; bombolles a 0,55 amb contorn fosc.</li><li>L'any en serif gran, en el gris de la quadrícula.</li><li>Estela amb un punt per any i l'any cada dècada.</li></ul></div><div><h5>Ve de</h5><p>Gapminder (Hans Rosling).</p></div></div>
+  </section>

@@ -1,0 +1,14 @@
+/* Estils addicionals de les peces IB-28 a IB-34 (mapes, segona tanda). */
+.ibx-wrap{flex-wrap:wrap;gap:6px 18px}
+.ibx-ba{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.ibx-handle:focus-visible circle{stroke-width:2.4}
+.ibx-biv svg path[tabindex]:focus-visible{stroke:var(--ink);stroke-width:2}
+.ibx-time{flex-wrap:nowrap;align-items:center;gap:10px 24px}
+.ibx-rngw{flex:1;min-width:0;font-family:var(--sans)}
+.ibx-lbl{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:10px}
+.ibx-lbl [data-v]{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.ibx-months{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin:0 -2px}
+.ibx-months span{flex:0 0 auto;width:0;display:flex;justify-content:center;white-space:nowrap}
+.ibx-months span:first-child{justify-content:flex-start}.ibx-months span:last-child{justify-content:flex-end}
+.ibx-months b{font-weight:400}.ibx-months i{font-style:normal;display:none}
+@media (max-width:639px){.ibx-months b{display:none}.ibx-months i{display:inline}}

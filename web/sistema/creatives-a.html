@@ -1,0 +1,108 @@
+  <h3 class="fam">Formes inesperades</h3>
+
+  <section class="pc" id="ib-35">
+    <div class="pc-h"><span class="pc-n">IB-35</span><h4>Zoom d'escala</h4></div>
+    <p class="pc-d">Cercles niats, cadascun deu vegades més ample que el de dins. Un lliscant fa un zoom continu i suau d'un ordre de magnitud al següent, i les etiquetes apareixen i desapareixen quan el cercle hi cap.</p>
+    <div class="vh"><div><strong>D'un nanòmetre a un milió de quilòmetres</strong><span>Potències de deu en metres: cada cercle és deu vegades més ample que el de dins</span></div><div class="lgs" data-lg="35"></div></div>
+    <div class="plot" data-p="35"></div>
+    <div class="ctl">
+      <div class="lbl"><span>Escala: <b data-v35>1 metre</b></span><button class="playb" type="button" data-play="35">Fes el viatge sencer</button></div>
+      <input class="rng" type="range" min="-9" max="9" step="0.01" value="0" data-r35 aria-label="Escala del zoom" aria-valuetext="1 metre">
+      <div class="lbl"><span>1 nanòmetre</span><span>1 metre</span><span>1 milió de km</span></div>
+    </div>
+    <p class="src"><b>Esquema</b> amb mides exactes: cada cercle és una potència de deu del metre. Els cercles vermells són longituds fixades per definició (la polzada des del 1959, la milla nàutica, la distància oficial de la marató i el segon-llum).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Fer sentir escales que no caben al cap: mides, distàncies, temps geològic, xifres astronòmiques, pressupostos.</p></div><div><h5>Regles</h5><ul><li>Cada pas multiplica per una quantitat fixa (10) i es diu.</li><li>Només marques amb una mida exacta o ben establerta.</li><li>Les etiquetes només es veuen quan el cercle és prou gran.</li></ul></div><div><h5>Ve de</h5><p>«Powers of Ten» (Charles i Ray Eames, 1977); «Scale of the Universe».</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-36">
+    <div class="pc-h"><span class="pc-n">IB-36</span><h4>Màquina de Galton</h4></div>
+    <p class="pc-d">Mil boles cauen per una reixa de claus i, a cada clau, reboten a la dreta o a l'esquerra. S'apilen als calaixos i, a poc a poc, dibuixen la campana. El lliscant canvia la probabilitat de rebotar a la dreta i la campana s'inclina.</p>
+    <div class="vh"><div><strong>L'atzar fa campanes</strong><span>Dotze fileres de claus, tretze calaixos, mil boles</span></div><div class="lgs" data-lg="36"></div></div>
+    <div class="plot" data-p="36"></div>
+    <div class="ctl">
+      <div class="lbl"><span>Probabilitat de rebotar a la dreta: <b data-v36>50 %</b></span><button class="playb" type="button" data-play="36">Torna a començar</button></div>
+      <input class="rng" type="range" min="0.1" max="0.9" step="0.05" value="0.5" data-r36 aria-label="Probabilitat de rebotar a la dreta" aria-valuetext="50 % de probabilitat de rebotar a la dreta">
+      <div class="lbl"><span>10 %</span><span>50 %</span><span>90 %</span></div>
+    </div>
+    <p class="src"><b>Simulació</b>, no dades reals: cada bola tria a l'atzar a cada clau. La corba és la distribució binomial amb n = 12.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Explicar l'atzar i les distribucions: per què les mitjanes s'agrupen, què és una probabilitat, com d'improbables són els extrems.</p></div><div><h5>Regles</h5><ul><li>Simulació en canvas; la teoria, una línia en tinta per sobre.</li><li>El comptador diu quantes boles han caigut.</li><li>Amb moviment reduït, el resultat final directe.</li></ul></div><div><h5>Ve de</h5><p>El «quincunx» de Francis Galton («Natural Inheritance», 1889).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-37">
+    <div class="pc-h"><span class="pc-n">IB-37</span><h4>Calendari de calor</h4></div>
+    <p class="pc-d">Cada dia és un quadrat en una reixa de setmanes per dies de la setmana, i el color en dona el valor. Es veuen d'un cop el cicle de l'any, els caps de setmana, les vacances i els dies estranys.</p>
+    <div class="vh"><div><strong>Tres anys, dia a dia</strong><span>Registres per dia, 2023–2025</span></div><div class="lgs" data-lg="37"></div></div>
+    <div class="plot" data-p="37"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. El calendari (dies de la setmana i mesos) és el real d'aquells anys.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Valors diaris durant anys: visites, trucades, contaminació, pluja, temperatura, casos.</p></div><div><h5>Regles</h5><ul><li>Rampa de calor (groc → vermell) per a intensitats; el zero, gairebé blanc.</li><li>Vora fina per als mesos; setmana que comença en dilluns.</li><li>A mòbil, els anys en columnes i les setmanes cap avall.</li></ul></div><div><h5>Ve de</h5><p>Calendaris de calor de d3 (Mike Bostock); el registre d'activitat de GitHub.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-38">
+    <div class="pc-h"><span class="pc-n">IB-38</span><h4>Crestes</h4></div>
+    <p class="pc-d">Una distribució per fila, apilades i encavalcades com una serralada. Es compara la forma de cada grup d'una ullada; en passar-hi per sobre, la cresta s'aixeca i en dona la mediana.</p>
+    <div class="vh"><div><strong>Com es reparteix l'ONI</strong><span>Distribució de l'anomalia mensual de la zona Niño 3.4 (°C)</span></div><div class="lgs" data-lg="38"></div></div>
+    <div class="plot" data-p="38"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Agrupació" data-seg="38"><button type="button" aria-pressed="true" data-k="dec">Per dècada</button><button type="button" aria-pressed="false" data-k="est">Per estació</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA Climate Prediction Center, índex ONI 1950–2026 (2026 fins a ag–oct). Densitat de nucli gaussià (amplada 0,22 °C); les ratlletes de sota són els mesos.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Comparar la forma de moltes distribucions: temperatures per dècada, edats per país, temps per tipus.</p></div><div><h5>Regles</h5><ul><li>Mateixa escala de densitat a totes les files.</li><li>Color per valor (la rampa de la història), contorn en tinta.</li><li>Entre 5 i 15 files; la mediana marcada.</li></ul></div><div><h5>Ve de</h5><p>La portada d'«Unknown Pleasures» (Joy Division, 1979), feta amb les dades del púlsar CP 1919.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-39">
+    <div class="pc-h"><span class="pc-n">IB-39</span><h4>Eixam de forces</h4></div>
+    <p class="pc-d">Centenars de punts, un per cas, que s'empenyen sense trepitjar-se. Quan tries una agrupació, l'eixam es desfà i es torna a fer en grups, i les proporcions es veuen per la mida de cada grup.</p>
+    <div class="vh"><div><strong>Cada mes des del 1950</strong><span>Índex ONI de cada mes: un punt per mes, 1950–2026</span></div><div class="lgs" data-lg="39"></div></div>
+    <div class="plot" data-p="39"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Agrupació" data-seg="39"><button type="button" aria-pressed="true" data-k="tot">Per valor</button><button type="button" aria-pressed="false" data-k="fase">Per fase</button><button type="button" aria-pressed="false" data-k="dec">Per dècada</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA Climate Prediction Center, índex ONI (mitjana de tres mesos). El Niño ≥ +0,5 °C; La Niña ≤ −0,5 °C.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Mostrar que cada punt és un cas i reagrupar-los per categories: persones, municipis, espècies, mesos.</p></div><div><h5>Regles</h5><ul><li>Entre 200 i 2.000 punts, sense vora.</li><li>Etiqueta de grup amb el recompte o el percentatge.</li><li>En passar per un punt, s'il·luminen els del mateix grup (aquí, el mateix any).</li></ul></div><div><h5>Ve de</h5><p>«Four Ways to Slice Obama's 2013 Budget Proposal» (The New York Times, 2012).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-40">
+    <div class="pc-h"><span class="pc-n">IB-40</span><h4>Flux amb partícules</h4></div>
+    <p class="pc-d">Un diagrama de flux d'on surt una quantitat, per on passa i on acaba. Les bandes tenen l'amplada del volum, i per dins hi circulen partícules en la mateixa proporció. En passar per una banda, se n'il·lumina el camí sencer.</p>
+    <div class="vh"><div><strong>On ha anat el carboni que hem emès</strong><span>Carboni acumulat 1850–2025, en gigatones de carboni (GtC)</span></div><div class="lgs" data-lg="40"></div></div>
+    <div class="plot" data-p="40"></div>
+    <div class="ctlbar"><button class="playb" type="button" data-play="40" aria-pressed="false">Atura les partícules</button></div>
+    <p class="src"><b>Dades reals.</b> Font: Global Carbon Project, Global Carbon Budget 2026 (Friedlingstein et al. 2026), full «Historical Budget». Fòssils sense la carbonatació del ciment, que es compta com a embornal. El desquadrament és la part del balanç que els models i les mesures no expliquen.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Balanços i recorreguts: d'on ve l'energia i on es perd, el pressupost d'un país, on va el carboni, l'aigua o els residus.</p></div><div><h5>Regles</h5><ul><li>Columnes que sumen el mateix; amplada proporcional al volum.</li><li>Color per a la destinació que explica la història; el camí d'origen, en gris.</li><li>Partícules de 2 px, ni massa ni massa ràpides; s'aturen amb moviment reduït.</li></ul></div><div><h5>Ve de</h5><p>Els diagrames de Matthew Sankey (1898) i el mapa de Charles Minard (1869).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-41">
+    <div class="pc-h"><span class="pc-n">IB-41</span><h4>Bombolles niades</h4></div>
+    <p class="pc-d">Cercles dins de cercles: el total, els grans grups i cada cas, amb l'àrea proporcional al valor. Un clic en un grup (amb el dit, dos tocs: el primer l'assenyala) hi fa zoom i hi apareixen els noms petits; un altre clic torna a la vista sencera.</p>
+    <div class="vh"><div><strong>De què mor el món</strong><span>Morts per causa, en milions (M)</span></div><div class="lgs" data-lg="41"></div></div>
+    <div class="plot" data-p="41"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Any" data-seg="41"><button type="button" aria-pressed="false" data-k="2019">2019</button><button type="button" aria-pressed="true" data-k="2023">2023</button></div><button class="playb" type="button" data-zoom41>Torna a la vista sencera</button></div>
+    <p class="src"><b>Dades reals.</b> Font: IHME, Global Burden of Disease 2023, via Our World in Data. Grups com a «De què mor el món?». Cada punt són 50.000 morts.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Jerarquies amb dos o tres nivells: pressupostos per partida, espècies per família, emissions per sector i país.</p></div><div><h5>Regles</h5><ul><li>Àrea proporcional; el grup només amb la vora.</li><li>Noms només si hi caben; la resta, al tooltip o fent zoom.</li><li>Un color per grup, en l'ordre de la paleta.</li></ul></div><div><h5>Ve de</h5><p>«Zoomable circle packing» (Mike Bostock); els treballs de Federica Fragapane.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-42">
+    <div class="pc-h"><span class="pc-n">IB-42</span><h4>Pendents</h4></div>
+    <p class="pc-d">Dos moments, dues columnes i una línia per cas: el pendent diu si puja o baixa i quant. Les etiquetes se separen soles perquè no es trepitgin.</p>
+    <div class="vh"><div><strong>Què ha canviat en quatre anys</strong><span>Causes de mort, 2019 i 2023 · escala logarítmica</span></div><div class="lgs" data-lg="42"></div></div>
+    <div class="plot" data-p="42"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Mesura" data-seg="42"><button type="button" aria-pressed="true" data-k="pct">Percentatge del total</button><button type="button" aria-pressed="false" data-k="abs">Nombre de morts</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: IHME, Global Burden of Disease 2023, via Our World in Data. No s'hi mostra «altres causes» (8,5 % el 2023). Morts totals: 55,2 milions el 2019 i 60,0 milions el 2023.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Abans i després de molts casos: rànquings, enquestes, preus, vots entre dues eleccions.</p></div><div><h5>Regles</h5><ul><li>Vermell si puja, blau si baixa, gris si gairebé no canvia.</li><li>Etiquetes a les dues bandes, separades amb una guia fina.</li><li>Escala logarítmica anunciada si els valors són molt diferents.</li></ul></div><div><h5>Ve de</h5><p>Edward Tufte, «The Visual Display of Quantitative Information» (1983).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-43">
+    <div class="pc-h"><span class="pc-n">IB-43</span><h4>Quadrats d'escala</h4></div>
+    <p class="pc-d">Quadrats niats a la mateixa cantonada, amb l'àrea proporcional a la quantitat, que creixen un darrere l'altre des del més petit. Serveix per fer sentir la diferència entre milers, milions i milers de milions.</p>
+    <div class="vh"><div><strong>La pols del Sàhara i el seu fòsfor</strong><span>Tones l'any, mitjana 2007–2013</span></div><div class="lgs" data-lg="43"></div></div>
+    <div class="plot" data-p="43"></div>
+    <div class="ctlbar"><button class="playb" type="button" data-play="43">Torna a fer-los créixer</button></div>
+    <p class="src"><b>Dades reals.</b> Fonts: Yu et al. 2015, <i>Remote Sensing of Environment</i> 159 (pols a 15°, 35° i 75° O, satèl·lit CALIPSO) i <i>Geophysical Research Letters</i> 42 (dipòsit a l'Amazònia i fòsfor, amb un 0,078 % de fòsfor a la pols).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Comparar quantitats de magnituds molt diferents: pressupostos, poblacions, distàncies, fortunes.</p></div><div><h5>Regles</h5><ul><li>Àrea proporcional, mai el costat.</li><li>Tots a la mateixa cantonada, del més gran al més petit.</li><li>El protagonista diminut amb color i anotació.</li></ul></div><div><h5>Ve de</h5><p>«The Billion Dollar-o-Gram» (David McCandless, Information is Beautiful, 2009).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-44">
+    <div class="pc-h"><span class="pc-n">IB-44</span><h4>Horitzó</h4></div>
+    <p class="pc-d">Moltes sèries llargues en files molt primes. Els valors es tallen en bandes i es pleguen una sobre l'altra: com més fosc, més intens. Una línia vertical travessa totes les files i en dona els valors.</p>
+    <div class="vh"><div><strong>Setanta-set anys d'El Niño i La Niña</strong><span>Índex ONI mes a mes, una fila per dècada</span></div><div class="lgs" data-lg="44"></div></div>
+    <div class="plot" data-p="44"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Vista" data-seg="44"><button type="button" aria-pressed="true" data-k="1">Plegat</button><button type="button" aria-pressed="false" data-k="0">Desplegat</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA Climate Prediction Center, índex ONI 1950–2026 (2026 fins a ag–oct). Els valors negatius es pleguen cap amunt, en blau.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Moltes sèries temporals llargues alhora: anomalies per dècada, preus de moltes accions, temperatura de moltes ciutats.</p></div><div><h5>Regles</h5><ul><li>Dues o tres bandes de la rampa divergent, de la mateixa amplada.</li><li>Files de 30–40 px, amb el mateix eix x.</li><li>La línia de hover dona tots els valors alhora.</li></ul></div><div><h5>Ve de</h5><p>Heer, Kong i Agrawala, «Sizing the Horizon» (CHI, 2009).</p></div></div>
+  </section>

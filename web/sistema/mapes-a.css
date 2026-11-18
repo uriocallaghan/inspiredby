@@ -1,0 +1,5 @@
+/* Mapes A (IB-21 a IB-27): estils addicionals. Sense fons. */
+.ibx-grab{cursor:crosshair}
+.ibx-grab:active{cursor:grabbing}
+.plot .ibx-under{position:absolute;left:0;top:0;display:block}
+.ibx-hit{cursor:crosshair}
