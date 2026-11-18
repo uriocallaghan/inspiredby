@@ -2,7 +2,7 @@
 
 Com han de ser els gràfics de tots els articles nous. Llegeix-ho sencer abans de dibuixar res, juntament amb `research/guia-estil-articles.md` (text, dades i estructura de l'article).
 
-- **Mostrari viu:** `web/sistema/index.html`, publicat a https://inspiredby-magazine.netlify.app/sistema/. Cada peça hi és dibuixada i funciona.
+- **Mostrari viu:** `web/sistema/index.html`, publicat a https://inspiredby.uriocallaghan.com/sistema/. Cada peça hi és dibuixada i funciona.
 - **Codi comú:** `web/assets/ib-viz.js` (objecte global `IBV`): colors, escales, text amb halo, anotacions, llegendes, tooltip tàctil, mapes. Es carrega després de d3 7.9.0 (i de `topojson-client@3.1.0` si hi ha mapes).
 - **Codi de cada peça:** un bloc per peça, marcat amb el número: IB-01 a IB-20 a `web/sistema/sistema.js`, IB-21 a IB-27 a `mapes-a.js`, IB-28 a IB-34 a `mapes-b.js`, IB-35 a IB-44 a `creatives-a.js` i IB-45 a IB-54 a `creatives-b.js` (cadascun amb el seu `.css` i el seu fitxer de dades). Copia el bloc que necessitis al JS de l'article i canvia-hi les dades.
 - **Model de qualitat:** «El Niño i La Niña» (`web/articles/el-nino/`).
