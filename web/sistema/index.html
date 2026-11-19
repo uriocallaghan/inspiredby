@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Sistema infogràfic · Inspired by Magazine</title>
-<meta name="description" content="Principis, colors, components i les cinquanta-quatre peces infogràfiques que fan servir els articles d'Inspired by Magazine.">
+<meta name="description" content="Principis, colors, components i les cinquanta-set peces infogràfiques que fan servir els articles d'Inspired by Magazine.">
 <meta name="robots" content="noindex">
 <link rel="icon" sizes="192x192" href="../assets/icon192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,7 +29,7 @@
   <header class="open lead">
     <p class="kicker">Ús intern</p>
     <h1>Sistema infogràfic</h1>
-    <p class="dek">Com són els gràfics de la revista: deu principis, els colors i la tipografia, els components de cada figura i cinquanta-quatre peces animades, amb nom i número, per construir els articles nous.</p>
+    <p class="dek">Com són els gràfics de la revista: deu principis, els colors i la tipografia, els components de cada figura i cinquanta-set peces animades, amb nom i número, per construir els articles nous.</p>
     <p class="meta">Model: «El Niño i La Niña» i una selecció de referències de premsa i disseny · Codi: <code>assets/ib-viz.js</code> · Guia per a agents: <code>research/sistema-infografic.md</code> · 18 de novembre de 2026</p>
   </header>
 
@@ -62,7 +62,6 @@
     <li><a href="#ib-19"><b>IB-19</b>Topografia de densitat</a></li>
     <li><a href="#ib-20"><b>IB-20</b>Petits múltiples</a></li>
     <li class="fam">Mapes</li>
-    <li><a href="#ib-21"><b>IB-21</b>Mosaic de quadrats</a></li>
     <li><a href="#ib-22"><b>IB-22</b>Cartograma de cercles</a></li>
     <li><a href="#ib-23"><b>IB-23</b>Densitat de punts</a></li>
     <li><a href="#ib-24"><b>IB-24</b>Arcs de flux</a></li>
@@ -76,6 +75,7 @@
     <li><a href="#ib-32"><b>IB-32</b>Mapa en franja</a></li>
     <li><a href="#ib-33"><b>IB-33</b>Hexàgons en el temps</a></li>
     <li><a href="#ib-34"><b>IB-34</b>Mapa d'isotermes marí</a></li>
+    <li><a href="#ib-59"><b>IB-59</b>Mapa físic en relleu</a></li>
     <li class="fam">Formes inesperades</li>
     <li><a href="#ib-35"><b>IB-35</b>Escala comparativa</a></li>
     <li><a href="#ib-36"><b>IB-36</b>Màquina de Galton</a></li>
@@ -391,16 +391,6 @@
 
   <h3 class="fam">Mapes</h3>
 
-  <section class="pc" id="ib-21">
-    <div class="pc-h"><span class="pc-n">IB-21</span><h4>Mosaic de quadrats</h4></div>
-    <p class="pc-d">Cada país és un quadrat igual en una reixa que recorda la geografia. Els països petits pesen el mateix que els grans i el color es llegeix sense distraccions. Un botó desfà el mapa i el converteix en un rànquing ordenat, i el torna a muntar.</p>
-    <div class="vh"><div><strong>Com més a l'est, més fred fa a l'hivern</strong><span>Temperatura mitjana de l'aire al gener, 1991–2020</span></div><div class="lgs" data-lg="21"></div></div>
-    <div class="plot" data-p="21"></div>
-    <div class="ctlbar"><div class="seg" role="group" aria-label="Vista" data-seg="21"><button aria-pressed="true" data-k="0">Mapa</button><button aria-pressed="false" data-k="1">Rànquing</button></div></div>
-    <p class="src"><b>Dades reals.</b> Font: NOAA PSL, reanàlisi NCEP/NCAR R1, temperatura de l'aire a prop de la superfície (nivell sigma 0,995), mitjana de gener 1991–2020, graella de 2,5°. Mitjana de cada país calculada per Inspired by: camp interpolat dins de la frontera (Natural Earth 1:50m) i ponderat per l'àrea; només el territori europeu (Rússia, a l'oest dels Urals, 60° E). Amb una graella tan ampla, la xifra és una mitjana suau, no la temperatura d'una ciutat.</p>
-    <div class="pc-r"><div><h5>Per a</h5><p>Un valor per país o regió quan els petits compten tant com els grans: Europa, comunitats, comarques, estats.</p></div><div><h5>Regles</h5><ul><li>Quadrats iguals, 3 px de separació, codi de dues lletres a dins.</li><li>Rampa divergent si hi ha un zero amb sentit; si no, seqüencial.</li><li>El rànquing comparteix colors i ordre de lectura amb el mapa.</li></ul></div><div><h5>Ve de</h5><p>Els mapes de quadrats de la premsa electoral i de dades.</p></div></div>
-  </section>
-
   <section class="pc" id="ib-22">
     <div class="pc-h"><span class="pc-n">IB-22</span><h4>Cartograma de cercles</h4></div>
     <p class="pc-d">Del mapa als cercles: cada país es converteix en un cercle d'àrea proporcional al valor i una simulació de forces els separa sense allunyar-los gaire del seu lloc. Aquí el valor és la superfície real, i el canvi desemmascara el mapa de Mercator.</p>
@@ -530,6 +520,15 @@
     <div class="plot" data-p="34"></div>
     <p class="src"><b>Dades reals.</b> Font: NOAA World Ocean Atlas 2023, temperatura de la superfície del mar, mitjana anual 1955–2022, graella d'1°, Atlàntic. Mapa: Natural Earth (world-atlas 50m).</p>
     <div class="pc-r"><div><h5>Per a</h5><p>Camps oceànics o climàtics continus on els fronts tèrmics i els corrents es revelen quan les isolínies s'estrenyen.</p></div><div><h5>Regles</h5><ul><li>Tota la dada visible d'entrada (sense lupes flotants que amaguin el mapa).</li><li>Franges translúcides suaus + doble jerarquia d'isotermes (2 °C fines i 5 °C etiquetades).</li><li>Terra silenciosa en gris suau a sobre i 3 anotacions breus de mecanisme.</li><li>En passar-hi, ressalta la isoterma del punt i mostra la lectura en una línia a sota.</li></ul></div><div><h5>Ve de</h5><p>Cartes oceanogràfiques clàssiques i la làmina «Germany — average rainfall and temperature».</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-59">
+    <div class="pc-h"><span class="pc-n">IB-59</span><h4>Mapa físic en relleu</h4></div>
+    <p class="pc-d">La base de qualsevol mapa regional: el territori dibuixat en franges de gris càlid segons l'alçada, amb una ombra suau des del nord-oest i isolínies finíssimes. El mar queda en blanc de paper i l'aigua dolça en blau. És l'estil dels mapes de «Jesús i els quatre evangelis»; les dades de l'article (rutes, llocs, cercles) van a sobre en vermell, blau o groc.</p>
+    <div class="vh"><div><strong>Catalunya, de la plana al Pirineu</strong><span>Relleu real en cel·les d'1,2 km · passa-hi per llegir l'alçada</span></div><div class="lgs" data-lg="59"></div></div>
+    <div class="plot" data-p="59"></div>
+    <p class="src"><b>Dades reals.</b> Relleu: Mapzen Terrain Tiles a AWS Open Data (NASA SRTM, GMTED2010, ETOPO1), mitjana per cel·les de 0,0125° (≈ 1,2 km), generat amb <code>scripts/relleu.mjs</code>. La mitjana d'una cel·la és més baixa que el cim: la Pica d'Estats (3.143 m) hi surt amb uns 2.840 m. La costa és la isolínia de 0 m del mateix relleu.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Tot mapa d'escala regional (d'una vall a un país o una conca): rutes, jaciments, viatges, batalles, ciutats, conques. Quan el relleu explica la història (per on passa el camí, d'on surt el vent, on viu la gent), és obligatori.</p></div><div><h5>Regles</h5><ul><li>Franges hipsomètriques de gris càlid, mai colors d'atles (verds i marrons).</li><li>Ombra des del NO de ±15 punts, isolínies de 0,55 px a 0,14 d'opacitat.</li><li>Mar en blanc de paper; rius i llacs en blau; terra sota el nivell del mar en blau clar.</li><li>Sense marc: vora esvaïda si el mapa s'acaba en terra; escala en km i mapa de situació.</li><li>Les dades, a sobre i en color: el relleu sempre és context gris.</li></ul></div><div><h5>Ve de</h5><p>«Jesús i els quatre evangelis» (Palestina, NASA SRTM); atles físics de gravat.</p></div></div>
   </section>
 
   <h3 class="fam">Formes inesperades</h3>
@@ -793,6 +792,7 @@
 <script src="dades-mapes-a.js"></script>
 <script src="mapes-a.js"></script>
 <script src="dades-mapes-b.js"></script>
+<script src="dades-relleu.js"></script>
 <script src="mapes-b.js"></script>
 <script src="dades-creatives-a.js"></script>
 <script src="creatives-a.js"></script>

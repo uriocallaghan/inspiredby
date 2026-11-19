@@ -1,4 +1,4 @@
-/* Sistema infogràfic d'Inspired by Magazine · Mapes, primera tanda (IB-21 a IB-27).
+/* Sistema infogràfic d'Inspired by Magazine · Mapes, primera tanda (IB-22 a IB-27).
    Fa servir assets/ib-viz.js (IBV), d3 7.9.0, topojson-client 3.1.0 i dades-mapes-a.js (IBDATA_MAPES_A). */
 (function(){
 "use strict";
@@ -59,110 +59,6 @@ function placeName(lon,lat){ // noms només per als extrems que comenten les pec
   if(lat>58&&lat<75&&lon>100&&lon<145)return "Sibèria";
   return llS(lon,lat);
 }
-
-/* =====================================================================
-   IB-21 · MOSAIC DE QUADRATS  (dades reals: NCEP/NCAR R1, gener 1991–2020)
-   ===================================================================== */
-const TILES=D.tiles.map(([a,n,c,r,jan])=>({a,n,c,r,v:jan}));
-TILES.slice().sort((a,b)=>b.v-a.v).forEach((d,i)=>d.rank=i);
-const T21=a=>TILES.find(d=>d.a===a);
-const DIV21=V.div(14);
-legend(21,el=>V.legendRamp(el,{scale:DIV21,min:-14,max:14,ticks:[-10,-5,0,5,10],f:v=>sgn(v,0),title:"Temperatura mitjana de gener (°C)",lo:"Més fred",hi:"Més calent"}));
-let mode21=0;
-const M21=piece(21,(el,w)=>{
-  const mob=w<640, gap=3, NT=TILES.length;
-  const s=mob?Math.floor((w-2)/9):Math.min(58,Math.floor(Math.max(w*.52,w-470)/9));
-  const mapW=9*s, mx=Math.round((w-mapW)/2), my=6, side=(w-mapW)/2, wide=side>=240;
-  const rowH=mob?15:14, top=30, cw=Math.min(w,760), ox=Math.round((w-cw)/2), nameW=mob?124:178;
-  const X=d3.scaleLinear([-12,16],[ox+nameW,ox+cw-(mob?30:44)]);
-  const H=[my+mapH()+(wide?6:4), top+NT*rowH+8];
-  function mapH(){ return 9*s; }
-  const IE=T21("IE"), BY=T21("BY"), RU=T21("RU"), MT=T21("MT"), cold=TILES.find(d=>d.rank===NT-1), hot=TILES.find(d=>d.rank===0);
-  const s0=V.svg(el,w,H[mode21],`Mosaic d'Europa: ${NT} països en quadrats iguals, pintats segons la temperatura mitjana de gener. Com més a l'est, més fred: Irlanda, ${sgn(IE.v)} °C; Belarús, a la mateixa latitud, ${sgn(BY.v)} °C. El més fred, ${cold.n} (${sgn(cold.v)} °C); el més càlid, ${hot.n} (${sgn(hot.v)} °C). Un botó ho converteix en un rànquing. Dades reals de la reanàlisi NCEP/NCAR.`);
-  const g=s0.append("g");
-  // capa del rànquing (eix) i de les notes del mapa
-  const axis=g.append("g").style("opacity",mode21?1:0);
-  [-10,-5,0,5,10,15].forEach(v=>{ axis.append("line").attr("x1",X(v)).attr("x2",X(v)).attr("y1",top-6).attr("y2",top+NT*rowH).attr("stroke",v===0?C.ink:C.grid);
-    if(!mob||v%10===0||v===5)V.t(axis,X(v),top-11,sgn(v,0)+(v===15?" °C":""),{size:11.5,fill:C.muted,anchor:"middle"}); });
-  const lo=g.append("g"); // anells i notes del mapa
-  const tiles=g.append("g").selectAll("g").data(TILES).join("g").attr("class","ibx-t");
-  const lum=d=>d3.lab(DIV21(d.v)).l<56;
-  const rect=tiles.append("rect").attr("fill",d=>DIV21(d.v)).attr("shape-rendering","crispEdges");
-  const code=tiles.append("text").text(d=>d.a).attr("text-anchor","middle").attr("font-size",mob?11.5:12.5).attr("font-weight",700).attr("fill",d=>lum(d)?"#fff":C.ink);
-  const val=tiles.append("text").text(d=>f1(d.v)).attr("text-anchor","middle").attr("font-size",11.5).style("font-variant-numeric","tabular-nums");
-  const nm=tiles.append("text").text(d=>d.n).attr("text-anchor","end").attr("font-size",mob?11.5:12.5).attr("fill",C.ink2);
-  val.each(function(d){ d._vw=this.getComputedTextLength(); });
-  function P(d,m){ if(!m)return {x:mx+d.c*s+gap/2,y:my+d.r*s+gap/2,w:s-gap,h:s-gap};
-    const a=X(0), b=X(d.v); return {x:Math.min(a,b),y:top+d.rank*rowH+2,w:Math.max(1.5,Math.abs(b-a)),h:rowH-4}; }
-  function setPos(sel,m){
-    sel.select("rect").attr("x",d=>P(d,m).x).attr("y",d=>P(d,m).y).attr("width",d=>P(d,m).w).attr("height",d=>P(d,m).h);
-    sel.select("text:nth-of-type(1)").attr("x",d=>{const p=P(d,m);return p.x+p.w/2;}).attr("y",d=>{const p=P(d,m);return m?p.y+p.h/2+4:p.y+p.h/2+(wide?-2:4);}).style("opacity",m?0:1);
-    sel.select("text:nth-of-type(2)").attr("x",d=>{ if(!m){const p=P(d,0);return p.x+p.w/2;} return (d.v>=0?X(d.v):X(0))+5+d._vw/2; })
-      .attr("y",d=>{const p=P(d,m);return m?p.y+p.h/2+4:p.y+p.h/2+13;}).attr("fill",d=>m?C.ink:(lum(d)?"#fff":C.ink)).style("opacity",m?1:(wide?1:0));
-    sel.select("text:nth-of-type(3)").attr("x",d=>m?ox+nameW-8:P(d,0).x+P(d,0).w/2).attr("y",d=>{const p=P(d,m);return m?p.y+p.h/2+4:p.y+p.h/2+4;}).style("opacity",m?1:0);
-  }
-  // notes del mapa (dades: NCEP)
-  const ring=d=>{ const p=P(d,0); lo.append("rect").attr("x",p.x-2.5).attr("y",p.y-2.5).attr("width",p.w+5).attr("height",p.h+5).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.2); };
-  ring(IE); ring(BY);
-  const fs=mob?12:12.5;
-  if(wide){
-    V.note(lo,{x:mx-4,y:my+1.5*s,tx:mx-26,ty:my+1.5*s,kind:"straight",anchor:"end",lines:[[`Irlanda, ${sgn(IE.v)} °C`,true],["a la mateixa latitud que Belarús"]]});
-    V.note(lo,{x:mx+8*s+2,y:my+3.5*s,tx:mx+9*s+18,ty:my+3.5*s,kind:"straight",anchor:"start",lines:[[`Belarús, ${sgn(BY.v)} °C`,true],[`${f1(IE.v-BY.v)} °C més fred que Irlanda`]]});
-    V.note(lo,{x:mx+8*s-gap,y:my+2.2*s,tx:mx+9*s+18,ty:my+1.1*s,kind:"straight",anchor:"start",lines:[[`Rússia europea, ${sgn(RU.v)} °C`,true],["el més fred del mosaic"]]});
-    V.note(lo,{x:mx+4.5*s,y:my+7*s-gap,tx:mx+3.5*s,ty:my+7.6*s,kind:"elbow",anchor:"end",lines:[[`Malta, ${sgn(MT.v)} °C`,true],["el més càlid al gener"]]});
-  } else {
-    lo.append("line").attr("x1",mx+.5*s).attr("x2",mx+.5*s).attr("y1",my+2*s).attr("y2",my+6.2*s).attr("stroke",C.ink).attr("stroke-width",.8);
-    V.lines(lo,mx+.5*s-3,my+6.2*s+14,[[`Irlanda ${sgn(IE.v)} °C`,true],[`Belarús ${sgn(BY.v)} °C`,true],["a la mateixa latitud"]],{size:fs,halo:true});
-  }
-  lo.style("opacity",mode21?0:1);
-  setPos(tiles,mode21);
-  // entrada: els quadrats creixen en onada des del nord-oest
-  V.onView(el,instant=>{ if(instant||mode21)return;
-    rect.attr("transform",d=>{ const p=P(d,0), cx=p.x+p.w/2, cy=p.y+p.h/2; return `translate(${cx},${cy}) scale(0) translate(${-cx},${-cy})`; })
-      .transition().delay(d=>(d.c+d.r)*55).duration(700).ease(d3.easeBackOut.overshoot(1.2)).attr("transform",d=>{ const p=P(d,0), cx=p.x+p.w/2, cy=p.y+p.h/2; return `translate(${cx},${cy}) scale(1) translate(${-cx},${-cy})`; });
-    tiles.selectAll("text").filter(function(){ return this.style.opacity!=="0"; }).style("opacity",0).transition().delay(d=>(d.c+d.r)*55+350).duration(400).style("opacity",function(){ return d3.select(this).classed("x")?0:1; });
-    lo.style("opacity",0).transition().delay(1100).duration(600).style("opacity",1);
-  });
-  el._go=m=>{
-    const dur=V.reduced?0:1100; el._off&&el._off();
-    s0.transition().duration(dur).ease(EIO).attr("height",H[m]).attr("viewBox",`0 0 ${w} ${H[m]}`);
-    lo.transition().duration(dur*.4).style("opacity",m?0:1);
-    axis.transition().delay(m?dur*.5:0).duration(dur*.5).style("opacity",m?1:0);
-    rect.interrupt().attr("transform",null); tiles.selectAll("text").interrupt(); lo.interrupt();
-    setPos(tiles.transition().delay(d=>V.reduced?0:(m?d.rank:(d.c+d.r)*2)*12).duration(dur).ease(EIO),m);
-  };
-  // interacció: un sol pla de captura
-  const MEAN=d3.mean(TILES,t=>t.v), hl=g.append("g").style("pointer-events","none");
-  const tp=tipOf(el), hit=hitRect(s0,w,Math.max(H[0],H[1]));
-  let cur=null;
-  function off(){ cur=null; tp.hide(); V.focus(tiles,null); rect.attr("stroke",null); val.attr("font-weight",400); hl.selectAll("*").remove(); if(!mode21)lo.interrupt().style("opacity",1); }
-  V.hover(hit.node(),(ev,[px,py])=>{
-    let d=null;
-    if(!mode21){ d=d3.least(TILES,t=>{ const p=P(t,0); return (p.x+p.w/2-px)**2+(p.y+p.h/2-py)**2; }); const p=P(d,0); if(Math.hypot(p.x+p.w/2-px,p.y+p.h/2-py)>s*.85)d=null; }
-    else { const k=clamp(Math.floor((py-top)/rowH),-1,NT); d=TILES.find(t=>t.rank===k)||null; if(px<ox||px>ox+cw)d=null; }
-    if(!d){ off(); return; }
-    const p=P(d,mode21);
-    tp.show(`<b>${d.n}</b><br>Gener: <b>${sgn(d.v)} °C</b><br>${sgn(d.v-MEAN)} °C respecte a la mitjana dels ${NT} països<br>posició ${d.rank+1} de ${NT}, del més càlid al més fred`,p.x+p.w/2+(mode21?Math.min(140,p.w/2):0),p.y);
-    if(d===cur)return; cur=d;
-    V.focus(tiles,o=>o===d,{dim:.5}); tiles.filter(o=>o===d).raise(); if(!mode21)lo.interrupt().style("opacity",.5); rect.attr("stroke",o=>o===d?C.ink:null).attr("stroke-width",1.5); val.attr("font-weight",o=>o===d?700:400);
-    hl.selectAll("*").remove(); hl.raise(); hit.raise();
-    if(!mode21){ // anell al lloc + etiqueta directa
-      hl.append("rect").attr("x",p.x-4).attr("y",p.y-4).attr("width",p.w+8).attr("height",p.h+8).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.5).attr("rx",2);
-      const right=d.c<6, lx=right?p.x+p.w+9:p.x-9;
-      V.lines(hl,lx,p.y+p.h/2-2,[[d.n,true],[`${sgn(d.v)} °C`]],{anchor:right?"start":"end",size:12.5,halo:true});
-    } else { // guia vertical fins a l'eix, amb el valor sobre l'eix
-      const xv=X(d.v);
-      hl.append("line").attr("x1",xv).attr("x2",xv).attr("y1",p.y+p.h/2).attr("y2",top-4).attr("stroke",C.ink).attr("stroke-width",.8).attr("stroke-dasharray","2 2");
-      hl.append("rect").attr("x",xv-26).attr("y",top-24).attr("width",52).attr("height",17).attr("fill","#fff");
-      V.t(hl,xv,top-11,`${sgn(d.v)} °C`,{anchor:"middle",size:12,weight:700});
-      V.t(hl,ox+nameW-8,p.y+p.h/2+4,d.n,{anchor:"end",size:mob?11.5:12.5,weight:700,halo:true});
-      hl.append("rect").attr("x",p.x-2).attr("y",p.y-2).attr("width",p.w+4).attr("height",p.h+4).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.5);
-    }
-  },off);
-  el._off=off;
-});
-seg(21,m=>{ mode21=m; const el=$('[data-p="21"]'); el._go&&el._go(m); });
-void M21;
 
 /* =====================================================================
    IB-22 · CARTOGRAMA DE CERCLES  (dades reals: superfície de Natural Earth)

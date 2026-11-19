@@ -4,7 +4,7 @@ Com han de ser els gràfics de tots els articles nous. Llegeix-ho sencer abans d
 
 - **Mostrari viu:** `web/sistema/index.html`, publicat a https://inspiredby.uriocallaghan.com/sistema/. Cada peça hi és dibuixada i funciona.
 - **Codi comú:** `web/assets/ib-viz.js` (objecte global `IBV`): colors, escales, text amb halo, anotacions, llegendes, tooltip tàctil, mapes. Es carrega després de d3 7.9.0 (i de `topojson-client@3.1.0` si hi ha mapes).
-- **Codi de cada peça:** un bloc per peça, marcat amb el número: IB-01 a IB-20 a `web/sistema/sistema.js`, IB-21 a IB-27 a `mapes-a.js`, IB-28 a IB-34 a `mapes-b.js`, IB-35 a IB-44 a `creatives-a.js` i IB-45 a IB-54 a `creatives-b.js` (cadascun amb el seu `.css` i el seu fitxer de dades). Copia el bloc que necessitis al JS de l'article i canvia-hi les dades.
+- **Codi de cada peça:** un bloc per peça, marcat amb el número: IB-01 a IB-20 a `web/sistema/sistema.js`, IB-22 a IB-27 a `mapes-a.js`, IB-28 a IB-34 a `mapes-b.js`, IB-35 a IB-44 a `creatives-a.js` i IB-45 a IB-54 a `creatives-b.js` (cadascun amb el seu `.css` i el seu fitxer de dades). Copia el bloc que necessitis al JS de l'article i canvia-hi les dades.
 - **Model de qualitat:** «El Niño i La Niña» (`web/articles/el-nino/`).
 
 Quan planifiquis un article, anomena els gràfics pel número: «IB-12 per al mapa de l'anomalia, IB-01 per a la sèrie de 1950–2026, IB-16 per al tall».
@@ -159,7 +159,7 @@ Els gràfics han de ser molt lleugers i fluids, també en un mòbil normal.
 
 ## 5. Peces
 
-Hi ha 54 peces, totes amb animació d'entrada (`IBV.onView`) i estat de hover (`IBV.focus` + tooltip). Cada peça té nom i número. Tria-les per la **pregunta** que ha de respondre el gràfic.
+Hi ha 57 peces, totes amb animació d'entrada (`IBV.onView`) i estat de hover (`IBV.focus` + tooltip). Cada peça té nom i número. Tria-les per la **pregunta** que ha de respondre el gràfic.
 
 ### Temps
 
@@ -201,11 +201,10 @@ Hi ha 54 peces, totes amb animació d'entrada (`IBV.onView`) i estat de hover (`
 | **IB-19** | Topografia de densitat | «On s'agrupen i com es toquen els grups?» | Punts x/y | `d3.contourDensity`, 20–30 nivells de 0,7 px, rampa a la línia, la corba exterior més gruixuda. | «Building strategy»; Senezh |
 | **IB-20** | Petits múltiples | «Com canvia el mateix patró entre llocs o èpoques?» | Qualsevol peça repetida | Mateixa escala a tots, escrita només al primer; títol serif 16 px; 4 per fila (2 a mòbil). | Parcs nacionals; seqüències de procés |
 
-### Mapes (IB-21 a IB-34)
+### Mapes (IB-22 a IB-34)
 
 | Núm. | Nom | Què fa | Dades al mostrari | Regles clau | Codi |
 |---|---|---|---|---|---|
-| **IB-21** | Mosaic de quadrats | Cada país és un quadrat igual en una reixa que recorda la geografia. | Dades reals | Quadrats iguals, 3 px de separació, codi de dues lletres a dins; Rampa divergent si hi ha un zero amb sentit; si no, seqüencial; El rànquing comparteix colors i ordre de lectura amb el mapa | `sistema/mapes-a.js` |
 | **IB-22** | Cartograma de cercles | Del mapa als cercles: cada país es converteix en un cercle d'àrea proporcional al valor i una simulació de forces els separa sense allunyar-los gaire del seu lloc. | Dades reals | Àrea del cercle proporcional al valor; clau de mida dins del gràfic; Els cercles surten del seu país i hi tornen; Etiqueta només els cercles que caben; la resta, al tooltip | `sistema/mapes-a.js` |
 | **IB-23** | Densitat de punts | Un punt per cada N unitats, escampats només dins de la frontera de cada regió i on és més probable que hi siguin (mètode dasimètric). | Dades d'exemple generades | Un sol color, punts d'1–1,5 px, opacitat alta; «1 punt = …» a la llegenda; la mateixa N a totes les amplades; Projecció d'àrees iguals | `sistema/mapes-a.js` |
 | **IB-24** | Arcs de flux | Orígens i destinacions units per arcs que segueixen el cercle màxim, amb partícules que hi circulen en el sentit del flux. | Dades d'exemple generades | Arcs de cercle màxim amb una petita separació per a cada sentit; Gruix de 0,6 a 5 px; partícules més ràpides que llegibles, mai al revés; Sortides en vermell, arribades en blau quan se'n destaca una | `sistema/mapes-a.js` |
