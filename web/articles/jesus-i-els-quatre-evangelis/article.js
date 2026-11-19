@@ -48,136 +48,136 @@
   });
 
   /* =====================================================================
-     V0 · UNA SOLA VIDA, 64.298 PARAULES EN QUATRE NÚVOLS (#intro-viz)
-     (Building Strategy + Fair and square? + Concentric rings)
+     V0 · UNA SOLA VIDA, QUATRE LLIBRES: 64.298 PARAULES (#intro-viz)
+     Tires d'unitats reals (1 traç = 100 paraules gregues SBLGNT), ordenades
+     cronològicament i dividides entre material compartit i exclusiu (Eusebi).
      ===================================================================== */
   (function(){
     const el=$("#intro-viz"), rd=$("#intro-r"); if(!el)return;
     const EV=[
-      {k:"Mc",n:"Marc",yr:"≈ 65–75",dt:"+40 anys",w:E.gnt.total.Mc,u:Math.round(EUS.Mc.uniqPct),c:C.vermell,
-        sub:"El primer · breu i urgent",det:"El més antic i curt (11.085 paraules). Sense relat de naixement; el 94 % reapareix a Mateu i Lluc."},
-      {k:"Mt",n:"Mateu",yr:"≈ 80–90",dt:"+55 anys",w:E.gnt.total.Mt,u:Math.round(EUS.Mt.uniqPct),c:C.blau,
-        sub:"El mestre jueu · mags i Egipte",det:"Escriu per a lectors d'arrel jueva (18.329 paraules). Afegeix el Sermó de la Muntanya i el relat dels mags."},
-      {k:"Lc",n:"Lluc",yr:"≈ 80–100",dt:"+58 anys",w:E.gnt.total.Lc,u:Math.round(EUS.Lc.uniqPct),c:C.blau,
-        sub:"Pastors · bon samarità · Jerusalem",det:"El més llarg (19.446 paraules). Posa el focus en els pobres, les dones i el viatge cap a Jerusalem."},
-      {k:"Jn",n:"Joan",yr:"≈ 90–110",dt:"+70 anys",w:E.gnt.total.Jn,u:Math.round(EUS.Jn.uniqPct),c:C.grocFosc,
-        sub:"76 % únic · filosòfic, sense paràboles",det:"El més tardà i diferent (15.438 paraules). Tres quartes parts no surten als altres tres evangelis."}
+      {k:"Mc",n:"Marc",yr:"≈ 65–75",dt:"+40 anys",w:E.gnt.total.Mc,sh:EUS.Mc.shared,un:EUS.Mc.uniq,u:Math.round(EUS.Mc.uniqPct),c:C.vermell,
+        det:"El més breu i antic (11.085 paraules). El 94 % del text reapareix a Mateu o Lluc; només un 6 % és exclusiu seu."},
+      {k:"Mt",n:"Mateu",yr:"≈ 80–90",dt:"+55 anys",w:E.gnt.total.Mt,sh:EUS.Mt.shared,un:EUS.Mt.uniq,u:Math.round(EUS.Mt.uniqPct),c:C.blau,
+        det:"18.329 paraules. Aprofita gairebé tot Marc i hi afegeix un 24 % de material propi, com els mags, Egipte i el Sermó de la Muntanya."},
+      {k:"Lc",n:"Lluc",yr:"≈ 80–100",dt:"+58 anys",w:E.gnt.total.Lc,sh:EUS.Lc.shared,un:EUS.Lc.uniq,u:Math.round(EUS.Lc.uniqPct),c:C.blauClar,
+        det:"El més llarg (19.446 paraules). Un 34 % és exclusiu: els pastors, el bon samarità, el fill pròdig i els deixebles d'Emmaús."},
+      {k:"Jn",n:"Joan",yr:"≈ 90–110",dt:"+70 anys",w:E.gnt.total.Jn,sh:EUS.Jn.shared,un:EUS.Jn.uniq,u:Math.round(EUS.Jn.uniqPct),c:C.groc,
+        det:"15.438 paraules i una veu pròpia: el 76 % del text (tres quartes parts) no surt a cap dels altres tres evangelis."}
     ];
+    const MAX_U=Math.round(d3.max(EV,d=>d.w)/100); // 194 unitats (Lluc)
     lg($("#intro-lg"),[
-      {c:C.vermell,t:"Jesús i Marc (1r)"},
-      {c:C.blau,t:"Mateu i Lluc (núvols agermanats)"},
-      {c:C.groc,t:"Joan (76 % exclusiu)"},
-      {c:C.muted,t:"1 punt = 100 paraules",k:"ho"}
+      {c:"#D6D2CB",t:"Material compartit amb altres evangelis",k:"sq"},
+      {c:C.vermell,t:"Propi de Marc",k:"sq"},
+      {c:C.blau,t:"Propi de Mateu",k:"sq"},
+      {c:C.blauClar,t:"Propi de Lluc",k:"sq"},
+      {c:C.groc,t:"Propi de Joan",k:"sq"}
     ]);
 
     V.mount(el,(node,w)=>{
-      const mob=w<680, h=mob?420:360;
-      const {ctx,s}=layerCS(node,w,h,"Núvol topogràfic de les 64.298 paraules dels quatre evangelis (1 punt = 100 paraules) sorgint d'un únic origen sense textos propis: Jesús de Natzaret.");
-      const r=V.rng(101);
+      const mob=w<640;
+      const m={t:18,r:mob?66:116,b:34,l:mob?84:150};
+      const bw=Math.max(120,w-m.l-m.r);
+      const jesusH=mob?38:42, rowH=mob?58:62, barH=mob?22:24;
+      const h=m.t+jesusH+EV.length*rowH+m.b;
+      const s=V.svg(node,w,h,"Comparativa de les 64.298 paraules gregues dels quatre evangelis (1 traç = 100 paraules) enfront de les 0 paraules escrites per Jesús de Natzaret, separant el material compartit del material exclusiu de cada llibre.");
+      const g=s.append("g");
 
-      const ox=mob?w/2:108, oy=mob?46:h/2;
-      const centers=mob?[
-        [w*.32,148],[w*.68,214],[w*.34,284],[w*.68,354]
-      ]:[
-        [Math.min(w*.34,ox+230),h*.32],
-        [Math.min(w*.54,ox+420),h*.30],
-        [Math.min(w*.57,ox+460),h*.68],
-        [Math.min(w*.79,w-165),h*.52]
-      ];
+      const x=d3.scaleLinear([0,MAX_U],[m.l,m.l+bw]);
+      const step=bw/MAX_U;
 
-      // generem 643 punts reals (1 punt = 100 paraules gregues SBLGNT) amb distribució orgànica gaussiana
-      const items=EV.map((d,i)=>{
-        const [cx,cy]=centers[i], nPts=Math.round(d.w/100), spread=(mob?15:24)*Math.sqrt(nPts/120);
-        const pts=d3.range(nPts).map(()=>{
-          const a=r()*Math.PI*2, rad=Math.abs(V.gauss(r))*spread*.78;
-          return [cx+Math.cos(a)*rad*1.12, cy+Math.sin(a)*rad*.88, 1.15+r()*.55];
-        });
-        return {...d,cx,cy,spread,pts};
+      // eix inferior net en paraules
+      const axY=m.t+jesusH+EV.length*rowH+6;
+      const ticks=mob?[0,50,100,150,194]:[0,50,100,150,194];
+      ticks.forEach(u=>{
+        const xx=x(u);
+        g.append("line").attr("x1",xx).attr("x2",xx).attr("y1",m.t+jesusH-6).attr("y2",axY-4)
+          .attr("stroke",u===0?C.ink2:C.grid).attr("stroke-width",u===0?1:.7).attr("stroke-dasharray",u===0?null:"2 3");
+        const lbl=u===0?"0":u===194?"19.446":f0(u*100);
+        if(!mob||u!==194) V.t(g,xx,axY+12,lbl,{anchor:u===0?"start":u===194?"end":"middle",size:11,fill:C.muted});
       });
+      V.t(g,m.l+bw,axY+26,"paraules gregues (SBLGNT)",{anchor:"end",size:11,fill:C.muted});
 
-      // cercles translúcids suaus (sense anells concèntrics!) + eix temporal fi
-      const gRings=s.append("g"), gFil=s.append("g"), gHalo=s.append("g"), gLab=s.append("g");
+      // fila 0: Jesús (0 paraules escrites) — el buit que ho explica tot
+      const jy=m.t+14;
+      V.t(g,m.l-12,jy+1,"Jesús",{anchor:"end",serif:true,weight:600,size:mob?14.5:16,fill:C.ink});
+      V.t(g,m.l-12,jy+15,"≈ 6 aC – ≈ 30 dC",{anchor:"end",size:11,fill:C.muted});
+      g.append("circle").attr("cx",m.l).attr("cy",jy+2).attr("r",4).attr("fill",C.vermell);
+      g.append("line").attr("x1",m.l+8).attr("x2",m.l+(mob?150:220)).attr("y1",jy+2).attr("y2",jy+2)
+        .attr("stroke",C.vermell).attr("stroke-width",.8).attr("stroke-dasharray","2 4").attr("stroke-opacity",.55);
+      V.t(g,m.l+12,jy-4,"0 paraules escrites",{anchor:"start",size:12,weight:600,fill:C.vermell});
+      g.append("line").attr("x1",0).attr("x2",w).attr("y1",m.t+jesusH-4).attr("y2",m.t+jesusH-4)
+        .attr("stroke",C.hair).attr("stroke-width",.8);
 
-      if(!mob){
-        // línies verticals finíssimes de distància temporal des de la creu
-        [{x:items[0].cx,t:"+40 anys"},{x:(items[1].cx+items[2].cx)/2,t:"+55 anys"},{x:items[3].cx,t:"+70 anys"}].forEach(a=>{
-          gRings.append("line").attr("x1",a.x).attr("x2",a.x).attr("y1",22).attr("y2",h-18).attr("stroke",C.grid).attr("stroke-width",.6).attr("stroke-dasharray","2 4");
-          V.t(gRings,a.x,14,a.t,{anchor:"middle",size:11,fill:C.muted});
-        });
-      }
+      // files dels 4 evangelis (1 traç vertical fi = 100 paraules)
+      const rows=g.append("g").selectAll("g.evr").data(EV).join("g").attr("class","evr").style("cursor","pointer");
+      const gapW=Math.max(.55,step*.26), tickW=Math.max(1.05,step-gapW);
 
-      // filaments ultra-fins trenats des de Jesús cap a cada núvol
-      items.forEach(d=>{
-        for(let k=0;k<6;k++){
-          const off=(k-2.5)*(mob?3.5:5.5), mx=(ox+d.cx)/2, my=(oy+d.cy)/2+off;
-          gFil.append("path").datum(d).attr("class","ifil")
-            .attr("d",`M${ox},${oy} Q${mx},${my} ${d.cx+off*.6},${d.cy+off*.5}`)
-            .attr("fill","none").attr("stroke",d.c).attr("stroke-width",.55).attr("stroke-opacity",.22);
+      rows.each(function(d,i){
+        const rg=d3.select(this);
+        const y0=m.t+jesusH+i*rowH+(rowH-barH)/2;
+        const nTot=Math.round(d.w/100);
+        const nUn=Math.max(1,Math.round(nTot*d.u/100));
+        const nSh=nTot-nUn;
+
+        // etiqueta esquerra (nom + datació)
+        V.t(rg,m.l-12,y0+barH/2-1,d.n,{anchor:"end",serif:true,weight:600,size:mob?15:17,fill:C.ink});
+        V.t(rg,m.l-12,y0+barH/2+13,d.yr,{anchor:"end",size:11,fill:C.muted});
+
+        // fons de hit invisible per a tota la fila
+        rg.append("rect").attr("x",0).attr("y",y0-10).attr("width",w).attr("height",barH+20).attr("fill","transparent");
+
+        // traços unitaris (1 traç = 100 paraules): esquerra compartit, dreta exclusiu
+        const bg=rg.append("g").attr("class","bars");
+        for(let k=0;k<nTot;k++){
+          const isUn=k>=nSh;
+          bg.append("rect")
+            .attr("class",isUn?"u-un":"u-sh")
+            .attr("x",x(k)).attr("y",y0)
+            .attr("width",tickW).attr("height",barH)
+            .attr("rx",.4)
+            .attr("fill",isUn?d.c:"#D6D2CB");
         }
+
+        // separador fi entre compartit i exclusiu
+        if(nSh>0&&nUn>0){
+          rg.append("line").attr("x1",x(nSh)-gapW/2).attr("x2",x(nSh)-gapW/2).attr("y1",y0-3).attr("y2",y0+barH+3)
+            .attr("stroke",C.ink).attr("stroke-width",.9).attr("stroke-opacity",.45);
+        }
+
+        // anotació directa de % propi a sobre o al costat
+        const xEnd=x(nTot)+8;
+        V.t(rg,xEnd,y0+barH/2-1,`${f0(d.w)}`,{anchor:"start",size:mob?12:13,weight:700,fill:C.ink});
+        V.t(rg,xEnd,y0+barH/2+13,`${d.u} % propi`,{anchor:"start",size:11,weight:600,fill:d.k==="Jn"?C.ink2:d.c});
       });
 
-      // un sol cercle translúcid suau d'àrea proporcional darrere cada núvol de punts (zero anells!)
-      const hDefs=s.append("defs");
-      items.forEach((d,i)=>{
-        const gid="ih"+i+"-"+Math.random().toString(36).slice(2,5);
-        const rg=hDefs.append("radialGradient").attr("id",gid);
-        const col=d.k==="Jn"?C.groc:d.c;
-        rg.append("stop").attr("offset",0).attr("stop-color",col).attr("stop-opacity",d.k==="Jn"?.34:.22);
-        rg.append("stop").attr("offset",.72).attr("stop-color",col).attr("stop-opacity",d.k==="Jn"?.16:.1);
-        rg.append("stop").attr("offset",1).attr("stop-color",col).attr("stop-opacity",0);
-        const rad=d.spread*(mob?1.45:1.65);
-        gHalo.append("circle").datum(d).attr("class","itopo").attr("cx",d.cx).attr("cy",d.cy).attr("r",rad)
-          .attr("fill",`url(#${gid})`).style("mix-blend-mode","multiply").style("cursor","pointer");
-      });
-
-      // origen: Jesús en cercle translúcid lluminós (sense anells concèntrics)
-      const jId="jg"+Math.random().toString(36).slice(2,6);
-      const jRg=hDefs.append("radialGradient").attr("id",jId);
-      jRg.append("stop").attr("offset",0).attr("stop-color",C.vermell).attr("stop-opacity",.45);
-      jRg.append("stop").attr("offset",.6).attr("stop-color",C.vermell).attr("stop-opacity",.18);
-      jRg.append("stop").attr("offset",1).attr("stop-color",C.vermell).attr("stop-opacity",0);
-      gLab.append("circle").attr("cx",ox).attr("cy",oy).attr("r",mob?22:32).attr("fill",`url(#${jId})`);
-      gLab.append("circle").attr("cx",ox).attr("cy",oy).attr("r",mob?5.5:7).attr("fill",C.vermell).attr("stroke",C.paper).attr("stroke-width",1.8);
-      if(!mob){
-        V.lines(gLab,ox,oy+36,[["Jesús de Natzaret",true,C.ink],["≈ 6 aC – ≈ 30 dC",false,C.ink2],["0 línies escrites",false,C.vermell]],{anchor:"middle",size:12,halo:3.5});
-      } else {
-        V.t(gLab,ox,oy+26,"Jesús · ≈ 6 aC – ≈ 30 dC (0 línies escrites)",{anchor:"middle",weight:700,size:11.5,fill:C.ink,halo:3});
-      }
-
-      // etiquetes netes al costat de cada núvol
-      items.forEach((d,i)=>{
-        const tx=mob?(i%2===0?d.cx+d.spread*1.4+10:d.cx-d.spread*1.4-10):d.cx+(d.k==="Jn"?0:d.k==="Mc"?-6:0);
-        const ty=mob?d.cy-4:(d.k==="Lc"?d.cy+d.spread+28:d.cy-d.spread-20);
-        const anc=mob?(i%2===0?"start":"end"):"middle";
-        V.lines(gLab,tx,ty,[[`${d.n} · ${d.yr}`,true,C.ink],[`${f0(d.w)} par. · ${d.u} % propi`,false,C.ink2]],{anchor:anc,size:mob?11:12,halo:3.5});
-      });
-
-      function drawDots(focusK){
-        ctx.clearRect(0,0,w,h);
-        items.forEach(d=>{
-          const col=d.k==="Jn"?C.grocFosc:d.c;
-          const a=focusK==null?.38:focusK===d.k?.74:.2;
-          V.cloud(ctx,d.pts,col,{alpha:a});
-        });
-      }
-      drawDots(null);
-
-      const reset=()=>{ drawDots(null); gHalo.selectAll(".itopo").style("opacity",1); gFil.selectAll(".ifil").attr("stroke-opacity",.22); };
-      outside(node,reset);
-      V.hover(s.node(),(ev,[px,py])=>{
-        const d=d3.least(items,q=>Math.hypot(px-q.cx,py-q.cy));
-        if(!d||Math.hypot(px-d.cx,py-d.cy)>(mob?62:95)){ reset(); return; }
-        drawDots(d.k);
-        gHalo.selectAll(".itopo").style("opacity",q=>q===d?1:.48);
-        gFil.selectAll(".ifil").attr("stroke-opacity",q=>q===d?.65:.12);
-        if(rd) rd.innerHTML=`<b>${d.n} (${d.yr} · ${d.dt}):</b> ${d.det}`;
-      },reset);
-
+      // animació d'entrada neta (escombrat d'esquerra a dreta)
       V.onView(node,instant=>{
         if(instant)return;
-        gHalo.style("opacity",0).transition().duration(900).ease(ease).style("opacity",1);
+        rows.each(function(d,i){
+          const rects=d3.select(this).selectAll("g.bars rect");
+          rects.attr("opacity",0).transition().delay((q,k)=>i*90+k*2.4).duration(240).attr("opacity",1);
+        });
       });
-      if(rd) rd.innerHTML="<b>Quatre núvols de paraules:</b> observa com <b>Mateu</b> i <b>Lluc</b> formen una parella pròxima i densa, mentre <b>Joan</b> orbita separat amb un 76 % de text únic.";
+
+      const defMsg="<b>D'un cop d'ull:</b> <b>Marc</b>, <b>Mateu</b> i <b>Lluc</b> comparteixen la major part del relat (gris), mentre que <b>Joan</b> és un 76 % exclusiu (groc).";
+      if(rd) rd.innerHTML=defMsg;
+
+      let cur=null;
+      const reset=()=>{
+        cur=null;
+        rows.transition().duration(140).style("opacity",1);
+        if(rd) rd.innerHTML=defMsg;
+      };
+      outside(node,reset);
+      V.hover(s.node(),(ev,[px,py])=>{
+        const idx=Math.floor((py-(m.t+jesusH))/rowH);
+        if(idx<0||idx>=EV.length){ if(cur)reset(); return; }
+        const d=EV[idx];
+        if(cur===d)return;
+        cur=d;
+        rows.transition().duration(140).style("opacity",q=>q===d?1:.5);
+        if(rd) rd.innerHTML=`<b>${d.n} (${d.yr} · ${d.dt}):</b> ${d.det}`;
+      },reset);
     });
   })();
 

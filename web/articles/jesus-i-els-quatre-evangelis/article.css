@@ -69,6 +69,16 @@ ol.fts li{scroll-margin-top:30vh;transition:background-color .4s;padding:2px 4px
 @keyframes nrflash{0%,35%{background:#F5C518;color:var(--ink)}100%{background:transparent}}
 @keyframes liflash{0%,30%{background:#FDF1C4}100%{background:transparent}}
 
+/* retrats d'autoria dels 4 evangelis a l'inici */
+.ev-authors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 40px;max-width:960px;margin:28px auto 12px;padding:0 20px}
+.ev-au{border-top:2px solid var(--hair);padding-top:13px}
+.ev-au-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 8px}
+.ev-au-h h3{font-family:var(--serif);font-weight:600;font-size:21px;line-height:1.2;margin:0;color:var(--ink)}
+.ev-au-h span{font-family:var(--sans);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ev-au p{font-family:var(--sans);font-size:14.5px;line-height:1.55;margin:0 0 8px;color:var(--ink-2)}
+.ev-au p:last-child{margin-bottom:0}
+.ev-au b{color:var(--ink);font-weight:600}
+
 /* retrats dels 4 evangelis sota les flors */
 .ev-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 36px;max-width:920px;margin:32px auto 0}
 .ev-card{border-top:2px solid var(--hair);padding-top:12px}
@@ -89,7 +99,8 @@ ol.fts li{scroll-margin-top:30vh;transition:background-color .4s;padding:2px 4px
   .graphic .vh{margin-bottom:4px}
   .graphic .vh span{display:none}
   .npop{display:none}
-  .ev-grid{grid-template-columns:1fr;gap:20px}
+  .ev-grid,.ev-authors{grid-template-columns:1fr;gap:20px}
+  .ev-authors{padding:0 16px}
 }
 /* relleu: les vores del mapa s'esvaeixen, sense marc */
 canvas.fade{-webkit-mask-image:linear-gradient(to right,transparent,#000 4%,#000 96%,transparent),linear-gradient(to bottom,transparent,#000 3%,#000 95%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 4%,#000 96%,transparent),linear-gradient(to bottom,transparent,#000 3%,#000 95%,transparent);mask-composite:intersect}
