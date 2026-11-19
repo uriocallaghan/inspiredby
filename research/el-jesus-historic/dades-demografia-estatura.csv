@@ -1,0 +1,13 @@
+tipus,nom,valor_central,min_estimat,max_estimat,unitat,font
+poblacio,Natzaret,350,200,1000,habitants,"Reed 2000 (200–400), Strange (200–480), Dark 2020 (400–1.000)"
+poblacio,Cafarnaüm,1250,1000,1500,habitants,"Reed 2000"
+poblacio,Tiberíades,9000,6000,12000,habitants,"Reed 2000"
+poblacio,Sèforis,10000,8000,12000,habitants,"Reed 2000"
+poblacio,Jerusalem (habitual),50000,20000,80000,habitants,"Geva 2014 (≤20k), Jeremias (25–30k), Levine (60–70k), Broshi (~80k)"
+poblacio,Jerusalem (Pasqua),300000,100000,400000,habitants,"Jeremias (~100k+), Sanders 1992 (300–400k)"
+poblacio,Roma imperial,900000,450000,1000000,habitants,"Scheidel/Morley (800k–1M), Storey 1997 (450–500k)"
+estatura,Dones adultes de Judea (mitjana),147,,,cm,"Nagar & Torge 2003 (IEJ 53, IAA)"
+estatura,Homes adults de Judea (mitjana IAA),166,,,cm,"Nagar & Torge 2003 (IEJ 53); Joan Taylor 2018"
+estatura,Yehohanan (home crucificat a Jerusalem),167,,,cm,"Haas 1970 (IEJ 20); Zias & Sekeles 1985 (IEJ 35)"
+estatura,Homes de la necròpolis de Jericó (mitjana),169,,,cm,"Hachlili 1979; Hachlili & Smith 1979 (BASOR 235)"
+estatura,Yeho'ezer «Goliat» (excepció a Jericó),188.5,,,cm,"Hachlili & Smith 1979 (BASOR 235, Ossari XXI)"
