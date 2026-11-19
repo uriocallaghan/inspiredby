@@ -23,97 +23,146 @@
   const CUM={}; B.forEach(b=>{ let s=0; CUM[b]=E.gnt.caps[b].map(n=>(s+=n)-n); });
   const chapOf=(b,i)=>d3.bisectRight(CUM[b],i);
 
-  /* ============ 1. Els dos calendaris (scrolly) ============ */
+  /* ============ 1. Els dos calendaris (scroll) ============
+     v2: el món romà a dalt com a context; carrils que apareixen pas a pas; l'eix del temps s'eixampla
+     a cada pas perquè el que es mostra ompli l'amplada. La v1 és a research/…/versions/calendari-v1.js */
   (function(){
     const el=$("#temps"); if(!el)return;
-    const G={vida:{c:C.vermell,t:"Vida de Jesús"},cartes:{c:C.blau,t:"Cartes de Pau"},escrits:{c:C.blauFosc,t:"Evangelis"},externes:{c:C.groc,t:"Fonts no cristianes"},canon:{c:C.ink2,t:"Cànon"}};
+    const LANES=[
+      {k:"mon",t:"El món romà",s:"emperadors i governants",c:C.ink2},
+      {k:"vida",t:"Vida de Jesús",s:"",c:C.vermell},
+      {k:"cartes",t:"Cartes de Pau",s:"els textos cristians més antics",c:C.blau},
+      {k:"escrits",t:"Evangelis",s:"relats de la seva vida",c:C.blauFosc},
+      {k:"externes",t:"Historiadors",s:"no cristians",c:C.groc},
+      {k:"canon",t:"Cànon",s:"quins llibres compten",c:C.ink2}];
+    const EMP=[["August",-27,14],["Tiberi",14,37],["Calígula",37,41],["Claudi",41,54],["Neró",54,68],["",68,69],["Vespasià",69,79],["Titus",79,81],["Domicià",81,96],["Nerva",96,98],["Trajà",98,117],["Adrià",117,138],["Antoní Pius",138,161],["Marc Aureli",161,180],["Constantí",306,337]];
     const D=[
+      {g:"mon",n:"Herodes el Gran, rei de Judea",s:"Herodes el Gran",a:-37,b:-4,d:"Rei jueu que governa amb el vistiplau de Roma. Quan mor, el país es reparteix entre els seus fills."},
+      {g:"mon",n:"Herodes Antipes, Galilea i Perea",s:"Antipes",a:-4,b:39,d:"Fill d'Herodes. Governa Galilea, la terra de Jesús, sota la supremacia romana."},
+      {g:"mon",n:"Ponç Pilat, prefecte de Judea",s:"Pilat",a:26,b:36,d:"Governador romà de Judea. Sota el seu govern crucifiquen Jesús."},
+      {g:"mon",n:"Incendi de Roma",s:"Incendi de Roma",a:64,b:64,ev:1,d:"Tàcit explica que Neró en va culpar els cristians."},
+      {g:"mon",n:"Guerra dels jueus contra Roma",s:"Guerra jueva",a:66,b:73,d:"Acaba amb Jerusalem presa i el Temple cremat l'any 70."},
       {g:"vida",n:"Naixement",a:-6,b:-4,l:"≈ 6–4 aC",d:"Mateu el situa en vida d'Herodes el Gran, mort el 4 aC. L'any exacte no es coneix."},
-      {g:"vida",n:"Joan bateja al Jordà",a:28,b:29,l:"≈ 28–29",d:"Lluc data la predicació de Joan el quinzè any de Tiberi."},
+      {g:"vida",n:"Joan bateja al Jordà",s:"Joan Baptista",a:28,b:29,l:"≈ 28–29",d:"Lluc data la predicació de Joan el quinzè any de Tiberi."},
       {g:"vida",n:"Crucifixió",a:29,b:33,m:30,l:"≈ 30",d:"Execució romana sota Ponç Pilat. Ventall habitual: del 29 al 33."},
-      {g:"cartes",n:"1 Tessalonicencs",a:48,b:51,l:"≈ 50",d:"El text cristià més antic que es conserva."},
-      {g:"cartes",n:"Gàlates, Corintis, Filipencs, Filèmon, Romans",s:"Altres cartes de Pau",a:52,b:58,l:"anys 50",d:"Les altres cartes d'autoria àmpliament acceptada, a mitjan anys cinquanta."},
-      {g:"escrits",n:"Destrucció del Temple",a:70,b:70,l:"70",d:"Els romans cremen el Temple de Jerusalem durant la guerra de Judea.",ev:1},
-      {g:"escrits",n:"Marc",a:65,b:75,l:"≈ 65–75",d:"Es discuteix si s'escriu just abans o just després de la destrucció del Temple."},
+      {g:"cartes",n:"1 Tessalonicencs",s:"1 Tessalonicencs",a:48,b:51,l:"≈ 50",d:"El text cristià més antic que es conserva."},
+      {g:"cartes",n:"Gàlates, Corintis, Filipencs, Filèmon, Romans",s:"Altres cartes",a:52,b:58,l:"anys 50",d:"Les altres cartes d'autoria àmpliament acceptada, a mitjan anys cinquanta."},
+      {g:"escrits",n:"Destrucció del Temple",s:"Temple",a:70,b:70,l:"70",ev:1,d:"Els romans cremen el Temple de Jerusalem durant la guerra de Judea."},
+      {g:"escrits",n:"Marc",a:65,b:75,l:"≈ 65–75",d:"El primer evangeli. Es discuteix si s'escriu just abans o just després de la destrucció del Temple."},
       {g:"escrits",n:"Mateu",a:80,b:90,l:"≈ 80–90",d:"Fa servir Marc, segons la hipòtesi més acceptada."},
-      {g:"escrits",n:"Lluc (i Fets)",s:"Lluc",a:80,b:100,l:"≈ 80–100",d:"Obra en dos volums amb els Fets dels Apòstols."},
+      {g:"escrits",n:"Lluc i Fets",s:"Lluc",a:80,b:100,l:"≈ 80–100",d:"Obra en dos volums amb els Fets dels Apòstols."},
       {g:"escrits",n:"Joan",a:90,b:110,l:"≈ 90–110",d:"Forma escrita conservada; pot haver tingut diverses etapes."},
-      {g:"externes",n:"Josep, Antiguitats jueves",s:"Josep",a:93,b:94,l:"93–94",d:"Acabades el tretzè any de Domicià. Esmenta Jaume, «germà de Jesús, l'anomenat Crist»."},
-      {g:"externes",n:"Tàcit, Annals",s:"Tàcit",a:105,b:120,l:"principi s. II",d:"Esmenta Crist, executat sota Tiberi per Pilat. Data aproximada."},
+      {g:"externes",n:"Josep, Antiguitats jueves",s:"Josep",a:93,b:94,l:"93–94",d:"Historiador jueu. Acaba l'obra el tretzè any de Domicià. Esmenta Jaume, «germà de Jesús, l'anomenat Crist»."},
+      {g:"externes",n:"Tàcit, Annals",s:"Tàcit",a:105,b:120,l:"principi s. II",d:"Historiador romà. Esmenta Crist, executat sota Tiberi per Pilat. Data aproximada."},
       {g:"canon",n:"Justí: «memòries dels apòstols»",s:"Justí",a:150,b:160,l:"mitjan s. II",d:"Explica que el diumenge es llegeixen les memòries dels apòstols, «que s'anomenen evangelis»."},
       {g:"canon",n:"Tacià, Diatèssaron",s:"Tacià",a:160,b:180,l:"2a meitat s. II",d:"Fon els quatre evangelis en una sola narració."},
       {g:"canon",n:"Ireneu: han de ser quatre",s:"Ireneu",a:178,b:182,l:"≈ 180",d:"Defensa que els evangelis són quatre, com els quatre vents."},
-      {g:"canon",n:"Atanasi: 27 llibres",s:"Atanasi",a:367,b:367,l:"367",d:"Enumera els vint-i-set llibres del Nou Testament en una carta de Pasqua.",ev:1}
-    ];
-    const ORD=["vida","cartes","escrits","externes","canon","tot"];
-    let state="vida", api=null;
+      {g:"canon",n:"Atanasi: 27 llibres",s:"Atanasi",a:367,b:367,l:"367",ev:1,d:"Enumera els vint-i-set llibres del Nou Testament en una carta de Pasqua."}];
+    const ORD=["mon","vida","cartes","escrits","externes","canon","tot"];
+    // vista de cada pas: domini [d0,d1,d2] i fracció de l'amplada on cau d1 (si d1 és el mig, l'escala és lineal)
+    const lin=(a,b)=>[a,(a+b)/2,b,.5];
+    const VW={mon:lin(-40,45),vida:lin(-12,40),cartes:lin(-12,62),escrits:lin(-12,114),externes:lin(-12,124),canon:[-12,120,380,.74],tot:[-12,120,380,.74]};
+    let state="mon", api=null;
     V.mount(el,(node,w)=>{
-      const mob=w<640, rh=mob?19:27, gap=mob?8:14, top=30;
-      const L=mob?0:150, R=w-(mob?6:10);
-      let y=top; const groups=[];
-      Object.keys(G).forEach(g=>{ groups.push({g,y}); D.filter(d=>d.g===g).forEach(d=>{ d.y=y; y+=rh; }); y+=gap; });
-      const h=y+8;
-      const s=V.svg(node,w,h,"Cronologia: la vida de Jesús (cap al 6 aC – cap al 30), les cartes de Pau (anys 50), els evangelis (del 65 al 110), Josep i Tàcit, i la formació del cànon fins al 367. Totes les dates són franges aproximades.");
-      const xb=L+(R-L)*(mob?.78:.8);
-      const x=d3.scaleLinear().domain([-10,120,380]).range([L,xb,R]).clamp(true);
-      const ax=s.append("g");
-      [-10,1,30,50,70,100].forEach(v=>{ ax.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",top-6).attr("y2",h-6).attr("stroke",C.grid);
-        V.t(ax,x(v),top-12,v<0?`${-v} aC`:v===1?"1 dC":String(v),{size:11.5,anchor:"middle",fill:C.muted}); });
-      [200,300].forEach(v=>{ ax.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",top-6).attr("y2",h-6).attr("stroke",C.grid); V.t(ax,x(v),top-12,String(v),{size:11.5,anchor:"middle",fill:C.muted}); });
-      // ruptura d'escala
-      const bk=ax.append("g").attr("transform",`translate(${xb+(x(130)-xb)/2},${top-12})`);
-      bk.append("rect").attr("x",-5).attr("y",-6).attr("width",10).attr("height",h).attr("fill",C.paper);
-      [-3,3].forEach(o=>bk.append("line").attr("x1",o-2).attr("x2",o+2).attr("y1",-2).attr("y2",8).attr("stroke",C.muted));
-      // la creu
-      const cr=s.append("g").attr("class","creu");
-      cr.append("line").attr("x1",x(30)).attr("x2",x(30)).attr("y1",top-4).attr("y2",h-6).attr("stroke",C.vermell).attr("stroke-width",1).attr("stroke-dasharray","3 3");
-      // a la vista final, un ram de línies surt de la creu cap a cada text: la distància en anys
-      const tree=s.append("g").style("opacity",0), CR=D.find(d=>d.n==="Crucifixió");
-      D.filter(d=>d.g!=="vida").forEach(d=>{ const x0=x(30), y0=CR.y+rh/2, x1=x(d.a)-2, y1=d.y+rh/2;
-        d.br=tree.append("path").attr("d",`M${x0},${y0}C${x0},${(y0+y1)/2} ${x0+(x1-x0)*.25},${y1} ${x1},${y1}`).attr("fill","none").attr("stroke",V.alpha(C.vermell,.5)).attr("stroke-width",.9); });
-      // grups
-      const gl=s.append("g");
-      if(!mob)groups.forEach(o=>V.t(gl,0,o.y+rh*.62,G[o.g].t,{size:12.5,italic:true,fill:C.ink2}));
-      const rows=s.append("g").selectAll("g").data(D).join("g").attr("transform",d=>`translate(0,${d.y})`);
-      rows.append("rect").attr("class","bar").attr("x",d=>x(d.a)-(d.ev?2:0)).attr("y",rh*.22).attr("height",rh*.56).attr("rx",1)
-        .attr("width",d=>Math.max(d.ev?4:3,x(d.b)-x(d.a)+(d.ev?0:0))).attr("fill",d=>G[d.g].c);
-      rows.filter(d=>d.m!=null).append("line").attr("x1",d=>x(d.m)).attr("x2",d=>x(d.m)).attr("y1",rh*.1).attr("y2",rh*.9).attr("stroke",C.ink).attr("stroke-width",1.5);
-      rows.each(function(d){ const g=d3.select(this), name=mob?(d.s||d.n):d.n, lab=`${name} · ${d.l}`;
-        const right=x(d.b)+6, wEst=lab.length*(mob?5.6:6.2);
-        const anchor=right+wEst>R?"end":"start", xx=anchor==="end"?x(d.a)-6:right;
-        d.lab=V.t(g,xx,rh*.68,lab,{size:mob?11.5:12.5,anchor,halo:true,fill:C.ink});
-        const bw=d.lab.node().getComputedTextLength()||wEst;
-        d.dist=V.t(g,anchor==="end"?xx-bw-8:xx+bw+8,rh*.68,"",{size:11.5,anchor,halo:true,fill:C.muted}); });
-      const hit=s.append("rect").attr("x",0).attr("y",top-6).attr("width",w).attr("height",h-top).attr("fill","transparent").attr("class","hit");
-      const guide=s.append("g").style("opacity",0);
-      guide.append("line").attr("y1",top-6).attr("stroke",C.ink).attr("stroke-width",.8);
-      const gtx=V.t(guide,0,top-12,"",{size:11.5,weight:700,anchor:"middle",halo:true});
-      const tp=V.tip(node);
-      let hov=null;
-      function since(d){ const m=(d.a+d.b)/2; if(d.g==="vida")return ""; const k=Math.round(m-30); return `+${k} anys`; }
-      function apply(dur){
-        const st=ORD.indexOf(state);
-        const vis=d=>state==="tot"||ORD.indexOf(d.g)<=st;
-        const on=d=>hov?d===hov:(state==="tot"||d.g===state);
-        rows.interrupt().transition().duration(dur).style("opacity",d=>!vis(d)?0:on(d)?1:.22);
-        rows.select(".bar").attr("stroke",d=>hov===d?C.ink:null).attr("stroke-width",1.5);
-        cr.transition().duration(dur).style("opacity",1);
-        const tOn=state==="tot";
-        if(tOn&&tree.style("opacity")==="0"&&!V.reduced){ tree.style("opacity",1); D.forEach(d=>{ if(!d.br)return; const L=d.br.node().getTotalLength(); d.br.attr("stroke-dasharray",`${L} ${L}`).attr("stroke-dashoffset",L).transition().delay(ORD.indexOf(d.g)*180).duration(900).ease(ease).attr("stroke-dashoffset",0); }); }
-        else tree.transition().duration(dur).style("opacity",tOn?1:0);
-        D.forEach(d=>{ if(d.br)d.br.attr("stroke",hov===d?C.vermell:V.alpha(C.vermell,hov?.15:.5)).attr("stroke-width",hov===d?1.8:.9); });
-        D.forEach(d=>d.dist.text((state==="tot"&&!mob)||hov===d?since(d):""));
+      const mob=w<640, LW=mob?0:158, L=LW+(mob?2:6), R=w-(mob?4:12), top=mob?18:24, sr=mob?14.5:21, lgap=mob?8:12, empH=mob?15:18;
+      const font=`${mob?11:12.5}px ${V.SANS}`, mctx=document.createElement("canvas").getContext("2d"); mctx.font=font;
+      const tw=t=>mctx.measureText(t).width;
+      const lab=d=>d.g==="mon"?(mob?d.s:d.n):`${mob?(d.s||d.n):d.n} · ${d.l}`;
+      function scaleOf(v){ const [a,m,b,f]=v; return d3.scaleLinear().domain([a,m,b]).range([L,L+(R-L)*f,R]).clamp(true); }
+      // empaqueta cada carril en subfiles perquè barres i etiquetes no se solapin
+      const inDom=(d,v)=>d.b>=v[0]&&d.a<=v[2];
+      function pack(x,st){ const vis=new Set(ORD.slice(0,ORD.indexOf(st)+1)); if(st==="tot")ORD.forEach(k=>vis.add(k));
+        const v=VW[st], Y={}; let y=top+empH+6; const lanes=[];
+        LANES.forEach(ln=>{ const its=D.filter(d=>d.g===ln.k); const on=vis.has(ln.k)&&!(mob&&ln.k==="mon"&&ORD.indexOf(st)>1);
+          const rows=[]; its.forEach(d=>{ if(!inDom(d,v)){ d.r=0; return; } const x0=x(d.a)-(d.ev?2:0), xe=Math.max(x(d.b),x0+3), lw=tw(lab(d))+10, x1=xe+lw;
+            d.pos=x1<=R?"r":(xe-x0>=lw+4?"in":"l"); if(d.pos==="l"&&x0-lw<L)d.pos=xe-x0>40?"in":"l";
+            const s0=d.pos==="l"?x0-lw:x0, s1=d.pos==="r"?x1:xe;
+            let r=rows.findIndex(o=>o.every(q=>s1<q[0]-4||s0>q[1]+4)); if(r<0){ rows.push([]); r=rows.length-1; } rows[r].push([s0,s1]); d.r=r; });
+          const hgt=on?Math.max(1,rows.length)*sr+(mob?14:0):0; ln.on=on;
+          lanes.push({k:ln.k,y,on,h:hgt}); its.forEach(d=>{ Y[d.n]=y+(mob?14:0)+d.r*sr; }); if(on)y+=hgt+lgap; });
+        return {Y,lanes,H:y}; }
+      // alçada fixa: la de la vista final, perquè el gràfic no salti
+      const HMAX=Math.max(...ORD.map(k=>pack(scaleOf(VW[k]),k).H))+6;
+      const s=V.svg(node,w,pack(scaleOf(VW[state]),state).H+6,"Cronologia en dos calendaris: a dalt, els emperadors romans i els governants de Judea i Galilea; a sota, la vida de Jesús (cap al 6 aC – cap al 30), les cartes de Pau (anys 50), els evangelis (65–110), Josep i Tàcit, i el cànon fins al 367.");
+      const gAx=s.append("g"), gEmp=s.append("g"), gLane=s.append("g"), gTree=s.append("g"), gRows=s.append("g"), gCross=s.append("g"), gHov=s.append("g");
+      const cross=gCross.append("line").attr("stroke",C.vermell).attr("stroke-dasharray","3 3");
+      const crossT=V.t(gCross,0,0,"la creu, ≈ 30",{size:11.5,fill:C.vermell,halo:true,weight:600});
+      // emperadors: una franja contínua
+      const emp=gEmp.selectAll("g").data(EMP).join("g");
+      emp.append("rect").attr("height",empH).attr("fill",(d,i)=>i%2?C.grid:C.land).attr("stroke",C.paper).attr("stroke-width",1);
+      emp.append("text").attr("font-family",V.SANS).attr("font-size",mob?11:11.5).attr("fill",C.ink2).attr("y",empH/2+4).attr("text-anchor","middle").text(d=>d[0]);
+      const laneL=gLane.selectAll("g").data(LANES).join("g");
+      if(!mob){ laneL.append("text").attr("class","t").attr("font-family",V.SANS).attr("font-size",12.5).attr("font-weight",700).attr("fill",C.ink).text(d=>d.t);
+        laneL.append("text").attr("class","s").attr("font-family",V.SANS).attr("font-size",11.5).attr("font-style","italic").attr("fill",C.ink2).attr("dy",14).text(d=>d.s); }
+      else laneL.append("text").attr("class","t").attr("font-family",V.SANS).attr("font-size",11.5).attr("font-weight",700).attr("fill",C.ink2).text(d=>d.t+(d.s?` · ${d.s}`:""));
+      laneL.append("line").attr("stroke",C.hair);
+      const rows=gRows.selectAll("g").data(D).join("g");
+      rows.append("rect").attr("class","bar").attr("rx",1).attr("fill",d=>LANES.find(l=>l.k===d.g).c).style("opacity",d=>d.g==="mon"?.55:1);
+      rows.filter(d=>d.m!=null).append("line").attr("class","mk").attr("stroke",C.ink).attr("stroke-width",1.5);
+      rows.append("text").attr("class","lb").attr("font-family",V.SANS).attr("font-size",mob?11:12.5).attr("fill",C.ink).text(lab);
+      rows.selectAll(".lb").each(function(){ V.halo(d3.select(this)); });
+      rows.append("text").attr("class","ds").attr("font-family",V.SANS).attr("font-size",11.5).attr("fill",C.muted).each(function(){ V.halo(d3.select(this)); });
+      const CR=D.find(d=>d.n==="Crucifixió");
+      const br=gTree.selectAll("path").data(D.filter(d=>d.g!=="vida"&&d.g!=="mon")).join("path").attr("fill","none").attr("stroke",V.alpha(C.vermell,.5)).attr("stroke-width",.9);
+      const since=d=>`+${Math.round((d.a+d.b)/2-30)} anys`;
+      let cur={v:VW[state].slice(),P:pack(scaleOf(VW[state]),state),vis:{}}, hov=null;
+      function visOf(st){ const o={}; const i=ORD.indexOf(st); LANES.forEach(l=>o[l.k]=st==="tot"||ORD.indexOf(l.k)<=i?1:0); return o; }
+      cur.vis=visOf(state);
+      function render(v,P,vis,treeK){ const x=scaleOf(v), H=P.H; s.attr("height",H+6).attr("viewBox",`0 0 ${w} ${H+6}`); hit.attr("height",H+6);
+        // eix: anys que hi caben sense trepitjar-se
+        gAx.selectAll("*").remove(); let last=-1e9;
+        [-40,-30,-20,-10,1,10,20,30,40,50,60,70,80,90,100,110,120,200,300,367].forEach(t=>{ const xx=x(t); if(t<v[0]||t>v[2]||xx-last<(mob?30:36))return; last=xx;
+          gAx.append("line").attr("x1",xx).attr("x2",xx).attr("y1",top-4).attr("y2",H).attr("stroke",C.grid);
+          V.t(gAx,xx,top-8,t<0?`${-t} aC`:t===1?"1 dC":String(t),{size:11.5,anchor:"middle",fill:C.muted}); });
+        if(v[1]!==(v[0]+v[2])/2){ const xb=x(v[1])+8; V.t(gAx,xb,top-8,"//",{size:11.5,anchor:"middle",fill:C.muted}); }
+        emp.attr("transform",d=>`translate(${x(d[1])},${top})`).select("rect").attr("width",d=>Math.max(0,x(d[2])-x(d[1])));
+        emp.select("text").attr("x",d=>(x(d[2])-x(d[1]))/2).style("opacity",d=>tw(d[0])+8<x(d[2])-x(d[1])?1:0);
+        const ln=new Map(P.lanes.map(l=>[l.k,l]));
+        laneL.attr("transform",d=>`translate(0,${ln.get(d.k).y})`).style("opacity",d=>vis[d.k]*(mob&&d.k==="mon"&&!ln.get(d.k).on?0:1));
+        laneL.select(".t").attr("x",0).attr("y",mob?11:14); laneL.select(".s").attr("x",0).attr("y",14);
+        laneL.select("line").attr("x1",0).attr("x2",R).attr("y1",-lgap/2).attr("y2",-lgap/2).style("opacity",(d,i)=>i?1:0);
+        const dv=d=>{ const a=(v[2]-d.a), b=(d.b-v[0]); return Math.max(0,Math.min(1,Math.min(a,b)+1)); };
+        rows.attr("transform",d=>`translate(0,${P.Y[d.n]})`).style("opacity",d=>vis[d.g]*dv(d)*(ln.get(d.g).on||!mob?1:0)*(hov&&hov!==d?.25:1));
+        rows.select(".bar").attr("x",d=>x(d.a)-(d.ev?1.5:0)).attr("y",sr*.18).attr("height",sr*.62).attr("width",d=>Math.max(d.ev?3:3,x(d.b)-x(d.a)))
+          .attr("stroke",d=>hov===d?C.ink:null).attr("stroke-width",1.5);
+        rows.select(".mk").attr("x1",d=>x(d.m)).attr("x2",d=>x(d.m)).attr("y1",sr*.05).attr("y2",sr*.95);
+        rows.select(".lb").attr("stroke",d=>d.pos==="in"?"none":C.paper).attr("fill",d=>d.pos!=="in"?C.ink:(d.g==="mon"||d.g==="externes"?C.ink:C.paper))
+          .attr("x",d=>d.pos==="l"?x(d.a)-6:d.pos==="in"?x(d.a)+5:Math.max(x(d.b),x(d.a)+3)+6).attr("text-anchor",d=>d.pos==="l"?"end":"start").attr("y",sr*.68);
+        const showD=d=>(state==="tot"&&!mob&&d.g!=="mon"&&d.g!=="vida")||hov===d;
+        rows.select(".ds").text(d=>showD(d)&&d.g!=="vida"&&d.g!=="mon"?since(d):"").attr("text-anchor",d=>d.pos==="l"?"end":"start").attr("y",sr*.68)
+          .attr("x",d=>d.pos==="l"?x(d.a)-6-tw(lab(d))-8:d.pos==="in"?Math.max(x(d.b),x(d.a)+3)+6:Math.max(x(d.b),x(d.a)+3)+6+tw(lab(d))+8);
+        const cx=x(30), y0=P.Y[CR.n]+sr/2;
+        cross.attr("x1",cx).attr("x2",cx).attr("y1",top+empH+2).attr("y2",H).style("opacity",vis.vida);
+        crossT.attr("x",cx+4).attr("y",H-4).style("opacity",vis.vida&&!mob?1:0);
+        br.attr("d",d=>{ const x1=x(d.a)-2, y1=P.Y[d.n]+sr/2; return `M${cx},${y0}C${cx},${(y0+y1)/2} ${cx+(x1-cx)*.25},${y1} ${x1},${y1}`; }).style("opacity",treeK)
+          .attr("stroke",d=>hov===d?C.vermell:V.alpha(C.vermell,hov?.15:.5)).attr("stroke-width",d=>hov===d?1.8:.9);
       }
-      hit.on("pointermove pointerdown",ev=>{ const [mx,my]=d3.pointer(ev,hit.node());
-        const st=ORD.indexOf(state); const cand=D.filter(d=>state==="tot"||ORD.indexOf(d.g)<=st);
-        const d=d3.least(cand,d=>Math.abs(d.y+rh/2-my)); if(!d){return;}
-        hov=d; apply(120);
-        const mid=d.m!=null?d.m:(d.a+d.b)/2; guide.style("opacity",1).select("line").attr("x1",x(mid)).attr("x2",x(mid)).attr("y2",d.y+rh*.2);
-        gtx.attr("x",x(mid)).text(d.l);
-        tp.show(`<b>${d.n}</b><br>${d.l}${d.g!=="vida"?` · ${since(d)} després de la creu`:""}<br>${d.d}`,mx,d.y);
-      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); }); function offH(){ hov=null; guide.style("opacity",0); tp.hide(); apply(150) } outside(node,offH);
-      api={set(k,first){ state=k; hov=null; guide.style("opacity",0); tp.hide(); apply(first?0:450);
-        if(!first&&!V.reduced){ rows.filter(d=>d.g===k).select(".bar").attr("width",0).transition().duration(900).ease(ease).attr("width",d=>Math.max(d.ev?4:3,x(d.b)-x(d.a))); } }};
+      let tm=null;
+      function go(st,inst){ state=st; const tv=VW[st].slice(), tvis=visOf(st), tP=pack(scaleOf(tv),st);
+        if(tm)tm.stop(); hov=null; tp.hide(); gHov.selectAll("*").remove();
+        const v0=cur.v.slice(), vis0=Object.assign({},cur.vis), P0=cur.P, tr0=cur.tree||0, tr1=st==="tot"?1:0;
+        const lerpP=k=>{ const Y={}; D.forEach(d=>Y[d.n]=P0.Y[d.n]+(tP.Y[d.n]-P0.Y[d.n])*k);
+          return {Y,H:P0.H+(tP.H-P0.H)*k,lanes:tP.lanes.map(l=>{ const o=P0.lanes.find(q=>q.k===l.k); return Object.assign({},l,{y:o.y+(l.y-o.y)*k}); })}; };
+        const fin=()=>{ cur={v:tv,P:tP,vis:tvis,tree:tr1}; render(tv,tP,tvis,tr1); };
+        if(inst||V.reduced){ fin(); return; }
+        // la franja nova creix des de l'esquerra
+        tm=d3.timer(t=>{ const k=Math.min(1,t/1100), e=ease(k);
+          const v=v0.map((a,i)=>a+(tv[i]-a)*e), vis={}; LANES.forEach(l=>vis[l.k]=vis0[l.k]+(tvis[l.k]-vis0[l.k])*e);
+          cur={v,P:lerpP(e),vis,tree:tr0+(tr1-tr0)*e}; render(v,cur.P,vis,cur.tree);
+          if(k>=1){ tm.stop(); fin(); } }); }
+      const tp=V.tip(node);
+      const hit=s.append("rect").attr("x",0).attr("y",0).attr("width",w).attr("height",HMAX).attr("fill","transparent").attr("class","hit");
+      hit.on("pointermove pointerdown",ev=>{ const [mx,my]=d3.pointer(ev,hit.node()); const x=scaleOf(cur.v);
+        if(my<top+empH&&my>top){ const e=EMP.find(e=>mx>=x(e[1])&&mx<x(e[2])); if(e&&e[0]){ hov=null; render(cur.v,cur.P,cur.vis,cur.tree); tp.show(`<b>${e[0]}</b><br>Emperador ${e[1]<0?-e[1]+" aC":e[1]}–${e[2]}`,mx,my); } else tp.hide(); return; }
+        const cand=D.filter(d=>cur.vis[d.g]>.5);
+        const d=d3.least(cand,d=>{ const y=cur.P.Y[d.n]+sr/2; const xa=x(d.a), xb=Math.max(x(d.b),xa+3); const dx=mx<xa?xa-mx:mx>xb?mx-xb:0; return Math.abs(y-my)*3+dx*.15; });
+        if(!d||Math.abs(cur.P.Y[d.n]+sr/2-my)>sr){ offH(); return; }
+        hov=d; render(cur.v,cur.P,cur.vis,cur.tree);
+        tp.show(`<b>${d.n}</b><br>${d.l||(d.a<0?`${-d.a} aC`:d.a)+(d.b!==d.a?`–${d.b<0?-d.b+" aC":d.b}`:"")}${d.g!=="vida"&&d.g!=="mon"?` · ${since(d)} després de la creu`:""}<br>${d.d}`,mx,cur.P.Y[d.n]); })
+        .on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); });
+      function offH(){ if(!hov&&!tp)return; hov=null; tp.hide(); render(cur.v,cur.P,cur.vis,cur.tree); }
+      outside(node,offH);
+      api={set(k,first){ go(k,first); }};
       api.set(state,true);
     });
     const sc=$("#s-temps");

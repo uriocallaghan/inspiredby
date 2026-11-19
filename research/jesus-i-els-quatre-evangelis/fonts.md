@@ -69,3 +69,14 @@ L'article s'ha reescrit i tots els gràfics s'han refet. Dades i com s'han obtin
   - IB-32 (franja amb perfil) per a la pujada a Jerusalem;
   - IB-25 (pics) per als llocs anomenats;
   - IB-30 (azimutal equidistant centrada a Jerusalem) per a la xarxa de Pau.
+
+## Calendari v2 (19-11-2026)
+
+- **Carril de context:** emperadors, Herodes el Gran (37–4 aC), Antipes (4 aC–39 dC), Pilat (26–36), incendi de Roma (64) i guerra jueva (66–73).
+- **Fonts de les dates:** pàgines de Britannica («List of Roman emperors», «Julio-Claudian dynasty», «Flavian dynasty», «Five Good Emperors», «Herod Antipas», «Pontius Pilate», «First Jewish Revolt»).
+- **Pendent de comprovar:** aquestes pàgines s'han vist només als resums del cercador, perquè la xarxa de l'entorn bloqueja britannica.com. Totes coincideixen amb les dates convencionals. Cal obrir-les abans de considerar-les verificades del tot.
+- **Matisos:**
+  - August a partir del 27 aC (convenció);
+  - Masada, 73 o 74;
+  - la relació entre l'incendi i els cristians la fa Tàcit, *Annals* XV, 44.
+- **Versió anterior del gràfic:** `versions/calendari-v1.js` i `versions/calendari-v1.html`.
