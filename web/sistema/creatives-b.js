@@ -131,80 +131,126 @@ seg(45,k=>{ order45=k; const el=$('[data-p="45"]'); el&&el._sort&&el._sort(); })
 void M45;
 
 /* =====================================================================
-   IB-46 · CORDA  (dades d'exemple)
-   Fluxos entre sis regions: arcs exteriors (total de cada regió) i cintes translúcides.
+   IB-46 · XARXA CIRCULAR AMB ONES  (dades d'exemple · estil «Letter traffic»)
+   Anell finíssim amb nodes translúcids, dues ones exteriors suaus (sortides en vermell,
+   entrades en blau) i fils Bézier interiors delicats amb tiges de puntets als fluxos clau.
    ===================================================================== */
-const N46=["Nord","Sud","Est","Oest","Centre","Costa"];
+const N46=["Nord","Nord-est","Est","Litoral","Sud-est","Sud","Sud-oest","Oest","Ponent","Centre"];
 const MAT46=(function(){ const r=V.rng(46);
-  return N46.map((a,i)=>N46.map((b,j)=>i===j?0:Math.round((5+r()*34)*(j===4?2.1:1)*(i===0?1.35:1)*(j===5&&i===3?2.4:1)))); })();
-legend(46,el=>V.legendCat(el,N46.map((t,i)=>({c:V.CAT6[i],t})),{title:"Regió"}));
+  return N46.map((a,i)=>N46.map((b,j)=>{
+    if(i===j)return 0;
+    const base=r()<.38?0:Math.round((4+r()*24)*(j===9?2.4:1)*(i===0||i===3?1.5:1)*(j===3&&i===9?2.1:1));
+    return base;
+  }));
+})();
+legend(46,el=>V.legendCat(el,[
+  {c:C.vermell,a:.35,t:"Ona exterior: sortides"},
+  {c:C.blau,a:.35,t:"Ona exterior: entrades"},
+  {c:C.ink2,t:"Fils interiors: flux directe",kind:"line",w:1}
+]));
 const M46=piece(46,(el,w)=>{
-  const mob=w<640, S=Math.min(w,mob?w:640), h=S, cx=w/2, cy=h/2, Ro=S/2-(mob?58:66), Ri=Ro-(mob?10:13);
-  const s=V.svg(el,w,h,"Diagrama de cordes amb sis regions. Les cintes uneixen cada parell de regions i el gruix a cada extrem és el que surt d'aquella regió. El Centre és la regió que més en rep. Dades d'exemple."), g=s.append("g").attr("transform",`translate(${cx},${cy})`);
-  const ch=d3.chord().padAngle(mob?.06:.045).sortSubgroups(d3.descending)(MAT46);
-  const arc=d3.arc().innerRadius(Ri).outerRadius(Ro), rib=d3.ribbon().radius(Ri-1.5);
-  const colOf=d=>V.CAT6[d.source.value>=d.target.value?d.source.index:d.target.index];
-  // marques cada 20 unitats
-  const tk=g.append("g");
-  ch.groups.forEach(gr=>{ const k=(gr.endAngle-gr.startAngle)/gr.value;
-    d3.range(0,gr.value+.01,20).forEach((v,i)=>{ const a=gr.startAngle+v*k, big=i%5===0;
-      tk.append("line").attr("x1",Math.sin(a)*(Ro+2)).attr("y1",-Math.cos(a)*(Ro+2)).attr("x2",Math.sin(a)*(Ro+(big?7:4))).attr("y2",-Math.cos(a)*(Ro+(big?7:4))).attr("stroke",C.muted).attr("stroke-width",big?.9:.6); }); });
-  const ribs=g.append("g").selectAll("path").data(ch).join("path").attr("class","ibx-rib").attr("d",rib)
-    .attr("fill",d=>V.alpha(colOf(d),.4)).attr("stroke",d=>colOf(d)===C.groc?"none":V.alpha(colOf(d),.75)).attr("stroke-width",.5);
-  const arcs=g.append("g").selectAll("path").data(ch.groups).join("path").attr("d",arc).attr("fill",d=>V.CAT6[d.index]);
-  const lab=g.append("g");
-  ch.groups.forEach(gr=>{ const a=(gr.startAngle+gr.endAngle)/2, rr=Ro+(mob?13:16), x=Math.sin(a)*rr, y=-Math.cos(a)*rr, sn=Math.sin(a), cs=Math.cos(a);
-    const anc=sn>.25?"start":sn<-.25?"end":"middle", dy=cs>.6?-14:cs<-.6?12:-2;
-    const out=d3.sum(MAT46[gr.index]), inn=d3.sum(MAT46,r=>r[gr.index]);
-    V.t(lab,x,y+dy,N46[gr.index],{anchor:anc,weight:700,size:12.5,halo:true});
-    V.t(lab,x,y+dy+14,mob?`${out} · ${inn}`:`surten ${out} · entren ${inn}`,{anchor:anc,size:11.5,fill:C.muted,halo:true}); });
-  // nota: el flux més gran
-  let bi=0,bj=1; MAT46.forEach((r,i)=>r.forEach((v,j)=>{ if(v>MAT46[bi][bj]){bi=i;bj=j;} }));
-  const nt=g.append("g");
-  if(!mob){ const c=ch.find(d=>(d.source.index===bi&&d.target.index===bj)||(d.source.index===bj&&d.target.index===bi)), sg=c.source.index===bi?c.source:c.target, a=(sg.startAngle+sg.endAngle)/2;
-    const px=Math.sin(a)*(Ri-8), py=-Math.cos(a)*(Ri-8), side=px>=0?1:-1;
-    V.note(nt,{x:px,y:py,tx:side*(Ro+70),ty:py+(py<0?-62:62),kind:"curve",bend:side*-16,anchor:side>0?"start":"end",lines:[["El flux més gran",true],[`${N46[bi]} → ${N46[bj]}: ${MAT46[bi][bj]}`]]}); }
-  // entrada: els arcs es dibuixen i les cintes neixen del centre
-  entry(el,instant=>{ if(instant)return;
-    arcs.transition().duration(900).ease(EIO).attrTween("d",d=>{ const i=d3.interpolate(d.startAngle,d.endAngle); return t=>arc({startAngle:d.startAngle,endAngle:i(t),innerRadius:Ri,outerRadius:Ro}); });
-    ribs.attr("opacity",0).transition().delay((d,i)=>500+i*45).duration(1000).ease(EIO).attr("opacity",1)
-      .attrTween("d",d=>t=>d3.ribbon().radius((Ri-1.5)*Math.max(.02,t))(d));
-    tk.attr("opacity",0).transition().delay(700).duration(600).attr("opacity",1);
-    lab.attr("opacity",0).transition().delay(600).duration(600).attr("opacity",1);
-    nt.attr("opacity",0).transition().delay(1800).duration(500).attr("opacity",1); });
-  // hover: un arc (zona ampla, per angle) deixa només les seves cintes; una cinta dona els dos sentits.
-  // Els valors s'escriuen sobre l'arc, a cada extrem de cinta.
-  const tp=V.tip(el), hv=g.append("g").attr("class","ibx-hv"), TOT=d3.sum(MAT46,r=>d3.sum(r)); s.style("cursor","pointer");
-  const endVal=(c,gi)=>{ const sg=c.source.index===gi?c.source:c.target; return {a:(sg.startAngle+sg.endAngle)/2,v:MAT46[sg.index][sg.index===c.source.index?c.target.index:c.source.index]}; };
-  function ends(list){ hv.selectAll("*").remove();
-    list.forEach(({a,v})=>{ const r1=Ri-3, r2=Ri-15;
-      hv.append("line").attr("x1",Math.sin(a)*Ro).attr("y1",-Math.cos(a)*Ro).attr("x2",Math.sin(a)*r1).attr("y2",-Math.cos(a)*r1).attr("stroke",C.ink).attr("stroke-width",1);
-      V.t(hv,Math.sin(a)*r2,-Math.cos(a)*r2+4,v,{anchor:"middle",weight:700,size:11.5,halo:3}); }); }
-  const outline=(sel,on)=>sel.interrupt("ol").transition("ol").duration(150).attr("stroke",on?C.ink:null).attr("stroke-width",on?1.5:null);
-  let cur=null;
-  const reset=()=>{ if(!cur)return; cur=null; ribs.attr("stroke",d=>colOf(d)===C.groc?"none":V.alpha(colOf(d),.75)).attr("stroke-width",.5); V.focus(ribs,null); V.focus(arcs,null); outline(arcs,false);
-    hv.selectAll("*").remove(); nt.transition().duration(160).attr("opacity",1); tp.hide(); };
-  V.hover(s.node(),(ev,[px,py])=>{ const dx=px-cx, dy=py-cy, r=Math.hypot(dx,dy); let a=Math.atan2(dx,-dy); if(a<0)a+=2*Math.PI;
-    let gr=null, rb=null;
-    if(r>=Ri-6&&r<=Ro+(mob?40:60)) gr=d3.least(ch.groups,q=>a>=q.startAngle&&a<=q.endAngle?0:Math.min(Math.abs(a-q.startAngle),Math.abs(a-q.endAngle),2*Math.PI-Math.abs(a-q.endAngle)));
-    else if(r<Ri-6){ const t=ev.target, d=t&&t.__data__; if(d&&d.source)rb=d; }
-    if(!gr&&!rb){ reset(); return; }
-    nt.transition().duration(160).attr("opacity",.15);
-    if(gr){ const i=gr.index; if(cur===gr){ tp.show(tp._h,px,py); return; } cur=gr;
-      ribs.attr("stroke",d=>colOf(d)===C.groc?"none":V.alpha(colOf(d),.75)).attr("stroke-width",.5);
-      V.focus(ribs,c=>c.source.index===i||c.target.index===i,{dim:.15}); V.focus(arcs,q=>q.index===i,{dim:.3});
-      outline(arcs.filter(q=>q.index===i).raise(),true); outline(arcs.filter(q=>q.index!==i),false);
-      ends(ch.filter(c=>c.source.index===i||c.target.index===i).map(c=>endVal(c,i)));
-      const rows=MAT46[i].map((v,j)=>({j,v,b:MAT46[j][i]})).filter(r=>r.j!==i).sort((a,b)=>b.v-a.v), out=d3.sum(MAT46[i]);
-      tp._h=`<b>${N46[i]}</b><br>Surten <b>${out}</b> unitats (${pct(out/TOT)} de tots els fluxos) · entren ${d3.sum(MAT46,r=>r[i])}<br>`+rows.map(r=>`${DOT(V.CAT6[r.j])} ${N46[r.j]}: surten ${r.v}, entren ${r.b}`).join("<br>");
-      tp.show(tp._h,px,py); return; }
-    if(cur===rb){ tp.show(tp._h,px,py); return; } cur=rb; const A=rb.source.index, B=rb.target.index;
-    ribs.attr("stroke",d=>d===rb?C.ink:(colOf(d)===C.groc?"none":V.alpha(colOf(d),.75))).attr("stroke-width",d=>d===rb?1.5:.5);
-    V.focus(ribs,c=>c===rb,{dim:.15}); V.focus(arcs,q=>q.index===A||q.index===B,{dim:.3}); outline(arcs,false);
-    ribs.filter(d=>d===rb).raise(); ends([endVal(rb,A),endVal(rb,B)]);
-    const ab=MAT46[A][B], ba=MAT46[B][A];
-    tp._h=`<b>${N46[A]} ⇄ ${N46[B]}</b><br>${N46[A]} → ${N46[B]}: <b>${ab}</b> unitats<br>${N46[B]} → ${N46[A]}: <b>${ba}</b> unitats<br>Saldo: ${ab===ba?"equilibrat":`${ab>ba?N46[A]:N46[B]} n'envia ${Math.abs(ab-ba)} més`} · ${pct((ab+ba)/TOT)} de tots els fluxos`;
-    tp.show(tp._h,px,py); },reset);
+  const mob=w<640, S=Math.min(w,mob?w:620), h=mob?Math.round(S*1.02):Math.round(S*.92), cx=w/2, cy=h/2;
+  const R=S/2-(mob?72:102), Wmax=mob?34:54;
+  el.style.height="";
+  const s=V.svg(el,w,h,"Xarxa circular híbrida de deu regions. Al voltant d'un cercle finíssim, dues ones translúcides mostren el volum de sortides (vermell) i entrades (blau); a dins, fils corbats delicats uneixen cada parell de regions. Dades d'exemple.");
+  const g=s.append("g").attr("transform",`translate(${cx},${cy})`);
+  const n=N46.length, ang=i=>i*(2*Math.PI/n)-Math.PI/2;
+  const outs=N46.map((_,i)=>d3.sum(MAT46[i])), ins=N46.map((_,i)=>d3.sum(MAT46,r=>r[i]));
+  const maxW=Math.max(d3.max(outs),d3.max(ins));
+  const rW=d3.scaleLinear([0,maxW],[0,Wmax]);
+  const rNode=d3.scaleSqrt([0,maxW*2],[mob?4:5,mob?10:13]);
+
+  // 1. Dues ones translúcides exteriors (sortides en vermell, entrades en blau, mix-blend-mode: multiply)
+  const wavePts=(arr)=>{
+    const pts=[];
+    for(let i=0;i<n;i++){
+      const a0=ang(i), aMid=ang(i)+Math.PI/n;
+      pts.push([a0+Math.PI/2,R+rW(arr[i])]);
+      pts.push([aMid+Math.PI/2,R+rW(Math.min(arr[i],arr[(i+1)%n])*.18)]);
+    }
+    return pts;
+  };
+  const areaR=d3.areaRadial().angle(d=>d[0]).innerRadius(R).outerRadius(d=>d[1]).curve(d3.curveCardinalClosed.tension(.45));
+  const gWaves=g.append("g");
+  gWaves.append("path").datum(wavePts(ins)).attr("d",areaR).attr("fill",C.blau).attr("fill-opacity",.24).style("mix-blend-mode","multiply");
+  gWaves.append("path").datum(wavePts(outs)).attr("d",areaR).attr("fill",C.vermell).attr("fill-opacity",.24).style("mix-blend-mode","multiply");
+
+  // 2. Anell finíssim de referència
+  g.append("circle").attr("r",R).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.9).attr("stroke-opacity",.72);
+
+  // 3. Fils Bézier interiors delicats (+ seqüència de puntets als 3 fluxos més forts)
+  const links=[];
+  for(let i=0;i<n;i++)for(let j=0;j<n;j++)if(MAT46[i][j]>0)links.push({i,j,v:MAT46[i][j]});
+  const maxL=d3.max(links,d=>d.v)||1;
+  const wL=d3.scaleLinear([1,maxL],[.45,1.8]);
+  const ptOn=(i,rad)=>[Math.cos(ang(i))*rad,Math.sin(ang(i))*rad];
+  const linkPath=d=>{
+    const [x0,y0]=ptOn(d.i,R), [x1,y1]=ptOn(d.j,R);
+    // lleugera desviació del centre perquè anada i tornada no se solapin exactament
+    const off=d.i<d.j?.14:-.14, mx=(x0+x1)*off, my=(y0+y1)*off;
+    return `M${x0},${y0}Q${mx},${my} ${x1},${y1}`;
+  };
+  const gLinks=g.append("g");
+  const Lpaths=gLinks.selectAll("path").data(links).join("path").attr("d",linkPath)
+    .attr("fill","none").attr("stroke",C.ink2).attr("stroke-width",d=>wL(d.v)).attr("stroke-opacity",d=>.14+.28*(d.v/maxL));
+
+  // Puntets delicats sobre els 3 fluxos principals (picada d'ullet a les tiges de «Letter traffic»)
+  const top3=links.slice().sort((a,b)=>b.v-a.v).slice(0,3);
+  const gBeads=g.append("g").style("pointer-events","none");
+  top3.forEach((d,ti)=>{
+    const [x0,y0]=ptOn(d.i,R), [x1,y1]=ptOn(d.j,R);
+    const off=d.i<d.j?.14:-.14, mx=(x0+x1)*off, my=(y0+y1)*off;
+    const col=ti===0?C.vermell:ti===1?C.blau:C.grocFosc;
+    for(let k=1;k<=6;k++){
+      const t=k/10, u=1-t;
+      const bx=u*u*x0+2*u*t*mx+t*t*x1, by=u*u*y0+2*u*t*my+t*t*y1;
+      gBeads.append("circle").attr("cx",bx).attr("cy",by).attr("r",2.3).attr("fill",col).attr("fill-opacity",.75).attr("stroke","#fff").attr("stroke-width",.6);
+    }
+  });
+
+  // 4. Nodes translúcids sobre l'anell + etiquetes netes fora les ones
+  const gNodes=g.append("g");
+  const nodes=gNodes.selectAll("g.nd").data(N46.map((t,i)=>({i,t,out:outs[i],inn:ins[i],tot:outs[i]+ins[i]}))).join("g").attr("class","nd").style("cursor","pointer");
+  nodes.each(function(d){
+    const q=d3.select(this), a=ang(d.i), [x,y]=ptOn(d.i,R), rad=rNode(d.tot);
+    q.append("circle").attr("cx",x).attr("cy",y).attr("r",rad).attr("fill",C.ink2).attr("fill-opacity",.26).style("mix-blend-mode","multiply");
+    q.append("circle").attr("cx",x).attr("cy",y).attr("r",2.4).attr("fill",C.ink);
+    const rr=R+Math.max(rW(d.out),rW(d.inn))+(mob?14:18), lx=Math.cos(a)*rr, ly=Math.sin(a)*rr;
+    const cs=Math.cos(a), sn=Math.sin(a);
+    const anc=cs>.22?"start":cs<-.22?"end":"middle", dy=sn<-.7?-4:sn>.7?12:4;
+    q.append("line").attr("x1",Math.cos(a)*(R+rad+1)).attr("y1",Math.sin(a)*(R+rad+1)).attr("x2",Math.cos(a)*(rr-5)).attr("y2",Math.sin(a)*(rr-5))
+      .attr("stroke",C.hair).attr("stroke-width",.6);
+    V.t(q,lx,ly+dy,d.t,{anchor:anc,weight:600,size:mob?11:12,fill:C.ink,halo:3});
+    q.append("circle").attr("cx",x).attr("cy",y).attr("r",Math.max(18,rad+6)).attr("fill","transparent");
+  });
+
+  // Hover suau: ressalta sortides en vermell i entrades en blau del node apuntat + lectura en 1 línia a sota
+  const tp=V.tip(el);
+  const tipEl=el.querySelector(":scope>.tip"); if(tipEl)el.appendChild(tipEl);
+  const reset=()=>{
+    Lpaths.interrupt().transition().duration(150).attr("stroke",C.ink2).attr("stroke-opacity",d=>.14+.28*(d.v/maxL)).attr("stroke-width",d=>wL(d.v));
+    nodes.interrupt().transition().duration(150).style("opacity",1);
+    gWaves.transition().duration(150).style("opacity",1);
+    gBeads.transition().duration(150).style("opacity",1);
+    tp.hide();
+  };
+  nodes.on("mouseenter",(ev,d)=>{
+    nodes.interrupt().transition().duration(150).style("opacity",o=>o===d||MAT46[d.i][o.i]>0||MAT46[o.i][d.i]>0?1:.48);
+    gWaves.transition().duration(150).style("opacity",.55);
+    gBeads.transition().duration(150).style("opacity",.35);
+    Lpaths.interrupt().transition().duration(150)
+      .attr("stroke",l=>l.i===d.i?C.vermell:l.j===d.i?C.blau:C.ink2)
+      .attr("stroke-opacity",l=>l.i===d.i||l.j===d.i?.85:.08)
+      .attr("stroke-width",l=>l.i===d.i||l.j===d.i?Math.max(1.3,wL(l.v)*1.3):wL(l.v));
+    tp.show(`<b>${d.t}</b> · Surten <b>${d.out}</b> (vermell) · Entren <b>${d.inn}</b> (blau) · Saldo ${sgn(d.inn-d.out,0)}`,cx,cy);
+  }).on("mouseleave",reset);
+
+  entry(el,instant=>{
+    if(instant)return;
+    gWaves.style("opacity",0).transition().duration(650).ease(EIO).style("opacity",1);
+    gLinks.style("opacity",0).transition().delay(250).duration(650).ease(EIO).style("opacity",1);
+    gBeads.style("opacity",0).transition().delay(500).duration(450).style("opacity",1);
+  });
 });
 void M46;
 
@@ -1005,5 +1051,324 @@ const M54=piece(54,(el,w)=>{
   if(b)b.addEventListener("click",()=>{ if(V.reduced){ S54.yr=2026; ui54(); return; } if(S54.play){ S54.play=false; } else { if(S54.yr>=2026)S54.yr=1980; S54.play=true; } ui54(); });
   ui54(); })();
 void M54;
+
+/* =====================================================================
+   IB-55 · MAPA CONCEPTUAL SOBRE EIX  (esquema · estil «Design Futures»)
+   Grans cercles monocroms translúcids `multiply` solapats al llarg d'un eix discontinu
+   bipolar per cartografiar disciplines, escoles o conceptes propers.
+   ===================================================================== */
+const N55=[
+  {id:"art",  t:"Art",                 x:.27, y:.58, r:.35, lx:.16, ly:.56, a:.11, stroke:false, d:"Exploració estètica i simbòlica sense restriccions funcionals."},
+  {id:"dis",  t:"Disseny",             x:.58, y:.34, r:.31, lx:.64, ly:.15, a:.11, stroke:false, d:"Creació d'objectes, sistemes i experiències amb intenció."},
+  {id:"est",  t:"Estratègia",          x:.73, y:.52, r:.26, lx:.84, ly:.54, a:.11, stroke:false, d:"Decisió a llarg termini sota restriccions reals de recursos."},
+  {id:"spec", t:"Disseny\nespeculatiu",x:.48, y:.41, r:.21, lx:.54, ly:.29, a:.14, stroke:false, d:"Proposa escenaris alternatius per debatre cap a on anem."},
+  {id:"crit", t:"Disseny\ncrític",     x:.42, y:.31, r:.10, lx:.42, ly:.31, a:.22, stroke:false, d:"Qüestiona normes socials i tecnològiques a través del disseny."},
+  {id:"scifi",t:"Ciència-\nficció",    x:.38, y:.68, r:.13, lx:.37, ly:.74, a:.18, stroke:false, d:"Narrativa que imagina futurs possibles a partir de la ciència."},
+  {id:"dfic", t:"Ficció de\ndisseny",  x:.47, y:.47, r:.065,lx:.47, ly:.47, a:.28, stroke:false, d:"Prototips d'objectes d'un món futur per fer-lo tangible."},
+  {id:"ft",   t:"Pensament\nde futurs",x:.56, y:.66, r:.16, lx:.59, ly:.77, a:.16, stroke:true,  d:"Prospectiva sistemàtica per anticipar tendències i riscos."},
+  {id:"dt",   t:"Design\nthinking",    x:.66, y:.52, r:.125,lx:.70, ly:.42, a:.18, stroke:true,  d:"Mètode iteratiu per resoldre problemes complexos centrats en l'usuari."},
+  {id:"dfut", t:"Futurs del\ndisseny", x:.60, y:.52, r:.052,lx:.60, ly:.52, a:.30, stroke:false, d:"Intersecció entre especulació, estratègia i prospectiva."}
+];
+const M55=piece(55,(el,w)=>{
+  const mob=w<640, h=mob?Math.round(w*.86):Math.min(500,Math.round(w*.54));
+  const padX=mob?10:28, uW=w-padX*2, uH=h-20, baseR=Math.min(uW*.62,uH*.98);
+  el.style.height="";
+  const s=V.svg(el,w,h,"Mapa conceptual de cercles translúcids blaus solapats al llarg d'un eix horitzontal de més obert (Art) a més pautat (Estratègia). Les interseccions s'enfosqueixen soles. Esquema conceptual.");
+  const g=s.append("g");
+  const px=d=>padX+d.x*uW, py=d=>10+d.y*uH, pr=d=>d.r*baseR;
+  const axisY=10+.50*uH;
+
+  // 1. Cercles translúcids monocroms blaus amb multiply
+  const gC=g.append("g");
+  const cs=gC.selectAll("circle").data(N55).join("circle")
+    .attr("cx",px).attr("cy",py).attr("r",pr)
+    .attr("fill",C.blau).attr("fill-opacity",d=>d.a)
+    .attr("stroke",d=>d.stroke?C.blauFosc:"none").attr("stroke-width",d=>d.stroke?1:0).attr("stroke-opacity",.55)
+    .style("mix-blend-mode","multiply").style("cursor","pointer");
+
+  // 2. Eix discontinu bipolar horitzontal
+  const gAx=g.append("g").style("pointer-events","none");
+  gAx.append("line").attr("x1",padX+6).attr("x2",w-padX-6).attr("y1",axisY).attr("y2",axisY)
+    .attr("stroke",C.blauFosc).attr("stroke-width",.9).attr("stroke-opacity",.55).attr("stroke-dasharray","3 3");
+  gAx.append("path").attr("d",`M${padX+11},${axisY-3.5}L${padX+4},${axisY}L${padX+11},${axisY+3.5}M${w-padX-11},${axisY-3.5}L${w-padX-4},${axisY}L${w-padX-11},${axisY+3.5}`)
+    .attr("fill","none").attr("stroke",C.blauFosc).attr("stroke-width",1);
+  V.t(gAx,padX+6,axisY-8,"Obert · exploratori",{size:11,fill:C.muted,anchor:"start",halo:3});
+  V.t(gAx,w-padX-6,axisY-8,"Pautat · aplicat",{size:11,fill:C.muted,anchor:"end",halo:3});
+
+  // 3. Etiquetes netes dins de cada cercle
+  const gL=g.append("g").style("pointer-events","none");
+  const lbs=gL.selectAll("g.lb").data(N55).join("g").attr("class","lb")
+    .attr("transform",d=>`translate(${padX+d.lx*uW},${10+d.ly*uH})`);
+  lbs.each(function(d){
+    if(mob&&(d.id==="dfic"||d.id==="dfut"||d.id==="crit"))return;
+    const parts=d.t.split("\n"), isBig=d.r>=.25;
+    const fs=isBig?(mob?13:15):(mob?11:12);
+    const q=d3.select(this);
+    parts.forEach((line,i)=>V.t(q,0,(i-(parts.length-1)/2)*(fs+2)+4,line,{size:fs,weight:isBig?600:500,fill:C.ink,anchor:"middle",halo:2.5}));
+  });
+
+  // Hover suau: ressalta el cercle apuntat i els que hi solapen + lectura en 1 línia a sota
+  const tp=V.tip(el);
+  const tipEl=el.querySelector(":scope>.tip"); if(tipEl)el.appendChild(tipEl);
+  const overlap=(a,b)=>a===b||Math.hypot(px(a)-px(b),py(a)-py(b))<pr(a)+pr(b)-4;
+  const reset=()=>{
+    cs.interrupt().transition().duration(150).style("opacity",1).attr("stroke",d=>d.stroke?C.blauFosc:"none").attr("stroke-width",d=>d.stroke?1:0);
+    lbs.interrupt().transition().duration(150).style("opacity",1);
+    tp.hide();
+  };
+  cs.on("mouseenter",(ev,d)=>{
+    cs.interrupt().transition().duration(150)
+      .style("opacity",o=>overlap(d,o)?1:.46)
+      .attr("stroke",o=>o===d?C.ink:(o.stroke?C.blauFosc:"none"))
+      .attr("stroke-width",o=>o===d?1.5:(o.stroke?1:0));
+    lbs.interrupt().transition().duration(150).style("opacity",o=>overlap(d,o)?1:.48);
+    tp.show(`<b>${d.t.replace("\n"," ")}</b> · ${d.d}`,px(d),py(d));
+  }).on("mouseleave",reset);
+
+  entry(el,instant=>{
+    if(instant)return;
+    gC.style("opacity",0).transition().duration(600).ease(d3.easeCubicOut).style("opacity",1);
+    lbs.style("opacity",0).transition().delay(250).duration(450).style("opacity",1);
+  });
+});
+void M55;
+
+/* =====================================================================
+   IB-56 · MATRIU MONOCROMA MULTIVARIANT  (dades d'exemple · estil «NBA heatmap»)
+   18 perfils × 12 indicadors en una sola rampa blava amb fils blancs fins i cercles
+   d'accent sobre els tres valors més alts.
+   ===================================================================== */
+const COLS56=["Velocitat","Precisió","Resistència","Abast","Visió","Ritme","Equilibri","Tàctica","Pressió","Control","Impuls","Síntesi"];
+const ROWS56=["Perfil 01","Perfil 02","Perfil 03","Perfil 04","Perfil 05","Perfil 06","Perfil 07","Perfil 08","Perfil 09","Perfil 10","Perfil 11","Perfil 12","Perfil 13","Perfil 14","Perfil 15","Perfil 16","Perfil 17","Perfil 18"];
+const DATA56=(function(){
+  const r=V.rng(56), cells=[];
+  ROWS56.forEach((rn,ri)=>{
+    // Cada perfil té un o dos punts forts recognoscibles (especialistes)
+    const fav1=(ri*3)%COLS56.length, fav2=(ri*5+4)%COLS56.length;
+    COLS56.forEach((cn,ci)=>{
+      let v=22+r()*44;
+      if(ci===fav1)v+=28+r()*12;
+      else if(ci===fav2)v+=16+r()*14;
+      v=Math.round(clamp(v,5,99));
+      cells.push({ri,ci,rn,cn,v});
+    });
+  });
+  return cells;
+})();
+const SEQ56=V.seq(C.blau,[0,100]);
+legend(56,el=>V.legendRamp(el,{scale:SEQ56,min:0,max:100,ticks:[0,25,50,75,100],f:f0,title:"Índex normalitzat (0–100)",lo:"Baix",hi:"Màxim"}));
+const M56=piece(56,(el,w)=>{
+  const mob=w<640, ml=mob?66:88, mr=mob?8:16, mt=mob?78:90, mb=16;
+  const cw=(w-ml-mr)/COLS56.length, ch=mob?19:22, h=mt+ROWS56.length*ch+mb;
+  el.style.height="";
+  const s=V.svg(el,w,h,"Matriu monocroma blava de 18 perfils per 12 indicadors (216 cel·les separades per fils blancs fins). Els tons més foscos revelen a l'instant en quin indicador destaca cada perfil. Dades d'exemple.");
+  const g=s.append("g");
+
+  // Capçaleres superiors verticals/inclinades
+  const gTop=g.append("g");
+  COLS56.forEach((cn,ci)=>{
+    const cx=ml+(ci+.5)*cw;
+    gTop.append("text").attr("transform",`translate(${cx},${mt-8}) rotate(-45)`)
+      .attr("text-anchor","start").attr("font-size",mob?11:11.5).attr("fill",C.ink2).text(cn);
+  });
+  // Noms de fila a l'esquerra
+  const gRow=g.append("g");
+  ROWS56.forEach((rn,ri)=>V.t(gRow,ml-8,mt+(ri+.5)*ch+4,rn,{size:mob?11:11.5,fill:C.ink2,anchor:"end"}));
+
+  // Cel·les monocromes blaves amb separació blanca fina (0,9 px)
+  const gCells=g.append("g");
+  const rects=gCells.selectAll("rect").data(DATA56).join("rect")
+    .attr("x",d=>ml+d.ci*cw+.5).attr("y",d=>mt+d.ri*ch+.5)
+    .attr("width",Math.max(2,cw-1)).attr("height",Math.max(2,ch-1))
+    .attr("rx",1).attr("fill",d=>SEQ56(d.v)).style("cursor","pointer");
+
+  // Cercles subtils d'accent sobre els 3 màxims globals (picada d'ullet a les anomalies encerclades)
+  const top3=DATA56.slice().sort((a,b)=>b.v-a.v).slice(0,3);
+  const gTop3=g.append("g").style("pointer-events","none");
+  top3.forEach(d=>{
+    gTop3.append("circle").attr("cx",ml+(d.ci+.5)*cw).attr("cy",mt+(d.ri+.5)*ch).attr("r",Math.min(cw,ch)*.28)
+      .attr("fill","none").attr("stroke","#fff").attr("stroke-width",1.3);
+  });
+
+  const hv=g.append("g").style("pointer-events","none");
+  const tp=V.tip(el);
+  const tipEl=el.querySelector(":scope>.tip"); if(tipEl)el.appendChild(tipEl);
+  const reset=()=>{ rects.interrupt().transition().duration(120).style("opacity",1); hv.selectAll("*").remove(); tp.hide(); };
+  rects.on("mouseenter",(ev,d)=>{
+    rects.interrupt().transition().duration(120).style("opacity",o=>o.ri===d.ri||o.ci===d.ci?1:.5);
+    hv.selectAll("*").remove();
+    hv.append("rect").attr("x",ml+d.ci*cw+.5).attr("y",mt+d.ri*ch+.5).attr("width",Math.max(2,cw-1)).attr("height",Math.max(2,ch-1))
+      .attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.6);
+    const colMean=d3.mean(DATA56.filter(o=>o.ci===d.ci),o=>o.v);
+    tp.show(`<b>${d.rn}</b> · ${d.cn}: <b>${d.v}/100</b> (mitjana de la columna: ${f0(colMean)})`,ml+d.ci*cw,mt+d.ri*ch);
+  }).on("mouseleave",reset);
+
+  entry(el,instant=>{
+    if(instant)return;
+    rects.style("opacity",0).transition().delay(d=>d.ri*18+d.ci*12).duration(320).style("opacity",1);
+  });
+});
+void M56;
+
+/* =====================================================================
+   IB-57 · RADAR ORGÀNIC SOBRE DISCOS SUAUS  (dades d'exemple · estil «Member Behaviour / Usability»)
+   Corba orgànica tancada (`curveCardinalClosed`) sobre 4 discos translúcids sense vora
+   (mai anells negres tipus diana). Comparador entre dos perfils.
+   ===================================================================== */
+const AX57=["Claredat","Rigor","Profunditat","Ritme","Originalitat","Síntesi"];
+const PROF57=[
+  {id:"a",t:"Assaig visual",c:C.vermell,v:[88,82,74,90,85,78]},
+  {id:"b",t:"Informe tècnic",c:C.blau,  v:[64,95,91,48,42,70]}
+];
+let mode57="all";
+legend(57,el=>V.legendCat(el,[
+  {c:C.vermell,a:.45,t:"Assaig visual"},
+  {c:C.blau,a:.45,t:"Informe tècnic"},
+  {c:C.vermell,a:.18,t:"Discos guia: 25 · 50 · 75 · 100"}
+]));
+const M57=piece(57,(el,w)=>{
+  const mob=w<640, S=Math.min(w,mob?w:480), h=mob?Math.round(S*.95):420, cx=w/2, cy=h/2+4;
+  const R=Math.min(w/2-(mob?64:90),h/2-(mob?38:44));
+  el.style.height="";
+  const s=V.svg(el,w,h,"Radar orgànic de sis dimensions (Claredat, Rigor, Profunditat, Ritme, Originalitat i Síntesi) dibuixat amb corbes suaus tancades sobre quatre discos translúcids sense vores dures. Dades d'exemple.");
+  const g=s.append("g").attr("transform",`translate(${cx},${cy})`);
+  const n=AX57.length, ang=i=>i*(2*Math.PI/n)-Math.PI/2;
+  const rS=d3.scaleLinear([0,100],[0,R]);
+
+  // 1. Quatre discos translúcids suaus sense vora (més rics al centre, eteris cap enfora — zero dianes de línies negres!)
+  const tiers=[{v:100,a:.06},{v:75,a:.08},{v:50,a:.11},{v:25,a:.15}];
+  const discCol=mode57==="b"?C.blau:C.vermell;
+  const gDiscs=g.append("g");
+  tiers.forEach(t=>{
+    gDiscs.append("circle").attr("r",rS(t.v)).attr("fill",discCol).attr("fill-opacity",t.a);
+  });
+
+  // 2. Radis finíssims i etiquetes dels 6 eixos
+  const gAx=g.append("g");
+  AX57.forEach((lbl,i)=>{
+    const a=ang(i), x1=Math.cos(a)*R, y1=Math.sin(a)*R;
+    gAx.append("line").attr("x1",0).attr("y1",0).attr("x2",x1).attr("y2",y1)
+      .attr("stroke",discCol).attr("stroke-width",.55).attr("stroke-opacity",.35);
+    const lx=Math.cos(a)*(R+(mob?18:24)), ly=Math.sin(a)*(R+(mob?16:20));
+    const anc=Math.cos(a)>.25?"start":Math.cos(a)<-.25?"end":"middle";
+    const dy=Math.sin(a)<-.6?-4:Math.sin(a)>.6?11:4;
+    V.t(gAx,lx,ly+dy,lbl,{size:mob?11.5:12.5,weight:600,fill:C.ink,anchor:anc});
+  });
+
+  // 3. Corbes orgàniques tancades (curveCardinalClosed) + vèrtexs interactius
+  const lineR=d3.lineRadial().angle((d,i)=>i*(2*Math.PI/n)).radius(d=>rS(d)).curve(d3.curveCardinalClosed.tension(.35));
+  const vis=mode57==="all"?PROF57:PROF57.filter(p=>p.id===mode57);
+  const gShapes=g.append("g");
+  const tp=V.tip(el);
+  const tipEl=el.querySelector(":scope>.tip"); if(tipEl)el.appendChild(tipEl);
+  const hv=g.append("g").style("pointer-events","none");
+
+  vis.forEach(p=>{
+    const gp=gShapes.append("g");
+    gp.append("path").datum(p.v).attr("d",lineR)
+      .attr("fill",p.c).attr("fill-opacity",.22).attr("stroke",p.c).attr("stroke-width",1.8)
+      .style("mix-blend-mode","multiply");
+    p.v.forEach((val,i)=>{
+      const a=ang(i), vx=Math.cos(a)*rS(val), vy=Math.sin(a)*rS(val);
+      gp.append("circle").attr("cx",vx).attr("cy",vy).attr("r",3.8)
+        .attr("fill",p.c).attr("stroke","#fff").attr("stroke-width",1.4).style("cursor","pointer")
+        .on("mouseenter",()=>{
+          hv.selectAll("*").remove();
+          hv.append("circle").attr("cx",vx).attr("cy",vy).attr("r",6.5).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.4);
+          V.t(hv,vx+(vx>=0?10:-10),vy-8,`${val}`,{size:12.5,weight:700,fill:p.c,anchor:vx>=0?"start":"end",halo:3.5});
+          tp.show(`<b>${p.t}</b> · ${AX57[i]}: <b>${val}</b> / 100`,cx+vx,cy+vy);
+        })
+        .on("mouseleave",()=>{ hv.selectAll("*").remove(); tp.hide(); });
+    });
+  });
+
+  entry(el,instant=>{
+    if(instant)return;
+    gShapes.attr("transform","scale(0.1)").style("opacity",0)
+      .transition().duration(750).ease(d3.easeCubicOut).attr("transform","scale(1)").style("opacity",1);
+  });
+});
+seg(57,k=>{ mode57=k; M57.redraw(); });
+void M57;
+
+/* =====================================================================
+   IB-58 · RUSC RADIAL D'HEXÀGONS  (dades d'exemple · estil «Performance hex-cluster»)
+   Composició orgànica en rusc des del centre cap enfora: 127 hexàgons iguals sense vores
+   dures, agrupats en 4 anells radials de color (groc nucli → vermell → blau → blau clar).
+   ===================================================================== */
+const LAY58=[
+  {id:"fidel", t:"Nucli fidel",      n:19, c:C.groc,     tc:C.ink},
+  {id:"comp",  t:"Lectura completa", n:26, c:C.vermell,  tc:C.vermell},
+  {id:"obert", t:"Obertura activa",  n:42, c:C.blau,     tc:C.blau},
+  {id:"abast", t:"Abast total",      n:40, c:C.blauClar, tc:C.ink2}
+];
+const HEX58=(function(){
+  // Genera 127 cel·les hexagonals en coordenades axials (radi 6) ordenades per distància al centre
+  const pts=[], rMax=6, rnd=V.rng(58);
+  for(let q=-rMax;q<=rMax;q++)for(let r=-rMax;r<=rMax;r++){
+    const s=-q-r;
+    if(Math.abs(s)<=rMax){
+      const x=Math.sqrt(3)*(q+r/2), y=1.5*r;
+      const dist=Math.hypot(x,y)+(rnd()-.5)*.55; // lleugera irregularitat orgànica al contorn de cada capa
+      pts.push({q,r,x,y,dist});
+    }
+  }
+  pts.sort((a,b)=>a.dist-b.dist);
+  let acc=0, gi=0;
+  pts.forEach((p,idx)=>{
+    while(gi<LAY58.length-1&&idx>=acc+LAY58[gi].n){ acc+=LAY58[gi].n; gi++; }
+    p.g=LAY58[gi]; p.idx=idx;
+  });
+  return pts;
+})();
+legend(58,el=>V.legendCat(el,LAY58.map(l=>({c:l.c,t:`${l.t} (${f0(l.n/HEX58.length*100)} %)`}))));
+const M58=piece(58,(el,w)=>{
+  const mob=w<640, h=mob?360:400, cx=w/2, cy=h/2;
+  const R=mob?Math.min(11.5,(w-48)/24):15.5;
+  el.style.height="";
+  const s=V.svg(el,w,h,"Rusc radial de 127 hexàgons iguals agrupats del centre cap enfora en quatre nivells d'implicació: nucli fidel (groc), lectura completa (vermell), obertura activa (blau) i abast total (blau clar). Dades d'exemple.");
+  const g=s.append("g").attr("transform",`translate(${cx},${cy})`);
+  // Polígon hexagonal punta-amunt amb petit marge blanc (1,4 px)
+  const hr=R*.88;
+  const hexD="M"+d3.range(6).map(k=>{ const a=Math.PI/3*k-Math.PI/6; return `${(Math.cos(a)*hr).toFixed(2)},${(Math.sin(a)*hr).toFixed(2)}`; }).join("L")+"Z";
+
+  const cells=g.append("g").selectAll("path").data(HEX58).join("path")
+    .attr("d",hexD)
+    .attr("transform",d=>`translate(${(d.x*R).toFixed(1)},${(d.y*R).toFixed(1)})`)
+    .attr("fill",d=>d.g.c).attr("fill-opacity",d=>d.g.id==="abast"?.65:.88)
+    .style("cursor","pointer");
+
+  // Etiquetes laterals netes (escriptori) connectades a cada capa
+  const gAn=g.append("g").style("pointer-events","none");
+  if(!mob){
+    const specs=[
+      {l:LAY58[0],px:0,py:0,tx:R*13.5,ty:-R*6.5,anc:"start"},
+      {l:LAY58[1],px:R*4.5,py:R*1.5,tx:R*13.5,ty:R*1.5,anc:"start"},
+      {l:LAY58[2],px:-R*6.8,py:-R*3.5,tx:-R*13.5,ty:-R*4.5,anc:"end"},
+      {l:LAY58[3],px:-R*9.5,py:R*3.5,tx:-R*13.5,ty:R*4.8,anc:"end"}
+    ];
+    specs.forEach(sp=>{
+      const pct=f0(sp.l.n/HEX58.length*100);
+      V.note(gAn,{x:sp.px,y:sp.py,tx:sp.tx,ty:sp.ty,kind:"elbow",anchor:sp.anc,size:12,
+        lines:[[sp.l.t,true,sp.l.tc],[`${sp.l.n} unitats · ${pct} %`]]});
+    });
+  }
+
+  const tp=V.tip(el);
+  const tipEl=el.querySelector(":scope>.tip"); if(tipEl)el.appendChild(tipEl);
+  const reset=()=>{ cells.interrupt().transition().duration(140).style("opacity",1); gAn.transition().duration(140).style("opacity",1); tp.hide(); };
+  cells.on("mouseenter",(ev,d)=>{
+    cells.interrupt().transition().duration(140).style("opacity",o=>o.g===d.g?1:.45);
+    gAn.transition().duration(140).style("opacity",.55);
+    tp.show(`<b>${d.g.t}</b> · ${d.g.n} de ${HEX58.length} unitats (${f1(d.g.n/HEX58.length*100)} %)`,cx+d.x*R,cy+d.y*R);
+  }).on("mouseleave",reset);
+
+  entry(el,instant=>{
+    if(instant)return;
+    cells.style("opacity",0).transition().delay(d=>d.idx*6).duration(380).ease(d3.easeCubicOut).style("opacity",1);
+    gAn.style("opacity",0).transition().delay(700).duration(450).style("opacity",1);
+  });
+});
+void M58;
 
 })();

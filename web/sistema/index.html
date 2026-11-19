@@ -88,7 +88,7 @@
     <li><a href="#ib-43"><b>IB-43</b>Quadrats d'escala</a></li>
     <li><a href="#ib-44"><b>IB-44</b>Horitzó</a></li>
     <li><a href="#ib-45"><b>IB-45</b>Flors de dades</a></li>
-    <li><a href="#ib-46"><b>IB-46</b>Corda</a></li>
+    <li><a href="#ib-46"><b>IB-46</b>Xarxa circular amb ones</a></li>
     <li><a href="#ib-47"><b>IB-47</b>Corrent apilat</a></li>
     <li><a href="#ib-48"><b>IB-48</b>Un dia en un minut</a></li>
     <li><a href="#ib-49"><b>IB-49</b>Temps profund</a></li>
@@ -97,6 +97,10 @@
     <li><a href="#ib-52"><b>IB-52</b>Mentre llegeixes</a></li>
     <li><a href="#ib-53"><b>IB-53</b>Anell de l'any</a></li>
     <li><a href="#ib-54"><b>IB-54</b>Bombolles en moviment</a></li>
+    <li><a href="#ib-55"><b>IB-55</b>Mapa conceptual sobre eix</a></li>
+    <li><a href="#ib-56"><b>IB-56</b>Matriu monocroma</a></li>
+    <li><a href="#ib-57"><b>IB-57</b>Radar orgànic</a></li>
+    <li><a href="#ib-58"><b>IB-58</b>Rusc radial d'hexàgons</a></li>
   </ol>
 
   <!-- ===================== PRINCIPIS ===================== -->
@@ -641,12 +645,12 @@
   </section>
 
   <section class="pc" id="ib-46">
-    <div class="pc-h"><span class="pc-n">IB-46</span><h4>Corda</h4></div>
-    <p class="pc-d">Els elements, en un cercle; les cintes que els uneixen, el que va de l'un a l'altre. El gruix de cada extrem és el que surt d'aquell costat, així que es llegeixen els dos sentits d'una sola cinta.</p>
-    <div class="vh"><div><strong>Qui envia a qui</strong><span>Fluxos entre sis regions, en unitats · el gruix de cada extrem és el que surt d'aquella regió; cada marca de l'arc, 20 unitats</span></div><div class="lgs" data-lg="46"></div></div>
+    <div class="pc-h"><span class="pc-n">IB-46</span><h4>Xarxa circular amb ones</h4></div>
+    <p class="pc-d">Una xarxa circular híbrida més lleugera que la corda clàssica: un anell finíssim amb nodes translúcids, dues ones exteriors suaus per a les sortides (vermell) i les entrades (blau), i fils Bézier delicats a l'interior amb puntets als fluxos principals.</p>
+    <div class="vh"><div><strong>Qui envia a qui</strong><span>Fluxos entre deu regions · ones exteriors de volum i fils interiors de connexió directa</span></div><div class="lgs" data-lg="46"></div></div>
     <div class="plot" data-p="46"></div>
-    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Passa o toca un arc per deixar només les seves cintes; una cinta, per veure'n els dos sentits.</p>
-    <div class="pc-r"><div><h5>Per a</h5><p>Fluxos entre un grup petit d'elements (4–10): migracions, comerç, transferències, trajectes entre barris.</p></div><div><h5>Regles</h5><ul><li>Cintes a 0,4 amb el color de qui n'envia més.</li><li>Marques fines a l'arc cada 20 unitats.</li><li>En passar-hi, la resta de cintes a 0,05.</li></ul></div><div><h5>Ve de</h5><p>Diagrames de cordes de migracions (Abel i Sander, <i>Science</i>, 2014); «Circos».</p></div></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Passa o toca qualsevol node per il·luminar-ne les sortides (vermell) i les entrades (blau).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Correspondències, xarxes d'influències, migracions o fluxos direccionals entre 6 i 20 nodes.</p></div><div><h5>Regles</h5><ul><li>Anell finíssim (0,9 px) amb nodes translúcids i dues ones exteriors <code>multiply</code>.</li><li>Fils Bézier delicats a l'interior (mai cintes opaques feixugues) i puntets sobre els fluxos clau.</li><li>En passar-hi, sortides en vermell i entrades en blau amb lectura en una línia a sota.</li></ul></div><div><h5>Ve de</h5><p>La làmina «Letter traffic» i les xarxes circulars editorials.</p></div></div>
   </section>
 
   <section class="pc" id="ib-47">
@@ -729,6 +733,43 @@
       <div class="ibx-rng"><span class="ibx-rng-l">Any</span><input class="rng" type="range" min="1980" max="2026" step="1" value="1980" data-rng="54" aria-label="Any" aria-valuetext="1980"><output data-out="54">1980</output></div></div>
     <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Els noms dels llocs són genèrics.</p>
     <div class="pc-r"><div><h5>Per a</h5><p>Com es mouen molts casos en dues variables alhora al llarg del temps: països, ciutats, empreses.</p></div><div><h5>Regles</h5><ul><li>Àrea proporcional; bombolles a 0,55 amb contorn fosc.</li><li>L'any en serif gran, en el gris de la quadrícula.</li><li>Estela amb un punt per any i l'any cada dècada.</li></ul></div><div><h5>Ve de</h5><p>Gapminder (Hans Rosling).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-55">
+    <div class="pc-h"><span class="pc-n">IB-55</span><h4>Mapa conceptual sobre eix</h4></div>
+    <p class="pc-d">Grans cercles monocroms translúcids <code>multiply</code> solapats al llarg d'un eix discontinu bipolar. Les interseccions s'enfosqueixen soles i mostren on es creuen disciplines, escoles de pensament o categories culturals.</p>
+    <div class="vh"><div><strong>Com se solapen les disciplines del futur</strong><span>Esquema conceptual sobre un eix continu d'obert/exploratori a pautat/aplicat</span></div></div>
+    <div class="plot" data-p="55"></div>
+    <p class="src"><b>Esquema conceptual</b> (la mida i la posició indiquen proximitat i abast qualitatiu, no quantitats mesurades). Passa o toca qualsevol cercle per veure'n la definició i les disciplines amb què se solapa.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Assajos de pensament, filosofia, història, cultura o taxonomia on les fronteres entre conceptes són poroses.</p></div><div><h5>Regles</h5><ul><li>Un sol color translúcid amb <code>multiply</code> (les interseccions emergeixen soles).</li><li>Eix discontinu bipolar ultra-fi que dona sentit a l'espai horitzontal.</li><li>Tipografia neta dins de cada cercle i hover suau (0,46) amb definició en una línia a sota.</li></ul></div><div><h5>Ve de</h5><p>«Modified Mapping of Design Futures» (Elliott P. Montgomery).</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-56">
+    <div class="pc-h"><span class="pc-n">IB-56</span><h4>Matriu monocroma</h4></div>
+    <p class="pc-d">Centenars de dades multivariants ordenades en una reixa nítida d'una sola gamma blava, separades per fils blancs d'1 px. Els especialistes i els patrons apareixen a l'instant sense amagar ni una sola cel·la.</p>
+    <div class="vh"><div><strong>Divuit perfils en dotze indicadors</strong><span>216 valors normalitzats (0–100) · els cercles blancs assenyalen els tres màxims globals</span></div><div class="lgs" data-lg="56"></div></div>
+    <div class="plot" data-p="56"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Passa o toca qualsevol cel·la per ressaltar la fila i la columna i comparar-la amb la mitjana.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Comparar 10–50 casos en 8–20 indicadors alhora: perfils, esportistes, països, paraules o horaris diaris.</p></div><div><h5>Regles</h5><ul><li>Una sola rampa seqüencial (blau o calor) sobre paper blanc, sense arc de Sant Martí.</li><li>Separació blanca fina (1 px) entre cel·les i cercles d'accent sobre els casos excepcionals.</li><li>En passar-hi, il·lumina la fila i la columna senceres (la resta a 0,5).</li></ul></div><div><h5>Ve de</h5><p>Matrius estadístiques monocromes (NBA heatmap) i l'ordre tipogràfic d'IB-37.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-57">
+    <div class="pc-h"><span class="pc-n">IB-57</span><h4>Radar orgànic</h4></div>
+    <p class="pc-d">Una corba tancada suau dibuixada sobre quatre discos translúcids sense vora (mai dianes de línies negres). Permet comparar l'equilibri d'un o dos perfils en sis dimensions sense aspecte tècnic ni rígids polígons punxeguts.</p>
+    <div class="vh"><div><strong>Dos perfils editorials en sis dimensions</strong><span>Puntuació de 0 a 100 · corba orgànica sobre discos guia translúcids</span></div><div class="lgs" data-lg="57"></div></div>
+    <div class="plot" data-p="57"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Perfils" data-seg="57"><button aria-pressed="true" data-k="all">Tots dos</button><button aria-pressed="false" data-k="a">Assaig visual</button><button aria-pressed="false" data-k="b">Informe tècnic</button></div></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Passa per cada vèrtex per veure'n la puntuació exacta.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Comparar 1 o 2 perfils en 5–7 dimensions qualitatives o quantitatives amb la mateixa escala (0–100).</p></div><div><h5>Regles</h5><ul><li>Quatre discos translúcids sense vora com a guia (25/50/75/100); mai anells negres tipus diana.</li><li>Corba tancada suau (<code>curveCardinalClosed</code>) amb <code>multiply</code> i màxim dues sèries.</li><li>Radis finíssims (0,55 px) i etiquetes horitzontals netes a fora.</li></ul></div><div><h5>Ve de</h5><p>«Member Behaviour» i els radars monocroms sobre discos translúcids.</p></div></div>
+  </section>
+
+  <section class="pc" id="ib-58">
+    <div class="pc-h"><span class="pc-n">IB-58</span><h4>Rusc radial d'hexàgons</h4></div>
+    <p class="pc-d">Una alternativa orgànica als gràfics de formatge o gofre: totes les unitats s'agrupen en un rusc hexagonal que floreix des del nucli central (groc) cap a les capes exteriors (vermell, blau i blau clar), sense vores dures.</p>
+    <div class="vh"><div><strong>Quatre capes d'implicació lectora</strong><span>127 unitats agrupades radialment del nucli fidel cap a l'abast total</span></div><div class="lgs" data-lg="58"></div></div>
+    <div class="plot" data-p="58"></div>
+    <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Passa o toca qualsevol hexàgon per aïllar la seva capa i veure'n el pes exacte.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Composicions en capes concèntriques o embuts: nucli vs perifèria, audiències, vocabulari bàsic vs rar, densitat urbana.</p></div><div><h5>Regles</h5><ul><li>Hexàgons iguals separats per un fil blanc (1,4 px), sense vores ni ombres.</li><li>Color per capa des del nucli càlid (groc/vermell) cap a l'exterior fred (blau/blau clar).</li><li>En passar-hi, ressalta la capa sencera i atenua la resta suaument (0,45).</li></ul></div><div><h5>Ve de</h5><p>Els ruscs radials d'hexàgons («Performance hex-cluster») i IB-11 (Reixa d'unitats).</p></div></div>
   </section>
 
   <div class="fn">
