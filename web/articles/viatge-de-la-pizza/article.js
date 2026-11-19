@@ -323,115 +323,294 @@
     }
 
     function drawCronologia(container, w){
-      const mob = w < 580;
+      const mob = w < 760;
       const colOf = c => c === "pa" ? C.groc : c === "bio" ? C.blau : c === "hist" ? C.vermell : C.ink;
       const tp = IBV.tip(container);
+      const ancient = D.fites.filter(d => d.any < 1500);
+      const modern = D.fites.filter(d => d.any >= 1500);
+      const keySet = new Set([-12400, 1692, 2017]);
 
       if(mob){
-        // Transposició vertical neta per a 390 px: cap solapament ni retall
-        const padT = 26, padB = 20, axisX = 76;
+        // Mòbil: barra proporcional lineal superior + llista vertical en dos blocs
+        const xMini = d3.scaleLinear([-12400, 2026], [6, w - 6]);
+        const axisX = 82;
         const rowH = 44;
-        const h = padT + D.fites.length * rowH + padB;
-        const svg = IBV.svg(container, w, h, "Línia del temps vertical de 14.400 anys d'història del pa pla i la pizza, en escala cronològica ordenada.");
+        const hdr1Y = 92;
+        const y1 = 104;
+        const sepY = y1 + ancient.length * rowH + 6;
+        const hdr2Y = sepY + 18;
+        const y2 = hdr2Y + 12;
+        const h = y2 + modern.length * rowH + 12;
 
-        IBV.t(svg, 6, 14, "Escala cronològica (del Paleolític al s. XXI) ↓", { size: 11.5, fill: C.muted });
-        svg.append("line").attr("x1", axisX).attr("x2", axisX).attr("y1", padT).attr("y2", h - padB)
+        const svg = IBV.svg(container, w, h, "Cronologia en escala lineal real dels 14.400 anys amb barra proporcional superior i llista ordenada en dos blocs: pa pla antic i zoom 1500–2025.");
+
+        // Capçalera proporcional superior (y = 0..76)
+        IBV.t(svg, 6, 14, "Escala lineal real (14.400 anys)", { size: 11.5, weight: 700, fill: C.ink });
+        IBV.t(svg, 6, 29, "El 96 % del temps és pa pla abans del tomàquet", { size: 11, fill: C.ink2 });
+
+        const barY = 46;
+        svg.append("line").attr("x1", 6).attr("x2", w - 6).attr("y1", barY).attr("y2", barY)
+          .attr("stroke", C.hair).attr("stroke-width", 1.5);
+        const zw = Math.max(8, xMini(2026) - xMini(1500));
+        const zx = xMini(2026) - zw;
+        svg.append("rect").attr("x", zx).attr("y", barY - 7).attr("width", zw).attr("height", 14).attr("rx", 1.5)
+          .attr("fill", C.vermell).attr("fill-opacity", 0.16).attr("stroke", C.vermell).attr("stroke-width", 1);
+
+        const miniDots = svg.append("g").selectAll("circle.mini-dot").data(D.fites).join("circle")
+          .attr("class", "mini-dot")
+          .attr("cx", d => xMini(d.any)).attr("cy", barY).attr("r", 2.2)
+          .attr("fill", d => colOf(d.cat));
+
+        IBV.t(svg, 6, 63, "12.400 aC", { size: 11, fill: C.muted });
+        IBV.t(svg, w - 6, 63, "1500–2025 (3,6 %) ↓", { size: 11, weight: 700, anchor: "end", fill: C.vermell });
+
+        // Bloc 1: Pa pla antic
+        IBV.t(svg, 6, hdr1Y, "Pa pla abans del tomàquet (12.400 aC – 997)", { size: 11, weight: 700, fill: C.muted });
+        svg.append("line").attr("x1", axisX).attr("x2", axisX)
+          .attr("y1", y1 + 18).attr("y2", y1 + (ancient.length - 1) * rowH + 18)
           .attr("stroke", C.hair).attr("stroke-width", 1);
 
-        const rows = svg.selectAll("g.fita").data(D.fites).join("g").attr("class","fita hit")
-          .attr("transform", (d, i) => `translate(0, ${padT + i * rowH + 14})`);
+        // Separador i Bloc 2: Zoom modern
+        svg.append("line").attr("x1", 6).attr("x2", w - 6).attr("y1", sepY).attr("y2", sepY)
+          .attr("stroke", IBV.alpha(C.vermell, 0.45)).attr("stroke-width", 0.9);
+        IBV.t(svg, 6, hdr2Y, "Zoom · 1500–2025: la pizza moderna (3,6 %)", { size: 11.5, weight: 700, fill: C.vermell });
+        svg.append("line").attr("x1", axisX).attr("x2", axisX)
+          .attr("y1", y2 + 18).attr("y2", y2 + (modern.length - 1) * rowH + 18)
+          .attr("stroke", IBV.alpha(C.vermell, 0.45)).attr("stroke-width", 1);
 
-        rows.append("rect").attr("x", 0).attr("y", -16).attr("width", w).attr("height", rowH).attr("fill","transparent");
-        rows.append("circle").attr("cx", axisX).attr("cy", 0).attr("r", 9)
-          .attr("fill", d => colOf(d.cat)).attr("fill-opacity", 0.24).style("mix-blend-mode","multiply");
-        rows.append("circle").attr("class","dot").attr("cx", axisX).attr("cy", 0).attr("r", 3.5)
-          .attr("fill", d => colOf(d.cat)).attr("stroke", C.paper).attr("stroke-width", 0.8);
+        const placedRows = [
+          ...ancient.map((d, i) => ({ d, cy: y1 + i * rowH + 18 })),
+          ...modern.map((d, i) => ({ d, cy: y2 + i * rowH + 18 }))
+        ];
 
-        rows.each(function(d){
+        const rows = svg.selectAll("g.fita").data(placedRows).join("g").attr("class", "fita hit")
+          .attr("transform", p => `translate(0, ${p.cy})`);
+
+        rows.append("rect").attr("x", 0).attr("y", -18).attr("width", w).attr("height", rowH).attr("fill", "transparent");
+        rows.append("circle").attr("class", "aura").attr("cx", axisX).attr("cy", 0).attr("r", 0)
+          .attr("fill", p => colOf(p.d.cat)).attr("fill-opacity", 0.24).style("mix-blend-mode", "multiply");
+        rows.append("circle").attr("class", "dot").attr("cx", axisX).attr("cy", 0).attr("r", 3.5)
+          .attr("fill", p => colOf(p.d.cat)).attr("stroke", C.paper).attr("stroke-width", 0.8);
+
+        rows.each(function(p){
           const g = d3.select(this);
-          IBV.t(g, axisX - 12, 4, d.etiq, { size: 11, weight: 700, anchor: "end", fill: C.ink2 });
-          IBV.t(g, axisX + 14, -1, d.titol, { size: 12.5, weight: 700, fill: C.ink });
-          IBV.t(g, axisX + 14, 14, d.lloc, { size: 11.5, fill: C.muted });
+          IBV.t(g, axisX - 12, 4, p.d.etiq, { size: 11, weight: 700, anchor: "end", fill: C.ink2 });
+          IBV.t(g, axisX + 14, -1, p.d.titol, { size: 12, weight: 700, fill: C.ink });
+          IBV.t(g, axisX + 14, 14, p.d.lloc, { size: 11.5, fill: C.muted });
         });
+
+        IBV.onView(container, instant => {
+          rows.selectAll("circle.aura").transition().duration(instant ? 0 : 750).ease(IBV.EASE)
+            .attr("r", p => keySet.has(p.d.any) ? 10.5 : 8.5);
+        });
+
+        function resetMob(){
+          IBV.focus(rows, null);
+          rows.selectAll("circle.dot").attr("r", 3.5).attr("stroke", C.paper).attr("stroke-width", 0.8);
+          miniDots.attr("r", 2.2).attr("stroke", "none").attr("stroke-width", 0);
+          tp.hide();
+        }
 
         IBV.hover(svg.node(), (ev, [mx, my]) => {
-          const i = clamp(Math.floor((my - padT) / rowH), 0, D.fites.length - 1);
-          const d = D.fites[i];
-          IBV.focus(rows, x => x === d, { dim: 0.48 });
-          rows.selectAll("circle.dot").attr("r", x => x === d ? 5 : 3.5).attr("stroke", x => x === d ? C.ink : C.paper);
-          tp.show(`<b>${d.etiq} · ${d.lloc}</b> · ${d.detall}`);
-        }, () => {
-          IBV.focus(rows, null);
-          rows.selectAll("circle.dot").attr("r", 3.5).attr("stroke", C.paper);
-          tp.hide();
-        });
+          const best = d3.least(placedRows, p => Math.abs(my - p.cy));
+          if(!best || Math.abs(my - best.cy) > rowH * 0.55){ resetMob(); return; }
+          IBV.focus(rows, p => p === best, { dim: 0.48 });
+          rows.selectAll("circle.dot")
+            .attr("r", p => p === best ? 5 : 3.5)
+            .attr("stroke", p => p === best ? C.ink : C.paper)
+            .attr("stroke-width", p => p === best ? 1.3 : 0.8);
+          miniDots
+            .attr("r", d => d === best.d ? 4 : 2.2)
+            .attr("stroke", d => d === best.d ? C.ink : "none")
+            .attr("stroke-width", d => d === best.d ? 1.3 : 0);
+          miniDots.filter(d => d === best.d).raise();
+          tp.show(`<b>${best.d.etiq} · ${best.d.lloc}</b> · ${best.d.detall}`);
+        }, resetMob);
         return;
       }
 
-      // Desktop: cinta logarítmica horitzontal (IB-49 Temps profund)
-      const h = 300;
-      const M = { l: 42, r: 44, t: 38, b: 44 };
-      const svg = IBV.svg(container, w, h, "Línia del temps logarítmica de 14.400 anys d'història del pa pla i la pizza, des de Shubayqa 1 fins a la UNESCO 2017.");
+      // Escriptori (>= 760 px): dues franges en escala lineal real (14.400 anys + zoom 1500–2025)
+      const h = 418;
+      const M = { l: 24, r: 24 };
+      const svg = IBV.svg(container, w, h, "Cronologia en dues franges lineals reals: dalt, els 14.400 anys d'història del pa pla (el 96 % anterior al tomàquet); a sota, zoom lineal de 1500 a 2025 amb les vuit fites de la pizza moderna.");
 
-      const x = d3.scaleLog().domain([16000, 7]).range([M.l, w - M.r]);
-      const baseY = 178;
+      const xTop = d3.scaleLinear([-12400, 2026], [M.l, w - M.r]);
+      const xZoom = d3.scaleLinear([1500, 2026], [M.l, w - M.r]);
+      const topY = 120;
+      const yConn0 = 128;
+      const yConn1 = 178;
+      const zoomY = 316;
+      const bx0 = xTop(1500);
+      const bx1 = xTop(2026);
 
-      IBV.t(svg, M.l, 18, "Escala logarítmica (anys enrere fins avui) →", { size: 11.5, fill: C.muted });
+      // Capçalera franja 1
+      const h1 = svg.append("text").attr("x", M.l).attr("y", 14).attr("font-size", 12)
+        .style("font-variant-numeric", "tabular-nums");
+      h1.append("tspan").attr("font-weight", 700).attr("fill", C.ink).text("1 · Escala lineal real (14.400 anys)");
+      h1.append("tspan").attr("fill", C.ink2).text(" · El 96 % és pa pla abans del tomàquet");
+      IBV.t(svg, w - M.r, 14, "Zoom 1500–2025 (3,6 %) ↓", { size: 11.5, weight: 600, anchor: "end", fill: C.vermell });
 
-      // Eix i tics logarítmics
-      const ticks = [10000, 2000, 500, 200, 100, 50, 10];
-      ticks.forEach(tk => {
-        const tx = x(tk);
-        svg.append("line").attr("x1", tx).attr("x2", tx).attr("y1", baseY - 6).attr("y2", baseY + 6).attr("stroke", C.hair);
-        const lbl = tk >= 1000 ? `Fa ${F0(tk)} a.` : `Fa ${tk} a.`;
-        IBV.t(svg, tx, h - 14, lbl, { size: 11, anchor: "middle", fill: C.muted });
+      // Connector òptic de zoom (darrere de les marques i eixos)
+      const beamPath = `M ${bx0},${yConn0} C ${bx0},${yConn0 + 34} ${M.l},${yConn1 - 24} ${M.l},${yConn1} L ${w - M.r},${yConn1} C ${w - M.r},${yConn1 - 24} ${bx1},${yConn0 + 34} ${bx1},${yConn0} Z`;
+      const zoomBeam = svg.append("path").attr("d", beamPath).attr("fill", C.vermell).attr("fill-opacity", 0.04);
+      svg.append("path")
+        .attr("d", `M ${bx0},${yConn0} C ${bx0},${yConn0 + 34} ${M.l},${yConn1 - 24} ${M.l},${yConn1}`)
+        .attr("fill", "none").attr("stroke", IBV.alpha(C.vermell, 0.5)).attr("stroke-width", 0.9).attr("stroke-dasharray", "3 3");
+      svg.append("path")
+        .attr("d", `M ${bx1},${yConn0} C ${bx1},${yConn0 + 34} ${w - M.r},${yConn1 - 24} ${w - M.r},${yConn1}`)
+        .attr("fill", "none").attr("stroke", IBV.alpha(C.vermell, 0.5)).attr("stroke-width", 0.9).attr("stroke-dasharray", "3 3");
+      svg.append("line").attr("x1", M.l).attr("x2", w - M.r).attr("y1", yConn1).attr("y2", yConn1)
+        .attr("stroke", IBV.alpha(C.vermell, 0.35)).attr("stroke-width", 0.8);
+
+      // Marques d'eix franja 1
+      [-12000, -8000, -4000, 0].forEach(v => {
+        const tx = xTop(v);
+        svg.append("line").attr("x1", tx).attr("x2", tx).attr("y1", topY).attr("y2", topY + 5).attr("stroke", C.muted);
+        const lbl = v < 0 ? `${F0(-v)} aC` : "Any 0";
+        IBV.t(svg, clamp(tx, M.l + 26, w - M.r - 26), topY + 17, lbl, { size: 11, anchor: "middle", fill: C.muted, halo: 3 });
       });
-      svg.append("line").attr("x1", M.l).attr("x2", w - M.r).attr("y1", baseY).attr("y2", baseY)
-        .attr("stroke", C.ink).attr("stroke-width", 1);
+      svg.append("line").attr("x1", M.l).attr("x2", w - M.r).attr("y1", topY).attr("y2", topY)
+        .attr("stroke", C.ink).attr("stroke-width", 1.1);
 
-      // Carrils alterns per evitar cap solapament d'etiquetes
-      const lanes = [-110, -56, 56, -110, 56, -56, -118, 62, -62, 106, -104, 52];
-      const items = svg.selectAll("g.fita").data(D.fites).join("g").attr("class","fita hit");
+      // Finestra de zoom 1500–2026 sobre la franja 1
+      svg.append("rect").attr("x", bx0).attr("y", topY - 8).attr("width", Math.max(2, bx1 - bx0)).attr("height", 16).attr("rx", 1.5)
+        .attr("fill", IBV.alpha(C.vermell, 0.13)).attr("stroke", C.vermell).attr("stroke-width", 1.1);
+      const miniDots = svg.append("g").selectAll("circle.mini-dot").data(modern).join("circle")
+        .attr("class", "mini-dot")
+        .attr("cx", d => xTop(d.any)).attr("cy", topY).attr("r", 2.2)
+        .attr("fill", d => colOf(d.cat));
 
-      items.each(function(d, i){
+      // Capçalera franja 2 + guies de segle
+      const h2 = svg.append("text").attr("x", M.l).attr("y", 194).attr("font-size", 12)
+        .style("font-variant-numeric", "tabular-nums");
+      h2.append("tspan").attr("font-weight", 700).attr("fill", C.vermell).text("2 · Zoom lineal (1500 – 2025)");
+      h2.append("tspan").attr("fill", C.ink2).text(" · Els últims 525 anys, només el 3,6 % de la història");
+
+      [1500, 1600, 1700, 1800, 1900, 2000].forEach(v => {
+        const gx = xZoom(v);
+        svg.append("line").attr("x1", gx).attr("x2", gx).attr("y1", 218).attr("y2", 408)
+          .attr("stroke", C.grid).attr("stroke-width", 0.55);
+        IBV.t(svg, gx, 212, String(v), { size: 11, anchor: v === 1500 ? "start" : "middle", fill: C.muted });
+      });
+      svg.append("line").attr("x1", M.l).attr("x2", w - M.r).attr("y1", zoomY).attr("y2", zoomY)
+        .attr("stroke", C.ink).attr("stroke-width", 1.1);
+
+      // Posicionament determinista de totes 12 fites
+      const ancSpec = {
+        "-12400": { ty: 44, anchor: "start", dx: 6, stemY: 40 },
+        "-8000":  { ty: 82, anchor: "start", dx: 6, stemY: 78 },
+        "79":     { ty: 82, anchor: "end",   dx: -6, stemY: 78 },
+        "997":    { ty: 44, anchor: "end",   dx: -6, stemY: 40 }
+      };
+      const modSpec = {
+        "1544": { ty: 276, anchor: "start", dx: 6, stemY: 272 },
+        "1692": { ty: 348, anchor: "end",   dx: -6, stemY: 342 },
+        "1835": { ty: 276, anchor: "end",   dx: -6, stemY: 272 },
+        "1858": { ty: 348, anchor: "end",   dx: -6, stemY: 342 },
+        "1889": { ty: 236, anchor: "end",   dx: -6, stemY: 232 },
+        "1905": { ty: 388, anchor: "end",   dx: -6, stemY: 382 },
+        "1970": { ty: 276, anchor: "end",   txFixed: w - M.r, stemY: 294 },
+        "2017": { ty: 348, anchor: "end",   txFixed: w - M.r, stemY: 336 }
+      };
+
+      const placedAll = D.fites.map(d => {
+        const isMod = d.any >= 1500;
+        const spec = isMod ? modSpec[String(d.any)] : ancSpec[String(d.any)];
+        const cx = isMod ? xZoom(d.any) : xTop(d.any);
+        const cy = isMod ? zoomY : topY;
+        const tx = spec.txFixed != null ? spec.txFixed : cx + spec.dx;
+        return { d, isMod, cx, cy, ty: spec.ty, tx, anchor: spec.anchor, stemY: spec.stemY };
+      });
+
+      const items = svg.append("g").selectAll("g.fita").data(placedAll).join("g").attr("class", "fita hit");
+      items.each(function(p){
         const g = d3.select(this);
-        const cx = x(d.anr);
-        const dy = lanes[i] || -60;
-        const col = colOf(d.cat);
-        const anc = cx < M.l + 90 ? "start" : cx > w - M.r - 110 ? "end" : "middle";
+        const col = colOf(p.d.cat);
+        const textCol = col === C.groc ? C.ink : col;
 
-        g.append("line").attr("class","stem")
-          .attr("x1", cx).attr("x2", cx).attr("y1", baseY).attr("y2", baseY + dy + (dy < 0 ? 14 : -14))
+        g.append("line").attr("class", "stem")
+          .attr("x1", p.cx).attr("x2", p.cx).attr("y1", p.cy).attr("y2", p.stemY)
           .attr("stroke", C.hair).attr("stroke-width", 0.8);
-        g.append("circle").attr("class","aura").attr("cx", cx).attr("cy", baseY).attr("r", 0)
-          .attr("fill", col).attr("fill-opacity", 0.28).style("mix-blend-mode","multiply");
-        g.append("circle").attr("class","dot").attr("cx", cx).attr("cy", baseY).attr("r", 3.6)
+        g.append("circle").attr("class", "aura")
+          .attr("cx", p.cx).attr("cy", p.cy).attr("r", 0)
+          .attr("fill", col).attr("fill-opacity", 0.28).style("mix-blend-mode", "multiply");
+        g.append("circle").attr("class", "dot")
+          .attr("cx", p.cx).attr("cy", p.cy).attr("r", 3.6)
           .attr("fill", col).attr("stroke", C.paper).attr("stroke-width", 1);
 
-        const ty = baseY + dy;
-        const tx = clamp(cx, M.l + (anc === "start" ? 0 : 54), w - M.r - (anc === "end" ? 0 : 54));
-        IBV.t(g, tx, ty - 2, d.etiq, { size: 11.5, weight: 700, anchor: anc, fill: col === C.groc ? C.ink : col, halo: 3 });
-        IBV.t(g, tx, ty + 12, d.titol, { size: 11.5, anchor: anc, fill: C.ink, halo: 3 });
+        IBV.t(g, p.tx, p.ty, p.d.etiq, { size: 11.5, weight: 700, anchor: p.anchor, fill: textCol, halo: 3 });
+        IBV.t(g, p.tx, p.ty + 14, p.d.titol, { size: 11.5, anchor: p.anchor, fill: C.ink, halo: 3 });
       });
 
+      const rBase = w < 900 ? 8 : 10;
+      const rKey = w < 900 ? 10.5 : 13;
       IBV.onView(container, instant => {
         items.selectAll("circle.aura").transition().duration(instant ? 0 : 850).ease(IBV.EASE)
-          .attr("r", (d, i) => (i === 0 || i === 5 || i === 11) ? 13 : 9);
+          .attr("r", p => keySet.has(p.d.any) ? rKey : rBase);
       });
 
-      IBV.hover(svg.node(), (ev, [mx]) => {
-        const best = d3.least(D.fites, d => Math.abs(x(d.anr) - mx));
-        if(!best) return;
-        IBV.focus(items, d => d === best, { dim: 0.48 });
-        items.selectAll("circle.dot").attr("r", d => d === best ? 5.5 : 3.6).attr("stroke", d => d === best ? C.ink : C.paper);
-        items.selectAll("line.stem").attr("stroke", d => d === best ? C.ink : C.hair);
-        tp.show(`<b>${best.etiq} · ${best.lloc}</b> · ${best.detall}`);
-      }, () => {
+      const placedAnc = placedAll.filter(p => !p.isMod);
+      const placedMod = placedAll.filter(p => p.isMod);
+
+      function hitLabel(list, mx, my){
+        return list.find(p => {
+          const approxW = Math.max(p.d.titol.length * 6.0, 58);
+          const x0 = p.anchor === "start" ? p.tx - 6 : p.tx - approxW - 6;
+          const x1 = p.anchor === "start" ? p.tx + approxW + 6 : p.tx + 6;
+          return mx >= x0 && mx <= x1 && my >= p.ty - 14 && my <= p.ty + 20;
+        });
+      }
+
+      function highlightItem(best){
+        IBV.focus(items, p => p === best, { dim: 0.48 });
+        items.selectAll("circle.dot")
+          .attr("r", p => p === best ? 5.4 : 3.6)
+          .attr("stroke", p => p === best ? C.ink : C.paper);
+        items.selectAll("line.stem")
+          .attr("stroke", p => p === best ? C.ink : C.hair)
+          .attr("stroke-width", p => p === best ? 1.3 : 0.8);
+        miniDots
+          .attr("r", d => best.isMod && d === best.d ? 4 : 2.2)
+          .attr("stroke", d => best.isMod && d === best.d ? C.ink : "none")
+          .attr("stroke-width", d => best.isMod && d === best.d ? 1.3 : 0);
+        if(best.isMod) miniDots.filter(d => d === best.d).raise();
+        zoomBeam.attr("fill-opacity", best.isMod ? 0.06 : 0.04);
+        tp.show(`<b>${best.d.etiq} · ${best.d.lloc}</b> · ${best.d.detall}`);
+      }
+
+      function resetDesktop(){
         IBV.focus(items, null);
         items.selectAll("circle.dot").attr("r", 3.6).attr("stroke", C.paper);
-        items.selectAll("line.stem").attr("stroke", C.hair);
+        items.selectAll("line.stem").attr("stroke", C.hair).attr("stroke-width", 0.8);
+        miniDots.attr("r", 2.2).attr("stroke", "none").attr("stroke-width", 0);
+        zoomBeam.attr("fill-opacity", 0.04);
         tp.hide();
-      });
+      }
+
+      IBV.hover(svg.node(), (ev, [mx, my]) => {
+        if(my < 168){
+          if(mx >= bx0 - 8 && mx <= bx1 + 8){
+            IBV.focus(items, p => p.isMod, { dim: 0.48 });
+            items.selectAll("circle.dot").attr("r", 3.6).attr("stroke", C.paper);
+            items.selectAll("line.stem").attr("stroke", C.hair).attr("stroke-width", 0.8);
+            miniDots.attr("r", 2.6).attr("stroke", "none").attr("stroke-width", 0);
+            zoomBeam.attr("fill-opacity", 0.09);
+            tp.show("<b>1500–2025 (3,6 % del temps)</b> · Les vuit fites modernes de la pizza desplegades a la franja inferior");
+            return;
+          }
+          let best = hitLabel(placedAnc, mx, my);
+          if(!best){
+            const cand = d3.least(placedAnc, p => Math.abs(p.cx - mx));
+            if(cand && Math.abs(cand.cx - mx) <= 90) best = cand;
+          }
+          if(best) highlightItem(best);
+          else resetDesktop();
+          return;
+        }
+        const best = hitLabel(placedMod, mx, my) || d3.least(placedMod, p => Math.abs(p.cx - mx));
+        if(best) highlightItem(best);
+        else resetDesktop();
+      }, resetDesktop);
     }
 
     function drawParents(container, w){

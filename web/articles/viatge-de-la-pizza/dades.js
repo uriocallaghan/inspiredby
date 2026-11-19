@@ -42,20 +42,20 @@ window.PIZZA_DADES = {
     }
   ],
 
-  /* 2. Cronologia de 14.400 anys (escala logarítmica d'anys enrere fins al 2026) */
+  /* 2. Cronologia de 14.400 anys (escala lineal real + zoom lineal 1500–2025) */
   fites: [
-    { any: -12400, anr: 14400, etiq: "≈ 14.400 BP", lloc: "Shubayqa 1 (Jordània)", titol: "Pa pla abans de l'agricultura", cat: "pa", detall: "Restes de pa pla natufià amb cereals silvestres i jonça (Arranz-Otaegui et al., 2018)" },
-    { any: -8000, anr: 10000, etiq: "≈ 10.000 BP", lloc: "Creixent Fèrtil", titol: "Domesticació del blat", cat: "bio", detall: "El blat hexaploide posterior aporta gliadina i glutenina: la xarxa de gluten" },
-    { any: 79, anr: 1947, etiq: "79 dC", lloc: "Pompeia (Regio IX)", titol: "Fresc de la «focaccia» romana", cat: "pa", detall: "Pa pla sobre safata de plata amb magrana, dàtils i moretum — sense tomàquet" },
-    { any: 997, anr: 1029, etiq: "997", lloc: "Gaeta (Campània)", titol: "Primer mot «pizza» escrit", cat: "hist", detall: "Codex Diplomaticus Cajetanus: renda anual de dotze pizzes al bisbe" },
-    { any: 1544, anr: 482, etiq: "1544", lloc: "Itàlia", titol: "Mattioli descriu el «pomo d'oro»", cat: "bio", detall: "El tomàquet arriba d'Amèrica, temut durant segles com a solanàcia sospitosa" },
-    { any: 1692, anr: 334, etiq: "1692", lloc: "Nàpols", titol: "Primera salsa de tomàquet impresa", cat: "hist", detall: "Antonio Latini publica «Salsa di Pomadoro, alla Spagnuola» a Lo Scalco alla Moderna" },
-    { any: 1835, anr: 191, etiq: "1835", lloc: "Nàpols", titol: "Dumas retrata els lazzaroni", cat: "hist", detall: "Pa pla de carrer doblegat en quatre per a obrers sense cuina ni coberts (Le Corricolo)" },
-    { any: 1858, anr: 168, etiq: "1858", lloc: "Nàpols", titol: "Tomàquet, mozzarella i alfàbrega", cat: "hist", detall: "De Bourcard documenta la combinació trenta anys abans del mite de 1889" },
-    { any: 1889, anr: 137, etiq: "1889", lloc: "Nàpols", titol: "El mite de la reina Margarida", cat: "hist", detall: "Tradició consolidada al s. XX com a símbol nacional (Nowak, 2014)" },
-    { any: 1905, anr: 121, etiq: "1905", lloc: "Nova York", titol: "Lombardi's i la pizza americana", cat: "global", detall: "Forns de carbó, blat ric en proteïna i porció gran compartida per a la diàspora" },
-    { any: 1970, anr: 56, etiq: "1970", lloc: "Antropologia", titol: "Bharati encunya l'«efecte pizza»", cat: "global", detall: "Allò que es menystenia a casa torna amb prestigi després de triomfar fora" },
-    { any: 2017, anr: 9, etiq: "2017", lloc: "UNESCO", titol: "Art del pizzaiuolo napolità", cat: "global", detall: "Inscrit al Patrimoni Cultural Immaterial de la Humanitat" }
+    { any: -12400, etiq: "≈ 12.400 aC", lloc: "Shubayqa 1 (Jordània)", titol: "Pa pla abans de l'agricultura", cat: "pa", detall: "Fa ~14.400 anys: restes de pa pla natufià amb cereals silvestres i jonça (Arranz-Otaegui et al., 2018)" },
+    { any: -8000, etiq: "≈ 8.000 aC", lloc: "Creixent Fèrtil", titol: "Domesticació del blat", cat: "bio", detall: "Fa ~10.000 anys: el blat hexaploide posterior aporta gliadina i glutenina, la xarxa de gluten" },
+    { any: 79, etiq: "79 dC", lloc: "Pompeia (Regio IX)", titol: "Fresc de la «focaccia» romana", cat: "pa", detall: "Pa pla sobre safata de plata amb magrana, dàtils i moretum — sense tomàquet" },
+    { any: 997, etiq: "997", lloc: "Gaeta (Campània)", titol: "Primer mot «pizza» escrit", cat: "hist", detall: "Codex Diplomaticus Cajetanus: renda anual de dotze pizzes al bisbe" },
+    { any: 1544, etiq: "1544", lloc: "Itàlia", titol: "Mattioli descriu el «pomo d'oro»", cat: "bio", detall: "El tomàquet arriba d'Amèrica, temut durant segles com a solanàcia sospitosa" },
+    { any: 1692, etiq: "1692", lloc: "Nàpols", titol: "Primera salsa de tomàquet impresa", cat: "hist", detall: "Antonio Latini publica «Salsa di Pomadoro, alla Spagnuola» a Lo Scalco alla Moderna" },
+    { any: 1835, etiq: "1835", lloc: "Nàpols", titol: "Dumas retrata els lazzaroni", cat: "hist", detall: "Pa pla de carrer doblegat en quatre per a obrers sense cuina ni coberts (Le Corricolo)" },
+    { any: 1858, etiq: "1858", lloc: "Nàpols", titol: "Tomàquet, mozzarella i alfàbrega", cat: "hist", detall: "De Bourcard documenta la combinació trenta anys abans del mite de 1889" },
+    { any: 1889, etiq: "1889", lloc: "Nàpols", titol: "El mite de la reina Margarida", cat: "hist", detall: "Tradició consolidada al s. XX com a símbol nacional (Nowak, 2014)" },
+    { any: 1905, etiq: "1905", lloc: "Nova York", titol: "Lombardi's i la pizza americana", cat: "global", detall: "Forns de carbó, blat ric en proteïna i porció gran compartida per a la diàspora" },
+    { any: 1970, etiq: "1970", lloc: "Antropologia", titol: "Bharati encunya l'«efecte pizza»", cat: "global", detall: "Allò que es menystenia a casa torna amb prestigi després de triomfar fora" },
+    { any: 2017, etiq: "2017", lloc: "UNESCO", titol: "Art del pizzaiuolo napolità", cat: "global", detall: "Inscrit al Patrimoni Cultural Immaterial de la Humanitat" }
   ],
 
   /* 2b. Parents antropològics del pa pla */
