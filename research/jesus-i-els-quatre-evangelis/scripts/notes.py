@@ -14,6 +14,7 @@ F=[('G','Associació Bíblica de Catalunya. <i>Bíblia catalana. Traducció inte
 ('A','Atanasi d\'Alexandria. <i>Carta festal</i> 39, §5 (367). <a href="https://www.newadvent.org/fathers/2806039.htm">Text</a>'),
 ('N','Tauber, J. K., ed. <i>MorphGNT: SBLGNT Edition</i>, versió 6.12, 2017 (text grec SBLGNT de la Society of Biblical Literature amb lematització). DOI: <a href="https://doi.org/10.5281/zenodo.376200">10.5281/zenodo.376200</a> · <a href="https://github.com/morphgnt/sblgnt">Dades</a>'),
 ('E','Eusebi de Cesarea. Seccions i taules canòniques dels evangelis (segle IV), descrites a la <i>Carta a Carpià</i>. Edició digital de domini públic de K. P. Edgecomb, alineada amb el text SBLGNT per A. Baker. <a href="https://github.com/adamb924/eusebian-canons">Dades</a>'),
+('S','NASA, Shuttle Radar Topography Mission (SRTM), via AWS Terrain Tiles (Mapzen), teselles skadi N30–N33 E034–E036. Mitjana per cel·les de 0,0125°. <a href="https://registry.opendata.aws/terrain-tiles/">Dades</a>'),
 ('R','Natural Earth. Costa, terra, llacs i rius, escales 1:10m i 1:50m. Domini públic. <a href="https://www.naturalearthdata.com/">Natural Earth</a>'),
 ]
 idx={k:i+1 for i,(k,_) in enumerate(F)}

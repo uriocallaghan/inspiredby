@@ -30,7 +30,7 @@
 
 <section class="scrolly" id="s-mapa" aria-label="El territori dels evangelis">
 <div class="steps">
-<div class="step" data-s="0"><div class="step-in"><p><b>Un racó de l'Imperi.</b> Galilea i Judea són a l'extrem oriental del Mediterrani romà, entre la costa i el desert. El riu Jordà les separa de les terres de l'est i uneix dos llacs: el de Galilea, d'aigua dolça, i el mar Mort.</p></div></div>
+<div class="step" data-s="0"><div class="step-in"><p><b>Un racó de l'Imperi.</b> Galilea i Judea són a l'extrem oriental del Mediterrani romà, entre la costa i el desert. El riu Jordà corre per una fossa enfonsada sota el nivell del mar: surt del llac de Galilea, a 212 metres per sota, i acaba al mar Mort, a més de 400. A banda i banda s'aixequen les muntanyes on hi ha Natzaret i Jerusalem.[[Alçades del model SRTM @S]]</p></div></div>
 <div class="step" data-s="1"><div class="step-in"><p><b>Natzaret.</b> Un poble de les muntanyes de la baixa Galilea. Segons Marc, allà el coneixen com «l'artesà, el fill de Maria». El mot grec, <i>téktōn</i>, és menys precís que l'estampa d'un fuster al banc de treball. Jerusalem queda a uns 100 quilòmetres en línia recta.[[{Mc 6,1–6} @G @H]]</p></div></div>
 <div class="step" data-s="2"><div class="step-in"><p><b>El llac.</b> L'activitat que narra Marc es concentra a la riba nord del llac de Galilea: Cafarnaüm, Betsaida, Corazín. Pobles de pescadors separats per pocs quilòmetres. Natzaret és a una jornada llarga de camí.[[{Mc 1,16–39} · {Mt 11,20–24} @G]]</p></div></div>
 <div class="step" data-s="3"><div class="step-in"><p><b>Dos governants.</b> Galilea i Perea, a l'altra banda del Jordà, són d'Herodes Antipes, fill d'Herodes el Gran, sota la supremacia romana. Judea i Samaria, en canvi, les governa directament un prefecte romà, Ponç Pilat, del 26 al 36. Anar de Galilea a Jerusalem per Pasqua volia dir sortir del territori d'Antipes i entrar en el de Pilat.[[{Lc 3,1} @B]]</p></div></div>
@@ -38,22 +38,33 @@
 <div class="step" data-s="5"><div class="step-in"><p><b>Les quatre pujades de Joan.</b> Joan explica una altra història: Jesús va i ve. Hi puja per una Pasqua, per una festa sense nom, per la festa de les Cabanyes i per l'última Pasqua. Com que Joan esmenta tres Pasqües, d'aquí ve la idea que la vida pública va durar uns tres anys. Els altres tres evangelis no ho diuen.[[Pujades a Jerusalem: {Jn 2,13} · {Jn 5,1} · {Jn 7,10} · {Jn 12,12}. Tres Pasqües: {Jn 2,13} · {Jn 6,4} · {Jn 11,55} @G @H]]</p></div></div>
 </div>
 <div class="graphic"><div class="gbox">
-<div class="vh"><div><strong id="mapa-t">El territori dels evangelis</strong><span class="gs" id="mapa-s">Costa, llacs i riu actuals</span></div></div>
+<div class="vh"><div><strong id="mapa-t">El territori dels evangelis</strong><span class="gs" id="mapa-s">El relleu real, una línia per latitud</span></div><div class="lgs" id="mapa-lg"></div></div>
 <div class="plot" id="mapa"></div>
-<p class="src"><b>Mapa.</b> Costa, llacs i Jordà actuals (Natural Earth 1:10m); el mar Mort era més gran. Posició dels llocs segons la identificació arqueològica habitual; Betsaida i Canà tenen identificacions discutides. Les regions són aproximades i no es dibuixen fronteres.</p>
+<p class="src"><b>Dades reals.</b> Relleu SRTM (cel·les d'1,2 km), exagerat en vertical; costa i llacs actuals de Natural Earth: el mar Mort era més gran. Llocs segons la identificació arqueològica habitual (Betsaida i Canà, discutides). Regions aproximades, sense fronteres.</p>
 </div></div>
 </section>
+
+<section class="col">
+<p>Marc diu que anaven de camí «pujant a Jerusalem». No és una manera de parlar. El camí baixa primer per la vall del Jordà, per sota del nivell del mar, i a Jericó comença una pujada de gairebé un quilòmetre de desnivell fins a la ciutat del Temple.[[{Mc 10,32–33} · {Mc 10,46} · {Mc 11,1}. Alçades del model SRTM @S]]</p>
+</section>
+
+<figure class="fig wide" id="f-pujada">
+<div class="vh"><div><strong>Pujar a Jerusalem</strong><span>Perfil d'alçada del camí que narra Marc, de Cafarnaüm a Jerusalem, desplegat en línia recta</span></div><div class="lgs" id="pujada-lg"><span class="lgi"><i class="sq" style="background:rgba(44,93,168,.3)"></i>Sota el nivell del mar</span></div></div>
+<div class="plot" id="pujada"></div>
+<p class="readout" id="pujada-r" aria-live="polite"></p>
+<figcaption class="src"><b>Dades reals</b> d'alçada (SRTM, cel·les d'1,2 km) sobre un <b>esquema de ruta</b>: Marc només diu que Jesús passa a l'altra banda del Jordà, per Jericó i per Betània; el traçat entre aquests punts és orientatiu. Distàncies de cercle màxim.[[{Mc 10,1} · {Mc 10,46} · {Mc 11,1} @S @R]]</figcaption>
+</figure>
 
 <section class="col">
 <p>Hi ha una manera senzilla de veure on posa l'accent cada narrador: comptar quantes vegades anomena cada lloc. No cal interpretar res. Només cal llegir el text grec i fer recompte.</p>
 </section>
 
 <figure class="fig wide" id="f-llocs">
-<div class="vh"><div><strong>Quins llocs anomena cada evangeli</strong><span>Mencions de cada població en el text grec. L'àrea del cercle és proporcional al recompte</span></div><div class="lgs" id="llocs-lg"></div></div>
+<div class="vh"><div><strong>Quins llocs anomena cada evangeli</strong><span>Mencions de cada població en el text grec. L'alçada de cada pic és proporcional al recompte</span></div><div class="lgs" id="llocs-lg"></div></div>
 <div class="seg" role="group" aria-label="Evangeli"><button type="button" aria-pressed="true" data-k="tots">Tots quatre</button><button type="button" aria-pressed="false" data-k="Mt">Mateu</button><button type="button" aria-pressed="false" data-k="Mc">Marc</button><button type="button" aria-pressed="false" data-k="Lc">Lluc</button><button type="button" aria-pressed="false" data-k="Jn">Joan</button></div>
 <div class="plot" id="llocs"></div>
 <p class="readout" id="llocs-r" aria-live="polite"></p>
-<figcaption class="src"><b>Dades reals.</b> Recompte d'Inspired by sobre el text grec SBLGNT amb la lematització de MorphGNT. Només els noms de població, no els adjectius («natzarè», «Magdalena»). Marc, fins a 16,8. Betània de Joan 1,28, a l'altra banda del Jordà, és un altre lloc i no es compta. Mapa: Natural Earth.[[Recompte propi sobre el text grec @N]]</figcaption>
+<figcaption class="src"><b>Dades reals.</b> Recompte d'Inspired by sobre el text grec SBLGNT amb la lematització de MorphGNT. Només els noms de població, no els adjectius («natzarè», «Magdalena»). Marc, fins a 16,8. Betània de Joan 1,28, a l'altra banda del Jordà, és un altre lloc i no es compta. Mapa inclinat: Natural Earth.[[Recompte propi sobre el text grec @N]]</figcaption>
 </figure>
 
 <section class="col">
@@ -65,11 +76,11 @@
 </section>
 
 <figure class="fig" id="f-betlem">
-<div class="vh"><div><strong>Dos itineraris per a un mateix naixement</strong><span>Els desplaçaments de la família segons cada evangeli</span></div><div class="lgs" id="betlem-lg"></div></div>
-<div class="seg" role="group" aria-label="Relat"><button type="button" aria-pressed="true" data-k="Mt">Segons Mateu</button><button type="button" aria-pressed="false" data-k="Lc">Segons Lluc</button><button type="button" aria-pressed="false" data-k="tots">Tots dos</button></div>
+<div class="vh"><div><strong>Dos itineraris per a un mateix naixement</strong><span>Els desplaçaments de la família segons cada evangeli, sobre el mateix relleu</span></div></div>
 <div class="plot" id="betlem"></div>
+<div class="ctlrow"><button type="button" class="playb">Torna a reproduir els recorreguts</button></div>
 <p class="readout" id="betlem-r" aria-live="polite"></p>
-<figcaption class="src"><b>Esquema sobre mapa real.</b> Recorreguts tal com els narra cada text, sense camins reals. Mateu no diu on s'atura la família a Egipte. A sota, la tensió de dates: Herodes el Gran mor el 4 aC i el cens de Quirini que coneix Josep és del 6 dC.[[{Mt 2} · {Lc 2} @G. Cens de Quirini: Josep, <i>Antiguitats jueves</i> XVIII, 1–4 @J @H]]</figcaption>
+<figcaption class="src"><b>Esquema sobre relleu real</b> (SRTM). Recorreguts tal com els narra cada text; els traçats i els quilòmetres són orientatius. Mateu no diu on s'atura la família a Egipte. A sota, la tensió de dates: Herodes el Gran mor el 4 aC i el cens de Quirini que coneix Josep és del 6 dC.[[{Mt 2} · {Lc 2} @G. Cens de Quirini: Josep, <i>Antiguitats jueves</i> XVIII, 1–4 @J @H]]</figcaption>
 </figure>
 
 <section class="col">
@@ -133,7 +144,7 @@
 <div class="seg" role="group" aria-label="Capa"><button type="button" aria-pressed="true" data-k="ga">Segons Gàlates</button><button type="button" aria-pressed="false" data-k="cartes">Les cartes</button><button type="button" aria-pressed="false" data-k="pla">El pla de Romans</button></div>
 <div class="plot" id="pau"></div>
 <p class="readout" id="pau-r" aria-live="polite"></p>
-<figcaption class="src"><b>Mapa amb dades textuals.</b> Recorreguts segons Gàlates 1–2 i Romans 15–16; les línies són rectes entre ciutats, no camins. Mida de cada carta: paraules gregues (SBLGNT). Costa: Natural Earth 1:50m. Distàncies en línia recta.[[{Ga 1,15–2,14} · {Rm 15,22–29} · {Rm 16,1–5} · {1Co 16,8} · {1Co 16,19} @P @N @R]]</figcaption>
+<figcaption class="src"><b>Mapa amb dades textuals.</b> Recorreguts segons Gàlates 1–2 i Romans 15–16; les línies són rectes entre ciutats, no camins. Projecció azimutal equidistant centrada a Jerusalem: la distància fins al centre és real en tot el mapa. Mida de cada carta: paraules gregues (SBLGNT). Costa: Natural Earth 1:50m.[[{Ga 1,15–2,14} · {Rm 15,22–29} · {Rm 16,1–5} · {1Co 16,8} · {1Co 16,19} @P @N @R]]</figcaption>
 </figure>
 
 <section class="col">

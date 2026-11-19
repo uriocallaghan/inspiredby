@@ -58,3 +58,14 @@ L'article s'ha reescrit i tots els gràfics s'han refet. Dades i com s'han obtin
 - La frase de Martin Kähler («relats de la passió amb una introducció llarga»): no s'ha pogut comprovar la redacció ni la pàgina. Fora de l'article.
 - Data de composició dels *Annals* de Tàcit: no verificada; l'article diu «començament del segle II» i el gràfic ho marca com a aproximat (105–120).
 - Reconstrucció de Séforis per Antipes i la pedra de Pilat a Cesarea: no verificades; fora de l'article.
+
+## Mapes amb relleu (19-11-2026)
+
+- **Relleu:** NASA SRTM a través d'AWS Terrain Tiles (Mapzen), teselles «skadi» N30–N33 / E034–E036, https://registry.opendata.aws/terrain-tiles/ . `scripts/dem.py` en fa la mitjana per cel·les de 0,0125° (≈1,2 km) entre 34–37 °E i 30,6–33,9 °N i la desa a `web/articles/jesus-i-els-quatre-evangelis/relleu.js` (8 bits, de −430 a 2.000 m, uns 9,5 m per pas).
+- Comprovació de valors: Jerusalem 764 m; Jericó −213 m; llac de Galilea −214 m (superfície real ≈ −212 m); mar Mort −415 m.
+- Al perfil del camí de Marc, la pujada de Jericó a Jerusalem surt d'uns 950 m en uns 23 km. El traçat entre els punts que dona el text (l'altra banda del Jordà, Jericó, Betània) és un esquema i així ho diu el peu.
+- **Peces:**
+  - IB-26 (crestes) per al mapa del territori i per als itineraris de la infància;
+  - IB-32 (franja amb perfil) per a la pujada a Jerusalem;
+  - IB-25 (pics) per als llocs anomenats;
+  - IB-30 (azimutal equidistant centrada a Jerusalem) per a la xarxa de Pau.

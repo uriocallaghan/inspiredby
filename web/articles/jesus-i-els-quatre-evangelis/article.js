@@ -63,6 +63,10 @@
       // la creu
       const cr=s.append("g").attr("class","creu");
       cr.append("line").attr("x1",x(30)).attr("x2",x(30)).attr("y1",top-4).attr("y2",h-6).attr("stroke",C.vermell).attr("stroke-width",1).attr("stroke-dasharray","3 3");
+      // a la vista final, un ram de línies surt de la creu cap a cada text: la distància en anys
+      const tree=s.append("g").style("opacity",0), CR=D.find(d=>d.n==="Crucifixió");
+      D.filter(d=>d.g!=="vida").forEach(d=>{ const x0=x(30), y0=CR.y+rh/2, x1=x(d.a)-2, y1=d.y+rh/2;
+        d.br=tree.append("path").attr("d",`M${x0},${y0}C${x0},${(y0+y1)/2} ${x0+(x1-x0)*.25},${y1} ${x1},${y1}`).attr("fill","none").attr("stroke",V.alpha(C.vermell,.5)).attr("stroke-width",.9); });
       // grups
       const gl=s.append("g");
       if(!mob)groups.forEach(o=>V.t(gl,0,o.y+rh*.62,G[o.g].t,{size:12.5,italic:true,fill:C.ink2}));
@@ -90,6 +94,10 @@
         rows.interrupt().transition().duration(dur).style("opacity",d=>!vis(d)?0:on(d)?1:.22);
         rows.select(".bar").attr("stroke",d=>hov===d?C.ink:null).attr("stroke-width",1.5);
         cr.transition().duration(dur).style("opacity",1);
+        const tOn=state==="tot";
+        if(tOn&&tree.style("opacity")==="0"&&!V.reduced){ tree.style("opacity",1); D.forEach(d=>{ if(!d.br)return; const L=d.br.node().getTotalLength(); d.br.attr("stroke-dasharray",`${L} ${L}`).attr("stroke-dashoffset",L).transition().delay(ORD.indexOf(d.g)*180).duration(900).ease(ease).attr("stroke-dashoffset",0); }); }
+        else tree.transition().duration(dur).style("opacity",tOn?1:0);
+        D.forEach(d=>{ if(d.br)d.br.attr("stroke",hov===d?C.vermell:V.alpha(C.vermell,hov?.15:.5)).attr("stroke-width",hov===d?1.8:.9); });
         D.forEach(d=>d.dist.text((state==="tot"&&!mob)||hov===d?since(d):""));
       }
       hit.on("pointermove pointerdown",ev=>{ const [mx,my]=d3.pointer(ev,hit.node());

@@ -68,3 +68,5 @@ ol.fts li.on{animation:liflash 2.4s ease-out}
   .npop{display:none}
 }
 @media (prefers-reduced-motion:reduce){sup.nr a.flash,ol.nts li.on,ol.fts li.on{animation:none}}
+/* relleu: les vores del mapa s'esvaeixen, sense marc */
+canvas.fade{-webkit-mask-image:linear-gradient(to right,transparent,#000 4%,#000 96%,transparent),linear-gradient(to bottom,transparent,#000 3%,#000 95%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 4%,#000 96%,transparent),linear-gradient(to bottom,transparent,#000 3%,#000 95%,transparent);mask-composite:intersect}

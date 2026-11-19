@@ -36,6 +36,7 @@ html=f'''<!doctype html>
 <script src="../../assets/scrolly.js"></script>
 <script src="../../assets/ib-viz.js"></script>
 <script src="dades.js"></script>
+<script src="relleu.js"></script>
 <script src="article.js"></script>
 <script src="mapes.js"></script>
 <script src="cites.js"></script>
