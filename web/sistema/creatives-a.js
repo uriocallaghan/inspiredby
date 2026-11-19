@@ -468,11 +468,11 @@ piece(37,(el,w)=>{
     const [x,y]=pos(best);
     if(cur===best)return;
     const ch=!cur||cur.m!==best.m||cur.yi!==best.yi; cur=best;
-    if(ch)dimTo(an,.15);
+    if(ch)dimTo(an,.5);
     const w0=DAYS37.filter(d=>d.yi===best.yi&&d.wk===best.wk), [x0,y0]=pos(w0[0]), [x1,y1]=pos(w0[w0.length-1]);
     hv.selectAll("*").remove();
-    // vel blanc amb un forat a la forma del mes: la resta queda apagada sense redibuixar el canvas
-    hv.append("path").attr("d",`M0,0H${w}V${H}H0Z`+monthPath(best.d.getFullYear(),best.m)).attr("fill-rule","evenodd").attr("fill",C.paper).attr("fill-opacity",.75);
+    // vel blanc suau amb un forat a la forma del mes: la resta queda atenuada però llegible
+    hv.append("path").attr("d",`M0,0H${w}V${H}H0Z`+monthPath(best.d.getFullYear(),best.m)).attr("fill-rule","evenodd").attr("fill",C.paper).attr("fill-opacity",.38);
     hv.append("rect").attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1).attr("x",Math.min(x0,x1)-.5).attr("y",Math.min(y0,y1)-.5).attr("width",Math.abs(x1-x0)+c).attr("height",Math.abs(y1-y0)+c);
     const cxx=x+c/2, cyy=y+c/2, mY=mob?null:T0-6, wdX=mob?null:26;
     // guies
@@ -721,7 +721,7 @@ const M39=piece(39,(el,w)=>{
     const ci=del.find(px,py), cand=N39[ci], best=cand&&(cand.x-px)**2+(cand.y-py)**2<=(r+10)**2?cand:null;
     if(!best){ if(cur)clear39(); return; }
     if(best!==cur){ cur=best;
-      veil.interrupt().transition().duration(HT).attr("opacity",.8); dimTo(ga,.15);
+      veil.interrupt().transition().duration(HT).attr("opacity",.42); dimTo(ga,.5);
       hv.selectAll("*").remove();
       const yr=N39.filter(d=>d.yr===best.yr).sort((a,b)=>a.k-b.k);
       hv.append("path").attr("d",d3.line(d=>d.x,d=>d.y)(yr)).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.7).attr("stroke-opacity",.6);

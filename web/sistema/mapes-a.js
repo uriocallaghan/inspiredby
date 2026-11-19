@@ -144,7 +144,7 @@ const M21=piece(21,(el,w)=>{
     const p=P(d,mode21);
     tp.show(`<b>${d.n}</b><br>Gener: <b>${sgn(d.v)} °C</b><br>${sgn(d.v-MEAN)} °C respecte a la mitjana dels ${NT} països<br>posició ${d.rank+1} de ${NT}, del més càlid al més fred`,p.x+p.w/2+(mode21?Math.min(140,p.w/2):0),p.y);
     if(d===cur)return; cur=d;
-    V.focus(tiles,o=>o===d,{dim:.2}); tiles.filter(o=>o===d).raise(); if(!mode21)lo.interrupt().style("opacity",.2); rect.attr("stroke",o=>o===d?C.ink:null).attr("stroke-width",1.5); val.attr("font-weight",o=>o===d?700:400);
+    V.focus(tiles,o=>o===d,{dim:.5}); tiles.filter(o=>o===d).raise(); if(!mode21)lo.interrupt().style("opacity",.5); rect.attr("stroke",o=>o===d?C.ink:null).attr("stroke-width",1.5); val.attr("font-weight",o=>o===d?700:400);
     hl.selectAll("*").remove(); hl.raise(); hit.raise();
     if(!mode21){ // anell al lloc + etiqueta directa
       hl.append("rect").attr("x",p.x-4).attr("y",p.y-4).attr("width",p.w+8).attr("height",p.h+8).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.5).attr("rx",2);
@@ -267,7 +267,7 @@ const M22=piece(22,(el,w)=>{
     else { let best=1e9; N.forEach(o=>{ const q=Math.hypot(o.x-px,o.y-py)-Math.max(o.r,2); if(q<best){best=q;d=o;} }); if(best>10)d=null; }
     if(!d){ off(); return; }
     tp.show(`<b>${d.n}</b><br>Superfície: <b>${kmS(d.A)}</b><br>posició ${d.rk} de ${N.length} per superfície<br>Al mapa de Mercator, ×${f1(d.inf)} més gran`,mode22?d.x:px,mode22?d.y-d.r:py);
-    if(d===cur)return; cur=d; hl.selectAll("*").remove(); hl.raise(); hit.raise(); notes.transition().duration(150).style("opacity",.25);
+    if(d===cur)return; cur=d; hl.selectAll("*").remove(); hl.raise(); hit.raise(); notes.transition().duration(150).style("opacity",.5);
     const right=(mode22?d.x:d.x0)<Math.min(220,w*.35), lab=[[d.n,true],[mode22?kmS(d.A):`×${f1(d.inf)} al mapa`]];
     if(!mode22){
       V.focus(paths,o=>o===d,{dim:.25}); paths.filter(o=>o===d).raise().attr("stroke",C.ink).attr("stroke-width",1.5);
@@ -367,7 +367,7 @@ const M23=piece(23,(el,w)=>{
     if(drawn<ORD.length){ if(el._timer)el._timer.stop(); drawn=ORD.length; }
     const reg=R[k];
     tp.show(`<b>${reg.n}</b><br><b>${f0(reg.total)} unitats</b> (${f0(reg.nd)} punts)<br>${V.fmt(",.1f")(100*reg.total/TOT)} % del total del mapa<br>${f0(reg.total/reg.area)} per km², mitjana ${f0(DENS)} · <i>dades d'exemple</i>`,px,py);
-    if(k===hl)return; hl=k; paint(); notes.style("opacity",.2);
+    if(k===hl)return; hl=k; paint(); notes.style("opacity",.5);
     outline.attr("d",path(reg.f)).style("opacity",0).transition().duration(150).style("opacity",1);
     hg.selectAll("*").remove(); const c=reg.c||[px,py], right=c[0]<w*.62;
     hg.append("circle").attr("cx",c[0]).attr("cy",c[1]).attr("r",7).attr("fill","#fff").attr("stroke",C.ink).attr("stroke-width",1.5);
@@ -459,7 +459,7 @@ const M24=piece(24,(el,w)=>{
     if(ns.c){ const c=ns.c, out=FL.filter(f=>f.a===c), inn=FL.filter(f=>f.b===c), so=d3.sum(out,f=>f.v), si=d3.sum(inn,f=>f.v);
       tp.show(`<b>${c.n}</b><br>Surten <b>${f0(so)} unitats</b> (${out.length} ${out.length===1?"flux":"fluxos"})<br>N'arriben <b>${f0(si)}</b> (${inn.length} ${inn.length===1?"flux":"fluxos"})<br>${V.fmt(",.0f")(100*(so+si)/TOTV)} % de tot el volum · <i>dades d'exemple</i>`,c.x,c.y); }
     else { const f=ns.f; tp.show(`<b>${f.a.n} → ${f.b.n}</b><br><b>${f0(f.v)} unitats</b><br>${V.fmt(",.1f")(100*f.v/TOTV)} % del total · posició ${f.rk} de ${FL.length} · <i>dades d'exemple</i>`,px,py); }
-    if(k===curK)return; curK=k; sel=ns; hg.selectAll("*").remove(); hg.raise(); hit.raise(); g.selectAll(".ibv-note").style("opacity",.15);
+    if(k===curK)return; curK=k; sel=ns; hg.selectAll("*").remove(); hg.raise(); hit.raise(); g.selectAll(".ibv-note").style("opacity",.5);
     const ends=ns.c?[ns.c]:[ns.f.a,ns.f.b];
     const partner=o=>ends.includes(o)||(ns.c&&FL.some(f=>(f.a===ns.c&&f.b===o)||(f.b===ns.c&&f.a===o)));
     V.focus(cg,partner,{dim:.2}); cg.filter(o=>ends.includes(o)).raise().select("circle").attr("r",4.5).attr("fill",C.ink); cg.selectAll("text").attr("font-weight",o=>ends.includes(o)?700:400);
@@ -473,7 +473,7 @@ const M24=piece(24,(el,w)=>{
       V.lines(hg,m[0],m[1]-14,[[`${f.a.n} → ${f.b.n}`,true],[`${f0(f.v)} unitats`]],{anchor:"middle",size:12,halo:true}); }
     // guia fins a l'escala: el gruix d'aquest flux (o del més gros de la ciutat) a la clau
     const bfl=ns.f||d3.greatest(FL.filter(f=>f.a===ns.c||f.b===ns.c),f=>f.v), fv=bfl?bfl.v:0, yk=ky-(mob?16:20), kc=ns.c&&bfl&&bfl.b===ns.c?C.blauFosc:C.vermell;
-    key.style("opacity",.35);
+    key.style("opacity",.52);
     hg.append("line").attr("x1",kx).attr("x2",kx+28).attr("y1",yk).attr("y2",yk).attr("stroke",kc).attr("stroke-width",wd(fv)*1.35).attr("stroke-linecap","round");
     V.t(hg,kx+36,yk+4,`${f0(fv)} unitats${ns.c?" (el més gros)":""}`,{size:12,weight:700,halo:true});
     if(V.reduced)frame(0);
@@ -821,17 +821,20 @@ const GRID27=(function(){ const out=[]; for(let i=1;i<NLAT-1;i++){ const lat=gLa
 const toVec=(lon,lat)=>{ const l=lon*Math.PI/180, p=lat*Math.PI/180; return [Math.cos(p)*Math.cos(l),Math.cos(p)*Math.sin(l),Math.sin(p)]; };
 function vecLines(lines){ return lines.map(ln=>{ const a=new Float32Array(ln.length*3); ln.forEach((q,k)=>{ const v=toVec(q[0],q[1]); a[k*3]=v[0]; a[k*3+1]=v[1]; a[k*3+2]=v[2]; }); return a; }); }
 let LAND27=null; const GRAT27=vecLines(d3.geoGraticule().step([15,15]).precision(3).lines().map(l=>l.coordinates));
-let mode27=0, spin27=!V.reduced;
+let mon27=0, spin27=!V.reduced;
+const MES27=["gener","febrer","març","abril","maig","juny","juliol","agost","setembre","octubre","novembre","desembre"];
+const fMon27=m=>(1-Math.cos(m*Math.PI/6))/2; // 0 = gener (real), 6 = juliol (real), sinusoïdal entremig
 const M27=piece(27,(el,w)=>{
   if(needWorld(()=>M27))return;
   if(el._loop)el._loop.stop();
   const mob=w<640, padT=mob?52:12, S=Math.min(w,mob?w:620), R=S/2-10, h=Math.round(S+padT+(mob?46:0)), cx=w/2, cy=padT+S/2;
-  const {c,ctx,s}=layer(el,w,h,"Globus terrestre que gira, pintat amb la temperatura mitjana de l'aire de gener o de juliol (1991–2020): blau on glaça, vermell on fa calor. Una ombra marca la nit; al gener, l'extrem nord no veu el sol. Dades reals de la reanàlisi NCEP/NCAR.");
+  const {c,ctx,s}=layer(el,w,h,"Globus terrestre que gira, pintat amb la temperatura mitjana de l'aire mes a mes (gener i juliol reals de 1991–2020; la resta, interpolació sinusoïdal): blau on glaça, vermell on fa calor. Una ombra marca la nit. Dades reals de la reanàlisi NCEP/NCAR.");
   c.classList.add("ibx-grab"); s.style("pointer-events","none");
   const proj=d3.geoOrthographic().scale(R).translate([cx,cy]).clipAngle(90).precision(.4), gp=d3.geoPath(proj,ctx);
   const grat=d3.geoGraticule().step([15,15])();
-  let rot=el._rot||[-10,-28], mt=mode27, hov=null, t0=null, ent=1;
-  const rad=R*(STEP*Math.PI/180)*.36;
+  let rot=el._rot||[-10,-28], mt=fMon27(mon27), hov=null, t0=null, ent=1;
+  // Punts més fins i nítids perquè els continents i les costes es reconeguin al primer cop d'ull
+  const rad=R*(STEP*Math.PI/180)*.22;
   if(!LAND27){ const rings=[]; W.land.features.forEach(f=>{ const G=f.geometry.type==="Polygon"?[f.geometry.coordinates]:f.geometry.coordinates; G.forEach(pg=>pg.forEach(r=>rings.push(r))); }); LAND27=vecLines(rings); }
   const nightCache=new Map(); let lastKey="";
   function frame(t,dt){
@@ -839,35 +842,31 @@ const M27=piece(27,(el,w)=>{
     if(spin27&&!el._drag&&!hov&&dt)rot[0]+=dt*0.009;
     if(el._mt!=null){ mt=el._mt; }
     const key=rot[0].toFixed(2)+"|"+rot[1].toFixed(2)+"|"+mt.toFixed(3)+"|"+(hov?hov.k:"")+"|"+ent.toFixed(3);
-    if(key===lastKey)return; lastKey=key; // res no ha canviat: no es redibuixa
+    if(key===lastKey)return; lastKey=key;
     el._rot=rot; proj.rotate(rot);
     ctx.clearRect(0,0,w,h);
-    // rotació feta a mà sobre vectors precalculats (sense d3.geoPath per fotograma)
     const L=rot[0]*Math.PI/180, cl=Math.cos(L), sl=Math.sin(L), Pp=rot[1]*Math.PI/180, cp=Math.cos(Pp), sp=Math.sin(Pp);
     const strokeV=arrs=>{ ctx.beginPath(); for(const a of arrs){ let on=false; for(let k=0;k<a.length;k+=3){ const x=a[k]*cl-a[k+1]*sl, y=a[k]*sl+a[k+1]*cl, z=a[k+2], x2=x*cp-z*sp, z2=z*cp+x*sp;
       if(x2<=0){ on=false; continue; } const X=cx+R*y, Y=cy-R*z2; if(on)ctx.lineTo(X,Y); else { ctx.moveTo(X,Y); on=true; } } } ctx.stroke(); };
-    ctx.strokeStyle=C.hair; ctx.lineWidth=.6; strokeV(GRAT27);
-    // punts
-    const mid=mt>0&&mt<1, dim=hov?.3:1;
+    ctx.strokeStyle=C.hair; ctx.lineWidth=.55; strokeV(GRAT27);
+    const mid=mt>0.001&&mt<0.999, dim=hov?.55:1;
     for(const d of GRID27){ const x=d.vx*cl-d.vy*sl, y=d.vx*sl+d.vy*cl, x2=x*cp-d.vz*sp; if(x2<=0.02)continue;
       const a=ent<1?clamp((ent*1.6-(1-x2)),0,1):1; if(a<=0)continue;
-      ctx.globalAlpha=a*(.55+.45*x2)*dim; ctx.fillStyle=mid?DIV27(d.t0+(d.t1-d.t0)*mt):(mt>=1?d.c1:d.c0);
-      ctx.beginPath(); ctx.arc(cx+R*y,cy-R*(d.vz*cp+x*sp),rad*(.5+.5*Math.sqrt(x2))*(.6+.4*a),0,6.2832); ctx.fill(); }
+      ctx.globalAlpha=a*(.6+.4*x2)*dim; ctx.fillStyle=mid?DIV27(d.t0+(d.t1-d.t0)*mt):(mt>=.999?d.c1:d.c0);
+      ctx.beginPath(); ctx.arc(cx+R*y,cy-R*(d.vz*cp+x*sp),rad*(.55+.45*Math.sqrt(x2))*(.6+.4*a),0,6.2832); ctx.fill(); }
     ctx.globalAlpha=1;
-    ctx.strokeStyle=V.alpha(C.ink,.55); ctx.lineWidth=.6; strokeV(LAND27);
-    // nit: el sol queda fix respecte a qui mira, així que la forma només depèn de la inclinació i del mes (es desa)
+    ctx.strokeStyle=V.alpha(C.ink,.74); ctx.lineWidth=.75; strokeV(LAND27);
     const nk=rot[1].toFixed(1)+"|"+mt.toFixed(2); let night=nightCache.get(nk);
-    if(!night){ const c0=[-rot[0],-rot[1]], dec=DECL[0]+(DECL[1]-DECL[0])*mt; night=new Path2D(); const pr=d3.geoOrthographic().scale(R).translate([cx,cy]).clipAngle(90).precision(.6).rotate([0,rot[1]]);
-      d3.geoPath(pr,night)(d3.geoCircle().center([70+180,-dec]).radius(90)()); if(nightCache.size>400)nightCache.clear(); nightCache.set(nk,night); void c0; }
-    ctx.fillStyle=V.alpha(C.ink,.2); ctx.fill(night);
-    ctx.setLineDash([3,3]); ctx.strokeStyle=C.ink2; ctx.lineWidth=.9; ctx.stroke(night); ctx.setLineDash([]);
+    if(!night){ const dec=DECL[0]+(DECL[1]-DECL[0])*mt; night=new Path2D(); const pr=d3.geoOrthographic().scale(R).translate([cx,cy]).clipAngle(90).precision(.6).rotate([0,rot[1]]);
+      d3.geoPath(pr,night)(d3.geoCircle().center([70+180,-dec]).radius(90)()); if(nightCache.size>400)nightCache.clear(); nightCache.set(nk,night); }
+    ctx.fillStyle=V.alpha(C.ink,.18); ctx.fill(night);
+    ctx.setLineDash([3,3]); ctx.strokeStyle=C.ink2; ctx.lineWidth=.85; ctx.stroke(night); ctx.setLineDash([]);
     ctx.strokeStyle=C.hair; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(cx,cy,R,0,6.2832); ctx.stroke();
     if(hov){ const v=toVec(hov.lon,hov.lat), x=v[0]*cl-v[1]*sl, y=v[0]*sl+v[1]*cl, x2=x*cp-v[2]*sp;
       if(x2>0){ const p=[cx+R*y,cy-R*(v[2]*cp+x*sp)], T=TEMP[0][hov.k]+(TEMP[1][hov.k]-TEMP[0][hov.k])*mt;
-        ctx.fillStyle=DIV27(T); ctx.strokeStyle=C.ink; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(p[0],p[1],rad*1.8,0,6.2832); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.arc(p[0],p[1],rad*1.8+5,0,6.2832); ctx.stroke();
+        ctx.fillStyle=DIV27(T); ctx.strokeStyle=C.ink; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(p[0],p[1],Math.max(4,rad*2.2),0,6.2832); ctx.fill(); ctx.stroke();
         const right=p[0]<cx-R*.55, txt=`${sgn(T)} °C`; ctx.font=`700 13px ${V.SANS}`; ctx.textAlign=right?"left":"right"; ctx.lineJoin="round";
-        const lx=mob?p[0]:p[0]+(right?14:-14), ly=mob?p[1]+rad*1.8+20:p[1]-8; if(mob)ctx.textAlign="center";
+        const lx=mob?p[0]:p[0]+(right?14:-14), ly=mob?p[1]+18:p[1]-8; if(mob)ctx.textAlign="center";
         ctx.lineWidth=3; ctx.strokeStyle="#fff"; ctx.strokeText(txt,lx,ly); ctx.fillStyle=C.ink; ctx.fillText(txt,lx,ly);
         mark(T); } }
     else mark(null);
@@ -907,19 +906,32 @@ const M27=piece(27,(el,w)=>{
   const tp=tipOf(el);
   V.hover(c,(ev,[px,py])=>{ if(el._drag){ tp.hide(); return; } if(Math.hypot(px-cx,py-cy)>R){ hov=null; tp.hide(); if(!spin27)frame(1,0); return; }
     const ll=proj.invert([px,py]); const i=clamp(Math.round((90-ll[1])/STEP),0,NLAT-1), j=Math.round((((ll[0]%360)+360)%360)/STEP)%NLON;
-    hov={lon:gLon(j),lat:gLat(i),k:i*NLON+j}; const M=Math.round(mt), T=TEMP[M][i*NLON+j], A=ANOM[M][i*NLON+j];
-    tp.show(`<b>${llS(hov.lon,hov.lat)}</b><br>${MES2[M][0].toUpperCase()+MES2[M].slice(1)}: <b>${sgn(T)} °C</b> (${T<0?"sota zero":"sobre zero"})<br>${sgn(A)} °C respecte a la mitjana de la seva latitud`,px,py);
+    hov={lon:gLon(j),lat:gLat(i),k:i*NLON+j}; const T=TEMP[0][hov.k]+(TEMP[1][hov.k]-TEMP[0][hov.k])*mt, A=ANOM[0][hov.k]+(ANOM[1][hov.k]-ANOM[0][hov.k])*mt;
+    const mn=MES27[mon27][0].toUpperCase()+MES27[mon27].slice(1);
+    tp.show(`<b>${llS(hov.lon,hov.lat)}</b> · ${mn}: <b>${sgn(T)} °C</b> (${sgn(A)} °C vs latitud)`,px,py);
     if(!spin27||V.reduced)frame(1,0);
   },()=>{ hov=null; tp.hide(); if(!spin27||V.reduced)frame(1,0); });
   el._redraw=()=>frame(1,0);
-  el._month=m=>{ const a=mt; if(V.reduced){ mt=m; el._mt=m; frame(1,0); return; }
-    if(el._mtT)el._mtT.stop(); const tm=el._mtT=d3.timer(t=>{ const e=EIO(clamp(t/900,0,1)); el._mt=a+(m-a)*e; if(!spin27)frame(1,0); if(t>=900){ tm.stop(); el._mt=m; } }); };
+  el._month=m=>{
+    const target=fMon27(m), a=mt;
+    if(V.reduced){ mt=target; el._mt=target; frame(1,0); return; }
+    if(el._mtT)el._mtT.stop();
+    const tm=el._mtT=d3.timer(t=>{ const e=EIO(clamp(t/450,0,1)); el._mt=a+(target-a)*e; if(!spin27)frame(1,0); if(t>=450){ tm.stop(); el._mt=target; } });
+  };
   frame(0,0);
   V.onView(el,instant=>{ if(instant){ ent=1; frame(1,0); }
     else { ent=0; const t1=d3.timer(t=>{ ent=clamp(t/1400,0,1); rot[0]+=(1-ent)*1.6; if(!spin27)frame(1,0); if(ent>=1)t1.stop(); }); }
     el._loop=V.loop(el,(t,dt)=>frame(t,dt)); });
 });
-seg(27,m=>{ mode27=m; const el=$('[data-p="27"]'); el._month&&el._month(m); });
+{ const rng=$('[data-rng="27"]'), out=$('[data-v="27"]');
+  const upd27=m=>{
+    mon27=m; const nm=MES27[m][0].toUpperCase()+MES27[m].slice(1), real=m===0||m===6;
+    if(out)out.textContent=`${nm} · ${real?"dada real":"interpolat"}`;
+    if(rng)rng.setAttribute("aria-valuetext",`${MES27[m]} (${real?"dada real":"interpolat"})`);
+    const el=$('[data-p="27"]'); el&&el._month&&el._month(m);
+  };
+  if(rng)rng.addEventListener("input",()=>upd27(+rng.value));
+}
 { const b=$('[data-play="27"]'); if(b){ if(V.reduced){ b.textContent="Gira"; }
   b.addEventListener("click",()=>{ spin27=!spin27; b.textContent=spin27?"Atura":"Gira"; b.setAttribute("aria-pressed",String(!spin27));
     if(V.reduced&&spin27){ const el=$('[data-p="27"]'); const go=d3.timer((t,dt)=>{ if(!spin27){ go.stop(); return; } el._rot&&(el._rot[0]+=.15); el._redraw&&el._redraw(); }); } }); } }

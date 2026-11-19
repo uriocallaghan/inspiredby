@@ -304,12 +304,12 @@
   <h3 class="fam">Lloc</h3>
 
   <section class="pc" id="ib-12">
-    <div class="pc-h"><span class="pc-n">IB-12</span><h4>Camp de punts sobre mapa</h4></div>
-    <p class="pc-d">Un camp continu (temperatura, pluja, densitat) dibuixat com una trama de punts hexagonal sobre el mapa. El color i la mida del punt diuen el valor; el mar queda blanc.</p>
+    <div class="pc-h"><span class="pc-n">IB-12</span><h4>Camp continu sobre mapa</h4></div>
+    <p class="pc-d">Un camp continu (temperatura, anomalia, pressió) dibuixat en franges litogràfiques translúcides amb isolínies fines en vermell i blau, i la terra silenciosa a sobre.</p>
     <div class="vh"><div><strong>Com es veu una anomalia a l'oceà</strong><span>Temperatura del mar respecte al normal</span></div><div class="lgs" data-lg="12"></div></div>
     <div class="plot" data-p="12"></div>
     <p class="src"><b>Simulació</b>, no dades reals: un camp suau que imita El Niño per mostrar la forma. Mapa: Natural Earth (world-atlas 110m).</p>
-    <div class="pc-r"><div><h5>Per a</h5><p>Qualsevol camp sobre el planeta: anomalies, pluja, clorofil·la, pols.</p></div><div><h5>Regles</h5><ul><li>Terra <code>land</code> amb fronteres blanques; mar sense color.</li><li>Punts on el valor és gairebé zero: no es dibuixen.</li><li>Noms d'oceà en cursiva, de país en sans petita.</li></ul></div><div><h5>Ve de</h5><p>El Niño (mapa del Pacífic, portada de la revista).</p></div></div>
+    <div class="pc-r"><div><h5>Per a</h5><p>Qualsevol camp continu sobre el planeta: anomalies, temperatura del mar, pressió.</p></div><div><h5>Regles</h5><ul><li>Franges suaus translúcides mesclades amb blanc + isolínies fines (zero discontinu).</li><li>Terra <code>land</code> amb fronteres blanques a sobre del camp.</li><li>Noms d'oceà en cursiva, de país en sans petita.</li></ul></div><div><h5>Ve de</h5><p>El Niño (mapa del Pacífic) i els mapes de franges IB-26 i IB-34.</p></div></div>
   </section>
 
   <section class="pc" id="ib-13">
@@ -323,21 +323,21 @@
   </section>
 
   <section class="pc" id="ib-14">
-    <div class="pc-h"><span class="pc-n">IB-14</span><h4>Anells proporcionals</h4></div>
-    <p class="pc-d">Cada lloc és un cercle fet d'anells concèntrics: un anell per cas. La mida diu quants n'hi ha i el color, la categoria. Les rutes, en blanc gruixut sota els anells.</p>
+    <div class="pc-h"><span class="pc-n">IB-14</span><h4>Taques proporcionals</h4></div>
+    <p class="pc-d">Cada lloc és una taca translúcida plana d'àrea proporcional al nombre de casos, sense degradats radials. Quan es toquen s'enfosqueixen amb <code>multiply</code>; les rutes, en línia negra molt fina a sota.</p>
     <div class="vh"><div><strong>On passa, i per què</strong><span>Casos per lloc i categoria</span></div><div class="lgs" data-lg="14"></div></div>
     <div class="plot" data-p="14"></div>
     <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Mapa: Natural Earth (world-atlas 110m).</p>
-    <div class="pc-r"><div><h5>Per a</h5><p>Recomptes per lloc quan cada cas importa: víctimes, rescats, observacions d'espècies.</p></div><div><h5>Regles</h5><ul><li>Un anell per cas (fins a ~40; a partir d'aquí, 1 anell = N).</li><li>Màxim tres categories.</li><li>Rutes blanques de 3–5 px sobre la terra.</li></ul></div><div><h5>Ve de</h5><p>«A sea of sand and sickness» (Creu Roja britànica).</p></div></div>
+    <div class="pc-r"><div><h5>Per a</h5><p>Recomptes per lloc quan la concentració i les rutes són la notícia: víctimes, rescats, observacions d'espècies.</p></div><div><h5>Regles</h5><ul><li>Taques planes translúcides (<code>fill-opacity: 0,34</code>, <code>multiply</code>, mai degradats) amb punt central.</li><li>Màxim tres categories.</li><li>Rutes en tinta negra molt fina (0,8–0,9 px) sota les taques.</li></ul></div><div><h5>Ve de</h5><p>«A sea of sand and sickness» (Creu Roja britànica) i els mapes de taques translúcides.</p></div></div>
   </section>
 
   <section class="pc" id="ib-15">
     <div class="pc-h"><span class="pc-n">IB-15</span><h4>Isolínies sobre camp</h4></div>
-    <p class="pc-d">Dues variables al mateix mapa: una com a camp de color per franges, l'altra com a corbes de nivell etiquetades sobre la mateixa línia.</p>
-    <div class="vh"><div><strong>Pluja i temperatura</strong><span>Precipitació anual (camp) i temperatura mitjana (línies)</span></div><div class="lgs" data-lg="15"></div></div>
+    <p class="pc-d">Dues variables al mateix mapa: una com a taques discretes d'aquarel·la sense degradat, l'altra com a corbes de nivell negres molt fines etiquetades sobre la mateixa línia.</p>
+    <div class="vh"><div><strong>Pluja i temperatura</strong><span>Precipitació anual (taques) i temperatura mitjana (isolínies)</span></div><div class="lgs" data-lg="15"></div></div>
     <div class="plot" data-p="15"></div>
     <p class="src"><b>Simulació</b>, no dades reals: camps suaus per mostrar la forma, retallats a la silueta d'Austràlia. Mapa: Natural Earth (world-atlas 110m).</p>
-    <div class="pc-r"><div><h5>Per a</h5><p>Climes, altituds, pressions; qualsevol mapa on dues magnituds es creuen.</p></div><div><h5>Regles</h5><ul><li>Camp seqüencial en 6–8 franges, sense vores.</li><li>Isolínies d'1,4 px, etiqueta tallant la línia.</li><li>Ciutats: punt de 3 px i nom amb halo.</li></ul></div><div><h5>Ve de</h5><p>«Germany – average rainfall and temperature».</p></div></div>
+    <div class="pc-r"><div><h5>Per a</h5><p>Climes, altituds, pressions; qualsevol mapa on dues magnituds es creuen.</p></div><div><h5>Regles</h5><ul><li>Camp seqüencial en 6 franges discretes (taques planes, sense degradat ni vores).</li><li>Isolínies en tinta negra molt fina (0,75 px, sense contorn blanc), etiqueta sobre la línia.</li><li>Ciutats: punt de 2,5 px i nom amb halo.</li></ul></div><div><h5>Ve de</h5><p>«Germany – average rainfall and temperature».</p></div></div>
   </section>
 
   <section class="pc" id="ib-16">
@@ -454,8 +454,11 @@
     <p class="pc-d">El planeta en projecció ortogràfica, que gira sol com la Terra i es pot arrossegar amb el ratolí o el dit. A sobre, un camp de punts de color; la nit, en una ombra suau amb el terminador.</p>
     <div class="vh"><div><strong>On glaça i on no</strong><span>Temperatura mitjana de l'aire a prop de la superfície, 1991–2020</span></div><div class="lgs" data-lg="27"></div></div>
     <div class="plot" data-p="27"></div>
-    <div class="ctlbar"><div class="seg" role="group" aria-label="Mes" data-seg="27"><button aria-pressed="true" data-k="0">Gener</button><button aria-pressed="false" data-k="1">Juliol</button></div><button class="playb" data-play="27">Atura</button></div>
-    <p class="src"><b>Dades reals.</b> Font: NOAA PSL, reanàlisi NCEP/NCAR R1, temperatura de l'aire a prop de la superfície (sigma 0,995), mitjana 1991–2020, graella de 2,5°. La nit és un <b>esquema</b>: la posició del sol a mitjan mes, amb el gir accelerat. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="ctlbar ibx-time"><button class="playb" data-play="27">Atura</button>
+      <div class="ibx-rngw"><div class="lbl ibx-lbl"><span>Mes</span><span data-v="27">Gener · dada real</span></div>
+        <input class="rng" type="range" min="0" max="11" step="1" value="0" data-rng="27" aria-label="Mes" aria-valuetext="gener (dada real)">
+        <div class="ibx-months" aria-hidden="true"><span><b>gen</b><i>G</i></span><span><b>feb</b><i>F</i></span><span><b>març</b><i>M</i></span><span><b>abr</b><i>A</i></span><span><b>maig</b><i>M</i></span><span><b>juny</b><i>J</i></span><span><b>jul</b><i>J</i></span><span><b>ag</b><i>A</i></span><span><b>set</b><i>S</i></span><span><b>oct</b><i>O</i></span><span><b>nov</b><i>N</i></span><span><b>des</b><i>D</i></span></div></div></div>
+    <p class="src"><b>Dades reals (gener i juliol) i interpolació sinusoïdal la resta de l'any.</b> Font: NOAA PSL, reanàlisi NCEP/NCAR R1, temperatura de l'aire a prop de la superfície (sigma 0,995), mitjana 1991–2020, graella de 2,5°. La nit és un <b>esquema</b>: la posició del sol a mitjan mes, amb el gir accelerat. Mapa: Natural Earth (world-atlas 110m).</p>
     <div class="pc-r"><div><h5>Per a</h5><p>Fenòmens globals on importa la forma de la Terra: polar, estacional, dia i nit, rutes llargues.</p></div><div><h5>Regles</h5><ul><li>Gir lent (un tomb cada 40 s); s'atura en passar-hi, en arrossegar i amb <code>prefers-reduced-motion</code>.</li><li>Gratícula de 15° en gris finíssim, costa en tinta clara.</li><li>Arrossegar en horitzontal a mòbil, perquè la pàgina continuï fent scroll.</li></ul></div><div><h5>Ve de</h5><p>Els globus ortogràfics de D3 (Mike Bostock) i el mapa de portada d'El Niño.</p></div></div>
   </section>
 
