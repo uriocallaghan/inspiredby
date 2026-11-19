@@ -71,7 +71,7 @@
     ]);
 
     V.mount(el,(node,w)=>{
-      const mob=w<680, h=mob?420:360, tp=V.tip(node);
+      const mob=w<680, h=mob?420:360;
       const {ctx,s}=layerCS(node,w,h,"Núvol topogràfic de les 64.298 paraules dels quatre evangelis (1 punt = 100 paraules) sorgint d'un únic origen sense textos propis: Jesús de Natzaret.");
       const r=V.rng(101);
 
@@ -156,22 +156,21 @@
         ctx.clearRect(0,0,w,h);
         items.forEach(d=>{
           const col=d.k==="Jn"?C.grocFosc:d.c;
-          const a=focusK==null?.38:focusK===d.k?.74:.08;
+          const a=focusK==null?.38:focusK===d.k?.74:.2;
           V.cloud(ctx,d.pts,col,{alpha:a});
         });
       }
       drawDots(null);
 
-      const reset=()=>{ drawDots(null); gHalo.selectAll(".itopo").style("opacity",1); gFil.selectAll(".ifil").attr("stroke-opacity",.22); tp.hide(); };
+      const reset=()=>{ drawDots(null); gHalo.selectAll(".itopo").style("opacity",1); gFil.selectAll(".ifil").attr("stroke-opacity",.22); };
       outside(node,reset);
       V.hover(s.node(),(ev,[px,py])=>{
         const d=d3.least(items,q=>Math.hypot(px-q.cx,py-q.cy));
         if(!d||Math.hypot(px-d.cx,py-d.cy)>(mob?62:95)){ reset(); return; }
         drawDots(d.k);
-        gHalo.selectAll(".itopo").style("opacity",q=>q===d?1:.15);
-        gFil.selectAll(".ifil").attr("stroke-opacity",q=>q===d?.7:.04);
-        tp.show(`<b>Evangeli de ${d.n}</b> (${d.yr} · ${d.dt})<br>${d.det}`,clamp(d.cx+16,10,w-250),clamp(d.cy-32,8,h-74));
-        if(rd) rd.innerHTML=`<b>${d.n} (${d.yr}):</b> ${d.det}`;
+        gHalo.selectAll(".itopo").style("opacity",q=>q===d?1:.48);
+        gFil.selectAll(".ifil").attr("stroke-opacity",q=>q===d?.65:.12);
+        if(rd) rd.innerHTML=`<b>${d.n} (${d.yr} · ${d.dt}):</b> ${d.det}`;
       },reset);
 
       V.onView(node,instant=>{
@@ -317,14 +316,14 @@
       V.hover(s.node(),(ev,[px,py])=>{
         const d=d3.least(D,q=>Math.abs(py-q.y));
         if(!d||Math.abs(py-d.y)>rh*.75){ off(); return; }
-        rows.style("opacity",q=>q===d?1:.16);
+        rows.style("opacity",q=>q===d?1:.48);
         const xm=x(d.m), diff=Math.round(d.m-30);
         gHv.selectAll("*").remove();
         gHv.append("line").attr("x1",xm).attr("y1",20).attr("x2",xm).attr("y2",h-22).attr("stroke",C.ink).attr("stroke-width",.9).attr("stroke-dasharray","2 2");
         gHv.append("circle").attr("cx",xm).attr("cy",d.y).attr("r",rSc(d.w)+3).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.3);
         const delta=diff>0?`+${diff} anys després de la creu`:diff<0?`${Math.abs(diff)} anys abans de la creu`:"Referència 0 (≈ 30 dC)";
         V.t(gHv,xm,h-8,delta,{anchor:xm>w-110?"end":xm<110?"start":"middle",size:11.5,weight:700,fill:C.ink,halo:3.5});
-        tp.show(`<b>${d.n}</b> (${d.l})<br>${d.d}<br><span style="color:${C.muted}">${delta}</span>`,clamp(px+12,10,w-240),d.y-12);
+        tp.show(`<b>${d.n}</b> (${d.l})<br>${d.d}`);
       },off);
 
       api={go:st=>apply(st,true)};
@@ -373,7 +372,7 @@
       const mob=w<640, rowH=mob?30:32, top=mob?46:38, left=mob?96:142, right=mob?58:84;
       const maxLen=w-left-right-12, h=top+BOOKS.length*rowH+16;
       const {ctx,s}=layerCS(node,w,h,"Eixam orgànic de 887 punts (1 punt = 100 paraules gregues) que volen en arc entre l'ordre de la Bíblia i l'ordre cronològic real.");
-      const tp=V.tip(node);
+      
 
       const posOf=(d,m)=>{
         const row=(m==="biblia"?d.b.bib:d.b.chr)-1;
@@ -395,7 +394,7 @@
       function renderDots(){
         ctx.clearRect(0,0,w,h);
         for(const d of UNITS){
-          const a=hovB==null?(d.b.k==="Jn"?.72:.46):(hovB===d.b?.9:.09);
+          const a=hovB==null?(d.b.k==="Jn"?.72:.46):(hovB===d.b?.9:.24);
           ctx.fillStyle=V.alpha(d.b.k==="Jn"?C.grocFosc:d.b.c,a);
           ctx.beginPath(); ctx.arc(d.x,d.y,mob?d.r*.82:d.r,0,6.283); ctx.fill();
         }
@@ -431,14 +430,14 @@
           :"<b>Ordre cronològic real:</b> les cartes de Pau (anys 50) són les primeres; <b>Marc</b> (~65–75) és el primer evangeli i <b>Joan</b> (~90–110) tanca el cercle.";
       }
 
-      const off=()=>{ hovB=null; labs.style("opacity",1); renderDots(); tp.hide(); };
+      const off=()=>{ hovB=null; labs.style("opacity",1); renderDots(); };
       outside(node,off);
       V.hover(s.node(),(ev,[px,py])=>{
         const row=Math.round((py-top)/rowH);
         const b=BOOKS.find(q=>(mode==="biblia"?q.bib:q.chr)-1===row);
         if(!b||Math.abs(py-(top+row*rowH))>rowH*.55){ off(); return; }
-        hovB=b; labs.style("opacity",d=>d===b?1:.22); renderDots();
-        tp.show(`<b>${b.n}</b> · ${f0(b.w)} paraules gregues<br>Data probable: <b>${b.yr}</b><br><span style="color:${C.muted}">Posició a la Bíblia: #${b.bib} · Ordre d'escriptura: #${b.chr}</span>`,clamp(px+12,10,w-240),top+row*rowH-14);
+        hovB=b; labs.style("opacity",d=>d===b?1:.5); renderDots();
+        if(rd) rd.innerHTML=`<b>${b.n}</b> (${b.yr}) · <b>${f0(b.w)} paraules gregues</b> · Posició a la Bíblia #${b.bib}, ordre d'escriptura #${b.chr}.`;
       },off);
 
       updateMode=m=>place(m,true);
@@ -456,7 +455,7 @@
     let view="zoom", redraw=null;
 
     V.mount(el,(node,w)=>{
-      const mob=w<640, tp=V.tip(node);
+      const mob=w<640;
 
       function renderMark(){
         const h=mob?260:290, M={l:mob?16:30,r:mob?16:30};
@@ -501,15 +500,14 @@
         const lgEl=$("#setmana-lg"); if(lgEl){ lgEl.innerHTML=""; V.legendSize(lgEl,{title:"Paraules per episodi",values:[50,200,400],r:rSc,f:f0}); }
 
         const gHv=s.append("g").attr("pointer-events","none");
-        const off=()=>{ bubs.style("opacity",1); gHv.selectAll("*").remove(); tp.hide(); };
+        const off=()=>{ bubs.style("opacity",1); gHv.selectAll("*").remove(); };
         outside(node,off);
         V.hover(s.node(),(ev,[px])=>{
           const d=d3.least(data,q=>Math.abs(x(q.mid)-px));
           if(!d||Math.abs(x(d.mid)-px)>28){ off(); return; }
-          bubs.style("opacity",q=>q===d?1:.18);
+          bubs.style("opacity",q=>q===d?1:.48);
           gHv.selectAll("*").remove();
           gHv.append("circle").attr("cx",x(d.mid)).attr("cy",cy).attr("r",rSc(d.w)+3).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.4);
-          tp.show(`<b>Marc ${d.ref}</b> · Secció #${d.num}<br><b>${d.w}</b> paraules gregues · ${d.pw?"Última setmana a Jerusalem":"Galilea i camí"}`,clamp(x(d.mid)+12,10,w-240),cy-rSc(d.w)-44);
           if(rd) rd.innerHTML=`<b>Marc ${d.ref}</b> (secció ${d.num} de 233): <b>${d.w} paraules</b> — ${d.pw?"dins l'última setmana a Jerusalem (36 % del llibre)":"abans d'arribar a Jerusalem"}.`;
         },off);
 
@@ -561,16 +559,15 @@
             lines:[["Gest al Temple",true,C.vermell],["Al 7 % de Joan; al final als altres tres"]],size:11.5});
         }
 
-        const off=()=>{ paths.attr("stroke-opacity",d=>d.nom==="Gest al Temple"?1:.45).attr("stroke-width",d=>d.nom==="Gest al Temple"?2.3:1.1); dots.style("opacity",1); tp.hide(); };
+        const off=()=>{ paths.attr("stroke-opacity",d=>d.nom==="Gest al Temple"?1:.45).attr("stroke-width",d=>d.nom==="Gest al Temple"?2.3:1.1); dots.style("opacity",1); };
         outside(node,off);
         V.hover(s.node(),(ev,[px,py])=>{
           let best=null, bd=1e9;
           esc.forEach(d=>books.forEach(b=>{ const dist=Math.hypot(px-x(d.pos[b]/E.gnt.total[b]),py-y(b)); if(dist<bd){ bd=dist; best=d; } }));
           if(!best||bd>28){ off(); return; }
-          paths.attr("stroke-opacity",d=>d===best?1:.1).attr("stroke-width",d=>d===best?2.6:1);
-          dots.style("opacity",d=>d===best?1:.15);
+          paths.attr("stroke-opacity",d=>d===best?1:.28).attr("stroke-width",d=>d===best?2.6:1);
+          dots.style("opacity",d=>d===best?1:.48);
           const det=books.map(b=>`${NOM[b]} ${Math.round(best.pos[b]/E.gnt.total[b]*100)} % (${best.ref[b]})`).join(" · ");
-          tp.show(`<b>${best.nom}</b><br>${det}`,clamp(px+12,10,w-240),clamp(py-18,10,h-60));
           if(rd) rd.innerHTML=`<b>${best.nom}:</b> ${det}`;
         },off);
 
@@ -614,7 +611,7 @@
     V.mount(el,(node,w)=>{
       const mob=w<640, h=mob?330:380;
       const {ctx,s}=layerCS(node,w,h,"Corrents trenats de partícules que mostren com el material de Marc i d'altres fonts nodreix Mateu, Lluc i Joan.");
-      const tp=V.tip(node), r=V.rng(40);
+      const r=V.rng(40);
       let links=[], particles=[];
 
       function layout(){
@@ -687,19 +684,18 @@
           const px=iu*iu*iu*l.x0+3*iu*iu*u*mx+3*iu*u*u*mx+u*u*u*l.x1;
           const py=iu*iu*iu*sy+3*iu*iu*u*sy+3*iu*u*u*ty+u*u*u*ty;
           const dim=activeIdx>=0&&l.idx!==activeIdx;
-          ctx.fillStyle=V.alpha(l.c,dim?.06:.72);
-          ctx.beginPath(); ctx.arc(px,py,dim?1:p.sz,0,6.283); ctx.fill();
+          ctx.fillStyle=V.alpha(l.c,dim?.26:.72);
+          ctx.beginPath(); ctx.arc(px,py,dim?1.1:p.sz,0,6.283); ctx.fill();
         }
       }
 
-      const off=()=>{ activeIdx=-1; s.selectAll(".ft").attr("stroke-opacity",.28).attr("stroke-width",.55); tp.hide(); drawParticles(0); };
+      const off=()=>{ activeIdx=-1; s.selectAll(".ft").attr("stroke-opacity",.28).attr("stroke-width",.55); drawParticles(0); };
       outside(node,off);
-      V.hover(s.node(),(ev,[px,py])=>{
+      V.hover(s.node(),(ev)=>{
         const hit=ev.target&&ev.target.__data__;
         if(!hit||hit.idx==null){ off(); return; }
         activeIdx=hit.idx;
-        s.selectAll(".ft").attr("stroke-opacity",d=>d.idx===activeIdx?.65:.05).attr("stroke-width",d=>d.idx===activeIdx?.9:.5);
-        tp.show(`<b>${hit.n}</b><br>${hit.ex}`,clamp(px+12,10,w-250),clamp(py-18,10,h-60));
+        s.selectAll(".ft").attr("stroke-opacity",d=>d.idx===activeIdx?.65:.14).attr("stroke-width",d=>d.idx===activeIdx?.9:.5);
         if(rd) rd.innerHTML=`<b>${hit.n}:</b> ${hit.ex}.`;
       },off);
 
@@ -742,7 +738,7 @@
     ]);
 
     V.mount(el,(node,w)=>{
-      const mob=w<640, h=mob?420:510, tp=V.tip(node);
+      const mob=w<640, h=mob?420:510;
       const {ctx,s}=layerCS(node,w,h,"Topografia de densitat dels 1.162 fragments d'Eusebi: cada punt és un passatge real atret pels evangelis que el contenen.");
       const r=V.rng(1162);
 
@@ -819,7 +815,7 @@
         ctx.clearRect(0,0,w,h);
         for(const d of ALL){
           const on=focusIsl==null||d.isl===focusIsl;
-          ctx.fillStyle=V.alpha(d.col,on?(focusIsl?.78:.44):.07);
+          ctx.fillStyle=V.alpha(d.col,on?(focusIsl?.78:.44):.2);
           ctx.beginPath(); ctx.arc(d.x,d.y,on&&focusIsl?d.r*1.18:d.r,0,6.283); ctx.fill();
         }
       }
@@ -827,7 +823,7 @@
 
       // hover per proximitat amb d3.Delaunay sobre tots els 1.162 punts!
       const del=d3.Delaunay.from(ALL,d=>d.x,d=>d.y), gHv=s.append("g").attr("pointer-events","none");
-      const reset=()=>{ drawCloud(null); gHv.selectAll("*").remove(); tp.hide(); };
+      const reset=()=>{ drawCloud(null); gHv.selectAll("*").remove(); };
       outside(node,reset);
       V.hover(s.node(),(ev,[px,py])=>{
         const idx=del.find(px,py), d=ALL[idx];
@@ -836,8 +832,7 @@
         const grp=ALL.filter(q=>q.isl===d.isl), totW=d3.sum(grp,q=>q.w);
         gHv.selectAll("*").remove();
         gHv.append("circle").attr("cx",d.x).attr("cy",d.y).attr("r",d.r+4).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.4);
-        tp.show(`<b>${d.isl.n}</b><br>${grp.length} fragments · ${f0(totW)} paraules<br><span style="color:${C.muted}">Punt: ${NOM[d.b]} ${d.ref} (${d.w} par.)</span>`,clamp(px+12,10,w-260),clamp(py-24,8,h-78));
-        if(rd) rd.innerHTML=`<b>${d.isl.n}</b> (${grp.length} fragments, ${f0(totW)} paraules): ${d.isl.ex}`;
+        if(rd) rd.innerHTML=`<b>${d.isl.n}</b> (${grp.length} fragments · ${f0(totW)} par. · ex. ${NOM[d.b]} ${d.ref}): ${d.isl.ex}`;
       },reset);
 
       V.onView(node,instant=>{ if(instant)return; gTopo.style("opacity",0).transition().duration(950).ease(ease).style("opacity",1); });
@@ -903,7 +898,7 @@
         rg.append("stop").attr("offset",1).attr("stop-color",c).attr("stop-opacity",c===C.groc?.72:.55);
       });
       const gradOf=c=>c===C.blau?`url(#${id}g0)`:c===C.vermell?`url(#${id}g1)`:`url(#${id}g2)`;
-      const tp=V.tip(node), Lsc=p=>d3.scaleSqrt([0,p.max],[0,R]);
+      const Lsc=p=>d3.scaleSqrt([0,p.max],[0,R]);
       const pos=i=>[(i%cols+.5)*cell, Math.floor(i/cols)*rowH+R+20];
       const arc=d3.arc().innerRadius(0);
       const radLoop=d3.lineRadial().angle(d=>d.j*Math.PI/3).radius(d=>Math.max(4,Lsc(d.p)(d.val))).curve(d3.curveCatmullRomClosed.alpha(.5));
@@ -938,15 +933,15 @@
         wedges.attr("transform","scale(0.01)").transition().delay((q,i)=>i*35).duration(850).ease(d3.easeCubicOut).attr("transform","scale(1)");
       });
 
-      function reset(){ wedges.style("opacity",1).attr("stroke-width",.8); hvG.selectAll("*").remove(); tp.hide(); }
+      function reset(){ wedges.style("opacity",1).attr("stroke-width",.8); hvG.selectAll("*").remove(); }
       outside(node,reset);
       V.hover(s.node(),(ev,[px,py])=>{
         const idx=d3.leastIndex(DATA,d=>{ const q=pos(d.idx); return Math.hypot(px-q[0],py-q[1]); });
         if(idx<0){ reset(); return; }
         const c=pos(idx); if(Math.hypot(px-c[0],py-c[1])>R+28){ reset(); return; }
         let a=Math.atan2(px-c[0],-(py-c[1])); if(a<0)a+=2*Math.PI;
-        const j=Math.round(a/(Math.PI/3))%6, tr=P[j], d=DATA[idx];
-        wedges.style("opacity",q=>q.j===j?1:.15).attr("stroke-width",q=>q.j===j?1.6:.8);
+        const j=Math.round(a/(Math.PI/3))%6, tr=P[j];
+        wedges.style("opacity",q=>q.j===j?1:.48).attr("stroke-width",q=>q.j===j?1.6:.8);
         hvG.selectAll("*").remove();
         fls.each(function(fd){
           const g=d3.select(this).select("g.hvg"), val=fd[tr.k], len=Lsc(tr)(val), ang=j*Math.PI/3;
@@ -955,7 +950,6 @@
           V.t(g,rx,ry+4,tr.fmt(val),{anchor:Math.sin(ang)>.2?"start":Math.sin(ang)<-.2?"end":"middle",weight:700,size:11.5,fill:C.ink,halo:3.5});
         });
         const comp=DATA.map(q=>`${q.n}: <b>${tr.fmt(q[tr.k])}</b>`).join(" · ");
-        tp.show(`<b>${tr.t}</b> (${d.n}: ${tr.fmt(d[tr.k])})<br>${comp}`,clamp(px+12,10,w-250),clamp(py-18,10,h-60));
         if(rd) rd.innerHTML=`<b>${tr.t} als quatre evangelis:</b> ${comp}.`;
       },reset);
 
@@ -983,7 +977,7 @@
       const s=V.svg(node,w,h,"Les quinze poblacions anomenades als quatre evangelis: cada cercle translúcid té l'àrea proporcional a les mencions en el text grec original.");
       const x=d3.scalePoint(BOOKS,[left+36,w-right-30]).padding(.15);
       const rSc=d3.scaleSqrt([0,rMax],[0,mob?20:30]);
-      const tp=V.tip(node);
+      
 
       // capçaleres de columna (els 4 evangelis) + fils verticals ultra-fins
       BOOKS.forEach(b=>{
@@ -1016,12 +1010,12 @@
       }
 
       const gHv=s.append("g").attr("pointer-events","none");
-      const off=()=>{ rows.style("opacity",1); gHv.selectAll("*").remove(); tp.hide(); };
+      const off=()=>{ rows.style("opacity",1); gHv.selectAll("*").remove(); };
       outside(node,off);
       V.hover(s.node(),(ev,[px,py])=>{
         const i=Math.round((py-top-14)/rh), d=TOWNS[i];
         if(!d||Math.abs(py-(top+i*rh+14))>rh*.6){ off(); return; }
-        rows.style("opacity",q=>q===d?1:.18);
+        rows.style("opacity",q=>q===d?1:.48);
         const cy=top+i*rh+14;
         gHv.selectAll("*").remove();
         BOOKS.forEach(b=>{
@@ -1033,8 +1027,7 @@
         });
         const det=BOOKS.map(b=>`${NOM[b]}: <b>${d.n[b]}</b>`).join(" · ");
         const refs=BOOKS.filter(b=>d.refs[b]&&d.refs[b].length).slice(0,2).map(b=>`${NOM[b]} ${d.refs[b].slice(0,3).join(", ")}${d.refs[b].length>3?"…":""}`).join(" | ");
-        tp.show(`<b>${d.nom}</b> (${d.tot} mencions)<br>${det}${refs?`<br><span style="color:${C.muted}">${refs}</span>`:""}${d.nota?`<br><i>${d.nota}</i>`:""}`,clamp(px+12,10,w-250),clamp(cy-38,8,h-76));
-        if(rd) rd.innerHTML=`<b>${d.nom} (${d.tot} mencions en total):</b> ${det}${d.nota?` — <i>${d.nota}</i>`:""}.`;
+        if(rd) rd.innerHTML=`<b>${d.nom} (${d.tot} mencions):</b> ${det}${refs?` — ${refs}`:""}${d.nota?` · <i>${d.nota}</i>`:""}.`;
       },off);
 
       V.onView(node,instant=>{
@@ -1082,7 +1075,7 @@
       const h=top+WIT.length*rh+38;
       const s=V.svg(node,w,h,"Constel·lació cronològica de qui veu Jesús ressuscitat i on, des de la carta de Pau (≈ 55) fins a l'Evangeli de Joan (≈ 100).");
       const x=d3.scalePoint(COLS.map(c=>c.k),[left+24,w-right-24]).padding(.12);
-      const tp=V.tip(node);
+      
 
       // columnes cronològiques
       COLS.forEach(c=>{
@@ -1124,14 +1117,12 @@
           lines:[["Marc 16,8: ningú no veu Jesús",true]],size:11.5});
       }
 
-      const off=()=>{ rows.style("opacity",1); tp.hide(); };
+      const off=()=>{ rows.style("opacity",1); };
       outside(node,off);
       V.hover(s.node(),(ev,[px,py])=>{
         const i=Math.round((py-top-16)/rh), d=WIT[i];
         if(!d||Math.abs(py-(top+i*rh+16))>rh*.58){ off(); return; }
-        rows.style("opacity",q=>q===d?1:.18);
-        const list=COLS.filter(c=>d.e[c.k]).map(c=>`${c.n}: <b>${LTXT[d.e[c.k]]}</b>`).join("<br>");
-        tp.show(`<b>${d.n}</b><br>${list}`,clamp(px+12,10,w-260),clamp(top+i*rh-26,8,h-80));
+        rows.style("opacity",q=>q===d?1:.48);
         if(rd) rd.innerHTML=`<b>${d.n}:</b> ${d.det}`;
       },off);
 
@@ -1186,7 +1177,7 @@
       const h=top+BOOKS.length*rowH+26;
       const s=V.svg(node,w,h,"Aparicions de set paraules clau al text grec original dels quatre evangelis, dibuixades com a cercles translúcids i corbes de densitat.");
       const x=d3.scaleLinear([0,1],[left,w-right]);
-      const tp=V.tip(node);
+      
 
       // eix inferior 0 % → 100 % del llibre
       [0,.25,.5,.75,1].forEach(p=>V.t(s,x(p),h-8,p===0?"Inici":p===1?"Final":Math.round(p*100)+" %",{anchor:"middle",size:11,fill:C.muted}));
@@ -1231,7 +1222,7 @@
         if(rd) rd.innerHTML=NOTES[m.g]||`<b>«${m.ca}» (${m.g}):</b> distribució real als quatre evangelis.`;
       };
 
-      const off=()=>{ gHv.selectAll("*").remove(); tp.hide(); };
+      const off=()=>{ gHv.selectAll("*").remove(); };
       outside(node,off);
       V.hover(s.node(),(ev,[px,py])=>{
         const i=Math.floor((py-top)/rowH);
@@ -1242,7 +1233,7 @@
         gHv.selectAll("*").remove();
         gHv.append("line").attr("x1",px).attr("x2",px).attr("y1",top).attr("y2",h-22).attr("stroke",C.ink).attr("stroke-width",.8).attr("stroke-dasharray","2 2");
         V.t(gHv,px,baseY-rowH+26,`${NOM[b]} · ${curM.pos[b].length}×`,{anchor:px>w-140?"end":"start",weight:700,size:11.5,fill:C.ink,halo:3.5});
-        tp.show(`<b>«${curM.ca}» (<i lang="el">${curM.g}</i>) a ${NOM[b]}</b><br>Total al llibre: <b>${curM.pos[b].length}</b> vegades<br><span style="color:${C.muted}">Punt ${Math.round(u*100)} % del llibre (${near} aparicions en aquest tram)</span>`,clamp(px+12,10,w-250),clamp(baseY-54,8,h-76));
+        if(rd) rd.innerHTML=`<b>«${curM.ca}» (<i lang="el">${curM.g}</i>) a ${NOM[b]}:</b> ${curM.pos[b].length} vegades en total · punt ${Math.round(u*100)} % del llibre (${near} aparicions en aquest tram).`;
       },off);
 
       drawWord(curM,false);

@@ -346,7 +346,6 @@
       const vLine=hv.append("line").attr("y1",M.t).attr("y2",h-M.b).attr("stroke",C.ink).attr("stroke-width",1).attr("stroke-dasharray","2 2");
       const vDot=hv.append("circle").attr("r",5.5).attr("fill",C.vermell).attr("stroke",C.paper).attr("stroke-width",1.8);
       const vLab=V.t(hv,0,0,"",{weight:700,size:12,fill:C.ink,halo:3.5});
-      const tp=V.tip(node);
 
       drawPos=function(f){
         frac=clamp(f,0,1);
@@ -376,9 +375,7 @@
       V.hover(hit.node(),(ev,[px])=>{
         if(playing)stopPlay();
         const f=clamp((px-M.l)/(w-M.l-M.r),0,1); drawPos(f);
-        const pt=PTS[Math.round(f*(PTS.length-1))];
-        tp.show(`<b>Km ${Math.round(pt.km)}</b> · ${pt.z>=0?"+":""}${Math.round(pt.z)} m`,x(pt.km),y(pt.z)-16);
-      },()=>tp.hide());
+      },()=>{});
       void pBase;
     });
 
