@@ -507,7 +507,12 @@
           if(!d||Math.abs(x(d.mid)-px)>28){ off(); return; }
           bubs.style("opacity",q=>q===d?1:.48);
           gHv.selectAll("*").remove();
-          gHv.append("circle").attr("cx",x(d.mid)).attr("cy",cy).attr("r",rSc(d.w)+3).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.4);
+          const cx0=x(d.mid), rr=rSc(d.w);
+          gHv.append("circle").attr("cx",cx0).attr("cy",cy).attr("r",rr+3).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.5);
+          const lbl=`Mc ${d.ref} · ${d.w} par.`;
+          const pillW=lbl.length*6.8+16, px0=clamp(cx0,M.l+pillW/2,w-M.r-pillW/2), py0=Math.max(42,cy-rr-22);
+          gHv.append("rect").attr("x",px0-pillW/2).attr("y",py0-11).attr("width",pillW).attr("height",20).attr("rx",3).attr("fill",d.pw?C.vermell:C.ink);
+          V.t(gHv,px0,py0+3,lbl,{anchor:"middle",size:11.5,weight:700,fill:C.paper});
           if(rd) rd.innerHTML=`<b>Marc ${d.ref}</b> (secció ${d.num} de 233): <b>${d.w} paraules</b> — ${d.pw?"dins l'última setmana a Jerusalem (36 % del llibre)":"abans d'arribar a Jerusalem"}.`;
         },off);
 
@@ -516,12 +521,54 @@
       }
 
       function renderAll4(){
-        const h=mob?340:380, M={t:36,r:mob?16:28,b:34,l:mob?52:74};
-        const s=V.svg(node,w,h,"Tots els 1.162 episodis reals dels quatre evangelis dibuixats com quatre files de bombolles translúcides, amb arcs connectant les nou escenes clau.");
+        const h=mob?380:430, M={t:50,r:mob?16:36,b:38,l:mob?52:74};
+        const s=V.svg(node,w,h,"Tots els 1.162 episodis reals dels quatre evangelis dibuixats com quatre files de bombolles translúcides, amb arcs connectant setze episodis clau.");
         const books=["Mc","Mt","Lc","Jn"];
-        const y=d3.scalePoint(books,[M.t+18,h-M.b-14]).padding(.2);
+        const y=d3.scalePoint(books,[M.t+22,h-M.b-14]).padding(.18);
         const x=d3.scaleLinear([0,1],[M.l,w-M.r]);
         const rSc=d3.scaleSqrt([0,480],[1.6,mob?13:18]);
+
+        // busca la posició real exacta en paraules gregues dins les seccions d'Eusebi
+        function secAt(b,tc,tv){
+          let last=null;
+          for(const sec of EUS[b].secs){
+            const m=sec[2].match(/^(\d+),(\d+)/); if(!m)continue;
+            const c=+m[1], v=+m[2];
+            if(c>tc||(c===tc&&v>tv)) return last||sec;
+            last=sec;
+            if(c===tc&&v===tv) return sec;
+          }
+          return last;
+        }
+        const baseMap=new Map(E.gnt.escenes.map(e=>[e.nom,e]));
+        const extraDefs=[
+          ["Guarició del paralític",{Mc:[2,1],Mt:[9,1],Lc:[5,17]}],
+          ["Paràbola del sembrador",{Mc:[4,1],Mt:[13,1],Lc:[8,4]}],
+          ["Tempesta calmada",{Mc:[4,35],Mt:[8,23],Lc:[8,22]}],
+          ["Transfiguració",{Mc:[9,2],Mt:[17,1],Lc:[9,28]}],
+          ["Unció d'una dona",{Mc:[14,3],Mt:[26,6],Lc:[7,36],Jn:[12,1]}],
+          ["Negació de Pere",{Mc:[14,66],Mt:[26,69],Lc:[22,54],Jn:[18,15]}],
+          ["Davant Ponç Pilat",{Mc:[15,1],Mt:[27,1],Lc:[23,1],Jn:[18,28]}]
+        ];
+        const extras=extraDefs.map(([nom,refs])=>{
+          const pos={}, ref={};
+          Object.keys(refs).forEach(b=>{
+            const [c,v]=refs[b], sec=secAt(b,c,v);
+            pos[b]=sec?sec[3]:0; ref[b]=`${c},${v}`;
+          });
+          return {nom,pos,ref};
+        });
+        const order=[
+          "Baptisme","Guarició del paralític","Paràbola del sembrador","Tempesta calmada",
+          "Pa per a cinc mil","Pere: «Ets el Messies»","Transfiguració","Entrada a Jerusalem",
+          "Gest al Temple","Unció d'una dona","Darrer sopar","Detenció",
+          "Negació de Pere","Davant Ponç Pilat","Crucifixió","Tomba oberta"
+        ];
+        const byNom=new Map([...baseMap,...extras.map(e=>[e.nom,e])]);
+        const esc=order.map(n=>byNom.get(n)).filter(Boolean).map(d=>{
+          const bs=books.filter(b=>d.pos[b]!=null);
+          return {...d,books:bs,all4:bs.length===4,isT:d.nom==="Gest al Temple",isU:d.nom==="Unció d'una dona"};
+        });
 
         // 4 files de bombolles (totes les 1.162 seccions reals!)
         books.forEach(b=>{
@@ -531,48 +578,119 @@
           EUS[b].secs.forEach(d=>{
             const pw=(d[3]+d[4])/2/tot, ww=d[4]-d[3];
             s.append("circle").attr("cx",x(pw)).attr("cy",yy).attr("r",rSc(ww))
-              .attr("fill",b==="Jn"?C.groc:col).attr("fill-opacity",.16).style("mix-blend-mode","multiply").attr("pointer-events","none");
+              .attr("fill",b==="Jn"?C.groc:col).attr("fill-opacity",.15).style("mix-blend-mode","multiply").attr("pointer-events","none");
           });
         });
-        [0,.25,.5,.75,1].forEach(p=>V.t(s,x(p),M.t-12,p===0?"Inici":p===1?"Final":Math.round(p*100)+" %",{anchor:"middle",size:11,fill:C.muted}));
+        [0,.25,.5,.75,1].forEach(p=>V.t(s,x(p),M.t-14,p===0?"Inici":p===1?"Final":Math.round(p*100)+" %",{anchor:"middle",size:11,fill:C.muted}));
 
-        // arcs d'escenes compartides per sobre
-        const esc=E.gnt.escenes, line=d3.line().x(d=>x(d.p)).y(d=>y(d.b)).curve(d3.curveMonotoneY);
-        const paths=s.selectAll("path.es").data(esc).join("path").attr("class","es")
-          .attr("d",d=>line(books.map(b=>({b,p:d.pos[b]/E.gnt.total[b]}))))
-          .attr("fill","none").attr("stroke",d=>d.nom==="Gest al Temple"?C.vermell:C.ink2)
-          .attr("stroke-width",d=>d.nom==="Gest al Temple"?2.3:1.1).attr("stroke-opacity",d=>d.nom==="Gest al Temple"?1:.45).style("cursor","pointer");
+        // arcs d'episodis compartits (16 episodis: 12 als quatre evangelis, 4 només als sinòptics)
+        const line=d3.line().x(d=>x(d.p)).y(d=>y(d.b)).curve(d3.curveMonotoneY);
+        const colOf=d=>d.isT?C.vermell:d.isU?C.blau:C.ink2;
+        const baseOp=d=>d.isT?1:d.isU?.82:d.all4?.42:.34;
+        const baseW=d=>d.isT?2.2:d.isU?1.7:1.05;
 
-        const dots=s.selectAll("g.ed").data(esc).join("g").attr("class","ed");
+        const gArc=s.append("g"), gDot=s.append("g"), gAnn=s.append("g"), gHv=s.append("g").attr("pointer-events","none");
+        const paths=gArc.selectAll("path.es").data(esc).join("path").attr("class","es")
+          .attr("d",d=>line(d.books.map(b=>({b,p:d.pos[b]/E.gnt.total[b]}))))
+          .attr("fill","none").attr("stroke",colOf)
+          .attr("stroke-width",baseW).attr("stroke-opacity",baseOp)
+          .attr("stroke-dasharray",d=>d.all4?null:"3 3")
+          .style("cursor","pointer");
+
+        const dots=gDot.selectAll("g.ed").data(esc).join("g").attr("class","ed").style("cursor","pointer");
         dots.each(function(d){
-          const g=d3.select(this), isT=d.nom==="Gest al Temple";
-          books.forEach(b=>g.append("circle").attr("cx",x(d.pos[b]/E.gnt.total[b])).attr("cy",y(b)).attr("r",isT?4.5:2.8)
-            .attr("fill",isT?C.vermell:C.ink).attr("stroke",C.paper).attr("stroke-width",1.1));
-          if(!mob&&(isT||d.nom==="Baptisme"||d.nom==="Crucifixió")){
-            if(d.nom==="Baptisme") V.t(g,x(d.pos.Mc/E.gnt.total.Mc),y("Mc")-16,d.nom,{anchor:"start",size:11,fill:C.ink2,halo:2.5});
-            else V.t(g,x(d.pos.Jn/E.gnt.total.Jn),y("Jn")+22,d.nom,{anchor:isT?"start":"middle",size:11,weight:isT?700:400,fill:isT?C.vermell:C.ink2,halo:2.5});
-          }
+          const g=d3.select(this), col=d.isT?C.vermell:d.isU?C.blau:C.ink;
+          d.books.forEach(b=>g.append("circle").attr("cx",x(d.pos[b]/E.gnt.total[b])).attr("cy",y(b)).attr("r",d.isT?4.2:d.isU?3.6:2.6)
+            .attr("fill",col).attr("stroke",C.paper).attr("stroke-width",1.1));
         });
+
+        // anotacions fixes mínimes (s'apaguen suaument en fer hover per no tapar mai l'episodi seleccionat)
         if(!mob){
-          const t=esc.find(d=>d.nom==="Gest al Temple");
-          V.note(s,{x:x(t.pos.Jn/E.gnt.total.Jn)+8,y:y("Jn")-6,tx:x(.30),ty:y("Lc")+14,kind:"curve",bend:-12,anchor:"start",
-            lines:[["Gest al Temple",true,C.vermell],["Al 7 % de Joan; al final als altres tres"]],size:11.5});
+          const t=esc.find(d=>d.isT), u=esc.find(d=>d.isU), bap=esc.find(d=>d.nom==="Baptisme"), cru=esc.find(d=>d.nom==="Crucifixió");
+          if(bap) V.t(gAnn,x(bap.pos.Mc/E.gnt.total.Mc),y("Mc")-16,"Baptisme",{anchor:"start",size:11,fill:C.ink2,halo:2.5});
+          if(cru) V.t(gAnn,x(cru.pos.Jn/E.gnt.total.Jn),y("Jn")+22,"Crucifixió",{anchor:"middle",size:11,fill:C.ink2,halo:2.5});
+          if(t){
+            V.t(gAnn,x(t.pos.Jn/E.gnt.total.Jn),y("Jn")+22,"Gest al Temple",{anchor:"start",size:11,weight:700,fill:C.vermell,halo:2.5});
+            V.note(gAnn,{x:x(t.pos.Jn/E.gnt.total.Jn)+8,y:y("Jn")-6,tx:x(.27),ty:y("Lc")+22,kind:"curve",bend:-10,anchor:"start",
+              lines:[["Gest al Temple",true,C.vermell],["Al 7 % de Joan; al final als altres tres"]],size:11.5});
+          }
+          if(u){
+            V.note(gAnn,{x:x(u.pos.Lc/E.gnt.total.Lc),y:y("Lc")-8,tx:x(.20),ty:y("Mt")+18,kind:"curve",bend:10,anchor:"end",
+              lines:[["Unció d'una dona",true,C.blau],["Al 29 % de Lluc; al final a Marc i Mateu"]],size:11});
+          }
         }
 
-        const off=()=>{ paths.attr("stroke-opacity",d=>d.nom==="Gest al Temple"?1:.45).attr("stroke-width",d=>d.nom==="Gest al Temple"?2.3:1.1); dots.style("opacity",1); };
+        // mostregem punts al llarg de cada corba per poder fer hover còmodament sobre tota la línia, no només als 4 punts
+        const samples=[];
+        paths.each(function(d){
+          const L=this.getTotalLength(), N=24;
+          for(let i=0;i<=N;i++){ const pt=this.getPointAtLength(L*i/N); samples.push({d,x:pt.x,y:pt.y}); }
+        });
+
+        let cur=null;
+        const defMsg="<b>Setze episodis clau sobre els 1.162 passatges reals:</b> passa el cursor per qualsevol línia o punt per veure el nom de l'episodi i on cau exactament a cada evangeli.";
+        const off=()=>{
+          cur=null;
+          paths.attr("stroke-opacity",baseOp).attr("stroke-width",baseW);
+          dots.style("opacity",1);
+          gAnn.style("opacity",1);
+          gHv.selectAll("*").remove();
+          if(rd) rd.innerHTML=defMsg;
+        };
         outside(node,off);
+
         V.hover(s.node(),(ev,[px,py])=>{
           let best=null, bd=1e9;
-          esc.forEach(d=>books.forEach(b=>{ const dist=Math.hypot(px-x(d.pos[b]/E.gnt.total[b]),py-y(b)); if(dist<bd){ bd=dist; best=d; } }));
-          if(!best||bd>28){ off(); return; }
-          paths.attr("stroke-opacity",d=>d===best?1:.28).attr("stroke-width",d=>d===best?2.6:1);
-          dots.style("opacity",d=>d===best?1:.48);
-          const det=books.map(b=>`${NOM[b]} ${Math.round(best.pos[b]/E.gnt.total[b]*100)} % (${best.ref[b]})`).join(" · ");
-          if(rd) rd.innerHTML=`<b>${best.nom}:</b> ${det}`;
+          for(const sp of samples){
+            const dist=Math.hypot(px-sp.x,py-sp.y);
+            if(dist<bd){ bd=dist; best=sp.d; }
+          }
+          if(!best||bd>22){ if(cur)off(); return; }
+          if(cur===best)return;
+          cur=best;
+
+          const col=best.isT?C.vermell:best.isU?C.blau:C.ink;
+          paths.attr("stroke-opacity",d=>d===best?1:.22).attr("stroke-width",d=>d===best?2.8:1);
+          paths.filter(d=>d===best).raise();
+          dots.style("opacity",d=>d===best?1:.42);
+          gAnn.style("opacity",.2);
+          gHv.selectAll("*").remove();
+
+          // píndola clara amb el nom de l'episodi just a sobre de la fila superior (Marc)
+          const topX=x(best.pos.Mc/E.gnt.total.Mc);
+          const tag=best.all4?best.nom:`${best.nom} · només sinòptics`;
+          const pillW=tag.length*6.6+18, pillX=clamp(topX,M.l+pillW/2,w-M.r-pillW/2), pillY=M.t-6;
+          gHv.append("line").attr("x1",topX).attr("x2",topX).attr("y1",pillY+10).attr("y2",y("Mc")-6)
+            .attr("stroke",col).attr("stroke-width",1.1).attr("stroke-dasharray","2 2");
+          gHv.append("rect").attr("x",pillX-pillW/2).attr("y",pillY-11).attr("width",pillW).attr("height",21).attr("rx",3)
+            .attr("fill",col);
+          V.t(gHv,pillX,pillY+3.5,tag,{anchor:"middle",size:12,weight:700,fill:C.paper});
+
+          // punts ressaltats + etiqueta directa «% · cap,v» al costat de CADA evangeli
+          best.books.forEach(b=>{
+            const bx=x(best.pos[b]/E.gnt.total[b]), by=y(b), pct=Math.round(best.pos[b]/E.gnt.total[b]*100);
+            gHv.append("circle").attr("cx",bx).attr("cy",by).attr("r",6.5).attr("fill",C.paper).attr("stroke",col).attr("stroke-width",2);
+            gHv.append("circle").attr("cx",bx).attr("cy",by).attr("r",3).attr("fill",col);
+            const right=bx<w-M.r-(mob?78:95);
+            const txt=mob?`${pct} %`:`${pct} % · ${best.ref[b]}`;
+            V.t(gHv,bx+(right?11:-11),by+4,txt,{anchor:right?"start":"end",size:11.5,weight:700,fill:col,halo:3.5});
+          });
+          if(!best.all4){
+            const lx=x(best.pos.Lc/E.gnt.total.Lc);
+            V.t(gHv,clamp(lx,M.l+45,w-M.r-45),y("Jn")+4,"absent a Joan",{anchor:"middle",size:11,italic:true,fill:C.muted,halo:3});
+          }
+
+          const det=best.books.map(b=>`${NOM[b]} ${Math.round(best.pos[b]/E.gnt.total[b]*100)} % (${best.ref[b]})`).join(" · ");
+          if(rd) rd.innerHTML=`<b>${best.nom}${best.all4?"":" (només als sinòptics)"}:</b> ${det}`;
         },off);
 
-        lg($("#setmana-lg"),[{c:C.vermell,t:"Gest al Temple (gran salt)",k:"ln"},{c:C.ink2,t:"Altres escenes compartides",k:"ln"}]);
-        if(rd) rd.innerHTML="<b>Tots els 1.162 episodis:</b> darrere les línies hi ha tots els passatges reals dels quatre evangelis. Observa com el <b>Gest al Temple</b> salta al principi de Joan.";
+        lg($("#setmana-lg"),[
+          {c:C.vermell,t:"Gest al Temple (gran salt a Joan)",k:"ln"},
+          {c:C.blau,t:"Unció d'una dona (gran salt a Lluc)",k:"ln"},
+          {c:C.ink2,t:"Als 4 evangelis",k:"ln"},
+          {c:C.ink2,t:"Només als 3 sinòptics",k:"da"}
+        ]);
+        if(rd) rd.innerHTML=defMsg;
       }
 
       redraw=()=>{ node.innerHTML=""; if(view==="zoom")renderMark(); else renderAll4(); };
