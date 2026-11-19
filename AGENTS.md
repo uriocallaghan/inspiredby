@@ -19,7 +19,18 @@ Revista web d'articles visuals per entendre el món, en català. Llegeix aquest 
 ## Guies obligatòries
 
 1. `research/guia-estil-articles.md`: com s'escriu un article, rigor de dades, estructura i proves.
-2. `research/sistema-infografic.md`: com han de ser els gràfics (principis, paleta, hover, lleugeresa) i les 54 peces IB-01 a IB-54. Mostrari viu: `web/sistema/` (https://inspiredby.uriocallaghan.com/sistema/).
+2. `research/sistema-infografic.md`: com han de ser els gràfics (principis, paleta, hover, lleugeresa) i les peces IB-01 a IB-59. Mostrari viu: `web/sistema/` (https://inspiredby.uriocallaghan.com/sistema/).
+
+## Els gràfics surten del sistema, no de zero
+
+El sistema infogràfic existeix perquè es faci servir. Per a cada article nou:
+
+1. **Abans de dibuixar res**, escriu `research/<slug>/pla-visual.md`: una línia per gràfic amb la peça IB que fa servir (p. ex. «V2 · IB-59 + IB-13: mapa físic del viatge»), per què aquesta forma i d'on surten les dades. Si cap peça encaixa, explica-ho i descriu la peça nova; si després agrada a l'editor, s'afegeix al sistema.
+2. **Copia el bloc de la peça** de `web/sistema/*.js` i canvia-hi les dades; no la reescriguis a mà.
+3. **Tot mapa regional va sobre el mapa físic en relleu IB-59** (l'estil dels evangelis): `node scripts/relleu.mjs` genera el relleu de la regió. Els mapes del món o d'un oceà van en terra plana; si és el cas, escriu «sense relleu: motiu» al pla visual.
+4. **Abans de publicar**, repassa la llista del §6 de la guia per a cada gràfic.
+
+`node scripts/check.mjs` falla si un article nou no té `pla-visual.md`, si hi cita peces que no existeixen o si té un mapa regional sense relleu; també avisa dels colors fora de la paleta.
 
 ## Regles que l'editor no negocia
 
@@ -33,6 +44,6 @@ Revista web d'articles visuals per entendre el món, en català. Llegeix aquest 
 
 ## Abans de fer push a `main`
 
-- `node scripts/sync-home.mjs` i `node scripts/check.mjs` (ha de passar amb 0 errors i 0 articles orfes).
+- `node scripts/sync-home.mjs` i `node scripts/check.mjs` (ha de passar amb 0 errors i 0 articles orfes; llegeix-ne també els avisos).
 - Serveix `web/` en local (`python3 -m http.server 8000 --directory web`) i comprova 1440×900 i 390×844: zero errors a la consola, cap scroll horitzontal, cap etiqueta tallada.
 - Al missatge de commit i a la resposta a l'editor: què canvia, quines dades són reals (amb fonts) i què no has pogut verificar.

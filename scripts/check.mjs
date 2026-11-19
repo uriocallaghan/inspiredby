@@ -121,6 +121,58 @@ for (const file of jsFiles) {
   }
 }
 
+// 5. Sistema infogràfic (research/sistema-infografic.md): cada article nou ha de partir d'un pla visual
+//    amb peces IB reals, i els mapes regionals han d'anar sobre la base física en relleu IB-59.
+//    Els articles publicats abans del 19-11-2026 en queden exempts (només avisos).
+const LEGACY = new Set([
+  "calendari-cosmic", "cinta-transportadora", "de-que-mor-el-mon", "el-jesus-historic", "el-nino",
+  "jesus-i-els-quatre-evangelis", "migracio-vertical", "on-va-el-co2", "per-que-dormim", "per-que-riem",
+  "pols-del-sahara", "stonehenge", "viatge-de-la-pizza", "virus-i-bacteris"
+]);
+const GUIDE = fs.readFileSync(path.join(ROOT, "research", "sistema-infografic.md"), "utf8");
+const IB_VALID = new Set([...GUIDE.matchAll(/\| \*\*(IB-\d+)\*\* \|/g)].map(m => m[1]));
+// Colors del sistema: IBV.C i rampes d'ib-viz.js + els tons del mapa físic IB-59
+const PALETTE = new Set([
+  ...(fs.readFileSync(path.join(WEB_DIR, "assets", "ib-viz.js"), "utf8").match(/#[0-9A-Fa-f]{6}\b/g) || []),
+  "#F3F2EF", "#ABA8A1", "#AEC6E6"
+].map(h => h.toUpperCase()));
+const REGIONAL = /\bgeo(Mercator|TransverseMercator|Conic\w*|Albers\w*|Equirectangular)\s*\(/;
+const RELIEF = /relleu59\s*\(|\w+_DEM\b|getReliefCanvas/;
+const warnings = [];
+
+for (const slug of jsonSlugs) {
+  const dir = path.join(ARTICLES_DIR, slug);
+  if (!fs.existsSync(dir)) continue;
+  const code = fs.readdirSync(dir).filter(f => /\.(js|css)$/.test(f) && !/^(dades|relleu|cites)/.test(f))
+    .map(f => fs.readFileSync(path.join(dir, f), "utf8")).join("\n");
+  const planPath = path.join(ROOT, "research", slug, "pla-visual.md");
+  const plan = fs.existsSync(planPath) ? fs.readFileSync(planPath, "utf8") : null;
+  const legacy = LEGACY.has(slug);
+  const report = (msg) => (legacy ? warnings : errors).push(msg);
+
+  if (!legacy) {
+    if (!plan) {
+      errors.push(`Falta research/${slug}/pla-visual.md: abans de dibuixar, anota quina peça IB fa cada gràfic (vegeu AGENTS.md).`);
+    } else {
+      const cited = [...new Set(plan.match(/IB-\d+/g) || [])];
+      if (!cited.length) errors.push(`research/${slug}/pla-visual.md no cita cap peça IB del sistema infogràfic.`);
+      const bad = cited.filter(n => !IB_VALID.has(n));
+      if (bad.length) errors.push(`research/${slug}/pla-visual.md cita peces que no existeixen a la guia: ${bad.join(", ")}.`);
+    }
+  }
+  if (REGIONAL.test(code) && !RELIEF.test(code) && !(plan && /sense relleu/i.test(plan))) {
+    report(`${slug}: té un mapa regional sense la base física en relleu IB-59 (si és un mapa d'oceà, escriu-ho al pla visual amb «sense relleu: motiu»).`);
+  }
+  const off = [...new Set((code.match(/#[0-9A-Fa-f]{6}\b/g) || []).map(h => h.toUpperCase()).filter(h => !PALETTE.has(h)))];
+  if (off.length) warnings.push(`${slug}: colors fora del sistema (${off.join(" ")}).`);
+}
+
+if (warnings.length) {
+  console.warn("\nAVISOS DEL SISTEMA INFOGRÀFIC (no bloquegen; articles anteriors al 19-11-2026 o colors):");
+  for (const w of warnings) console.warn(" - " + w);
+  console.warn("");
+}
+
 if (errors.length) fail(errors);
 
 console.log(`OK · Sistema verificat:`);

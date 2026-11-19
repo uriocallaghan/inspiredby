@@ -1,4 +1,4 @@
-/* Sistema infogràfic d'Inspired by Magazine · Mapes, segona tanda (IB-28 a IB-34).
+/* Sistema infogràfic d'Inspired by Magazine · Mapes, segona tanda (IB-28 a IB-34) i mapa físic en relleu (IB-59).
    Cada bloc «IB-nn» és una peça completa. Fa servir assets/ib-viz.js (IBV),
    la geografia de world-atlas 2.0.2 i les dades reals de dades-mapes-b.js
    (NCEP/NCAR R1, gener i juliol 1991–2020; World Ocean Atlas 2023, superfície de l'Atlàntic). */
@@ -1008,6 +1008,165 @@ const M34=piece(34,(el,w)=>{
     d3.select(cv).transition().duration(650).ease(d3.easeCubicOut).style("opacity",1);
     gLab.transition().delay(300).duration(450).style("opacity",1);
     ann.transition().delay(450).duration(450).style("opacity",1);
+  });
+});
+
+/* =====================================================================
+   IB-59 · MAPA FÍSIC EN RELLEU  (dades reals: relleu Mapzen Terrain Tiles / NASA SRTM)
+   L'estil dels mapes de «Jesús i els quatre evangelis», fet reutilitzable.
+   Base física per a QUALSEVOL mapa regional (un país, una vall, una costa):
+   franges hipsomètriques en grisos càlids + ombra suau des del NO + isolínies
+   finíssimes, mar en blanc de paper i aigua (rius, llacs, depressions) en blau.
+   Les dades de l'article (rutes, llocs, cercles) van a sobre en vermell/blau/groc.
+   Per fer-lo servir en un article:
+     1. node scripts/relleu.mjs --bbox oest,sud,est,nord --st 0.0125 --var XX_DEM --out web/articles/<slug>/relleu.js
+     2. copia aquest bloc (de «IB59_BANDS» a «relleu59») i crida
+        relleu59(ctx, proj, w, h, window.XX_DEM, {land, lakes, rivers, fade:"e"}).
+        «fade» esvaeix les vores on el relleu s'acaba en terra (n, e, s, o).
+        Sense «land», la costa surt de la isolínia de 0 m del mateix relleu.
+   ===================================================================== */
+// Franges hipsomètriques (m): grisos càlids, cada esglaó ~9 punts més fosc. Les quatre primeres són les dels evangelis.
+const IB59_BANDS=[[200,[243,242,239]],[500,[235,233,228]],[800,[226,223,216]],[1500,[216,212,204]],[2200,[206,202,193]],[Infinity,[196,191,182]]];
+const IB59_COAST="#ABA8A1", IB59_LAKE="#AEC6E6";
+function dem59(D){ // descodifica una sola vegada; retorna {z(lon,lat), grid, D}
+  if(D.__dec)return D.__dec;
+  const s=atob(D.b64), a=new Float32Array(s.length), k=(D.mx-D.mn)/254;
+  for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i)*k+D.mn;
+  const z=(lon,lat)=>{ const fx=(lon-D.lon0)/D.st-.5, fy=(D.lat1-lat)/D.st-.5;
+    if(fx<0||fy<0||fx>D.nx-1||fy>D.ny-1)return NaN;
+    const i=Math.floor(fx), j=Math.floor(fy), u=fx-i, v=fy-j, i1=Math.min(i+1,D.nx-1), j1=Math.min(j+1,D.ny-1);
+    return (a[j*D.nx+i]*(1-u)+a[j*D.nx+i1]*u)*(1-v)+(a[j1*D.nx+i]*(1-u)+a[j1*D.nx+i1]*u)*v; };
+  return (D.__dec={z,grid:a,D});
+}
+// isolínies del relleu en lon/lat (talla els trams que toquen la vora de la graella)
+function iso59(D,th){
+  const {grid}=dem59(D), out=[];
+  for(const c of d3.contours().size([D.nx,D.ny]).thresholds(th)(grid)){
+    const lines=[];
+    for(const poly of c.coordinates)for(const ring of poly){
+      let seg=[];
+      for(const [gx,gy] of ring){
+        if(gx<=.05||gx>=D.nx-1.05||gy<=.05||gy>=D.ny-1.05){ if(seg.length>1)lines.push(seg); seg=[]; }
+        else seg.push([D.lon0+(gx+.5)*D.st, D.lat1-(gy+.5)*D.st]);
+      }
+      if(seg.length>1)lines.push(seg);
+    }
+    out.push({v:c.value,geo:{type:"MultiLineString",coordinates:lines}});
+  }
+  return out;
+}
+function relleu59(ctx,proj,w,h,D,o){
+  o=o||{};
+  const {z}=dem59(D), clamp=(v,a,b)=>Math.max(a,Math.min(b,v)), pth=d3.geoPath(proj,ctx);
+  const land=o.land||null, sea=o.sea==null?0:o.sea;
+  const iso=o.iso||(D.mx>1500?[500,1000,1500,2000,2500,3000]:[300,600,900,1200]);
+  // 1. Ràster: una cel·la de pantalla per píxel CSS (prou: el relleu és suau). Funciona amb qualsevol projecció amb invert.
+  const sc=o.res||1, fw=Math.ceil(w/sc), fh=Math.ceil(h/sc);
+  const fc=document.createElement("canvas"); fc.width=fw; fc.height=fh;
+  const fx=fc.getContext("2d"), im=fx.createImageData(fw,fh), d=im.data;
+  const kmLon=111.32*Math.cos(((D.lat1-D.ny*D.st/2)*Math.PI)/180), dd=D.st*1.12;
+  for(let y=0;y<fh;y++)for(let x=0;x<fw;x++){
+    const ll=proj.invert([(x+.5)*sc,(y+.5)*sc]); if(!ll)continue;
+    const zz=z(ll[0],ll[1]); if(zz!==zz)continue;
+    if(!land&&zz<=sea)continue;                       // mar: blanc de paper
+    // ombra suau des del NO: pendent en m/km, saturada a ~100 m/km, ±15 punts
+    const gx=(z(ll[0]+dd,ll[1])-z(ll[0]-dd,ll[1]))/(2*dd*kmLon), gy=(z(ll[0],ll[1]+dd)-z(ll[0],ll[1]-dd))/(2*dd*111.32);
+    const shade=(gx!==gx||gy!==gy)?0:clamp((-gx+gy)*.65/98,-1,1)*15;
+    let r,g,b;
+    if(zz<0){ const t=clamp(-zz/420,0,1); r=234-t*48; g=240-t*32; b=248-t*12; }   // terra sota el nivell del mar: blau clar
+    else { const band=IB59_BANDS.find(q=>zz<q[0])[1]; r=band[0]; g=band[1]; b=band[2]; }
+    const i=(y*fw+x)*4; d[i]=clamp(r+shade,0,255); d[i+1]=clamp(g+shade,0,255); d[i+2]=clamp(b+shade,0,255); d[i+3]=255;
+  }
+  fx.putImageData(im,0,0);
+  ctx.save();
+  if(land){ ctx.beginPath(); pth(land); ctx.clip(); }
+  ctx.imageSmoothingEnabled=true; ctx.drawImage(fc,0,0,w,h);
+  // 2. Isolínies: fil gris finíssim; 0 m en blau discontinu només si hi ha terra sota el mar (amb «land»)
+  iso59(D,land?[0,...iso]:iso).forEach(c=>{
+    ctx.beginPath(); pth(c.geo);
+    if(c.v===0){ ctx.strokeStyle=V.alpha(C.blau,.48); ctx.lineWidth=.85; ctx.setLineDash([3,2.5]); }
+    else { ctx.strokeStyle=V.alpha(C.ink,.14); ctx.lineWidth=.55; ctx.setLineDash([]); }
+    ctx.stroke();
+  });
+  ctx.setLineDash([]); ctx.restore();
+  // 3. Costa nítida
+  ctx.beginPath();
+  if(land)pth(land); else iso59(D,[sea+.01]).forEach(c=>pth(c.geo));
+  ctx.strokeStyle=IB59_COAST; ctx.lineWidth=.9; ctx.lineJoin="round"; ctx.stroke();
+  // 4. Aigua dolça en blau
+  if(o.rivers){ ctx.beginPath(); pth(o.rivers); ctx.strokeStyle=V.alpha(C.blau,.78); ctx.lineWidth=1.25; ctx.lineCap="round"; ctx.stroke(); }
+  if(o.lakes){ ctx.beginPath(); pth(o.lakes); ctx.fillStyle=IB59_LAKE; ctx.fill(); ctx.strokeStyle=C.blau; ctx.lineWidth=.95; ctx.stroke(); }
+  // 5. Vores que s'esvaeixen (sense marc) on el relleu s'acaba en terra: o.fade = "neso" (qualsevol combinació de n, e, s, o)
+  if(o.fade){
+    const a=proj([D.lon0,D.lat1]), b=proj([D.lon0+D.nx*D.st,D.lat1-D.ny*D.st]);
+    const x0=Math.max(0,Math.min(a[0],b[0])), x1=Math.min(w,Math.max(a[0],b[0])), y0=Math.max(0,Math.min(a[1],b[1])), y1=Math.min(h,Math.max(a[1],b[1]));
+    const L=Math.min(x1-x0,y1-y0)*(o.fadeK||.09);
+    ctx.save(); ctx.globalCompositeOperation="destination-out";
+    const side=(gx0,gy0,gx1,gy1,rx,ry,rw,rh)=>{ const g=ctx.createLinearGradient(gx0,gy0,gx1,gy1); g.addColorStop(0,"rgba(0,0,0,0)"); g.addColorStop(1,"rgba(0,0,0,1)"); ctx.fillStyle=g; ctx.fillRect(rx,ry,rw,rh); };
+    if(o.fade.includes("e"))side(x1-L,0,x1,0,x1-L,-2,w-x1+L+2,h+4);
+    if(o.fade.includes("o"))side(x0+L,0,x0,0,-2,-2,x0+L+2,h+4);
+    if(o.fade.includes("n"))side(0,y0+L,0,y0,-2,-2,w+4,y0+L+2);
+    if(o.fade.includes("s"))side(0,y1-L,0,y1,-2,y1-L,w+4,h-y1+L+2);
+    ctx.restore();
+  }
+  return {z};
+}
+
+const D59=window.IB59_DEM||null;
+const LL59=[ // llocs de referència (coordenades IGN/ICGC arrodonides)
+  {n:"Barcelona",ll:[2.170,41.387],k:"c",a:"start"},{n:"Girona",ll:[2.821,41.979],k:"c",a:"start"},
+  {n:"Lleida",ll:[0.620,41.617],k:"c",a:"start"},{n:"Tarragona",ll:[1.245,41.119],k:"c",a:"start"},
+  {n:"Andorra la Vella",ll:[1.522,42.507],k:"c",a:"start"},{n:"Perpinyà",ll:[2.895,42.699],k:"c",a:"end"},
+  {n:"Montserrat",ll:[1.812,41.594],k:"m",a:"end"},{n:"Montseny",ll:[2.435,41.772],k:"m",a:"start"},
+  {n:"Pica d'Estats",ll:[1.398,42.667],k:"m",a:"end"},{n:"Canigó",ll:[2.457,42.519],k:"m",a:"start"}
+];
+legend(59,el=>{
+  legendSteps(el,{colors:IB59_BANDS.map(b=>`rgb(${b[1].join(",")})`),edges:[200,500,800,1500,2200],cw:34,f:v=>f0(v),title:"Alçada (m)",lo:"Plana",hi:"Alta muntanya"});
+  V.legendCat(el,[{c:C.ink,t:"Isolínia cada 500 m",kind:"line",w:.6},{c:IB59_COAST,t:"Costa",kind:"line",w:1}]);
+});
+const M59=piece(59,(el,w)=>{
+  if(!D59)return;
+  const mob=w<640, h=Math.round(mob?w*1.02:Math.min(w*.7,600));
+  const proj=d3.geoMercator().fitExtent([[mob?2:8,mob?4:8],[w-(mob?2:8),h-(mob?4:8)]],{type:"MultiPoint",coordinates:[[0.16,40.5],[3.35,42.9]]});
+  stage(el,h);
+  const {c:cv,ctx}=mkCanvas(el,w,h,{label:"Mapa físic de Catalunya en relleu: la plana de Lleida i la costa en gris clar, la Serralada Prelitoral (Montserrat, Montseny) en gris mitjà i el Pirineu, de més de 2.200 m, en el gris més fosc, amb isolínies cada 500 m."});
+  cv.style.position="relative"; el.style.height="";   // la lectura del hover queda netament a sota del mapa
+  const {z}=relleu59(ctx,proj,w,h,D59,{fade:"neso"});
+  const s=mkSvg(el,w,h,{abs:true});
+  const gLab=s.append("g");
+  // context en cursiva grisa (mar, grans unitats de relleu)
+  [["Mar Mediterrani",[2.55,40.95]],["Pirineu",[0.75,42.62]],["Depressió Central",[1.05,41.78]]].forEach(([t,ll])=>{
+    if(mob&&t!=="Mar Mediterrani")return; const p=proj(ll); V.t(gLab,p[0],p[1],t,{italic:true,fill:C.muted,size:V.FS.small,anchor:"middle",halo:2.5}); });
+  LL59.filter(d=>!mob||["Barcelona","Lleida","Girona","Tarragona","Pica d'Estats","Montserrat"].includes(d.n)).forEach(d=>{
+    const p=proj(d.ll), dx=d.a==="end"?-7:7;
+    if(d.k==="c")gLab.append("circle").attr("cx",p[0]).attr("cy",p[1]).attr("r",2.6).attr("fill",C.ink);
+    else gLab.append("path").attr("d",`M${p[0]-4},${p[1]+3}L${p[0]},${p[1]-4}L${p[0]+4},${p[1]+3}Z`).attr("fill",C.ink2);
+    V.t(gLab,p[0]+dx,p[1]+4,d.n,{anchor:d.a,size:d.k==="c"?V.FS.label:V.FS.small,weight:d.k==="c"?600:400,fill:d.k==="c"?C.ink:C.ink2,halo:3});
+  });
+  // escala gràfica (50 km)
+  { const a=proj([1.6,40.62]), b=proj([1.6+50/(111.32*Math.cos(40.62*Math.PI/180)),40.62]), x=proj([0.35,40.6])[0], y=h-(mob?12:18), px=b[0]-a[0];
+    gLab.append("path").attr("d",`M${x},${y-4}V${y}H${x+px}V${y-4}`).attr("fill","none").attr("stroke",C.ink2).attr("stroke-width",1);
+    V.t(gLab,x+px+6,y+1,"50 km",{size:V.FS.small,fill:C.ink2,halo:true}); }
+  // hover: alçada real de la cel·la apuntada, marcada també a la llegenda
+  const hv=s.append("g").attr("pointer-events","none"), tp=V.tip(el);
+  const hit=s.append("rect").attr("width",w).attr("height",h).attr("fill","transparent");
+  const off=()=>{ hv.selectAll("*").remove(); tp.hide(); stepsMark(59,null); };
+  V.hover(hit.node(),(ev,[px,py])=>{
+    const ll=proj.invert([px,py]), zz=ll?z(ll[0],ll[1]):NaN;
+    if(!(zz>0))return off();
+    hv.selectAll("*").remove();
+    hv.append("circle").attr("cx",px).attr("cy",py).attr("r",3.2).attr("fill",C.ink).attr("stroke",C.paper).attr("stroke-width",1.5);
+    const right=px<w*.7;
+    V.t(hv,px+(right?9:-9),py-7,`${f0(zz)} m`,{anchor:right?"start":"end",size:12.5,weight:700,halo:3.4});
+    const band=IB59_BANDS.findIndex(q=>zz<q[0]);
+    stepsMark(59,band,`${f0(zz)} m`);
+    tp.show(`<b>${f0(zz)} m</b> d'alçada mitjana en aquesta cel·la d'1,2 km · ${f1(ll[1])}° N, ${f1(ll[0])}° E`,px,py);
+  },off);
+  V.onView(el,instant=>{
+    if(instant)return;
+    cv.style.opacity=0; gLab.style("opacity",0);
+    d3.select(cv).transition().duration(900).ease(d3.easeCubicOut).style("opacity",1);
+    gLab.transition().delay(450).duration(500).style("opacity",1);
   });
 });
 

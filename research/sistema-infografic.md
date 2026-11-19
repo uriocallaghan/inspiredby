@@ -4,8 +4,8 @@ Com han de ser els gràfics de tots els articles nous. Llegeix-ho sencer abans d
 
 - **Mostrari viu:** `web/sistema/index.html`, publicat a https://inspiredby.uriocallaghan.com/sistema/. Cada peça hi és dibuixada i funciona.
 - **Codi comú:** `web/assets/ib-viz.js` (objecte global `IBV`): colors, escales, text amb halo, anotacions, llegendes, tooltip tàctil, mapes. Es carrega després de d3 7.9.0 (i de `topojson-client@3.1.0` si hi ha mapes).
-- **Codi de cada peça:** un bloc per peça, marcat amb el número: IB-01 a IB-20 a `web/sistema/sistema.js`, IB-22 a IB-27 a `mapes-a.js`, IB-28 a IB-34 a `mapes-b.js`, IB-35 a IB-44 a `creatives-a.js` i IB-45 a IB-54 a `creatives-b.js` (cadascun amb el seu `.css` i el seu fitxer de dades). Copia el bloc que necessitis al JS de l'article i canvia-hi les dades.
-- **Model de qualitat:** «El Niño i La Niña» (`web/articles/el-nino/`).
+- **Codi de cada peça:** un bloc per peça, marcat amb el número: IB-01 a IB-20 a `web/sistema/sistema.js`, IB-22 a IB-27 a `mapes-a.js`, IB-28 a IB-34 i IB-59 a `mapes-b.js`, IB-35 a IB-44 a `creatives-a.js` i IB-45 a IB-58 a `creatives-b.js` (cadascun amb el seu `.css` i el seu fitxer de dades). Copia el bloc que necessitis al JS de l'article i canvia-hi les dades.
+- **Model de qualitat:** «El Niño i La Niña» (`web/articles/el-nino/`). **Model per als mapes regionals:** «Jesús i els quatre evangelis» (`web/articles/jesus-i-els-quatre-evangelis/`), que ha donat lloc a IB-59.
 
 Quan planifiquis un article, anomena els gràfics pel número: «IB-12 per al mapa de l'anomalia, IB-01 per a la sèrie de 1950–2026, IB-16 per al tall».
 
@@ -35,13 +35,24 @@ Les 11 referències de l'editor comparteixen un llenguatge de **gravat científi
 - **Res de barres rectangulars massisses quan hi ha una forma més orgànica:** si pots mostrar les observacions reals com a **núvol de punts translúcids** (`IBV.cloud`, estil *Fair and square?*), **cercles translúcids superposats** amb `mix-blend-mode: multiply` (*Major quakes*, *Incendios en Perú*), **corbes topogràfiques de densitat** (*Building strategy*) o **roses polars suaus** (`IBV.polarGrid`, *Typology demand* i *Parcs nacionals dels EUA*), tria sempre la forma orgànica.
 - **Cercles translúcids, MAI anells concèntrics (decisió de l'editor, 19-11-2026):** a l'editor li encanten els **cercles plens translúcids** (`opacity 0,18–0,45`, `mix-blend-mode: multiply`, gradients radials suaus amb un puntet central) i **no li agraden gens els anells concèntrics tipus diana**. No facis servir anells concèntrics per marcar llocs o quantitats; fes servir cercles translúcids d'àrea proporcional (`d3.scaleSqrt`).
 - **Prohibits els mapes inclinats pseudo-3D, els mapes de pics/agulles, els mapes de crestes abstractes i les lupes flotants que amaguen les dades (decisió de l'editor, 19-11-2026):** els mapes sempre van en projecció neta (plana Equal Earth/Mercator/cònica o globus ortogràfic real) amb costes recognoscibles i **tota la informació visible d'entrada** — mai inclinats, mai amb agulles verticals, mai amb crestes abstractes tipus *Joy Division*, ni amb una lupa circular que obliga a passar el ratolí per descobrir un mapa esvaït. Les quantitats puntuals sobre mapa es representen amb cercles translúcids `multiply` (IB-25) i els camps continus amb franges suaus i isolínies nítides sobre costes clares (IB-26, IB-34).
+- **Els mapes regionals són mapes físics en relleu: IB-59 (decisió de l'editor, 19-11-2026).** L'editor vol que tots els mapes d'escala regional tinguin el detall del territori en gris dels mapes de «Jesús i els quatre evangelis». No és decoració: el relleu explica per què el camí va per la vall, per què «es puja» a Jerusalem, d'on surt el vent o on viu la gent.
+  - **Quan:** sempre que el mapa mostri una regió (d'una vall a un país o una conca, aproximadament fins a 3.000 km d'amplada): rutes, jaciments, viatges, batalles, ciutats, conques, fonts de pols. Els mapes del món sencer o d'un oceà mantenen la terra plana `#ECEBE8` (geografia ultra-silenciosa d'IB-28), perquè a aquesta escala el relleu és soroll; un globus o un oceà pot afegir-hi, com a molt, el relleu continental molt pàl·lid.
+  - **La recepta (no la canviïs):**
+    1. **Franges hipsomètriques de gris càlid**, mai colors d'atles: 0–200 m `#F3F2EF`, 200–500 `rgb(235,233,228)`, 500–800 `rgb(226,223,216)`, 800–1.500 `rgb(216,212,204)`, 1.500–2.200 `rgb(206,202,193)`, més amunt `rgb(196,191,182)`.
+    2. **Ombra suau des del nord-oest**, ±15 punts de gris, saturada a un pendent d'uns 100 m/km. Res de llums dures ni de 3D.
+    3. **Isolínies finíssimes**: tinta a 0,14 d'opacitat i 0,55 px, cada 300 m (relleu baix) o 500 m (alta muntanya). La de 0 m, en blau discontinu, només on hi ha terra sota el nivell del mar.
+    4. **Aigua:** mar en blanc de paper (P1); costa nítida en `#ABA8A1` a 0,9 px; rius en blau a 0,78 d'opacitat i 1,25 px; llacs en `#AEC6E6` amb vora blava; terra sota el nivell del mar en blau clar.
+    5. **Sense marc:** on el relleu s'acaba en terra, la vora s'esvaeix (`fade`). Escala gràfica en km i, si el lloc no és evident, mapa de situació petit.
+    6. **Les dades a sobre, en color:** rutes, llocs, cercles i etiquetes en vermell, blau, groc i tinta. El relleu sempre és context gris (P2).
+  - **Com es fa:** `node scripts/relleu.mjs --bbox oest,sud,est,nord --st 0.0125 --var XX_DEM --out web/articles/<slug>/relleu.js` (Mapzen Terrain Tiles a AWS Open Data, que combinen NASA SRTM, GMTED2010 i ETOPO1; 0,0125° ≈ 1,2 km per a una regió, 0,05–0,1° per a un país gran o un desert sencer; uns 50–90 KB). Després copia el bloc IB-59 de `web/sistema/mapes-b.js` (`dem59`, `iso59`, `relleu59`) i crida `relleu59(ctx, proj, w, h, window.XX_DEM, {land, lakes, rivers, fade})`. Sense `land`, la costa surt de la isolínia de 0 m del mateix relleu; amb depressions per sota del nivell del mar (Mar Mort, Qattara) passa-hi la terra de Natural Earth. Comprovat: el generador reprodueix el relleu SRTM dels evangelis amb una mediana d'error de 0 m.
+  - **Al peu:** «Relleu: Mapzen Terrain Tiles (NASA SRTM, GMTED2010, ETOPO1), mitjana per cel·les de X km». Si el hover dona alçades, digues que són la mitjana de la cel·la (més baixa que els cims).
 - **Partícules lentes i contemplatives (decisió de l'editor, 19-11-2026):** totes les partícules que es mouen (fluxos IB-40, boires de punts, arcs de flux, vents) han d'anar **molt a poc a poc** — recorregut complet en ~20–35 segons, moviment serè i hipnòtic, mai ràpid ni nerviós.
 - **Ordenar el caos aparent:** quan hi ha centenars o milers de dades, deixa que els punts, les traces o els cercles revelin l'estructura per densitat (`opacity 0,05–0,38`, `mix-blend-mode: multiply`), en lloc d'amagar-los darrere mitjanes o caixes opaques.
 - **Fils d'estructura ultra-fins:** retícules polars, cercles guia i línies base de `0,45–0,6 px`, sense graelles verticals feixugues que tallin les marques. Molt aire blanc al voltant.
 - **Model de referència de l'editor — IB-28 («Camp de vent animat», 19-11-2026):** aquesta peça resumeix la gramàtica visual ideal de la revista:
   1. **Monocromia rica:** un sol to seqüencial (blau) modulat en intensitat, sense soroll de colors.
   2. **Doble o triple codificació natural:** la intensitat es nota alhora pel **to**, la **llargada del traç** i la **densitat** — s'entén en mig segon sense mirar la llegenda.
-  3. **Geografia ultra-silenciosa:** terra plana en `#ECEBE8` sense vores dures, aigua en blanc de paper, gratícula gairebé invisible; el mapa s'identifica a l'instant però cedeix el 100 % del protagonisme al fenomen.
+  3. **Geografia ultra-silenciosa (mapes de món i d'oceà; els regionals van en relleu, IB-59):** terra plana en `#ECEBE8` sense vores dures, aigua en blanc de paper, gratícula gairebé invisible; el mapa s'identifica a l'instant però cedeix el 100 % del protagonisme al fenomen.
   4. **La forma és el fenomen:** milers de micro-traços direccionals deixen aparèixer l'estructura orgànica (espirals, corrents, fluxos) sense caixes ni símbols artificials; funciona tant animat (a poc a poc) com congelat.
   5. **Anotacions quirúrgiques de mecanisme:** només 2–3 anotacions breus (títol en negreta + 4–5 paraules que expliquen *com funciona*, no què es veu) amb colze ultra-fi en tinta.
   6. **Aplicable més enllà de la meteorologia:** reutilitza aquesta gramàtica per a rutes marítimes, migracions, difusió cultural o de llengües, comerç antic o fluxos econòmics.
@@ -201,7 +212,7 @@ Hi ha 57 peces, totes amb animació d'entrada (`IBV.onView`) i estat de hover (`
 | **IB-19** | Topografia de densitat | «On s'agrupen i com es toquen els grups?» | Punts x/y | `d3.contourDensity`, 20–30 nivells de 0,7 px, rampa a la línia, la corba exterior més gruixuda. | «Building strategy»; Senezh |
 | **IB-20** | Petits múltiples | «Com canvia el mateix patró entre llocs o èpoques?» | Qualsevol peça repetida | Mateixa escala a tots, escrita només al primer; títol serif 16 px; 4 per fila (2 a mòbil). | Parcs nacionals; seqüències de procés |
 
-### Mapes (IB-22 a IB-34)
+### Mapes (IB-22 a IB-34 i IB-59)
 
 | Núm. | Nom | Què fa | Dades al mostrari | Regles clau | Codi |
 |---|---|---|---|---|---|
@@ -218,8 +229,9 @@ Hi ha 57 peces, totes amb animació d'entrada (`IBV.onView`) i estat de hover (`
 | **IB-32** | Mapa en franja | Un recorregut desplegat en línia recta: el mapa es gira perquè el camí quedi horitzontal, amb els llocs al llarg, els països que travessa i una variable a sota. | Dades reals | El recorregut, recte i en vermell; el mapa es gira, no es deforma el camí; Vores de la franja que s'esvaeixen, sense marc; Variable a sota amb la mateixa escala horitzontal; línia guia comuna; Mini mapa de situació sempre visible | `sistema/mapes-b.js` |
 | **IB-33** | Hexàgons en el temps | La terra coberta d'hexàgons iguals que canvien de color mes a mes amb un lliscant o amb «Reprodueix». | Simulació | Hexàgons iguals, separats 1 px; només sobre terra; Rampa divergent amb el zero en gris; la línia del zero, en tinta; El mes, gran i en serif dins del mapa; Lliscant amb aria-valuetext i botó que s'atura | `sistema/mapes-b.js` |
 | **IB-34** | Mapa d'isotermes marí | Camp complet de temperatura de la superfície del mar amb franges litogràfiques translúcides, isotermes fines cada 2 °C i principals cada 5 °C, i terra silenciosa a sobre (sense lupa que amagui el mapa). | Dades reals | Tota la dada visible d'entrada; franges suaus blau↔vermell + isotermes fines (2 °C) i etiquetades (5 °C); 3 anotacions de mecanisme; en passar-hi, ressalta la isoterma del punt | `sistema/mapes-b.js` |
+| **IB-59** | Mapa físic en relleu | Base de tots els mapes regionals: franges hipsomètriques en gris càlid, ombra suau des del NO, isolínies finíssimes, mar en blanc i aigua en blau; les dades a sobre en color (estil «Jesús i els quatre evangelis»). | Dades reals (Catalunya, Mapzen Terrain Tiles / SRTM) | Grisos càlids, mai verds ni marrons; ombra ±15; isolínies 0,55 px a 0,14; vora esvaïda sense marc; escala en km; relleu sempre context gris | `sistema/mapes-b.js` + `scripts/relleu.mjs` |
 
-### Formes inesperades (IB-35 a IB-54)
+### Formes inesperades (IB-35 a IB-58)
 
 | Núm. | Nom | Què fa | Dades al mostrari | Regles clau | Codi |
 |---|---|---|---|---|---|
@@ -256,7 +268,9 @@ Les peces funcionen dins d'una secció `.scrolly` (el gràfic enganxat i els pas
 
 ## 6. Abans de publicar un gràfic
 
+- [ ] És una peça IB del pla visual de l'article (`research/<slug>/pla-visual.md`), o el pla explica per què cal una peça nova.
 - [ ] No pinta cap fons, panell ni ombra (P1).
+- [ ] Si és un mapa regional, va sobre la base física en relleu IB-59 (no sobre terra plana).
 - [ ] El protagonista és clar en dos segons; la resta, gris (P2).
 - [ ] Té capçalera (C-01) i llegenda si hi ha ≥ 2 sèries o una rampa.
 - [ ] Les idees clau estan anotades dins del gràfic (P4).
