@@ -34,13 +34,13 @@
   </section>
 
   <section class="pc" id="ib-38">
-    <div class="pc-h"><span class="pc-n">IB-38</span><h4>Crestes</h4></div>
-    <p class="pc-d">Una distribució per fila, apilades i encavalcades com una serralada. Es compara la forma de cada grup d'una ullada; en passar-hi per sobre, la cresta s'aixeca i en dona la mediana.</p>
-    <div class="vh"><div><strong>Com es reparteix l'ONI</strong><span>Distribució de l'anomalia mensual de la zona Niño 3.4 (°C)</span></div><div class="lgs" data-lg="38"></div></div>
+    <div class="pc-h"><span class="pc-n">IB-38</span><h4>Filera de cercles translúcids</h4></div>
+    <p class="pc-d">Una fila neta per grup on cada observació real és un cercle translúcid <code>multiply</code> d'àrea proporcional a la intensitat. La superposició dibuixa sola on s'agrupen els mesos i fa destacar els extrems sense cap muntanya opaca que tapi la fila de darrere.</p>
+    <div class="vh"><div><strong>Com es reparteix l'ONI</strong><span>Tots els 921 mesos reals (1950–2026) sobre el fil de cada dècada o estació · àrea proporcional a la intensitat</span></div><div class="lgs" data-lg="38"></div></div>
     <div class="plot" data-p="38"></div>
     <div class="ctlbar"><div class="seg" role="group" aria-label="Agrupació" data-seg="38"><button type="button" aria-pressed="true" data-k="dec">Per dècada</button><button type="button" aria-pressed="false" data-k="est">Per estació</button></div></div>
-    <p class="src"><b>Dades reals.</b> Font: NOAA Climate Prediction Center, índex ONI 1950–2026 (2026 fins a ag–oct). Densitat de nucli gaussià (amplada 0,22 °C); les ratlletes de sota són els mesos.</p>
-    <div class="pc-r"><div><h5>Per a</h5><p>Comparar la forma de moltes distribucions: temperatures per dècada, edats per país, temps per tipus.</p></div><div><h5>Regles</h5><ul><li>Mateixa escala de densitat a totes les files.</li><li>Color per valor (la rampa de la història), contorn en tinta.</li><li>Entre 5 i 15 files; la mediana marcada.</li></ul></div><div><h5>Ve de</h5><p>La portada d'«Unknown Pleasures» (Joy Division, 1979), feta amb les dades del púlsar CP 1919.</p></div></div>
+    <p class="src"><b>Dades reals.</b> Font: NOAA Climate Prediction Center, índex ONI 1950–2026 (2026 fins a ag–oct). Cada cercle és un mes real (àrea proporcional a |ONI| via <code>d3.scaleSqrt</code>); la ratlla fosca marca la mediana del grup.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Comparar distribucions i extrems entre molts grups (dècades, estacions, països, esdeveniments) deixant veure totes les dades reals alhora.</p></div><div><h5>Regles</h5><ul><li>Una línia guia fina (0,65 px) per fila; mai crestes opaques encavalcades.</li><li>Cercles translúcids <code>multiply</code> amb àrea proporcional a la magnitud; mediana marcada en tinta.</li><li>En passar-hi, la resta de files s'atenuen suaument (0,48) i s'assenyala el mes exacte apuntat.</li></ul></div><div><h5>Ve de</h5><p>«Major quakes and their aftershocks» (Reuters) i «Incendios en Perú 2012–2024» (Enrique Mendoza Tincopa).</p></div></div>
   </section>
 
   <section class="pc" id="ib-39">
