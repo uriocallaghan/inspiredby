@@ -3,7 +3,7 @@
    bombolles translúcides multiply, anells concèntrics, corrents trenats i roses polars concèntriques).
    V0 (#intro-viz): 64.298 paraules en 4 núvols topogràfics (Building Strategy + Fair and square?).
    V1 (#temps): Scrollytelling cronològic amb 5 blocs, bombolles translúcides (Major quakes) i boira oral.
-   V2 (#biblio): Eixam orgànic de 887 punts que volen en arc (Ordre Bíblia ↔ Escriptura).
+   V2 (#biblio): Eixam orgànic de 887 punts que volen en arc (Ordre Bíblia – Escriptura).
    V6 (#setmana): Els 233 episodis de Marc i els 1.162 dels 4 evangelis (Incendios en Perú + Major quakes).
    V7a (#flux): Corrents trenats fins amb partícules en canvas (Iceberg alley + IB-40).
    V7b (#corda): Topografia orgànica de densitat de tots els 1.162 fragments d'Eusebi (Building Strategy).
@@ -244,7 +244,7 @@
       });
       const sx=x(120);
       s.append("line").attr("x1",sx-3).attr("y1",20).attr("x2",sx+3).attr("y2",h-22).attr("stroke",C.hair).attr("stroke-dasharray","2 3");
-      if(!mob) V.t(s,sx+6,h-8,"escala comprimida ▶",{size:11,fill:C.muted});
+      if(!mob) V.t(s,sx+6,h-8,"escala comprimida →",{size:11,fill:C.muted});
 
       // boira orgànica de memòria oral en canvas (1.100 punts diminuts d'1 px, més densos prop del 30 dC)
       const rng=V.rng(30), ox0=x(30), ox1=x(72);
@@ -339,7 +339,7 @@
   })();
 
   /* =====================================================================
-     V2 · POLS DE PARAULES: ORDRE DE LA BÍBLIA ↔ ESCRIPTURA (Eixam orgànic)
+     V2 · POLS DE PARAULES: ORDRE DE LA BÍBLIA – ESCRIPTURA (Eixam orgànic)
      ===================================================================== */
   (function(){
     const fig=$("#f-biblio"), el=$("#biblio"), rd=$("#biblio-r"); if(!el)return;

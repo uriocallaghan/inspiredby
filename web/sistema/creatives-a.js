@@ -535,8 +535,8 @@ const M38=piece(38,(el,w)=>{
   [-.5,.5].forEach(v=>ax.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",m.t-8).attr("y2",h-m.b)
     .attr("stroke",v<0?C.blau:C.vermell).attr("stroke-width",.9).attr("stroke-opacity",.45).attr("stroke-dasharray","2 3"));
   if(!mob){
-    V.t(ax,x(-.5)-8,h-m.b+36,"◀ La Niña (≤ −0,5 °C)",{size:11.5,fill:C.blau,anchor:"end",italic:true});
-    V.t(ax,x(.5)+8,h-m.b+36,"El Niño (≥ +0,5 °C) ▶",{size:11.5,fill:C.vermell,italic:true});
+    V.t(ax,x(-.5)-8,h-m.b+36,"← La Niña (≤ −0,5 °C)",{size:11.5,fill:C.blau,anchor:"end",italic:true});
+    V.t(ax,x(.5)+8,h-m.b+36,"El Niño (≥ +0,5 °C) →",{size:11.5,fill:C.vermell,italic:true});
     V.t(ax,w-m.r+10,m.t-12,"Mediana",{size:11,fill:C.muted,anchor:"start"});
   }
 
@@ -674,7 +674,7 @@ const M39=piece(39,(el,w)=>{
       [-2,-1,0,1,2].forEach(v=>{ gl.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",h*.5+E-4).attr("y2",h*.5+E).attr("stroke",C.muted);
         V.t(gl,x(v),h*.5+E+14,sgn(v,0)+(v===2?" °C":""),{size:11.5,fill:C.muted,anchor:"middle"}); });
       [-.5,.5].forEach(v=>gl.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",h*.5-E+4).attr("y2",h*.5+E-4).attr("stroke",C.ink2).attr("stroke-width",1.1).attr("stroke-dasharray","1.5 3.5").attr("stroke-linecap","round"));
-      V.t(gl,x(-.5)-6,h*.5-E,"◀ La Niña",{size:12,italic:true,fill:C.ink2,anchor:"end"}); V.t(gl,x(.5)+6,h*.5-E,"El Niño ▶",{size:12,italic:true,fill:C.ink2});
+      V.t(gl,x(-.5)-6,h*.5-E,"← La Niña",{size:12,italic:true,fill:C.ink2,anchor:"end"}); V.t(gl,x(.5)+6,h*.5-E,"El Niño →",{size:12,italic:true,fill:C.ink2});
       const mx=N39.reduce((a,b)=>b.v>a.v?b:a);
       V.note(ga,{x:x(mx.v),y:h*.5-6,tx:x(mx.v)-(mob?8:20),ty:h*.5-E-(mob?26:34),kind:"elbow",anchor:"end",lines:[["El mes més càlid",true],[`${SEASON[mx.k]} ${mx.yr}: ${sgn(mx.v)} °C`]]});
       const nw=N39.filter(d=>d.yr===2026);

@@ -163,7 +163,7 @@
     (o.ticks||[]).forEach(v=>{ s.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",0).attr("y2",h+3).attr("stroke",v===0?C.ink:C.paper).attr("stroke-width",v===0?1:1);
       s.append("text").attr("x",x(v)).attr("y",h+14).attr("text-anchor","middle").attr("font-size",FS.min).attr("fill",C.muted).style("font-variant-numeric","tabular-nums").text(o.f?o.f(v):v); });
     if(o.lo||o.hi){ const r=s.append("g").attr("transform",`translate(0,${h+27})`).attr("font-size",FS.min).attr("fill",C.ink2);
-      if(o.lo)r.append("text").text("◀ "+o.lo); if(o.hi)r.append("text").attr("x",w).attr("text-anchor","end").text(o.hi+" ▶"); }
+      if(o.lo)r.append("text").text("← "+o.lo); if(o.hi)r.append("text").attr("x",w).attr("text-anchor","end").text(o.hi+" →"); }
     return d.node();
   }
   function legendSize(el,o){
