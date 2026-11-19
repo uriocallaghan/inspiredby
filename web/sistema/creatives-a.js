@@ -71,100 +71,172 @@ const DECS=d3.range(1950,2030,10);
 const decLab=(d,mob)=>{ const last=Math.min(d+9,ONI_YEARS[ONI_YEARS.length-1]); return mob?`${d}–${String(last).slice(2)}`:`${d}–${last}`; };
 
 /* =====================================================================
-   IB-35 · ZOOM D'ESCALA  (esquema: potències de deu en metres)
+   IB-35 · ESCALA COMPARATIVA D'ORDRES DE MAGNITUD  (dades reals: SI, IAU, NASA, FIFA)
+   Tots els ordres de magnitud visibles alhora (de 10⁻⁹ m a 10⁹ m) amb referències
+   concretes en cercles translúcids i arcs interactius per comparar qualssevol dues mides.
    ===================================================================== */
 const SUPD={"0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹","-":"⁻"};
 const p10=k=>"10"+String(k).split("").map(c=>SUPD[c]).join("");
-const U35=["1 nanòmetre","10 nanòmetres","100 nanòmetres","1 micròmetre","10 micròmetres","100 micròmetres","1 mil·límetre","1 centímetre","1 decímetre","1 metre","10 metres","100 metres","1 quilòmetre","10 quilòmetres","100 quilòmetres","1.000 quilòmetres","10.000 quilòmetres","100.000 quilòmetres","1 milió de quilòmetres"].map((t,i)=>({k:i-9,t}));
-const X35=[{v:.0254,t:"Polzada",d:"25,4 mm exactes"},{v:1852,t:"Milla nàutica",d:"1.852 m exactes"},{v:42195,t:"Marató",d:"42,195 km exactes"},{v:299792458,t:"Segon-llum",d:"299.792,458 km exactes"}].map(d=>Object.assign(d,{k:Math.log10(d.v)}));
 const ord=n=>n===1?"1r":n===2?"2n":n===3?"3r":n===4?"4t":n+"è";
-const metres=k=>k>=0?f0(10**k)+" m":"0,"+"0".repeat(-k-1)+"1 m";
-let s35=V.reduced?0:-9, tw35=null;
-legend(35,el=>V.legendCat(el,[{c:C.ink,t:"Cada cercle, 10 vegades el de dins",kind:"hollow"},{c:C.vermell,t:"Una mida exacta per definició",kind:"line",w:1.2,dash:"3 3"}]));
-function set35(v){
-  s35=Math.max(-9,Math.min(9,v));
-  const el=$('[data-p="35"]'); if(el&&el._upd)el._upd(s35);
-  const r=$('[data-r35]'), t=U35[Math.round(s35)+9].t;
-  if(r){ r.value=s35; r.setAttribute("aria-valuetext",t); }
-  const o=$('[data-v35]'); if(o)o.textContent=t;
+const ITEMS35=[
+  {id:"adn",    v:2e-9,       t:"Hèlix d'ADN",      m:"2 nm",            d:"micro", mob:true},
+  {id:"virus",  v:1e-7,       t:"Virus",            m:"100 nm",          d:"micro", mob:false},
+  {id:"globul", v:7e-6,       t:"Glòbul vermell",   m:"7 µm",            d:"micro", mob:false},
+  {id:"cabell", v:7e-5,       t:"Cabell humà",      m:"70 µm",           d:"micro", mob:true},
+  {id:"polz",   v:.0254,      t:"Polzada",          m:"25,4 mm",         d:"huma",  mob:false},
+  {id:"metre",  v:1,          t:"1 metre",          m:"1 m exacte",      d:"huma",  mob:true},
+  {id:"camp",   v:105,        t:"Camp de futbol",   m:"105 m",           d:"huma",  mob:false},
+  {id:"milla",  v:1852,       t:"Milla nàutica",    m:"1.852 m",         d:"cosmo", mob:false},
+  {id:"everest",v:8849,       t:"Everest",          m:"8,85 km",         d:"cosmo", mob:true},
+  {id:"marato", v:42195,      t:"Marató",           m:"42,2 km",         d:"cosmo", mob:false},
+  {id:"lluna",  v:3.474e6,    t:"Lluna",            m:"3.474 km",        d:"cosmo", mob:false},
+  {id:"terra",  v:1.2742e7,   t:"Terra",            m:"12.742 km",       d:"cosmo", mob:false},
+  {id:"llum",   v:2.99792458e8,t:"Segon-llum",      m:"299.792 km",      d:"cosmo", mob:false},
+  {id:"sol",    v:1.3927e9,   t:"Sol",              m:"1,39 M km",       d:"cosmo", mob:true}
+].map((d,i)=>Object.assign(d,{i,k:Math.log10(d.v)}));
+const DOM35={
+  micro:{c:C.blau,  t:"Món microscòpic (< 1 mm)"},
+  huma: {c:C.ink2,  t:"Escala humana (1 mm – 1 km)"},
+  cosmo:{c:C.vermell,t:"Planetari i còsmic (> 1 km)"}
+};
+function fmtRatio35(a,b){
+  const r=b.v/a.v;
+  if(Math.abs(r-1)<1e-6)return "Mateixa mida";
+  const big=r>1, f=big?r:1/r;
+  let num;
+  if(f<10)num=f1(f);
+  else if(f<1e4)num=f0(f);
+  else if(f<1e6)num=f0(Math.round(f/100)*100);
+  else if(f<1e9)num=f1(f/1e6)+" milions";
+  else if(f<1e12)num=f1(f/1e9)+" mil milions";
+  else num=p10(Math.round(Math.log10(f)));
+  return big?`×${num} més gran`:`÷${num} més petit`;
 }
-function go35(target,dur){
-  if(tw35){ tw35.stop(); tw35=null; }
-  if(V.reduced||!dur){ set35(target); return; }
-  const s0=s35;
-  tw35=d3.timer(t=>{ const u=Math.min(1,t/dur); set35(s0+(target-s0)*EIO(u)); if(u>=1){ tw35.stop(); tw35=null; } });
-}
-piece(35,(el,w)=>{
-  const mob=w<640, h=mob?440:540;
-  const {ctx,s}=layer(el,w,h,"Cercles niats, cadascun deu vegades més ample que el de dins, des d'un nanòmetre fins a un milió de quilòmetres. El lliscant fa un zoom continu d'una escala a l'altra; quatre cercles vermells marquen mides exactes per definició, com la marató o el segon-llum. Esquema."), g=s.append("g"), cv=ctx.canvas;
-  const bx=Math.round(mob?w*.52:w*.5), by=h-8, D0=(h-80)*.95;
-  const cid="c35"+Math.random().toString(36).slice(2,6);
-  s.append("defs").append("clipPath").attr("id",cid).append("rect").attr("x",-2).attr("y",0).attr("width",w+4).attr("height",h);
-  g.attr("clip-path",`url(#${cid})`);
-  const labs=g.append("g"), ro=g.append("g");
-  const MIN=[]; for(let k=-9;k<=8;k++)for(let m=2;m<=9;m++)MIN.push(k+Math.log10(m));
-  // els 167 cercles van en canvas (es redibuixen a cada pas del zoom); a l'SVG només hi queda el text
-  function circles(sv){
-    const kn=Math.round(sv), R=k=>D0/2*Math.pow(10,k-sv), arc=r=>{ ctx.beginPath(); ctx.arc(bx,by-r,r,0,6.2832); ctx.stroke(); };
-    ctx.clearRect(0,0,w,h);
-    ctx.strokeStyle=C.ghost; ctx.lineWidth=.6;
-    for(const d of MIN){ const r=R(d); if(r<=2.5||r>=2.5*h)continue; ctx.globalAlpha=smooth(r,2.5,30)*.85; arc(r); }
-    ctx.strokeStyle=C.ink;
-    for(const d of U35){ const r=R(d.k); if(r<=.5||r>=2.5*h)continue; ctx.globalAlpha=.35+.65*smooth(r,.5,8); ctx.lineWidth=d.k===kn?1.7:.9; arc(r); }
-    ctx.globalAlpha=1; ctx.strokeStyle=C.vermell; ctx.lineWidth=1; ctx.setLineDash([3,3]);
-    for(const d of X35){ const r=R(d.k); if(r<=1||r>=2.5*h)continue; arc(r); }
-    ctx.setLineDash([]);
+let anchor35="metre", focus35="terra";
+legend(35,el=>V.legendCat(el,[
+  {c:C.blau,t:"Món microscòpic"},
+  {c:C.ink2,t:"Escala humana"},
+  {c:C.vermell,t:"Planetari i còsmic"}
+]));
+const M35=piece(35,(el,w)=>{
+  const mob=w<640, h=mob?290:360;
+  const ml=mob?18:42, mr=mob?18:42, axisY=mob?154:162;
+  el.style.height="";
+  const s=V.svg(el,w,h,"Escala logarítmica comparativa d'un nanòmetre fins al diàmetre del Sol (18 ordres de magnitud). Totes les mides són visibles alhora com a cercles translúcids; clicant qualsevol punt es fixa com a referència i un arc mostra quantes vegades és més gran o més petit qualsevol altre objecte.");
+  const g=s.append("g");
+  const X=d3.scaleLinear([-9.4,9.6],[ml,w-mr]);
+  const rDom=d=>mob?8+(d.k+9)*.52:10+(d.k+9)*.68;
+
+  // 1. Franges subtils de domini sobre la línia base
+  const bands=[
+    {a:-9.4,b:-3,c:C.blau,t:"Món microscòpic"},
+    {a:-3,b:3,c:C.groc,t:"Escala humana"},
+    {a:3,b:9.6,c:C.vermell,t:"Planetari i còsmic"}
+  ];
+  bands.forEach(b=>{
+    g.append("rect").attr("x",X(b.a)).attr("y",axisY-3).attr("width",X(b.b)-X(b.a)).attr("height",6)
+      .attr("rx",3).attr("fill",b.c).attr("fill-opacity",b.c===C.groc?.22:.12);
+    V.t(g,(X(b.a)+X(b.b))/2,h-10,b.t,{size:11,fill:C.muted,anchor:"middle"});
+  });
+
+  // 2. Marques cada potència de 10 (etiquetades cada 3 ordres de magnitud, just sota l'eix)
+  const ticks=d3.range(-9,10,1);
+  ticks.forEach(k=>{
+    const x=X(k), major=k%3===0;
+    g.append("line").attr("x1",x).attr("x2",x).attr("y1",axisY-(major?9:4)).attr("y2",axisY+(major?9:4))
+      .attr("stroke",k===0?C.ink:major?C.hair:C.grid).attr("stroke-width",k===0?1.3:.8);
+    if(major&&(!mob||k%6===0||k===0)){
+      const txt=k===-9?"1 nm":k===-6?"1 µm":k===-3?"1 mm":k===0?"1 m":k===3?"1 km":k===6?"1.000 km":"1 M km";
+      V.t(g,x,axisY+24,txt,{size:11,fill:k===0?C.ink:C.muted,weight:k===0?700:400,anchor:"middle"});
+    }
+  });
+
+  // 3. Zona superior lliure reservada exclusivament per a l'arc comparatiu (zero col·lisions!)
+  const gArc=g.append("g").style("pointer-events","none");
+
+  // 4. Cercles translúcids sobre l'eix i etiquetes escalonades a sota (sense solapaments)
+  const gPts=g.append("g");
+  const pts=gPts.selectAll("g.pt").data(ITEMS35).join("g").attr("class","pt").style("cursor","pointer");
+  pts.each(function(d,idx){
+    const q=d3.select(this), x=X(d.k), col=DOM35[d.d].c, rad=rDom(d);
+    const showLab=!mob||d.mob;
+    q.append("circle").attr("class","halo").attr("cx",x).attr("cy",axisY).attr("r",rad)
+      .attr("fill",col).attr("fill-opacity",.22).style("mix-blend-mode","multiply");
+    q.append("circle").attr("class","core").attr("cx",x).attr("cy",axisY).attr("r",3.2)
+      .attr("fill",col).attr("stroke","#fff").attr("stroke-width",1.2);
+    if(showLab){
+      // 3 files escalonades a escriptori, 2 a mòbil — totes sota la línia d'escala
+      const row=mob?(idx%2):(idx%3);
+      const yLab=axisY+(mob?52+row*32:54+row*42);
+      q.append("line").attr("class","stem").attr("x1",x).attr("x2",x)
+        .attr("y1",axisY+rad+2).attr("y2",yLab-12)
+        .attr("stroke",C.hair).attr("stroke-width",.7);
+      const anc=x<ml+52?"start":x>w-mr-52?"end":"middle";
+      V.t(q,x,yLab,d.t,{size:11.5,weight:600,fill:C.ink,anchor:anc,halo:3}).attr("class","lbl-t");
+      V.t(q,x,yLab+13,d.m,{size:11,fill:C.muted,anchor:anc,halo:3}).attr("class","lbl-m");
+    }
+    q.append("circle").attr("cx",x).attr("cy",axisY).attr("r",Math.max(16,rad+4)).attr("fill","transparent");
+  });
+
+  const tp=V.tip(el);
+  const tipEl=el.querySelector(":scope>.tip"); if(tipEl)el.appendChild(tipEl);
+
+  function renderCompare(hvItem){
+    const anc=ITEMS35.find(d=>d.id===anchor35)||ITEMS35[5];
+    const tgt=hvItem||ITEMS35.find(d=>d.id===focus35)||ITEMS35[11];
+    gArc.selectAll("*").remove();
+
+    pts.each(function(d){
+      const q=d3.select(this), isA=d.id===anc.id, isT=tgt&&d.id===tgt.id;
+      const active=isA||isT;
+      q.style("opacity",active?1:.52);
+      q.select(".core").attr("r",isA?4.8:isT?4.2:3.2).attr("stroke",isA?C.ink:"#fff").attr("stroke-width",isA?1.8:1.2);
+      q.select(".halo").attr("fill-opacity",active?.36:.18);
+    });
+
+    if(!tgt||tgt.id===anc.id){
+      tp.show(`<b>${anc.t}</b> (${anc.m}) · Referència activa — passa per qualsevol altre punt per comparar-lo`,X(anc.k),axisY);
+      return;
+    }
+    const x1=X(anc.k), x2=X(tgt.k), mx=(x1+x2)/2, span=Math.abs(x2-x1);
+    const arcH=Math.min(axisY-64,Math.max(46,span*.24));
+    const col=tgt.k>=anc.k?C.vermell:C.blau;
+    const dPath=`M${x1},${axisY-10} Q${mx},${axisY-10-arcH*1.5} ${x2},${axisY-10}`;
+    gArc.append("path").attr("d",dPath).attr("fill","none").attr("stroke",col).attr("stroke-width",1.9).attr("stroke-opacity",.92);
+    // Titular de la comparació centrat amb seguretat a la zona superior neta
+    const apexY=axisY-10-arcH*.75;
+    const topY=Math.max(24,apexY-24);
+    const ratioStr=fmtRatio35(anc,tgt);
+    const ordDiff=tgt.k-anc.k;
+    const lx=Math.max(mob?140:180,Math.min(w-(mob?140:180),mx));
+    V.t(gArc,lx,topY,`${anc.t} → ${tgt.t}: ${ratioStr}`,{size:mob?12:13.5,weight:700,fill:col,anchor:"middle",halo:4});
+    V.t(gArc,lx,topY+16,`${sgn(ordDiff,1)} ordres de magnitud`,{size:11.5,fill:C.ink2,anchor:"middle",halo:3.5});
+    tp.show(`<b>${anc.t}</b> (${anc.m}) → <b>${tgt.t}</b> (${tgt.m}): <b>${ratioStr}</b> · Clica qualsevol punt per canviar la referència`,mx,topY);
   }
-  const Ml=labs.selectAll("g.m").data(U35).join("g").attr("class","m");
-  Ml.each(function(d){ const t=d3.select(this).append("text").attr("x",4).attr("y",-7).attr("font-size",12.5).style("font-variant-numeric","tabular-nums").call(V.halo,3);
-    t.append("tspan").attr("font-weight",700).attr("fill",C.ink).text(d.t); t.append("tspan").attr("fill",C.muted).attr("font-size",11.5).text("  "+p10(d.k)+" m"); });
-  const Xl=labs.selectAll("g.x").data(X35).join("g").attr("class","x");
-  Xl.each(function(d){ const q=d3.select(this); lab(q,-6,-22,d.t,{weight:700,size:12.5,anchor:"end",fill:C.vermell}); lab(q,-6,-7,d.d,{size:11.5,anchor:"end",fill:C.ink2}); });
-  // lectura de l'escala, a dalt a l'esquerra
-  const r1=lab(ro,0,30,"",{serif:true,weight:600,size:mob?22:27}), r2=lab(ro,0,50,"",{size:12.5,fill:C.ink2});
-  function upd(sv){
-    const R=k=>D0/2*Math.pow(10,k-sv), kn=Math.round(sv);
-    circles(sv);
-    Ml.attr("transform",d=>`translate(${bx},${by-2*R(d.k)})`).style("opacity",d=>{ const r=R(d.k), top=by-2*r; return smooth(2*r,20,46)*smooth(top,18,44); })
-      .style("display",d=>{ const r=R(d.k); return 2*r>20&&by-2*r>18?null:"none"; });
-    Xl.attr("transform",d=>`translate(${bx},${by-2*R(d.k)})`).style("opacity",d=>{ const r=R(d.k), top=by-2*r; return smooth(2*r,36,70)*smooth(top,mob?70:30,mob?96:56); })
-      .style("display",d=>{ const r=R(d.k); return 2*r>36&&by-2*r>(mob?70:30)?null:"none"; });
-    r1.text(U35[kn+9].t); r2.text(`El cercle gruixut fa ${p10(kn)} m d'ample`);
-    if(cur)drawHv();
-  }
-  // hover: el cercle apuntat en tinta, la resta apagada, cota del diàmetre amb el valor i nom al costat
-  const body=d3.selectAll([cv,labs.node()]);
-  const hv=hvLayer(g); let cur=null;
-  const shortV=k=>Math.abs(k)>=4?`${p10(k)} m`:metres(k);
-  function drawHv(){
-    hv.selectAll("*").remove(); if(!cur)return;
-    const R=D0/2*Math.pow(10,cur.k-s35), cy=by-R, col=cur.ex?C.vermell:C.ink;
-    hv.append("circle").attr("cx",bx).attr("cy",cy).attr("r",R).attr("fill",V.alpha(col,.05)).attr("stroke",col).attr("stroke-width",2).attr("stroke-dasharray",cur.ex?"5 3":null);
-    // cota horitzontal: el diàmetre, amb el valor en negreta
-    const x0=Math.max(4,bx-R), x1=Math.min(w-4,bx+R), yy=Math.max(24,Math.min(cy,by-14));
-    hv.append("line").attr("x1",x0).attr("x2",x1).attr("y1",yy).attr("y2",yy).attr("stroke",col).attr("stroke-width",1);
-    [[x0,bx-R>=4],[x1,bx+R<=w-4]].forEach(([xx,end])=>hv.append("path").attr("d",end?`M${xx},${yy-5}V${yy+5}`:`M${xx+(xx<bx?6:-6)},${yy-4}L${xx},${yy}L${xx+(xx<bx?6:-6)},${yy+4}`).attr("stroke",col).attr("fill","none"));
-    axTag(hv,bx,yy-6,cur.ex?cur.d.replace(" exactes",""):shortV(cur.k),{fill:col===C.vermell?C.vermell:C.ink});
-    // nom al costat, a dalt del cercle
-    const top=Math.max(18,by-2*R-8);
-    lab(hv,bx+8,top,cur.ex?cur.t:cur.t,{size:13,weight:700,fill:col});
-  }
-  el.__f=el.__f||[0,0]; el._upd=tm(el,upd); upd(s35);
-  const tp=V.tip(el), hit=s.append("rect").attr("width",w).attr("height",h).attr("fill","transparent").style("cursor","crosshair");
-  V.hover(hit.node(),(ev,[px,py])=>{
-    const R=k=>D0/2*Math.pow(10,k-s35);
-    const ex=X35.find(d=>{ const r=R(d.k); return r>8&&Math.abs(Math.hypot(px-bx,py-(by-r))-r)<9; });
-    const d=ex?null:U35.find(u=>{ const r=R(u.k); return r>4&&Math.hypot(px-bx,py-(by-r))<r+6; });
-    if(!ex&&!d){ if(cur){ cur=null; drawHv(); dimTo(body,1); } tp.hide(); return; }
-    const nk=ex?{k:ex.k,t:ex.t,d:ex.d,ex:true}:{k:d.k,t:d.t};
-    if(!cur||cur.k!==nk.k){ cur=nk; drawHv(); dimTo(body,.22); }
-    if(ex)tp.show(`<b>${ex.t}</b><br>${ex.d}<br>Entre ${metres(Math.floor(ex.k))} i ${metres(Math.ceil(ex.k))}: ${f2(ex.k)} ordres de magnitud sobre el metre`,px,py);
-    else { const r=R(d.k); const kn=Math.round(s35); void r; tp.show(`<b>${d.t}</b><br>${p10(d.k)} m = ${metres(d.k)}<br>${d.k===kn?"És el cercle gruixut":d.k>kn?`${f0(10**(d.k-kn))} vegades el cercle gruixut`:`1/${f0(10**(kn-d.k))} del cercle gruixut`}`,px,py); }
-  },()=>{ cur=null; drawHv(); dimTo(body,1); tp.hide(); });
-  if(!el.__ov){ el.__ov=true; V.onView(el,inst=>{ if(inst)set35(0); else { set35(-9); go35(0,4800); } }); }
+
+  // Interacció: hover compara contra l'àncora; clic fixa una nova àncora
+  pts.on("mouseenter",(ev,d)=>{ focus35=d.id; renderCompare(d); })
+     .on("click",(ev,d)=>{ anchor35=d.id; if(focus35===d.id)focus35=d.id==="metre"?"terra":"metre"; renderCompare(ITEMS35.find(x=>x.id===focus35)); });
+  s.on("mouseleave",()=>{ renderCompare(ITEMS35.find(x=>x.id===focus35)); });
+
+  el._setPair=(a,b)=>{ anchor35=a; focus35=b; renderCompare(ITEMS35.find(x=>x.id===b)); };
+  renderCompare(ITEMS35.find(x=>x.id===focus35));
+
+  intro(el,
+    ()=>{ gPts.style("opacity",0); gArc.style("opacity",0); },
+    inst=>{
+      if(inst){ gPts.style("opacity",1); gArc.style("opacity",1); return; }
+      gPts.transition().duration(550).ease(EIO).style("opacity",1);
+      gArc.transition().delay(320).duration(500).ease(EIO).style("opacity",1);
+    }
+  );
 });
-(function(){ const r=$('[data-r35]'); if(r)r.addEventListener("input",()=>{ if(tw35){ tw35.stop(); tw35=null; } set35(+r.value); });
-  const p=$('[data-play="35"]'); if(p)p.addEventListener("click",()=>{ if(s35>8.5)set35(-9); const d=9-s35; go35(9,Math.max(1200,d*900)); }); })();
+segs(35,k=>{
+  const pairs={metre:["metre","terra"],micro:["virus","globul"],huma:["everest","marato"],cosmo:["terra","sol"]};
+  const p=pairs[k]||pairs.metre, el=$('[data-p="35"]');
+  if(el&&el._setPair)el._setPair(p[0],p[1]);
+});
+void M35;
 
 /* =====================================================================
    IB-36 · MÀQUINA DE GALTON  (simulació)
