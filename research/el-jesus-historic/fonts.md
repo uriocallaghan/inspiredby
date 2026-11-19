@@ -92,3 +92,13 @@ Totes les imatges s'han verificat via API de Wikimedia Commons (`commons.wikimed
 11. `rembrandt-crist.jpg` — Rembrandt van Rijn, *Cap de Crist* (c. 1648–1656), Gemäldegalerie Berlin (Inv. 811C; foto: Christoph Schmidt). Domini públic (`PDMark-owner`). https://commons.wikimedia.org/wiki/File:Christuskopf_-_Gem%C3%A4ldegalerie_Berlin_-_5250510.jpg
 12. `hofmann-1889.jpg` — Heinrich Hofmann, *Crist i el jove ric* (1889), Riverside Church, Nova York. Domini públic (`PD-old-auto-expired`, †1911). https://commons.wikimedia.org/wiki/File:Hoffman-ChristAndTheRichYoungRuler.jpg
 - **No reproduïdes per drets vigents (només enllaç oficial):** Warner Sallman, *Head of Christ* (1940, Warner Press, protegit fins al 2036 als EUA i el 2039 a la UE); *Evangelis de Zir Ganela* (Morgan Library MS M.828, sense llicència oberta CC0).
+
+## 5. Reescriptura del 19-11-2026: temes nous
+
+L'article es va reescriure i simplificar (fora l'onomàstica, la mida de les ciutats, el «pou de Tyrrell» i la taula de contrastos). Cada afirmació nova té la font, la cita curta i el grau de confiança en aquests fitxers:
+
+- `recerca-nom-calendari.md`: Yeshua → Iēsous → Iesus → Jesús, la lletra J, les formes del nom en 12 llengües, les paraules arameues de Marc, Dionís l'Exigu i l'any 1, la mort d'Herodes (4 aC), el Cronògraf de 354 i el 25 de desembre, el concili de Tarragona del 1180 i l'era hispànica, la data de la mort (30 o 33 dC).
+- `recerca-arqueologia-fonts.md`: Pedra de Pilat, ossari de Caifàs, taló de Yehohanan, sinagoga i pedra de Magdala, barca de Galilea, cases de Natzaret, ossari de Jaume, Síndone de Torí, autors antics no cristians (Josep, Plini, Tàcit, Suetoni, Talmud) i consens sobre l'existència.
+- `recerca-altres-cultures.md`: Jesús a l'Alcorà (recompte propi: ʿĪsā 25, Maryam 34, Muhammad 4), Maria al Nou Testament (19), ocells d'argila i Evangeli de la infància de Tomàs, Talmud i estudiosos jueus moderns, estela de Xi'an, cristians amagats del Japó, fumi-e, Hong Xiuquan, Shingō i Notovitch.
+- `recerca-imatges-globals.md`: llicències, autors i museus de les 11 imatges noves (`img-noves/`, copiades a `web/articles/el-jesus-historic/img/`).
+- Les verificacions creuades dels tres agents revisors són a `verificacio-2026-11-19.md`.

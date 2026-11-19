@@ -1,53 +1,5 @@
 /* «Qui era realment Jesús?»: dades verificades (fonts completes a research/el-jesus-historic/fonts.md) */
 window.JH = {
-  // 1. Onomàstica jueva de Palestina (330 aC – 200 dC): Tal Ilan (2002) / Bauckham (2006, 2017, Taules 6 i 7)
-  // Percentatges calculats sobre denominadors exactes per sexe (2.625 homes; 328 dones; cf. van de Weghe, NTS 2023).
-  noms: {
-    homes: {
-      total: 2625,
-      distints: 447,
-      items: [
-        {r:1, nom:"Simó", orig:"Shimon", n:243, cercle:true, det:"El nom més comú del país (9,3 %): el porten el seu germà Simó, Simó Pere i Simó el Zelota."},
-        {r:2, nom:"Josep", orig:"Yosef", n:218, cercle:true, det:"Segon nom més freqüent (8,3 %): el seu pare Josep i un dels seus germans."},
-        {r:3, nom:"Llàtzer", orig:"El'azar", n:166, cercle:true, det:"Tercer (6,3 %): forma grega d'Eleazar, nom d'un dels fills de Mataties Macabeu."},
-        {r:4, nom:"Judes", orig:"Yehudah", n:164, cercle:true, det:"Quart (6,2 %): el porten un germà de Jesús i dos apòstols (entre ells Iscariot)."},
-        {r:5, nom:"Joan", orig:"Yohanan", n:122, cercle:true, det:"Cinquè (4,6 %): Joan Baptista i l'apòstol Joan."},
-        {r:6, nom:"Jesús", orig:"Yešūaʿ", n:99, cercle:true, star:true, det:"Sisè nom masculí més corrent (3,8 %, ~1 de cada 26 homes): per això calia dir «Jesús de Natzaret»."},
-        {r:7, nom:"Ananies", orig:"Hananyah", n:82, cercle:false, det:"Setè (3,1 %): molt habitual entre sacerdots i famílies de Jerusalem."},
-        {r:8, nom:"Jonatan", orig:"Yehonatan", n:71, cercle:false, det:"Vuitè (2,7 %): popular per la memòria patriòtica de la dinastia asmonea."},
-        {r:9, nom:"Mateu", orig:"Mattityahu", n:62, cercle:true, det:"Novè (2,4 %): l'apòstol Mateu i Maties, nom del patriarca dels Macabeus."},
-        {r:10, nom:"Manaen", orig:"Menahem", n:42, cercle:false, det:"Desè (1,6 %): present en inscripcions d'ossaris i en Flavi Josep."},
-        {r:11, nom:"Jaume", orig:"Ya'akov", n:40, cercle:true, det:"Onzè (1,5 %): el seu germà Jaume —líder a Jerusalem— i dos apòstols."}
-      ]
-    },
-    dones: {
-      total: 328,
-      distints: 74,
-      items: [
-        {r:1, nom:"Maria", orig:"Mariam", n:70, cercle:true, star:true, det:"Més d'1 de cada 5 dones jueves registrades (21,3 %): la seva mare, Maria Magdalena i altres Maries."},
-        {r:2, nom:"Salomé", orig:"Shalom", n:58, cercle:true, det:"Segona (17,7 %): una de les seguidores presents al peu de la creu (Mc 15,40)."},
-        {r:3, nom:"Xelamzion", orig:"Shelamzion", n:24, cercle:false, det:"Tercera (7,3 %): forma llarga de Salomé, nom de la reina asmonea Salomé Alexandra."},
-        {r:4, nom:"Marta", orig:"Marta", n:20, cercle:true, det:"Quarta (6,1 %): Marta de Betània (Lluc 10; Joan 11), molt comuna en ossaris."},
-        {r:5, nom:"Joana", orig:"Yohannah", n:12, cercle:true, det:"Cinquena empatada (3,7 %): una de les dones que sostenien econòmicament el grup (Lc 8,3)."},
-        {r:6, nom:"Safira", orig:"Shifrah", n:12, cercle:false, det:"Cinquena empatada (3,7 %): testimoniada en ossaris de Judea i a Fets dels Apòstols."},
-        {r:7, nom:"Berenice", orig:"Berenike", n:8, cercle:false, det:"Setena (2,4 %): nom grec estès per la dinastia herodiana."},
-        {r:8, nom:"Imma", orig:"Imma", n:7, cercle:false, det:"Vuitena empatada (2,1 %): documentada en Flavi Josep i fonts rabíniques."},
-        {r:9, nom:"Mara", orig:"Mara", n:7, cercle:false, det:"Vuitena empatada (2,1 %): variant aramea present en ossaris i en Flavi Josep."}
-      ]
-    }
-  },
-
-  // 2. Demografia del segle I (estimacions arqueològiques verificades amb rangs honestos)
-  ciutats: [
-    {id:"natzaret", nom:"Natzaret", sub:"El poble de Jesús", v:350, lo:200, hi:1000, g:"galilea", font:"Reed (2000: 200–400), Strange (200–480), Dark (2020: 400–1.000)", det:"Poblet agrícola i de pedrera sense muralles ni paviment, a 6 km de Sèforis. Ni tan sols surt a l'Antic Testament."},
-    {id:"cafarnaum", nom:"Cafarnaüm", sub:"Base al llac", v:1250, lo:1000, hi:1500, g:"galilea", font:"Reed (2000)", det:"Poble de pescadors i duana a la riba nord del llac de Galilea, centre de l'activitat pública de Jesús."},
-    {id:"tiberiades", nom:"Tiberíades", sub:"Capital nova", v:9000, lo:6000, hi:12000, g:"galilea", font:"Reed (2000)", det:"Ciutat hel·lenitzada fundada per Herodes Antipes cap al 19 dC. Els evangelis mai no hi situen Jesús."},
-    {id:"seforis", nom:"Sèforis", sub:"A 1 hora a peu", v:10000, lo:8000, hi:12000, g:"galilea", font:"Reed (2000)", det:"Gran capital galilea en reconstrucció durant la joventut de Jesús; tampoc no apareix mai citada als evangelis."},
-    {id:"jerusalem", nom:"Jerusalem (habitual)", sub:"Ciutat del Temple", v:50000, lo:20000, hi:80000, g:"judea", font:"Geva (2014: ≤20k), Jeremias (25–30k), Levine (60–70k), Broshi (~80k)", det:"Cor religiós del judaisme. La població permanent és objecte de debat viu entre minimalistes i maximalistes."},
-    {id:"pasqua", nom:"Jerusalem per Pasqua", sub:"Marea de pelegrins", v:300000, lo:100000, hi:400000, g:"judea", font:"Jeremias (100k+), Sanders (1992: 300–400k)", det:"Durant la Pasqua, la ciutat multiplicava la població i el prefecte romà hi desplegava tropes per evitar revoltes."},
-    {id:"roma", nom:"Roma imperial", sub:"Centre de l'Imperi", v:900000, lo:450000, hi:1000000, g:"imperi", font:"Scheidel/Morley (800k–1M), Storey (1997: 450–500k)", det:"La metròpoli de l'Imperi romà: milers de vegades més gran que el llogaret galileu on va créixer Jesús."}
-  ],
-
   // 3. Bioarqueologia: alçades puntuals publicades d'esquelets de Judea del segle I (cm)
   // Sense barres d'error inventades: només valors publicats i la franja verificada de mitjanes masculines (165–169 cm).
   estatura: [
@@ -55,15 +7,15 @@ window.JH = {
     {id:"homes", nom:"Homes adults de Judea (mitjana IAA)", v:166, cat:"prota", tipus:"Mitjana poblacional", font:"Nagar & Torge (2003, IEJ 53); Taylor (2018)", det:"Alçada típica d'un home jueu del segle I segons la síntesi osteològica de l'Autoritat d'Antiguitats d'Israel."},
     {id:"yehohanan", nom:"Yehohanan (crucificat a Jerusalem)", v:167, cat:"prota", tipus:"Esquelet individual", font:"Haas (1970, IEJ 20); Zias & Sekeles (1985, IEJ 35)", det:"L'únic esquelet jueu del segle I amb un clau romà de crucifixió (11,5 cm) encara travessant el taló."},
     {id:"jerico", nom:"Homes de la necròpolis de Jericó", v:169, cat:"prota", tipus:"Mitjana poblacional", font:"Hachlili (1979); Hachlili & Smith (1979, BASOR 235)", det:"Mitjana masculina en tombes monumentals jueves del segle I a Jericó."},
-    {id:"goliat", nom:"Yeho'ezer «Goliat» (excepció a Jericó)", v:188.5, cat:"extrem", tipus:"Esquelet individual", font:"Hachlili & Smith (1979, BASOR 235, Ossari XXI)", det:"Feia 1,885 m: tan excepcionalment alt per a la Judea del segle I que la seva família portava inscrit el sobrenom «Goliat»."}
+    {id:"goliat", nom:"Yeho'ezer «Goliat» (excepció a Jericó)", v:188.5, cat:"extrem", tipus:"Esquelet individual", font:"Hachlili & Smith (1979, BASOR 235, Ossari XXI)", det:"Feia 1,885 m, molt per sobre de la mitjana de la Judea del segle I. A l'ossari duia inscrit el sobrenom «Goliat», probablement per la seva alçada."}
   ],
 
-  // 4. Catàleg verificat de 24 fites iconogràfiques (200 dC – 2001)
+  // 4. Catàleg verificat de 29 fites iconogràfiques (200 dC – 2001)
   iconografia: [
-    {id:"alexamenos", any:200, data:"c. 200", nom:"Grafit d'Alexàmenos", lloc:"Roma", lat:41.89, lon:12.49, ox:-8, oy:-7, tipus:"altre", fase:0, font:"Museu Palatí, Inv. 381403", det:"Sàtira romana amb cap d'ase: la primera representació coneguda de la crucifixió de Jesús."},
-    {id:"dura", any:240, data:"c. 240–256", nom:"Dura-Europos (Paralític)", lloc:"Dura-Europos, Síria", lat:34.75, lon:40.73, tipus:"imberbe", fase:0, font:"Yale Univ. Art Gallery, 34498", det:"La pintura narrativa més antiga conservada de Jesús: jove, sense barba, cabell curt i túnica grecoromana."},
+    {id:"alexamenos", any:200, data:"c. 200", nom:"Grafit d'Alexàmenos", lloc:"Roma", lat:41.89, lon:12.49, ox:-8, oy:-7, tipus:"altre", fase:0, font:"Museu Palatí, Roma (Solin & Itkonen-Kaila 1966, núm. 246)", det:"Sàtira romana: un crucificat amb cap d'ase i la frase «Alexàmenos venera [el seu] déu». És, amb una gemma màgica del British Museum, una de les representacions més antigues de la crucifixió."},
+    {id:"dura", any:232, data:"c. 232", nom:"Dura-Europos (Paralític)", lloc:"Dura-Europos, Síria", lat:34.75, lon:40.73, tipus:"imberbe", fase:0, font:"Yale Univ. Art Gallery, 1932.1202", det:"La pintura narrativa més antiga conservada de Jesús: jove, sense barba, cabell curt i túnica grecoromana."},
     {id:"priscila", any:260, data:"c. 230–300", nom:"Bon Pastor (Catacumbes)", lloc:"Roma", lat:41.93, lon:12.51, ox:-6, oy:6, tipus:"imberbe", fase:0, font:"Catacumbes de Priscil·la i Cal·lixt", det:"Jove imberbe amb una ovella sobre les espatlles, inspirat en el model clàssic d'Hermes i Orfeu."},
-    {id:"hinton", any:330, data:"c. 300–350", nom:"Mosaic de Hinton St Mary", lloc:"Dorset, Britània", lat:50.95, lon:-2.30, tipus:"imberbe", fase:0, font:"British Museum, 1965,0409.1", det:"Bust d'un jove romà imberbe de cabell curt amb el monograma Chi-Rho darrere el cap."},
+    {id:"hinton", any:330, data:"c. 300–350", nom:"Mosaic de Hinton St Mary", lloc:"Dorset, Britània", lat:50.95, lon:-2.30, tipus:"imberbe", fase:0, font:"British Museum, 1965,0409.1", det:"Bust d'un jove imberbe de cabell curt amb el monograma Chi-Rho darrere el cap: probablement Crist, tot i que es discuteix."},
     {id:"junibas", any:359, data:"359", nom:"Sarcòfag de Juni Bas", lloc:"Roma", lat:41.90, lon:12.45, ox:0, oy:10, tipus:"imberbe", fase:0, font:"Tresor de Sant Pere, Vaticà", det:"Jesús entronitzat sobre el cel: encara imberbe i juvenil, com Apol·lo o un filòsof."},
     {id:"commodilla", any:385, data:"c. 375–400", nom:"Catacumba de Commodil·la", lloc:"Roma", lat:41.86, lon:12.48, ox:8, oy:6, tipus:"barbut", fase:1, font:"Catacumba de Commodil·la", det:"Un dels primers busts amb barba plena i cabell llarg fosc, evocant Zeus i els filòsofs."},
     {id:"pudenziana", any:410, data:"c. 401–417", nom:"Absis de Santa Pudenziana", lloc:"Roma", lat:41.90, lon:12.50, ox:8, oy:-6, tipus:"barbut", fase:1, font:"Santa Pudenziana, Roma", det:"Crist Emperador vestit d'or i porpra, amb barba llarga i tron imperial."},
@@ -75,15 +27,65 @@ window.JH = {
     {id:"zirganela", any:1400, data:"1400–1401", nom:"Evangelis de Zir Ganela", lloc:"Etiòpia", lat:11.33, lon:39.72, tipus:"global", fase:2, font:"Morgan Library, MS M.828", det:"Miniatura etíop solomònica: Jesús adoptat plenament als trets i ulls ametllats locals."},
     {id:"vaneyck", any:1438, data:"1432–1440", nom:"Van Eyck (Gant / Vera Icon)", lloc:"Gant / Bruges", lat:51.05, lon:3.73, tipus:"barbut", fase:2, font:"Sant Bavó / Groeningemuseum", det:"Realisme flamenc fidel a la Carta de Lèntul (falsificació medieval): cabells castanys partits i barba partida."},
     {id:"leonardo", any:1497, data:"1495–1498", nom:"El Sant Sopar (Leonardo)", lloc:"Milà, Itàlia", lat:45.47, lon:9.17, tipus:"barbut", fase:3, font:"Santa Maria delle Grazie", det:"Humanisme renaixentista italià: pell clara, cabells castany rogenc i bellesa clàssica europea."},
-    {id:"durer", any:1500, data:"1500", nom:"Autoretrat de Dürer", lloc:"Nuremberg, Alemanya", lat:49.45, lon:11.08, tipus:"barbut", fase:3, font:"Alte Pinakothek, Munic", det:"Dürer s'autoretrata frontalment com a Salvator Mundi: el Jesús de pell pàl·lida del nord d'Europa."},
+    {id:"durer", any:1500, data:"1500", nom:"Autoretrat de Dürer", lloc:"Nuremberg, Alemanya", lat:49.45, lon:11.08, tipus:"barbut", fase:3, font:"Alte Pinakothek, Munic", det:"Dürer s'autoretrata frontalment amb la posa que s'associava a Crist: el model de rostre pàl·lid del Renaixement nòrdic."},
     {id:"esquipulas", any:1595, data:"1595", nom:"Cristo Negro de Esquipulas", lloc:"Esquipulas, Guatemala", lat:14.57, lon:-89.35, tipus:"global", fase:3, font:"Basílica de Esquipulas", det:"Talla de cedre enfosquida pel fum d'espelmes i resines, integrada en la cosmovisió maia-chortí."},
-    {id:"rembrandt", any:1650, data:"c. 1648–1656", nom:"Cap de Crist (Rembrandt)", lloc:"Amsterdam", lat:52.37, lon:4.90, tipus:"global", fase:3, font:"Gemäldegalerie Berlin, 811C", det:"Excepció extraordinària: pintat del natural («nae't leven»); els historiadors de l'art el vinculen a un jove jueu del seu barri d'Amsterdam."},
+    {id:"ploma", any:1539, data:"1539", nom:"Missa de sant Gregori (plomes)", lloc:"Ciutat de Mèxic", lat:19.43, lon:-99.13, tipus:"global", fase:3, font:"Musée des Amériques, Auch", det:"Mosaic de plomes fet per artesans nahues de la Ciutat de Mèxic sota el governador Diego de Alvarado Huanitzin i dedicat al papa Pau III."},
+    {id:"kongo", any:1600, data:"s. XVI–XVII", nom:"Crucifix del Congo", lloc:"Regne del Congo", lat:-6.27, lon:14.24, tipus:"global", fase:3, font:"Met, 1999.295.7", det:"Crist de llautó amb trets africans i petites figures agenollades, fos per artesans del regne del Congo."},
+    {id:"mughal", any:1603, data:"1602–1604", nom:"Miniatura mogol (Mir'at al-quds)", lloc:"Allahabad, Índia", lat:25.43, lon:81.85, tipus:"global", fase:3, font:"Cleveland Museum of Art, 2005.145.143.a", det:"Miniatura d'una còpia de la vida de Crist en persa del jesuïta Jerome Xavier, feta per al príncep Salim, el futur emperador Jahangir."},
+    {id:"fumie", any:1669, data:"època Edo", nom:"Fumi-e (placa per trepitjar)", lloc:"Nagasaki, Japó", lat:32.75, lon:129.87, tipus:"altre", fase:3, font:"Museu Nacional de Tòquio, C-1011", det:"Al Japó Tokugawa, els habitants de Nagasaki i d'altres dominis havien de trepitjar aquestes plaques cada any per demostrar que no eren cristians."},
+    {id:"zapata", any:1750, data:"c. 1753", nom:"Sant Sopar de Cusco (cuy)", lloc:"Cusco, Perú", lat:-13.52, lon:-71.98, tipus:"global", fase:3, font:"Catedral de Cusco (atr. Marcos Zapata)", det:"Al centre de la taula del Sant Sopar hi ha un cuy, el conill d'índies rostit que és menjar de festa als Andes."},
+    {id:"rembrandt", any:1650, data:"c. 1648", nom:"Cap de Crist (Rembrandt)", lloc:"Amsterdam", lat:52.37, lon:4.90, tipus:"global", fase:3, font:"Gemäldegalerie Berlin, 811C", det:"L'inventari de Rembrandt del 1656 registra caps de Crist «del natural» («nae't leven»); aquest probablement parteix d'un jove jueu del seu barri d'Amsterdam."},
     {id:"hofmann", any:1889, data:"1889–1890", nom:"Crist (Heinrich Hofmann)", lloc:"Dresden, Alemanya", lat:51.05, lon:13.74, tipus:"barbut", fase:4, font:"Riverside Church, Nova York", det:"Model romàntic alemany de rostre dolç, pell molt clara i cabell castany clar, antecedent de Sallman."},
     {id:"eisenach", any:1939, data:"1939–1940", nom:"Institut «desjudaïtzador»", lloc:"Eisenach, Alemanya", lat:50.98, lon:10.32, ox:-6, oy:4, tipus:"barbut", fase:4, font:"Heschel (2008, Princeton UP)", det:"Teòlegs nazis liderats per Walter Grundmann reescriuen el Nou Testament (Die Botschaft Gottes) per fabricar un «Jesús ari»."},
     {id:"sallman", any:1940, data:"1940", nom:"Head of Christ (W. Sallman)", lloc:"Chicago, EUA", lat:41.88, lon:-87.63, tipus:"barbut", star:true, fase:4, font:"Anderson Univ. / Morgan (1996)", det:"Més de 500 milions de còpies: l'home blanc d'ulls clars i cabell ondulat que fixa l'estàndard occidental modern."},
     {id:"kim", any:1953, data:"1952–1953", nom:"Jesús en hanbok (Kim Ki-chang)", lloc:"Corea del Sud", lat:37.57, lon:126.98, tipus:"global", fase:5, font:"Unbo Museum / MMCA Corea", det:"Durant la guerra de Corea, Kim pinta la vida de Jesús vestit amb roba tradicional Joseon."},
-    {id:"powell", any:1977, data:"1977", nom:"Jesus of Nazareth (R. Powell)", lloc:"Londres / Roma", lat:51.51, lon:-0.13, tipus:"barbut", fase:5, font:"ITC / RAI (F. Zeffirelli)", det:"Ulls blaus perfilats i mirada sense parpellejar: consolida el cànon Sallman a la televisió mundial."},
+    {id:"powell", any:1977, data:"1977", nom:"Jesus of Nazareth (R. Powell)", lloc:"Londres / Roma", lat:51.51, lon:-0.13, tipus:"barbut", fase:5, font:"ITC / RAI (F. Zeffirelli)", det:"Sèrie de televisió de Franco Zeffirelli: segons es conta, va demanar a Powell que no parpellegés. Consolida el cànon Sallman a la televisió mundial."},
     {id:"neave", any:2001, data:"2001", nom:"Reconstrucció forense (R. Neave)", lloc:"Judea / Manchester", lat:32.70, lon:35.30, tipus:"global", fase:5, font:"BBC (2001) / crítica Taylor (2018)", det:"Tipus mitjà d'un home jueu del segle I basat en cranis antics (no un retrat personal): cabell curt, pell bruna, barba curta."}
+  ],
+
+  // 9. Vegades que s'escriu cada nom (recompte sobre el text àrab complet de l'Alcorà, Quran.com; Nou Testament: mare de Jesús pel nom)
+  alcora: [
+    {nom:"Maria a l'Alcorà", n:34, src:"alcora", det:"Maryam és l'única dona que l'Alcorà anomena pel nom, i la sura 19 porta el seu nom.", font:"Alcorà; Smith & Haddad 1989"},
+    {nom:"Maria al Nou Testament", n:19, src:"nt", det:"La mare de Jesús, pel seu nom: 5 vegades a Mateu, 1 a Marc, 12 a Lluc i 1 als Fets. Joan no la nomena mai.", font:"Recompte del Nou Testament"},
+    {nom:"Jesús (ʿĪsā) a l'Alcorà", n:25, src:"alcora", det:"A més, l'anomena «fill de Maria» 23 vegades i al-Masīḥ, «el Messies», 11.", font:"Alcorà, text àrab complet"},
+    {nom:"Mahoma a l'Alcorà", n:4, src:"alcora", det:"El profeta de l'islam surt pel nom només 4 vegades (i un cop més com a Aḥmad, 61,6).", font:"Alcorà, text àrab complet"}
+  ],
+
+  // 7. El viatge del nom (recerca: research/el-jesus-historic/recerca-nom-calendari.md)
+  nom: {
+    cadena: [
+      {g:"יְהוֹשֻׁעַ", tr:"Yehōšūaʿ", l:"Hebreu bíblic", d:"El nom de Josuè", seg1:false, det:"La forma llarga, la de Josuè. La lectura tradicional és «Jahvè salva», el sentit que hi veu Mateu 1,21, tot i que l'etimologia exacta es debat."},
+      {g:"יֵשׁוּעַ", tr:"Yēšūaʿ", l:"Hebreu i arameu", d:"Forma curta, segle I", seg1:true, canvi:"s'escurça", det:"La forma breu que es feia servir després de l'exili a Babilònia. És el nom que duia el fill de Maria a Natzaret, i el de molts altres jueus del seu temps."},
+      {g:"Ἰησοῦς", tr:"Iēsoûs", l:"Grec", d:"Bíblia grega i evangelis", seg1:false, canvi:"sense «x», amb -s", det:"La traducció grega de la Bíblia hebrea (la Septuaginta) ja escrivia així el nom de Josuè. El grec no tenia el so de la nostra «x» (sh) i hi afegia la -s final dels noms masculins."},
+      {g:"IESVS", tr:"Iesus", l:"Llatí", d:"De Roma a tot Occident", seg1:false, canvi:"es llatinitza", det:"El llatí adopta la forma grega. Durant més de mil anys s'escriu amb I, perquè la lletra J encara no existia."},
+      {g:"Jesus", tr:"I → J", l:"La lletra J", d:"Segles XIV–XVII", seg1:false, canvi:"I allargada", det:"La J va néixer com una I allargada. La distinció entre totes dues lletres va començar cap al segle XIV i no es va completar fins al XVII: el Nou Testament anglès del rei Jaume del 1612 encara escriu «Iesus»."},
+      {g:"Jesús", tr:"Jesús", l:"Català", d:"Pronunciat [ʒəˈzus]", seg1:false, canvi:"cada llengua la llegeix a la seva manera", det:"Cada llengua pronuncia la J a la seva manera: «j» de jardí en català, «jota» en castellà, «dj» en anglès, «i» en alemany. Només l'alemany conserva, per casualitat, el so inicial del nom original."}
+    ],
+    avui: [
+      {g:"عيسى", tr:"ʿĪsā", l:"Àrab, Alcorà", k:"isa", det:"El nom que li dona l'Alcorà (per exemple, 3,45, on també l'anomena al-Masīḥ, «el Messies»). És el que fan servir els musulmans."},
+      {g:"يسوع", tr:"Yasūʿ", l:"Àrab, cristians", det:"La forma de les Bíblies àrabs: els cristians àrabs i els musulmans no l'anomenen igual."},
+      {g:"ישוע", tr:"Yeshua", l:"Hebreu modern", det:"La forma que fan servir les traduccions hebrees del Nou Testament, la més pròxima a l'original."},
+      {g:"ישו", tr:"Yeshu", l:"Hebreu, Talmud", det:"La forma del Talmud (Sanhedrín 43a) i de l'ús israelià corrent. Per a alguns té una connotació despectiva, però el seu origen es discuteix."},
+      {g:"ኢየሱስ", tr:"Iyäsus", l:"Amhàric (Etiòpia)", det:"Etiòpia té una de les esglésies més antigues del món: el regne d'Axum, al nord de l'actual Etiòpia, es va convertir al segle IV."},
+      {g:"耶稣", tr:"Yēsū", l:"Xinès", det:"Dos caràcters triats pel seu so: la forma de la Chinese Union Version, la Bíblia xinesa protestant de referència."},
+      {g:"イエス", tr:"Iesu", l:"Japonès", det:"Escrit en katakana, el sil·labari que el japonès fa servir per als noms estrangers."},
+      {g:"예수", tr:"Yesu", l:"Coreà", det:"Escrit en hangul, l'alfabet coreà."},
+      {g:"यीशु", tr:"Yīśu", l:"Hindi", det:"La forma de les Bíblies en hindi, escrita en devanagari."},
+      {g:"Yesu", tr:"Yesu", l:"Suahili", det:"La forma de la Bíblia en suahili, la gran llengua franca de l'Àfrica oriental."},
+      {g:"Иисус", tr:"Iisus", l:"Rus", det:"La forma de la Bíblia sinodal russa, escrita en alfabet ciríl·lic."},
+      {g:"Jesus", tr:"Jesus", l:"Anglès", det:"Escrit igual que en alemany o portuguès, però pronunciat «djízes»."}
+    ]
+  },
+
+  // 8. Cronologia real (anys astronòmics: 1 aC = 0; 4 aC = −3). Fonts: Britannica, Flavi Josep, Humphreys & Waddington (1983)
+  crono: [
+    {k:"jesus", nom:"Jesús", vida:[-3,33], trams:[[-5,-3]], punts:[{v:30,t:"30"},{v:33,t:"33",buit:true}], tv:[-4,"neix c. 6–4 aC"], txt:"Va néixer cap al 6–4 aC, abans de la mort d'Herodes, i va morir crucificat sota Pilat, probablement l'any 30 (alguns astrònoms i historiadors proposen el 33).", font:"Britannica; Humphreys & Waddington, Nature 1983"},
+    {k:"herodes", nom:"Herodes el Gran, rei", a:-36, b:-3, txt:"Rei de Judea sota la protecció de Roma des del 37 aC. Va morir el març o l'abril del 4 aC; Flavi Josep esmenta un eclipsi de lluna just abans de la seva mort.", font:"Britannica; Flavi Josep, Antiguitats XVII, 167"},
+    {k:"august", nom:"August, emperador", a:-26, b:14, txt:"Primer emperador de Roma (27 aC – 14 dC). Lluc situa el naixement de Jesús durant el seu regnat.", font:"Britannica"},
+    {k:"antipes", nom:"Herodes Antipes, Galilea", a:-3, b:39, txt:"Fill d'Herodes, governant de Galilea —la regió de Natzaret— del 4 aC al 39 dC. És l'Herodes que fa matar Joan Baptista.", font:"Britannica"},
+    {k:"tiberi", nom:"Tiberi, emperador", a:14, b:37, txt:"Emperador del 14 al 37 dC. Tàcit escriu que Crist va ser executat «sota Tiberi».", font:"Tàcit, Annals XV, 44"},
+    {k:"caifas", nom:"Caifàs, gran sacerdot", a:18, b:36, txt:"Gran sacerdot del Temple del 18 al 36 dC. El 1990 es va trobar a Jerusalem un ossari amb el nom «Josep fill de Caifàs».", font:"Flavi Josep; Israel Museum"},
+    {k:"pilat", nom:"Ponç Pilat, prefecte", a:26, b:36, txt:"Prefecte romà de Judea del 26 al 36 dC. Una pedra trobada a Cesarea el 1961 confirma el seu nom i el seu càrrec.", font:"Britannica; Pedra de Pilat"}
   ],
 
   // 5. Dades empíriques modernes: YouGov UK (2021) & EUA (2020) + PLOS ONE (2018)
@@ -106,35 +108,6 @@ window.JH = {
       {nom:"Raça pròpia (afroamericans)", op:"=", t:1.86, p:"p = 0,06", grup:"ego", det:"Efecte marginalment significatiu entre participants afroamericans (t = 1,86)."},
       {nom:"Gènere propi (homes vs. dones)", op:"=", t:0.93, p:"p = 0,36 (no sig.)", grup:"no", det:"Única excepció: tant homes com dones visualitzen igualment un rostre masculí (t = 0,93)."}
     ]
-  },
+  }
 
-  // 6. Esquema historiogràfic: «El pou de Tyrrell» (IB-55, coordenades conceptuals ben separades)
-  mirall: [
-    {id:"historic", nom:"El jueu galileu", sub:"Consens històric (s. I)", x:-0.72, y:0.62, r:60, c:"vermell", fase:0,
-      det:"Profeta apocalíptic jueu observant (Sanders, Fredriksen, Vermes, Ehrman): arrelat a Israel i executat per Roma."},
-    {id:"bizanti", nom:"Crist Emperador", sub:"Bizanci (s. IV–XII)", x:-0.05, y:0.72, r:54, c:"blau", fase:1,
-      det:"Pantocràtor entronitzat vestit de porpra i or: autoritat còsmica i imperial inspirada en Zeus i els cèsars."},
-    {id:"liberal", nom:"Mestre moral i «Jesús ari»", sub:"Europa (1863–1940)", x:0.68, y:0.34, r:58, c:"blau", fase:2,
-      det:"Del Jesús protestant liberal que critica Tyrrell (1909) fins a la distorsió racial extrema de l'Institut d'Eisenach (1939)."},
-    {id:"sallman", nom:"Executiu i icona blanca", sub:"EUA (1925–1977)", x:0.70, y:-0.32, r:58, c:"groc", fase:3,
-      det:"El líder empresarial de Bruce Barton (1925), el rostre blanc de Warner Sallman (1940) i els ulls blaus de Hollywood."},
-    {id:"actual", nom:"«Jesús a la carta»", sub:"Occident (segle XXI)", x:0.20, y:-0.78, r:52, c:"vermellClar", fase:4,
-      det:"Guerrer nacionalista (Du Mez, 2020) o coach espiritual neoliberal (Crossley, 2012): dos miralls oposats del present."}
-  ],
-
-  // 7. Dotze contrastos verificats (Imatge occidental vs. Consens històric)
-  contrastos: [
-    {k:"Nom i cognom", myth:"«Jesús Crist» sembla un nom i un cognom únics.", hist:"Es deia Yešūaʿ (6è nom masculí més comú a Judea, 3,8 %). «Crist» (Christós) tradueix Messies («ungit»): era un títol.", src:"Ilan (2002); Bauckham (2017)", deg:"solid"},
-    {k:"Aspecte físic", myth:"Alt (~1,80 m), pell molt clara, cabells llargs castany-ros i ulls clars.", hist:"Home jueu de l'Orient Mitjà (~1,66 m), pell marró olivàcia (encara més enfosquida pel treball a l'exterior), ulls foscos, cabells curts i barba curta.", src:"Taylor (2018); Nagar & Torge (2003); 1Co 11,14", deg:"solid"},
-    {k:"Vestimenta", myth:"Túnica blanca impecable fins als turmells.", hist:"Túnica curta de llana sense tenyir (chiton), mantell (himation) amb borles rituals jueves (tzitzit) i sandàlies de cuir.", src:"Taylor (2018); Mc 6,56", deg:"solid"},
-    {k:"Religió", myth:"Va trencar amb el judaisme per fundar una religió nova.", hist:"Va viure i morir com a jueu observant; debatia dins del judaisme i era sorprenentment pròxim als fariseus.", src:"Sanders (1985); Levine (2006); Fredriksen (1999)", deg:"solid"},
-    {k:"Ofici i classe", myth:"Fuster de taller acomodat, amb casa i mobles de fusta.", hist:"Téktōn: artesà manual de la pedra i la fusta en un poblet rural de ~200–1.000 habitants, sense riquesa ni estatus escriba.", src:"Mc 6,3; Meier (1991); Reed (2000); Dark (2020)", deg:"solid"},
-    {k:"Llengua", myth:"Sovint imaginat parlant llatí, grec culte o la nostra llengua.", hist:"Parlava arameu galileu com a llengua materna; coneixia l'hebreu litúrgic i, com a molt, un grec bàsic de mercat.", src:"Fitzmyer; Meier (1991); Casey", deg:"solid"},
-    {k:"Motiu de la mort", myth:"Un afer purament religiós o espiritual fora de la política.", hist:"Crucificat per Roma (càstig de sedició) com a «Rei dels jueus», però Pilat no va arrestar els deixebles: no liderava una guerrilla.", src:"Mc 15,26; Tàcit Ann. XV,44; Fredriksen (1999)", deg:"solid"},
-    {k:"Primeres imatges", myth:"Sempre se l'ha pintat amb barba llarga i cabells sobre les espatlles.", hist:"Durant els primers tres segles conservats (s. III–IV) apareix jove, imberbe i amb cabells curts. La barba s'imposa a partir del s. IV–VI.", src:"Dura-Europos (c. 240); Sant'Apollinare Nuovo; Jensen (2005)", deg:"solid"},
-    {k:"Urgència del missatge", myth:"Un savi atemporal que promet pau interior i el cel després de morir.", hist:"Profeta apocalíptic que anunciava la intervenció imminent de Déu al món «abans que passi aquesta generació».", src:"Mc 9,1; Mc 13,30; Schweitzer (1906); Ehrman (1999)", deg:"majoria"},
-    {k:"Família i germans", myth:"Fill únic sempre envoltat d'una família devota i convençuda.", hist:"Mc 6,3 anomena 4 germans i germanes, i Mc 3,21 diu que la família pensava que «havia perdut el seny». (Catòlics i ortodoxos llegeixen «cosins» o «germanastres».)", src:"Mc 3,21; Mc 6,3; Ga 1,19; Flavi Josep Ant. XX,200", deg:"majoria"},
-    {k:"Destinataris", myth:"Predicació universalista moderna adreçada d'entrada a tots els pobles.", hist:"Entenia la seva missió adreçada a Israel («les ovelles perdudes de la casa d'Israel»); l'obertura als no jueus creix després de la seva mort.", src:"Mt 15,24; Mc 7,24–30; Sanders (1985)", deg:"majoria"},
-    {k:"Sabia llegir i escriure?", myth:"Autor instruït que dominava l'escriptura.", hist:"No va deixar res escrit. En una Palestina rural amb ~1–3 % d'alfabetització (Hezser 2001), els historiadors debaten si llegia rotlles hebreus (Lc 4,16 vs. Keith 2011).", src:"Hezser (2001); Keith (2011); Meier (1991); Lc 4,16", deg:"debat"}
-  ]
 };
