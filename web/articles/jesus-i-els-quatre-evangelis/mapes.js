@@ -1,6 +1,6 @@
 /* «Jesús i els quatre evangelis» · mapes
-   Base comuna: relleu real NASA SRTM (IB-26 crestes) + costes Natural Earth.
-   Peces: V3 (#mapa) scrollytelling IB-26 + IB-13 + mini-mapa Mediterrani;
+   Base comuna: relleu topogràfic pla amb ombra suau i isolínies (NASA SRTM, IB-26) + costes Natural Earth.
+   Peces: V3 (#mapa) scrollytelling mapa topogràfic + IB-13 + mini-mapa Mediterrani;
           V4 (#pujada) IB-32 franja + IB-16 perfil interactiu;
           V5 (#betlem) IB-31 comparador abans/després amb divisor arrossegable (Mateu vs Lluc). */
 (function(){
@@ -42,26 +42,122 @@
   const LAKEZ={gal:-212,mort:-415};
   const zOf=(lon,lat)=>{ if(lon>36.95)return null; const k=kind(lon,lat); if(k===2)return lat>32.4?LAKEZ.gal:LAKEZ.mort; return k?elev(lon,lat):null; };
 
-  function ridges(ctx,p,w,h,o){
-    const row=o.row, vex=o.vex, sx=o.sx||3; ctx.clearRect(0,0,w,h); ctx.lineJoin="round";
-    const xs=d3.range(-sx,w+2*sx,sx), lons=xs.map(x=>p.invert([x,0])[0]);
-    const deep=430*vex+2, extra=Math.ceil(2000*vex/row)*row;
-    for(let y=-extra; y<=h+deep; y+=row){
-      const lat=p.invert([w/2,y])[1]; let run=null; const runs=[];
-      for(let k=0;k<xs.length;k++){ const z=zOf(lons[k],lat);
-        if(z==null){ if(run){ runs.push(run); run=null; } continue; }
-        const kd=kind(lons[k],lat)===2?2:z<0?1:0; (run=run||[]).push([xs[k],y-z*vex,kd]); }
-      if(run)runs.push(run);
-      for(const r of runs){ if(r.length<2)continue;
-        ctx.fillStyle=C.paper; ctx.beginPath(); ctx.moveTo(r[0][0],r[0][1]); for(const q of r)ctx.lineTo(q[0],q[1]); ctx.lineTo(r[r.length-1][0],y+deep); ctx.lineTo(r[0][0],y+deep); ctx.closePath(); ctx.fill();
-        let cur=-1; for(let k=1;k<r.length;k++){ const kd=Math.min(r[k][2],r[k-1][2])===2?2:(r[k][2]||r[k-1][2]);
-          if(kd!==cur){ if(cur>=0)ctx.stroke(); cur=kd; ctx.beginPath(); ctx.moveTo(r[k-1][0],r[k-1][1]);
-            ctx.strokeStyle=kd===2?(o.lake||C.blau):kd===1?(o.low||V.alpha(C.blau,.45)):(o.ink||V.alpha(C.ink,.48)); ctx.lineWidth=kd===2?(o.lw||.75)*1.3:(o.lw||.75); }
-          ctx.lineTo(r[k][0],r[k][1]); }
-        if(cur>=0)ctx.stroke(); } }
-    if(o.fadeEast){ const a=p([36.15,32])[0], b=p([36.9,32])[0]; if(a<w){ ctx.save(); ctx.globalCompositeOperation="destination-out"; const g=ctx.createLinearGradient(a,0,b,0); g.addColorStop(0,"rgba(0,0,0,0)"); g.addColorStop(1,"rgba(0,0,0,1)"); ctx.fillStyle=g; ctx.fillRect(a,-10,w-a+10,h+20); ctx.restore(); } } }
+  /* ---------- mapa topogràfic pla: ombra suau + fossa del Jordà en blau + isolínies (NASA SRTM) ---------- */
+  const DEM_LON1=DM.lon0+DM.nx*DM.st, DEM_LAT0=DM.lat1-DM.ny*DM.st;
+  const mercY=lat=>-Math.log(Math.tan(Math.PI/4+lat*Math.PI/360));
+  const invMercY=my=>(2*Math.atan(Math.exp(-my))-Math.PI/2)*180/Math.PI;
+  let RELIEF_CV=null, ISO_GEO=null;
 
-  const lift=(p,vex)=>(lon,lat)=>{ const q=p([lon,lat]), z=zOf(lon,lat); return [q[0],q[1]-(z==null?0:z)*vex]; };
+  function getReliefCanvas(){
+    if(RELIEF_CV)return RELIEF_CV;
+    const rw=480, rh=540;
+    const cv=document.createElement("canvas"); cv.width=rw; cv.height=rh;
+    const x=cv.getContext("2d"), img=x.createImageData(rw,rh), d=img.data;
+    const myTop=mercY(DM.lat1), myBot=mercY(DEM_LAT0);
+    const dLon=(DEM_LON1-DM.lon0)/rw, dMy=(myBot-myTop)/rh;
+    for(let py=0;py<rh;py++){
+      const lat=invMercY(myTop+(py+.5)*dMy);
+      for(let px=0;px<rw;px++){
+        const lon=DM.lon0+(px+.5)*dLon;
+        const z=elev(lon,lat);
+        // Gradient local per a un ombrejat topogràfic delicat des del NO
+        const zx=elev(lon+.014,lat)-elev(lon-.014,lat);
+        const zy=elev(lon,lat+.014)-elev(lon,lat-.014);
+        const shade=clamp((-zx*.65+zy*.65)/260,-1,1)*15;
+        let r,g,b;
+        if(z<0){
+          // Fossa del Jordà (sota el nivell del mar) en blau clar suau
+          const t=clamp(-z/420,0,1);
+          r=234-t*48; g=240-t*32; b=248-t*12;
+        } else if(z<200){
+          r=243; g=242; b=239;
+        } else if(z<500){
+          r=235; g=233; b=228;
+        } else if(z<800){
+          r=226; g=223; b=216;
+        } else {
+          r=216; g=212; b=204;
+        }
+        const i=(py*rw+px)*4;
+        d[i]=clamp(Math.round(r+shade),0,255);
+        d[i+1]=clamp(Math.round(g+shade),0,255);
+        d[i+2]=clamp(Math.round(b+shade),0,255);
+        d[i+3]=255;
+      }
+    }
+    x.putImageData(img,0,0);
+    return (RELIEF_CV=cv);
+  }
+
+  function getIsoGeo(){
+    if(ISO_GEO)return ISO_GEO;
+    const vals=dem(), th=[0,300,600,900];
+    const gen=d3.contours().size([DM.nx,DM.ny]).thresholds(th);
+    const out=[];
+    for(const c of gen(vals)){
+      const lines=[];
+      for(const poly of c.coordinates){
+        for(const ring of poly){
+          let seg=[];
+          for(let k=0;k<ring.length;k++){
+            const [gx,gy]=ring[k];
+            const edge=gx<=.05||gx>=DM.nx-1.05||gy<=.05||gy>=DM.ny-1.05;
+            if(edge){ if(seg.length>=2)lines.push(seg); seg=[]; }
+            else seg.push([DM.lon0+(gx+.5)*DM.st,DM.lat1-(gy+.5)*DM.st]);
+          }
+          if(seg.length>=2)lines.push(seg);
+        }
+      }
+      out.push({v:c.value,fc:{type:"MultiLineString",coordinates:lines}});
+    }
+    return (ISO_GEO=out);
+  }
+
+  function reliefMap(ctx,p,w,h,o){
+    o=o||{};
+    ctx.clearRect(0,0,w,h);
+    const pth=d3.geoPath(p,ctx);
+    // 1. Terra retallada a la costa real amb relleu suau + isolínies
+    ctx.save();
+    ctx.beginPath(); pth(PLAND); ctx.fillStyle="#F3F2EF"; ctx.fill();
+    ctx.clip();
+    const p0=p([DM.lon0,DM.lat1]), p1=p([DEM_LON1,DEM_LAT0]);
+    ctx.imageSmoothingEnabled=true;
+    ctx.drawImage(getReliefCanvas(),p0[0],p0[1],p1[0]-p0[0],p1[1]-p0[1]);
+    // Isolínies topogràfiques (0 m en blau suau, 300/600/900 m en fil gris finíssim)
+    getIsoGeo().forEach(item=>{
+      ctx.beginPath(); pth(item.fc);
+      if(item.v===0){
+        ctx.strokeStyle=V.alpha(C.blau,.48); ctx.lineWidth=.85; ctx.setLineDash([3,2.5]);
+      } else {
+        ctx.strokeStyle=V.alpha(C.ink,.14); ctx.lineWidth=.55; ctx.setLineDash([]);
+      }
+      ctx.stroke();
+    });
+    ctx.setLineDash([]);
+    ctx.restore();
+
+    // 2. Línia de costa nítida
+    ctx.beginPath(); pth(PLAND); ctx.strokeStyle="#ABA8A1"; ctx.lineWidth=.9; ctx.stroke();
+
+    // 3. Riu Jordà i llacs (Llac de Galilea i Mar Mort) ben visibles en blau
+    ctx.beginPath(); pth(RIV); ctx.strokeStyle=V.alpha(C.blau,.78); ctx.lineWidth=1.25; ctx.lineCap="round"; ctx.stroke();
+    ctx.beginPath(); pth(LAKES); ctx.fillStyle="#AEC6E6"; ctx.fill(); ctx.strokeStyle=C.blau; ctx.lineWidth=.95; ctx.stroke();
+
+    // 4. Esvaïment suau al marge est (desert) perquè el mapa respiri sense caixa
+    if(o.fadeEast){
+      const a=p([36.1,32])[0], b=p([36.85,32])[0];
+      if(a<w){
+        ctx.save(); ctx.globalCompositeOperation="destination-out";
+        const g=ctx.createLinearGradient(a,0,b,0);
+        g.addColorStop(0,"rgba(0,0,0,0)"); g.addColorStop(1,"rgba(0,0,0,1)");
+        ctx.fillStyle=g; ctx.fillRect(a,-10,w-a+10,h+20);
+        ctx.restore();
+      }
+    }
+  }
+
+  const lift=p=>(lon,lat)=>p([lon,lat]);
   function zoomer(w,h,pad,make){ make=make||(()=>d3.geoMercator()); const p=make();
     return {p,fit(bx,pd){ const q=make().fitExtent([[pd==null?pad:pd,pd==null?pad:pd],[w-(pd==null?pad:pd),h-(pd==null?pad:pd)]],bx); return {s:q.scale(),t:q.translate()}; },
     set(v){ p.scale(v.s).translate(v.t); }, lerp(a,b,k){ const s=a.s*Math.pow(b.s/a.s,k);
@@ -98,7 +194,7 @@
     const el=$("#mapa"); if(!el)return;
     let step=0, api=null, raf=0;
     const META=[
-      {t:"El territori dels evangelis",s:"Relleu real (NASA SRTM). En blau, la vall del Jordà per sota del nivell del mar",lg:[{c:C.blau,t:"Sota el nivell del mar",k:"ln"}]},
+      {t:"El territori dels evangelis",s:"Relleu topogràfic real (NASA SRTM). En blau clar, la vall del Jordà per sota del nivell del mar",lg:[{c:"rgba(44,93,168,.28)",t:"Sota el nivell del mar",k:"sq"},{c:C.blau,t:"Llacs i riu Jordà",k:"ln"}]},
       {t:"Natzaret i el llac de Galilea",s:"Un poble petit de muntanya i els pobles de pescadors on Jesús passa la major part de la seva vida pública",lg:[{c:C.vermell,t:"Llocs de Galilea"}]},
       {t:"Dos governants, una frontera invisible",s:"Galilea i Perea (Herodes Antipes) al nord; Judea i Jerusalem (Ponç Pilat, Roma) al sud",lg:[{c:C.blau,t:"Herodes Antipes",k:"ln"},{c:C.vermell,t:"Ponç Pilat (Roma)",k:"ln"}]},
       {t:"L'únic viatge de Marc (~140 km)",s:"Tot el relat de Marc camina cap a una sola pujada a Jerusalem per Pasqua",lg:[{c:C.vermell,t:"Viatge de Marc",k:"ln"}]},
@@ -155,13 +251,9 @@
       }
 
       function render(v,isEnd){
-        zm.set(v); const p=zm.p, vex=(step===1?.011:.0085)*(mob?.75:1), lf=lift(p,vex);
-        ridges(ctx,p,w,h,{row:mob?4.4:4.8,vex,sx:mob?3.5:3,fadeEast:true});
+        zm.set(v); const p=zm.p, lf=lift(p);
+        reliefMap(ctx,p,w,h,{fadeEast:true});
         gMap.selectAll("*").remove(); gRoute.selectAll("*").remove(); gPts.selectAll("*").remove(); gNote.selectAll("*").remove(); gScale.selectAll("*").remove();
-
-        // riu Jordà
-        const rPath=d3.geoPath(p);
-        gMap.append("path").attr("d",rPath(RIV)).attr("fill","none").attr("stroke",V.alpha(C.blau,.55)).attr("stroke-width",1.1);
 
         // etiquetes d'aigua i regions
         if(step!==1){
@@ -177,9 +269,9 @@
           const a1=lf(34.7,32.48), a2=lf(35.7,32.48);
           gMap.append("line").attr("x1",a1[0]).attr("y1",a1[1]).attr("x2",a2[0]).attr("y2",a2[1])
             .attr("stroke",C.ink2).attr("stroke-width",1.1).attr("stroke-dasharray","4 4");
-          const g1=lf(35.35,32.98), g2=lf(35.15,31.52);
-          V.lines(gNote,g1[0],g1[1],[["GALILEA · Herodes Antipes",true,C.blau],["Príncep jueu aliat de Roma",false,C.ink2]],{anchor:"middle",size:mob?11.5:12.5,halo:3.5});
-          V.lines(gNote,g2[0],g2[1]+18,[["JUDEA · Ponç Pilat",true,C.vermell],["Prefecte romà directe (26–36 dC)",false,C.ink2]],{anchor:"middle",size:mob?11.5:12.5,halo:3.5});
+          const g1=lf(mob?34.98:35.12,33.12), g2=lf(35.12,31.48);
+          V.lines(gNote,g1[0],g1[1],[["GALILEA · Herodes Antipes",true,C.blau],["Príncep jueu aliat de Roma",false,C.ink2]],{anchor:"middle",size:mob?11:12.5,halo:3.5});
+          V.lines(gNote,g2[0],g2[1]+18,[["JUDEA · Ponç Pilat",true,C.vermell],["Prefecte romà directe (26–36 dC)",false,C.ink2]],{anchor:"middle",size:mob?11:12.5,halo:3.5});
         }
 
         // pas 3 i 4: rutes trenades (estil «Iceberg alley»)
@@ -238,7 +330,7 @@
       const off=()=>{ gHv.selectAll("*").remove(); tp.hide(); };
       outside(node,off);
       V.hover(s.node(),(ev,[px,py])=>{
-        const p=zm.p, vex=(step===1?.011:.0085)*(mob?.75:1), lf=lift(p,vex);
+        const p=zm.p, lf=lift(p);
         const d=d3.least(E.llocs,q=>{ const xy=lf(q.lon,q.lat); return Math.hypot(px-xy[0],py-xy[1]); });
         if(!d){ off(); return; }
         const xy=lf(d.lon,d.lat); if(Math.hypot(px-xy[0],py-xy[1])>(mob?36:28)){ off(); return; }
@@ -404,8 +496,8 @@
       // ampliem l'SVG per incloure la barra temporal de 10 anys a sota
       s.attr("height",h).style("position","relative").style("margin-top",(-mapH)+"px");
       const p=d3.geoMercator().fitExtent([[mob?16:36,mob?18:24],[w-(mob?16:36),mapH-(mob?18:24)]],box(33.9,31.1,36.1,33.05));
-      const vex=mob?.006:.0075, lf=lift(p,vex);
-      ridges(ctx,p,w,mapH,{row:mob?4.6:5,vex,sx:mob?3.5:3,fadeEast:true});
+      const lf=lift(p);
+      reliefMap(ctx,p,w,mapH,{fadeEast:true});
 
       const id="b31"+Math.random().toString(36).slice(2,6), defs=s.append("defs");
       const clL=defs.append("clipPath").attr("id",id+"l").append("rect").attr("y",0).attr("height",mapH);
