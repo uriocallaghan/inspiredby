@@ -65,5 +65,20 @@ window.RIEM_DATA={
       {grup:70, groomPct:19.6, nom:"Sostre del desparasitat (~20 % del dia)"},
       {grup:150, groomPct:42.0, nom:"Xarxa humana (~150): impossible mà a mà"}
     ]
-  }
+  },
+  // Mapa etnogràfic dels usos socials, rituals i polítics del riure arreu del món
+  ethnoSites:[
+    {id:"inuit", nom:"Duels de cançons inuit", lloc:"Groenlàndia i Àrtic canadenc", lon:-44, lat:66, cat:"conflicte",
+     resum:"Disputes resoltes davant la comunitat amb cançons satíriques: el riure del públic dicta sentència i evita la violència (Hoebel; Briggs).", dx:10, dy:14, anc:"start"},
+    {id:"sanankuya", nom:"Sanankuya (parentiu de broma)", lloc:"Mali i Àfrica Occidental", lon:-5, lat:14, cat:"conflicte",
+     resum:"Clans i pobles (com dogons i bozos) s'han de fer bromes punyents amb prohibició d'ofendre's: una institució de pau i ajuda mútua (Radcliffe-Brown, 1940).", dx:10, dy:16, anc:"start"},
+    {id:"pueblo", nom:"Pallassos sagrats (Koyemshi i Heyoka)", lloc:"Sud-oest i Grans Planures (EUA)", lon:-106, lat:38, cat:"poder",
+     resum:"Figures rituals que actuen al revés i es burlen de caps i tabús enmig de la cerimònia sagrada per mantenir humil l'autoritat (Douglas, 1968).", dx:-10, dy:16, anc:"end"},
+    {id:"carnaval", nom:"Carnaval i Festa dels Bojos", lloc:"Europa medieval", lon:4, lat:48, cat:"poder",
+     resum:"Inversió anual de jerarquies on el poble parodiava reis i bisbes, en tensió constant amb la disciplina monàstica (Bakhtin; Le Goff, 1997).", dx:10, dy:-14, anc:"start"},
+    {id:"tanganyika", nom:"Brot de Kashasha (1962)", lloc:"Districte de Bukoba, Tanzània", lon:31.8, lat:-1.3, cat:"etiqueta",
+     resum:"Episodi psicogènic massiu de rialla incontrolable propagat entre escoles i pobles en un context d'estrès social (Rankin & Philip, 1963).", dx:10, dy:14, anc:"start"},
+    {id:"japo", nom:"Terewarai i aiso-warai", lloc:"Japó", lon:138, lat:36, cat:"etiqueta",
+     resum:"Rialla de vergonya o cortesia que protegeix l'harmonia del grup i suavitza la incomoditat social sense implicar humor.", dx:-10, dy:-14, anc:"end"}
+  ]
 };

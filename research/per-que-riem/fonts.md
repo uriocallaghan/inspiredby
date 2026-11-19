@@ -78,3 +78,23 @@ Totes les dades, xifres i cites d'aquest article han estat verificades contra fo
 
 19. **Gelotofòbia (por de ser objecte de burla o rialla)**
     - Ruch, W., & Proyer, R. T. (2008). *The fear of being laughed at: Individual and group differences in Gelotophobia*. **Humor**, 21(1), 47–67. DOI: `10.1515/HUMOR.2008.002` (verificat via OpenAlex).
+
+## Fonts antropològiques i etnogràfiques afegides
+
+20. **Relacions de broma institucionalitzades (*joking relationships*): burla obligatòria i prohibició d'ofendre's per desactivar tensions estructurals de parentiu i aliança (incloent-hi el *sanankuya* de l'Àfrica Occidental)**
+    - Radcliffe-Brown, A. R. (1940). *On Joking Relationships*. **Africa**, 13(3), 195–210. DOI: `10.2307/1156093` (verificat via OpenAlex).
+
+21. **L'acudit i el riure ritual com a «anti-ritu» que qüestiona temporalment la jerarquia i revela la convenció social**
+    - Douglas, M. (1968). *The Social Control of Cognition: Some Factors in Joke Perception*. **Man**, New Series, 3(3), 361–376. DOI: `10.2307/2798875` (verificat via OpenAlex).
+
+22. **Carnaval medieval, cultura popular del riure, Festa dels Bojos i debat monàstic sobre la licitud del riure**
+    - Bakhtin, M. (1968 [orig. rus 1965]). *Rabelais and His World*. Bloomington: Indiana University Press.
+    - Le Goff, J. (1997). *Laughter in the Middle Ages*. A J. N. Bremmer & H. Roodenburg (Eds.), *A Cultural History of Humour* (pp. 40–51). Cambridge: Polity Press.
+
+23. **Duels de cançons satíriques inuit (*nith songs*) com a resolució comunitària no violenta de conflictes mitjançant el riure públic**
+    - Hoebel, E. A. (1954). *The Law of Primitive Man*. Cambridge, MA: Harvard University Press.
+    - Briggs, J. L. (1970). *Never in Anger: Portrait of an Eskimo Family*. Cambridge, MA: Harvard University Press.
+
+24. **Pallassos sagrats (*Koyemshi* dels zuni; *Heyoka* dels lakota) i etiqueta japonesa del riure de vergonya o cortesia (*terewarai* / *aiso-warai*)**
+    - Apte, M. L. (1985). *Humor and Laughter: An Anthropological Approach*. Ithaca: Cornell University Press.
+    - Lebra, T. S. (1976). *Japanese Patterns of Behavior*. Honolulu: University of Hawai'i Press.

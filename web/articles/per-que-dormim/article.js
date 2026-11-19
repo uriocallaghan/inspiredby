@@ -681,4 +681,140 @@ const $=s=>document.querySelector(s);
   });
 })();
 
+/* =====================================================================
+   FIGURA 4 · IB-42 PENDENTS · DIA VS. FOC ENTRE ELS JU/'HOANSI (Wiessner 2014)
+   ===================================================================== */
+(function focFig(){
+  const el=$("#foc-viz"), lg=$("#foc-lg");
+  if(!el||!D.wiessner)return;
+  V.legendCat(lg,[
+    {c:C.vermell, t:"Es dispara de nit vora el foc", kind:"line", w:2.6},
+    {c:C.blau,    t:"Baixa de nit", kind:"line", w:2}
+  ]);
+
+  V.mount(el,(box,w)=>{
+    const mob=w<640, h=mob?300:340;
+    const xL=mob?w*0.38:w*0.30, xR=mob?w*0.64:w*0.70;
+    const m={t:34,b:22};
+    const s=V.svg(box,w,h,"Gràfic de pendents (IB-42) amb les 174 converses reals dels ju/'hoansi (Wiessner, 2014): les històries i mites passen del 6 % de dia al 81 % vora el foc de nit, mentre queixes (34 % a 7 %) i economia (31 % a 4 %) s'enfonsen.");
+    const g=s.append("g");
+    const tp=V.tip(box);
+
+    const y=d3.scaleLinear([0,88],[h-m.b,m.t]);
+    // Columnes verticals subtils
+    [xL,xR].forEach(xx=>g.append("line").attr("x1",xx).attr("x2",xx).attr("y1",m.t).attr("y2",h-m.b).attr("stroke",C.hair));
+    V.t(g, xL, 18, mob?"De dia":"De dia (llum del sol)", {size:mob?12:13, weight:700, anchor:"middle", fill:C.ink});
+    V.t(g, xR, 18, mob?"Vora el foc":"De nit (vora el foc)", {size:mob?12:13, weight:700, anchor:"middle", fill:C.vermell});
+
+    const mobNm={stories:"Històries", complaints:"Queixes", economic:"Economia", other:"Bromes/altres"};
+    const items=g.selectAll("g.sl").data(D.wiessner).join("g").attr("class","sl").style("cursor","pointer");
+    items.each(function(d){
+      const q=d3.select(this), isUp=d.dir==="up", col=isUp?C.vermell:C.blau;
+      const y1=y(d.day), y2=y(d.night);
+      q.append("line").attr("x1",xL).attr("x2",xR).attr("y1",y1).attr("y2",y2)
+        .attr("stroke",col).attr("stroke-width",isUp?3:1.9).attr("stroke-opacity",isUp?.9:.68);
+      q.append("circle").attr("cx",xL).attr("cy",y1).attr("r",isUp?6:4.2).attr("fill",col).attr("stroke","#fff").attr("stroke-width",1.2);
+      q.append("circle").attr("cx",xR).attr("cy",y2).attr("r",isUp?8:4.2).attr("fill",col).attr("stroke","#fff").attr("stroke-width",1.3);
+      if(isUp){
+        q.append("circle").attr("cx",xR).attr("cy",y2).attr("r",18).attr("fill",C.vermell).attr("fill-opacity",.22).style("mix-blend-mode","multiply");
+      }
+      // Etiquetes esquerra i dreta separades verticalment
+      const lyL=d.id==="complaints"?y1-14:d.id==="economic"?y1+2:d.id==="other"?y1+18:y1+4;
+      const lyR=d.id==="other"?y2-13:d.id==="complaints"?y2+2:d.id==="economic"?y2+16:y2+4;
+      const shortNm=mob?mobNm[d.id]:d.nom;
+      V.t(q, xL-10, lyL, `${d.day} % · ${shortNm}`, {size:mob?11:12, weight:isUp?700:400, anchor:"end", fill:isUp?C.vermell:C.ink2, halo:true});
+      V.t(q, xR+10, lyR, `${d.night} %${isUp?(mob?" · Històries":" · Històries i mites"):""}`, {size:mob?11:12.5, weight:isUp?700:600, anchor:"start", fill:isUp?C.vermell:C.ink2, halo:true});
+      q.append("line").attr("x1",xL).attr("x2",xR).attr("y1",y1).attr("y2",y2).attr("stroke","transparent").attr("stroke-width",18);
+    });
+
+    items.on("pointerenter pointerdown",(ev,d)=>{
+      V.focus(items, x=>x.id===d.id, {dim:.48});
+      tp.show(`<b>${d.nom}</b> (${d.day} % dia → ${d.night} % nit)<br>${d.detall}`);
+    }).on("pointerleave",ev=>{
+      if(ev.pointerType!=="mouse")return;
+      V.focus(items,null); tp.hide();
+    });
+  });
+})();
+
+/* =====================================================================
+   FIGURA 5 · IB-25 · ATLES ETNOGRÀFIC DE LES CULTURES DEL SON
+   ===================================================================== */
+(function culturesSonFig(){
+  const el=$("#cson-viz"), lg=$("#cson-lg");
+  if(!el||!D.sleepCultures)return;
+  let filter="tots", applyFilter=null;
+  const CAT={
+    social:{c:C.vermell, t:"Son compartit, foc i sentinella"},
+    temps: {c:C.blau,    t:"Horaris culturals i son en públic"},
+    somnis:{c:C.groc,    t:"Narració comunitària dels somnis"}
+  };
+  V.legendCat(lg,[
+    {c:C.vermell, t:CAT.social.t},
+    {c:C.blau,    t:CAT.temps.t},
+    {c:C.groc,    t:CAT.somnis.t}
+  ]);
+
+  V.mount(el,(box,w)=>{
+    const mob=w<640, h=Math.round(Math.min(mob?270:430, w*0.52));
+    const s=V.svg(box,w,h,"Mapa mundial en projecció Equal Earth amb set estudis antropològics i històrics del son: ju/'hoansi, hadza, Egipte, Europa preindustrial, Japó (inemuri), tsimané i comunitats americanes de narració de somnis.");
+    const gMap=s.append("g"), gPts=s.append("g");
+    const tp=V.tip(box);
+
+    V.world().then(world=>{
+      gMap.selectAll("*").remove(); gPts.selectAll("*").remove();
+      const proj=d3.geoEqualEarth().fitExtent([[6,10],[w-6,h-10]], {type:"Sphere"});
+      const path=d3.geoPath(proj);
+      gMap.append("path").datum(world.land).attr("d",path).attr("fill",C.land);
+      gMap.append("path").datum(world.borders).attr("d",path).attr("fill","none").attr("stroke",C.paper).attr("stroke-width",.6);
+
+      const sites=gPts.selectAll("g.sc").data(D.sleepCultures).join("g").attr("class","sc").style("cursor","pointer");
+      sites.each(function(d){
+        const q=d3.select(this), p=proj([d.lon,d.lat]);
+        if(!p)return;
+        const [x,y]=p, col=CAT[d.cat].c;
+        const rad=mob?13:20;
+        q.append("circle").attr("class","halo").attr("cx",x).attr("cy",y).attr("r",rad)
+          .attr("fill",col).attr("fill-opacity",d.cat==="somnis"?.46:.30).style("mix-blend-mode","multiply");
+        q.append("circle").attr("class","core").attr("cx",x).attr("cy",y).attr("r",3.8)
+          .attr("fill",d.cat==="somnis"?C.ink:col).attr("stroke","#fff").attr("stroke-width",1.3);
+        const showLab=!mob || d.id==="europa" || d.id==="japo" || d.id==="juhoansi" || d.id==="somnis";
+        if(showLab){
+          const tx=Math.max(10, Math.min(w-10, x+(mob?d.dx*.7:d.dx)));
+          const ty=Math.max(16, Math.min(h-8, y+(mob?d.dy*.75:d.dy)));
+          const anc=tx<95?"start":tx>w-95?"end":d.anc;
+          V.t(q, tx, ty, d.nom.split(" (")[0], {size:mob?11:12, weight:700, anchor:anc, fill:C.ink, halo:true});
+        }
+        q.append("circle").attr("cx",x).attr("cy",y).attr("r",24).attr("fill","transparent");
+      });
+
+      sites.on("pointerenter pointerdown",(ev,d)=>{
+        V.focus(sites, x=>x.id===d.id, {dim:.48});
+        sites.select(".core").attr("r",x=>x.id===d.id?5.2:3.8);
+        tp.show(`<b>${d.nom}</b> (${d.lloc})<br>${d.resum}`);
+      }).on("pointerleave",ev=>{
+        if(ev.pointerType!=="mouse")return;
+        if(applyFilter)applyFilter(filter);
+        sites.select(".core").attr("r",3.8);
+        tp.hide();
+      });
+
+      applyFilter=k=>{
+        filter=k;
+        if(k==="tots") V.focus(sites, null);
+        else V.focus(sites, d=>d.cat===k, {dim:.48});
+      };
+      applyFilter(filter);
+    });
+  });
+
+  document.querySelectorAll("#f-cultures-son .seg button").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      document.querySelectorAll("#f-cultures-son .seg button").forEach(b=>b.setAttribute("aria-pressed",b===btn));
+      filter=btn.dataset.k;
+      if(applyFilter)applyFilter(filter);
+    });
+  });
+})();
+
 })();

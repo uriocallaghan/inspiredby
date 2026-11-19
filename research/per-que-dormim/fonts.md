@@ -58,3 +58,23 @@ Totes les dades, xifres i cites d'aquest article han estat verificades contra fo
 
 13. **Cost acumulat de la restricció crònica de son (48 adults, 14 dies a 4 h, 6 h o 8 h al llit vs. privació total): 14 dies a 6 h/nit igualen 24 h sense dormir; 14 dies a 4 h/nit igualen 48 h sense dormir; llindar crític de vigília de 15,84 h (± 0,73 h); la somnolència subjectiva s'estanca mentre el dèficit cognitiu continua creixent**
     - Van Dongen, H. P. A., Maislin, G., Mullington, J. M., & Dinges, D. F. (2003). *The Cumulative Cost of Additional Wakefulness: Dose-Response Effects on Neurobehavioral Functions and Sleep Physiology From Chronic Sleep Restriction and Total Sleep Deprivation*. **SLEEP**, 26(2), 117–126. DOI: `10.1093/sleep/26.2.117` (verificat).
+
+## Fonts antropològiques i etnogràfiques afegides
+
+14. **Converses de dia vs. vora el foc entre els ju/'hoansi (!kung san, Namíbia/Botswana; 174 converses): de dia 34 % queixes/crítica, 31 % economia, 16 % bromes, 6 % històries; de nit vora el foc 81 % històries i mites, 7 % queixes/crítica, 4 % economia**
+    - Wiessner, P. W. (2014). *Embers of society: Firelight talk among the Ju/'hoansi Bushmen*. **PNAS**, 111(39), 14027–14035. DOI: `10.1073/pnas.1404212111` · PMC4191796 (verificat via OpenAlex i resultats comprovats).
+
+15. **Son compartit (*cosleeping*) com a norma familiar a Egipte (78 membres de 16 famílies del Caire i un poble rural): 69,1 % dels episodis compartint llit (24,2 % amb més d'una persona), 45 % dels restants compartint habitació, només 21,6 % completament solitaris**
+    - Worthman, C. M., & Brown, R. A. (2007). *Companionable sleep: Social regulation of sleep and cosleeping in Egyptian families*. **Journal of Family Psychology**, 21(1), 124–135. DOI: `10.1037/0893-3200.21.1.124` · PMC3771325 (verificat via OpenAlex i PMC).
+
+16. **Antropologia biològica del son compartit mare-nadó (*cosleeping* i lactància com a entorn evolutiu habitual de l'espècie)**
+    - McKenna, J. J., Ball, H. L., & Gettler, L. T. (2007). *Mother–infant cosleeping, breastfeeding and sudden infant death syndrome: What biological anthropology has discovered about normal infant sleep and pediatric sleep medicine*. **American Journal of Physical Anthropology**, S45, 133–161. DOI: `10.1002/ajpa.20736` (verificat via OpenAlex).
+
+17. ***Inemuri* al Japó («estar present mentre es dorm»): dormir en espais públics o reunions com a signe cultural de dedicació i confiança social**
+    - Steger, B. (2006). *Sleeping through Class to Success: Japanese notions of time and diligence*. **Time & Society**, 15(2–3), 197–214. DOI: `10.1177/0961463X06066952` (verificat via OpenAlex).
+
+18. **Construcció històrica i industrial del son solitari consolidat de 8 hores (horaris de fàbrica, medicina moderna i dormitori privat)**
+    - Wolf-Meyer, M. J. (2012). *The Slumbering Masses: Sleep, Medicine, and Modern American Life*. Minneapolis: University of Minnesota Press. DOI: `10.5749/minnesota/9780816674749.001.0001` (verificat via OpenAlex).
+
+19. **Antropologia dels somnis com a espai comunicatiu públic (maies quitxés, zuni, comunitats amazòniques com els achuar)**
+    - Tedlock, B. (Ed.). (1987). *Dreaming: Anthropological and Psychological Interpretations*. Cambridge: Cambridge University Press.

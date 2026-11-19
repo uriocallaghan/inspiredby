@@ -268,7 +268,10 @@ const $=s=>document.querySelector(s);
       const hd=HEADS[k]||HEADS.animals;
       $("#evo-t").textContent=hd[0]; $("#evo-s").textContent=hd[1];
       const isHum=(k==="egressiu"||k==="cadencia");
-      waveTitle.text(isHum?"Flux d'aire humà: només exhalació (ràfegues de ~75 ms cada ~210 ms)":"Flux d'aire en ximpanzés: panteix alternant (espira ↑ · inspira ↓)");
+      waveTitle.text(
+        mob ? (isHum?"Flux humà: només exhalació (~75 ms / ~210 ms)":"Ximpanzé: panteix (espira ↑ · inspira ↓)")
+            : (isHum?"Flux d'aire humà: només exhalació (ràfegues de ~75 ms cada ~210 ms)":"Flux d'aire en ximpanzés: panteix alternant (espira ↑ · inspira ↓)")
+      );
       waveCap.text(mob?"":(isHum?"Exclusivament egressiu":"Alternança in / out"));
       nodes.style("opacity",d=>{
         if(k==="panteix")return d.id==="xim"||d.id==="bon"?1:.5;
@@ -665,6 +668,86 @@ const $=s=>document.querySelector(s);
     V.onView(box, inst=>{
       if(inst)return;
       nodes.style("opacity",0).transition().delay((d,i)=>i*140).duration(650).ease(d3.easeCubicOut).style("opacity",1);
+    });
+  });
+})();
+
+/* =====================================================================
+   FIGURA 4 · IB-25 · MAPA ETNOGRÀFIC DELS USOS RITUALS I POLÍTICS DEL RIURE
+   ===================================================================== */
+(function etnografiaFig(){
+  const el=$("#etno-viz"), lg=$("#etno-lg");
+  if(!el||!D.ethnoSites)return;
+  let filter="tots", applyFilter=null;
+  const CAT={
+    conflicte:{c:C.vermell, t:"Resolució de conflictes"},
+    poder:    {c:C.blau,    t:"Inversió del poder i el sagrat"},
+    etiqueta: {c:C.groc,    t:"Etiqueta i contagi social"}
+  };
+  V.legendCat(lg,[
+    {c:C.vermell, t:CAT.conflicte.t},
+    {c:C.blau,    t:CAT.poder.t},
+    {c:C.groc,    t:CAT.etiqueta.t}
+  ]);
+
+  V.mount(el,(box,w)=>{
+    const mob=w<640, h=Math.round(Math.min(mob?270:430, w*0.52));
+    const s=V.svg(box,w,h,"Mapa mundial en projecció Equal Earth amb sis casos antropològics i històrics del riure: duels de cançons inuit, sanankuya a Mali, pallassos sagrats als EUA, Carnaval medieval a Europa, brot de Kashasha a Tanzània i terewarai al Japó.");
+    const gMap=s.append("g"), gPts=s.append("g");
+    const tp=V.tip(box);
+
+    V.world().then(world=>{
+      gMap.selectAll("*").remove(); gPts.selectAll("*").remove();
+      const proj=d3.geoEqualEarth().fitExtent([[6,10],[w-6,h-10]], {type:"Sphere"});
+      const path=d3.geoPath(proj);
+      gMap.append("path").datum(world.land).attr("d",path).attr("fill",C.land);
+      gMap.append("path").datum(world.borders).attr("d",path).attr("fill","none").attr("stroke",C.paper).attr("stroke-width",.6);
+
+      const sites=gPts.selectAll("g.es").data(D.ethnoSites).join("g").attr("class","es").style("cursor","pointer");
+      sites.each(function(d){
+        const q=d3.select(this), p=proj([d.lon,d.lat]);
+        if(!p)return;
+        const [x,y]=p, col=CAT[d.cat].c;
+        const rad=mob?14:21;
+        q.append("circle").attr("class","halo").attr("cx",x).attr("cy",y).attr("r",rad)
+          .attr("fill",col).attr("fill-opacity",d.cat==="etiqueta"?.44:.30).style("mix-blend-mode","multiply");
+        q.append("circle").attr("class","core").attr("cx",x).attr("cy",y).attr("r",3.8)
+          .attr("fill",d.cat==="etiqueta"?C.ink:col).attr("stroke","#fff").attr("stroke-width",1.3);
+        const showLab=!mob || d.id==="inuit" || d.id==="sanankuya" || d.id==="pueblo" || d.id==="japo";
+        if(showLab){
+          const tx=Math.max(10, Math.min(w-10, x+(mob?d.dx*.7:d.dx)));
+          const ty=Math.max(16, Math.min(h-8, y+(mob?d.dy*.75:d.dy)));
+          const anc=tx<95?"start":tx>w-95?"end":d.anc;
+          V.t(q, tx, ty, d.nom.split(" (")[0], {size:mob?11:12, weight:700, anchor:anc, fill:C.ink, halo:true});
+        }
+        q.append("circle").attr("cx",x).attr("cy",y).attr("r",24).attr("fill","transparent");
+      });
+
+      sites.on("pointerenter pointerdown",(ev,d)=>{
+        V.focus(sites, x=>x.id===d.id, {dim:.48});
+        sites.select(".core").attr("r",x=>x.id===d.id?5.2:3.8);
+        tp.show(`<b>${d.nom}</b> (${d.lloc})<br>${d.resum}`);
+      }).on("pointerleave",ev=>{
+        if(ev.pointerType!=="mouse")return;
+        if(applyFilter)applyFilter(filter);
+        sites.select(".core").attr("r",3.8);
+        tp.hide();
+      });
+
+      applyFilter=k=>{
+        filter=k;
+        if(k==="tots") V.focus(sites, null);
+        else V.focus(sites, d=>d.cat===k, {dim:.48});
+      };
+      applyFilter(filter);
+    });
+  });
+
+  document.querySelectorAll("#f-etnografia .seg button").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      document.querySelectorAll("#f-etnografia .seg button").forEach(b=>b.setAttribute("aria-pressed",b===btn));
+      filter=btn.dataset.k;
+      if(applyFilter)applyFilter(filter);
     });
   });
 })();
