@@ -8,6 +8,7 @@ La revista: *articles visuals per entendre el món*. Cada article explica una q�
 
 - **Català** natural i correcte, frases curtes, to de reportatge de diari (no de llibre de text ni de nota de premsa). Tracte de «tu» al lector quan cal («Baixa per veure…», «Arrossega…»).
 - **Comença amb una història o una imatge concreta** (a El Niño: els pescadors del Perú abans de Nadal). Primer paràgraf amb caplletra (`<p class="dl">`).
+- **Mirada antropològica que sorprengui:** sempre que el tema toqui el comportament, el cos o la vida quotidiana humana, evita limitar-te a una explicació purament biològica o descriptiva. Qüestiona allò que el lector occidental modern dona per «normal» o «natural» contrastant-ho amb etnografia verificada, història i altres cultures (com es viu en societats no industrials, quins rituals o normes socials hi construeixen altres pobles, què era diferent abans de la modernitat). Aquesta tensió entre biologia universal i creativitat cultural és un dels trets que més enganxen al lector.
 - **Primer les peces, després el fenomen.** El Niño explica primer el vent, després l'aigua calenta, després la mesura, i només llavors El Niño. Cada secció respon una pregunta («Per què…?», «Què vol dir…?»).
 - **Analogies quotidianes** (la banyera, el plat de sopa, els cavallets de la fira, el gronxador). Una per idea difícil, no més.
 - **Números concrets** i amb unitats, sempre amb font. Arrodoneix com ho faria un diari (2,3 milions; uns 20 °C).
