@@ -1,0 +1,106 @@
+[
+  {
+    "slug": "viatge-de-la-pizza",
+    "title": "El viatge de la pizza",
+    "desc": "Un pa pla nascut abans de l'agricultura, un fruit andí que Europa va témer com a verí i una búfala de l'Índia. Com el pa de carrer de Nàpols va conquerir tot el planeta.",
+    "category": "Antropologia i història",
+    "minutes": 19,
+    "thumbAlt": "Forma orgànica abstracta de tons rosa, taronja i verd oliva."
+  },
+  {
+    "slug": "per-que-riem",
+    "title": "Per què riem?",
+    "desc": "Riem trenta cops més acompanyats que sols, i gairebé mai per un acudit. Dels duels inuit als grans simis: quan un reflex animal esdevé pacte i tribunal.",
+    "category": "Antropologia i biologia",
+    "minutes": 17,
+    "thumbAlt": "Composició abstracta d'esferes càlides taronges i roses sobre fons clar."
+  },
+  {
+    "slug": "per-que-dormim",
+    "title": "Per què dormim?",
+    "desc": "El dormitori solitari és una raresa històrica. De les fregates que dormen volant a les fogueres del Kalahari i l'inemuri japonès: com modela cada cultura el son.",
+    "category": "Antropologia i biologia",
+    "minutes": 19,
+    "thumbAlt": "Composició abstracta difuminada de tons rosa i daurat suau."
+  },
+  {
+    "slug": "el-jesus-historic",
+    "title": "Qui era realment Jesús?",
+    "desc": "Cap text antic no descriu un Jesús alt, ros i d'ulls clars. La distància entre el jueu galileu del segle I que reconstrueixen l'arqueologia i la cara que li va posar Occident.",
+    "category": "Història i arqueologia",
+    "minutes": 19,
+    "thumbAlt": "Degradat abstracte d'horitzó amb verd fosc a la base i cel càlid."
+  },
+  {
+    "slug": "jesus-i-els-quatre-evangelis",
+    "title": "Una vida, quatre evangelis",
+    "desc": "Quan Pau escrivia als corintis, cap dels quatre evangelis existia encara, però ja es recordava l'últim sopar. Quatre relats que discrepen sobre Jesús de Natzaret.",
+    "category": "Història",
+    "minutes": 20,
+    "thumbAlt": "Dues esferes abstractes superposades en taronja, rosa i blau cel."
+  },
+  {
+    "slug": "el-nino",
+    "title": "El Niño i La Niña",
+    "desc": "Cada pocs anys, un tros del Pacífic s'escalfa uns graus i a l'altra punta del món hi ha inundacions, incendis i sequeres. Com mou un canvi oceànic mig planeta.",
+    "category": "Clima",
+    "minutes": 18,
+    "thumbAlt": "Fusió abstracta de blau cobalt, taronja intens i rosa suau."
+  },
+  {
+    "slug": "calendari-cosmic",
+    "title": "El calendari còsmic",
+    "desc": "Durant gairebé tota la història del cosmos no hem existit. Si comprimim del Big Bang fins avui en un any, els humans hauríem arribat el 31 de desembre al vespre.",
+    "category": "Cosmos",
+    "minutes": 8,
+    "thumbAlt": "Forma abstracta ascendent en taronja viu, verd oliva i magenta."
+  },
+  {
+    "slug": "de-que-mor-el-mon",
+    "title": "De què mor el món?",
+    "desc": "De guerres? De gana? Si al món només hi visquessin cent persones, de què moririen segons les dades més recents? Avui mor més gent per suïcidi que per homicidi.",
+    "category": "Societat",
+    "minutes": 7,
+    "thumbAlt": "Volum orgànic abstracte en verd oliva, blau petroli, lila i taronja."
+  },
+  {
+    "slug": "migracio-vertical",
+    "title": "La gran migració de cada nit",
+    "desc": "Cada vespre milers de milions d'animals pugen del fons marí per menjar i baixen abans de l'alba. Passa cada dia a tots els oceans, i ho vam descobrir per error.",
+    "category": "Oceà",
+    "minutes": 15,
+    "thumbAlt": "Grup d'esferes translúcides flotants en corall, violeta i rosa."
+  },
+  {
+    "slug": "virus-i-bacteris",
+    "title": "La guerra invisible",
+    "desc": "En cada gota de mar, centenars de milers de virus ataquen bacteris que es defensen sense treva. D'aquesta guerra invisible, la ciència en va treure el CRISPR.",
+    "category": "Biologia",
+    "minutes": 18,
+    "thumbAlt": "Forma orgànica abstracta de tons rosa, taronja i verd oliva."
+  },
+  {
+    "slug": "pols-del-sahara",
+    "title": "La pols que adoba l'Amazònia",
+    "desc": "El vent s'enduu cada any milions de tones de pols del Sàhara fins a Amèrica. Una part cau sobre l'Amazònia i li porta el fòsfor que la pluja s'emporta.",
+    "category": "Planeta",
+    "minutes": 15,
+    "thumbAlt": "Degradat abstracte d'horitzó amb verd fosc a la base i cel càlid."
+  },
+  {
+    "slug": "cinta-transportadora",
+    "title": "La cinta transportadora de l'Atlàntic",
+    "desc": "Un corrent invisible porta calor al nord i aigua freda al sud a quilòmetres de fondària. Mou catorze cops l'aigua de tots els rius junts, i pot estar afeblint-se.",
+    "category": "Clima",
+    "minutes": 18,
+    "thumbAlt": "Corrent abstracte de blau profund i taronja càlid entrellaçats."
+  },
+  {
+    "slug": "on-va-el-co2",
+    "title": "On va el CO₂ que emetem",
+    "desc": "Cada any aboquem a l'aire més de 40.000 milions de tones de CO₂, però menys de la meitat s'hi queda. Seguim la resta fins al fons del mar i les fulles dels boscos.",
+    "category": "Clima",
+    "minutes": 17,
+    "thumbAlt": "Esfera orgànica abstracta de tons taronja, blau, lila i verd oliva."
+  }
+]

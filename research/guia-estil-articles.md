@@ -56,11 +56,12 @@ La revista: *articles visuals per entendre el món*. Cada article explica una q�
 - Article: `web/articles/<slug>/index.html` i `web/articles/<slug>/<slug>.js` (pots tenir-ne més d'un). Copia l'esquelet de capçalera, barra (`ib-bar` amb el logo), barra de progrés, peu i scripts de `web/articles/calendari-cosmic/index.html` (rutes relatives `../../assets/…`).
 - Portada per a la revista: crea `web/articles/<slug>/cover.html` (SVG de 1680×720 fet amb codi, sense text, amb la paleta de l'article) i genera'n `cover.jpg`:
   `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu --hide-scrollbars --window-size=1680,720 --screenshot=cover.png file://…/cover.html` i converteix-lo amb `sips -s format jpeg cover.png --out cover.jpg`.
-- **No toquis** la portada de la revista (`web/index.html`), altres articles, ni els fitxers compartits. Tampoc publiquis res: ho integra i publica l'editor.
+- Miniatura 4:5 de portada: afegeix `web/articles/<slug>/thumb.webp` (800×1000; temporalment es pot copiar una miniatura existent si encara no se n'ha generat una de nova), registra l'article a `web/articles.json` i regenera `web/index.html` executant `node scripts/sync-home.mjs`.
+- **Tots els articles de `web/articles/` han de sortir sempre a la portada.** No modifiquis el disseny o CSS de la portada, altres articles ni els fitxers compartits (`web/assets/*`) sense explicar-ho.
 
 ## 5. Proves
 
-- `node --check` de cada .js.
+- `node scripts/check.mjs` (valida la sincronia portada ↔ `web/articles.json` ↔ `web/articles/`, els fitxers obligatoris i el `node --check` de tots els `.js`).
 - Serveix la carpeta `web/` amb el teu propi port (`python3 -m http.server <port> --directory "<ruta>/web"`) i atura'l en acabar.
 - Pots fer servir el navegador integrat (eines `mcp__Claude_Browser__*`) **només en una pestanya pròpia** (`tabs_create` i passa sempre el teu `tabId`); no toquis les altres pestanyes. Si no està disponible, fes servir Chrome headless (`--screenshot`, `--dump-dom`, `--enable-logging=stderr`).
 - Recorre tots els passos del scroll i totes les interaccions; zero errors a la consola; zero desbordaments horitzontals.

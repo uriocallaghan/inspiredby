@@ -11,7 +11,8 @@ Revista web d'articles visuals per entendre el món, en català. Llegeix aquest 
 
 ## Què hi ha
 
-- `web/`: la web que es publica (estàtica, sense build). `web/index.html` és la portada; `web/articles/<slug>/` els articles; `web/assets/` el codi i els estils comuns; `web/sistema/` el sistema infogràfic.
+- `web/`: la web que es publica (estàtica, sense build). `web/articles.json` és el catàleg únic dels articles que genera `web/index.html` (la portada); `web/articles/<slug>/` els articles; `web/assets/` el codi i els estils comuns; `web/sistema/` el sistema infogràfic.
+- `scripts/`: eines de sistema (`sync-home.mjs` regenera la portada des de `web/articles.json`, `check.mjs` valida tot el conjunt).
 - `research/`: dades, fonts i validacions de cada article, i les guies.
 - `site/`: còpia de la web original del 2020–2021. **No la toquis.**
 
@@ -26,12 +27,12 @@ Revista web d'articles visuals per entendre el món, en català. Llegeix aquest 
 - **Res inventat.** Cada xifra ve d'una font primària verificada i citada. Dades d'exemple o simulacions, sempre dites al peu.
 - **Res de «AI slop»:** cap rètol decoratiu en majúscules petites, cap índex numerat, cap secció «Pròximament», cap text de farciment, cap emoji (ni caràcters Unicode que els navegadors renderitzen com a emoji, com `◀`, `▶`, `↔`; fes servir sempre fletxes tipogràfiques `←` `→` `↑` `↓`).
 - **Paleta:** només vermell `#C8442A`, blau `#2C5DA8` i groc `#F5C518` (i els seus tons), grisos i terra. Mai text en groc. Cap gràfic pinta fons.
-- **Portada:** tipografia Helvetica Neue LT Pro i l'aspecte original. No la redissenyis.
+- **Portada:** tipografia Helvetica Neue LT Pro i l'aspecte original. No en redissenyis ni el CSS ni la maquetació, però **tots els articles de `web/articles/` han d'aparèixer sempre a la portada**: cada article nou porta el seu `thumb.webp` (800×1000; temporalment es pot copiar el d'un article existent si no se'n crea un de nou), s'afegeix a `web/articles.json` i es regenera `web/index.html` amb `node scripts/sync-home.mjs`.
 - **Gràfics:** animats en entrar, amb hover que mostra clarament què s'apunta, superlleugers (canvas per a molts elements) i sense scroll horitzontal a 390 px.
 - No modifiquis els fitxers compartits (`web/assets/*`) sense explicar-ho clarament al commit i al resum a l'editor.
 
 ## Abans de fer push a `main`
 
-- `node --check` de cada `.js` que hagis tocat.
+- `node scripts/sync-home.mjs` i `node scripts/check.mjs` (ha de passar amb 0 errors i 0 articles orfes).
 - Serveix `web/` en local (`python3 -m http.server 8000 --directory web`) i comprova 1440×900 i 390×844: zero errors a la consola, cap scroll horitzontal, cap etiqueta tallada.
 - Al missatge de commit i a la resposta a l'editor: què canvia, quines dades són reals (amb fonts) i què no has pogut verificar.
