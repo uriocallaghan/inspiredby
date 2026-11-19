@@ -483,98 +483,117 @@ const M24=piece(24,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-25 · MAPA DE PICS  (dades reals: Wigington et al. 2016, corregit 2017)
+   IB-25 · MAPA DE CERCLES TRANSLÚCIDS  (dades reals: Wigington et al. 2016, corregit 2017)
+   Projecció plana neta (Equal Earth), zero perspectiva 3D i zero agulles: cercles translúcids multiply.
    ===================================================================== */
 const SITES=D.virus.map(([lon,lat,n,v,st])=>({lon,lat,n,v,st}));
 const PLACE25={"BATS":"Bermuda (BATS)","USC MO":"Costa de Los Angeles","BEDFORDBASIN":"Halifax (Bedford Basin)","CASES03-04":"Golf d'Amundsen","RAUNEFJORD2000":"Bergen (Raunefjorden)","MOVE":"Badia de Chesapeake"};
 const place25=d=>PLACE25[d.st]||(d.lon<-160&&d.lat>=66?"Mar dels Txuktxis":d.lon<-160&&d.lat>=52?"Mar de Bering":d.lon<-140&&d.lon>-160&&d.lat>=54&&d.lat<61?"Golf d'Alaska":llS(d.lon,d.lat));
-const MODE25=[{k:"n",c:C.vermell,max:d3.max(SITES,d=>d.n),ref:500,refT:"500 mesures",f:v=>`${f0(v)} ${v===1?"mesura":"mesures"}`},
-  {k:"v",c:C.blau,max:d3.max(SITES,d=>d.v),ref:50,refT:"50 milions/ml",f:v=>`mediana de ${f1(v)} milions de virus/ml`}];
-legend(25,el=>V.legendCat(el,[{c:C.vermell,t:"Alçada: nombre de mesures"},{c:C.blau,t:"Alçada: virus per ml (mediana)"}]));
+const MODE25=[{k:"n",c:C.vermell,max:d3.max(SITES,d=>d.n),ref:[50,400,1400],f:v=>`${f0(v)} ${v===1?"mesura":"mesures"}`},
+  {k:"v",c:C.blau,max:d3.max(SITES,d=>d.v),ref:[5,25,80],f:v=>`mediana de ${f1(v)} milions de virus/ml`}];
+legend(25,el=>V.legendCat(el,[{c:C.vermell,t:"Àrea: nombre de mesures",a:.42},{c:C.blau,t:"Àrea: virus per ml (mediana)",a:.42}]));
 let mode25=0;
 const M25=piece(25,(el,w)=>{
   if(needWorld(()=>M25))return;
   if(el._tm)el._tm.stop();
-  const mob=w<640, tilt=.62, Hm=mob?150:250, top=Hm+30;
-  const proj=d3.geoNaturalEarth1().rotate([60,0]).fitWidth(w-8,{type:"Sphere"});
-  const ya=proj([0,82])[1], yb=proj([0,-66])[1], mh=(yb-ya)*tilt, h=Math.ceil(top+mh+10);
-  const T=(x,y)=>[x+4,top+(y-ya)*tilt]; // pla inclinat
-  // capes: terra en SVG (fix), 261 pics en canvas, text i hover en SVG
-  const {under,c,ctx,s}=stack(el,w,h,`Mapa inclinat amb un pic a cada lloc on s'han mesurat virus marins: ${SITES.length} llocs i ${f0(d3.sum(SITES,d=>d.n))} mesures. Una sola estació, a Bermuda, en té ${f0(MODE25[0].max)}, una de cada quatre. Dades reals de Wigington et al. 2016, amb la correcció del 2017.`);
+  const mob=w<640, pad=mob?4:8;
+  const proj=d3.geoEqualEarth().rotate([60,0]).fitWidth(w-pad*2,{type:"Sphere"});
+  const path=d3.geoPath(proj), h=Math.ceil(path.bounds({type:"Sphere"})[1][1])+pad*2;
+  const {under,c,ctx,s}=stack(el,w,h,`Mapa pla Equal Earth amb cercles translúcids a cada punt de mostreig marí: ${SITES.length} llocs i ${f0(d3.sum(SITES,d=>d.n))} mesures. Bermuda (BATS) en concentra ${f0(MODE25[0].max)}. Dades reals de Wigington et al. 2016.`);
   c.style.transition="opacity .15s";
-  const path=d3.geoPath(proj), ug=under.append("g");
-  const cid="cl25"+Math.random().toString(36).slice(2,6); under.append("defs").append("clipPath").attr("id",cid).append("rect").attr("width",w).attr("height",h);
-  ug.attr("clip-path",`url(#${cid})`);
-  const base=ug.append("g").attr("transform",`translate(4,${top}) scale(1,${tilt}) translate(0,${-ya})`);
-  base.append("path").attr("d",path(d3.geoGraticule().step([30,30])())).attr("fill","none").attr("stroke",C.grid).attr("stroke-width",.8).attr("vector-effect","non-scaling-stroke");
-  base.append("path").attr("d",path(W.land)).attr("fill",C.land);
-  const g=s.append("g");
-  const eq=T(0,proj([0,0])[1]);
-  V.t(g,w-6,eq[1]-4,"Equador",{anchor:"end",italic:true,size:11.5,fill:C.muted,halo:true});
-  SITES.forEach(d=>{ const p=proj([d.lon,d.lat]), q=T(p[0],p[1]); d.x=+q[0].toFixed(1); d.y=+q[1].toFixed(1); d.h=0; });
-  const P=SITES.slice().sort((a,b)=>a.y-b.y);
-  const bw=mob?5:7;
-  const face=(d,h,side)=>{ const x=d.x, y=d.y, b=Math.min(bw,2.4+h*.45), f=b*.3; return side?`M${x},${y+f}L${x},${y-h}L${x+b/2},${y}Z`:`M${x-b/2},${y}L${x},${y-h}L${x},${y+f}Z`; };
-  const HS=m=>d3.scaleLinear([0,MODE25[m].max],[0,Hm]);
-  const tgt=(d,m)=>Math.max(2.5,HS(m)(d[MODE25[m].k]));
+  const ug=under.append("g").attr("transform",`translate(${pad},${pad})`);
+  ug.append("path").attr("d",path({type:"Sphere"})).attr("fill","none").attr("stroke",C.hair).attr("stroke-width",.7);
+  ug.append("path").attr("d",path(d3.geoGraticule().step([30,30])())).attr("fill","none").attr("stroke",C.grid).attr("stroke-width",.5);
+  ug.append("path").attr("d",path(W.land)).attr("fill",C.land);
+  ug.append("path").attr("d",path(W.borders)).attr("fill","none").attr("stroke","#fff").attr("stroke-width",.6);
+
+  const g=s.append("g"), maxR=mob?26:44;
+  const RS=m=>d3.scaleSqrt([0,MODE25[m].max],[mob?2.2:2.6,maxR]);
+  SITES.forEach(d=>{ const q=proj([d.lon,d.lat]); d.x=q[0]+pad; d.y=q[1]+pad; d.r=0; });
+  const P=SITES.slice().sort((a,b)=>b.n-a.n);
   let colM=mode25;
-  function draw(){ ctx.clearRect(0,0,w,h); const cl=MODE25[colM].c, cL=V.alpha(cl,.5);
-    for(const d of P){ const x=d.x, y=d.y, hh=d.h, b=Math.min(bw,2.4+hh*.45), f=b*.3;
-      ctx.fillStyle=cL; ctx.beginPath(); ctx.moveTo(x-b/2,y); ctx.lineTo(x,y-hh); ctx.lineTo(x,y+f); ctx.fill();
-      ctx.fillStyle=cl; ctx.beginPath(); ctx.moveTo(x,y+f); ctx.lineTo(x,y-hh); ctx.lineTo(x+b/2,y); ctx.fill(); } }
-  // anima les alçades (entrada i canvi de mesura) redibuixant només el canvas
-  function animate(m,dur,del){ if(el._tm)el._tm.stop(); P.forEach(d=>{ d.h0=d.h; d.h1=tgt(d,m); d.dl=del(d); });
-    if(V.reduced||!dur){ P.forEach(d=>d.h=d.h1); draw(); return; }
+
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    const cl=MODE25[colM].c;
+    ctx.save(); ctx.globalCompositeOperation="multiply";
+    for(const d of P){
+      if(d.r<=.1)continue;
+      const rg=ctx.createRadialGradient(d.x,d.y,0,d.x,d.y,d.r);
+      rg.addColorStop(0,V.alpha(cl,.42));
+      rg.addColorStop(.68,V.alpha(cl,.24));
+      rg.addColorStop(1,V.alpha(cl,.05));
+      ctx.fillStyle=rg;
+      ctx.beginPath(); ctx.arc(d.x,d.y,d.r,0,6.283); ctx.fill();
+    }
+    ctx.restore();
+    // puntet central nítid perquè es vegin els recorreguts de les campanyes oceàniques
+    ctx.fillStyle=V.alpha(cl,.8);
+    for(const d of P){ if(d.r<=.1)continue; ctx.beginPath(); ctx.arc(d.x,d.y,1.3,0,6.283); ctx.fill(); }
+  }
+
+  function animate(m,dur,del){
+    if(el._tm)el._tm.stop();
+    const rs=RS(m), k=MODE25[m].k;
+    P.forEach(d=>{ d.r0=d.r; d.r1=rs(d[k]); d.dl=del(d); });
+    if(V.reduced||!dur){ P.forEach(d=>d.r=d.r1); draw(); return; }
     const tend=dur+d3.max(P,d=>d.dl);
-    el._tm=d3.timer(t=>{ for(const d of P){ const q=clamp((t-d.dl)/dur,0,1), e=m===mode25&&d.h0===0?d3.easeCubicOut(q):EIO(q); d.h=d.h0+(d.h1-d.h0)*e; } draw(); if(t>=tend){ el._tm.stop(); } }); }
-  const labs=g.append("g"), ref=g.append("g");
-  function drawLabels(m){ labs.selectAll("*").remove(); ref.selectAll("*").remove();
-    const k=MODE25[m].k, top5=[], cand=SITES.slice().sort((a,b)=>b[k]-a[k]), boxes=[], fsz=mob?11.5:12.5;
+    el._tm=d3.timer(t=>{
+      for(const d of P){ const q=clamp((t-d.dl)/dur,0,1), e=d.r0===0?d3.easeCubicOut(q):EIO(q); d.r=d.r0+(d.r1-d.r0)*e; }
+      draw(); if(t>=tend)el._tm.stop();
+    });
+  }
+
+  const labs=g.append("g");
+  function drawLabels(m){
+    labs.selectAll("*").remove();
+    const k=MODE25[m].k, rs=RS(m), top5=[], cand=SITES.slice().sort((a,b)=>b[k]-a[k]), boxes=[], fsz=mob?11.5:12;
     for(const d of cand){ if(top5.length>=(mob?3:5))break; if(top5.some(o=>place25(o)===place25(d)))continue; top5.push(d); }
-    const hit=(b)=>boxes.some(o=>b.x0<o.x1&&b.x1>o.x0&&b.y0<o.y1&&b.y1>o.y0)||b.x0<2||b.x1>w-2;
-    top5.forEach(d=>{ const ht=tgt(d,m), tx=d.x, ty=d.y-ht, L1=place25(d), L2=m?`${f1(d.v)} milions/ml`:`${f0(d.n)} mesures`;
-      const tw=Math.max(L1.length*fsz*.56,L2.length*fsz*.5)+6; let pl=null;
-      for(let up=0;up<160&&!pl;up+=14)for(const right of [d.x<w*.7,!(d.x<w*.7)]){ const x=tx+(right?8:-8), y=ty-6-up;
-        const b={x0:right?x:x-tw,x1:right?x+tw:x,y0:y-fsz*1.1,y1:y+fsz*1.4}; if(!hit(b)){ pl={x,y,right,b}; break; } }
+    const hit=b=>boxes.some(o=>b.x0<o.x1&&b.x1>o.x0&&b.y0<o.y1&&b.y1>o.y0)||b.x0<4||b.x1>w-4||b.y0<10||b.y1>h-6;
+    top5.forEach(d=>{
+      const rr=rs(d[k]), L1=place25(d), L2=m?`${f1(d.v)} M/ml`:`${f0(d.n)} mesures`;
+      const tw=Math.max(L1.length*fsz*.56,L2.length*fsz*.52)+8; let pl=null;
+      const dirs=[[1,-1],[1,1],[-1,-1],[-1,1]];
+      for(let dist=rr+14;dist<rr+90&&!pl;dist+=16){
+        for(const [dx,dy] of dirs){
+          const x=d.x+dx*dist, y=d.y+dy*(dist*.55), right=dx>0;
+          const b={x0:right?x:x-tw,x1:right?x+tw:x,y0:y-fsz*1.1,y1:y+fsz*1.4};
+          if(!hit(b)){ pl={x,y,right,b,dx,dy}; break; }
+        }
+      }
       if(!pl)return; boxes.push(pl.b);
-      labs.append("path").attr("d",`M${tx},${ty}L${pl.x},${pl.y+fsz*.25}`).attr("stroke",C.ink).attr("stroke-width",.8).attr("fill","none");
-      V.lines(labs,pl.x+(pl.right?2:-2),pl.y,[[L1,true],[L2]],{anchor:pl.right?"start":"end",size:fsz,halo:true}); });
-    // pic de referència a l'esquerra
-    const rh=HS(m)(MODE25[m].ref), rx=mob?10:18, ry=top+(mob?18:34), rd={x:rx,y:ry};
-    ref.append("path").attr("d",face(rd,rh,0)).attr("fill",V.alpha(C.ink2,.35)); ref.append("path").attr("d",face(rd,rh,1)).attr("fill",C.ink2);
-    V.t(ref,rx-4,ry+14,"Escala",{size:11.5,fill:C.muted,italic:true,halo:true});
-    ref.append("line").attr("x1",rx+bw).attr("x2",rx+bw+6).attr("y1",ry-rh).attr("y2",ry-rh).attr("stroke",C.ink).attr("stroke-width",.8);
-    V.t(ref,rx+bw+9,ry-rh+4,MODE25[m].refT,{size:11.5,fill:C.ink2,halo:true,italic:true}); }
-  if(!mob){ const oa=proj([-38,14]), q=T(oa[0],oa[1]); V.t(g,q[0],q[1],"Oceà Atlàntic",{anchor:"middle",italic:true,size:12.5,fill:C.ink2,halo:true}); }
-  P.forEach(d=>d.h=el.__seen?tgt(d,mode25):0); draw(); drawLabels(mode25);
-  V.onView(el,instant=>{ if(instant){ P.forEach(d=>d.h=tgt(d,mode25)); draw(); return; }
-    labs.style("opacity",0); ref.style("opacity",0);
-    animate(mode25,1000,d=>(d.x/w)*700);
-    labs.transition().delay(1500).duration(500).style("opacity",1); ref.transition().delay(1500).duration(500).style("opacity",1); });
-  el._go=m=>{ el._off&&el._off(); const dur=V.reduced?0:1000; labs.transition().duration(dur*.3).style("opacity",0);
-    colM=m; animate(m,dur,d=>(d.x/w)*300);
-    setTimeout(()=>{ drawLabels(m); labs.style("opacity",0).transition().duration(400).style("opacity",1); },dur*1.2); };
+      V.note(labs,{x:d.x+pl.dx*rr*.6,y:d.y+pl.dy*rr*.6,tx:pl.x,ty:pl.y,kind:"curve",bend:pl.dx*8,anchor:pl.right?"start":"end",lines:[[L1,true],[L2]],size:fsz});
+    });
+  }
+
+  if(!mob){ const oa=proj([-36,12]); V.t(g,oa[0]+pad,oa[1]+pad,"Oceà Atlàntic",{anchor:"middle",italic:true,size:12,fill:C.muted,halo:true}); }
+  const rs0=RS(mode25); P.forEach(d=>d.r=el.__seen?rs0(d[MODE25[mode25].k]):0); draw(); drawLabels(mode25);
+  V.onView(el,instant=>{
+    if(instant){ P.forEach(d=>d.r=RS(mode25)(d[MODE25[mode25].k])); draw(); return; }
+    labs.style("opacity",0); animate(mode25,900,d=>(d.x/w)*450);
+    labs.transition().delay(1100).duration(450).style("opacity",1);
+  });
+  el._go=m=>{
+    el._off&&el._off(); const dur=V.reduced?0:850; labs.transition().duration(dur*.25).style("opacity",0);
+    colM=m; animate(m,dur,d=>(d.x/w)*250);
+    setTimeout(()=>{ drawLabels(m); labs.style("opacity",0).transition().duration(350).style("opacity",1); },dur*1.05);
+  };
+
   const hg=g.append("g").style("pointer-events","none"), TOTN=d3.sum(SITES,x=>x.n), MEDV=d3.median(SITES,x=>x.v);
-  const tp=tipOf(el), hit=hitRect(s,w,h);
+  const del=d3.Delaunay.from(P,d=>d.x,d=>d.y);
+  const tp=tipOf(el), hit=hitRect(s,w,h,"pointer");
   let cur=null;
   function off(){ cur=null; c.style.opacity=1; hg.selectAll("*").remove(); labs.style("opacity",1); tp.hide(); }
   el._off=off;
-  V.hover(hit.node(),(ev,[px,py])=>{ let best=1e9, d=null;
-    for(const o of P){ const yy=clamp(py,o.y-o.h,o.y), q=Math.hypot(o.x-px,(yy-py))+(py>o.y?(py-o.y)*2:0); if(q<best){best=q;d=o;} }
-    if(!d||best>16){ off(); return; }
+  V.hover(hit.node(),(ev,[px,py])=>{
+    const d=P[del.find(px,py)];
+    if(!d||Math.hypot(d.x-px,d.y-py)>Math.max(18,d.r+8)){ off(); return; }
     const m=mode25, val=m?`${f1(d.v)} milions de virus/ml`:`${f0(d.n)} ${d.n===1?"mesura":"mesures"}`;
-    const ctxt=m?`${d.v>=MEDV?"+":"−"}${f0(Math.abs(100*(d.v/MEDV-1)))} % respecte a la mediana dels ${SITES.length} llocs`:`${V.fmt(",.1f")(100*d.n/TOTN)} % de totes les mesures`;
-    tp.show(`<b>${place25(d)}</b><br><b>${val}</b><br>${ctxt}<br>${llS(d.lon,d.lat)} · campanya ${d.st}`,d.x,d.y-d.h);
-    if(d===cur)return; cur=d; hg.selectAll("*").remove(); labs.style("opacity",.15);
-    c.style.opacity=.2; // la resta s'apaga; el pic apuntat es redibuixa a la capa de hover
-    const ht=d.h, b=Math.min(bw,2.4+ht*.45)+2, cl=MODE25[m].c;
-    hg.append("path").attr("d",face(d,ht,0)).attr("fill",V.alpha(cl,.5)); hg.append("path").attr("d",face(d,ht,1)).attr("fill",cl);
-    hg.append("path").attr("d",`M${d.x-b/2},${d.y}L${d.x},${d.y-ht-1}L${d.x+b/2},${d.y}`).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.5).attr("stroke-linejoin","round");
-    hg.append("ellipse").attr("cx",d.x).attr("cy",d.y).attr("rx",10).attr("ry",10*tilt).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.5);
-    const rx=(mob?10:18)+bw+4;
-    hg.append("line").attr("x1",rx).attr("x2",d.x-6).attr("y1",d.y-ht).attr("y2",d.y-ht).attr("stroke",C.ink).attr("stroke-width",.8).attr("stroke-dasharray","2 3");
-    V.t(hg,rx,d.y-ht-4,m?`${f1(d.v)} milions/ml`:f0(d.n),{size:12,weight:700,halo:true});
-    const right=d.x<Math.min(260,w*.4); V.lines(hg,d.x+(right?8:-8),d.y-ht+(right?-16:18),[[place25(d),true],[val]],{anchor:right?"start":"end",size:12.5,halo:true});
+    const ctxt=m?`${d.v>=MEDV?"+":"−"}${f0(Math.abs(100*(d.v/MEDV-1)))} % vs mediana`:`${V.fmt(",.1f")(100*d.n/TOTN)} % del total`;
+    tp.show(`<b>${place25(d)}</b> · ${val}<br>${ctxt} · ${llS(d.lon,d.lat)}`,d.x,d.y);
+    if(d===cur)return; cur=d; hg.selectAll("*").remove(); labs.style("opacity",.48); c.style.opacity=.5;
+    hg.append("circle").attr("cx",d.x).attr("cy",d.y).attr("r",d.r).attr("fill",V.alpha(MODE25[m].c,.45)).attr("stroke",C.ink).attr("stroke-width",1.4);
+    hg.append("circle").attr("cx",d.x).attr("cy",d.y).attr("r",2.6).attr("fill",C.ink);
   },off);
 });
 seg(25,m=>{ mode25=m; const el=$('[data-p="25"]'); el._go&&el._go(m); });

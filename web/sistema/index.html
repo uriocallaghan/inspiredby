@@ -66,7 +66,7 @@
     <li><a href="#ib-22"><b>IB-22</b>Cartograma de cercles</a></li>
     <li><a href="#ib-23"><b>IB-23</b>Densitat de punts</a></li>
     <li><a href="#ib-24"><b>IB-24</b>Arcs de flux</a></li>
-    <li><a href="#ib-25"><b>IB-25</b>Mapa de pics</a></li>
+    <li><a href="#ib-25"><b>IB-25</b>Mapa de cercles translúcids</a></li>
     <li><a href="#ib-26"><b>IB-26</b>Mapa de crestes</a></li>
     <li><a href="#ib-27"><b>IB-27</b>Globus que gira</a></li>
     <li><a href="#ib-28"><b>IB-28</b>Camp de vent animat</a></li>
@@ -426,13 +426,13 @@
   </section>
 
   <section class="pc" id="ib-25">
-    <div class="pc-h"><span class="pc-n">IB-25</span><h4>Mapa de pics</h4></div>
-    <p class="pc-d">Un pic prim a cada lloc, que creix des del terra amb l'alçada proporcional al valor. El mapa s'inclina una mica per donar profunditat. Es veu de seguida on es concentra tot i on no hi ha res.</p>
+    <div class="pc-h"><span class="pc-n">IB-25</span><h4>Mapa de cercles translúcids</h4></div>
+    <p class="pc-d">Projecció plana neta (Equal Earth) amb un cercle translúcid a cada lloc d'àrea proporcional al valor. La superposició amb <code>multiply</code> mostra de seguida on es concentra el mostreig sense inclinar el mapa ni distorsionar el planeta.</p>
     <div class="vh"><div><strong>On s'han comptat els virus del mar</strong><span>Mesures de virus per mil·lilitre en cada lloc de mostreig (cel·la d'1°)</span></div><div class="lgs" data-lg="25"></div></div>
     <div class="plot" data-p="25"></div>
-    <div class="ctlbar"><div class="seg" role="group" aria-label="Alçada" data-seg="25"><button aria-pressed="true" data-k="0">Nombre de mesures</button><button aria-pressed="false" data-k="1">Virus per mil·lilitre</button></div></div>
-    <p class="src"><b>Dades reals.</b> Font: Wigington et al. 2016, <i>Nature Microbiology</i> 1:15024, amb la correcció del 2017 (5.508 mesures de 22 campanyes, sense els tres conjunts d'aigua dolça retirats). Agrupació per lloc i mediana calculades per Inspired by. Escala lineal.</p>
-    <div class="pc-r"><div><h5>Per a</h5><p>Recomptes o quantitats per punt quan els extrems són la notícia: població, mesures, terratrèmols, captures.</p></div><div><h5>Regles</h5><ul><li>Pics de base estreta i dues cares (llum i ombra); de darrere cap endavant.</li><li>Escala lineal amb un pic de referència dins del gràfic.</li><li>Etiqueta de 3 a 5 pics, els més alts.</li></ul></div><div><h5>Ve de</h5><p>Els mapes de pics de població («spike maps») de la premsa.</p></div></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Variable" data-seg="25"><button aria-pressed="true" data-k="0">Nombre de mesures</button><button aria-pressed="false" data-k="1">Virus per mil·lilitre</button></div></div>
+    <p class="src"><b>Dades reals.</b> Font: Wigington et al. 2016, <i>Nature Microbiology</i> 1:15024, amb la correcció del 2017 (5.508 mesures de 22 campanyes, sense els tres conjunts d'aigua dolça retirats). Àrea proporcional (<code>d3.scaleSqrt</code>).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Recomptes o quantitats per punt quan els extrems i les rutes de mostreig són la notícia.</p></div><div><h5>Regles</h5><ul><li>Projecció plana neta (mai mapes inclinats pseudo-3D ni agulles).</li><li>Cercles translúcids amb gradient radial, <code>multiply</code> i puntet central.</li><li>Etiqueta els 3–5 extrems amb fletxes corbes delicades.</li></ul></div><div><h5>Ve de</h5><p>Atles científics i els mapes de punts translúcids de la revista.</p></div></div>
   </section>
 
   <section class="pc" id="ib-26">
