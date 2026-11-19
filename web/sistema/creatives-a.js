@@ -747,98 +747,168 @@ const M39=piece(39,(el,w)=>{
 segs(39,k=>{ mode39=k; const el=$('[data-p="39"]'); if(el&&el._go)el._go(k,true); });
 
 /* =====================================================================
-   IB-40 · FLUX AMB PARTÍCULES  (dades reals: Global Carbon Budget 2026)
+   IB-40 · FLUX AMB FILS DE PARTÍCULES  (dades reals: Global Carbon Budget 2026)
+   Bandes de seda translúcides sense contorn (`multiply` + degradat horitzontal),
+   nodes fins arrodonits i centenars de micro-traços corbats que circulen a poc a poc
+   seguint el flux (estil IB-28 aplicat a un Sankey).
    ===================================================================== */
 let run40=true;
 const GCB=DA.gcb||{p:[]};
 const N40=(function(){
-  const src=[{id:"fossil",t:"Combustibles fòssils",ts:"Fòssils",col:0,c:C.ink},{id:"luc",t:"Canvi d'ús del sòl",ts:"Ús del sòl",col:0,c:C.ink}];
+  const src=[{id:"fossil",t:"Combustibles fòssils",ts:"Fòssils",col:0,c:C.ink2},{id:"luc",t:"Canvi d'ús del sòl",ts:"Ús del sòl",col:0,c:C.muted}];
   const per=GCB.p.map((p,i)=>({id:"p"+i,t:p[0],ts:p[0].replace(/–(\d\d)(\d\d)$/,"–$2"),col:1,c:C.ink,yrs:+p[0].slice(5)-+p[0].slice(0,4)+1}));
-  const dst=[{id:"atm",t:"Atmosfera",ts:"Atmosfera",c:C.vermell,i:3},{id:"ocean",t:"Oceà",ts:"Oceà",c:C.blau,i:4},{id:"land",t:"Terra: vegetació i sòls",ts:"Terra",c:C.groc,i:5},{id:"cement",t:"Carbonatació del ciment",ts:"Ciment",c:C.ink2,i:6},{id:"imb",t:"Desquadrament del balanç",ts:"Desquadrament",c:C.muted,i:7}].map(d=>Object.assign(d,{col:2}));
+  const dst=[{id:"atm",t:"Atmosfera",ts:"Atmosfera",c:C.vermell,sc:C.vermell,i:3},{id:"ocean",t:"Oceà",ts:"Oceà",c:C.blau,sc:C.blau,i:4},{id:"land",t:"Terra: vegetació i sòls",ts:"Terra",c:C.groc,sc:C.grocFosc,i:5},{id:"cement",t:"Carbonatació del ciment",ts:"Ciment",c:C.ink2,sc:C.ink2,i:6},{id:"imb",t:"Desquadrament del balanç",ts:"Desquadrament",c:C.muted,sc:C.muted,i:7}].map(d=>Object.assign(d,{col:2}));
   const links=[];
   GCB.p.forEach((p,i)=>{ links.push({s:src[0],t:per[i],v:p[1]}); links.push({s:src[1],t:per[i],v:p[2]}); dst.forEach(d=>links.push({s:per[i],t:d,v:p[d.i]})); });
   const nodes=src.concat(per,dst);
   nodes.forEach(nd=>{ nd.out=links.filter(l=>l.s===nd); nd.in=links.filter(l=>l.t===nd); nd.v=Math.max(d3.sum(nd.out,l=>l.v),d3.sum(nd.in,l=>l.v)); });
-  links.forEach(l=>{ l.c=l.t.col===2?l.t.c:C.ink2; });
+  links.forEach((l,idx)=>{ l.idx=idx; l.c=l.t.col===2?l.t.c:(l.s.id==="fossil"?C.ink2:C.muted); l.sc=l.t.col===2?l.t.sc:(l.s.id==="fossil"?"#4E4C48":"#8F8C85"); });
   return {nodes,links,src,per,dst,T:d3.sum(src,d=>d.v)};
 })();
 legend(40,el=>V.legendCat(el,[{c:C.vermell,t:"Es queda a l'atmosfera"},{c:C.blau,t:"L'absorbeix l'oceà"},{c:C.groc,t:"L'absorbeix la terra"},{c:C.ink2,t:"Ciment i desquadrament",a:.6}]));
 const M40=piece(40,(el,w)=>{
   if(el.__loop){ el.__loop.stop(); el.__loop=null; }
-  const mob=w<640, h=mob?520:520, nw=mob?5:7;
-  const m=mob?{t:24,b:16,l:2,r:2}:{t:28,b:52,l:170,r:200};
-  const d3s=d3.select(el); d3s.selectAll("canvas.ibv,svg.ibv").remove(); el.style.height=h+"px";
-  const s=V.svg(el,w,h,`Diagrama de flux del carboni emès entre el 1850 i el 2025: ${f0(N40.T)} GtC, de combustibles fòssils i del canvi d'ús del sòl, repartits en tres períodes i en la seva destinació: un ${f0(N40.dst[0].v/N40.T*100)} % s'ha quedat a l'atmosfera, la resta l'han absorbit l'oceà i la terra. Les partícules circulen en proporció al volum. Dades reals del Global Carbon Budget 2026.`);
+  const mob=w<640, h=mob?500:520, nw=mob?3:3.5;
+  const m=mob?{t:28,b:18,l:6,r:6}:{t:32,b:56,l:178,r:208};
+  const d3s=d3.select(el); d3s.selectAll("canvas.ibv,svg.ibv").remove(); el.style.height="";
+  const s=V.svg(el,w,h,`Diagrama de flux del carboni emès entre el 1850 i el 2025: ${f0(N40.T)} GtC, de combustibles fòssils i del canvi d'ús del sòl, repartits en tres períodes i en la seva destinació: un ${f0(N40.dst[0].v/N40.T*100)} % s'ha quedat a l'atmosfera, la resta l'han absorbit l'oceà i la terra. Micro-traços direccionals circulen a poc a poc en proporció al volum. Dades reals del Global Carbon Budget 2026.`);
   const {c:cv,ctx}=V.canvas(el,w,h,""); d3.select(cv).attr("role",null).attr("aria-hidden","true").style("position","absolute").style("left",0).style("top",0).style("pointer-events","none");
-  const g=s.append("g");
+  const g=s.append("g"), defs=s.append("defs");
   const X=[m.l,(m.l+w-m.r)/2-nw/2,w-m.r-nw];
   const cols=[N40.src,N40.per,N40.dst];
-  const inner=h-m.t-m.b, maxN=5, padMax=mob?30:34;
+  const inner=h-m.t-m.b, maxN=5, padMax=mob?32:36;
   const k=(inner-padMax*(maxN-1))/N40.T;
-  cols.forEach((col,ci)=>{ const tot=d3.sum(col,d=>d.v)*k, pad=Math.min(ci===0?120:60,(inner-tot)/(col.length-1)); let y=m.t+(inner-tot-pad*(col.length-1))/2;
-    col.forEach(nd=>{ nd.x=X[ci]; nd.y0=y; nd.h=Math.max(1,nd.v*k); nd.y1=y+nd.h; y=nd.y1+pad; }); });
-  // capes dels enllaços dins de cada node
-  N40.nodes.forEach(nd=>{ let y=nd.y0; nd.out.slice().sort((a,b)=>a.t.y0-b.t.y0).forEach(l=>{ l.sy=y; l.w=l.v*k; y+=l.w; });
-    y=nd.y0; nd.in.slice().sort((a,b)=>a.s.y0-b.s.y0).forEach(l=>{ l.ty=y; y+=l.v*k; }); });
-  N40.links.forEach(l=>{ l.x0=l.s.x+nw; l.x1=l.t.x; l.xm=(l.x0+l.x1)/2; });
+  cols.forEach((col,ci)=>{
+    const tot=d3.sum(col,d=>d.v)*k, pad=Math.min(ci===0?112:58,(inner-tot)/(col.length-1));
+    let y=m.t+(inner-tot-pad*(col.length-1))/2;
+    col.forEach(nd=>{ nd.x=X[ci]; nd.y0=y; nd.h=Math.max(2,nd.v*k); nd.y1=y+nd.h; y=nd.y1+pad; });
+  });
+  N40.nodes.forEach(nd=>{
+    let y=nd.y0; nd.out.slice().sort((a,b)=>a.t.y0-b.t.y0).forEach(l=>{ l.sy=y; l.w=l.v*k; y+=l.w; });
+    y=nd.y0; nd.in.slice().sort((a,b)=>a.s.y0-b.s.y0).forEach(l=>{ l.ty=y; y+=l.v*k; });
+  });
+  N40.links.forEach(l=>{ l.x0=l.s.x+nw+1.5; l.x1=l.t.x-1.5; l.xm=(l.x0+l.x1)/2; });
   const band=l=>`M${l.x0},${l.sy}C${l.xm},${l.sy} ${l.xm},${l.ty} ${l.x1},${l.ty}L${l.x1},${l.ty+l.w}C${l.xm},${l.ty+l.w} ${l.xm},${l.sy+l.w} ${l.x0},${l.sy+l.w}Z`;
+
+  // Degradats suaus d'aquarel·la sense contorn (sense vores dures ni gris brut)
+  const pid="g40"+Math.random().toString(36).slice(2,6);
+  N40.links.forEach(l=>{
+    const gr=defs.append("linearGradient").attr("id",`${pid}-${l.idx}`).attr("gradientUnits","userSpaceOnUse")
+      .attr("x1",l.x0).attr("x2",l.x1).attr("y1",0).attr("y2",0);
+    if(l.t.col===2){
+      gr.append("stop").attr("offset","0%").attr("stop-color",C.ink2).attr("stop-opacity",.04);
+      gr.append("stop").attr("offset","35%").attr("stop-color",l.c).attr("stop-opacity",l.c===C.groc?.13:.09);
+      gr.append("stop").attr("offset","100%").attr("stop-color",l.c).attr("stop-opacity",l.c===C.groc?.22:.16);
+    } else {
+      const a0=l.s.id==="fossil"?.09:.065;
+      gr.append("stop").attr("offset","0%").attr("stop-color",l.c).attr("stop-opacity",a0);
+      gr.append("stop").attr("offset","100%").attr("stop-color",l.c).attr("stop-opacity",.04);
+    }
+  });
+
   const cid="c40"+Math.random().toString(36).slice(2,7);
-  const clip=s.append("defs").append("clipPath").attr("id",cid).append("rect").attr("x",0).attr("y",0).attr("height",h).attr("width",w);
+  const clip=defs.append("clipPath").attr("id",cid).append("rect").attr("x",0).attr("y",0).attr("height",h).attr("width",w);
   const LB=g.append("g").attr("clip-path",`url(#${cid})`).selectAll("path").data(N40.links).join("path").attr("d",band)
-    .attr("fill",l=>l.c).attr("fill-opacity",l=>l.t.col===2?(l.c===C.groc?.3:.2):.1).attr("stroke",l=>l.c===C.groc?C.grocFosc:l.c).attr("stroke-opacity",.25).attr("stroke-width",.5);
+    .attr("fill",l=>`url(#${pid}-${l.idx})`).style("mix-blend-mode","multiply");
   const LH=g.append("g").attr("clip-path",`url(#${cid})`).selectAll("path").data(N40.links).join("path").attr("d",band)
     .attr("fill","transparent").attr("stroke","transparent").attr("stroke-width",8).style("cursor","pointer");
-  const ND=g.append("g").selectAll("rect").data(N40.nodes).join("rect").attr("x",d=>d.x).attr("y",d=>d.y0).attr("width",nw).attr("height",d=>d.h).attr("fill",d=>d.c);
-  // etiquetes
+  // Nodes ultra-esvelts arrodonits (3,5 px en lloc de blocs negres pesants)
+  const ND=g.append("g").selectAll("rect").data(N40.nodes).join("rect")
+    .attr("x",d=>d.x).attr("y",d=>d.y0).attr("width",nw).attr("height",d=>d.h)
+    .attr("rx",nw/2).attr("ry",nw/2).attr("fill",d=>d.col===2?d.c:d.col===1?C.ink:d.c).attr("fill-opacity",.88);
+
+  // Etiquetes netes
   const LG=g.append("g");
   const pct=v=>f0(v/N40.T*100)+" %";
   function labelsCol(col,side){
     const it=col.map(nd=>({nd,y:(nd.y0+nd.y1)/2}));
-    separate(it,mob?30:32,m.t+8,h-m.b-22);
-    it.forEach(o=>{ const nd=o.nd, xx=side==="l"?nd.x-8:side==="r"?nd.x+nw+8:nd.x+nw/2;
+    separate(it,mob?30:34,m.t+8,h-m.b-22);
+    it.forEach(o=>{
+      const nd=o.nd, xx=side==="l"?nd.x-10:side==="r"?nd.x+nw+10:nd.x+nw/2;
       const a=side==="l"?"end":side==="r"?"start":"middle";
       const q=LG.append("g").datum(nd).attr("class","ibx-nl");
-      if(Math.abs(o.ly-o.y)>3&&side!=="m")q.append("path").attr("d",`M${side==="l"?nd.x-2:nd.x+nw+2},${o.y}L${xx+(side==="l"?3:-3)},${o.ly-4}`).attr("stroke",C.ink).attr("stroke-width",.6).attr("fill","none");
+      if(Math.abs(o.ly-o.y)>4&&side!=="m")q.append("path").attr("d",`M${side==="l"?nd.x-2:nd.x+nw+2},${o.y}L${xx+(side==="l"?4:-4)},${o.ly-3}`).attr("stroke",C.hair).attr("stroke-width",.8).attr("fill","none");
       lab(q,xx,o.ly-4,mob?nd.ts:nd.t,{size:12.5,weight:700,anchor:a,fill:nd.col===2&&(nd.id==="atm"||nd.id==="ocean")?nd.c:C.ink});
-      lab(q,xx,o.ly+11,`${f0(nd.v)} GtC · ${pct(nd.v)}`,{size:12,anchor:a,fill:C.ink2}); });
+      lab(q,xx,o.ly+11,`${f0(nd.v)} GtC · ${pct(nd.v)}`,{size:11.5,anchor:a,fill:C.muted});
+    });
   }
   if(!mob){ labelsCol(N40.src,"l"); labelsCol(N40.dst,"r"); }
-  else { // a mòbil, dins del gràfic, amb halo
-    labelsCol(N40.src,"r"); labelsCol(N40.dst,"l"); }
-  N40.per.forEach(nd=>{ const q=LG.append("g").datum(nd).attr("class","ibx-nl"); lab(q,nd.x+nw/2,nd.y0-7,mob?nd.ts:`${nd.t} · ${f0(nd.v)} GtC`,{size:12.5,weight:700,anchor:"middle"}); });
-  if(!mob){ const p2=N40.per[2], p0=N40.per[0];
-    V.note(LG,{x:p2.x+nw/2,y:p2.y1+4,tx:p2.x+nw/2+30,ty:p2.y1+30,kind:"elbow",anchor:"start",lines:[[`${f1(p2.v/p2.yrs)} GtC l'any`,true],[`${f0(p2.v/p2.yrs/(p0.v/p0.yrs))} vegades el ritme de ${p0.t}`]]}); }
-  // capçaleres de columna
-  if(!mob){ [["D'on surt",X[0]+nw,"end"],["Quan",X[1]+nw/2,"middle"],["On va",X[2],"start"]].forEach(([t,xx,a])=>V.t(g,a==="end"?xx-nw-8:a==="start"?xx+nw+8:xx,12,t,{size:11.5,fill:C.muted,anchor:a})); }
-  // partícules
-  // partícules: la geometria de cada banda es mostreja una vegada (64 punts) i cada fotograma només interpola;
-  // es dibuixen agrupades per enllaç (un sol canvi d'estil per banda)
-  const NS=64, dens=(mob?650:1300)/N40.T, rnd=V.rng(40);
+  else { labelsCol(N40.src,"r"); labelsCol(N40.dst,"l"); }
+  N40.per.forEach(nd=>{
+    const q=LG.append("g").datum(nd).attr("class","ibx-nl");
+    lab(q,nd.x+nw/2,nd.y0-9,mob?nd.ts:`${nd.t} · ${f0(nd.v)} GtC`,{size:12,weight:700,anchor:"middle",fill:C.ink});
+  });
+  if(!mob){
+    const p2=N40.per[2], p0=N40.per[0];
+    V.note(LG,{x:p2.x+nw/2,y:p2.y1+5,tx:p2.x+nw/2+34,ty:p2.y1+32,kind:"curve",anchor:"start",
+      lines:[[`${f1(p2.v/p2.yrs)} GtC l'any`,true],[`${f0(p2.v/p2.yrs/(p0.v/p0.yrs))} vegades el ritme de ${p0.t}`]]});
+  }
+  if(!mob){
+    [["D'on surt",X[0]-10,"end"],["Quan",X[1]+nw/2,"middle"],["On va",X[2]+nw+10,"start"]]
+      .forEach(([t,xx,a])=>V.t(g,xx,14,t,{size:11.5,fill:C.muted,anchor:a}));
+  }
+
+  // Micro-traços corbats de seda (estil IB-28: esteles corbes suaus, moviment lent i hipnòtic)
+  const NS=64, dens=(mob?360:720)/N40.T, rnd=V.rng(40);
   const bez=(a,b,c2,d,t)=>{ const u=1-t; return u*u*u*a+3*u*u*t*b+3*u*t*t*c2+t*t*t*d; };
-  N40.links.forEach(l=>{ l.LX=new Float32Array(NS+1); l.LY=new Float32Array(NS+1);
+  N40.links.forEach(l=>{
+    l.LX=new Float32Array(NS+1); l.LY=new Float32Array(NS+1);
     for(let i=0;i<=NS;i++){ const t=i/NS; l.LX[i]=bez(l.x0,l.xm,l.xm,l.x1,t); l.LY[i]=bez(l.sy,l.sy,l.ty,l.ty,t); }
-    const nP=Math.max(1,Math.round(l.v*dens)); l.pt=new Float32Array(nP); l.po=new Float32Array(nP); l.ps=new Float32Array(nP);
-    for(let i=0;i<nP;i++){ l.pt[i]=rnd(); l.po[i]=(.08+rnd()*.84)*l.w; l.ps[i]=(.75+rnd()*.5)*.000032*(160/Math.max(120,l.x1-l.x0)); } });
+    const nP=Math.max(2,Math.round(l.v*dens));
+    l.pt=new Float32Array(nP); l.po=new Float32Array(nP); l.ps=new Float32Array(nP); l.pl=new Float32Array(nP); l.pw=new Float32Array(nP);
+    for(let i=0;i<nP;i++){
+      l.pt[i]=rnd();
+      l.po[i]=(.08+rnd()*.84)*l.w;
+      l.ps[i]=(.75+rnd()*.5)*.00003*(160/Math.max(120,l.x1-l.x0));
+      l.pl[i]=.038+rnd()*.042;
+      l.pw[i]=.85+rnd()*.65;
+    }
+  });
+  function sampleP(l,t,off){
+    const f=cl01(t)*NS, k=f|0, u=f-k, k1=k<NS?k+1:NS;
+    return [l.LX[k]+(l.LX[k1]-l.LX[k])*u, l.LY[k]+(l.LY[k1]-l.LY[k])*u+off];
+  }
   let foc=null, rev=1;
   function drawP(){
     ctx.clearRect(0,0,w,h);
+    ctx.lineCap="round"; ctx.lineJoin="round";
     const xMax=m.l+(w-m.l-m.r)*rev+nw;
     for(const l of N40.links){
-      ctx.globalAlpha=foc?(foc.has(l)?.95:.06):.75; ctx.fillStyle=l.c;
-      const pt=l.pt, po=l.po, LX=l.LX, LY=l.LY;
-      for(let i=0;i<pt.length;i++){ const f=pt[i]*NS, k=f|0, u=f-k, k1=k<NS?k+1:NS;
-        const xx=LX[k]+(LX[k1]-LX[k])*u; if(xx>xMax)continue;
-        ctx.fillRect(xx-.9,LY[k]+(LY[k1]-LY[k])*u+po[i]-.9,1.8,1.8); } }
+      const baseA=foc?(foc.has(l)?.88:.24):(l.t.col===2?.76:.52);
+      ctx.strokeStyle=l.sc; ctx.fillStyle=l.sc;
+      const pt=l.pt, po=l.po, pl=l.pl, pw=l.pw;
+      for(let i=0;i<pt.length;i++){
+        const t1=pt[i], t0=Math.max(0,t1-pl[i]);
+        const pHead=sampleP(l,t1,po[i]);
+        if(pHead[0]>xMax||t1-t0<.004)continue;
+        const fade=smooth(t1,0,.09)*smooth(1-t1,0,.09);
+        const a=baseA*fade;
+        if(a<.03)continue;
+        // Estela corba suau de 4 segments seguint exactament la Bézier
+        ctx.globalAlpha=a*.62; ctx.lineWidth=pw[i];
+        ctx.beginPath();
+        const p0=sampleP(l,t0,po[i]), p1=sampleP(l,t0+(t1-t0)*.35,po[i]), p2=sampleP(l,t0+(t1-t0)*.7,po[i]);
+        ctx.moveTo(p0[0],p0[1]); ctx.lineTo(p1[0],p1[1]); ctx.lineTo(p2[0],p2[1]); ctx.lineTo(pHead[0],pHead[1]);
+        ctx.stroke();
+        // Puntet lluminós al capdavant perquè el sentit del flux es llegeixi fins i tot congelat
+        ctx.globalAlpha=a;
+        ctx.beginPath(); ctx.arc(pHead[0],pHead[1],pw[i]*.78,0,6.2832); ctx.fill();
+      }
+    }
     ctx.globalAlpha=1;
   }
   const move=dt=>{ for(const l of N40.links){ const pt=l.pt, ps=l.ps; for(let i=0;i<pt.length;i++){ let t=pt[i]+dt*ps[i]; if(t>1)t-=1; pt[i]=t; } } };
   el.__f=el.__f||[0,0]; el.__loop=V.loop(el,tm(el,(t,dt)=>{ if(run40&&!V.reduced){ move(dt); drawP(); } else if(rev<1)drawP(); }));
-  // hover: camí sencer
+
+  // Hover suau: camí sencer + lectura en 1 línia ancorada a sota
   const tp=V.tip(el);
-  const pathOf=o=>{ const S=new Set();
+  const tipEl=el.querySelector(":scope>.tip"); if(tipEl)el.appendChild(tipEl);
+  const pathOf=o=>{
+    const S=new Set();
     if(o.s){ S.add(o); if(o.t.col===1)o.t.out.forEach(l=>S.add(l)); if(o.s.col===1)o.s.in.forEach(l=>S.add(l)); }
     else { o.in.forEach(l=>S.add(l)); o.out.forEach(l=>S.add(l)); }
-    return S; };
+    return S;
+  };
   const hv=hvLayer(s); ND.style("cursor","pointer");
   const reset40=()=>{ foc=null; tp.hide(); hv.selectAll("*").remove(); fo(LB,null); fo(ND,null); fo(LG.selectAll(".ibx-nl"),null); drawP(); };
   let curD=null;
@@ -846,33 +916,36 @@ const M40=piece(40,(el,w)=>{
     const d=d3.select(ev.target).datum();
     if(!d||(!d.s&&d.col==null)){ if(foc){ curD=null; reset40(); } return; }
     foc=pathOf(d);
-    if(curD!==d){ curD=d; hv.selectAll("*").remove();
-      const mark=(x,y,hh)=>hv.append("rect").attr("x",x-2).attr("y",y-1).attr("width",nw+4).attr("height",Math.max(2,hh)+2).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.5);
-      if(d.s){ hv.append("path").attr("d",band(d)).attr("fill",d.c).attr("fill-opacity",.35).attr("stroke",C.ink).attr("stroke-width",1.5);
-        mark(d.s.x,d.sy,d.w); mark(d.t.x,d.ty,d.w);
+    if(curD!==d){
+      curD=d; hv.selectAll("*").remove();
+      if(d.s){
+        hv.append("path").attr("d",band(d)).attr("fill",d.c).attr("fill-opacity",.18).attr("stroke",d.sc).attr("stroke-width",1.2).attr("stroke-opacity",.75);
         const share=d.v/(d.s.col===0?d.t.v:d.s.v)*100;
-        // percentatge escrit al costat del node que fa d'escala
-        if(d.s.col===0)lab(hv,d.x1-6,d.ty+d.w/2+4,`${f0(share)} %`,{size:12,weight:700,anchor:"end"});
-        else lab(hv,d.x0+6,d.sy+d.w/2+4,`${f0(share)} %`,{size:12,weight:700});
-        lab(hv,d.xm,(d.sy+d.ty)/2+d.w/2+4,`${f0(d.v)} GtC`,{size:13,weight:700,anchor:"middle"}); }
-      else { mark(d.x,d.y0,d.h); } }
-    fo(LB,l=>foc.has(l)); fo(ND,nd=>d.s?(nd===d.s||nd===d.t||(d.t.col===1&&d.t.out.some(l=>l.t===nd))||(d.s.col===1&&d.s.in.some(l=>l.s===nd))):(nd===d||d.in.some(l=>l.s===nd)||d.out.some(l=>l.t===nd)));
-    fo(LG.selectAll(".ibx-nl"),nd=>[...foc].some(l=>l.s===nd||l.t===nd));
-    if(d.s){ const share=d.v/(d.s.col===0?d.t.v:d.s.v)*100;
-      tp.show(`<b>${d.s.t} → ${d.t.t}</b><br>${f1(d.v)} GtC<br>${d.s.col===0?`${f0(share)} % de les emissions del període ${d.t.t}`:`${f0(share)} % del carboni emès en el període ${d.s.t}`}`,px,py); }
-    else tp.show(`<b>${d.t}</b><br>${f1(d.v)} GtC, ${pct(d.v)} del total${d.yrs?`<br>${f1(d.v/d.yrs)} GtC l'any de mitjana`:""}`,px,py);
+        lab(hv,d.xm,(d.sy+d.ty)/2+d.w/2+4,`${f0(d.v)} GtC (${f0(share)} %)`,{size:12.5,weight:700,anchor:"middle",fill:C.ink});
+      }
+    }
+    fo(LB,l=>foc.has(l),.48);
+    fo(ND,nd=>d.s?(nd===d.s||nd===d.t||(d.t.col===1&&d.t.out.some(l=>l.t===nd))||(d.s.col===1&&d.s.in.some(l=>l.s===nd))):(nd===d||d.in.some(l=>l.s===nd)||d.out.some(l=>l.t===nd)),.48);
+    fo(LG.selectAll(".ibx-nl"),nd=>[...foc].some(l=>l.s===nd||l.t===nd),.48);
+    if(d.s){
+      const share=d.v/(d.s.col===0?d.t.v:d.s.v)*100;
+      tp.show(`<b>${d.s.t} → ${d.t.t}</b> · ${f1(d.v)} GtC (${f0(share)} % de ${d.s.col===0?d.t.t:d.s.t})`,px,py);
+    } else {
+      tp.show(`<b>${d.t}</b> · ${f1(d.v)} GtC (${pct(d.v)} del total${d.yrs?` · ${f1(d.v/d.yrs)} GtC/any`:""})`,px,py);
+    }
     if(V.reduced||!run40)drawP();
   },()=>{ curD=null; reset40(); });
+
   intro(el,()=>{ clip.attr("width",0); rev=0; LG.style("opacity",0); ND.attr("height",0); },inst=>{
     if(inst){ clip.attr("width",w); rev=1; LG.style("opacity",1); ND.attr("height",d=>d.h); drawP(); return; }
-    ND.transition().delay(d=>d.col*350).duration(600).ease(EIO).attr("height",d=>d.h);
-    clip.transition().duration(1600).ease(EIO).attr("width",w);
-    d3.transition().duration(1600).ease(EIO).tween("rev",()=>t=>{ rev=t; });
-    LG.transition().delay(1000).duration(700).style("opacity",1);
+    ND.transition().delay(d=>d.col*280).duration(550).ease(EIO).attr("height",d=>d.h);
+    clip.transition().duration(1400).ease(EIO).attr("width",w);
+    d3.transition().duration(1400).ease(EIO).tween("rev",()=>t=>{ rev=t; });
+    LG.transition().delay(850).duration(600).style("opacity",1);
   });
 });
 (function(){ const b=$('[data-play="40"]'); if(!b)return; if(V.reduced){ b.style.display="none"; return; }
-  b.addEventListener("click",()=>{ run40=!run40; b.textContent=run40?"Atura les partícules":"Torna a moure les partícules"; b.setAttribute("aria-pressed",!run40); }); void M40; })();
+  b.addEventListener("click",()=>{ run40=!run40; b.textContent=run40?"Atura els fils":"Torna a moure els fils"; b.setAttribute("aria-pressed",!run40); }); void M40; })();
 
 /* =====================================================================
    IB-41 · BOMBOLLES NIADES  (dades reals: IHME GBD, morts per causa)
