@@ -1,10 +1,10 @@
 /* «Qui era realment Jesús?»: estils propis de l'article (la base és assets/article.css) */
 .page{overflow-x:clip}
 .step b{font-weight:600}
-.col h3{font-family:var(--serif);font-weight:400;font-size:23px;line-height:1.25;margin:44px 0 12px;letter-spacing:-.045em}
+.col h3{font-family:var(--serif-display);font-weight:400;font-size:23px;line-height:1.25;margin:44px 0 12px;letter-spacing:-.045em}
 
 .vh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px 28px;flex-wrap:wrap;margin:0 0 12px;font-family:var(--sans)}
-.vh strong{display:block;font-family:var(--serif);font-weight:400;font-size:22px;line-height:1.2;letter-spacing:-.048em}
+.vh strong{display:block;font-family:var(--serif-display);font-weight:400;font-size:22px;line-height:1.2;letter-spacing:-.048em}
 .vh span{display:block;font-size:13.5px;color:var(--ink-2);margin-top:3px;font-variant-numeric:tabular-nums;max-width:660px}
 .vh .lgs{display:flex;gap:6px 18px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--ink-2)}
 
@@ -63,7 +63,7 @@
 .tr-card{border-top:1.5px solid var(--hair);padding-top:10px;transition:opacity .16s;cursor:pointer}
 .tr-grid.dimmed .tr-card:not(.is-hi){opacity:.48}
 .tr-card.is-hi{border-top-color:var(--ink)}
-.tr-h{font-family:var(--serif);font-size:18px;font-weight:400;margin:0 0 8px;color:var(--ink)}
+.tr-h{font-family:var(--serif-display);font-size:18px;font-weight:400;margin:0 0 8px;color:var(--ink)}
 .tr-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;font-size:13.5px;line-height:1.45}
 .tr-pair .tl{display:block;font-size:11.5px;font-weight:700;margin-bottom:3px}
 .tr-pair .tl.w{color:var(--cold)}

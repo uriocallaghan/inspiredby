@@ -2,7 +2,7 @@
 .page{overflow-x:clip}
 .step b{font-weight:600}
 .vh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px 28px;flex-wrap:wrap;margin:0 0 12px;font-family:var(--sans)}
-.vh strong{display:block;font-family:var(--serif);font-weight:400;font-size:22px;line-height:1.2;letter-spacing:-.048em}
+.vh strong{display:block;font-family:var(--serif-display);font-weight:400;font-size:22px;line-height:1.2;letter-spacing:-.048em}
 .vh span{display:block;font-size:13.5px;color:var(--ink-2);margin-top:3px;font-variant-numeric:tabular-nums;max-width:640px}
 .vh .lgs{display:flex;gap:6px 18px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--ink-2)}
 .ibv-lg{font-family:var(--sans);font-size:12px;line-height:1.3;color:var(--ink-2)}
@@ -75,7 +75,7 @@ ol.fts li{scroll-margin-top:30vh;transition:background-color .4s;padding:2px 4px
 .ev-au-art{display:flex;justify-content:center;align-items:center;height:210px;margin:4px 0 10px;overflow:hidden}
 .ev-au-art img{height:248px;width:auto;max-width:none;display:block;mix-blend-mode:multiply}
 .ev-au-h{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:0 0 8px}
-.ev-au-h h3{font-family:var(--serif);font-weight:400;font-size:23px;line-height:1.15;margin:0;color:var(--ink)}
+.ev-au-h h3{font-family:var(--serif-display);font-weight:400;font-size:23px;line-height:1.15;margin:0;color:var(--ink)}
 .ev-au-role{display:block;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--ink-2);margin-top:2px}
 .ev-au-meta{font-family:var(--sans);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;padding-top:4px}
 .ev-au-bar{display:flex;height:4px;gap:2px;margin:0 0 12px}
@@ -88,7 +88,7 @@ ol.fts li{scroll-margin-top:30vh;transition:background-color .4s;padding:2px 4px
 /* retrats dels 4 evangelis sota les flors */
 .ev-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 36px;max-width:920px;margin:32px auto 0}
 .ev-card{border-top:2px solid var(--hair);padding-top:12px}
-.ev-card h3{font-family:var(--serif);font-weight:400;font-size:20px;line-height:1.2;margin:0 0 6px;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.ev-card h3{font-family:var(--serif-display);font-weight:400;font-size:20px;line-height:1.2;margin:0 0 6px;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .ev-card h3 span{font-family:var(--sans);font-size:12.5px;font-weight:400;color:var(--muted)}
 .ev-card p{font-size:17px;line-height:1.55;margin:0;color:var(--ink-2)}
 

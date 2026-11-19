@@ -11,12 +11,13 @@
   --land:#ECEBE8;
   --warm:#C8442A;
   --cold:#2C5DA8;
-  --serif:"STIXGeneral", "STIX Two Text", Georgia, "Times New Roman", serif;
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --serif-display:"STIXGeneral", "STIX Two Text", Georgia, "Times New Roman", serif;
   --sans:"Source Sans 3", "Helvetica Neue", Arial, sans-serif;
 }
 *{box-sizing:border-box}
 html,body{background:var(--paper)}
-body{margin:0;color:var(--ink);font-family:var(--serif);font-size:20px;line-height:1.54;letter-spacing:-.032em;font-kerning:normal;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{margin:0;color:var(--ink);font-family:var(--serif);font-size:19px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 a{color:inherit;text-decoration-thickness:1px;text-underline-offset:3px}
 button,input{font:inherit;color:inherit}
 :focus-visible{outline:1.5px solid var(--ink);outline-offset:3px}
@@ -27,15 +28,15 @@ button,input{font:inherit;color:inherit}
 
 /* opening */
 .open{padding-block:120px 72px}
-.kicker{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--warm);letter-spacing:0;margin:0 0 18px}
-h1{font-family:var(--serif);font-weight:400;font-size:clamp(50px,6.8vw,78px);line-height:.94;letter-spacing:-.068em;margin:0 0 22px;text-wrap:balance}
-.dek{font-weight:400;font-size:23.5px;line-height:1.34;letter-spacing:-.04em;color:var(--ink-2);margin:0 0 30px;text-wrap:pretty}
-.meta{font-family:var(--sans);font-size:13.5px;letter-spacing:0;color:var(--muted);margin:0;padding-top:16px;border-top:1px solid var(--hair)}
+.kicker{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--warm);margin:0 0 18px}
+h1{font-family:var(--serif-display);font-weight:400;font-size:clamp(50px,6.8vw,78px);line-height:.94;letter-spacing:-.068em;font-kerning:normal;margin:0 0 22px;text-wrap:balance}
+.dek{font-size:23px;line-height:1.42;color:var(--ink-2);margin:0 0 30px;text-wrap:pretty}
+.meta{font-family:var(--sans);font-size:13.5px;color:var(--muted);margin:0;padding-top:16px;border-top:1px solid var(--hair)}
 .intro{padding-bottom:40px}
-.intro .dl::first-letter{font-size:3.65em;line-height:.78;float:left;margin:.06em .08em 0 0;font-weight:400;letter-spacing:0}
+.intro .dl::first-letter{font-family:var(--serif-display);font-size:3.65em;line-height:.78;float:left;margin:.06em .08em 0 0;font-weight:400}
 
 /* section heads + figures */
-.sh{font-family:var(--serif);font-weight:400;font-size:38px;line-height:1.04;letter-spacing:-.055em;margin:96px 0 16px;text-wrap:balance;scroll-margin-top:28px}
+.sh{font-family:var(--serif-display);font-weight:400;font-size:38px;line-height:1.04;letter-spacing:-.055em;font-kerning:normal;margin:96px 0 16px;text-wrap:balance;scroll-margin-top:28px}
 .fig{max-width:920px;margin:36px auto 24px}
 .fig.wide{max-width:1120px}
 .fig canvas,.fig svg{display:block;width:100%}
@@ -66,7 +67,7 @@ h1{font-family:var(--serif);font-weight:400;font-size:clamp(50px,6.8vw,78px);lin
 .graphic canvas,.graphic svg{display:block;width:100%}
 
 /* closing */
-.close h2{font-family:var(--serif);font-weight:400;font-size:36px;line-height:1.06;margin:56px 0 14px;letter-spacing:-.052em}
+.close h2{font-family:var(--serif-display);font-weight:400;font-size:36px;line-height:1.06;margin:56px 0 14px;letter-spacing:-.052em;font-kerning:normal}
 .fn{font-family:var(--sans);font-size:13.5px;letter-spacing:0;line-height:1.55;color:var(--muted);border-top:1px solid var(--hair);margin-top:56px;padding:18px 0 110px}
 .fn p{margin:0 0 .8em}
 .fn ol{margin:0;padding-left:1.2em}
@@ -102,7 +103,7 @@ h1{font-family:var(--serif);font-weight:400;font-size:clamp(50px,6.8vw,78px);lin
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--sans);font-size:12.5px;letter-spacing:0;color:var(--ink-2);margin-top:8px}
 .legend i{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:-1px;border-radius:50%}
 .gh{font-family:var(--sans);letter-spacing:0;display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:8px}
-.gh strong{font-family:var(--serif);font-weight:400;font-size:25px;letter-spacing:-.048em}
+.gh strong{font-family:var(--serif-display);font-weight:400;font-size:25px;letter-spacing:-.048em;font-kerning:normal}
 .gh span{font-size:13.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .ann{position:absolute;font-family:var(--sans);font-size:12.5px;letter-spacing:0;line-height:1.3;color:var(--ink);max-width:170px;text-shadow:0 0 3px var(--paper),0 0 3px var(--paper),0 0 2px var(--paper);pointer-events:none}
 .ann b{font-weight:700;display:block}
