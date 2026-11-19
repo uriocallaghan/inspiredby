@@ -6,7 +6,7 @@
 var T=13.787e9, YEAR=365*86400, SPY=T/YEAR;
 var sec=function(ya){return ya/SPY};
 var C={cos:"#2C5DA8",life:"#3F7F2A",hum:"#C8442A",ink:"#121212",ink2:"#4A4A4A",muted:"#7A7A7A",hair:"#DADADA",soft:"#F2F1EE"};
-var SANS="'Source Sans 3', sans-serif",SERIF="'Source Serif 4', Georgia, serif";
+var SANS="'Source Sans 3', sans-serif",SERIF="'STIXGeneral', 'STIX Two Text', Georgia, serif";
 var MESL=["Gener","Febrer","Març","Abril","Maig","Juny","Juliol","Agost","Setembre","Octubre","Novembre","Desembre"];
 var MD=[31,28,31,30,31,30,31,31,30,31,30,31],M0=[0];for(var i=1;i<12;i++)M0[i]=M0[i-1]+MD[i-1];
 

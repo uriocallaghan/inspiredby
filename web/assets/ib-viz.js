@@ -40,7 +40,7 @@
 
   /* ---------- 2. Tipografia i números ---------- */
   const SANS='"Source Sans 3","Helvetica Neue",Arial,sans-serif';
-  const SERIF='"Source Serif 4",Georgia,serif';
+  const SERIF='"STIXGeneral","STIX Two Text",Georgia,serif';
   const FS={label:12.5, small:11.5, min:11, title:22};   // px reals a la pantalla; mai per sota d'11
   const loc=d3.formatLocale({decimal:",",thousands:".",grouping:[3],currency:[""," €"],minus:"−"});
   const fmt=spec=>loc.format(spec);
@@ -86,7 +86,7 @@
     const n=g.append("text").attr("x",x).attr("y",y).text(str)
       .attr("font-size",o.size||FS.label).attr("font-weight",o.weight||400)
       .attr("text-anchor",o.anchor||"start").attr("fill",o.fill||C.ink)
-      .attr("font-family",o.serif?SERIF:SANS).style("font-variant-numeric","tabular-nums");
+      .attr("font-family",o.serif?SERIF:SANS).attr("letter-spacing",o.serif?"-0.028em":null).style("font-variant-numeric","tabular-nums");
     if(o.italic)n.attr("font-style","italic");
     if(o.base)n.attr("dominant-baseline",o.base);
     if(o.halo!==false&&o.halo!==undefined)halo(n,o.halo===true?3:o.halo);

@@ -5,7 +5,7 @@
 const D=window.CO2DATA, CC=3.664;
 const RM=window.IB&&IB.reduced;
 const COL={ink:"#121212",ink2:"#4A4A4A",muted:"#7A7A7A",hair:"#DADADA",land:"#ECEBE8",soil:"#E3DED5",warm:"#C8442A",cold:"#2C5DA8",dry:"#9A6326",bio:"#4C8A2E",sea:"#E4ECF6",sea2:"#CFDCEE",sea3:"#B5C8E2",paper:"#FFFFFF"};
-const SSF='"Source Sans 3", "Helvetica Neue", Arial, sans-serif', SERIF='"Source Serif 4", Georgia, serif';
+const SSF='"Source Sans 3", "Helvetica Neue", Arial, sans-serif', SERIF='"STIXGeneral", "STIX Two Text", Georgia, serif';
 const clamp=(v,a,b)=>v<a?a:v>b?b:v, lerp=(a,b,t)=>a+(b-a)*t, ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
 const mob=()=>innerWidth<900;
 const nf=(v,d=1)=>IB.fmt(v,d);

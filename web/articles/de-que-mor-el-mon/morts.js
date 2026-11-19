@@ -3,7 +3,7 @@
    natalitat-mortalitat.csv (ONU WPP 2024). Validació: research/validacio-de-que-mor-el-mon.md */
 (function(){
 "use strict";
-var SANS="'Source Sans 3', sans-serif",SERIF="'Source Serif 4', Georgia, serif";
+var SANS="'Source Sans 3', sans-serif",SERIF="'STIXGeneral', 'STIX Two Text', Georgia, serif";
 var K={ink:"#121212",ink2:"#4A4A4A",muted:"#7A7A7A",hair:"#DADADA",soft:"#E9E7E2",ncd:"#2C5DA8",inf:"#B07A1F",inj:"#C8442A",oth:"#9A9A96",
   /* colors de l'article original (2020) */ grey:"#B9B9B9",blue:"#50A0C1",red:"#EC370A",black:"#040404"};
 var CAT={ncd:"Malalties no transmissibles",inf:"Infeccions, morts maternes i de nadons",inj:"Lesions i violència",oth:"Altres causes"};

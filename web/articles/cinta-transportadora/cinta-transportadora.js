@@ -324,7 +324,7 @@ const SEC=(function(){
     ctx.font=`${mob()?10:11}px "Source Sans 3", Arial, sans-serif`;ctx.fillStyle=C.muted;ctx.textAlign="right";
     [0,200,500,1000,2000,3000,4000,5000].forEach(d=>{if(mob()&&(d===200||d===3000))return;const y=ys(d);ctx.fillText(d===0?"0 m":IB.fmt(d),M.l-5,y+(d===0?8:4));ctx.fillRect(M.l-3,y,3,.7)});
     ctx.textAlign="center";[[-60,"60° S"],[-30,"30° S"],[0,"Equador"],[30,"30° N"],[60,"60° N"]].forEach(([la,s])=>{const x=xs(la);ctx.fillText(s,x,H-6);ctx.fillRect(x,H-M.b,.7,3)});
-    {const xa=xs(37.5);ctx.save();ctx.font=`italic 10.5px "Source Serif 4", Georgia, serif`;ctx.textAlign="left";ctx.lineJoin="round";ctx.strokeStyle="rgba(255,255,255,.85)";ctx.lineWidth=3;ctx.strokeText("Açores",xa+4,M.t+12);ctx.fillStyle=C.ink;ctx.fillText("Açores",xa+4,M.t+12);ctx.restore()}
+    {const xa=xs(37.5);ctx.save();ctx.font=`italic 10.5px "STIXGeneral", "STIX Two Text", Georgia, serif`;ctx.textAlign="left";ctx.lineJoin="round";ctx.strokeStyle="rgba(255,255,255,.85)";ctx.lineWidth=3;ctx.strokeText("Açores",xa+4,M.t+12);ctx.fillStyle=C.ink;ctx.fillText("Açores",xa+4,M.t+12);ctx.restore()}
     ctx.textAlign="left";ctx.fillStyle=C.ink2;if(!mob()){ctx.fillText("← Antàrtida",M.l+2,H-M.b-6)}ctx.textAlign="right";if(!mob())ctx.fillText("Islàndia →",W-M.r-2,H-M.b-6);
     if(arrows>.02){ctx.save();ctx.globalAlpha=arrows;ctx.lineCap="round";ctx.lineJoin="round";for(const A of ARR){ctx.strokeStyle="rgba(255,255,255,.85)";ctx.lineWidth=A.w+3;ctx.setLineDash([]);arrowPath(A.p);ctx.strokeStyle=A.c;ctx.lineWidth=A.w;ctx.setLineDash([9,7]);ctx.lineDashOffset=-(RM?0:t*22);arrowPath(A.p);ctx.setLineDash([]);head(A.p)}ctx.restore()}
     anns.forEach(place);

@@ -10,7 +10,7 @@
 var RM=!!(window.IB&&IB.reduced);
 var C={ink:"#121212",ink2:"#4A4A4A",muted:"#7A7A7A",hair:"#DADADA",land:"#ECEBE8",landG:"#DCE5CF",sea:"#D9E4F0",border:"#FFFFFF",
   dust:"#B07434",dustRGB:"176,116,52",dry:"#9A6326",warm:"#C8442A",cold:"#2C5DA8",bio:"#4C8A2E",lake:"#9DBBDD",water:"#7C8C9C",diat:"#F6F3EA"};
-var SANS='"Source Sans 3", "Helvetica Neue", Arial, sans-serif',SERIF='"Source Serif 4", Georgia, serif';
+var SANS='"Source Sans 3", "Helvetica Neue", Arial, sans-serif',SERIF='"STIXGeneral", "STIX Two Text", Georgia, serif';
 var DEG=Math.PI/180;
 function clamp(v,a,b){return v<a?a:v>b?b:v}
 function lerp(a,b,t){return a+(b-a)*t}
