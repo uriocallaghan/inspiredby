@@ -36,7 +36,8 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
   const col=k=>k==="Cas"?C.vermell:k==="RM"?C.blau:DORON.has(k)?C.groc:C.ink2;
   const strokeCol=k=>k==="Cas"?C.vermell:k==="RM"?C.blau:DORON.has(k)?C.grocFosc:C.ink2;
 
-  let view=0, redrawDef=null;
+  let view=0, redrawDef=null, clearDef=null;
+  document.addEventListener("pointerdown",ev=>{ if(ev.pointerType!=="mouse"&&!vizEl.contains(ev.target)&&clearDef)clearDef(); });
   function renderLegend(){
     if(!lgEl)return;
     lgEl.innerHTML="";
@@ -58,7 +59,7 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
   renderLegend();
 
   V.mount(vizEl,(el,W)=>{
-    const mob=W<580;
+    const mob=W<600;
     const tp=V.tip(el);
 
     function drawView(animate){
@@ -67,42 +68,48 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
       if(view===0){
         title.textContent="Quins sistemes de defensa porten bacteris i arqueus";
         sub.textContent="Percentatge de genomes amb cada família (les 25 més freqüents de 60) · Cercles d'àrea proporcional";
-        const ml=mob?108:164, mr=mob?42:56, mt=24, mb=28, rh=mob?20:22;
+        const ml=mob?8:164, mr=mob?10:56, mt=mob?26:24, mb=28, rh=mob?38:22;
         const H=mt+DEF.length*rh+mb;
         const s=V.svg(el,W,H,"Percentatge de 21.738 genomes de bacteris i arqueus que porten cada família antiviral: restricció-modificació al 83 %, CRISPR-Cas al 39,2 %, Gabija al 15,3 %, i la resta per sota del 15 %.");
         const X=d3.scaleLinear([0,100],[ml,W-mr]);
-        const rSc=d3.scaleSqrt([0,100],[3.2,mob?10.5:12.5]);
+        const rSc=d3.scaleSqrt([0,100],[3.2,mob?9.5:12.5]);
         const g=s.append("g");
 
         /* Eix X recessiu amb quadrícula fina vertical */
         [0,25,50,75,100].forEach(v=>{
           g.append("line").attr("x1",X(v)).attr("x2",X(v)).attr("y1",mt-4).attr("y2",H-mb)
             .attr("stroke",v===0?C.ink:C.grid).attr("stroke-width",v===0?.9:.65);
-          V.t(g,X(v),mt-10,v+(v===100?" %":""),{size:11,fill:C.muted,anchor:"middle"});
+          V.t(g,X(v),mt-10,v+(v===100?" %":""),{size:11,fill:C.muted,anchor:mob&&v===0?"start":mob&&v===100?"end":"middle"});
         });
 
+        const barY=mob?26:0;
         const rows=g.selectAll("g.row").data(DEF).join("g").attr("class","row")
-          .attr("transform",(d,i)=>`translate(0,${mt+i*rh+rh/2})`).style("cursor","pointer");
+          .attr("transform",(d,i)=>`translate(0,${mob?mt+i*rh:mt+i*rh+rh/2})`).style("cursor","pointer");
 
-        rows.append("rect").attr("x",0).attr("y",-rh/2).attr("width",W).attr("height",rh).attr("fill","transparent");
-        rows.append("line").attr("class","guide").attr("x1",X(0)).attr("x2",X(100)).attr("y1",0).attr("y2",0)
+        rows.append("rect").attr("x",0).attr("y",mob?0:-rh/2).attr("width",W).attr("height",rh).attr("fill","transparent");
+        rows.append("line").attr("class","guide").attr("x1",X(0)).attr("x2",X(100)).attr("y1",barY).attr("y2",barY)
           .attr("stroke",C.grid).attr("stroke-width",.5).attr("stroke-opacity",.6);
 
-        const stems=rows.append("line").attr("class","stem").attr("x1",X(0)).attr("x2",d=>animate?X(0):X(d[1])).attr("y1",0).attr("y2",0)
+        const stems=rows.append("line").attr("class","stem").attr("x1",X(0)).attr("x2",d=>animate?X(0):X(d[1])).attr("y1",barY).attr("y2",barY)
           .attr("stroke",d=>strokeCol(d[0])).attr("stroke-width",d=>d[0]==="Cas"||d[0]==="RM"?1.4:.9).attr("stroke-opacity",.75);
 
-        const halos=rows.append("circle").attr("class","halo").attr("cx",d=>animate?X(0):X(d[1])).attr("cy",0)
+        const halos=rows.append("circle").attr("class","halo").attr("cx",d=>animate?X(0):X(d[1])).attr("cy",barY)
           .attr("r",d=>animate?0:rSc(d[1])).attr("fill",d=>col(d[0]))
           .attr("fill-opacity",d=>DORON.has(d[0])?.44:d[0]==="Cas"||d[0]==="RM"?.32:.2)
           .style("mix-blend-mode","multiply");
 
-        const cores=rows.append("circle").attr("class","core").attr("cx",d=>animate?X(0):X(d[1])).attr("cy",0)
+        const cores=rows.append("circle").attr("class","core").attr("cx",d=>animate?X(0):X(d[1])).attr("cy",barY)
           .attr("r",d=>d[0]==="Cas"||d[0]==="RM"?3:2.2).attr("fill",d=>strokeCol(d[0]));
 
         rows.each(function(d){
           const q=d3.select(this), key=d[0], isKey=key==="Cas"||key==="RM";
-          V.t(q,ml-10,4,NAME[key]||key,{size:mob?11.5:12.5,weight:isKey?700:400,fill:key==="Cas"?C.vermell:key==="RM"?C.blau:C.ink,anchor:"end"});
-          V.t(q,X(d[1])+rSc(d[1])+6,4,`${fmtN(d[1],d[1]<10?1:0)} %`,{size:11.5,weight:isKey?700:400,fill:C.ink2,anchor:"start"}).attr("class","val").style("opacity",animate?0:1);
+          if(mob){
+            V.t(q,ml,13,NAME[key]||key,{size:12,weight:isKey?700:500,fill:key==="Cas"?C.vermell:key==="RM"?C.blau:C.ink,anchor:"start"});
+            V.t(q,W-mr,13,`${fmtN(d[1],d[1]<10?1:0)} %`,{size:11.5,weight:isKey?700:500,fill:C.ink2,anchor:"end"}).attr("class","val").style("opacity",animate?0:1);
+          } else {
+            V.t(q,ml-10,4,NAME[key]||key,{size:12.5,weight:isKey?700:400,fill:key==="Cas"?C.vermell:key==="RM"?C.blau:C.ink,anchor:"end"});
+            V.t(q,X(d[1])+rSc(d[1])+6,4,`${fmtN(d[1],d[1]<10?1:0)} %`,{size:11.5,weight:isKey?700:400,fill:C.ink2,anchor:"start"}).attr("class","val").style("opacity",animate?0:1);
+          }
         });
 
         /* Anotació editorial sobre CRISPR-Cas */
@@ -127,18 +134,18 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
           halos.attr("stroke",null).attr("stroke-width",null);
           tp.hide();
         };
-        rows.on("pointerenter",(ev,d)=>{
+        clearDef=clear;
+        rows.on("pointerenter pointerdown",(ev,d)=>{
           V.focus(rows,x=>x[0]===d[0],{dim:.48});
           halos.attr("stroke",x=>x[0]===d[0]?C.ink:null).attr("stroke-width",x=>x[0]===d[0]?1.4:null);
           const extra=DESC[d[0]]||(DORON.has(d[0])?"Descrit el 2018 (Doron et al.)":"");
           tp.show(`<b>${NAME[d[0]]||d[0]}</b> · ${f1(d[1])} % (${f0(Math.round(d[1]/100*N))} genomes)${extra?"<br>"+extra:""}`);
         }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")clear(); });
-        document.addEventListener("pointerdown",ev=>{ if(ev.pointerType!=="mouse"&&!el.contains(ev.target))clear(); });
 
       } else {
         title.textContent="Quants sistemes de defensa té cada genoma";
         sub.textContent="Distribució dels 21.738 genomes segons el nombre de sistemes antivirals (mitjana: 5,2; màxim: 57)";
-        const H=mob?290:330, ml=mob?42:54, mr=mob?14:24, mt=mob?46:34, mb=44;
+        const H=mob?300:330, ml=mob?42:54, mr=mob?14:24, mt=mob?58:34, mb=44;
         const agg=HIST.filter(d=>d[0]<30).map(d=>[d[0],d[1]]);
         const rest=HIST.filter(d=>d[0]>=30).reduce((a,d)=>a+d[1],0);
         const data=agg.concat([[30,rest]]);
@@ -171,10 +178,10 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
         items.append("rect").attr("x",d=>X(d[0])-(W-ml-mr)/62).attr("y",mt).attr("width",(W-ml-mr)/31).attr("height",H-mt-mb).attr("fill","transparent");
 
         const gNote=s.append("g").style("pointer-events","none");
-        V.note(gNote,{x:X(0),y:Y(1450)-8,tx:X(0)+(mob?8:14),ty:mt+(mob?-10:4),kind:"elbow",anchor:"start",
+        V.note(gNote,{x:X(0),y:Y(1450)-8,tx:X(0)+(mob?6:14),ty:mob?16:mt+4,kind:"elbow",anchor:"start",
           lines:[["1.450 genomes",true,C.vermell],["sense cap sistema"]]});
-        V.note(gNote,{x:xMean,y:Y(2712),tx:X(mob?11:10),ty:Y(2712)-(mob?6:0),kind:"straight",anchor:"start",
-          lines:[["Mitjana: 5,2",true,C.blau],["sistemes per genoma"]]});
+        V.note(gNote,{x:xMean,y:Y(mob?2250:2712),tx:X(mob?14:10),ty:Y(mob?2250:2712),kind:"straight",anchor:"start",
+          lines:[["Mitjana: 5,2",true,C.blau],[mob?"per genoma":"sistemes per genoma"]]});
         V.note(gNote,{x:X(30),y:Y(rest)-6,tx:X(30)-4,ty:Y(rest)-(mob?34:46),kind:"elbow",anchor:"end",
           lines:[[mob?"Màxim: 57":"Màxim: 57 sistemes",true],[mob?"":"(Desulfonema limicola)"]]});
 
@@ -186,12 +193,12 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
         }
 
         const clear=()=>{ V.focus(items,null); halos.attr("stroke",null); tp.hide(); };
-        items.on("pointerenter",(ev,d)=>{
+        clearDef=clear;
+        items.on("pointerenter pointerdown",(ev,d)=>{
           V.focus(items,x=>x[0]===d[0],{dim:.48});
           halos.attr("stroke",x=>x[0]===d[0]?C.ink:null).attr("stroke-width",x=>x[0]===d[0]?1.4:null);
           tp.show(`<b>${d[0]===30?"30 o més":d[0]} ${d[0]===1?"sistema":"sistemes"}</b> · ${f0(d[1])} genomes (${f1(d[1]/N*100)} %)`);
         }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")clear(); });
-        document.addEventListener("pointerdown",ev=>{ if(ev.pointerType!=="mouse"&&!el.contains(ev.target))clear(); });
       }
     }
 
@@ -241,7 +248,7 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
 
   V.mount(vizEl,(el,W)=>{
     const mob=innerWidth<900;
-    const H=mob?Math.round(clamp(Math.min(innerHeight*.38,W*.78),210,330)):Math.round(clamp(Math.min(innerHeight-240,W*.68),300,520));
+    const H=mob?Math.round(Math.max(205,Math.min(window.innerHeight*.29,245))):Math.round(clamp(Math.min(innerHeight-240,W*.68),300,520));
     const {c:cv,ctx:c}=V.canvas(el,W,H,"Esquema del sistema immunitari CRISPR: l'arxiu d'espaiadors al cromosoma, la captura d'un fragment de virus per Cas1-Cas2, l'herència a les cèl·lules filles, les guies d'ARN a Cas9 i l'edició d'ADN humà.");
     const tp=V.tip(el);
     V.hover(cv,()=>{ tp.show(TIPS[st]); },()=>tp.hide());
@@ -329,8 +336,24 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
     }
     const LBL=(px,py,lines,tx,ty,al,a)=>{
       if(a<=0)return;
-      lead(c,X(px),Y(py),X(tx),Y(ty),C.ink,a);
-      txt(c,lines,X(tx)+(al==="right"?-4:al==="center"?0:4),Y(ty)+(ty<py?-4-(lines.length-1)*fs*1.28:fs),al,fs,a);
+      let lx=X(tx), ly=Y(ty), alg=al||"left", tw=0;
+      lines.forEach(l=>{ if(!l||!l[0])return; c.font=`${l[1]?"700 ":""}${fs}px ${SSF}`; tw=Math.max(tw,c.measureText(l[0]).width); });
+      if(alg==="left"&&lx+4+tw>W-8){
+        if(lx-4-tw>=8){ alg="right"; }
+        else { lx=Math.max(8,W-8-tw-4); }
+      } else if(alg==="right"&&lx-4-tw<8){
+        if(lx+4+tw<=W-8){ alg="left"; }
+        else { lx=Math.min(W-8,8+tw+4); }
+      } else if(alg==="center"){
+        lx=clamp(lx,8+tw/2,W-8-tw/2);
+      }
+      const yOff=ty<py?-4-(lines.length-1)*fs*1.28:fs;
+      const top=ly+yOff-fs, bot=ly+yOff+(lines.length-1)*fs*1.28+3;
+      let sh=0;
+      if(top<4) sh=4-top;
+      else if(bot>H-4) sh=H-4-bot;
+      lead(c,X(px),Y(py),lx,ly+sh,C.ink,a);
+      txt(c,lines,lx+(alg==="right"?-4:alg==="center"?0:4),ly+yOff+sh,alg,fs,a);
     };
 
     function draw(){
@@ -408,7 +431,13 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
         [lerp(438,210,d),lerp(438,418,d)].forEach(yc=>{ chromLine(60,740,yc,k); casGenes(90,yc,k); arrayAt(90+160*k,yc,k,spc); });
         if(d>=1){
           const ex=90+160*k+(30+5*64+14)*k, a=la(2.2);
-          if(a>0){ lead(c,X(ex+4),Y(216),X(ex+40),Y(250),C.ink,a); lead(c,X(ex+4),Y(412),X(ex+40),Y(284),C.ink,a); txt(c,[["Les dues filles",true],["recorden el virus",false,C.ink2]],X(ex+46),Y(258),"left",fs,a); }
+          if(a>0){
+            const l3=[["Les dues filles",true],["recorden el virus",false,C.ink2]];
+            let tw3=0; l3.forEach(l=>{ c.font=`${l[1]?"700 ":""}${fs}px ${SSF}`; tw3=Math.max(tw3,c.measureText(l[0]).width); });
+            const tx3=Math.min(X(ex+46),W-8-tw3), lx3=Math.min(X(ex+40),tx3-6);
+            lead(c,X(ex+4),Y(216),lx3,Y(250),C.ink,a); lead(c,X(ex+4),Y(412),lx3,Y(284),C.ink,a);
+            txt(c,l3,tx3,Y(258),"left",fs,a);
+          }
         }
       }
       if(st===7){
@@ -676,7 +705,8 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
     [2023,"El primer medicament","El 15 de novembre, el Regne Unit autoritza el Casgevy, el primer medicament basat en CRISPR, per a l'anèmia falciforme i la beta-talassèmia que depèn de transfusions.","MHRA"]
   ];
 
-  let sel=4, renderSel=null;
+  let sel=4, renderSel=null, clearTl=null;
+  document.addEventListener("pointerdown",ev=>{ if(ev.pointerType!=="mouse"&&!vizEl.contains(ev.target)&&clearTl)clearTl(); });
   function updCard(){
     const e=EV[sel];
     card.innerHTML=`<h3><span class="y">${e[0]}</span>${e[1]}</h3><p>${e[2]}</p><p class="tsrc">${e[3]}</p>`;
@@ -684,7 +714,58 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
   }
 
   V.mount(vizEl,(el,W)=>{
-    const mob=W<560, H=mob?108:118, ml=18, mr=18, y0=mob?60:66;
+    const vert=W<600;
+    const tp=V.tip(el);
+
+    if(vert){
+      // TRANSPOSICIÓ VERTICAL a mòbil (< 600 px): anys a l'esquerra, fites i títols curts a la dreta
+      const rowH=40, mt=10, mb=10, axX=54;
+      const H=mt+EV.length*rowH+mb;
+      const s=V.svg(el,W,H,"Línia del temps vertical del CRISPR del 1987 al 2023: toca qualsevol any per llegir-ne el detall a la fitxa inferior.");
+      s.attr("tabindex",0);
+      const g=s.append("g");
+      g.append("line").attr("x1",axX).attr("x2",axX).attr("y1",mt+rowH/2).attr("y2",H-mb-rowH/2).attr("stroke",C.hair).attr("stroke-width",1.1);
+
+      const pts=g.append("g").selectAll("g.ev").data(EV).join("g").attr("class","ev").style("cursor","pointer");
+      pts.each(function(e,i){
+        const q=d3.select(this), cy=mt+i*rowH+rowH/2, col=e[0]>=2012?C.vermell:C.blau;
+        q.append("rect").attr("x",0).attr("y",cy-rowH/2).attr("width",W).attr("height",rowH).attr("fill","transparent");
+        if(i<EV.length-1) q.append("line").attr("x1",axX+16).attr("x2",W-4).attr("y1",cy+rowH/2).attr("y2",cy+rowH/2).attr("stroke",C.grid).attr("stroke-width",.55);
+        q.append("circle").attr("class","halo").attr("cx",axX).attr("cy",cy).attr("r",8)
+          .attr("fill",col).attr("fill-opacity",.2).style("mix-blend-mode","multiply");
+        q.append("circle").attr("class","core").attr("cx",axX).attr("cy",cy).attr("r",3.4)
+          .attr("fill",col).attr("stroke","#fff").attr("stroke-width",1.2);
+        V.t(q,axX-14,cy+4,String(e[0]),{size:12,weight:700,fill:col,anchor:"end"}).attr("class","tyr");
+        V.t(q,axX+16,cy+4,e[1],{size:12.5,weight:500,fill:C.ink2,anchor:"start"}).attr("class","ttl");
+      });
+
+      renderSel=function(){
+        pts.each(function(d,i){
+          const on=i===sel, q=d3.select(this);
+          q.select(".halo").attr("r",on?12:8).attr("fill-opacity",on?.36:.18);
+          q.select(".core").attr("r",on?4.8:3.4).attr("stroke",on?C.ink:"#fff").attr("stroke-width",on?1.6:1.2);
+          q.select(".ttl").attr("font-weight",on?700:500).attr("fill",on?C.ink:C.ink2);
+        });
+      };
+
+      clearTl=()=>{ V.focus(pts,null); tp.hide(); };
+      pts.on("click",(ev,d)=>{
+        sel=EV.indexOf(d); updCard();
+      });
+      s.on("keydown",e=>{
+        if(e.key==="ArrowDown"||e.key==="ArrowRight"){ sel=Math.min(EV.length-1,sel+1); updCard(); }
+        if(e.key==="ArrowUp"||e.key==="ArrowLeft"){ sel=Math.max(0,sel-1); updCard(); }
+      });
+
+      renderSel();
+      V.onView(el,inst=>{
+        if(inst)return;
+        pts.style("opacity",0).transition().delay((d,i)=>i*25).duration(380).ease(d3.easeCubicOut).style("opacity",1);
+      });
+      return;
+    }
+
+    const H=118, ml=18, mr=18, y0=66;
     const s=V.svg(el,W,H,"Línia del temps del CRISPR del 1987 al 2023: repeticions a E. coli, Mojica a Alacant, el nom CRISPR, l'origen víric dels espaiadors, la prova experimental, Cas9 com a eina, el Nobel del 2020 i el primer medicament el 2023.");
     s.attr("tabindex",0);
     const X=d3.scaleLinear([1985,2025],[ml,W-mr]);
@@ -692,33 +773,33 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
 
     /* Línia base fina i eix temporal IBV */
     g.append("line").attr("x1",X(1985)).attr("x2",X(2025)).attr("y1",y0).attr("y2",y0).attr("stroke",C.hair).attr("stroke-width",1);
-    const ticks=mob?[1985,1995,2005,2015,2025]:d3.range(1985,2026,5);
+    const ticks=d3.range(1985,2026,5);
     V.axisX(g,X,y0,ticks,y=>String(y));
 
     const gSel=g.append("g").style("pointer-events","none");
     const pts=g.append("g").selectAll("g.ev").data(EV).join("g").attr("class","ev").style("cursor","pointer");
     pts.each(function(e,i){
       const q=d3.select(this), x=X(e[0]), col=e[0]>=2012?C.vermell:C.blau;
-      q.append("circle").attr("class","halo").attr("cx",x).attr("cy",y0).attr("r",mob?8:10.5)
+      q.append("circle").attr("class","halo").attr("cx",x).attr("cy",y0).attr("r",10.5)
         .attr("fill",col).attr("fill-opacity",.22).style("mix-blend-mode","multiply");
-      q.append("circle").attr("class","core").attr("cx",x).attr("cy",y0).attr("r",mob?3:3.5)
+      q.append("circle").attr("class","core").attr("cx",x).attr("cy",y0).attr("r",3.5)
         .attr("fill",col).attr("stroke","#fff").attr("stroke-width",1.2);
       q.append("rect").attr("x",x-11).attr("y",y0-28).attr("width",22).attr("height",46).attr("fill","transparent");
     });
 
-    const tp=V.tip(el);
     renderSel=function(){
       const e=EV[sel], x=X(e[0]), col=e[0]>=2012?C.vermell:C.blau;
       gSel.selectAll("*").remove();
       gSel.append("line").attr("x1",x).attr("x2",x).attr("y1",y0-13).attr("y2",y0-32).attr("stroke",C.ink).attr("stroke-width",.9);
-      V.t(gSel,clamp(x,26,W-26),y0-38,String(e[0]),{size:mob?13.5:15,weight:700,fill:col,anchor:"middle",halo:3.5});
+      V.t(gSel,clamp(x,26,W-26),y0-38,String(e[0]),{size:15,weight:700,fill:col,anchor:"middle",halo:3.5});
       pts.each(function(d,i){
         const on=i===sel, q=d3.select(this);
-        q.select(".halo").attr("r",on?(mob?12:15):(mob?8:10.5)).attr("fill-opacity",on?.34:.2);
-        q.select(".core").attr("r",on?4.6:(mob?3:3.5)).attr("stroke",on?C.ink:"#fff").attr("stroke-width",on?1.6:1.2);
+        q.select(".halo").attr("r",on?15:10.5).attr("fill-opacity",on?.34:.2);
+        q.select(".core").attr("r",on?4.6:3.5).attr("stroke",on?C.ink:"#fff").attr("stroke-width",on?1.6:1.2);
       });
     };
 
+    clearTl=()=>{ V.focus(pts,null); tp.hide(); };
     pts.on("pointerenter",(ev,d)=>{
       V.focus(pts,x=>x[0]===d[0],{dim:.48});
       tp.show(`<b>${d[0]} · ${d[1]}</b> · Clica per llegir-ne el detall`);
@@ -732,7 +813,6 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
       if(e.key==="ArrowRight"){ sel=Math.min(EV.length-1,sel+1); updCard(); }
       if(e.key==="ArrowLeft"){ sel=Math.max(0,sel-1); updCard(); }
     });
-    document.addEventListener("pointerdown",ev=>{ if(ev.pointerType!=="mouse"&&!el.contains(ev.target)){ V.focus(pts,null); tp.hide(); } });
 
     renderSel();
     V.onView(el,inst=>{

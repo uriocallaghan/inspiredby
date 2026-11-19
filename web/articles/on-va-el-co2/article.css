@@ -61,20 +61,17 @@
 .fn li{margin:0 0 .45em}
 
 @media (pointer:coarse){
-  .fig .seg button,.graphic .seg button{min-height:42px}
+  .fig .seg button,.graphic .seg button,.playb{min-height:44px;min-width:44px}
 }
 @media (max-width:899px){
   .vh strong{font-size:18.5px}
   .vh span{font-size:12.5px}
   .fig{margin:40px auto 30px}
+  .fig .seg button,.graphic .seg button,.playb{min-height:44px;min-width:44px}
   #scA .plot,#scB .plot{min-height:0}
-  .graphic .src{display:none}
-  .graphic .vh{margin-bottom:6px}
-  .graphic .vh .lgs{display:none}
+  .graphic .vh{margin-bottom:4px}
+  .graphic .vh span,.graphic .vh .lgs,.graphic .src{display:none}
   .yearlay{grid-template-columns:minmax(0,1fr);gap:14px}
   .yearpanel{min-height:0}
   .yp-row{grid-template-columns:96px minmax(0,1fr) 86px}
-}
-@media (max-width:899px) and (max-height:760px){
-  .graphic .vh span{display:none}
 }

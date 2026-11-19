@@ -36,7 +36,10 @@ const $=s=>document.querySelector(s);
     }
   };
   const dots=d3.range(100).map(i=>({i}));
-  let updateView=null;
+  let updateView=null, clearFocus=null;
+  document.addEventListener("pointerdown", ev=>{
+    if(clearFocus && !el.contains(ev.target)) clearFocus();
+  });
 
   function renderLegend(v){
     lg.innerHTML="";
@@ -119,15 +122,18 @@ const $=s=>document.querySelector(s);
       });
     }
 
+    clearFocus=()=>{
+      V.focus(circles,null);
+      circles.attr("stroke",null);
+      tp.hide();
+    };
     circles.on("pointerenter pointerdown",(ev,d)=>{
       V.focus(circles, x=>x.gi===d.gi, {dim:.48});
       circles.attr("stroke",x=>x.i===d.i?C.ink:null).attr("stroke-width",x=>x.i===d.i?1.5:0);
       tp.show(`<b>${d.g.t}</b><br>${d.g.s}`);
     }).on("pointerleave",ev=>{
       if(ev.pointerType!=="mouse")return;
-      V.focus(circles,null);
-      circles.attr("stroke",null);
-      tp.hide();
+      clearFocus();
     });
 
     updateView=(m,inst)=>{ mode=m; layout(m,inst); };
@@ -163,20 +169,25 @@ const $=s=>document.querySelector(s);
     {c:C.groc,    t:"Vocalitzacions de joc en altres mamífers"}
   ]);
 
-  let redrawStep=null;
+  let redrawStep=null, clearFocus=null;
+  document.addEventListener("pointerdown", ev=>{
+    if(clearFocus && !el.contains(ev.target)) clearFocus();
+  });
+
   V.mount(el,(box,w)=>{
     if(loopCtrl){ loopCtrl.stop(); loopCtrl=null; }
-    const mob=w<640, h=mob?340:440;
+    const mob=w<600;
+    const h=mob?Math.round(Math.max(210,Math.min(window.innerHeight*0.30,250))):440;
     const s=V.svg(box,w,h,"Arbre filogenètic acústic de la rialla en orangutans, goril·les, bonobos, ximpanzés i humans (10 a 16 milions d'anys) i esquema del flux respiratori comparat.");
     const gTree=s.append("g"), gWave=s.append("g");
     const tp=V.tip(box);
 
-    const topH=mob?186:248;
-    const ml=mob?20:36, mr=mob?108:150;
+    const topH=mob?Math.round(h*0.57):248;
+    const ml=mob?16:36, mr=mob?102:150;
     const xMa=d3.scaleLinear([16,0],[ml,w-mr]);
     const species=D.hominids;
-    const ySp=d3.scalePoint(species.map(d=>d.id),[34, topH-16]);
-    const rEgr=d3.scaleSqrt([0,14],[0, mob?17:22]);
+    const ySp=d3.scalePoint(species.map(d=>d.id),[mob?18:34, topH-(mob?14:16)]);
+    const rEgr=d3.scaleSqrt([0,14],[0, mob?12:22]);
 
     // Eix temporal (milions d'anys)
     V.axisX(gTree, xMa, topH-2, mob?[16,10,6,0]:[16,14,10,6,2,0], d=>d===0?"Avui":`−${d} Ma`, {tick:true});
@@ -202,38 +213,45 @@ const $=s=>document.querySelector(s);
       .attr("fill","none").attr("stroke",b=>b.id==="hum"?C.vermell:C.blau).attr("stroke-width",b=>b.id==="hum"?2.2:1.4);
 
     // Node arrel (65 espècies / avantpassat 10-16 Ma)
-    const rootDot=gTree.append("circle").attr("cx",xMa(15.2)).attr("cy",yRoot).attr("r",mob?14:18)
+    const rootDot=gTree.append("circle").attr("cx",xMa(15.2)).attr("cy",yRoot).attr("r",mob?10:18)
       .attr("fill",C.groc).attr("fill-opacity",.45).style("mix-blend-mode","multiply");
     gTree.append("circle").attr("cx",xMa(15.2)).attr("cy",yRoot).attr("r",3.5).attr("fill",C.ink);
-    const rootNote=V.lines(gTree, xMa(15.2)+8, yRoot-(mob?28:34), [["≥ 65 espècies",true],["vocalitzacions de joc"]], {size:11.5, halo:true});
+    const rootNote=V.lines(
+      gTree,
+      mob?ml:xMa(15.2)+8,
+      mob?topH-34:yRoot-34,
+      [["≥ 65 espècies",true],["vocalitzacions de joc"]],
+      {size:mob?11:11.5, halo:true}
+    );
 
     // Nodes finals per espècie (cercles translúcids d'àrea proporcional a la màxima seqüència egressiva)
     const nodes=gTree.selectAll("g.sp").data(species).join("g").attr("class","sp").style("cursor","pointer");
     nodes.each(function(d){
       const q=d3.select(this), x=xMa(0), y=ySp(d.id), isH=d.id==="hum";
-      const rad=isH?(mob?18:24):rEgr(d.maxEgr);
+      const rad=isH?(mob?13:24):rEgr(d.maxEgr);
       q.append("circle").attr("class","aura").attr("cx",x).attr("cy",y).attr("r",rad)
         .attr("fill",isH?C.vermell:C.blau).attr("fill-opacity",isH?.32:.24).style("mix-blend-mode","multiply");
       q.append("circle").attr("cx",x).attr("cy",y).attr("r",3.2).attr("fill",isH?C.vermell:C.blau).attr("stroke","#fff").attr("stroke-width",1.1);
-      V.t(q, x+(mob?10:14), y+4, d.nom, {size:mob?12:13, weight:isH?700:600, fill:isH?C.vermell:C.ink, halo:true});
+      V.t(q, x+(mob?10:14), y+4, d.nom, {size:mob?11.5:13, weight:isH?700:600, fill:isH?C.vermell:C.ink, halo:true});
       if(!mob){
         V.t(q, x+88, y+4, isH?"100 % egressiu":`màx. ${f1(d.maxEgr)} s`, {size:11.5, fill:C.muted});
       }
       q.append("rect").attr("x",x-24).attr("y",y-16).attr("width",mr+20).attr("height",32).attr("fill","transparent");
     });
 
+    clearFocus=()=>{ V.focus(nodes,null); tp.hide(); };
     nodes.on("pointerenter pointerdown",(ev,d)=>{
       V.focus(nodes, x=>x.id===d.id, {dim:.48});
       tp.show(`<b>${d.nom}</b> (${d.llat})<br>${d.mode} — ${d.desc}`);
     }).on("pointerleave",ev=>{
       if(ev.pointerType!=="mouse")return;
-      V.focus(nodes,null); tp.hide();
+      clearFocus();
     });
 
     // Banda inferior: esquema animat de respiració (panteix ximpanzé vs. ha-ha-ha humà)
-    const wTop=topH+32, wH=h-wTop-14, wMid=wTop+wH*.52;
+    const wTop=topH+(mob?26:32), wH=Math.max(36, h-wTop-(mob?6:14)), wMid=wTop+wH*.54;
     gWave.append("line").attr("x1",ml).attr("x2",w-14).attr("y1",wMid).attr("y2",wMid).attr("stroke",C.hair).attr("stroke-width",1);
-    const waveTitle=V.t(gWave, ml, wTop+6, "Flux d'aire: panteix del ximpanzé (← inspira · espira →)", {size:12, weight:700, fill:C.ink});
+    const waveTitle=V.t(gWave, ml, wTop+(mob?4:6), "Flux d'aire: panteix del ximpanzé (← inspira · espira →)", {size:mob?11:12, weight:700, fill:C.ink});
     const wavePath=gWave.append("path").attr("fill","none").attr("stroke",C.blau).attr("stroke-width",2);
     const waveFill=gWave.append("path").attr("fill",C.blau).attr("fill-opacity",.12);
     const waveCap=V.t(gWave, w-14, wTop+6, "", {size:11.5, fill:C.muted, anchor:"end"});
@@ -326,10 +344,14 @@ const $=s=>document.querySelector(s);
     {id:"pag", nom:"Tronc encefàlic (PAG)", x:0.55, y:0.77, via:"esp", desc:"Coordina el diafragma, la laringe i el patró rítmic involuntari."}
   ];
 
-  let refreshState=null;
+  let refreshState=null, clearFocus=null;
+  document.addEventListener("pointerdown", ev=>{
+    if(clearFocus && !el.contains(ev.target)) clearFocus();
+  });
+
   V.mount(el,(box,w)=>{
     if(loopCtrl){ loopCtrl.stop(); loopCtrl=null; }
-    const mob=w<700, h=mob?460:340;
+    const narrow=w<600, mob=w<700, h=narrow?520:(mob?460:340);
     const s=V.svg(box,w,h,"Esquema de les dues vies neurals de la rialla (espontània subcortical amb alliberament d'opioides al tàlem, nucli caudat i ínsula, enfront de la via voluntària de l'escorça motora) i ona acústica interactiva.");
     const tp=V.tip(box);
 
@@ -365,17 +387,18 @@ const $=s=>document.querySelector(s);
       q.append("circle").attr("cx",x).attr("cy",y).attr("r",18).attr("fill","transparent");
     });
 
+    clearFocus=()=>{ V.focus(regNodes,null); tp.hide(); };
     regNodes.on("pointerenter pointerdown",(ev,d)=>{
       V.focus(regNodes, x=>x.id===d.id, {dim:.5});
       tp.show(`<b>${d.nom}</b><br>${d.desc}`);
     }).on("pointerleave",ev=>{
       if(ev.pointerType!=="mouse")return;
-      V.focus(regNodes,null); tp.hide();
+      clearFocus();
     });
 
     // Zona 2: perfil acústic en temps real (morfologia espontània vs. voluntària)
     const ax0=mob?14:w*0.56, ax1=w-14;
-    const ay0=mob?268:44, ay1=mob?425:278;
+    const ay0=mob?264:44, ay1=narrow?392:(mob?425:278);
     const gAc=s.append("g");
     const acTitle=V.t(gAc, ax0, ay0-14, "", {size:13, weight:700, fill:C.ink});
     const acSub=V.t(gAc, ax0, ay0+4, "", {size:11.5, fill:C.muted});
@@ -384,7 +407,7 @@ const $=s=>document.querySelector(s);
     gAc.append("line").attr("x1",ax0).attr("x2",ax1).attr("y1",waveMid).attr("y2",waveMid).attr("stroke",C.grid);
     const acPath=gAc.append("path").attr("fill","none").attr("stroke-width",2);
     const acBursts=gAc.append("g");
-    const metY=ay1+24;
+    const metY=narrow?418:(ay1+24);
     const metG=gAc.append("g");
 
     function updateVisuals(tMs){
@@ -434,11 +457,20 @@ const $=s=>document.querySelector(s);
         ["Alliberament d'opioides", sp>=.5?"Alt (PET 2017)":"Baix"],
         ["Variabilitat del to", sp>=.5?"Alta i aguda":"Uniforme i suau"]
       ];
-      const stepX=(ax1-ax0)/pills.length;
-      pills.forEach((p,i)=>{
-        V.t(metG, ax0+i*stepX, metY-4, p[0], {size:11, fill:C.muted});
-        V.t(metG, ax0+i*stepX, metY+12, p[1], {size:12, weight:600, fill:C.ink});
-      });
+      if(narrow){
+        pills.forEach((p,i)=>{
+          const ry=metY+i*32;
+          metG.append("line").attr("x1",ax0).attr("x2",ax1).attr("y1",ry-14).attr("y2",ry-14).attr("stroke",C.grid).attr("stroke-width",.7);
+          V.t(metG, ax0, ry+3, p[0], {size:11.5, fill:C.muted});
+          V.t(metG, ax1, ry+3, p[1], {size:12, weight:600, fill:C.ink, anchor:"end"});
+        });
+      } else {
+        const stepX=(ax1-ax0)/pills.length;
+        pills.forEach((p,i)=>{
+          V.t(metG, ax0+i*stepX, metY-4, p[0], {size:11, fill:C.muted});
+          V.t(metG, ax0+i*stepX, metY+12, p[1], {size:12, weight:600, fill:C.ink});
+        });
+      }
     }
 
     refreshState=()=>updateVisuals(0);
@@ -489,10 +521,16 @@ const $=s=>document.querySelector(s);
     {c:C.ink2,    t:"Límit pràctic (~20 % del dia)", kind:"line", w:1.4, dash:"2 3"}
   ]);
 
-  let redrawStep=null;
+  let redrawStep=null, clearFocus=null;
+  document.addEventListener("pointerdown", ev=>{
+    if(clearFocus && !el.contains(ev.target)) clearFocus();
+  });
+
   V.mount(el,(box,w)=>{
     if(loopCtrl){ loopCtrl.stop(); loopCtrl=null; }
-    const mob=w<640, h=mob?330:410, m={t:24,r:20,b:34,l:38};
+    const mob=w<600;
+    const h=mob?Math.round(Math.max(210,Math.min(window.innerHeight*0.30,250))):410;
+    const m={t:mob?16:24,r:mob?14:20,b:mob?30:34,l:mob?34:38};
     const s=V.svg(box,w,h,"Relació entre mida del grup social i percentatge del temps diürn necessari per cohesionar-lo: el desparasitat 1 a 1 topa amb el sostre del 20 % cap als 50 individus; la rialla en grups de 3 a 4 persones multiplica l'abast per tres.");
     const g=s.append("g"), gCont=s.append("g");
     const tp=V.tip(box);
@@ -501,11 +539,11 @@ const $=s=>document.querySelector(s);
     const y=d3.scaleLinear([0,46],[h-m.b,m.t]);
     V.gridY(g,y,0,w-m.r,[0,10,20,30,40],v=>v,{zero:0,unit:" % del dia"});
     V.axisX(g,x,h-m.b,mob?[0,50,100,150]:[0,25,50,75,100,125,150],d=>d,{tick:true});
-    V.t(g, w-m.r, h-6, "Mida del grup (individus)", {size:11, fill:C.muted, anchor:"end"});
+    V.t(g, w-m.r, h-(mob?4:6), "Mida del grup (individus)", {size:11, fill:C.muted, anchor:"end"});
 
     // Zona de sostre 20%
     V.rule(g, m.l, w-m.r, y(20), {stroke:C.ink2});
-    V.t(g, m.l+6, y(20)-6, "Sostre pràctic en primats (~20 % del temps actiu)", {size:11.5, italic:true, fill:C.ink2, halo:true});
+    V.t(g, m.l+6, y(20)-6, mob?"Sostre primats (~20 % del dia)":"Sostre pràctic en primats (~20 % del temps actiu)", {size:mob?11:11.5, italic:true, fill:C.ink2, halo:true});
 
     // Corba 1 a 1 (0,28 % per individu: 70 -> 19,6 %, 150 -> 42,0 %)
     const pts1=d3.range(0,156,5).map(n=>[n, n*0.28]);
@@ -522,25 +560,27 @@ const $=s=>document.querySelector(s);
       const q=d3.select(this), px=x(d.grup), py=y(d.groomPct);
       q.append("circle").attr("cx",px).attr("cy",py).attr("r",12).attr("fill",d.grup>100?C.vermell:C.blau).attr("fill-opacity",.24).style("mix-blend-mode","multiply");
       q.append("circle").attr("cx",px).attr("cy",py).attr("r",3.6).attr("fill",d.grup>100?C.vermell:C.blau).attr("stroke","#fff").attr("stroke-width",1.2);
+      q.append("circle").attr("cx",px).attr("cy",py).attr("r",18).attr("fill","transparent");
     });
-    const noteGap=V.note(g,{x:x(150),y:y(42),tx:x(mob?108:112),ty:y(41),kind:"straight",anchor:"end",lines:[["150 individus",true],["~42 % del dia mà a mà"]]});
-    const noteLaugh=V.note(g,{x:x(150),y:y(14),tx:x(mob?108:116),ty:y(9),kind:"elbow",anchor:"end",lines:[["Amb rialla en grup (×3)",true],["baixa a ~14 % del dia"]]});
+    const noteGap=V.note(g,{x:x(150),y:y(42),tx:x(mob?108:112),ty:y(mob?37:41),kind:"straight",anchor:"end",lines:[["150 individus",true],["~42 % del dia mà a mà"]],size:mob?11:11.5});
+    const noteLaugh=V.note(g,{x:x(150),y:y(14),tx:x(mob?108:116),ty:y(mob?8:9),kind:"elbow",anchor:"end",lines:[["Amb rialla en grup (×3)",true],["baixa a ~14 % del dia"]],size:mob?11:11.5});
 
+    clearFocus=()=>{ V.focus(ptsG,null); tp.hide(); };
     ptsG.on("pointerenter pointerdown",(ev,d)=>{
       V.focus(ptsG, p=>p.grup===d.grup, {dim:.48});
       tp.show(`<b>${d.nom}</b><br>Grup ~${d.grup} individus · ~${f1(d.groomPct)} % del dia en desparasitat 1 a 1`);
     }).on("pointerleave",ev=>{
       if(ev.pointerType!=="mouse")return;
-      V.focus(ptsG,null); tp.hide();
+      clearFocus();
     });
 
     // Capa de contagi (pas 4): 4 cercles translúcids d'un grup de rialla natural
-    const cx=x(105), cy=y(26);
+    const cx=x(mob?96:105), cy=y(mob?22:26), scG=mob?0.68:1;
     const groupPts=[
-      {dx:-36, dy:-8, c:C.vermell, r:28, t:"Parlant"},
-      {dx:18,  dy:-26, c:C.blau,   r:24, t:"Oient 1"},
-      {dx:30,  dy:20,  c:C.groc,   r:24, t:"Oient 2"},
-      {dx:-10, dy:30,  c:C.blau,   r:22, t:"Oient 3"}
+      {dx:-36*scG, dy:-8*scG,  c:C.vermell, r:28*scG, t:"Parlant"},
+      {dx:18*scG,  dy:-26*scG, c:C.blau,    r:24*scG, t:"Oient 1"},
+      {dx:30*scG,  dy:20*scG,  c:C.groc,    r:24*scG, t:"Oient 2"},
+      {dx:-10*scG, dy:30*scG,  c:C.blau,    r:22*scG, t:"Oient 3"}
     ];
     const gPulses=gCont.selectAll("circle.pl").data(groupPts).join("circle").attr("class","pl")
       .attr("cx",d=>cx+d.dx).attr("cy",d=>cy+d.dy).attr("r",d=>d.r)
@@ -548,7 +588,13 @@ const $=s=>document.querySelector(s);
     groupPts.forEach(d=>{
       gCont.append("circle").attr("cx",cx+d.dx).attr("cy",cy+d.dy).attr("r",3.2).attr("fill",d.c===C.groc?C.ink:d.c);
     });
-    V.t(gCont, cx, cy-58, "Cor natural: 3–4 persones (Dezecache & Dunbar, 2012)", {size:12, weight:700, anchor:"middle", halo:true});
+    if(mob){
+      const ltx=Math.max(8, Math.min(w-8, w-10));
+      V.t(gCont, ltx, m.t+8, "Cor natural: 3–4 persones", {size:11.5, weight:700, anchor:"end", halo:true});
+      V.t(gCont, ltx, m.t+21, "(Dezecache & Dunbar, 2012)", {size:11, fill:C.muted, anchor:"end", halo:true});
+    } else {
+      V.t(gCont, cx, cy-58, "Cor natural: 3–4 persones (Dezecache & Dunbar, 2012)", {size:12, weight:700, anchor:"middle", halo:true});
+    }
 
     function applyStep(k){
       stepKey=k;
@@ -591,15 +637,20 @@ const $=s=>document.querySelector(s);
     {c:C.groc,    t:"Dominància"}
   ]);
 
+  let clearFocus=null;
+  document.addEventListener("pointerdown", ev=>{
+    if(clearFocus && !el.contains(ev.target)) clearFocus();
+  });
+
   V.mount(el,(box,w)=>{
-    const mob=w<720, h=mob?500:310;
+    const narrow=w<600, mob=w<720, h=mob?500:310;
     const s=V.svg(box,w,h,"A l'esquerra, rangs de precisió per sobre de l'atzar en 24 societats (53–67 %) i 21 societats (56–69 %) de Bryant et al. A la dreta, mapa conceptual de les tres funcions socials de la rialla: recompensa, afiliació i dominància (Wood et al., 2017).");
     const tp=V.tip(box);
 
     // ---- Panell A: Dades reals transculturals (Bryant 2016 & 2018) ----
     const ax0=mob?14:16, ax1=mob?w-14:w*0.48;
     const gL=s.append("g");
-    V.t(gL, ax0, 18, "Proves transculturals reals (precisió d'encert)", {size:13, weight:700, fill:C.ink});
+    V.t(gL, ax0, 18, narrow?"Proves transculturals (precisió)":"Proves transculturals reals (precisió d'encert)", {size:13, weight:700, fill:C.ink});
     const xP=d3.scaleLinear([42,76],[ax0+6,ax1-10]);
     const yRows=[86, 166];
     V.axisX(gL, xP, 212, [45,50,55,60,65,70,75], d=>d+" %", {tick:true});
@@ -610,8 +661,10 @@ const $=s=>document.querySelector(s);
     const rows=gL.selectAll("g.cc").data(D.crossCultural).join("g").attr("class","cc").style("cursor","pointer");
     rows.each(function(d,i){
       const q=d3.select(this), yy=yRows[i], col=i===0?C.vermell:C.blau;
-      V.t(q, ax0+6, yy-24, `${d.pregunta} · ${d.societats} societats (N = ${f0(d.n)})`, {size:12.5, weight:700, fill:C.ink});
-      V.t(q, ax0+6, yy-9, `${d.estudi}, ${d.any}`, {size:11.5, fill:C.muted});
+      const rowTitle=narrow?`${d.pregunta} · ${d.societats} soc.`:`${d.pregunta} · ${d.societats} societats (N = ${f0(d.n)})`;
+      const rowSub=narrow?`${d.estudi}, ${d.any} (N = ${f0(d.n)})`:`${d.estudi}, ${d.any}`;
+      V.t(q, ax0+6, yy-24, rowTitle, {size:narrow?12:12.5, weight:700, fill:C.ink});
+      V.t(q, ax0+6, yy-9, rowSub, {size:narrow?11:11.5, fill:C.muted});
       // Franja de rang entre societats (translúcida)
       q.append("line").attr("x1",xP(d.min)).attr("x2",xP(d.max)).attr("y1",yy+10).attr("y2",yy+10)
         .attr("stroke",col).attr("stroke-width",10).attr("stroke-linecap","round").attr("stroke-opacity",.32);
@@ -657,6 +710,7 @@ const $=s=>document.querySelector(s);
       V.t(q, cx, cy+4, d.nom, {size:13, weight:700, anchor:"middle", fill:C.ink, halo:true});
     });
 
+    clearFocus=()=>{ V.focus(rows,null); V.focus(nodes,null); tp.hide(); };
     nodes.on("pointerenter pointerdown",(ev,d)=>{
       V.focus(nodes, x=>x.id===d.id, {dim:.48});
       tp.show(`<b>Rialla de ${d.nom.toLowerCase()}</b><br>${d.funcio} (${d.trets}).`);
@@ -678,7 +732,10 @@ const $=s=>document.querySelector(s);
 (function etnografiaFig(){
   const el=$("#etno-viz"), lg=$("#etno-lg");
   if(!el||!D.ethnoSites)return;
-  let filter="tots", applyFilter=null;
+  let filter="tots", applyFilter=null, clearFocus=null;
+  document.addEventListener("pointerdown", ev=>{
+    if(clearFocus && !el.contains(ev.target)) clearFocus();
+  });
   const CAT={
     conflicte:{c:C.vermell, t:"Resolució de conflictes"},
     poder:    {c:C.blau,    t:"Inversió del poder i el sagrat"},
@@ -723,15 +780,18 @@ const $=s=>document.querySelector(s);
         q.append("circle").attr("cx",x).attr("cy",y).attr("r",24).attr("fill","transparent");
       });
 
+      clearFocus=()=>{
+        if(applyFilter)applyFilter(filter);
+        sites.select(".core").attr("r",3.8);
+        tp.hide();
+      };
       sites.on("pointerenter pointerdown",(ev,d)=>{
         V.focus(sites, x=>x.id===d.id, {dim:.48});
         sites.select(".core").attr("r",x=>x.id===d.id?5.2:3.8);
         tp.show(`<b>${d.nom}</b> (${d.lloc})<br>${d.resum}`);
       }).on("pointerleave",ev=>{
         if(ev.pointerType!=="mouse")return;
-        if(applyFilter)applyFilter(filter);
-        sites.select(".core").attr("r",3.8);
-        tp.hide();
+        clearFocus();
       });
 
       applyFilter=k=>{

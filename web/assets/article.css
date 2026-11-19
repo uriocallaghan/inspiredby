@@ -81,12 +81,26 @@ h1{font-family:var(--serif-display);font-weight:400;font-size:clamp(50px,6.8vw,7
   .fig{margin:28px auto 20px}
   .fig figcaption{text-align:left}
   .scrolly{display:flex;flex-direction:column}
-  .graphic{order:-1;height:auto;top:0;z-index:2;background:var(--paper);padding-block:10px 8px;border-bottom:1px solid var(--hair)}
-  .steps{padding-bottom:40vh}
-  .step{min-height:85vh;align-items:flex-end;padding-bottom:6vh}
-  .step:first-child{min-height:60vh}
-  .step-in{background:var(--paper);padding:14px 0;opacity:.35}
+  .graphic{order:-1;height:auto;top:0;z-index:2;background:var(--paper);padding-block:8px 6px;border-bottom:1px solid var(--hair)}
+  .graphic .vh{margin-bottom:4px}
+  .graphic .vh span,.graphic .vh .lgs,.graphic .src{display:none}
+  .graphic .tip.ibv-dock{margin-top:4px;padding-top:4px;min-height:20px;font-size:12px}
+  .steps{padding-bottom:35vh;padding-bottom:35dvh}
+  .step{min-height:75vh;min-height:75dvh;align-items:flex-end;padding-bottom:8vh;padding-bottom:8dvh}
+  .step:first-child{min-height:55vh;min-height:55dvh}
+  .step-in{background:var(--paper);padding:16px 0 20px;opacity:.35}
   .step p{font-size:17px}
+  .tip{max-width:min(260px,calc(100vw - 32px))}
+  .fig .seg button,.graphic .seg button,.seg button,.playb,.ctl-row button,.ctlrow button,.btn{min-height:44px;padding-block:8px}
+  .rng{height:40px}
+  .rng::-webkit-slider-thumb{width:22px;height:22px;margin-top:-11px}
+  .rng::-moz-range-thumb{width:18px;height:18px}
+}
+@media (pointer:coarse){
+  .fig .seg button,.graphic .seg button,.seg button,.playb,.ctl-row button,.ctlrow button,.btn{min-height:44px;padding-block:8px}
+  .rng{height:40px}
+  .rng::-webkit-slider-thumb{width:22px;height:22px;margin-top:-11px}
+  .rng::-moz-range-thumb{width:18px;height:18px}
 }
 @media (prefers-reduced-motion:reduce){.step-in{transition:none}}
 

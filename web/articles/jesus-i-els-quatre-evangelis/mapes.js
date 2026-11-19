@@ -223,7 +223,7 @@
     ];
 
     V.mount(el,(node,w)=>{
-      const mob=w<640, h=mob?Math.min(Math.round(window.innerHeight*.44),330):Math.min(540,Math.round(w*.74));
+      const mob=w<640, h=mob?Math.max(195,Math.min(Math.round(window.innerHeight*.30),255)):Math.min(540,Math.round(w*.74));
       const {ctx,s}=layered(node,w,h,"Mapa en relleu del territori de Jesús: Galilea, Samaria, Judea, la vall del Jordà i Jerusalem.");
       const zm=zoomer(w,h,mob?14:24), tp=V.tip(node);
       const gMap=s.append("g"), gRoute=s.append("g"), gPts=s.append("g"), gNote=s.append("g"), gInset=s.append("g"), gScale=s.append("g"), gHv=s.append("g");
@@ -258,11 +258,12 @@
         // etiquetes d'aigua i regions
         if(step!==1){
           const mm=p([34.55,32.25]); V.t(gMap,mm[0],mm[1],"Mar Mediterrani",{size:mob?11:12,italic:true,fill:C.muted,anchor:"middle",halo:true});
-          const ds=lf(35.5,31.45); V.t(gMap,ds[0]+6,ds[1],"Mar Mort (−415 m)",{size:11,italic:true,fill:C.blau,halo:true});
+          const ds=lf(35.5,31.45), dsEnd=mob&&ds[0]>w-108;
+          V.t(gMap,dsEnd?Math.min(w-6,ds[0]-6):ds[0]+6,ds[1],"Mar Mort (−415 m)",{size:11,italic:true,fill:C.blau,anchor:dsEnd?"end":"start",halo:true});
         }
-        const lgPt=lf(35.62,32.81);
-        V.t(gMap,lgPt[0]+(step===1?12:8),lgPt[1]+4,"Llac de Galilea",{size:11.5,italic:true,fill:C.blau,halo:true});
-        if(step===1) V.t(gMap,lgPt[0]+12,lgPt[1]+17,"−212 m",{size:11,fill:C.blau,halo:true});
+        const lgPt=lf(35.62,32.81), lgEnd=mob&&lgPt[0]>w-96;
+        V.t(gMap,lgEnd?Math.min(w-6,lgPt[0]-8):lgPt[0]+(step===1?12:8),lgPt[1]+4,"Llac de Galilea",{size:11.5,italic:true,fill:C.blau,anchor:lgEnd?"end":"start",halo:true});
+        if(step===1) V.t(gMap,lgEnd?Math.min(w-6,lgPt[0]-8):lgPt[0]+12,lgPt[1]+17,"−212 m",{size:11,fill:C.blau,anchor:lgEnd?"end":"start",halo:true});
 
         // pas 2: dos governants
         if(step===2){
@@ -388,7 +389,8 @@
       const y=d3.scaleLinear([-320,960],[h-M.b,M.t]);
 
       // quadrícula horitzontal
-      V.gridY(s,y,M.l,w-M.r,[-200,0,200,400,600,800],v=>v===0?"0 m (nivell del mar)":(v>0?"+":"")+v+" m",{zero:true});
+      V.gridY(s,y,M.l,w-M.r,[-200,0,200,400,600,800],v=>v===0?(mob?"0 m":"0 m (nivell del mar)"):(v>0?"+":"")+v+" m",{zero:true});
+      if(mob) V.t(s,M.l+6,y(0)-5,"nivell del mar",{size:11,italic:true,fill:C.muted,halo:2.5});
       // franja sota el nivell del mar
       s.append("rect").attr("x",M.l).attr("y",y(0)).attr("width",w-M.l-M.r).attr("height",h-M.b-y(0))
         .attr("fill",V.alpha(C.blau,.08));
@@ -491,7 +493,7 @@
     let pos=.5;
 
     V.mount(el,(node,w)=>{
-      const mob=w<640, mapH=mob?310:390, barH=62, h=mapH+barH;
+      const mob=w<640, mapH=mob?310:390, barH=mob?78:62, h=mapH+barH;
       const {ctx,s}=layered(node,w,mapH,"Comparador interactiu entre el relat del naixement de Mateu (esquerra) i el de Lluc (dreta) sobre el relleu real.");
       // ampliem l'SVG per incloure la barra temporal de 10 anys a sota
       s.attr("height",h).style("position","relative").style("margin-top",(-mapH)+"px");
@@ -518,7 +520,9 @@
       [[bet,"1. Betlem","Casa familiar · Mags",15],[egi,"2. Fugida a Egipte","Per por d'Herodes el Gran",11],[nat,"3. Natzaret","S'hi instal·len en tornar",9]].forEach(([pt,t1,t2,rad])=>{
         gM.append("circle").attr("cx",pt[0]).attr("cy",pt[1]).attr("r",rad).attr("fill",C.vermell).attr("fill-opacity",.24).style("mix-blend-mode","multiply");
         gM.append("circle").attr("cx",pt[0]).attr("cy",pt[1]).attr("r",3).attr("fill",C.vermell).attr("stroke",C.paper).attr("stroke-width",1.1);
-        V.lines(gM,pt[0]+rad+7,pt[1]+(pt===bet?4:-4),[[t1,true,C.ink],[t2,false,C.ink2]],{size:mob?11:12,halo:3.5});
+        const flip=mob&&pt[0]>w*.5;
+        const lx=flip?Math.min(w-8,pt[0]-rad-7):Math.max(8,pt[0]+rad+7);
+        V.lines(gM,lx,pt[1]+(pt===bet?4:-4),[[t1,true,C.ink],[t2,false,C.ink2]],{anchor:flip?"end":"start",size:mob?11:12,halo:3.5});
       });
 
       // CAPA DRETA: LLUC (blau) amb trajectòries trenades i cercles translúcids
@@ -528,36 +532,46 @@
       [[nat,"1. Natzaret","Ja hi viuen Maria i Josep",13],[bet,"2. Betlem","Viatgen pel cens · Pastors",15],[jer,"3. Jerusalem","Temple · Tornen a Natzaret",11]].forEach(([pt,t1,t2,rad])=>{
         gL.append("circle").attr("cx",pt[0]).attr("cy",pt[1]).attr("r",rad).attr("fill",C.blau).attr("fill-opacity",.24).style("mix-blend-mode","multiply");
         gL.append("circle").attr("cx",pt[0]).attr("cy",pt[1]).attr("r",3).attr("fill",C.blau).attr("stroke",C.paper).attr("stroke-width",1.1);
-        const anc=pt===bet?"end":"start", dx=(pt===bet?-1:1)*(rad+7);
-        V.lines(gL,pt[0]+dx,pt[1]+(pt===jer?-12:4),[[t1,true,C.ink],[t2,false,C.ink2]],{anchor:anc,size:mob?11:12,halo:3.5});
+        const flip=pt===bet||(mob&&pt[0]>w*.5);
+        const anc=flip?"end":"start", dx=(flip?-1:1)*(rad+7);
+        const dy=pt===jer?(mob?-18:-12):(mob&&pt===bet?12:4);
+        V.lines(gL,pt[0]+dx,pt[1]+dy,[[t1,true,C.ink],[t2,false,C.ink2]],{anchor:anc,size:mob?11:12,halo:3.5});
       });
 
-      // divisor interactiu (IB-31)
+      // divisor interactiu (IB-31) — touch-action: none només sobre el mànec/franja de 44 px
       const dv=s.append("g").attr("class","ibx-handle").attr("tabindex",0).attr("role","slider")
         .attr("aria-label","Divisor entre el relat de Mateu i el de Lluc")
-        .attr("aria-valuemin",0).attr("aria-valuemax",100).style("cursor","ew-resize").style("outline","none");
+        .attr("aria-valuemin",0).attr("aria-valuemax",100).style("cursor","ew-resize").style("outline","none").style("touch-action","none");
+      const dHit=dv.append("rect").attr("y",0).attr("width",44).attr("height",mapH).attr("fill","transparent");
       const dl=dv.append("line").attr("y1",0).attr("y2",mapH).attr("stroke",C.ink).attr("stroke-width",1.3);
       const hc=dv.append("g");
-      hc.append("circle").attr("r",16).attr("fill",C.paper).attr("stroke",C.ink).attr("stroke-width",1.3);
+      hc.append("circle").attr("r",mob?18:16).attr("fill",C.paper).attr("stroke",C.ink).attr("stroke-width",1.3);
       hc.append("path").attr("d","M-4,-5L-9,0L-4,5M4,-5L9,0L4,5").attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.3).attr("stroke-linejoin","round");
       const labL=V.t(s,0,20,mob?"← Mateu":"← Mateu (mags i Egipte)",{anchor:"end",weight:700,size:mob?12:13.5,fill:C.vermell,halo:3.5}).attr("pointer-events","none");
       const labR=V.t(s,0,20,mob?"Lluc →":"Lluc (cens i pastors) →",{anchor:"start",weight:700,size:mob?12:13.5,fill:C.blau,halo:3.5}).attr("pointer-events","none");
 
       // barra inferior: la bretxa de 10 anys
       const gb=s.append("g").attr("transform",`translate(0,${mapH+14})`);
-      const x0=mob?16:60, x1=w-(mob?16:60), tx=d3.scaleLinear([-8,10],[x0,x1]);
-      gb.append("line").attr("x1",x0).attr("y1",16).attr("x2",x1).attr("y2",16).attr("stroke",C.hair).attr("stroke-width",1.2);
-      gb.append("line").attr("x1",tx(-4)).attr("y1",16).attr("x2",tx(6)).attr("y2",16).attr("stroke",C.ink).attr("stroke-width",2.2);
-      gb.append("circle").attr("cx",tx(-4)).attr("cy",16).attr("r",5).attr("fill",C.vermell);
-      gb.append("circle").attr("cx",tx(6)).attr("cy",16).attr("r",5).attr("fill",C.blau);
-      V.t(gb,tx(-4),6,"4 aC · Mor Herodes (Mateu)",{anchor:"middle",size:mob?11:12,weight:700,fill:C.vermell});
-      V.t(gb,tx(6),6,"6 dC · Cens de Quirini (Lluc)",{anchor:"middle",size:mob?11:12,weight:700,fill:C.blau});
-      V.t(gb,tx(1),34,"10 anys de diferència entre les dues dates",{anchor:"middle",size:mob?11:12,fill:C.ink2});
+      const x0=mob?12:60, x1=w-(mob?12:60), tx=d3.scaleLinear([-8,10],[x0,x1]);
+      const by=mob?30:16;
+      gb.append("line").attr("x1",x0).attr("y1",by).attr("x2",x1).attr("y2",by).attr("stroke",C.hair).attr("stroke-width",1.2);
+      gb.append("line").attr("x1",tx(-4)).attr("y1",by).attr("x2",tx(6)).attr("y2",by).attr("stroke",C.ink).attr("stroke-width",2.2);
+      gb.append("circle").attr("cx",tx(-4)).attr("cy",by).attr("r",5).attr("fill",C.vermell);
+      gb.append("circle").attr("cx",tx(6)).attr("cy",by).attr("r",5).attr("fill",C.blau);
+      if(mob){
+        V.lines(gb,x0,6,[["4 aC · Mor Herodes",true,C.vermell],["(Mateu)",false,C.ink2]],{anchor:"start",size:11});
+        V.lines(gb,x1,6,[["6 dC · Cens de Quirini",true,C.blau],["(Lluc)",false,C.ink2]],{anchor:"end",size:11});
+        V.t(gb,w/2,by+20,"10 anys de diferència entre les dues dates",{anchor:"middle",size:11,fill:C.ink2});
+      } else {
+        V.t(gb,tx(-4),6,"4 aC · Mor Herodes (Mateu)",{anchor:"middle",size:12,weight:700,fill:C.vermell});
+        V.t(gb,tx(6),6,"6 dC · Cens de Quirini (Lluc)",{anchor:"middle",size:12,weight:700,fill:C.blau});
+        V.t(gb,tx(1),34,"10 anys de diferència entre les dues dates",{anchor:"middle",size:12,fill:C.ink2});
+      }
 
       function set(f){
         pos=clamp(f,0,1); const x=Math.round(pos*w);
         clL.attr("x",0).attr("width",x); clR.attr("x",x).attr("width",w-x);
-        dl.attr("x1",x).attr("x2",x); hc.attr("transform",`translate(${x},${mapH/2})`);
+        dHit.attr("x",x-22); dl.attr("x1",x).attr("x2",x); hc.attr("transform",`translate(${x},${mapH/2})`);
         const minX=mob?76:160;
         labL.attr("x",x-12).style("opacity",x>minX?1:0); labR.attr("x",x+12).style("opacity",x<w-minX?1:0);
         dv.attr("aria-valuenow",Math.round(pos*100))
@@ -570,13 +584,16 @@
       }
       set(pos);
 
-      let drag=false;
+      let drag=false, tapStart=null;
       s.style("touch-action","pan-y");
-      const hit=s.insert("rect",".ibx-handle").attr("width",w).attr("height",mapH).attr("fill","transparent").style("cursor","ew-resize");
-      const startDrag=ev=>{ const [px]=d3.pointer(ev,s.node()); drag=true; s.node().setPointerCapture&&s.node().setPointerCapture(ev.pointerId); set(px/w); ev.preventDefault(); };
-      hit.on("pointerdown",startDrag); dv.on("pointerdown",startDrag);
-      s.on("pointermove",ev=>{ if(!drag)return; const [px]=d3.pointer(ev,s.node()); set(px/w); })
-       .on("pointerup pointercancel",()=>{ drag=false; });
+      const hit=s.insert("rect",".ibx-handle").attr("width",w).attr("height",mapH).attr("fill","transparent").style("cursor","pointer").style("touch-action","pan-y");
+      const startDrag=ev=>{ const [px]=d3.pointer(ev,s.node()); drag=true; dv.node().setPointerCapture&&dv.node().setPointerCapture(ev.pointerId); set(px/w); ev.preventDefault(); };
+      dv.on("pointerdown",startDrag);
+      dv.on("pointermove",ev=>{ if(!drag)return; const [px]=d3.pointer(ev,s.node()); set(px/w); })
+        .on("pointerup pointercancel",()=>{ drag=false; });
+      // sobre la resta del mapa: cap preventDefault (deixa l'scroll vertical lliure), però un toc ràpid mou el divisor
+      hit.on("pointerdown",ev=>{ tapStart=[ev.clientX,ev.clientY]; });
+      hit.on("pointerup",ev=>{ if(!tapStart)return; const d=Math.hypot(ev.clientX-tapStart[0],ev.clientY-tapStart[1]); tapStart=null; if(d<10){ const [px]=d3.pointer(ev,s.node()); set(px/w); } });
       dv.on("keydown",ev=>{ const k=ev.key, st=ev.shiftKey?.12:.04;
         if(k==="ArrowLeft"||k==="ArrowDown")set(pos-st); else if(k==="ArrowRight"||k==="ArrowUp")set(pos+st); else if(k==="Home")set(0); else if(k==="End")set(1); else return; ev.preventDefault(); });
 

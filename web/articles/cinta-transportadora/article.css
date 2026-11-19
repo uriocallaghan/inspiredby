@@ -53,7 +53,9 @@
 .presets{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--sans);font-size:13px;margin:8px 0 0}
 .presets button{border:0;background:none;padding:4px 0;min-height:36px;cursor:pointer;color:var(--ink-2);border-bottom:1px solid transparent;text-align:left}
 .presets button[aria-pressed="true"]{color:var(--ink);font-weight:700;border-bottom-color:currentColor}
-#tsw svg{touch-action:none;cursor:crosshair}
+#tsw svg{cursor:crosshair}
+#tsw .dp-hit{touch-action:none;cursor:grab}
+#tsw .dp-hit:active{cursor:grabbing}
 #colc{display:block;width:100%}
 
 /* Reixa d'unitats (aigua i calor) */
@@ -89,20 +91,21 @@ dl.gl dt{font-weight:700}
   .vh strong{font-size:18.5px}
   .vh span{font-size:12.5px}
   .fig{margin:40px auto 30px}
+  .fig .seg button,.graphic .seg button,.playb,.presets button{min-height:44px}
   .graphic .vh{margin-bottom:4px}
-  .graphic .vh span{display:none}
-  .graphic .src{display:none}
+  .graphic .vh span,.graphic .vh .lgs,.graphic .src{display:none}
   .ann{font-size:11px;max-width:118px}
   .ann.hm{display:none}
   #gov .ann{background:rgba(255,255,255,.82);padding:1px 4px;border-radius:2px}
-  /* density explorer: diagram and Labrador column side by side, controls right below */
-  .den{grid-template-columns:minmax(0,1fr) 114px;grid-template-areas:"tst colt" "tsc colw" "read read" "ver ver" "sl sl" "pre pre";gap:4px 10px}
+  #xov .ann{background:rgba(255,255,255,.85);padding:1px 4px;border-radius:2px}
+  /* density explorer: stacked 1 column on mobile so both panels get full 350px width */
+  .den{grid-template-columns:minmax(0,1fr);grid-template-areas:"tst" "tsc" "read" "ver" "sl" "pre" "colt" "colw";gap:8px}
   .den .panel{display:contents}
-  .den .tst{grid-area:tst}.den .tsc{grid-area:tsc}.den .colt{grid-area:colt}.den .colw{grid-area:colw}
+  .den .tst{grid-area:tst}.den .tsc{grid-area:tsc}.den .colt{grid-area:colt;margin-top:8px}.den .colw{grid-area:colw}
   .den .read{grid-area:read;margin:8px 0 2px}.den .verdict{grid-area:ver;font-size:15.5px;min-height:2.9em;margin:0}
   .den .sl{grid-area:sl}.den .presets{grid-area:pre;margin-top:4px}
   .den .tst span,.den .dsk{display:none}.den .mb{display:inline}
-  .den .ptitle{font-size:12px;margin:0}
+  .den .ptitle{font-size:12.5px;margin:0}
   .read strong{font-size:19px}.read span{font-size:12.5px}
   .urow{grid-template-columns:minmax(0,1fr);gap:6px}
   .ugrid i{width:7px;height:7px}
@@ -110,8 +113,5 @@ dl.gl dt{font-weight:700}
   .pj-read{grid-template-columns:minmax(0,1fr)}
   .sl{gap:2px 16px}
   .rng::-webkit-slider-thumb{width:22px;height:22px;margin-top:-11px}
-  .rng{height:36px}
-}
-@media (max-width:899px) and (max-height:760px){
-  .graphic .ibv-lg-cat{display:none}
+  .rng{height:40px}
 }

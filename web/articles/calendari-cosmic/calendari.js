@@ -152,8 +152,8 @@ function initScrolly(){
   let W=0, H=0, mob=false, cur=null, curStep=0, svg=null, layers={}, geo={}, timer=null;
 
   function draw(el,w){
-    W=w; mob=innerWidth<900||w<520;
-    H=Math.round(mob?Math.min(innerHeight*.44,Math.max(290,W*.96)):Math.min(innerHeight*.60,W*.64,540));
+    W=w; mob=innerWidth<900||w<600;
+    H=mob?Math.round(Math.max(200,Math.min(innerHeight*.28,240))):Math.round(Math.min(innerHeight*.60,W*.64,540));
     svg=V.svg(el,W,H,"Línia del temps interactiva de l'any còsmic: tot l'any, gener, setembre, desembre, el 31 de desembre, l'última hora, l'últim minut i els últims cinc segons.");
     layers={}; geo={};
     ["year","m0","m8","m11","day","hour","min","sec"].forEach(k=>{
@@ -179,8 +179,8 @@ function initScrolly(){
 
   /* ---------- IB-37: l'any sencer en 12 fulls tipogràfics ---------- */
   function buildYear(){
-    const g=layers.year, cols=mob?3:4, rows=12/cols, gx=mob?12:24, gy=mob?10:18, top=6;
-    const mw=(W-gx*(cols-1))/cols, th=mob?18:22, mh=(H-top-gy*(rows-1))/rows;
+    const g=layers.year, cols=mob?3:4, rows=12/cols, gx=mob?12:24, gy=mob?6:18, top=mob?4:6;
+    const mw=(W-gx*(cols-1))/cols, th=mob?15:22, mh=(H-top-gy*(rows-1))/rows;
     const cs=Math.min(mw/7,(mh-th)/5.2), cell=Math.max(4,cs-1.8);
     geo.year={months:[],cs,th,cell};
     const cells=[];
@@ -266,7 +266,7 @@ function initScrolly(){
 
   /* ---------- Els últims 5 segons (gravat lineal net sobre paper) ---------- */
   function buildSec(){
-    const g=layers.sec, x0=mob?14:34, x1=W-(mob?14:34), y=H*.72;
+    const g=layers.sec, x0=mob?14:34, x1=W-(mob?14:34), y=H*(mob?.64:.72);
     geo.sec={x0,x1,y,span:5,pts:[]};
     g.append("line").attr("x1",x0).attr("x2",x1).attr("y1",y).attr("y2",y).attr("stroke",C.ink).attr("stroke-width",1);
     for(let i=0;i<=50;i++){
@@ -283,7 +283,7 @@ function initScrolly(){
       .attr("fill",C.vermell).attr("fill-opacity",.28).style("mix-blend-mode","multiply");
     g.append("line").attr("x1",lx).attr("x2",x1).attr("y1",y).attr("y2",y).attr("stroke",C.vermell).attr("stroke-width",2.2);
     V.note(g,{
-      x:(lx+x1)/2, y:y+2, tx:x1-(mob?28:58), ty:y+42, kind:"curve", bend:-12, anchor:"end", size:11.5,
+      x:(lx+x1)/2, y:y+2, tx:x1-(mob?68:58), ty:y+(mob?46:42), kind:"curve", bend:mob?-10:-12, anchor:"end", size:11.5,
       lines:[["Una vida de 80 anys",true],[f2(life)+" s abans de mitjanit"]]
     });
     g.append("g").attr("class","marks");
@@ -355,7 +355,7 @@ function initScrolly(){
       });
       o.pts=pts;
       pts.forEach((p,i)=>{
-        const e=p.e, ly=o.y-34-i*(mob?34:38);
+        const e=p.e, ly=o.y-(mob?28:34)-i*(mob?28:38);
         const anc=p.x<o.x0+120?"start":"end", tx=anc==="end"?p.x-8:p.x+8;
         const eg=mk.append("g").datum(p).attr("class","emk");
         eg.append("path").attr("d",`M${p.x},${o.y-5}V${ly+4}H${tx+(anc==="end"?3:-3)}`)
@@ -386,10 +386,26 @@ function initScrolly(){
     });
     o.pts=pts;
     if(mob){
-      pts.forEach((p,i)=>{
-        const e=p.e, col=CAT_COL[e.cat], lr=o.R+16;
-        const bx=o.cx+Math.sin(p.a)*lr, by=o.cy-Math.cos(p.a)*lr;
+      const lr=o.R+16, minAng=21/lr;
+      const bPts=pts.map((p,i)=>({p,i,ba:p.a})).sort((a,b)=>a.ba-b.ba);
+      for(let pass=0;pass<8;pass++){
+        for(let j=1;j<bPts.length;j++){
+          const diff=bPts[j].ba-bPts[j-1].ba;
+          if(diff<minAng){
+            const push=(minAng-diff)/2;
+            bPts[j-1].ba-=push;
+            bPts[j].ba+=push;
+          }
+        }
+      }
+      bPts.sort((a,b)=>a.i-b.i).forEach(({p,i,ba})=>{
+        const e=p.e, col=CAT_COL[e.cat];
+        const bx=o.cx+Math.sin(ba)*lr, by=o.cy-Math.cos(ba)*lr;
         const eg=mk.append("g").datum(p).attr("class","emk");
+        if(Math.abs(ba-p.a)>.03){
+          eg.append("line").attr("x1",p.x).attr("y1",p.y).attr("x2",bx).attr("y2",by)
+            .attr("stroke",CAT_STROKE[e.cat]).attr("stroke-width",.8).attr("stroke-opacity",.65);
+        }
         eg.append("circle").attr("class","halo").attr("cx",p.x).attr("cy",p.y).attr("r",8)
           .attr("fill",col).attr("fill-opacity",.28).style("mix-blend-mode","multiply");
         eg.append("circle").attr("class","core").attr("cx",p.x).attr("cy",p.y).attr("r",3.5)
@@ -701,20 +717,120 @@ function initEras(){
   }
 
   function drawLog(el,w){
-    const mob=w<640, lanes=mob?5:5, laneH=mob?34:36;
-    const m={t:26,l:mob?10:14,r:mob?10:14}, axisY=m.t+lanes*laneH+22, H=axisY+52;
+    const mob=w<600;
+    const fmtTick=v=>{
+      if(v>=1e9) return f0(v/1e9)+" mil M";
+      if(v>=1e6) return f0(v/1e6)+" M";
+      return f0(v);
+    };
+
+    if(mob){
+      const m={t:22,b:34,l:64,r:8}, axisX=m.l, H=510;
+      const s=V.svg(el,w,H,"Línia del temps logarítmica vertical amb els 39 esdeveniments reals del calendari còsmic, des del Big Bang fa 13.787 milions d'anys fins a l'arribada a la Lluna fa 57 anys.");
+      const g=s.append("g");
+      const y=d3.scaleLog([1.45e10,40],[m.t,H-m.b]);
+
+      // Quadrícula i tics logarítmics a l'esquerra
+      const gridG=g.append("g"), axG=g.append("g");
+      const ticks=d3.range(2,11).map(k=>Math.pow(10,k)).filter(v=>Math.round(Math.log10(v))%2===0);
+      ticks.forEach(v=>{
+        const Y=y(v);
+        gridG.append("line").attr("x1",axisX).attr("x2",w-m.r).attr("y1",Y).attr("y2",Y).attr("stroke",C.grid).attr("stroke-width",.65);
+        axG.append("line").attr("x1",axisX-4).attr("x2",axisX).attr("y1",Y).attr("y2",Y).attr("stroke",C.muted);
+        V.t(axG,axisX-8,Y+3.5,fmtTick(v),{size:11,fill:C.muted,anchor:"end"});
+      });
+      g.append("line").attr("x1",axisX).attr("x2",axisX).attr("y1",m.t-4).attr("y2",H-m.b+4).attr("stroke",C.ink).attr("stroke-width",1);
+      V.t(axG,w-m.r,H-10,"anys enrere · escala logarítmica (×10)",{size:11,fill:C.ink2,anchor:"end",italic:true});
+
+      // Selecció i separació vertical d'etiquetes per prioritat
+      const lay={}, chosen=[];
+      const pri=EV.slice().sort((a,b)=>a.pri-b.pri||b.ya-a.ya);
+      const minGap=21;
+      pri.forEach(e=>{
+        const Y=y(e.ya);
+        const ok=chosen.every(p=>Math.abs(p.y-Y)>=minGap*.78);
+        if(ok&&chosen.length<20){
+          const item={e,y:Y,ly:Y};
+          chosen.push(item);
+          lay[e.id]={Y,item};
+        } else {
+          lay[e.id]={Y,item:null};
+        }
+      });
+      separate(chosen,minGap,m.t+4,H-m.b-4);
+
+      const evG=g.append("g"), hvG=g.append("g").style("pointer-events","none");
+      const evs=evG.selectAll("g.ev").data(EV,d=>d.id).join("g").attr("class","ev");
+      const tx=axisX+18, maxLabW=w-m.r-tx;
+
+      evs.each(function(d){
+        const L=lay[d.id], hasL=!!L.item, q=d3.select(this);
+        if(hasL){
+          const ly=L.item.ly;
+          q.append("path").attr("class","st")
+            .attr("d",`M${axisX+4},${L.Y}L${axisX+12},${ly}H${tx-3}`)
+            .attr("fill","none").attr("stroke",C.ink2).attr("stroke-width",.65);
+        }
+        q.append("circle").attr("class","halo").attr("cx",axisX).attr("cy",L.Y).attr("r",hasL?7:4.5)
+          .attr("fill",CAT_COL[d.cat]).attr("fill-opacity",.26).style("mix-blend-mode","multiply");
+        q.append("circle").attr("class","dt").attr("cx",axisX).attr("cy",L.Y).attr("r",hasL?3.2:2.2)
+          .attr("fill",CAT_COL[d.cat]).attr("stroke",CAT_STROKE[d.cat]).attr("stroke-width",.9);
+        if(hasL){
+          const ly=L.item.ly, lb=q.append("g").attr("class","lb");
+          const agShort=d.ya>=1e9?f1(d.ya/1e9)+" mil M":d.ya>=1e6?(d.ya>=1e8?f0(d.ya/1e6):f1(d.ya/1e6))+" M":f0(d.ya)+" a";
+          const nmW=textW(d.lab,11.5,700), agW=textW(" · "+agShort,11,400);
+          V.t(lb,tx,ly+3.5,d.lab,{anchor:"start",size:11.5,weight:700,fill:C.ink,halo:3});
+          if(nmW+agW<=maxLabW){
+            V.t(lb,tx+nmW+2,ly+3.5," · "+agShort,{anchor:"start",size:11,fill:C.muted,halo:3});
+          }
+        }
+      });
+
+      const tp=V.tip(el);
+      s.style("cursor","crosshair");
+      let curE=null;
+      function leave(){
+        if(!curE)return;
+        curE=null; hvG.selectAll("*").remove(); V.focus(evs,null); tp.hide();
+      }
+      V.hover(s.node(),(ev,[px,py])=>{
+        if(py<m.t-14||py>H-m.b+14){ leave(); return; }
+        const best=d3.least(EV,e=>Math.abs(lay[e.id].Y-py));
+        if(!best||Math.abs(lay[best.id].Y-py)>28){ leave(); return; }
+        if(curE===best)return;
+        curE=best;
+        const L=lay[best.id], Y=L.Y;
+        V.focus(evs,d=>d===best,{dim:.48});
+        evs.filter(d=>d===best).raise();
+        hvG.selectAll("*").remove();
+        hvG.append("line").attr("x1",axisX-6).attr("x2",w-m.r).attr("y1",Y).attr("y2",Y)
+          .attr("stroke",C.ink).attr("stroke-width",.7).attr("stroke-dasharray","2 2");
+        hvG.append("circle").attr("cx",axisX).attr("cy",Y).attr("r",5.5)
+          .attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.5);
+        if(!L.item){
+          V.t(hvG,tx,clamp(Y-8,m.t+8,H-m.b-8),best.lab,{anchor:"start",size:12,weight:700,fill:C.ink,halo:3.5});
+        }
+        tp.show(`<b>${best.lab}</b> · ${fmtAge(best.ya)}<br>${fmtCosmic(best)} · ${CAT_NAME[best.cat]}`);
+      },leave);
+
+      V.onView(el,inst=>{
+        if(inst)return;
+        evs.select(".dt").attr("r",0).transition().delay((d,i)=>i*18).duration(320)
+          .attr("r",d=>lay[d.id].item?3.2:2.2);
+        evs.select(".lb").style("opacity",0).transition().delay((d,i)=>220+i*18).duration(320).style("opacity",1);
+      });
+      return;
+    }
+
+    const lanes=5, laneH=36;
+    const m={t:26,l:14,r:14}, axisY=m.t+lanes*laneH+22, H=axisY+52;
     const s=V.svg(el,w,H,"Línia del temps logarítmica amb els 39 esdeveniments reals del calendari còsmic, des del Big Bang fa 13.787 milions d'anys fins a l'arribada a la Lluna fa 57 anys.");
     const g=s.append("g");
     const x=d3.scaleLog([1.45e10,40],[m.l,w-m.r]);
 
     // Quadrícula logarítmica
     const gridG=g.append("g"), axG=g.append("g");
-    const ticks=d3.range(2,11).map(k=>Math.pow(10,k)).filter(v=>!mob||Math.round(Math.log10(v))%2===0);
-    const fmtTick=v=>{
-      if(v>=1e9) return f0(v/1e9)+" mil M";
-      if(v>=1e6) return f0(v/1e6)+" M";
-      return f0(v);
-    };
+    const ticks=d3.range(2,11).map(k=>Math.pow(10,k));
     ticks.forEach(v=>{
       const X=x(v);
       gridG.append("line").attr("x1",X).attr("x2",X).attr("y1",m.t-4).attr("y2",axisY).attr("stroke",C.grid).attr("stroke-width",.65);

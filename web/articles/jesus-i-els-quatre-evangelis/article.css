@@ -103,7 +103,7 @@ ol.fts li{scroll-margin-top:30vh;transition:background-color .4s;padding:2px 4px
   #s-temps .plot,#s-mapa .plot{min-height:0}
   .graphic .src{display:none}
   .graphic .vh{margin-bottom:4px}
-  .graphic .vh span{display:none}
+  .graphic .vh span,.graphic .vh .lgs{display:none}
   .npop{display:none}
   .ev-grid,.ev-authors{grid-template-columns:1fr;gap:20px}
   .ev-authors{padding:0 16px}

@@ -96,7 +96,7 @@ h1{font-family:var(--serif-display);font-weight:400;font-size:clamp(50px,6.8vw,7
 .ann.imp{pointer-events:none;max-width:150px}
 .cap{font-family:var(--sans);letter-spacing:0;font-size:12px;color:var(--muted);margin:14px 0 6px;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:0 6px}.loc{margin:22px 0 4px}#loc34{display:block;width:100%}.cap span+span::before{content:"·";margin-right:6px}
 #xs{display:block;width:100%}
-.tip{position:absolute;left:0;top:0;background:var(--paper);border:1px solid var(--hair);font-family:var(--sans);letter-spacing:0;font-size:12.5px;padding:5px 8px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .12s;z-index:3;font-variant-numeric:tabular-nums}
+.tip{position:absolute;left:0;top:0;background:var(--paper);border:1px solid var(--hair);font-family:var(--sans);letter-spacing:0;font-size:12.5px;line-height:1.35;padding:5px 8px;white-space:normal;max-width:min(260px,calc(100vw - 32px));pointer-events:none;opacity:0;transition:opacity .12s;z-index:3;font-variant-numeric:tabular-nums}
 .card{position:absolute;width:290px;max-width:calc(100% - 4px);background:var(--paper);border-top:2px solid var(--ink);box-shadow:0 1px 0 var(--hair),0 10px 30px rgba(0,0,0,.08);padding:14px 16px 12px;z-index:4;font-size:15px;line-height:1.45}
 .card h3{font-family:var(--sans);font-size:15px;font-weight:700;margin:0 0 8px;display:flex;justify-content:space-between;gap:8px}
 .card h3 button{border:0;background:none;cursor:pointer;font-size:18px;line-height:1;padding:0 2px;color:var(--muted)}
@@ -167,20 +167,23 @@ dl.gl dd{margin:0;color:var(--ink-2)}
   .dek{font-size:20px}
   .scrolly{display:flex;flex-direction:column}
   .graphic{order:-1}
-  .graphic{height:auto;top:0;z-index:2;background:var(--paper);padding-block:10px 8px;border-bottom:1px solid var(--hair)}
-  .steps{padding-bottom:40vh}
-  .step{min-height:85vh;align-items:flex-end;padding-bottom:6vh}
-  .step:first-child{min-height:60vh}
+  .graphic{height:auto;top:0;z-index:2;background:var(--paper);padding-block:6px 4px;border-bottom:1px solid var(--hair)}
+  .steps{padding-bottom:35dvh}
+  .step{min-height:75dvh;align-items:flex-end;padding-bottom:8dvh}
+  .step:first-child{min-height:55dvh}
   .step-in{background:var(--paper);padding:14px 0;opacity:.35}
-  .ghead{margin-bottom:6px}
-  .state strong{font-size:18px}
+  .ghead{margin-bottom:3px}
+  .state{flex-direction:row;align-items:baseline;gap:8px}
+  .state strong{font-size:17px}
+  .state .val{font-size:12.5px}
   .legend{display:none}
-  .ann{font-size:10.5px;max-width:110px}
+  .ann{font-size:11px;max-width:110px}
   .ann.hm{display:none}
   .ann.imp{max-width:none}.ann.imp b,.ann.imp .t{display:none}
-  .cap{margin:6px 0 2px;font-size:10.5px}
-  .ctl{grid-template-columns:minmax(0,1fr);gap:8px;margin-top:8px;padding-top:8px}
-  #tl{height:44px}
+  .cap{margin:4px 0 2px;font-size:11px}
+  #gbox>.cap{display:none}
+  .ctl{grid-template-columns:minmax(0,1fr);gap:4px;margin-top:4px;padding-top:4px}
+  #tl{height:34px}
   dl.gl{grid-template-columns:minmax(0,1fr);gap:2px}
   dl.gl dd{margin-bottom:12px}
   .card{left:0!important;width:100%}
@@ -217,26 +220,32 @@ dl.gl dd{margin:0;color:var(--ink-2)}
 
 /* ---- mobile, vertical ---- */
 .lg-m{display:none}
+@media (pointer:coarse){
+  .playb,#aReplay,#oReplay{min-height:44px;padding:8px 0}
+}
 @media (max-width:899px){
   .page{overflow-x:clip}
   .state .src{display:none}
   #gbox>.cap span+span{display:none}
   .cap{flex-direction:column;gap:1px}.cap span+span::before{content:none}
-  .lg-m{display:flex;align-items:center;gap:6px 12px;flex-wrap:wrap;font-family:var(--sans);font-size:10.5px;color:var(--ink-2);margin:4px 0 0}
+  .lg-m{display:flex;align-items:center;gap:4px 10px;flex-wrap:wrap;font-family:var(--sans);font-size:11px;color:var(--ink-2);margin:2px 0 0}
   .lg-m .rb{display:inline-block;width:54px;height:5px;background:linear-gradient(90deg,#1F4A8E,#2C5DA8 16%,#8FB3DA 34%,#E4E4E2 50%,#EDA27A 66%,#C8442A 84%,#7E1A16);vertical-align:middle;margin:0 4px}
   .lg-m i{display:inline-block;width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.55;margin-right:4px;vertical-align:-1px}
-  .ctl{gap:6px;margin-top:6px;padding-top:6px}
+  .ctl{gap:4px;margin-top:4px;padding-top:4px}
   .ctl>div:first-child{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px}
   .ctl>div:first-child .lbl{display:none}
   .ctl .presets{display:contents}
-  .ctl .presets button{font-size:12.5px;padding:6px 0;min-height:32px}
+  .ctl .presets button{font-size:12.5px;padding:2px 0;min-height:32px}
   .ctl .presets button:first-child{order:1}.ctl .rng{order:2}.ctl .presets button:last-child{order:3}
   .ctl .presets button:nth-child(2){display:none}
   .rng::-webkit-slider-thumb{width:22px;height:22px;margin-top:-11px}
-  .rng{height:36px}
-  .playb{min-height:36px;padding:8px 0}
+  .rng{height:32px}
+  .playb,#aReplay,#oReplay{min-height:44px;padding:8px 0}
+  .ctl .playb{min-height:26px;padding:2px 0}
   .ctl .lbl{margin-bottom:0}
-  #tl{height:40px}
+  .ctl>div:last-child .lbl>span{display:none}
+  .ctl>div:last-child .lbl{justify-content:flex-end}
+  #tl{height:34px}
   .step p{font-size:17px}
   .sh{font-size:27px;margin-top:72px}
   .fig{margin:28px auto 20px}
@@ -251,19 +260,18 @@ dl.gl dd{margin:0;color:var(--ink-2)}
 
 @media (max-width:899px){
   h1{text-wrap:balance}
-  .ctl .presets button{min-height:40px}
 }
 @media (max-width:899px) and (max-height:760px){
   #gbox>.cap{display:none}
   .ghead{margin-bottom:2px}
-  .state strong{font-size:16px}.state .val{font-size:13px}
+  .state strong{font-size:16px}.state .val{font-size:12px}
   .ctl>div:last-child .lbl>span{display:none}
   .ctl>div:last-child .lbl{justify-content:flex-end}
   #tl{height:32px}
   .rng{height:30px}
   .ctl .playb{min-height:0;padding:2px 0}
-  .ctl .presets button{min-height:32px}
-  .graphic{padding-block:6px 4px}
+  .ctl .presets button{min-height:30px}
+  .graphic{padding-block:5px 4px}
   .lg-m{margin-top:2px}
   .step p{font-size:16px;line-height:1.5}
   .step .note{font-size:14px}
@@ -662,15 +670,16 @@ const impEls=IMP.map(m=>{const el=document.createElement("div");el.className="an
 function layout(){
   S.mob=innerWidth<900;
   const colW=graphic.clientWidth;
-  const ratio=(MLAT1-MLAT0)/(ME1-ME0);
-  const secR=S.mob?(innerHeight<700?.18:.24):.17;
+  const latMax=S.mob?33:MLAT1, latMin=S.mob?-33:MLAT0;
+  const ratio=(latMax-latMin)/(ME1-ME0);
+  const secR=S.mob?.20:.17;
   let w=colW;
   if(!S.mob){const avail=innerHeight-300;w=Math.min(colW,Math.floor(avail/(ratio+secR)))}
-  else{const avail=innerHeight*.62-150;w=Math.min(colW,Math.floor(avail/(ratio+secR)))}
-  gbox.style.maxWidth=Math.max(220,w)+"px";
+  else{const avail=Math.min(innerHeight*.23,190);w=Math.min(colW,Math.floor(avail/(ratio+secR)))}
+  gbox.style.maxWidth=Math.max(220,S.mob?colW:w)+"px";
   W=mapEl.clientWidth;if(W<4||innerHeight<4){W=0;return}K=W/1000;dpr=Math.min(2,devicePixelRatio||1);
-  const sc=W/((ME1-ME0)*Math.PI/180);proj=d3.geoEquirectangular().rotate([-(ME0+ME1)/2,0]).scale(sc).translate([W/2,sc*MLAT1*Math.PI/180]);
-  H=Math.round(W*ratio);
+  const sc=W/((ME1-ME0)*Math.PI/180);proj=d3.geoEquirectangular().rotate([-(ME0+ME1)/2,0]).scale(sc).translate([W/2,sc*latMax*Math.PI/180]);
+  H=S.mob?Math.round(clamp(W*ratio,112,118)):Math.round(W*ratio);
   cv.width=W*dpr;cv.height=H*dpr;cv.style.height=H+"px";
   const sp=d3.geoPath(proj);landP=new Path2D(sp(land));bordP=new Path2D(sp(borders));
   const m=document.createElement("canvas");m.width=W;m.height=H;const mc=m.getContext("2d",{willReadFrequently:true});
@@ -712,11 +721,11 @@ function drawMap(t){
     for(const p of pts){const E=p[2],la=p[3];if(E<215||la>6||la<-22)continue;const ce=279.6-.3*Math.min(la,0),wc=Math.exp(-(((E-ce)/3.2)**2))*clamp((la+19)/6,0,1)*clamp((1.5-la)/2,0,1),wt=Math.exp(-(((la+1)/2.6)**2))*sm((E-222)/45)*.55,q=Math.max(wc,wt)*rc;if(q<.12)continue;const r=rmax*.62*Math.min(1,q);ctx.moveTo(p[0]+r,p[1]);ctx.arc(p[0],p[1],r,0,6.2832)}
     ctx.fill();ctx.globalAlpha=1}}
   ctx.save();ctx.setLineDash([1,3]);ctx.strokeStyle=C.muted;ctx.lineWidth=.7;ctx.beginPath();eqPts.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.stroke();ctx.restore();
-  ctx.font=`italic ${Math.round(clamp(12*K+1,10,13))}px "STIXGeneral", "STIX Two Text", Georgia, serif`;ctx.fillStyle=C.water;ctx.textAlign="left";
+  ctx.font=`italic ${Math.round(clamp(12*K+1,11,13))}px "STIXGeneral", "STIX Two Text", Georgia, serif`;ctx.fillStyle=C.water;ctx.textAlign="left";
   if(!S.mob){const q=P(ME0+1.5,0);ctx.fillText("Equador",q[0],q[1]-5)}
   ctx.textAlign="center";
   {const q=P(203,25);ctx.fillText("Oceà Pacífic",q[0],q[1])}
-  ctx.font=`${Math.round(clamp(11*K+1,10,12))}px "Source Sans 3", Arial, sans-serif`;ctx.fillStyle=C.muted;[["Indonèsia",118,-6],["Austràlia",134,-24],["Perú",285,-10],["Amèrica del Sud",298,-26],["Amèrica del Nord",258,29],["Àsia",110,27]].forEach(([s,E,la])=>{if(S.imp&&(s==="Indonèsia"||s==="Perú"||s==="Austràlia"||s==="Amèrica del Nord"))return;const q=P(E,la);if(q[0]<W-20&&q[0]>20)ctx.fillText(s,q[0],q[1])});
+  ctx.font=`${Math.round(clamp(11*K+1,11,12))}px "Source Sans 3", Arial, sans-serif`;ctx.fillStyle=C.muted;[["Indonèsia",118,-6],["Austràlia",134,-24],["Perú",285,-10],["Amèrica del Sud",298,-26],["Amèrica del Nord",258,29],["Àsia",110,27]].forEach(([s,E,la])=>{if(S.imp&&(s==="Indonèsia"||s==="Perú"||s==="Austràlia"||s==="Amèrica del Nord"))return;const q=P(E,la);if(q[0]<W-20&&q[0]>20)ctx.fillText(s,q[0],q[1])});
   ctx.save();ctx.setLineDash([3,3]);ctx.strokeStyle=C.ink;ctx.lineWidth=S.box?1.3:.8;ctx.globalAlpha=S.box?1:.55;ctx.beginPath();boxPts.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.closePath();ctx.stroke();ctx.restore();
   const tr=trade(v);ctx.strokeStyle=C.ink;ctx.lineCap="round";
   for(let s=0;s<2;s++){ctx.globalAlpha=(.18+.22*clamp(tr,0,1.4))*(s?1:.45);ctx.lineWidth=s?.9:.6;ctx.beginPath();for(const p of parts){const n=p.tr.length;if(n<3)continue;const a0=s?Math.floor(n/2):0,a1=s?n-1:Math.floor(n/2);ctx.moveTo(p.tr[a0][0],p.tr[a0][1]);for(let i=a0+1;i<=a1;i++)ctx.lineTo(p.tr[i][0],p.tr[i][1])}ctx.stroke()}
@@ -743,6 +752,7 @@ cv.addEventListener("pointermove",e=>{const r=cv.getBoundingClientRect(),x=e.cli
   if(ocean(x,y)){const ll=proj.invert([x,y]),t=(performance.now()-T0)/1000,E=(ll[0]+360)%360,a=anom(E,ll[1],S.idx,t);tipAt(x,y,`${sst(E,ll[1],S.idx,t).toFixed(1).replace(".",",")} °C · ${fmt(a)} °C respecte al normal`)}else tip.style.opacity=0});
 cv.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse")cv.dispatchEvent(new PointerEvent("pointermove",{clientX:e.clientX,clientY:e.clientY}))});
 cv.addEventListener("pointerleave",e=>{if(e.pointerType==="mouse")tip.style.opacity=0});
+document.addEventListener("pointerdown",e=>{if(!cv.contains(e.target)&&tip.style.opacity!=="0")tip.style.opacity=0});
 addEventListener("scroll",()=>{if(tip.style.opacity!=="0")tip.style.opacity=0},{passive:true});
 
 function tipAt(x,y,t){tip.textContent=t;tip.style.opacity=1;const w=tip.offsetWidth;tip.style.transform=`translate(${clamp(x+12,0,W-w)}px,${clamp(y-30,0,H-26)}px)`}
@@ -759,7 +769,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")hideCard()});
 
 /* ---------- cross-section ---------- */
 const xs=document.getElementById("xs"),xc=xs.getContext("2d");let SW=0,SH=0;
-function layoutXS(){SW=W;SH=Math.round(clamp(W*(S.mob?.24:.17),80,180));xs.width=SW*dpr;xs.height=SH*dpr;xs.style.height=SH+"px"}
+function layoutXS(){SW=W;SH=S.mob?Math.round(clamp(W*.20,68,72)):Math.round(clamp(W*.17,80,180));xs.width=SW*dpr;xs.height=SH*dpr;xs.style.height=SH+"px"}
 /* ---------- shared: section land + nutrients ---------- */
 const reachOf=thD=>clamp((.42-thD)/.26,0,1);
 function secLand(c,X,sf,od,lu,w,bot){
@@ -803,7 +813,7 @@ function drawXS(t){
     [Math.PI/2,Math.PI*1.5].forEach(a=>{const p=pt(a),q=pt(a+dir*.05),an=Math.atan2(q[1]-p[1],q[0]-p[0]);xc.beginPath();xc.moveTo(q[0]-6*Math.cos(an-.5),q[1]-6*Math.sin(an-.5));xc.lineTo(q[0],q[1]);xc.lineTo(q[0]-6*Math.cos(an+.5),q[1]-6*Math.sin(an+.5));xc.stroke()});xc.restore()};
   loop(er,es,1,clamp(tr,.1,1.3));if(fe>.08)loop(112,er,-1,fe*.8);
   const rx=X(er);xc.strokeStyle=C.wet;xc.lineWidth=1;for(let i=0;i<7;i++){const x=rx+(i-3)*5,f=(t*1.4+i*.37)%1,y=yT+8+(seaY-yT-14)*f;xc.globalAlpha=.85*Math.sin(f*Math.PI);xc.beginPath();xc.moveTo(x,y);xc.lineTo(x-1.5,y+6);xc.stroke()}xc.globalAlpha=1;
-  const fs=S.mob?10.5:11.5;
+  const fs=S.mob?11:11.5;
   const L=(s,x,y,al,col,bold)=>{xc.font=`${bold?"600 ":""}${fs}px "Source Sans 3", Arial, sans-serif`;xc.textAlign=al;xc.fillStyle=col;xc.fillText(s,x,y)};
   {xc.font=`${fs}px "Source Sans 3", Arial, sans-serif`;const iw=xc.measureText("Indonèsia").width;L("Indonèsia",Math.max(X(113.5),iw/2+2),surf(114.6)-lu*7-6,"center",C.muted)}L("Perú",w-4,surf(284.7)-lu*18-7,"right",C.muted);
   {const ax=X(clamp((er+es)/2,160,230));xc.font=`${fs}px "Source Sans 3", Arial, sans-serif`;const aw=xc.measureText("Alisis 100 %").width,pr=rx+22+30>ax-aw/2-4;L("Pluja",pr?rx-12:rx+22,yT+fs+4,pr?"right":"left",C.wet,true);
@@ -827,7 +837,7 @@ function drawTL(){
   const G=TG();tc.setTransform(dpr,0,0,dpr,0,0);tc.clearRect(0,0,TW,TH);
   for(let i=0;i<ONI.length;i++){const v=ONI[i],x=G.x0+i*G.bw,hh=v*G.ky;tc.fillStyle=Math.abs(v)<.5?C.dot:rgb(ip(ANOM,v*1.1));tc.fillRect(x,v>0?G.y0-hh:G.y0,Math.max(G.bw-.1,.5),Math.abs(hh)||.4)}
   tc.fillStyle=C.ink;tc.fillRect(G.x0,G.y0,G.x1-G.x0,.6);
-  tc.font='10.5px "Source Sans 3", Arial, sans-serif';tc.fillStyle=C.muted;tc.textAlign="left";
+  tc.font='11px "Source Sans 3", Arial, sans-serif';tc.fillStyle=C.muted;tc.textAlign="left";
   for(let y=1950;y<=2020;y+=10){const x=G.x0+(y-1950)*12*G.bw;tc.fillText(String(y),x+2,TH-1);tc.fillRect(x,G.bot,.6,3)}
   tc.fillText("+2",G.x1+6,G.y0-2*G.ky+4);if(!S.mob)tc.fillText("0",G.x1+6,G.y0+4);tc.fillText("−2",G.x1+6,Math.min(G.y0+2*G.ky+4,G.bot));
   if(TW>480){tc.fillStyle=C.ink2;EV.forEach(e=>{const x=G.x0+e.i*G.bw;tc.fillText(e.l,x+4,e.v>0?Math.max(9,G.y0-e.v*G.ky+8):Math.min(G.bot-2,G.y0-e.v*G.ky))})}
@@ -919,7 +929,7 @@ const gVis=(lon,lat)=>d3.geoDistance([lon,lat],GC)<1.5;
 function gSpawn(p,init){p.lon=GC[0]-75+Math.random()*150;const s=Math.random()<.5?1:-1;p.lat=s*(3+Math.random()*27);p.a=0;p.l=2+Math.random()*3;p.tr=[]}
 function layoutGlobe(){
   GW=document.getElementById("pbox").clientWidth;if(!GW)return;const m=mob();
-  GH=Math.round(m?Math.min(innerHeight*.5,GW*.95):Math.min(innerHeight*.76,GW*.7));
+  GH=Math.round(m?Math.min(innerHeight*.31,GW*.78,265):Math.min(innerHeight*.76,GW*.7));
   gl.width=GW*dpr;gl.height=GH*dpr;gl.style.height=GH+"px";
   gr=Math.min(GW*(m?.35:.24),GH*(m?.4:.33));gcx=m?GW*.49:Math.max(GW*.42,Math.min(GW*.5,GW-gr*1.42-215));if(!m&&gcx+gr*1.42+205>GW)gr=Math.max(GW*.2,(GW-gcx-205)/1.42);gcy=GH*.53;
   gproj=d3.geoOrthographic().rotate([150,0]).scale(gr).translate([gcx,gcy]).clipAngle(90).precision(.5);
@@ -936,7 +946,7 @@ function layoutGlobe(){
 }
 function drawGlobe(t,rdt){
   if(!GW)return;easeObj(GA,gT,Math.min(1,rdt*3));
-  const c=gx,m=mob(),fs=m?10.5:12.5;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,GW,GH);
+  const c=gx,m=mob(),fs=m?11:12.5,fsS=Math.max(11,fs-1);c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,GW,GH);
   const yL=lat=>gcy-gr*Math.sin(lat*R2D),xL=lat=>gcx-gr*Math.cos(lat*R2D),xR=lat=>gcx+gr*Math.cos(lat*R2D);
   // sun rays + two equal beams
   if(GA.sun>.01){
@@ -960,7 +970,7 @@ function drawGlobe(t,rdt){
   if(GA.sst>.01){c.save();c.globalAlpha=GA.sst;const rr=Math.max(1.3,gr/110);for(const s of gSST){c.fillStyle=s[2];c.beginPath();c.arc(s[0],s[1],rr,0,6.2832);c.fill()}c.restore()}
   // latitude guides
   if(GA.lat>.01){c.save();c.globalAlpha=GA.lat;c.setLineDash([1,3]);c.strokeStyle=C.muted;c.lineWidth=.7;[30,0,-30].forEach(l=>{const y=yL(l),hw=gr*Math.cos(l*R2D);c.beginPath();c.moveTo(gcx-hw,y);c.lineTo(gcx+hw,y);c.stroke()});c.restore();
-    [[30,"30° N"],[0,m?"Eq.":"Equador"],[-30,"30° S"]].forEach(([l,s])=>txt(c,[s],xL(l)-8,yL(l)+4,"right",fs-1,GA.lat,C.muted))}
+    [[30,"30° N"],[0,m?"Eq.":"Equador"],[-30,"30° S"]].forEach(([l,s])=>txt(c,[s],xL(l)-8,yL(l)+4,"right",fsS,GA.lat,C.muted))}
   c.strokeStyle=C.ink;c.lineWidth=.8;c.beginPath();c.arc(gcx,gcy,gr,0,6.2832);c.stroke();
   // Hadley cells on the right limb
   if(GA.cells>.01){
@@ -985,7 +995,7 @@ function drawGlobe(t,rdt){
     if(da>.01){
       [1,-1].forEach(sg=>{const y=gcy-sg*gr*1.26*Math.sin(30*R2D),x=gcx+gr*1.26*Math.cos(30*R2D);c.save();c.globalAlpha=da;c.strokeStyle=C.dry;c.lineWidth=2;c.beginPath();c.moveTo(x+10,y);c.lineTo(x+10,y+sg*gr*.12);c.stroke();chev(c,[x+10,y],[x+10,y+sg*gr*.12],6);c.restore();
         if(!m)txt(c,sg>0?[["L'aire sec baixa",true,C.dry],["Aquí no plou: Sonora, Mojave"]]:[["També a l'hemisferi sud",true,C.dry],["Atacama, Austràlia"]],x+24,y+(sg>0?-6:14),"left",fs,da)});
-      [[-70,-24,"Atacama","l"],[133,-25,"Desert australià","r"],[-113,31,"Sonora","l"],[-116,35.5,"Mojave","l"]].forEach(([lo,la,n,al])=>{const q=gproj([lo,la]);c.save();c.globalAlpha=da;c.fillStyle=C.dry;c.beginPath();c.arc(q[0],q[1],3.2,0,6.2832);c.fill();c.restore();txt(c,[[n,true,C.dry]],q[0]+(al==="l"?-7:7),q[1]+4,al==="l"?"right":"left",fs-1,da)});
+      [[-70,-24,"Atacama","l"],[133,-25,"Desert australià","r"],[-113,31,"Sonora","l"],[-116,35.5,"Mojave","l"]].forEach(([lo,la,n,al])=>{const q=gproj([lo,la]);c.save();c.globalAlpha=da;c.fillStyle=C.dry;c.beginPath();c.arc(q[0],q[1],3.2,0,6.2832);c.fill();c.restore();txt(c,[[n,true,C.dry]],q[0]+(al==="l"?-7:7),q[1]+4,al==="l"?"right":"left",fsS,da)});
       if(!m)txt(c,[["Arran de terra,"],["l'aire torna cap a l'equador"]],gcx+gr*1.34,gcy+gr*.2+fs,"left",fs,da,C.ink2);
     }
   }
@@ -1026,7 +1036,7 @@ function drawGlobe(t,rdt){
       c.fillStyle=C.wet;c.beginPath();c.arc(q[0],q[1],5.5,0,6.2832);c.fill();c.restore();
       if(sg>0&&!m){const s0=gproj([lo0,30]),e0=gproj(path(1)),gE=gproj([lo0,3]);
         txt(c,[["Surt a 1.450 km/h cap a l'est",true],["la velocitat del terra a 30°",false,C.ink2]],s0[0]+12,s0[1]-fs*1.6,"left",fs,al);
-        txt(c,[["Sense gir,",false,C.muted],["aniria recte",false,C.muted]],gE[0]+10,gE[1]-fs*.6,"left",fs-1,al);
+        txt(c,[["Sense gir,",false,C.muted],["aniria recte",false,C.muted]],gE[0]+10,gE[1]-fs*.6,"left",fsS,al);
         txt(c,[["Aquí el terra va a 1.670 km/h",true],["i l'avança: la bombolla"],["es queda enrere, cap a l'oest",false,C.wet]],e0[0]-6,e0[1]+fs*3.2,"center",fs,al);c.save();c.globalAlpha=al*.7;c.strokeStyle=C.ink;c.lineWidth=.6;c.beginPath();c.moveTo(e0[0],e0[1]+7);c.lineTo(e0[0]-6,e0[1]+fs*2.1);c.stroke();c.restore()}
     });
     if(!m)txt(c,[["Efecte de Coriolis",true],["el vent es desvia"],["cap a l'oest"]],gcx+gr+18,gcy-gr*.2,"left",fs,GA.parcel);
@@ -1047,7 +1057,7 @@ const rn=document.getElementById("rain"),rcx=rn.getContext("2d");let RW=0,RH=0,r
 const TLO=26,THI=28;
 function layoutRain(){RW=rn.parentElement.clientWidth;RH=mob()?330:390;rn.width=RW*dpr;rn.height=RH*dpr;rn.style.height=RH+"px";rParts=[];rDrops=[]}
 function drawRain(t,rdt){
-  if(!RW)return;const c=rcx,m=mob(),fs=m?10.5:12.5;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,RW,RH);
+  if(!RW)return;const c=rcx,m=mob(),fs=m?11:12.5,fsS=Math.max(11,fs-1);c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,RW,RH);
   const L=22,Rr=RW-22,top=42,base=RH-(m?150:156),Tx=T=>Rr-(T-20)/11*(Rr-L),xT=x=>20+(Rr-x)/(Rr-L)*11,hh=base-top;
   // threshold band
   c.fillStyle="rgba(18,18,18,.035)";c.fillRect(Tx(THI),top-14,Tx(TLO)-Tx(THI),base-top+14);
@@ -1064,13 +1074,13 @@ function drawRain(t,rdt){
   // sea strip + axis
   for(let x=L;x<Rr;x+=2){c.fillStyle=rgb(ip(SEC,xT(x)));c.fillRect(x,base,2.6,12)}
   c.fillStyle=C.ink;c.fillRect(L,base,Rr-L,.8);
-  c.font=`${fs-1}px ${SSF}`;c.textAlign="center";c.fillStyle=C.muted;
+  c.font=`${fsS}px ${SSF}`;c.textAlign="center";c.fillStyle=C.muted;
   for(let T=20;T<=30;T+=2){const x=Tx(T);c.fillRect(x,base+12,.7,4);c.fillText(T+" °C",x,base+29)}
   c.textAlign="center";c.fillText(RW<380?"← Més calenta · Més freda →":"← Més calenta · Temperatura de l'aigua del mar · Més freda →",RW<380?(L+Rr)/2:Tx(24.2),base+46);
   // labels in the air
-  txt(c,[["Llindar",true],["entre 26 i 28 °C"]],Tx(27),top-24,"center",fs,1);
-  txt(c,[["Aigua més freda",true],["núvols baixos, poca pluja"]],Rr-2,base-hh*.55,"right",fs,1,C.ink2);
-  txt(c,[["Torres de núvols",true],["de més de 15 km"],["i pluja forta",true,C.wet]],L+2,top+6,"left",fs,1);
+  txt(c,m?[["Llindar",true],["26–28 °C"]]:[["Llindar",true],["entre 26 i 28 °C"]],Tx(27),top-24,"center",fs,1);
+  txt(c,m?[["Aigua freda",true],["poca pluja"]]:[["Aigua més freda",true],["núvols baixos, poca pluja"]],Rr-2,base-hh*.55,"right",fs,1,C.ink2);
+  txt(c,m?[["Torres de núvols",true],["+15 km · pluja",true,C.wet]]:[["Torres de núvols",true],["de més de 15 km"],["i pluja forta",true,C.wet]],L+2,top+6,"left",fs,1);
   // where real places sit on the scale
   const n34=NORM[8],now=Y26[8];
   const ya=base-14;c.save();c.globalAlpha=.95;arrow(c,Tx(n34),ya,Tx(now),ya,hh*.16,C.warm,1.8);c.restore();
@@ -1093,10 +1103,10 @@ const MC=["gen","feb","mar","abr","mai","jun","jul","ago","set","oct","nov","des
 function layoutAnom(){AW=an.parentElement.clientWidth;AH=mob()?310:400;an.width=AW*dpr;an.height=AH*dpr;an.style.height=AH+"px";drawAnom(aP)}
 function aG(){const m=mob(),l=m?34:46,r=m?8:190,tp=40,b=30;return{l,r,tp,b,x:s=>l+s/11*(AW-l-r),y:v=>tp+(30.3-v)/(30.3-24.6)*(AH-tp-b)}}
 function drawAnom(p){
-  if(!AW)return;const c=acx,G=aG(),m=mob(),fs=m?10.5:12.5;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,AW,AH);
-  c.font=`${fs-1}px ${SSF}`;c.textAlign="right";
+  if(!AW)return;const c=acx,G=aG(),m=mob(),fs=m?11:12.5,fsS=Math.max(11,fs-1);c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,AW,AH);
+  c.font=`${fsS}px ${SSF}`;c.textAlign="right";
   [25,26,27,28,29,30].forEach(v=>{const y=G.y(v);c.fillStyle=C.hair;c.fillRect(G.l,y,AW-G.l-G.r,.7);c.fillStyle=C.muted;c.fillText(v+" °C",G.l-6,y+4)});
-  c.textAlign="center";MC.forEach((n,s)=>{const x=G.x(s);c.fillStyle=C.muted;c.fillRect(x,AH-G.b,.7,4);c.fillText(n,x,AH-G.b+18)});
+  c.textAlign="center";MC.forEach((n,s)=>{const x=G.x(s);c.fillStyle=C.muted;c.fillRect(x,AH-G.b,.7,4);if(m&&s%2!==0)return;const ml=m&&(n==="mar"?"març":n==="mai"?"maig":n)||n;c.fillText(ml,x,AH-G.b+18)});
   const line=(arr,upto)=>{c.beginPath();const n=Math.max(0,Math.min(arr.length-1,upto));for(let k=0;k<=Math.floor(n);k++){const x=G.x(k),y=G.y(arr[k]);k?c.lineTo(x,y):c.moveTo(x,y)}const f=n-Math.floor(n);if(f>0&&Math.floor(n)<arr.length-1){const k=Math.floor(n);c.lineTo(G.x(k+f),G.y(arr[k]+(arr[k+1]-arr[k])*f))}c.stroke()};
   // 30 grey years
   c.strokeStyle=C.muted;c.lineWidth=1;
@@ -1122,18 +1132,21 @@ function drawAnom(p){
   if(la>0&&WP.length){c.save();c.globalAlpha=la;c.strokeStyle=C.warm;c.lineWidth=2;c.setLineDash([2,4]);c.beginPath();c.moveTo(xe,yr);WP.forEach(w=>c.lineTo(G.x(w.x),G.y(w.v)));c.stroke();c.setLineDash([]);c.fillStyle=C.warm;WP.forEach((w,i)=>{c.beginPath();c.arc(G.x(w.x),G.y(w.v),i===WP.length-1?3.5:2,0,6.2832);c.fill()});c.restore();
     const Lw=WP[WP.length-1];txt(c,[[`${+Lw.d.slice(0,2)} nov: ${f1(Lw.v)} °C`,true,C.warm],["marca setmanal, provisional",false,C.muted]],G.x(Lw.x)+(m?-4:8),G.y(Lw.v)-fs*1.9,m?"right":"left",fs,la)}
   txt(c,[[`Ago–oct 2026: ${f1(Y26[ke])} °C`,true,C.warm]],xe-8,yr-12,"right",fs,la);
-  if(la>0){c.save();c.globalAlpha=la;const bx=xe+(m?14:20);c.strokeStyle=C.warm;c.lineWidth=1.2;c.beginPath();c.moveTo(bx-5,yr);c.lineTo(bx,yr);c.lineTo(bx,yn);c.lineTo(bx-5,yn);c.stroke();c.restore();
-    txt(c,[[`${fmt(A26[ke])} °C`,true,C.warm],["anomalia",false,C.ink2]],bx+6,(yr+yn)/2,"left",fs,la)}
+  if(la>0){c.save();c.globalAlpha=la;const bx=clamp(xe+(m?10:20),8,AW-8),flip=m&&bx+66>AW-8;c.strokeStyle=C.warm;c.lineWidth=1.2;c.beginPath();c.moveTo(bx-5,yr);c.lineTo(bx,yr);c.lineTo(bx,yn);c.lineTo(bx-5,yn);c.stroke();c.restore();
+    txt(c,[[`${fmt(A26[ke])} °C`,true,C.warm],["anomalia",false,C.ink2]],flip?clamp(bx-8,8,AW-8):clamp(bx+6,8,AW-8),(yr+yn)/2,flip?"right":"left",fs,la)}
   if(aHover>=0){const x=G.x(aHover);c.fillStyle=C.ink;c.fillRect(x-.4,G.tp,.8,AH-G.tp-G.b);c.beginPath();c.arc(x,G.y(NORM[aHover]),3.5,0,6.2832);c.fill();if(aHover<N26){c.fillStyle=C.warm;c.beginPath();c.arc(x,G.y(Y26[aHover]),3.5,0,6.2832);c.fill()}}
 }
 function animAnom(now){
   if(aStart===null){if(vis.anom===true&&!RM){aStart=now;aP=0}else return}
   if(aP<4.3){aP=(now-aStart)/1000*1.05;drawAnom(aP)}
 }
+function hideAtip(){if(aHover<0&&atip.style.opacity==="0")return;aHover=-1;atip.style.opacity=0;drawAnom(Math.max(aP,4.3))}
 an.addEventListener("pointermove",e=>{const r=an.getBoundingClientRect(),G=aG(),s=clamp(Math.round((e.clientX-r.left-G.l)/(AW-G.l-G.r)*11),0,11);aHover=s;drawAnom(Math.max(aP,4.3));
   const M=MON[s],t26=s<N26?` · 2026: ${f1(Y26[s])} °C (${fmt(A26[s])})`:"";atip.textContent=`${M[0].toUpperCase()+M.slice(1)} · normal ${f1(NORM[s])} °C${t26} · els 30 anys: de ${f1(MINS[s])} a ${f1(MAXS[s])} °C`;atip.style.opacity=1;const w=atip.offsetWidth;atip.style.transform=`translate(${clamp(G.x(s)-w/2,0,Math.max(0,AW-w))}px,-30px)`});
 an.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse")an.dispatchEvent(new PointerEvent("pointermove",{clientX:e.clientX,clientY:e.clientY}))});
-an.addEventListener("pointerleave",e=>{if(e.pointerType!=="mouse")return;aHover=-1;atip.style.opacity=0;drawAnom(Math.max(aP,4.3))});
+an.addEventListener("pointerleave",e=>{if(e.pointerType!=="mouse")return;hideAtip()});
+document.addEventListener("pointerdown",e=>{if(!an.contains(e.target))hideAtip()});
+addEventListener("scroll",hideAtip,{passive:true});
 document.getElementById("aReplay").addEventListener("click",()=>{if(RM){aP=4.3;drawAnom(aP);return}aStart=performance.now();aP=0});
 
 
@@ -1153,10 +1166,10 @@ const MS=[
 ];
 const MA={...MS[0]};let mT=MS[0],mStep=0,mLab=1;
 const mixC=(a,b,f)=>{const A=hx(a),B=hx(b);return rgb([A[0]+(B[0]-A[0])*f,A[1]+(B[1]-A[1])*f,A[2]+(B[2]-A[2])*f])};
-function layoutMech(){MW=document.getElementById("mbox").clientWidth;if(!MW)return;MH=Math.round(mob()?Math.min(innerHeight*.42,MW*.78):Math.min(innerHeight*.64,MW*.52));mcv.width=MW*dpr;mcv.height=MH*dpr;mcv.style.height=MH+"px"}
+function layoutMech(){MW=document.getElementById("mbox").clientWidth;if(!MW)return;MH=Math.round(mob()?Math.min(innerHeight*.31,MW*.78,265):Math.min(innerHeight*.64,MW*.52));mcv.width=MW*dpr;mcv.height=MH*dpr;mcv.style.height=MH+"px"}
 function drawMech(t,rdt){
   if(!MW)return;easeObj(MA,mT,Math.min(1,rdt*2.2));mLab=Math.min(1,mLab+rdt*1.4);
-  const c=mxc,m=mob(),fs=m?10.5:12.5,w=MW,h=MH;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+  const c=mxc,m=mob(),fs=m?11:12.5,fsS=Math.max(11,fs-1),w=MW,h=MH;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
   const E0=ME0,E1=ME1,X=E=>(E-E0)/(E1-E0)*w,Ei=x=>E0+x/w*(E1-E0);
   const seaY=Math.round(h*.34),bot=h,od=bot-seaY;
   const ph=RM?.45:(t*.14)%1,Ek=122+ph*155,env=Math.sin(Math.min(1,ph*6)*Math.PI/2)*(1-sm((ph-.85)/.15));
@@ -1173,15 +1186,15 @@ function drawMech(t,rdt){
     txt(c,[["Dipòsit de calor",true],["l'aigua calenta s'acumula"]],m?Math.max(X(160),w*.3):X(156),seaY+dep(156)*.45,"center",fs,MA.res)}
   // upwelling: colour = temperature of the rising water
   const Tu=T(266),uc=mixC("#2C5DA8","#C8442A",clamp((Tu-21)/8,0,1)),up=clamp(MA.tr,0,1.2);
-  {const th=E=>seaY+dep(E),rc=reachOf(dep(266)/od),pb=secNutr(c,X,surf,th,bot,t,up,rc,true);if(!m){txt(c,[["Nutrients",true,C.bio]],X(214),bot-8,"left",fs-1,1);txt(c,[[rc>.5?"Plàncton":"Sense nutrients, poc plàncton",true,rc>.5?C.bio:C.muted]],X(262),surf(262)-8,"center",fs-1,clamp(up,.4,1))}}
+  {const th=E=>seaY+dep(E),rc=reachOf(dep(266)/od),pb=secNutr(c,X,surf,th,bot,t,up,rc,true);if(!m){txt(c,[["Nutrients",true,C.bio]],X(214),bot-8,"left",fsS,1);txt(c,[[rc>.5?"Plàncton":"Sense nutrients, poc plàncton",true,rc>.5?C.bio:C.muted]],X(262),surf(262)-8,"center",fsS,clamp(up,.4,1))}}
   c.save();c.strokeStyle=uc;c.lineWidth=1.4;for(let i=0;i<5;i++){const E=257+i*4.2,f=((t*.32+i*.21)%1),y0=seaY+dep(E)+16,y1=surf(E)+6,y=y0+(y1-y0)*f;c.globalAlpha=(.3+.6*up)*Math.sin(f*Math.PI);c.beginPath();c.moveTo(X(E)-4,y+4);c.lineTo(X(E),y);c.lineTo(X(E)+4,y+4);c.stroke()}c.restore();
   txt(c,[["Aigua que puja",true,uc],[`${Math.round(Tu)} °C`,true,uc]],X(265),Math.min(bot-fs*1.6,seaY+dep(266)+fs+14),"right",fs,1);
   // land
   const mlu=Math.min(h*.011,2.2);secLand(c,X,surf,od,mlu,w,bot);
-  txt(c,["Indonèsia"],X(113.5),surf(114.6)-mlu*7-8,"center",fs-1,1,C.muted);txt(c,["Perú"],w-4,surf(284.7)-mlu*18-8,"right",fs-1,1,C.muted);
+  txt(c,["Indonèsia"],X(113.5),surf(114.6)-mlu*7-8,"center",fsS,1,C.muted);txt(c,["Perú"],w-4,surf(284.7)-mlu*18-8,"right",fsS,1,C.muted);
   // trade winds
   const ya=seaY-24,ta=clamp(MA.tr,.08,1);c.save();c.globalAlpha=ta;c.strokeStyle=C.ink;c.lineWidth=1.2;c.setLineDash([7,6]);c.lineDashOffset=RM?0:t*30*MA.tr;c.beginPath();c.moveTo(X(262),ya);c.lineTo(X(158),ya);c.stroke();c.setLineDash([]);chev(c,[X(162),ya],[X(156),ya],7);c.restore();
-  txt(c,[[`Alisis · ${Math.round(MA.tr*100)} % de la força normal`]],X(210),ya-9,"center",fs-1,1,C.ink2);
+  txt(c,[[`Alisis · ${Math.round(MA.tr*100)} % de la força normal`]],X(210),ya-9,"center",fsS,1,C.ink2);
   // westerly wind bursts
   if(MA.wwb>.02){const yb=seaY-50;c.save();c.globalAlpha=MA.wwb;c.strokeStyle=C.ink;c.lineWidth=1.8;c.setLineDash([9,5]);c.lineDashOffset=RM?0:-t*45;c.beginPath();c.moveTo(X(122),yb);c.lineTo(X(178),yb);c.stroke();c.setLineDash([]);chev(c,[X(174),yb],[X(180),yb],8);
     c.strokeStyle=C.wet;c.lineWidth=1;for(let i=0;i<6;i++){const x=X(128+i*4),f=(t*1.3+i*.37)%1,y=yb+8+(seaY-yb-12)*f;c.globalAlpha=MA.wwb*.8*Math.sin(f*Math.PI);c.beginPath();c.moveTo(x,y);c.lineTo(x-1.5,y+6);c.stroke()}c.restore();
@@ -1215,23 +1228,23 @@ function oSim(seed){const r=mulb(seed),N=mob()?180:360,w=2*Math.PI/46;let T=0,h=
   const sm=T_.map((v,i)=>(T_[Math.max(0,i-1)]+v+T_[Math.min(N-1,i+1)])/3);
   const s=2.3/Math.max(...sm.map(Math.abs)),sh=1.7/Math.max(...H_.map(Math.abs));oT=sm.map(v=>v*s);oH=H_.map(v=>v*sh);oK=K_.filter((k,i,a)=>!i||k-a[i-1]>2)}
 function layoutOsc(){OW=oc.parentElement.clientWidth;OH=mob()?300:360;oc.width=OW*dpr;oc.height=OH*dpr;oc.style.height=OH+"px";if(oT.length!==(mob()?180:360))oSim(oSeed);drawOsc(oA===null?0:oP)}
-function drawOsc(p){if(!OW)return;const c=occ,m=mob(),fs=m?10.5:12.5;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,OW,OH);
+function drawOsc(p){if(!OW)return;const c=occ,m=mob(),fs=m?11:12.5,fsS=Math.max(11,fs-1);c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,OW,OH);
   const l=m?8:70,r=m?8:150,tp=m?46:16,bt=46,N=oT.length,X=i=>l+i/(N-1)*(OW-l-r),y0=tp+(OH-tp-bt)/2,sy=(OH-tp-bt)/2/2.6,Y=v=>y0-v*sy,n=Math.max(1,Math.floor(p*(N-1)));
-  c.font=`${fs-1}px ${SSF}`;c.fillStyle=C.muted;c.textAlign="center";for(let yr=0;yr<=N/12;yr+=5){const x=X(Math.min(N-1,yr*12));c.fillRect(x,OH-bt,.7,4);c.textAlign=x>OW-30?"right":"center";c.fillText(yr?`${yr} anys`:"0",x>OW-30?OW-2:x,OH-bt+17)}
+  c.font=`${fsS}px ${SSF}`;c.fillStyle=C.muted;c.textAlign="center";for(let yr=0;yr<=N/12;yr+=5){const x=X(Math.min(N-1,yr*12));c.fillRect(x,OH-bt,.7,4);c.textAlign=x>OW-30?"right":"center";c.fillText(yr?`${yr} anys`:"0",x>OW-30?OW-2:x,OH-bt+17)}
   c.fillStyle=C.ink;c.fillRect(l,y0,OW-l-r,.7);c.save();c.setLineDash([2,3]);c.strokeStyle=C.hair;[.5,-.5].forEach(v=>{c.beginPath();c.moveTo(l,Y(v));c.lineTo(OW-r,Y(v));c.stroke()});c.restore();
   if(!m){c.textAlign="right";c.font=`600 ${fs}px ${SSF}`;c.fillStyle=C.warm;c.fillText("El Niño",l-8,Y(1.3));c.fillStyle=C.cold;c.fillText("La Niña",l-8,Y(-1.3)+4)}else{c.textAlign="left";c.font=`600 ${fs}px ${SSF}`;c.fillStyle=C.warm;c.fillText("↑ El Niño",l,tp+4);c.fillStyle=C.cold;c.fillText("↓ La Niña",l,OH-bt-30)}
   for(let i=1;i<=n;i++){const a=oT[i-1],b=oT[i];c.fillStyle=(a+b)>0?C.warm:C.cold;c.globalAlpha=.22;c.beginPath();c.moveTo(X(i-1),y0);c.lineTo(X(i-1),Y(a));c.lineTo(X(i),Y(b));c.lineTo(X(i),y0);c.fill()}c.globalAlpha=1;
   c.strokeStyle=C.ink2;c.lineWidth=1.6;c.beginPath();for(let i=0;i<=n;i++)i?c.lineTo(X(i),Y(oT[i])):c.moveTo(X(i),Y(oT[i]));c.stroke();
   c.save();c.strokeStyle=C.muted;c.lineWidth=1.3;c.setLineDash([4,3]);c.beginPath();for(let i=0;i<=n;i++)i?c.lineTo(X(i),Y(oH[i])):c.moveTo(X(i),Y(oH[i]));c.stroke();c.restore();
   c.fillStyle=C.ink;oK.forEach(k=>{if(k>n)return;const x=X(k),yb=OH-bt-6;c.beginPath();c.moveTo(x,yb-7);c.lineTo(x-2.6,yb);c.lineTo(x+2.6,yb);c.closePath();c.fill()});
-  if(m&&oK.length)txt(c,[["▲ empenta de vent de l'oest",false,C.ink2]],l,24,"left",fs-1,clamp(p*4,0,1));
-  if(!m&&oK.length&&n>oK[0])txt(c,[["▲ empenta de vent de l'oest",false,C.ink2]],X(oK[0])+(X(oK[0])>OW*.6?-6:6),OH-bt-14,X(oK[0])>OW*.6?"right":"left",fs-1,1);
+  if(m&&oK.length)txt(c,[["▲ empenta de vent de l'oest",false,C.ink2]],l,24,"left",fsS,clamp(p*4,0,1));
+  if(!m&&oK.length&&n>oK[0])txt(c,[["▲ empenta de vent de l'oest",false,C.ink2]],X(oK[0])+(X(oK[0])>OW*.6?-6:6),OH-bt-14,X(oK[0])>OW*.6?"right":"left",fsS,1);
   const xe=X(n),ex=m?"right":"left",dx=m?-6:8;
-  if(m){const lg=clamp(p*4,0,1);c.save();c.globalAlpha=lg;c.strokeStyle=C.ink2;c.lineWidth=1.6;c.beginPath();c.moveTo(l,6);c.lineTo(l+16,6);c.stroke();c.strokeStyle=C.muted;c.setLineDash([4,3]);c.lineWidth=1.3;c.beginPath();c.moveTo(l+150,6);c.lineTo(l+166,6);c.stroke();c.restore();txt(c,[["Temperatura del mar",true]],l+21,10,"left",fs-.5,lg);txt(c,[["Calor sota el mar",true,C.muted]],l+171,10,"left",fs-.5,lg)}
+  if(m){const lg=clamp(p*4,0,1);c.save();c.globalAlpha=lg;c.strokeStyle=C.ink2;c.lineWidth=1.6;c.beginPath();c.moveTo(l,6);c.lineTo(l+16,6);c.stroke();c.strokeStyle=C.muted;c.setLineDash([4,3]);c.lineWidth=1.3;c.beginPath();c.moveTo(l+150,6);c.lineTo(l+166,6);c.stroke();c.restore();txt(c,[["Temperatura del mar",true]],l+21,10,"left",fsS,lg);txt(c,[["Calor sota el mar",true,C.muted]],l+171,10,"left",fsS,lg)}
   else txt(c,[["Temperatura","true"],["de la superfície"]].map(a=>[a[0],a[1]==="true"]),xe+dx,Y(oT[n])+(oT[n]>oH[n]?-6:14),ex,fs,clamp(p*4,0,1));
   if(!m)txt(c,[["Calor acumulada",true,C.muted],["sota el mar",false,C.muted]],xe+dx,Y(oH[n])+(oH[n]>=oT[n]?-6:14),ex,fs,clamp(p*4,0,1));
   if(p>=1){let iT=0;for(let i=24;i<N-24;i++)if(oT[i]>oT[iT]||iT<24)iT=i;let iH=Math.max(0,iT-30);for(let i=Math.max(0,iT-30);i<iT;i++)if(oH[i]>oH[iH])iH=i;
-    if(iH<iT-3){c.fillStyle=C.muted;c.beginPath();c.arc(X(iH),Y(oH[iH]),3,0,6.283);c.fill();txt(c,[["1. Dipòsit ple",true,C.ink2]],X(iH)-6,Y(oH[iH])-9,"right",fs,1)}
+    if(iH<iT-3){c.fillStyle=C.muted;c.beginPath();c.arc(X(iH),Y(oH[iH]),3,0,6.283);c.fill();const x1=X(iH),flip1=x1<112;txt(c,[["1. Dipòsit ple",true,C.ink2]],flip1?Math.max(l+4,x1+6):x1-6,Y(oH[iH])-9,flip1?"left":"right",fs,1)}
     c.fillStyle=C.warm;c.beginPath();c.arc(X(iT),Y(oT[iT]),3.5,0,6.283);c.fill();{const rt=X(iT)>OW*.62;txt(c,[["2. El Niño",true,C.warm],["el buida"]],X(iT)+(rt?-8:8),Y(oT[iT])-4,rt?"right":"left",fs,1)}
     let iL=-1;for(let i=iT+6;i<Math.min(N,iT+40);i++)if(oT[i]<-.5&&(iL<0||oT[i]<oT[iL]))iL=i;
     if(iL>0){c.fillStyle=C.cold;c.beginPath();c.arc(X(iL),Y(oT[iL]),3.5,0,6.283);c.fill();{const rt=X(iL)>OW*.55;txt(c,[["3. Després, La Niña",true,C.cold],["el torna a omplir"]],X(iL)+(rt?-8:8),Math.min(Y(oT[iL])+16,OH-bt-10-fs*1.3),rt?"right":"left",fs,1)}}}
@@ -1258,8 +1271,8 @@ document.getElementById("oReplay").addEventListener("click",()=>{oSeed=(oSeed*48
  const el=document.getElementById("rt");if(el)el.textContent=Math.max(1,Math.round(sec/60))+" min de lectura"})();
 /* ---------- Niño regions ---------- */
 const zc=document.getElementById("zones"),zx=zc.getContext("2d");
-function layoutZones(){const w=zc.parentElement.clientWidth;if(!w)return;const m=mob(),fs=m?10.5:12.5,E0=140,E1=292,LA0=13,LA1=-21;
-  const k=w/((E1-E0)*Math.PI/180),top=6,mh=(LA0-LA1)*Math.PI/180*k,gap=fs*3.2+18,ay=Math.round(top+mh+gap),h=Math.round(ay+fs*2.7+22);
+function layoutZones(){const w=zc.parentElement.clientWidth;if(!w)return;const m=mob(),fs=m?11:12.5,fsS=Math.max(11,fs-1),E0=140,E1=292,LA0=13,LA1=-21;
+  const k=w/((E1-E0)*Math.PI/180),top=6,mh=(LA0-LA1)*Math.PI/180*k,gap=fs*3.2+18,ay=Math.round(top+mh+gap),h=Math.round(ay+(m?fs*4.2+24:fs*2.7+22));
   zc.width=w*dpr;zc.height=h*dpr;zc.style.height=h+"px";const c=zx;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
   const pr=d3.geoEquirectangular().rotate([-(E0+E1)/2,0]).scale(k).translate([w/2,top+LA0*Math.PI/180*k]),P=(E,la)=>pr([E>180?E-360:E,la]);
   c.save();c.beginPath();c.rect(0,top,w,mh);c.clip();c.fillStyle=C.deep;c.fillRect(0,top,w,mh);c.fillStyle=C.land;c.beginPath();d3.geoPath(pr,c)(land);c.fill();c.strokeStyle="#8E8E89";c.lineWidth=.9;c.lineJoin="round";c.stroke();c.restore();
@@ -1270,20 +1283,21 @@ function layoutZones(){const w=zc.parentElement.clientWidth;if(!w)return;const m
   const cy=eq+fs*.36;
   txt(c,[["Niño 4",true]],P(175,0)[0],cy,"center",fs,1);txt(c,[["Niño 3",true]],P(255,0)[0],cy,"center",fs,1);txt(c,[["Niño 3.4",true]],P(215,0)[0],cy,"center",fs+1,1);
   const b12=P(275,-10);c.font=`600 ${fs}px ${SSF}`;const w12=c.measureText("Niño 1+2").width;txt(c,[["Niño 1+2",true]],Math.min(b12[0],w-4-w12/2),b12[1]+fs+5,"center",fs,1);
-  txt(c,[["Indonèsia",false,C.ink2]],Math.max(4,P(118,0)[0]),P(0,-15)[1],"left",fs-1,1);
-  if(!m)txt(c,[["Amèrica",false,C.ink2],["del Sud",false,C.ink2]],w-4,P(0,-17)[1],"right",fs-1,1);
+  txt(c,[["Indonèsia",false,C.ink2]],Math.max(4,P(118,0)[0]),P(0,-15)[1],"left",fsS,1);
+  if(!m)txt(c,[["Amèrica",false,C.ink2],["del Sud",false,C.ink2]],w-4,P(0,-17)[1],"right",fsS,1);
   const T0=22.5,T1=30,L=m?16:60,Rr=w-(m?16:60),X=T=>Rr-(T-T0)/(T1-T0)*(Rr-L);
   c.fillStyle="rgba(22,120,108,.12)";c.fillRect(X(26),ay-12,X(28)-X(26),24);
   c.save();c.setLineDash([3,3]);c.strokeStyle=C.wet;c.lineWidth=.8;[26,28].forEach(T=>{c.beginPath();c.moveTo(X(T),ay-12);c.lineTo(X(T),ay+12);c.stroke()});c.restore();
   const gr=c.createLinearGradient(Rr,0,L,0);for(let T=T0;T<=T1;T+=.5)gr.addColorStop((T-T0)/(T1-T0),rgb(ip(SEC,T)));c.fillStyle=gr;c.fillRect(L,ay-2.5,Rr-L,5);
-  if(w>=340){txt(c,[["← Més calenta",false,C.muted]],L,ay+fs*2.4+10,"left",fs-1,1);txt(c,[["Més freda →",false,C.muted]],Rr,ay+fs*2.4+10,"right",fs-1,1)}
+  const dirY=m?ay+14+fs*3.85:ay+fs*2.4+10;
+  if(w>=340){txt(c,[["← Més calenta",false,C.muted]],L,dirY,"left",fsS,1);txt(c,[["Més freda →",false,C.muted]],Rr,dirY,"right",fsS,1)}
   const dot=(T,r,s)=>{c.fillStyle=rgb(ip(SEC,T));c.beginPath();c.arc(X(T),ay,r,0,6.2832);c.fill();c.strokeStyle=s||"#fff";c.lineWidth=2;c.stroke()};
   const f1c=T=>T.toFixed(1).replace(".",",");
   [[23.5,"Niño 1+2"],[25.8,"Niño 3"],[28.6,"Niño 4"]].forEach(([T,n])=>{dot(T,6);txt(c,[[n,true],[`${f1c(T)} °C`,false,C.ink2]],X(T),ay-14-fs*1.32,"center",fs,1)});
   dot(27,8,C.ink);
   txt(c,[["Niño 3.4 · 27 °C",true]],X(27),ay+14+fs,"center",fs,1);
-  txt(c,[[m?"llindar de la pluja":"dins del llindar de la pluja (26–28 °C)",false,C.wet]],X(27),ay+14+fs*2.32,"center",fs-1,1)}
-function layoutZonesOld(){const w=zc.parentElement.clientWidth,m=mob(),fs=m?10.5:12.5,E0=140,E1=290,LA0=14,LA1=-20;
+  txt(c,[[m?"llindar de la pluja":"dins del llindar de la pluja (26–28 °C)",false,C.wet]],X(27),ay+14+fs*2.35,"center",fsS,1)}
+function layoutZonesOld(){const w=zc.parentElement.clientWidth,m=mob(),fs=m?11:12.5,fsS=Math.max(11,fs-1),E0=140,E1=290,LA0=14,LA1=-20;
   const k=w/((E1-E0)*Math.PI/180),top=m?54:62,mh=(LA0-LA1)*Math.PI/180*k,h=Math.round(top+mh+4);
   zc.width=w*dpr;zc.height=h*dpr;zc.style.height=h+"px";const c=zx;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
   const pr=d3.geoEquirectangular().rotate([-(E0+E1)/2,0]).scale(k).translate([w/2,top+LA0*Math.PI/180*k]),P=(E,la)=>pr([E>180?E-360:E,la]);
@@ -1300,11 +1314,11 @@ function layoutZonesOld(){const w=zc.parentElement.clientWidth,m=mob(),fs=m?10.5
   lab(P(255,0)[0],by,[["Niño 3",true],[`≈ ${f1c(25.8)} °C`,false,C.ink2]],"center");
   const y12=P(275,-10)[1]+fs+8;lab(w-4,y12,[["Niño 1+2",true],[`≈ ${f1c(23.5)} °C`,false,C.ink2],[m?"":"aquí ho notaven els pescadors",false,C.muted]],"right");
   lab(P(215,0)[0],r[1]-(m?30:34),[["Niño 3.4",true,C.ink],[m?"≈ 27 °C, al llindar":"≈ 27 °C, just a tocar del llindar de la pluja",false,C.ink2]],"center");
-  txt(c,[["Indonèsia"]],P(118,0)[0]>0?P(118,0)[0]:6,P(118,0)[1]-8,"left",fs-1,1,C.muted);txt(c,[["Perú"]],P(284,-8)[0]+4,P(284,-8)[1],"left",fs-1,1,C.muted)}
+  txt(c,[["Indonèsia"]],P(118,0)[0]>0?P(118,0)[0]:6,P(118,0)[1]-8,"left",fsS,1,C.muted);txt(c,[["Perú"]],P(284,-8)[0]+4,P(284,-8)[1],"left",fsS,1,C.muted)}
 
 /* ---------- locator: where Niño 3.4 sits ---------- */
 const lc=document.getElementById("loc34"),lx=lc.getContext("2d");
-function layoutLoc(){const w=lc.parentElement.clientWidth;if(!w)return;const m=mob(),fs=m?10.5:12.5,E0=m?108:100,E1=m?288:292,LA0=m?14:9,LA1=m?-28:-21;
+function layoutLoc(){const w=lc.parentElement.clientWidth;if(!w)return;const m=mob(),fs=m?11:12.5,E0=m?108:100,E1=m?288:292,LA0=m?14:9,LA1=m?-28:-21;
   const k=w/((E1-E0)*Math.PI/180),top=Math.round(fs*2.8+10),mh=(LA0-LA1)*Math.PI/180*k,h=Math.round(top+mh+(m?6:2));
   lc.width=w*dpr;lc.height=h*dpr;lc.style.height=h+"px";const c=lx;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
   const pr=d3.geoEquirectangular().rotate([-(E0+E1)/2,0]).scale(k).translate([w/2,top+LA0*Math.PI/180*k]),P=(E,la)=>pr([E>180?E-360:E,la]);

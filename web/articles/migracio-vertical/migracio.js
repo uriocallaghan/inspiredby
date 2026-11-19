@@ -546,11 +546,11 @@
 
     let loopHandle = null;
     IBV.mount(stack, (el, w) => {
-      const m = mob();
+      const m = mob() || w < 600;
       W = w;
-      H = Math.round(m ? clamp(window.innerHeight * 0.34, 210, 310) : clamp(window.innerHeight - 260, 380, 680));
-      H = Math.min(H, Math.round(W * (m ? 1.05 : 0.95)));
-      skyH = Math.max(28, Math.round(H * 0.095));
+      H = m ? Math.round(Math.max(195, Math.min(window.innerHeight * 0.27, 230)))
+        : Math.min(Math.round(clamp(window.innerHeight - 260, 380, 680)), Math.round(W * 0.95));
+      skyH = Math.max(26, Math.round(H * 0.095));
       y0 = skyH; ML = m ? 34 : 42; MR = m ? 6 : 10;
       const built = IBV.canvas(el, W, H, ARIA);
       cvNode = built.c; ctx = built.ctx;
@@ -589,7 +589,7 @@
     const out = $("szOut"), rg = $("szRng"), val = $("szVal"), lgd = $("szLgd");
     if (!copWrap || !humWrap) return;
 
-    const BODY = 0.005, DIST = 500, RATIO = DIST / BODY, MAR = 42.195, KMAX = 230;
+    const BODY = 0.005, DIST = 500, RATIO = DIST / BODY, MAR = 42.195, KMAX = 270;
     const BCN = [41.3874, 2.1686];
     const CITIES = [
       ["Girona", 41.9794, 2.8214],
@@ -685,13 +685,14 @@
     IBV.mount(humWrap, (el, w) => {
       const m = mob(), h = m ? 128 : 138;
       const s = IBV.svg(el, w, h, "La mateixa distància a escala humana, comparada amb maratons i amb distàncies en línia recta des de Barcelona.");
-      const ml = 10, mr = 16, ty = 52;
+      const ml = 10, mr = m ? 18 : 22, ty = 52;
       humBaseX = ml;
       const X = d3.scaleLinear([0, KMAX], [ml, w - mr]);
       humX = X;
 
       // Eix x suau al peu
-      IBV.axisX(s, X, h - 22, m ? [0, 50, 100, 150, 200] : [0, 50, 100, 150, 200, 230], v => v === 230 || (m && v === 200) ? `${v} km` : String(v));
+      const ax = IBV.axisX(s, X, h - 22, [0, 50, 100, 150, 200, 250], v => v === 250 ? "250 km" : String(v));
+      if (m) ax.selectAll("text").filter((_, i, n) => i === n.length - 1).attr("text-anchor", "end").attr("x", w - 4);
 
       // Pista base fina + barra activa translúcida
       s.append("line").attr("x1", X(0)).attr("x2", X(KMAX)).attr("y1", ty).attr("y2", ty)
@@ -721,9 +722,12 @@
 
       cityG.each(function (d, i) {
         const gg = d3.select(this), x = X(d.d), dy = ty + 24 + (i % 2) * 14;
+        const nearRight = x > w - (m ? 46 : 72);
         gg.append("line").attr("x1", x).attr("x2", x).attr("y1", ty + 4).attr("y2", dy - 10)
           .attr("stroke", C.muted).attr("stroke-width", 0.7);
-        IBV.t(gg, x, dy, m ? d.n : `${d.n} · ${fmt0(d.d)} km`, { size: IBV.FS.min, anchor: "middle", fill: C.ink2, halo: true });
+        IBV.t(gg, nearRight ? Math.min(x + 4, w - 4) : x, dy, m ? d.n : `${d.n} · ${fmt0(d.d)} km`, {
+          size: IBV.FS.min, anchor: nearRight ? "end" : "middle", fill: C.ink2, halo: true
+        });
       });
 
       IBV.t(s, X(0), ty - 16, "Barcelona", { size: IBV.FS.min, fill: C.ink, weight: 600 });
@@ -831,9 +835,149 @@
     if (playB) playB.addEventListener("click", () => (playing ? stopPlay() : startPlay()));
 
     IBV.mount(wrap, (el, w) => {
-      const m = mob(), h = m ? 410 : 460;
+      const m = mob(), narrow = w < 600;
+      const ARIA = "Fondària mitjana de la capa de dia i de nit en cinc regions de l'expedició Malaspina. Pacífic oriental: 348 m de dia, 97 m de nit, migra el 91%. Sud de l'Índic: 591 i 470 m, 20%. Totes les zones: 486 i 303 m, 46%.";
+
+      if (narrow) {
+        const ml = 8, mr = 14, mt = 44, mb = 28, rowH = 62, gap = 14;
+        const h = mt + D.length * rowH + gap + mb;
+        const s = IBV.svg(el, w, h, ARIA);
+        const x = d3.scaleLinear([0, 700], [ml, w - mr]);
+        const rowY = i => mt + i * rowH + (D[i].all ? gap : 0);
+        const rRow = d3.scaleSqrt([0, 1], [6, 15]);
+
+        // Franja mundial de dia (200–650 m)
+        s.append("rect")
+          .attr("x", x(200)).attr("width", x(650) - x(200))
+          .attr("y", mt - 6).attr("height", h - mb - (mt - 6))
+          .attr("fill", C.neutral).attr("fill-opacity", 0.55);
+        IBV.t(s, w - mr, mt - 12, "200–650 m: interval mundial de dia", {
+          size: IBV.FS.min, anchor: "end", fill: C.muted, italic: true
+        });
+        IBV.t(s, ml, mt - 24, "0 m · Superfície", { size: IBV.FS.small, fill: C.blau, weight: 600 });
+
+        // Quadrícula vertical recessiva + línia de superfície en blau
+        for (let z = 0; z <= 700; z += 100) {
+          s.append("line").attr("x1", x(z)).attr("x2", x(z))
+            .attr("y1", mt - 6).attr("y2", h - mb)
+            .attr("stroke", z === 0 ? C.blau : C.grid)
+            .attr("stroke-width", z === 0 ? 1.3 : 0.7);
+        }
+        const ax = IBV.axisX(s, x, h - mb, [0, 200, 400, 600, 700], v => v === 700 ? "700 m" : String(v), { tick: false });
+        ax.selectAll("text").filter((_, i, n) => i === 0).attr("text-anchor", "start");
+        ax.selectAll("text").filter((_, i, n) => i === n.length - 1).attr("text-anchor", "end").attr("x", w - 4);
+
+        // Separador per a «Totes les zones»
+        const sepY = rowY(5) - gap / 2;
+        s.append("line").attr("x1", ml).attr("x2", w - mr).attr("y1", sepY).attr("y2", sepY)
+          .attr("stroke", C.hair).attr("stroke-width", 0.9);
+
+        // Guia vertical de hover
+        const vGuide = s.append("line").attr("y1", mt - 6).attr("y2", h - mb)
+          .attr("stroke", C.ink).attr("stroke-width", 0.7).attr("stroke-dasharray", "2 3").style("opacity", 0);
+
+        const rows = s.append("g").selectAll("g.col").data(D).join("g").attr("class", "col hit");
+        const ycOf = (_, i) => rowY(i) + 38;
+
+        rows.append("line")
+          .attr("x1", x(0)).attr("x2", x(700))
+          .attr("y1", ycOf).attr("y2", ycOf)
+          .attr("stroke", C.hair).attr("stroke-width", 0.6);
+
+        rows.each(function (d, i) {
+          const gg = d3.select(this), ty = rowY(i) + 15;
+          IBV.t(gg, ml, ty, d.n, { size: IBV.FS.label, fill: C.ink, weight: d.all ? 700 : 600 });
+          IBV.t(gg, w - mr, ty, `migra el ${Math.round(d.p * 100)} %`, {
+            size: IBV.FS.small, anchor: "end", fill: C.vermell, weight: 600
+          });
+        });
+
+        const stems = rows.append("line")
+          .attr("x1", d => x(d.d)).attr("x2", d => x(d.d))
+          .attr("y1", ycOf).attr("y2", ycOf)
+          .attr("stroke", C.ink2).attr("stroke-width", 1).attr("stroke-dasharray", "2 3");
+
+        rows.append("circle").attr("cx", d => x(d.d)).attr("cy", ycOf).attr("r", 3.5).attr("fill", C.ink);
+        rows.append("circle").attr("cx", d => x(d.ni)).attr("cy", ycOf).attr("r", 3.5)
+          .attr("fill", C.paper).attr("stroke", C.ink).attr("stroke-width", 1.2);
+
+        const halos = rows.append("circle")
+          .attr("class", "reg-halo")
+          .attr("cx", d => x(mode === "day" ? d.d : d.ni))
+          .attr("cy", ycOf).attr("r", 0)
+          .attr("fill", C.vermell).attr("fill-opacity", 0.34)
+          .style("mix-blend-mode", "multiply");
+
+        const cores = rows.append("circle")
+          .attr("class", "reg-core")
+          .attr("cx", d => x(mode === "day" ? d.d : d.ni))
+          .attr("cy", ycOf).attr("r", 0)
+          .attr("fill", C.vermell).attr("stroke", C.paper).attr("stroke-width", 1.2);
+
+        const labPos = d => {
+          const v = mode === "day" ? d.d : d.ni;
+          const leftSide = v > 500;
+          return { x: x(v) + (leftSide ? -(rRow(d.p) + 6) : (rRow(d.p) + 6)), anchor: leftSide ? "end" : "start" };
+        };
+
+        const labs = rows.append("text")
+          .attr("x", d => labPos(d).x)
+          .attr("y", (_, i) => ycOf(_, i) + 4)
+          .attr("text-anchor", d => labPos(d).anchor)
+          .attr("font-size", IBV.FS.min).attr("font-weight", 600).attr("fill", C.ink)
+          .style("font-variant-numeric", "tabular-nums")
+          .text(d => `${mode === "day" ? d.d : d.ni} m`);
+        IBV.halo(labs, 3);
+
+        moveFn = anim => {
+          const dur = anim && !RM ? 1050 : 0;
+          halos.transition().duration(dur).ease(d3.easeCubicInOut).attr("cx", d => x(mode === "day" ? d.d : d.ni));
+          cores.transition().duration(dur).ease(d3.easeCubicInOut).attr("cx", d => x(mode === "day" ? d.d : d.ni));
+          labs.attr("text-anchor", d => labPos(d).anchor)
+            .transition().duration(dur).ease(d3.easeCubicInOut)
+            .attr("x", d => labPos(d).x)
+            .tween("text", function (d) {
+              const node = this, a = parseInt(node.textContent, 10), b = mode === "day" ? d.d : d.ni;
+              const interp = d3.interpolateNumber(isNaN(a) ? b : a, b);
+              return t => { node.textContent = Math.round(interp(t)) + " m"; };
+            });
+        };
+
+        IBV.onView(el, instant => {
+          const dur = instant ? 0 : IBV.DUR;
+          stems.transition().duration(dur).ease(IBV.EASE).attr("x1", d => x(d.ni));
+          halos.transition().duration(dur).delay((_, i) => instant ? 0 : i * 70).ease(IBV.EASE).attr("r", d => rRow(d.p));
+          cores.transition().duration(dur).delay((_, i) => instant ? 0 : i * 70).ease(IBV.EASE).attr("r", 3.4);
+        });
+
+        IBV.hover(s.node(), (_ev, [, my]) => {
+          if (my < mt - 6 || my > h - mb) {
+            IBV.focus(rows, null); rows.select("circle.reg-halo").attr("stroke", "none");
+            vGuide.style("opacity", 0); tp.hide(); return;
+          }
+          const idx = d3.leastIndex(D, (_, i) => Math.abs(ycOf(_, i) - my));
+          if (idx == null || idx < 0) return;
+          const d = D[idx];
+          IBV.focus(rows, dd => dd === d);
+          rows.select("circle.reg-halo")
+            .attr("stroke", dd => dd === d ? C.ink : "none")
+            .attr("stroke-width", 1.5);
+          rows.filter(dd => dd === d).raise();
+          const cx = x(mode === "day" ? d.d : d.ni);
+          vGuide.attr("x1", cx).attr("x2", cx).style("opacity", 0.7);
+          tp.show(`<b>${d.n}</b> · Dia ${d.d} m → Nit ${d.ni} m<br>Amplitud ${d.a} m · migra el ${Math.round(d.p * 100)} % (${d.k} parells)`);
+        }, () => {
+          IBV.focus(rows, null);
+          rows.select("circle.reg-halo").attr("stroke", "none");
+          vGuide.style("opacity", 0);
+          tp.hide();
+        });
+        return;
+      }
+
+      const h = m ? 410 : 460;
       const mt = 30, mb = m ? 74 : 76, ml = 8, gx0 = m ? 34 : 46, mr = 10;
-      const s = IBV.svg(el, w, h, "Fondària mitjana de la capa de dia i de nit en cinc regions de l'expedició Malaspina. Pacífic oriental: 348 m de dia, 97 m de nit, migra el 91%. Sud de l'Índic: 591 i 470 m, 20%. Totes les zones: 486 i 303 m, 46%.");
+      const s = IBV.svg(el, w, h, ARIA);
 
       const y = d3.scaleLinear([0, 700], [mt, h - mb]);
       const gap = m ? 10 : 24;
@@ -1123,15 +1267,18 @@
       }
 
       // Eix de temps
-      const st = p.hours > 96 ? 12 : 6;
+      const narrow = W < 600;
+      const st = p.hours > 96 ? (narrow ? 24 : 12) : 6;
       for (let h = 0; h <= p.hours; h += st) {
         const x = X(h), hr = (p.t0 + h) % 24;
         overSvg.append("line").attr("x1", x).attr("x2", x)
           .attr("y1", plot.y + plot.h).attr("y2", plot.y + plot.h + (hr === 0 ? 6 : 4))
           .attr("stroke", hr === 0 ? C.ink2 : C.hair);
         if (m && hr !== 0 && hr !== 12) continue;
-        IBV.t(overSvg, clamp(x, plot.x + 12, W - 14), plot.y + plot.h + 18, hr === 0 ? "0 h" : hr + " h", {
-          size: IBV.FS.small, anchor: "middle", fill: hr === 0 ? C.ink : C.muted, weight: hr === 0 ? 600 : 400
+        const lbl = p.hours > 96 && narrow ? `${h} h` : (hr === 0 ? "0 h" : hr + " h");
+        const isLast = h === p.hours && narrow;
+        IBV.t(overSvg, isLast ? W - 4 : clamp(x, plot.x + 12, W - 14), plot.y + plot.h + 18, lbl, {
+          size: IBV.FS.small, anchor: isLast ? "end" : "middle", fill: hr === 0 ? C.ink : C.muted, weight: hr === 0 ? 600 : 400
         });
       }
 
@@ -1521,11 +1668,11 @@
 
     let loopHandle = null;
     IBV.mount(stack, (el, w) => {
-      const m = mob();
+      const m = mob() || w < 600;
       W = w;
-      H = Math.round(m ? clamp(window.innerHeight * 0.34, 210, 300) : clamp(window.innerHeight - 240, 380, 660));
-      H = Math.min(H, Math.round(W * (m ? 1.05 : 0.95)));
-      skyH = Math.max(26, Math.round(H * 0.09));
+      H = m ? Math.round(Math.max(210, Math.min(window.innerHeight * 0.30, 250)))
+        : Math.min(Math.round(clamp(window.innerHeight - 240, 380, 660)), Math.round(W * 0.95));
+      skyH = Math.max(24, Math.round(H * 0.09));
       y0 = skyH; ML = m ? 34 : 42; MR = m ? 6 : 10;
 
       const built = IBV.canvas(el, W, H, ARIA);
@@ -1584,7 +1731,7 @@
     const tp = IBV.tip(wrap);
 
     IBV.mount(wrap, (el, w) => {
-      const m = mob(), rowH = m ? 66 : 58, ml = m ? 8 : 206, mr = 18, mt = 44;
+      const m = mob(), rowH = m ? 66 : 58, ml = m ? 8 : 206, mr = m ? 10 : 18, mt = 44;
       const h = mt + R.length * rowH + 34;
       const s = IBV.svg(el, w, h, "Estimacions del carboni que transporten cap avall els animals, en petagrams de carboni l'any. Zooplàncton migrador: ≈ 1,0 (càlcul nostre). Peixos: 1,5 (0,3–2,7). Migradors de la zona crepuscular: 0,9–3,6. Exportació total del model del 2019: 6,5.");
 
@@ -1595,7 +1742,8 @@
         s.append("line").attr("x1", x(v)).attr("x2", x(v)).attr("y1", mt - 6).attr("y2", h - 26)
           .attr("stroke", v === 0 ? C.ink : C.grid).attr("stroke-width", v === 0 ? 1 : 0.8);
       }
-      IBV.axisX(s, x, h - 26, [0, 1, 2, 3, 4, 5, 6, 7], v => (v === 7 ? "7 PgC/any" : String(v)), { tick: false });
+      const ax = IBV.axisX(s, x, h - 26, [0, 1, 2, 3, 4, 5, 6, 7], v => (v === 7 ? "7 PgC/any" : String(v)), { tick: false });
+      ax.selectAll("text").filter((_, i, n) => i === n.length - 1).attr("text-anchor", "end").attr("x", w - 2);
 
       // Llindar de referència: 6,5 PgC/any (model del 2019)
       s.append("line").attr("x1", x(6.5)).attr("x2", x(6.5)).attr("y1", mt - 14).attr("y2", h - 26)

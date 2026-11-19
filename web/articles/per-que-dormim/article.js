@@ -30,9 +30,13 @@ const $=s=>document.querySelector(s);
     {c:C.ghost,    t:"Altres mamífers"}
   ]);
 
-  let redrawMode=null;
+  let redrawMode=null, clearFocus=null;
+  document.addEventListener("pointerdown", ev=>{
+    if(clearFocus && !el.contains(ev.target)) clearFocus();
+  });
+
   V.mount(el,(box,w)=>{
-    const mob=w<640, h=mob?380:400, m={t:28,r:mob?16:30,b:34,l:mob?36:44};
+    const mob=w<600, h=mob?380:400, m={t:28,r:mob?16:30,b:34,l:mob?36:44};
     const s=V.svg(box,w,h,"Comparació de les hores diàries de son de 83 mamífers (Savage & West, 2007) i espècies salvatges destacades, de 0,69 h la fregata en vol i 2,0 h l'elefant salvatge fins a 19,9 h el ratpenat marró petit; els humans dormen menys que cap altre primat però amb més proporció de REM.");
     const gAxes=s.append("g"), gPts=s.append("g"), gAnn=s.append("g");
     const tp=V.tip(box);
@@ -41,9 +45,30 @@ const $=s=>document.querySelector(s);
     const rnd=V.rng(2026);
     ALL.forEach(d=>{ d._j=(rnd()-0.5)*2; });
 
+    let curList=[], curX=null, curY=null, curDots=null;
+    function resetFocus(){
+      if(curDots){
+        V.focus(curDots,null);
+        curDots.attr("stroke",x=>x.en==="Human"?C.ink:null).attr("stroke-width",x=>x.en==="Human"?1.6:0);
+      }
+      tp.hide();
+    }
+    clearFocus=resetFocus;
+
+    function showDot(d){
+      if(!curDots)return;
+      V.focus(curDots, x=>x.en===d.en, {dim:.48});
+      curDots.attr("stroke",x=>x.en===d.en?C.ink:(x.en==="Human"?C.ink:null))
+             .attr("stroke-width",x=>x.en===d.en?1.8:(x.en==="Human"?1.4:0));
+      const remTxt=d.rem!=null?` · REM: ${f1(d.rem)} h (${f1(d.remPct)} %)`: "";
+      const srcTxt=d.src?` (${d.src})`:"";
+      tp.show(`<b>${d.ca}</b> (${d.ord})<br>${f1(d.tot)} h/dia${remTxt}${srcTxt}`);
+    }
+
     function draw(mMode, instant){
       gAxes.selectAll("*").remove();
       gAnn.selectAll("*").remove();
+      resetFocus();
       const dur=instant||V.reduced?0:680;
       let list, xScale, yPos, rVal;
 
@@ -71,17 +96,23 @@ const $=s=>document.querySelector(s);
           if(mob && pk.en==="African elephant (wild)")return;
           const d=list.find(x=>x.en===pk.en); if(!d)return;
           const px=xScale(d.tot), py=yPos(d);
-          V.note(gAnn,{x:px,y:py,tx:px+pk.dx,ty:py+pk.dy,kind:"straight",anchor:pk.anc,lines:pk.l,size:11.5});
+          const tx=Math.max(8, Math.min(w-8, px+pk.dx));
+          V.note(gAnn,{x:px,y:py,tx,ty:py+pk.dy,kind:"straight",anchor:pk.anc,lines:pk.l,size:11.5});
         });
       } else if(mMode==="primats"){
         list=D.mammals.filter(d=>d.grp==="primat").sort((a,b)=>a.tot-b.tot);
         xScale=d3.scaleLinear([5.5,18.5],[m.l+74, w-m.r]);
         const yP=d3.scalePoint(list.map(d=>d.en),[m.t+10, h-m.b-12]);
-        V.axisX(gAxes, xScale, h-m.b, [6,8,10,12,14,16,18], d=>d+" h", {tick:true, grid:m.t});
+        V.axisX(gAxes, xScale, h-m.b, mob?[6,9,12,15,18]:[6,8,10,12,14,16,18], d=>d+" h", {tick:true, grid:m.t});
         // Predicció evolutiva humana (9,55 h, Samson & Nunn 2015)
         gAxes.append("line").attr("x1",xScale(9.55)).attr("x2",xScale(9.55)).attr("y1",m.t).attr("y2",h-m.b)
           .attr("stroke",C.ink).attr("stroke-width",1.1).attr("stroke-dasharray","2 3");
-        V.t(gAxes, xScale(9.55)+5, m.t+12, "Predicció humana: 9,55 h (Samson & Nunn, 2015)", {size:11.5, italic:true, fill:C.ink2, halo:true});
+        if(mob){
+          V.t(gAxes, w-8, m.t+10, "Predicció humana: 9,55 h", {size:11, italic:true, fill:C.ink2, anchor:"end", halo:true});
+          V.t(gAxes, w-8, m.t+23, "(Samson & Nunn, 2015)", {size:11, italic:true, fill:C.muted, anchor:"end", halo:true});
+        } else {
+          V.t(gAxes, xScale(9.55)+5, m.t+12, "Predicció humana: 9,55 h (Samson & Nunn, 2015)", {size:11.5, italic:true, fill:C.ink2, halo:true});
+        }
         list.forEach(d=>{
           const yy=yP(d.en), isH=d.en==="Human";
           gAxes.append("line").attr("x1",m.l+74).attr("x2",xScale(d.tot)).attr("y1",yy).attr("y2",yy)
@@ -96,7 +127,7 @@ const $=s=>document.querySelector(s);
         xScale=d3.scaleLinear([0,21],[m.l,w-m.r]);
         const yRem=d3.scaleLinear([0,62],[h-m.b,m.t]);
         V.gridY(gAxes, yRem, 0, w-m.r, [0,15,30,45,60], v=>v, {zero:0, unit:" % REM"});
-        V.axisX(gAxes, xScale, h-m.b, [0,5,10,15,20], d=>d+" h totals", {tick:true});
+        V.axisX(gAxes, xScale, h-m.b, [0,5,10,15,20], d=>mob?(d+" h"):(d+" h totals"), {tick:true});
         yPos=d=>yRem(d.remPct);
         rVal=d=>d.en==="Human"?11:(d.grp==="primat"?7.5:5.5);
         // Anotacions clau REM
@@ -109,14 +140,16 @@ const $=s=>document.querySelector(s);
         remPicks.forEach(pk=>{
           if(mob && pk.en==="Chimpanzee")return;
           const d=list.find(x=>x.en===pk.en); if(!d)return;
-          V.note(gAnn,{x:xScale(d.tot),y:yRem(d.remPct),tx:xScale(d.tot)+pk.dx,ty:yRem(d.remPct)+pk.dy,kind:"straight",anchor:pk.anc,lines:pk.l,size:11.5});
+          const px=xScale(d.tot), py=yRem(d.remPct);
+          const tx=Math.max(8, Math.min(w-8, px+pk.dx));
+          V.note(gAnn,{x:px,y:py,tx,ty:py+pk.dy,kind:"straight",anchor:pk.anc,lines:pk.l,size:11.5});
         });
       }
 
       const sel=gPts.selectAll("circle.sp").data(list, d=>d.en);
       sel.exit().transition().duration(dur/2).attr("r",0).remove();
       const ent=sel.enter().append("circle").attr("class","sp").attr("r",0)
-        .style("mix-blend-mode","multiply").style("cursor","pointer");
+        .style("mix-blend-mode","multiply").style("pointer-events","none");
       const allDots=ent.merge(sel);
 
       allDots.transition().duration(dur).ease(d3.easeCubicInOut)
@@ -125,20 +158,20 @@ const $=s=>document.querySelector(s);
         .attr("fill-opacity",d=>d.en==="Human"?.72:(d.grp==="primat"?.46:(d.grp==="carnivor"?.52:.34)))
         .attr("stroke",d=>d.en==="Human"?C.ink:null).attr("stroke-width",d=>d.en==="Human"?1.6:0);
 
-      allDots.on("pointerenter pointerdown",(ev,d)=>{
-        V.focus(allDots, x=>x.en===d.en, {dim:.48});
-        allDots.attr("stroke",x=>x.en===d.en?C.ink:(x.en==="Human"?C.ink:null))
-               .attr("stroke-width",x=>x.en===d.en?1.8:(x.en==="Human"?1.4:0));
-        const remTxt=d.rem!=null?` · REM: ${f1(d.rem)} h (${f1(d.remPct)} %)`: "";
-        const srcTxt=d.src?` (${d.src})`:"";
-        tp.show(`<b>${d.ca}</b> (${d.ord})<br>${f1(d.tot)} h/dia${remTxt}${srcTxt}`);
-      }).on("pointerleave",ev=>{
-        if(ev.pointerType!=="mouse")return;
-        V.focus(allDots,null);
-        allDots.attr("stroke",x=>x.en==="Human"?C.ink:null).attr("stroke-width",x=>x.en==="Human"?1.6:0);
-        tp.hide();
-      });
+      curList=list; curX=xScale; curY=yPos; curDots=allDots;
     }
+
+    const hit=s.append("rect").attr("class","hit").attr("x",0).attr("y",0).attr("width",w).attr("height",h).attr("fill","transparent");
+    V.hover(hit.node(), (ev,[px,py])=>{
+      if(!curList.length||!curX||!curY)return;
+      const maxD=mob?36:24;
+      const best=d3.least(curList, d=>Math.hypot(curX(d.tot)-px, curY(d)-py));
+      if(best && Math.hypot(curX(best.tot)-px, curY(best)-py)<=maxD){
+        showDot(best);
+      } else {
+        resetFocus();
+      }
+    }, resetFocus);
 
     redrawMode=(mMode,inst)=>{ mode=mMode; draw(mMode,inst); };
     V.onView(box, inst=>draw(mode,inst));
@@ -197,7 +230,7 @@ const $=s=>document.querySelector(s);
 
   let updateView=null;
   V.mount(el,(box,w)=>{
-    const mob=w<640, h=mob?290:330, m={t:24,r:18,b:34,l:38};
+    const mob=w<600, h=mob?290:330, m={t:24,r:18,b:34,l:38};
     const s=V.svg(box,w,h,"Simulador del model de dos processos de Borbély al llarg de 36 hores: la pressió d'adenosina (vermell) puja mentre estem desperts i baixa dormint; el ritme circadià (blau) oscil·la cada 24 hores.");
     const g=s.append("g"), gDyn=s.append("g"), gCur=s.append("g");
     const tp=V.tip(box);
@@ -229,14 +262,30 @@ const $=s=>document.querySelector(s);
           .attr("fill",C.blau).attr("fill-opacity",.07);
         V.t(gDyn, x(27), m.t+20, "Son nocturn (8 h)", {size:11.5, italic:true, fill:C.blau, anchor:"middle", halo:true});
       } else {
-        V.note(gDyn,{x:x(31),y:y(72),tx:x(34.5),ty:y(88),kind:"elbow",anchor:"start",lines:[["Segona alenada (07:00)",true],["el rellotge C puja malgrat 24 h despert"]],size:11.5});
+        V.note(gDyn,{
+          x:x(31),y:y(72),
+          tx:mob?Math.min(w-10,x(31)-8):x(34.5),
+          ty:y(88),
+          kind:"elbow",
+          anchor:mob?"end":"start",
+          lines:mob?[["Segona alenada (07:00)",true],["C puja malgrat 24 h despert"]]:[["Segona alenada (07:00)",true],["el rellotge C puja malgrat 24 h despert"]],
+          size:11.5
+        });
       }
 
       if(sc==="cafe"){
         // Adenosina real acumulada (puntejada) vs percebuda (sòlida)
         gDyn.append("path").attr("d",lineS(pts)).attr("fill","none").attr("stroke",C.vermell).attr("stroke-width",1.4).attr("stroke-dasharray","4 3").attr("stroke-opacity",.7);
         gDyn.append("path").attr("d",lineSp(pts)).attr("fill","none").attr("stroke",C.vermell).attr("stroke-width",2.4);
-        V.note(gDyn,{x:x(19),y:y(48),tx:x(21),ty:y(28),kind:"straight",anchor:"start",lines:[["Cafè 17:00",true],["bloqueja receptors però no elimina adenosina"]],size:11.5});
+        V.note(gDyn,{
+          x:x(19),y:y(48),
+          tx:mob?w-10:x(21),
+          ty:mob?y(22):y(28),
+          kind:"straight",
+          anchor:mob?"end":"start",
+          lines:mob?[["Cafè 17:00",true],["emmascara, no elimina adenosina"]]:[["Cafè 17:00",true],["bloqueja receptors però no elimina adenosina"]],
+          size:11.5
+        });
       } else {
         gDyn.append("path").attr("d",lineS(pts)).attr("fill","none").attr("stroke",C.vermell).attr("stroke-width",2.4);
       }
@@ -323,31 +372,34 @@ const $=s=>document.querySelector(s);
   let redrawStep=null;
   V.mount(el,(box,w)=>{
     if(loopCtrl){ loopCtrl.stop(); loopCtrl=null; }
-    const mob=w<640, h=mob?340:425, m={t:18,r:16,b:18,l:mob?50:62};
+    const mob=w<600;
+    const h=mob?Math.round(Math.max(210,Math.min(window.innerHeight*0.30,250))):425;
+    const m={t:mob?12:18,r:16,b:mob?8:18,l:mob?48:62};
     const s=V.svg(box,w,h,"Hipnograma esquemàtic de 8 hores de son humà amb cinc cicles ultradians: el son profund N3 predomina a la primera meitat de la nit i el son REM s'allarga a les darreres hores; a sota, l'ona elèctrica EEG de la fase activa.");
     const gHyp=s.append("g"), gEEG=s.append("g");
     const tp=V.tip(box);
 
-    const hypH=mob?198:248;
+    const hypH=mob?Math.round(h*0.56):248;
     const x=d3.scaleLinear([0,8],[m.l,w-m.r]);
-    const y=d3.scaleLinear([0,4],[m.t+10, hypH]);
+    const y=d3.scaleLinear([0,4],[m.t+(mob?8:10), hypH]);
     const stNames=["Vigília","REM","N1","N2","N3"];
 
     stNames.forEach((nm,i)=>{
       gHyp.append("line").attr("x1",m.l).attr("x2",w-m.r).attr("y1",y(i)).attr("y2",y(i)).attr("stroke",C.grid);
-      V.t(gHyp, m.l-8, y(i)+4, nm, {size:11.5, weight:i===1||i===4?700:400, fill:i===1?C.vermell:i===4?C.blau:C.muted, anchor:"end"});
+      V.t(gHyp, m.l-8, y(i)+4, nm, {size:mob?11:11.5, weight:i===1||i===4?700:400, fill:i===1?C.vermell:i===4?C.blau:C.muted, anchor:"end"});
     });
-    V.axisX(gHyp, x, hypH+12, [0,1,2,3,4,5,6,7,8], d=>d+" h", {tick:true});
+    V.axisX(gHyp, x, hypH+(mob?10:12), mob?[0,2,4,6,8]:[0,1,2,3,4,5,6,7,8], d=>d+" h", {tick:true});
 
     // Blocs translúcids per destacar N3 (blau) i REM (vermell)
     const n3Blocks=[[0.55,1.22],[2.05,2.62],[3.80,4.05]];
     const remBlocks=[[1.52,1.68],[3.02,3.30],[4.58,4.98],[6.00,6.52],[7.30,7.82]];
 
+    const blkH=mob?16:26, blkOff=mob?8:14;
     const bN3=gHyp.selectAll("rect.n3").data(n3Blocks).join("rect").attr("class","n3")
-      .attr("x",d=>x(d[0])).attr("y",y(4)-14).attr("width",d=>x(d[1])-x(d[0])).attr("height",26)
+      .attr("x",d=>x(d[0])).attr("y",y(4)-blkOff).attr("width",d=>x(d[1])-x(d[0])).attr("height",blkH)
       .attr("rx",4).attr("fill",C.blau).attr("fill-opacity",.28).style("mix-blend-mode","multiply");
     const bREM=gHyp.selectAll("rect.rem").data(remBlocks).join("rect").attr("class","rem")
-      .attr("x",d=>x(d[0])).attr("y",y(1)-14).attr("width",d=>x(d[1])-x(d[0])).attr("height",26)
+      .attr("x",d=>x(d[0])).attr("y",y(1)-blkOff).attr("width",d=>x(d[1])-x(d[0])).attr("height",blkH)
       .attr("rx",4).attr("fill",C.vermell).attr("fill-opacity",.30).style("mix-blend-mode","multiply");
 
     // Línia d'hipnograma escalonada suau
@@ -356,13 +408,13 @@ const $=s=>document.querySelector(s);
 
     // Tall de les 6 hores (es mostra al pas final "tot")
     const cut6=gHyp.append("g").style("opacity",0);
-    cut6.append("line").attr("x1",x(6)).attr("x2",x(6)).attr("y1",m.t).attr("y2",hypH+12).attr("stroke",C.vermell).attr("stroke-width",1.4).attr("stroke-dasharray","3 3");
-    cut6.append("rect").attr("x",x(6)).attr("y",m.t).attr("width",x(8)-x(6)).attr("height",hypH-m.t+12).attr("fill",C.vermell).attr("fill-opacity",.06);
-    V.t(cut6, x(6)-6, m.t+14, "Tall a 6 h → perds el REM final", {size:11.5, weight:700, fill:C.vermell, anchor:"end", halo:true});
+    cut6.append("line").attr("x1",x(6)).attr("x2",x(6)).attr("y1",m.t).attr("y2",hypH+(mob?10:12)).attr("stroke",C.vermell).attr("stroke-width",1.4).attr("stroke-dasharray","3 3");
+    cut6.append("rect").attr("x",x(6)).attr("y",m.t).attr("width",x(8)-x(6)).attr("height",hypH-m.t+(mob?10:12)).attr("fill",C.vermell).attr("fill-opacity",.06);
+    V.t(cut6, x(6)-6, m.t+(mob?12:14), mob?"Tall a 6 h → perds REM":"Tall a 6 h → perds el REM final", {size:mob?11:11.5, weight:700, fill:C.vermell, anchor:"end", halo:true});
 
     // Hover sobre l'hipnograma
-    const hvLine=gHyp.append("line").attr("y1",m.t).attr("y2",hypH+12).attr("stroke",C.ink).attr("stroke-width",.8).attr("stroke-dasharray","2 2").style("display","none");
-    const hit=gHyp.append("rect").attr("class","hit").attr("x",m.l).attr("y",m.t).attr("width",w-m.l-m.r).attr("height",hypH-m.t+12).attr("fill","transparent").style("cursor","crosshair");
+    const hvLine=gHyp.append("line").attr("y1",m.t).attr("y2",hypH+(mob?10:12)).attr("stroke",C.ink).attr("stroke-width",.8).attr("stroke-dasharray","2 2").style("display","none");
+    const hit=gHyp.append("rect").attr("class","hit").attr("x",m.l).attr("y",m.t).attr("width",w-m.l-m.r).attr("height",hypH-m.t+(mob?10:12)).attr("fill","transparent").style("cursor","crosshair");
     V.hover(hit.node(), (ev,[px])=>{
       const hr=Math.max(0,Math.min(8,x.invert(px)));
       let st=0;
@@ -373,9 +425,9 @@ const $=s=>document.querySelector(s);
     }, ()=>{ hvLine.style("display","none"); tp.hide(); });
 
     // Banda inferior: ona EEG animada (molt serena)
-    const eTop=hypH+48, eH=h-eTop-14, eMid=eTop+eH*.54;
+    const eTop=hypH+(mob?38:48), eH=Math.max(28, h-eTop-(mob?6:14)), eMid=eTop+eH*.54;
     gEEG.append("line").attr("x1",m.l).attr("x2",w-m.r).attr("y1",eMid).attr("y2",eMid).attr("stroke",C.grid);
-    const eegTitle=V.t(gEEG, m.l, eTop-4, "", {size:12, weight:700, fill:C.ink});
+    const eegTitle=V.t(gEEG, m.l, eTop-4, "", {size:mob?11:12, weight:700, fill:C.ink});
     const eegPath=gEEG.append("path").attr("fill","none").attr("stroke-width",1.8);
 
     function drawEEG(phase, k){
@@ -411,11 +463,19 @@ const $=s=>document.querySelector(s);
       bREM.transition().duration(400).attr("fill-opacity", k==="rem"||k==="tot"?.44:.14);
       cut6.transition().duration(400).style("opacity", k==="tot"?1:0);
       eegTitle.text(
-        k==="n3"?"Senyal EEG en N3: ones delta lentes i de gran amplitud (0,5–4 Hz)":
-        k==="n2"?"Senyal EEG en N2: base suau amb esclats de «fusos de son» (12–14 Hz)":
-        k==="rem"?"Senyal EEG en REM: activitat ràpida i desincronitzada (com despert)":
-        k==="tot"?"Senyal EEG: alternança cíclica de ritmes durant 8 hores":
-        "Senyal EEG en N1: transició d'ones alfa a ones theta (4–7 Hz)"
+        mob ? (
+          k==="n3"?"EEG en N3 · ones delta (0,5–4 Hz)":
+          k==="n2"?"EEG en N2 · fusos de son (12–14 Hz)":
+          k==="rem"?"EEG en REM · activitat ràpida":
+          k==="tot"?"EEG · alternança de ritmes (8 h)":
+          "EEG en N1 · alfa a theta (4–7 Hz)"
+        ) : (
+          k==="n3"?"Senyal EEG en N3: ones delta lentes i de gran amplitud (0,5–4 Hz)":
+          k==="n2"?"Senyal EEG en N2: base suau amb esclats de «fusos de son» (12–14 Hz)":
+          k==="rem"?"Senyal EEG en REM: activitat ràpida i desincronitzada (com despert)":
+          k==="tot"?"Senyal EEG: alternança cíclica de ritmes durant 8 hores":
+          "Senyal EEG en N1: transició d'ones alfa a ones theta (4–7 Hz)"
+        )
       );
       drawEEG(0, k);
     }
@@ -454,11 +514,16 @@ const $=s=>document.querySelector(s);
     {c:C.groc,    t:"Llum solar"}
   ]);
 
-  let redrawStep=null;
+  let redrawStep=null, clearFocus=null;
+  document.addEventListener("pointerdown", ev=>{
+    if(clearFocus && !el.contains(ev.target)) clearFocus();
+  });
+
   V.mount(el,(box,w)=>{
-    const mob=w<640, h=mob?350:430;
+    const mob=w<600;
+    const h=mob?Math.round(Math.max(210,Math.min(window.innerHeight*0.30,250))):430;
     const s=V.svg(box,w,h,"Rellotge polar de 24 hores amb mitjanit a dalt que mostra l'horari real de son dels hadza, san i tsimané (inici 3,3 h després de la posta, despertar al mínim tèrmic), el contrast amb el son bifàsic europeu i el solapament dels 33 cronotips hadza (99,8 % de la nit amb algú despert).");
-    const cx=w/2, cy=h/2+4, R=Math.min(w*0.38, h*0.40);
+    const cx=w/2, cy=h/2+(mob?2:4), R=Math.min(w*0.38, h*(mob?0.39:0.40));
     const tp=V.tip(box);
 
     // Retícula polar finíssima (mitjanit = 0 rad a dalt, sentit horari)
@@ -468,7 +533,7 @@ const $=s=>document.querySelector(s);
 
     // Etiquetes horàries al perímetre
     [0,3,6,9,12,15,18,21].forEach(hh=>{
-      const a=ang(hh), lr=R+16;
+      const a=ang(hh), lr=R+(mob?14:16);
       const lbl=hh===0?"00:00":hh===6?"06:00":hh===12?"12:00":hh===18?"18:00":`${hh<10?"0":""}${hh}h`;
       V.t(s, cx+lr*Math.sin(a), cy-lr*Math.cos(a)+4, lbl, {size:11, weight:hh%6===0?700:400, fill:hh%6===0?C.ink:C.muted, anchor:"middle"});
     });
@@ -489,8 +554,8 @@ const $=s=>document.querySelector(s);
     gCold.append("line").attr("x1",R*0.30*Math.sin(aCold)).attr("y1",-R*0.30*Math.cos(aCold))
       .attr("x2",R*0.95*Math.sin(aCold)).attr("y2",-R*0.95*Math.cos(aCold))
       .attr("stroke",C.blauFosc).attr("stroke-width",1.8).attr("stroke-dasharray","3 2");
-    gCold.append("circle").attr("cx",R*0.88*Math.sin(aCold)).attr("cy",-R*0.88*Math.cos(aCold)).attr("r",6).attr("fill",C.blauFosc);
-    V.t(gCold, R*0.58*Math.sin(aCold)+8, -R*0.58*Math.cos(aCold), "Mínim tèrmic", {size:11.5, weight:700, fill:C.blauFosc, halo:true});
+    gCold.append("circle").attr("cx",R*0.88*Math.sin(aCold)).attr("cy",-R*0.88*Math.cos(aCold)).attr("r",mob?4.5:6).attr("fill",C.blauFosc);
+    V.t(gCold, R*0.90*Math.sin(aCold), -R*0.90*Math.cos(aCold)-(mob?14:16), "Mínim tèrmic", {size:mob?11:11.5, weight:700, fill:C.blauFosc, anchor:"end", halo:true});
     // Franja extra d'hivern (+53–56 min)
     gCold.append("path").attr("d",arc(R*0.66, R*0.88, 20.65, 21.55)).attr("fill",C.blauFosc).attr("fill-opacity",.32);
 
@@ -511,27 +576,39 @@ const $=s=>document.querySelector(s);
       return {i, age:Math.round(60 - frac*40), start, end:start+dur};
     });
     const rMin=R*0.30, rMax=R*0.86;
+    const bandW=(rMax-rMin)/hadza.length;
+    hadza.forEach((d,i)=>{ d.rMid=rMin+bandW*(i+0.5); });
     const sentPaths=gSent.selectAll("path.hz").data(hadza).join("path").attr("class","hz")
       .attr("d",(d,i)=>{
-        const r0=rMin + (rMax-rMin)*(i/hadza.length);
-        const r1=r0 + (rMax-rMin)/hadza.length - 1.5;
+        const r0=rMin + bandW*i;
+        const r1=r0 + Math.max(1.2, bandW - 1.5);
         return arc(r0,r1,d.start,d.end);
       })
       .attr("fill",d=>d.age>45?C.blau:d.age<30?C.vermell:C.blauClar)
-      .attr("fill-opacity",.52).style("cursor","pointer");
+      .attr("fill-opacity",.52).style("pointer-events","none");
 
-    sentPaths.on("pointerenter pointerdown",(ev,d)=>{
+    const fmtH=v=>{ const h24=Math.floor(((v%24)+24)%24), mn=Math.round((v%1)*60)%60; return `${h24<10?"0":""}${h24}:${mn<10?"0":""}${mn}`; };
+    function resetAntro(){
+      V.focus(sentPaths,null);
+      tp.hide();
+    }
+    clearFocus=resetAntro;
+
+    // Àrea de toc còmoda per proximitat radial als 18 arcs de sentinella
+    const sentHit=gSent.append("circle").attr("cx",0).attr("cy",0).attr("r",rMax+14).attr("fill","transparent").style("cursor","pointer");
+    V.hover(sentHit.node(), (ev,[px,py])=>{
+      if(stepKey!=="sentinella")return;
+      const r=Math.hypot(px,py);
+      if(r<rMin-12 || r>rMax+14){ resetAntro(); return; }
+      const d=d3.least(hadza, hItem=>Math.abs(hItem.rMid-r));
+      if(!d){ resetAntro(); return; }
       V.focus(sentPaths, x=>x.i===d.i, {dim:.48});
-      const fmtH=v=>{ const h24=Math.floor(((v%24)+24)%24), mn=Math.round((v%1)*60)%60; return `${h24<10?"0":""}${h24}:${mn<10?"0":""}${mn}`; };
       tp.show(`<b>Cronotip orientatiu (~${d.age} anys)</b><br>Son ${fmtH(d.start)} – ${fmtH(d.end)} · El solapament cobreix el 99,8 % de la nit`);
-    }).on("pointerleave",ev=>{
-      if(ev.pointerType!=="mouse")return;
-      V.focus(sentPaths,null); tp.hide();
-    });
+    }, resetAntro);
 
     // Etiqueta central
-    const cNum=V.t(gC, 0, -4, "6,4 h", {size:mob?20:24, weight:700, serif:true, anchor:"middle", fill:C.ink});
-    const cSub=V.t(gC, 0, 14, "son real mitjà", {size:11.5, anchor:"middle", fill:C.muted});
+    const cNum=V.t(gC, 0, mob?-3:-4, "6,4 h", {size:mob?17:24, weight:700, serif:true, anchor:"middle", fill:C.ink});
+    const cSub=V.t(gC, 0, mob?11:14, "son real mitjà", {size:11, anchor:"middle", fill:C.muted});
 
     gFire.on("pointerenter pointerdown",()=>tp.show("<b>Vespre vora el foc (+3,3 h)</b><br>Hadza, san i tsimané s'adormen entre 2,5 i 4,4 h després de la posta (Yetish et al., 2015)."))
          .on("pointerleave",ev=>{ if(ev.pointerType==="mouse")tp.hide(); });
@@ -547,6 +624,8 @@ const $=s=>document.querySelector(s);
       gCold.transition().duration(450).style("opacity", k==="fred"?1:0);
       gBip.transition().duration(450).style("opacity", k==="bifasic"?1:0);
       gSent.transition().duration(450).style("opacity", k==="sentinella"?1:0);
+      sentHit.style("pointer-events", k==="sentinella"?"all":"none");
+      resetAntro();
       if(k==="mite"){ cNum.text("6,4 h").attr("fill",C.blau); cSub.text("mitjana real"); }
       else if(k==="fred"){ cNum.text("+53–56 m").attr("fill",C.blauFosc); cSub.text("més a l'hivern"); }
       else if(k==="bifasic"){ cNum.text("1r + 2n").attr("fill",C.vermell); cSub.text("son hivernal"); }
@@ -571,16 +650,22 @@ const $=s=>document.querySelector(s);
   if(!el)return;
   let mode="edat";
 
-  let redraw=null;
+  let redraw=null, clearFocus=null;
+  document.addEventListener("pointerdown", ev=>{
+    if(clearFocus && !el.contains(ev.target)) clearFocus();
+  });
+
   V.mount(el,(box,w)=>{
-    const mob=w<640, h=mob?320:360, m={t:24,r:mob?16:34,b:44,l:38};
-    const s=V.svg(box,w,h,"A la primera vista, hores de son recomanades per franja d'edat segons la National Sleep Foundation (de 14–17 h en nadons a 7–8 h en majors de 65 anys). A la segona vista, acumulació de lapses d'atenció durant 14 dies dormint 4, 6 o 8 hores segons el model de Van Dongen et al. (2003).");
+    const mob=w<600, baseH=mob?310:360, m={t:24,r:mob?24:34,b:44,l:38};
+    const s=V.svg(box,w,baseH,"A la primera vista, hores de son recomanades per franja d'edat segons la National Sleep Foundation (de 14–17 h en nadons a 7–8 h en majors de 65 anys). A la segona vista, acumulació de lapses d'atenció durant 14 dies dormint 4, 6 o 8 hores segons el model de Van Dongen et al. (2003).");
     const g=s.append("g");
     const tp=V.tip(box);
 
     function draw(mMode){
       g.selectAll("*").remove();
       lg.innerHTML="";
+      tp.hide();
+      clearFocus=()=>tp.hide();
       if(mMode==="edat"){
         V.legendCat(lg,[
           {c:C.blau,    t:"Rang recomanat (NSF, 2015)"},
@@ -588,38 +673,86 @@ const $=s=>document.querySelector(s);
           {c:C.vermell, t:"Pic de cronotip nocturn (~20 anys)"}
         ]);
         const data=D.nsf;
-        const x=d3.scaleBand(data.map(d=>d.id),[m.l,w-m.r]).padding(0.28);
-        const y=d3.scaleLinear([4,20],[h-m.b,m.t]);
-        V.gridY(g,y,0,w-m.r,[4,8,12,16,20],v=>v,{unit:" h/dia"});
+        if(mob){
+          // Transposició a 9 files horitzontals en mòbil
+          const rowH=40, mt=16, mb=30, ml=86, mr=14;
+          const hMob=mt + data.length*rowH + mb;
+          s.attr("height",hMob).attr("viewBox",`0 0 ${w} ${hMob}`);
+          const x=d3.scaleLinear([4,20],[ml,w-mr]);
+          V.axisX(g, x, hMob-mb, [4,8,12,16,20], d=>d+" h", {tick:true, grid:mt});
 
-        // Bandes suaus d'àrea + punts centrals
-        const areaOk=d3.area().x(d=>x(d.id)+x.bandwidth()/2).y0(d=>y(d.okMin)).y1(d=>y(d.okMax)).curve(d3.curveMonotoneX);
-        const areaRec=d3.area().x(d=>x(d.id)+x.bandwidth()/2).y0(d=>y(d.min)).y1(d=>y(d.max)).curve(d3.curveMonotoneX);
-        g.append("path").attr("d",areaOk(data)).attr("fill",C.blauClar).attr("fill-opacity",.22);
-        g.append("path").attr("d",areaRec(data)).attr("fill",C.blau).attr("fill-opacity",.28).style("mix-blend-mode","multiply");
+          const items=g.selectAll("g.ag").data(data).join("g").attr("class","ag").style("cursor","pointer");
+          items.each(function(d,i){
+            const q=d3.select(this), cy=mt + i*rowH + rowH/2, isJov=d.id==="jov";
+            q.append("line").attr("x1",ml).attr("x2",w-mr).attr("y1",cy).attr("y2",cy).attr("stroke",C.grid).attr("stroke-width",.6);
+            q.append("line").attr("x1",x(d.okMin)).attr("x2",x(d.okMax)).attr("y1",cy).attr("y2",cy)
+              .attr("stroke",C.blauClar).attr("stroke-width",9).attr("stroke-linecap","round").attr("stroke-opacity",.32);
+            q.append("line").attr("x1",x(d.min)).attr("x2",x(d.max)).attr("y1",cy).attr("y2",cy)
+              .attr("stroke",isJov?C.vermell:C.blau).attr("stroke-width",9).attr("stroke-linecap","round").attr("stroke-opacity",.82);
+            q.append("circle").attr("cx",x(d.mid)).attr("cy",cy).attr("r",3.8).attr("fill",isJov?C.vermell:C.ink).attr("stroke","#fff").attr("stroke-width",1.2);
+            const hasSub=d.age!==d.lbl;
+            V.t(q, ml-8, hasSub?cy-1:cy+4, d.lbl, {size:11.5, anchor:"end", fill:isJov?C.vermell:C.ink2, weight:isJov?700:600});
+            if(hasSub) V.t(q, ml-8, cy+11, d.age.replace(" mesos"," m").replace(" anys"," a"), {size:11, anchor:"end", fill:C.muted});
+            q.append("rect").attr("x",0).attr("y",cy-rowH/2).attr("width",w).attr("height",rowH).attr("fill","transparent");
+          });
 
-        const items=g.selectAll("g.ag").data(data).join("g").attr("class","ag").style("cursor","pointer");
-        items.each(function(d){
-          const q=d3.select(this), cx=x(d.id)+x.bandwidth()/2, isPeak=d.id==="ado"||d.id==="jov";
-          q.append("line").attr("x1",cx).attr("x2",cx).attr("y1",y(d.min)).attr("y2",y(d.max))
-            .attr("stroke",d.id==="jov"?C.vermell:C.blau).attr("stroke-width",5).attr("stroke-linecap","round").attr("stroke-opacity",.75);
-          q.append("circle").attr("cx",cx).attr("cy",y(d.mid)).attr("r",4).attr("fill",d.id==="jov"?C.vermell:C.ink).attr("stroke","#fff").attr("stroke-width",1.2);
-          V.t(q, cx, h-m.b+16, mob?d.age.replace(" mesos","m").replace(" anys","a"):d.lbl, {size:11, anchor:"middle", fill:d.id==="jov"?C.vermell:C.ink2, weight:d.id==="jov"?700:400});
-          if(!mob)V.t(q, cx, h-m.b+30, d.age, {size:11, anchor:"middle", fill:C.muted});
-          q.append("rect").attr("x",x(d.id)-4).attr("y",m.t).attr("width",x.bandwidth()+8).attr("height",h-m.t-m.b).attr("fill","transparent");
-        });
+          const jovIdx=data.findIndex(d=>d.id==="jov");
+          const jovY=mt + jovIdx*rowH + rowH/2;
+          V.note(g,{
+            x:x(9.2), y:jovY,
+            tx:w-10, ty:jovY+rowH*1.15,
+            kind:"elbow", anchor:"end",
+            lines:[["Cap als 20 anys",true],["pic nocturn (Roenneberg)"]],
+            size:11
+          });
 
-        const jovX=x("jov")+x.bandwidth()/2;
-        V.note(g,{x:jovX,y:y(9),tx:jovX-10,ty:y(15.5),kind:"elbow",anchor:"end",lines:[["Cap als 20 anys",true],["pic més nocturn del cronotip (Roenneberg, 2004)"]],size:11.5});
+          clearFocus=()=>{ V.focus(items,null); tp.hide(); };
+          items.on("pointerenter pointerdown",(ev,d)=>{
+            V.focus(items, p=>p.id===d.id, {dim:.48});
+            tp.show(`<b>${d.lbl} (${d.age})</b><br>Recomanat: ${d.min}–${d.max} h/dia · Acceptable: ${d.okMin}–${d.okMax} h`);
+          }).on("pointerleave",ev=>{
+            if(ev.pointerType!=="mouse")return;
+            clearFocus();
+          });
+        } else {
+          const h=baseH;
+          s.attr("height",h).attr("viewBox",`0 0 ${w} ${h}`);
+          const x=d3.scaleBand(data.map(d=>d.id),[m.l,w-m.r]).padding(0.28);
+          const y=d3.scaleLinear([4,20],[h-m.b,m.t]);
+          V.gridY(g,y,0,w-m.r,[4,8,12,16,20],v=>v,{unit:" h/dia"});
 
-        items.on("pointerenter pointerdown",(ev,d)=>{
-          V.focus(items, p=>p.id===d.id, {dim:.48});
-          tp.show(`<b>${d.lbl} (${d.age})</b><br>Recomanat: ${d.min}–${d.max} h/dia · Acceptable: ${d.okMin}–${d.okMax} h`);
-        }).on("pointerleave",ev=>{
-          if(ev.pointerType!=="mouse")return;
-          V.focus(items,null); tp.hide();
-        });
+          // Bandes suaus d'àrea + punts centrals
+          const areaOk=d3.area().x(d=>x(d.id)+x.bandwidth()/2).y0(d=>y(d.okMin)).y1(d=>y(d.okMax)).curve(d3.curveMonotoneX);
+          const areaRec=d3.area().x(d=>x(d.id)+x.bandwidth()/2).y0(d=>y(d.min)).y1(d=>y(d.max)).curve(d3.curveMonotoneX);
+          g.append("path").attr("d",areaOk(data)).attr("fill",C.blauClar).attr("fill-opacity",.22);
+          g.append("path").attr("d",areaRec(data)).attr("fill",C.blau).attr("fill-opacity",.28).style("mix-blend-mode","multiply");
+
+          const items=g.selectAll("g.ag").data(data).join("g").attr("class","ag").style("cursor","pointer");
+          items.each(function(d){
+            const q=d3.select(this), cx=x(d.id)+x.bandwidth()/2;
+            q.append("line").attr("x1",cx).attr("x2",cx).attr("y1",y(d.min)).attr("y2",y(d.max))
+              .attr("stroke",d.id==="jov"?C.vermell:C.blau).attr("stroke-width",5).attr("stroke-linecap","round").attr("stroke-opacity",.75);
+            q.append("circle").attr("cx",cx).attr("cy",y(d.mid)).attr("r",4).attr("fill",d.id==="jov"?C.vermell:C.ink).attr("stroke","#fff").attr("stroke-width",1.2);
+            V.t(q, cx, h-m.b+16, d.lbl, {size:11, anchor:"middle", fill:d.id==="jov"?C.vermell:C.ink2, weight:d.id==="jov"?700:400});
+            V.t(q, cx, h-m.b+30, d.age, {size:11, anchor:"middle", fill:C.muted});
+            q.append("rect").attr("x",x(d.id)-4).attr("y",m.t).attr("width",x.bandwidth()+8).attr("height",h-m.t-m.b).attr("fill","transparent");
+          });
+
+          const jovX=x("jov")+x.bandwidth()/2;
+          V.note(g,{x:jovX,y:y(9),tx:jovX-10,ty:y(15.5),kind:"elbow",anchor:"end",lines:[["Cap als 20 anys",true],["pic més nocturn del cronotip (Roenneberg, 2004)"]],size:11.5});
+
+          clearFocus=()=>{ V.focus(items,null); tp.hide(); };
+          items.on("pointerenter pointerdown",(ev,d)=>{
+            V.focus(items, p=>p.id===d.id, {dim:.48});
+            tp.show(`<b>${d.lbl} (${d.age})</b><br>Recomanat: ${d.min}–${d.max} h/dia · Acceptable: ${d.okMin}–${d.okMax} h`);
+          }).on("pointerleave",ev=>{
+            if(ev.pointerType!=="mouse")return;
+            clearFocus();
+          });
+        }
       } else {
+        const h=baseH;
+        s.attr("height",h).attr("viewBox",`0 0 ${w} ${h}`);
         // Esquema fidel a Van Dongen et al. (2003, SLEEP): 14 dies a 4 h, 6 h, 8 h vs somnolència subjectiva
         V.legendCat(lg,[
           {c:C.vermell, t:"4 h/nit (lapses PVT)", kind:"line", w:2.4},
@@ -639,7 +772,7 @@ const $=s=>document.querySelector(s);
         const x=d3.scaleLinear([1,14],[m.l,w-m.r]);
         const y=d3.scaleLinear([0,20],[h-m.b,m.t]);
         V.gridY(g,y,0,w-m.r,[0,5,10,15,20],v=>v,{zero:0,unit:" lapses PVT"});
-        V.axisX(g,x,h-m.b,[1,3,5,7,10,12,14],d=>"Dia "+d,{tick:true});
+        V.axisX(g,x,h-m.b,mob?[1,4,7,10,14]:[1,3,5,7,10,12,14],d=>"Dia "+d,{tick:true});
 
         // Llindars de privació total (24 h ≈ 10 lapses; 48 h ≈ 17 lapses)
         V.rule(g, m.l, w-m.r, y(10.2), {stroke:C.blau});
@@ -692,6 +825,11 @@ const $=s=>document.querySelector(s);
     {c:C.blau,    t:"Baixa de nit", kind:"line", w:2}
   ]);
 
+  let clearFocus=null;
+  document.addEventListener("pointerdown", ev=>{
+    if(clearFocus && !el.contains(ev.target)) clearFocus();
+  });
+
   V.mount(el,(box,w)=>{
     const mob=w<640, h=mob?300:340;
     const xL=mob?w*0.38:w*0.30, xR=mob?w*0.64:w*0.70;
@@ -727,12 +865,13 @@ const $=s=>document.querySelector(s);
       q.append("line").attr("x1",xL).attr("x2",xR).attr("y1",y1).attr("y2",y2).attr("stroke","transparent").attr("stroke-width",18);
     });
 
+    clearFocus=()=>{ V.focus(items,null); tp.hide(); };
     items.on("pointerenter pointerdown",(ev,d)=>{
       V.focus(items, x=>x.id===d.id, {dim:.48});
       tp.show(`<b>${d.nom}</b> (${d.day} % dia → ${d.night} % nit)<br>${d.detall}`);
     }).on("pointerleave",ev=>{
       if(ev.pointerType!=="mouse")return;
-      V.focus(items,null); tp.hide();
+      clearFocus();
     });
   });
 })();
@@ -743,7 +882,10 @@ const $=s=>document.querySelector(s);
 (function culturesSonFig(){
   const el=$("#cson-viz"), lg=$("#cson-lg");
   if(!el||!D.sleepCultures)return;
-  let filter="tots", applyFilter=null;
+  let filter="tots", applyFilter=null, clearFocus=null;
+  document.addEventListener("pointerdown", ev=>{
+    if(clearFocus && !el.contains(ev.target)) clearFocus();
+  });
   const CAT={
     social:{c:C.vermell, t:"Son compartit, foc i sentinella"},
     temps: {c:C.blau,    t:"Horaris culturals i son en públic"},
@@ -788,15 +930,18 @@ const $=s=>document.querySelector(s);
         q.append("circle").attr("cx",x).attr("cy",y).attr("r",24).attr("fill","transparent");
       });
 
+      clearFocus=()=>{
+        if(applyFilter)applyFilter(filter);
+        sites.select(".core").attr("r",3.8);
+        tp.hide();
+      };
       sites.on("pointerenter pointerdown",(ev,d)=>{
         V.focus(sites, x=>x.id===d.id, {dim:.48});
         sites.select(".core").attr("r",x=>x.id===d.id?5.2:3.8);
         tp.show(`<b>${d.nom}</b> (${d.lloc})<br>${d.resum}`);
       }).on("pointerleave",ev=>{
         if(ev.pointerType!=="mouse")return;
-        if(applyFilter)applyFilter(filter);
-        sites.select(".core").attr("r",3.8);
-        tp.hide();
+        clearFocus();
       });
 
       applyFilter=k=>{

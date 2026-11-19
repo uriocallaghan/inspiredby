@@ -606,12 +606,12 @@ function initSAL(){
       V.t(gAnn,x(8),y0-10,"Sàhara",{anchor:"middle",weight:600,size:mob?11.5:12.5,fill:C.ink,halo:3});
       if(!mob)V.t(gAnn,x(-17),y0+22,"costa africana",{anchor:"middle",size:11,fill:C.muted,italic:true});
       if(w>.35){
-        V.t(gAnn,x(-32),y(Math.max(.35,botAt(-32,w)*.45)),"aire del mar, fresc i humit",{anchor:"middle",size:mob?11:12,fill:C.blauFosc,italic:true,halo:3})
+        V.t(gAnn,x(mob?-40:-32),y(Math.max(.35,botAt(-32,w)*.45)),"aire del mar, fresc i humit",{anchor:"middle",size:mob?11:12,fill:C.blauFosc,italic:true,halo:3})
           .style("opacity",sm((w-.35)/.3));
       }
       if(rainA>.25){
         V.t(gAnn,x(-70),y0-12,"Amazònia",{anchor:"middle",weight:600,size:mob?11.5:12.5,fill:C.ink,halo:3}).style("opacity",rainA);
-        V.t(gAnn,x(-70),y(4.2),"la pluja arrossega la pols",{anchor:"middle",size:mob?11:12,fill:C.blauFosc,italic:true,halo:3}).style("opacity",rainA);
+        V.t(gAnn,mob?mg.l+6:x(-70),y(4.2),"la pluja arrossega la pols",{anchor:mob?"start":"middle",size:mob?11:12,fill:C.blauFosc,italic:true,halo:3}).style("opacity",rainA);
       }
       if(de>.25){
         V.t(gAnn,x(-65),y0-14,"Antilles",{anchor:"middle",size:11.5,fill:C.ink2,halo:3}).style("opacity",de);
@@ -815,8 +815,8 @@ function initAtlantic(){
   const ANNS=[
     {lon:5,lat:23,lines:[["Sàhara",true]],anchor:"middle",steps:[0,1,6]},
     {lon:17.8,lat:17,lines:[["Bodélé",false]],dx:10,dy:16,hm:true,lead:true,steps:[0]},
-    {lon:-15,lat:30,lines:[["182 Mt/any",true,C.vermell],["surten d'Àfrica"]],dx:8,dy:0,steps:[0,1]},
-    {lon:-35,lat:30,lines:[["132 Mt/any",true],["a mig oceà"]],dx:8,dy:0,steps:[1]},
+    {lon:-15,lat:30,lines:[["182 Mt/any",true,C.vermell],["surten d'Àfrica"]],dx:8,dy:0,m1:{dx:-6,dy:-4,anchor:"end"},steps:[0,1]},
+    {lon:-35,lat:30,lines:[["132 Mt/any",true],["a mig oceà"]],dx:8,dy:0,m1:{dx:-6,dy:28,anchor:"end"},steps:[1]},
     {lon:-75,lat:30,lines:[["43 Mt/any",true,C.blau],["al Carib"]],dx:8,dy:0,steps:[1,4]},
     {lon:-23.6,lat:15.6,lines:[["Cap Verd",false]],dx:-10,dy:-14,anchor:"end",hm:true,steps:[0,1]},
     {lon:-59.5,lat:13.1,lines:[["Barbados",false]],dx:10,dy:-12,hm:true,lead:true,steps:[1,4]},
@@ -882,8 +882,8 @@ function initAtlantic(){
     if(activeLoop){ activeLoop.stop(); activeLoop=null; }
     if(!WORLD){ ensureWorld(()=>mnt.redraw()); return; }
     const mob=isMob(W);
-    const maxH=mob?Math.min(window.innerHeight*.36,280):Math.min(Math.max(280,window.innerHeight-260),500);
-    const H=Math.round(Math.min(W*(mob?.72:.60),maxH));
+    const maxH=mob?Math.min(window.innerHeight*.27,225):Math.min(Math.max(280,window.innerHeight-260),500);
+    const H=Math.round(Math.min(W*(mob?.65:.60),maxH));
 
     d3.select(el).selectAll("canvas.ibv,svg.ibv").remove();
     const {c:cv,ctx}=V.canvas(el,W,H,"Mapa de l'Atlàntic tropical amb el flux de pols del Sàhara cap a l'Amazònia a l'hivern i primavera, cap al Carib a l'estiu i cap a Europa alguns dies. Esquema.");
@@ -1036,12 +1036,16 @@ function initAtlantic(){
         if(mob&&a.hm)return;
         const p=P(a.lon,a.lat);
         if(p[0]<-10||p[0]>W+10||p[1]<-10||p[1]>H+10)return;
-        const tx2=clamp(p[0]+(a.dx||0)*K,a.anchor==="end"?84:10,a.anchor==="end"?W-10:W-96);
-        const ty2=clamp(p[1]+(a.dy||0)*K,16,H-18);
+        const ov=(mob&&step===1&&a.m1)?a.m1:null;
+        const anc=ov&&ov.anchor?ov.anchor:a.anchor;
+        const adx=ov&&ov.dx!=null?ov.dx:(a.dx||0);
+        const ady=ov&&ov.dy!=null?ov.dy:(a.dy||0);
+        const tx2=clamp(p[0]+adx*K,anc==="end"?84:10,anc==="end"?W-10:W-96);
+        const ty2=clamp(p[1]+ady*K,16,H-18);
         if(a.lead){
-          V.note(gAnn,{x:p[0],y:p[1],tx:tx2,ty:ty2,lines:a.lines,kind:"elbow",anchor:a.anchor,dot:true,size:mob?11.5:12.5,italic:a.italic});
+          V.note(gAnn,{x:p[0],y:p[1],tx:tx2,ty:ty2,lines:a.lines,kind:"elbow",anchor:anc,dot:true,size:mob?11.5:12.5,italic:a.italic});
         }else{
-          V.lines(gAnn,tx2,ty2,a.lines,{anchor:a.anchor||"start",halo:3,size:mob?11.5:12.5,italic:a.italic,fill:a.italic?C.ink2:C.ink});
+          V.lines(gAnn,tx2,ty2,a.lines,{anchor:anc||"start",halo:3,size:mob?11.5:12.5,italic:a.italic,fill:a.italic?C.ink2:C.ink});
         }
       });
     }
@@ -1208,7 +1212,7 @@ function initTrucks(){
     const r=cell*.36;
     const gridW=cols*cell, x0=(W-gridW)/2;
     const gridH=rows*cell;
-    const calloutH=64;
+    const calloutH=mob?78:64;
     const H=Math.round(gridH+calloutH+12);
 
     const svg=V.svg(el,W,H,"Reixa de 364 cercles translúcids on cada cercle equival a 20.000 camions de 25 tones (0,5 Mt). Permet comparar els 182 Mt que surten d'Àfrica amb els 132 a mig oceà, els 28 que cauen a l'Amazònia, els 43 al Carib i les 22.000 t de fòsfor (880 camions, 1/23 d'un cercle).");
@@ -1245,10 +1249,16 @@ function initTrucks(){
       gCall.selectAll("*").remove();
       if(v.p){
         /* Escala proporcional neta per al fòsfor (1/23 d'un cercle), sense lupa flotant */
-        const by=gridH+20, bw=Math.min(280,W-24), bx=x0, bh=14;
-        V.note(gCall,{x:data[0].cx,y:data[0].cy+r+2,tx:bx+bw+12,ty:by+bh/2,kind:"elbow",anchor:"start",
-          lines:mob?[["880 camions",true,C.vermellFosc],["1/23 d'un cercle"]]:[["Fòsfor: 880 camions",true,C.vermellFosc],["una 23a part d'un sol cercle (22.000 t)"]],
-          size:mob?11.5:12.5,dot:false});
+        const by=gridH+(mob?16:20), bw=mob?Math.min(W-16,gridW):Math.min(280,W-24), bx=x0, bh=14;
+        if(mob){
+          V.note(gCall,{x:data[0].cx,y:data[0].cy+r+2,tx:Math.min(W-8,bx+bw),ty:by+bh+22,kind:"elbow",anchor:"end",
+            lines:[["880 camions",true,C.vermellFosc],["1/23 d'un cercle"]],
+            size:11.5,dot:false});
+        }else{
+          V.note(gCall,{x:data[0].cx,y:data[0].cy+r+2,tx:bx+bw+12,ty:by+bh/2,kind:"elbow",anchor:"start",
+            lines:[["Fòsfor: 880 camions",true,C.vermellFosc],["una 23a part d'un sol cercle (22.000 t)"]],
+            size:12.5,dot:false});
+        }
         gCall.append("rect").attr("x",bx).attr("y",by).attr("width",bw).attr("height",bh).attr("rx",2)
           .attr("fill",V.alpha(C.grocClar,.65)).attr("stroke",C.hair).attr("stroke-width",.8);
         gCall.append("rect").attr("x",bx).attr("y",by).attr("width",Math.max(4,bw/22.7)).attr("height",bh).attr("rx",1.5)
@@ -1257,7 +1267,7 @@ function initTrucks(){
           const sx=bx+bw*s/22.7;
           gCall.append("line").attr("x1",sx).attr("x2",sx).attr("y1",by).attr("y2",by+bh).attr("stroke","#FFFFFF").attr("stroke-width",.7);
         }
-        V.t(gCall,bx,by+bh+15,"1 cercle = 20.000 camions (500.000 t)",{size:11.5,fill:C.muted});
+        V.t(gCall,bx,by+bh+15,mob?"1 cercle = 20.000 camions":"1 cercle = 20.000 camions (500.000 t)",{size:11.5,fill:C.muted});
       }else{
         const activeCount=Math.ceil(exact);
         const pct=Math.round(v.t/182e6*100);
@@ -1316,7 +1326,10 @@ function initBudget(){
   ];
   const PF=1e12*780e-6/9.6e8; // g P/ha per Tg de pols
   const rng=document.getElementById("bRng"), outD=document.getElementById("bOutD"), ver=document.getElementById("bVerdict");
-  let updateVal=null;
+  let updateVal=null, clearBudgetFocus=null;
+  document.addEventListener("pointerdown", ev=>{
+    if(clearBudgetFocus && !wrap.contains(ev.target)) clearBudgetFocus();
+  });
 
   function updateVerdict(D){
     const P=D*PF;
@@ -1334,10 +1347,10 @@ function initBudget(){
   V.mount(wrap,(el,W)=>{
     const mob=isMob(W);
     const lw=mob?0:215;
-    const rowH=mob?34:26;
+    const rowH=mob?44:26;
     const top1=26, h1=top1+EST.length*rowH+26;
     const top2=h1+28;
-    const balH=mob?198:162;
+    const balH=mob?224:162;
     const H=top2+balH+24;
 
     const svg=V.svg(el,W,H,"Balanç de fòsfor de l'Amazònia. A dalt, les 7 estimacions publicades de pols africana (de 9 a 50 milions de tones l'any). A baix, comparació del fòsfor aportat per la pols amb les pèrdues pels rius (8–40 g/ha/any), la deposició total de l'aire (161–300 g/ha) i el reciclatge de la selva (1.400–4.100 g/ha).");
@@ -1381,15 +1394,16 @@ function initBudget(){
     const curLine=gE.append("line").attr("y1",top1-2).attr("y2",top1+EST.length*rowH)
       .attr("stroke",C.ink).attr("stroke-width",1.1).attr("stroke-dasharray","3 2").attr("pointer-events","none");
 
+    clearBudgetFocus=()=>{ V.focus(rows,null); tp.hide(); };
     rows.on("click",(e,d)=>{ if(rng)rng.value=d.v; setVal(d.v,false); })
       .on("keydown",(e,d)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); if(rng)rng.value=d.v; setVal(d.v,false); } })
-      .on("pointerenter",(e,d)=>{
+      .on("pointerenter pointerdown",(e,d)=>{
         V.focus(rows,r=>r===d,{dim:.48});
         const pVal=d.v*PF;
         const intv=d.lo!=null?` (interval ${d.lo}–${d.hi} Mt)`:"";
         tp.show(`<b>${d.n}</b> (${d.d})<br>${fmtNum(d.v,d.v%1?1:0)} Mt/any${intv} → ≈ ${f1(pVal)} g P/ha`);
       })
-      .on("pointerleave",()=>{ V.focus(rows,null); tp.hide(); });
+      .on("pointerleave",e=>{ if(e.pointerType!=="mouse")return; clearBudgetFocus(); });
 
     /* Part 2: IB-10 Escala amb llindar de fòsfor */
     const xb=d3.scaleLinear([0,60],[mob?10:lw+10,W-(mob?14:86)]);
@@ -1440,7 +1454,11 @@ function initBudget(){
       inBar.transition().duration(dur).attr("width",Math.max(0,px-xb(0)));
       inDot.transition().duration(dur).attr("cx",px);
       inTri.transition().duration(dur).attr("d",`M${px-4},${r1-6}L${px+4},${r1-6}L${px},${r1-1}Z`);
-      inVal.transition().duration(dur).attr("x",Math.min(W-34,px+9)).text(fmtNum(P,P<10?1:0));
+      const flipVal=px+36>W-8;
+      inVal.transition().duration(dur)
+        .attr("x",flipVal?px-12:px+11)
+        .attr("text-anchor",flipVal?"end":"start")
+        .text(fmtNum(P,P<10?1:0));
       updateVerdict(D);
     }
     updateVal=setVal;
@@ -1533,7 +1551,7 @@ function initYears(){
     const gAnn=svg.append("g").attr("pointer-events","none").style("opacity",0);
     V.note(gAnn,{x:x(2007),y:y(226.6),tx:x(2007)+(mob?22:32),ty:y(248),kind:"elbow",anchor:"start",
       lines:[["2007 · 227 Mt",true],["màxim del període"]],size:mob?11.5:12});
-    V.note(gAnn,{x:x(2011),y:y(28.4),tx:x(2011),ty:y(6)+2,kind:"straight",anchor:"middle",
+    V.note(gAnn,{x:x(2011),y:y(28.4),tx:mob?W-10:x(2011),ty:y(6)+2,kind:"straight",anchor:mob?"end":"middle",
       lines:[["2011 · mínim a tots tres meridians",true]],size:mob?11.5:12});
 
     /* Capa de hover */

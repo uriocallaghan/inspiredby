@@ -74,10 +74,10 @@
     ]);
 
     V.mount(el,(node,w)=>{
-      const mob=w<640;
-      const m={t:18,r:mob?66:116,b:34,l:mob?84:150};
+      const mob=w<600;
+      const m={t:mob?14:18,r:mob?10:116,b:34,l:mob?8:150};
       const bw=Math.max(120,w-m.l-m.r);
-      const jesusH=mob?38:42, rowH=mob?58:62, barH=mob?22:24;
+      const jesusH=mob?46:42, rowH=mob?60:62, barH=mob?20:24;
       const h=m.t+jesusH+EV.length*rowH+m.b;
       const s=V.svg(node,w,h,"Comparativa de les 64.298 paraules gregues dels quatre evangelis (1 traç = 100 paraules) enfront de les 0 paraules escrites per Jesús de Natzaret, separant el material compartit del material exclusiu de cada llibre.");
       const g=s.append("g");
@@ -99,12 +99,21 @@
 
       // fila 0: Jesús (0 paraules escrites) — el buit que ho explica tot
       const jy=m.t+14;
-      V.t(g,m.l-12,jy+1,"Jesús",{anchor:"end",serif:true,weight:600,size:mob?14.5:16,fill:C.ink});
-      V.t(g,m.l-12,jy+15,"≈ 6 aC – ≈ 30 dC",{anchor:"end",size:11,fill:C.muted});
-      g.append("circle").attr("cx",m.l).attr("cy",jy+2).attr("r",4).attr("fill",C.vermell);
-      g.append("line").attr("x1",m.l+8).attr("x2",m.l+(mob?150:220)).attr("y1",jy+2).attr("y2",jy+2)
-        .attr("stroke",C.vermell).attr("stroke-width",.8).attr("stroke-dasharray","2 4").attr("stroke-opacity",.55);
-      V.t(g,m.l+12,jy-4,"0 paraules escrites",{anchor:"start",size:12,weight:600,fill:C.vermell});
+      if(mob){
+        V.t(g,m.l,jy,"Jesús",{anchor:"start",serif:true,weight:600,size:15,fill:C.ink});
+        V.t(g,m.l+46,jy,"≈ 6 aC – ≈ 30 dC",{anchor:"start",size:11,fill:C.muted});
+        g.append("circle").attr("cx",m.l+4).attr("cy",jy+17).attr("r",4).attr("fill",C.vermell);
+        g.append("line").attr("x1",m.l+12).attr("x2",m.l+140).attr("y1",jy+17).attr("y2",jy+17)
+          .attr("stroke",C.vermell).attr("stroke-width",.8).attr("stroke-dasharray","2 4").attr("stroke-opacity",.55);
+        V.t(g,m.l+16,jy+13,"0 paraules escrites",{anchor:"start",size:11.5,weight:600,fill:C.vermell});
+      } else {
+        V.t(g,m.l-12,jy+1,"Jesús",{anchor:"end",serif:true,weight:600,size:16,fill:C.ink});
+        V.t(g,m.l-12,jy+15,"≈ 6 aC – ≈ 30 dC",{anchor:"end",size:11,fill:C.muted});
+        g.append("circle").attr("cx",m.l).attr("cy",jy+2).attr("r",4).attr("fill",C.vermell);
+        g.append("line").attr("x1",m.l+8).attr("x2",m.l+220).attr("y1",jy+2).attr("y2",jy+2)
+          .attr("stroke",C.vermell).attr("stroke-width",.8).attr("stroke-dasharray","2 4").attr("stroke-opacity",.55);
+        V.t(g,m.l+12,jy-4,"0 paraules escrites",{anchor:"start",size:12,weight:600,fill:C.vermell});
+      }
       g.append("line").attr("x1",0).attr("x2",w).attr("y1",m.t+jesusH-4).attr("y2",m.t+jesusH-4)
         .attr("stroke",C.hair).attr("stroke-width",.8);
 
@@ -114,17 +123,23 @@
 
       rows.each(function(d,i){
         const rg=d3.select(this);
-        const y0=m.t+jesusH+i*rowH+(rowH-barH)/2;
+        const y0=mob?(m.t+jesusH+i*rowH+26):(m.t+jesusH+i*rowH+(rowH-barH)/2);
         const nTot=Math.round(d.w/100);
         const nUn=Math.max(1,Math.round(nTot*d.u/100));
         const nSh=nTot-nUn;
 
-        // etiqueta esquerra (nom + datació)
-        V.t(rg,m.l-12,y0+barH/2-1,d.n,{anchor:"end",serif:true,weight:600,size:mob?15:17,fill:C.ink});
-        V.t(rg,m.l-12,y0+barH/2+13,d.yr,{anchor:"end",size:11,fill:C.muted});
+        // etiqueta (a sobre de la fila en mòbil, a l'esquerra en desktop)
+        if(mob){
+          V.t(rg,m.l,y0-8,`${d.n} `, {anchor:"start",serif:true,weight:600,size:15,fill:C.ink});
+          V.t(rg,m.l+54,y0-8,d.yr,{anchor:"start",size:11,fill:C.muted});
+          V.t(rg,w-m.r,y0-8,`${f0(d.w)} · ${d.u} % propi`,{anchor:"end",size:11,weight:600,fill:d.k==="Jn"?C.ink2:d.c});
+        } else {
+          V.t(rg,m.l-12,y0+barH/2-1,d.n,{anchor:"end",serif:true,weight:600,size:17,fill:C.ink});
+          V.t(rg,m.l-12,y0+barH/2+13,d.yr,{anchor:"end",size:11,fill:C.muted});
+        }
 
         // fons de hit invisible per a tota la fila
-        rg.append("rect").attr("x",0).attr("y",y0-10).attr("width",w).attr("height",barH+20).attr("fill","transparent");
+        rg.append("rect").attr("x",0).attr("y",mob?y0-22:y0-10).attr("width",w).attr("height",mob?rowH:barH+20).attr("fill","transparent");
 
         // traços unitaris (1 traç = 100 paraules): esquerra compartit, dreta exclusiu
         const bg=rg.append("g").attr("class","bars");
@@ -144,10 +159,12 @@
             .attr("stroke",C.ink).attr("stroke-width",.9).attr("stroke-opacity",.45);
         }
 
-        // anotació directa de % propi a sobre o al costat
-        const xEnd=x(nTot)+8;
-        V.t(rg,xEnd,y0+barH/2-1,`${f0(d.w)}`,{anchor:"start",size:mob?12:13,weight:700,fill:C.ink});
-        V.t(rg,xEnd,y0+barH/2+13,`${d.u} % propi`,{anchor:"start",size:11,weight:600,fill:d.k==="Jn"?C.ink2:d.c});
+        // anotació directa de % propi al costat en desktop
+        if(!mob){
+          const xEnd=x(nTot)+8;
+          V.t(rg,xEnd,y0+barH/2-1,`${f0(d.w)}`,{anchor:"start",size:13,weight:700,fill:C.ink});
+          V.t(rg,xEnd,y0+barH/2+13,`${d.u} % propi`,{anchor:"start",size:11,weight:600,fill:d.k==="Jn"?C.ink2:d.c});
+        }
       });
 
       // animació d'entrada neta (escombrat d'esquerra a dreta)
@@ -214,43 +231,51 @@
       escrits:["vida","cartes","escrits"], externes:["vida","cartes","escrits","externes"],
       canon:["vida","cartes","escrits","externes","canon"]
     };
+    const MOB_LABELS={
+      vida:new Set(["Naixement","Crucifixió a Jerusalem"]),
+      oral:new Set(["Crucifixió a Jerusalem"]),
+      cartes:new Set(["1 Tessalonicencs (Pau)"]),
+      escrits:new Set(["Evangeli de Marc","Evangeli de Joan"]),
+      externes:new Set(["Flavi Josep (historiador jueu)","Tàcit (historiador romà)"]),
+      canon:new Set(["Ireneu defensa que són quatre","Atanasi fixa els 27 llibres"])
+    };
     lg($("#temps-lg"),Object.values(G).map(g=>({c:g.c===C.grocFosc?C.groc:g.c,t:g.t})));
     let state="vida", api=null;
 
     V.mount(el,(node,w)=>{
-      const mob=w<640, rh=mob?24:29, hdrH=mob?18:20, gap=mob?11:15, top=28;
+      const mob=w<600, rh=mob?11:29, hdrH=mob?12:20, gap=mob?4:15, top=mob?20:28;
       const L=mob?0:166, R=w-(mob?8:18);
       let y=top; const groups=[];
       Object.keys(G).forEach((g,gi)=>{
-        const divY=gi>0?y-6:null, hy=y+11; y+=hdrH;
-        D.filter(d=>d.g===g).forEach(d=>{ d.y=y+6; y+=rh; });
+        const divY=gi>0?y-(mob?2:6):null, hy=y+(mob?9:11); y+=hdrH;
+        D.filter(d=>d.g===g).forEach(d=>{ d.y=y+(mob?5.5:6); y+=rh; });
         groups.push({g,divY,hy}); y+=gap;
       });
-      const h=y+24;
+      const h=y+(mob?10:24);
       const {ctx,s}=layerCS(node,w,h,"Cronologia orgànica en cinc blocs ancorada a la crucifixió (≈ 30 dC), amb boira de punts de memòria oral i bombolles proporcionals a l'extensió de cada text.");
       const split=L+(R-L)*.78;
       const x=yr=>yr<=120?L+(yr+10)/130*(split-L):split+(yr-120)/260*(R-split);
-      const rSc=d3.scaleSqrt([0,24000],[3.5,mob?15:24]);
+      const rSc=d3.scaleSqrt([0,24000],[mob?2.4:3.5,mob?6.5:24]);
 
       // eix superior net (estil «Major quakes»)
       const ticks=[-10,0,30,50,70,90,110,180,367];
       ticks.forEach(t=>{
         const xx=x(t);
-        s.append("line").attr("x1",xx).attr("y1",20).attr("x2",xx).attr("y2",h-22)
+        s.append("line").attr("x1",xx).attr("y1",mob?16:20).attr("x2",xx).attr("y2",h-(mob?14:22))
           .attr("stroke",t===30?C.vermell:C.grid).attr("stroke-width",t===30?1:.55)
           .attr("stroke-opacity",t===30?.65:.7);
         if(mob&&(t===-10||t===90||t===180))return;
-        V.t(s,xx,14,t<0?Math.abs(t)+" aC":t===0?"0":t===30?"0 · ≈30 dC":String(t),{anchor:"middle",size:11,fill:t===30?C.vermell:C.muted,weight:t===30?700:400});
+        V.t(s,xx,mob?12:14,t<0?Math.abs(t)+" aC":t===0?"0":t===30?"0 · ≈30 dC":String(t),{anchor:mob&&t===367?"end":"middle",size:11,fill:t===30?C.vermell:C.muted,weight:t===30?700:400});
       });
       const sx=x(120);
-      s.append("line").attr("x1",sx-3).attr("y1",20).attr("x2",sx+3).attr("y2",h-22).attr("stroke",C.hair).attr("stroke-dasharray","2 3");
+      s.append("line").attr("x1",sx-3).attr("y1",mob?16:20).attr("x2",sx+3).attr("y2",h-(mob?14:22)).attr("stroke",C.hair).attr("stroke-dasharray","2 3");
       if(!mob) V.t(s,sx+6,h-8,"escala comprimida →",{size:11,fill:C.muted});
 
       // boira orgànica de memòria oral en canvas (1.100 punts diminuts d'1 px, més densos prop del 30 dC)
       const rng=V.rng(30), ox0=x(30), ox1=x(72);
-      const mist=d3.range(mob?550:1100).map(()=>{
+      const mist=d3.range(mob?420:1100).map(()=>{
         const u=Math.pow(rng(),1.35);
-        return {x:ox0+u*(ox1-ox0), y:24+rng()*(h-50), r:.8+rng()*.55, ph:rng()*6.28, sp:.25+rng()*.35, a:.22*(1-u*.65)};
+        return {x:ox0+u*(ox1-ox0), y:(mob?18:24)+rng()*(h-(mob?34:50)), r:.8+rng()*.55, ph:rng()*6.28, sp:.25+rng()*.35, a:.22*(1-u*.65)};
       });
       function drawMist(t){
         ctx.clearRect(0,0,w,h);
@@ -265,19 +290,19 @@
       V.loop(node,(t)=>{ if(state==="oral"||state==="cartes"||state==="escrits")drawMist(t); });
 
       const gOralLab=s.append("g").attr("pointer-events","none");
-      V.lines(gOralLab,(ox0+ox1)/2,top+(mob?96:88),[["Memòria oral",true,C.vermell],["20–40 anys de boca en boca",false,C.ink2]],{anchor:"middle",size:mob?11:11.5,halo:3.5});
+      V.lines(gOralLab,(ox0+ox1)/2,top+(mob?62:88),[["Memòria oral",true,C.vermell],["20–40 anys de boca en boca",false,C.ink2]],{anchor:"middle",size:mob?11:11.5,halo:3.5});
 
       const g70=s.append("g");
-      g70.append("line").attr("x1",x(70)).attr("y1",20).attr("x2",x(70)).attr("y2",h-22).attr("stroke",C.ink2).attr("stroke-width",.8).attr("stroke-dasharray","2 3");
-      V.t(g70,x(70)+4,h-8,mob?"70 · Temple":"70 · Destrucció del Temple",{size:11,fill:C.ink2,halo:2.5});
+      g70.append("line").attr("x1",x(70)).attr("y1",mob?16:20).attr("x2",x(70)).attr("y2",h-(mob?14:22)).attr("stroke",C.ink2).attr("stroke-width",.8).attr("stroke-dasharray","2 3");
+      V.t(g70,x(70)+4,h-(mob?4:8),mob?"70 · Temple":"70 · Destrucció del Temple",{size:11,fill:C.ink2,halo:2.5});
 
       // separadors i capçaleres dels 5 blocs
       const gHdrs=s.selectAll("g.ghdr").data(groups).join("g").attr("class","ghdr");
       gHdrs.each(function(gr){
         const g=d3.select(this), meta=G[gr.g];
         if(gr.divY!=null) g.append("line").attr("x1",0).attr("y1",gr.divY).attr("x2",R).attr("y2",gr.divY).attr("stroke",C.hair).attr("stroke-width",.7);
-        g.append("circle").attr("cx",5).attr("cy",gr.hy-3.5).attr("r",3.8).attr("fill",meta.c===C.grocFosc?C.groc:meta.c);
-        V.t(g,14,gr.hy,meta.t,{size:mob?11.5:12,weight:700,fill:C.ink,halo:3});
+        g.append("circle").attr("cx",5).attr("cy",gr.hy-3.5).attr("r",mob?3:3.8).attr("fill",meta.c===C.grocFosc?C.groc:meta.c);
+        V.t(g,13,gr.hy,meta.t,{size:mob?11:12,weight:700,fill:C.ink,halo:3});
       });
 
       // files: fil finíssim + bombolla translúcida (àrea = paraules) + bigoti del marge de dates
@@ -295,16 +320,20 @@
           .attr("fill",d.g==="externes"?C.groc:col).attr("fill-opacity",d.g==="externes"?.42:.2)
           .attr("stroke",col).attr("stroke-width",.8).attr("stroke-opacity",.75)
           .style("mix-blend-mode","multiply");
-        g.append("circle").attr("cx",xm).attr("cy",cy).attr("r",d.key?3.2:2).attr("fill",col);
-        const lx=Math.max(x2,xm+rad)+7, short=mob?(d.s||d.n)+" · "+d.l:d.l;
-        const anc=lx>w-74?"end":"start", tx=lx>w-74?Math.min(x1,xm-rad)-7:lx;
-        V.t(g,tx,cy+4,short,{anchor:anc,size:11,fill:C.ink,halo:3});
+        g.append("circle").attr("cx",xm).attr("cy",cy).attr("r",d.key?2.8:1.8).attr("fill",col);
+        const lx=Math.max(x2,xm+rad)+(mob?5:7), short=mob?(d.s||d.n)+" · "+d.l:d.l;
+        const forceStart=mob&&d.n.startsWith("Tàcit");
+        const anc=forceStart?"start":(lx>w-(mob?98:74)?"end":"start");
+        const tx=anc==="end"?Math.min(x1,xm-rad)-(mob?5:7):lx;
+        V.t(g,tx,cy+3.5,short,{anchor:anc,size:11,fill:C.ink,halo:3}).attr("class","tlab");
       });
 
       const gHv=s.append("g").attr("pointer-events","none"), tp=V.tip(node);
       function apply(st,anim){
         state=st; const allow=new Set(STEP_GROUPS[st]||STEP_GROUPS.canon), dur=anim&&!V.reduced?450:0;
+        const mLab=MOB_LABELS[st]||MOB_LABELS.canon;
         rows.transition().duration(dur).style("opacity",d=>allow.has(d.g)?1:.2);
+        if(mob) rows.selectAll(".tlab").transition().duration(dur).style("opacity",d=>mLab.has(d.n)?1:0);
         gHdrs.transition().duration(dur).style("opacity",gr=>allow.has(gr.g)?1:.42);
         gOralLab.transition().duration(dur).style("opacity",st==="oral"?1:0);
         g70.transition().duration(dur).style("opacity",st==="escrits"||st==="externes"||st==="canon"?1:.15);
@@ -315,14 +344,15 @@
       outside(node,off);
       V.hover(s.node(),(ev,[px,py])=>{
         const d=d3.least(D,q=>Math.abs(py-q.y));
-        if(!d||Math.abs(py-d.y)>rh*.75){ off(); return; }
+        if(!d||Math.abs(py-d.y)>(mob?16:rh*.75)){ off(); return; }
         rows.style("opacity",q=>q===d?1:.48);
+        if(mob) rows.selectAll(".tlab").style("opacity",q=>q===d?1:0);
         const xm=x(d.m), diff=Math.round(d.m-30);
         gHv.selectAll("*").remove();
-        gHv.append("line").attr("x1",xm).attr("y1",20).attr("x2",xm).attr("y2",h-22).attr("stroke",C.ink).attr("stroke-width",.9).attr("stroke-dasharray","2 2");
+        gHv.append("line").attr("x1",xm).attr("y1",mob?16:20).attr("x2",xm).attr("y2",h-(mob?14:22)).attr("stroke",C.ink).attr("stroke-width",.9).attr("stroke-dasharray","2 2");
         gHv.append("circle").attr("cx",xm).attr("cy",d.y).attr("r",rSc(d.w)+3).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.3);
         const delta=diff>0?`+${diff} anys després de la creu`:diff<0?`${Math.abs(diff)} anys abans de la creu`:"Referència 0 (≈ 30 dC)";
-        V.t(gHv,xm,h-8,delta,{anchor:xm>w-110?"end":xm<110?"start":"middle",size:11.5,weight:700,fill:C.ink,halo:3.5});
+        V.t(gHv,xm,h-(mob?4:8),delta,{anchor:xm>w-110?"end":xm<110?"start":"middle",size:11.5,weight:700,fill:C.ink,halo:3.5});
         tp.show(`<b>${d.n}</b> (${d.l})<br>${d.d}`);
       },off);
 
@@ -369,7 +399,7 @@
     lg($("#biblio-lg"),[{c:C.ink2,t:"Cartes de Pau (anys 50)"},{c:C.vermell,t:"Marc (1r evangeli)"},{c:C.blau,t:"Mateu i Lluc"},{c:C.groc,t:"Joan (últim)"}]);
 
     V.mount(el,(node,w)=>{
-      const mob=w<640, rowH=mob?30:32, top=mob?46:38, left=mob?96:142, right=mob?58:84;
+      const mob=w<600, rowH=mob?42:32, top=mob?44:38, left=mob?8:142, right=mob?8:84;
       const maxLen=w-left-right-12, h=top+BOOKS.length*rowH+16;
       const {ctx,s}=layerCS(node,w,h,"Eixam orgànic de 887 punts (1 punt = 100 paraules gregues) que volen en arc entre l'ordre de la Bíblia i l'ordre cronològic real.");
       
@@ -377,18 +407,24 @@
       const posOf=(d,m)=>{
         const row=(m==="biblia"?d.b.bib:d.b.chr)-1;
         const len=Math.max(12,(d.b.w/19446)*maxLen);
-        return [left+d.u*len+d.jx, top+row*rowH+clamp(d.jy,-8,8)];
+        return [left+d.u*len+d.jx, top+row*rowH+(mob?10:0)+clamp(d.jy,mob?-5:-8,mob?5:8)];
       };
       // estat d'animació en canvas per a 887 punts a 60 fps
       UNITS.forEach(d=>{ const p=posOf(d,mode); d.x=p[0]; d.y=p[1]; d.x0=p[0]; d.y0=p[1]; d.x1=p[0]; d.y1=p[1]; });
 
       // fils base + etiquetes en SVG
       const gGuides=s.append("g"), gLabels=s.append("g"), gNote=s.append("g");
-      BOOKS.forEach((_,i)=>gGuides.append("line").attr("x1",left).attr("x2",w-right).attr("y1",top+i*rowH).attr("y2",top+i*rowH).attr("stroke",C.grid).attr("stroke-width",.55));
+      BOOKS.forEach((_,i)=>gGuides.append("line").attr("x1",left).attr("x2",w-right).attr("y1",top+i*rowH+(mob?10:0)).attr("y2",top+i*rowH+(mob?10:0)).attr("stroke",C.grid).attr("stroke-width",.55));
       const labs=gLabels.selectAll("g.blab").data(BOOKS,d=>d.k).join("g").attr("class","blab").style("cursor","pointer");
-      labs.append("text").attr("x",left-10).attr("y",4).attr("text-anchor","end").attr("font-size",mob?11.5:12.5)
-        .attr("font-weight",d=>d.g==="ev"?700:500).attr("fill",d=>d.k==="Mc"?C.vermell:C.ink).text(d=>d.n);
-      labs.append("text").attr("x",w-4).attr("y",4).attr("text-anchor","end").attr("font-size",11).attr("fill",C.muted).style("font-variant-numeric","tabular-nums").text(d=>d.yr);
+      if(mob){
+        labs.append("text").attr("x",left).attr("y",-4).attr("text-anchor","start").attr("font-size",11.5)
+          .attr("font-weight",d=>d.g==="ev"?700:500).attr("fill",d=>d.k==="Mc"?C.vermell:C.ink).text(d=>d.n);
+        labs.append("text").attr("x",w-right).attr("y",-4).attr("text-anchor","end").attr("font-size",11).attr("fill",C.muted).style("font-variant-numeric","tabular-nums").text(d=>d.yr);
+      } else {
+        labs.append("text").attr("x",left-10).attr("y",4).attr("text-anchor","end").attr("font-size",12.5)
+          .attr("font-weight",d=>d.g==="ev"?700:500).attr("fill",d=>d.k==="Mc"?C.vermell:C.ink).text(d=>d.n);
+        labs.append("text").attr("x",w-4).attr("y",4).attr("text-anchor","end").attr("font-size",11).attr("fill",C.muted).style("font-variant-numeric","tabular-nums").text(d=>d.yr);
+      }
 
       let hovB=null, raf=0;
       function renderDots(){
@@ -521,7 +557,7 @@
       }
 
       function renderAll4(){
-        const h=mob?380:430, M={t:50,r:mob?16:36,b:38,l:mob?52:74};
+        const h=mob?385:430, M={t:mob?58:54,r:mob?16:36,b:38,l:mob?52:74};
         const s=V.svg(node,w,h,"Tots els 1.162 episodis reals dels quatre evangelis dibuixats com quatre files de bombolles translúcides, amb arcs connectant setze episodis clau.");
         const books=["Mc","Mt","Lc","Jn"];
         const y=d3.scalePoint(books,[M.t+22,h-M.b-14]).padding(.18);
@@ -581,7 +617,7 @@
               .attr("fill",b==="Jn"?C.groc:col).attr("fill-opacity",.15).style("mix-blend-mode","multiply").attr("pointer-events","none");
           });
         });
-        [0,.25,.5,.75,1].forEach(p=>V.t(s,x(p),M.t-14,p===0?"Inici":p===1?"Final":Math.round(p*100)+" %",{anchor:"middle",size:11,fill:C.muted}));
+        [0,.25,.5,.75,1].forEach(p=>V.t(s,x(p),14,p===0?"Inici":p===1?"Final":Math.round(p*100)+" %",{anchor:"middle",size:11,fill:C.muted}));
 
         // arcs d'episodis compartits (16 episodis: 12 als quatre evangelis, 4 només als sinòptics)
         const line=d3.line().x(d=>x(d.p)).y(d=>y(d.b)).curve(d3.curveMonotoneY);
@@ -656,10 +692,10 @@
           gAnn.style("opacity",.2);
           gHv.selectAll("*").remove();
 
-          // píndola clara amb el nom de l'episodi just a sobre de la fila superior (Marc)
+          // píndola clara amb el nom de l'episodi separada dels tics superiors
           const topX=x(best.pos.Mc/E.gnt.total.Mc);
           const tag=best.all4?best.nom:`${best.nom} · només sinòptics`;
-          const pillW=tag.length*6.6+18, pillX=clamp(topX,M.l+pillW/2,w-M.r-pillW/2), pillY=M.t-6;
+          const pillW=tag.length*6.6+18, pillX=clamp(topX,M.l+pillW/2,w-M.r-pillW/2), pillY=34;
           gHv.append("line").attr("x1",topX).attr("x2",topX).attr("y1",pillY+10).attr("y2",y("Mc")-6)
             .attr("stroke",col).attr("stroke-width",1.1).attr("stroke-dasharray","2 2");
           gHv.append("rect").attr("x",pillX-pillW/2).attr("y",pillY-11).attr("width",pillW).attr("height",21).attr("rx",3)
@@ -727,7 +763,7 @@
     lg($("#flux-lg"),[{c:C.vermell,t:"De Marc (1r evangeli)",k:"ln"},{c:C.blau,t:"Compartit Mateu–Lluc (Q o Mateu)",k:"ln"},{c:C.grocFosc,t:"Joan (camí propi)",k:"ln"},{c:C.ink2,t:"Fonts pròpies",k:"ln"}]);
 
     V.mount(el,(node,w)=>{
-      const mob=w<640, h=mob?330:380;
+      const vert=w<600, mob=w<640, h=vert?456:380;
       const {ctx,s}=layerCS(node,w,h,"Corrents trenats de partícules que mostren com el material de Marc i d'altres fonts nodreix Mateu, Lluc i Joan.");
       const r=V.rng(40);
       let links=[], particles=[];
@@ -735,52 +771,105 @@
       function layout(){
         s.selectAll("*").remove();
         const raw=hyp==="q"?LINKS_Q:LINKS_F;
-        const padL=mob?92:152, padR=mob?82:136, x0=padL, x1=w-padR;
         const srcNames=hyp==="q"?["Marc (1r)","Font Q (?)","Fonts pròpies"]:["Marc (1r)","Mateu (llegit)","Fonts pròpies"];
         const dstNames=["Mateu","Lluc","Joan"];
         const srcCol=[C.vermell,C.blau,C.ink2], dstCol=[C.blau,C.blauClar,C.grocFosc];
 
         const sTot=[0,0,0], dTot=[0,0,0];
         raw.forEach(l=>{ sTot[l.s]+=l.w; dTot[l.t]+=l.w; });
-        const scale=(h-64)/Math.max(d3.sum(sTot),d3.sum(dTot));
-        let y=24; const nodesL=sTot.map((v,i)=>{ const bh=Math.max(22,v*scale), o={i,n:srcNames[i],y0:y,y1:y+bh,cur:y,c:srcCol[i]}; y+=bh+18; return o; });
-        y=24; const nodesR=dTot.map((v,i)=>{ const bh=Math.max(22,v*scale), o={i,n:dstNames[i],y0:y,y1:y+bh,cur:y,c:dstCol[i]}; y+=bh+18; return o; });
 
-        links=raw.map((l,idx)=>{
-          const th=Math.max(6,l.w*scale);
-          const sy0=nodesL[l.s].cur, sy1=sy0+th; nodesL[l.s].cur=sy1;
-          const ty0=nodesR[l.t].cur, ty1=ty0+th; nodesR[l.t].cur=ty1;
-          const mx=(x0+x1)/2;
-          const pathD=`M${x0},${sy0} C${mx},${sy0} ${mx},${ty0} ${x1},${ty0} L${x1},${ty1} C${mx},${ty1} ${mx},${sy1} ${x0},${sy1} Z`;
-          return {...l,idx,th,x0,x1,sy0,sy1,ty0,ty1,pathD};
-        });
+        if(vert){
+          // TRANSPOSICIÓ VERTICAL (dalt → baix) a mòbil (< 600 px)
+          const padX=10, gapX=14, y0=54, y1=h-40;
+          const avail=w-padX*2-gapX*2;
+          const scS=avail/d3.sum(sTot), scD=avail/d3.sum(dTot);
+          let x=padX;
+          const nodesT=sTot.map((v,i)=>{ const bw=Math.max(24,v*scS), o={i,n:srcNames[i],x0:x,x1:x+bw,cur:x,c:srcCol[i]}; x+=bw+gapX; return o; });
+          x=padX;
+          const nodesB=dTot.map((v,i)=>{ const bw=Math.max(24,v*scD), o={i,n:dstNames[i],x0:x,x1:x+bw,cur:x,c:dstCol[i]}; x+=bw+gapX; return o; });
 
-        // fils trenats ultra-fins (estil «Iceberg alley») dins cada corrent + àrea de hover invisible
-        const gThreads=s.append("g");
-        links.forEach(l=>{
-          const nStr=Math.max(3,Math.min(14,Math.round(l.th/4)));
-          const mx=(l.x0+l.x1)/2;
-          for(let k=0;k<nStr;k++){
-            const u=(k+.5)/nStr, sy=l.sy0+(l.sy1-l.sy0)*u, ty=l.ty0+(l.ty1-l.ty0)*u;
-            gThreads.append("path").datum(l).attr("class","ft")
-              .attr("d",`M${l.x0},${sy} C${mx},${sy} ${mx},${ty} ${l.x1},${ty}`)
-              .attr("fill","none").attr("stroke",l.c).attr("stroke-width",.55).attr("stroke-opacity",.28);
-          }
-          gThreads.append("path").datum(l).attr("class","fhit").attr("d",l.pathD)
-            .attr("fill",V.alpha(l.c,.03)).style("cursor","pointer");
-        });
+          const my=(y0+y1)/2;
+          links=raw.map((l,idx)=>{
+            const sNode=nodesT[l.s], dNode=nodesB[l.t];
+            const sw=(l.w/sTot[l.s])*(sNode.x1-sNode.x0);
+            const dw=(l.w/dTot[l.t])*(dNode.x1-dNode.x0);
+            const sx0=sNode.cur, sx1=sx0+sw; sNode.cur=sx1;
+            const tx0=dNode.cur, tx1=tx0+dw; dNode.cur=tx1;
+            const pathD=`M${sx0},${y0} C${sx0},${my} ${tx0},${my} ${tx0},${y1} L${tx1},${y1} C${tx1},${my} ${sx1},${my} ${sx1},${y0} Z`;
+            return {...l,idx,vert:true,th:Math.max(sw,dw),y0,y1,sx0,sx1,tx0,tx1,pathD};
+          });
 
-        // nodes en anells/cercles fins a esquerra i dreta
-        nodesL.forEach(n=>{
-          const cy=(n.y0+n.y1)/2;
-          s.append("line").attr("x1",x0).attr("x2",x0).attr("y1",n.y0+2).attr("y2",n.y1-2).attr("stroke",n.c).attr("stroke-width",2.4).attr("stroke-linecap","round");
-          V.t(s,x0-10,cy+4,n.n,{anchor:"end",weight:700,size:mob?11.5:13,fill:C.ink});
-        });
-        nodesR.forEach(n=>{
-          const cy=(n.y0+n.y1)/2;
-          s.append("line").attr("x1",x1).attr("x2",x1).attr("y1",n.y0+2).attr("y2",n.y1-2).attr("stroke",n.c).attr("stroke-width",2.4).attr("stroke-linecap","round");
-          V.t(s,x1+10,cy+4,n.n,{anchor:"start",weight:700,size:mob?11.5:13,fill:C.ink});
-        });
+          const gThreads=s.append("g");
+          links.forEach(l=>{
+            const nStr=Math.max(3,Math.min(14,Math.round(l.th/5)));
+            for(let k=0;k<nStr;k++){
+              const u=(k+.5)/nStr, sx=l.sx0+(l.sx1-l.sx0)*u, tx=l.tx0+(l.tx1-l.tx0)*u;
+              gThreads.append("path").datum(l).attr("class","ft")
+                .attr("d",`M${sx},${l.y0} C${sx},${my} ${tx},${my} ${tx},${l.y1}`)
+                .attr("fill","none").attr("stroke",l.c).attr("stroke-width",.6).attr("stroke-opacity",.3);
+            }
+            gThreads.append("path").datum(l).attr("class","fhit").attr("d",l.pathD)
+              .attr("fill",V.alpha(l.c,.04)).style("cursor","pointer");
+          });
+
+          // nodes superiors (fonts)
+          V.t(s,padX,14,"Fonts d'origen ↓",{anchor:"start",size:11,fill:C.muted});
+          nodesT.forEach((n,i)=>{
+            s.append("line").attr("x1",n.x0+2).attr("x2",n.x1-2).attr("y1",y0).attr("y2",y0).attr("stroke",n.c).attr("stroke-width",3).attr("stroke-linecap","round");
+            const anc=i===0?"start":i===2?"end":"middle";
+            const tx=i===0?n.x0:i===2?n.x1:(n.x0+n.x1)/2;
+            V.t(s,tx,y0-12,n.n,{anchor:anc,weight:700,size:11.5,fill:C.ink});
+          });
+          // nodes inferiors (evangelis)
+          nodesB.forEach((n,i)=>{
+            s.append("line").attr("x1",n.x0+2).attr("x2",n.x1-2).attr("y1",y1).attr("y2",y1).attr("stroke",n.c).attr("stroke-width",3).attr("stroke-linecap","round");
+            const anc=i===0?"start":i===2?"end":"middle";
+            const tx=i===0?n.x0:i===2?n.x1:(n.x0+n.x1)/2;
+            V.t(s,tx,y1+18,n.n,{anchor:anc,weight:700,size:12,fill:C.ink});
+          });
+          V.t(s,padX,h-6,"Evangelis resultants",{anchor:"start",size:11,fill:C.muted});
+        } else {
+          const padL=mob?92:152, padR=mob?82:136, x0=padL, x1=w-padR;
+          const scale=(h-64)/Math.max(d3.sum(sTot),d3.sum(dTot));
+          let y=24; const nodesL=sTot.map((v,i)=>{ const bh=Math.max(22,v*scale), o={i,n:srcNames[i],y0:y,y1:y+bh,cur:y,c:srcCol[i]}; y+=bh+18; return o; });
+          y=24; const nodesR=dTot.map((v,i)=>{ const bh=Math.max(22,v*scale), o={i,n:dstNames[i],y0:y,y1:y+bh,cur:y,c:dstCol[i]}; y+=bh+18; return o; });
+
+          links=raw.map((l,idx)=>{
+            const th=Math.max(6,l.w*scale);
+            const sy0=nodesL[l.s].cur, sy1=sy0+th; nodesL[l.s].cur=sy1;
+            const ty0=nodesR[l.t].cur, ty1=ty0+th; nodesR[l.t].cur=ty1;
+            const mx=(x0+x1)/2;
+            const pathD=`M${x0},${sy0} C${mx},${sy0} ${mx},${ty0} ${x1},${ty0} L${x1},${ty1} C${mx},${ty1} ${mx},${sy1} ${x0},${sy1} Z`;
+            return {...l,idx,vert:false,th,x0,x1,sy0,sy1,ty0,ty1,pathD};
+          });
+
+          // fils trenats ultra-fins (estil «Iceberg alley») dins cada corrent + àrea de hover invisible
+          const gThreads=s.append("g");
+          links.forEach(l=>{
+            const nStr=Math.max(3,Math.min(14,Math.round(l.th/4)));
+            const mx=(l.x0+l.x1)/2;
+            for(let k=0;k<nStr;k++){
+              const u=(k+.5)/nStr, sy=l.sy0+(l.sy1-l.sy0)*u, ty=l.ty0+(l.ty1-l.ty0)*u;
+              gThreads.append("path").datum(l).attr("class","ft")
+                .attr("d",`M${l.x0},${sy} C${mx},${sy} ${mx},${ty} ${l.x1},${ty}`)
+                .attr("fill","none").attr("stroke",l.c).attr("stroke-width",.55).attr("stroke-opacity",.28);
+            }
+            gThreads.append("path").datum(l).attr("class","fhit").attr("d",l.pathD)
+              .attr("fill",V.alpha(l.c,.03)).style("cursor","pointer");
+          });
+
+          // nodes en anells/cercles fins a esquerra i dreta
+          nodesL.forEach(n=>{
+            const cy=(n.y0+n.y1)/2;
+            s.append("line").attr("x1",x0).attr("x2",x0).attr("y1",n.y0+2).attr("y2",n.y1-2).attr("stroke",n.c).attr("stroke-width",2.4).attr("stroke-linecap","round");
+            V.t(s,x0-10,cy+4,n.n,{anchor:"end",weight:700,size:13,fill:C.ink});
+          });
+          nodesR.forEach(n=>{
+            const cy=(n.y0+n.y1)/2;
+            s.append("line").attr("x1",x1).attr("x2",x1).attr("y1",n.y0+2).attr("y2",n.y1-2).attr("stroke",n.c).attr("stroke-width",2.4).attr("stroke-linecap","round");
+            V.t(s,x1+10,cy+4,n.n,{anchor:"start",weight:700,size:13,fill:C.ink});
+          });
+        }
 
         particles=[];
         links.forEach(l=>{
@@ -797,10 +886,17 @@
         const stepT=paused?0:Math.min(.05,dt*.001);
         for(const p of particles){
           p.t=(p.t+p.v*stepT)%1;
-          const l=p.l, u=p.t, iu=1-u, mx=(l.x0+l.x1)/2;
-          const sy=l.sy0+(l.sy1-l.sy0)*p.off, ty=l.ty0+(l.ty1-l.ty0)*p.off;
-          const px=iu*iu*iu*l.x0+3*iu*iu*u*mx+3*iu*u*u*mx+u*u*u*l.x1;
-          const py=iu*iu*iu*sy+3*iu*iu*u*sy+3*iu*u*u*ty+u*u*u*ty;
+          const l=p.l, u=p.t, iu=1-u;
+          let px, py;
+          if(l.vert){
+            const my=(l.y0+l.y1)/2, sx=l.sx0+(l.sx1-l.sx0)*p.off, tx=l.tx0+(l.tx1-l.tx0)*p.off;
+            px=iu*iu*iu*sx+3*iu*iu*u*sx+3*iu*u*u*tx+u*u*u*tx;
+            py=iu*iu*iu*l.y0+3*iu*iu*u*my+3*iu*u*u*my+u*u*u*l.y1;
+          } else {
+            const mx=(l.x0+l.x1)/2, sy=l.sy0+(l.sy1-l.sy0)*p.off, ty=l.ty0+(l.ty1-l.ty0)*p.off;
+            px=iu*iu*iu*l.x0+3*iu*iu*u*mx+3*iu*u*u*mx+u*u*u*l.x1;
+            py=iu*iu*iu*sy+3*iu*iu*u*sy+3*iu*u*u*ty+u*u*u*ty;
+          }
           const dim=activeIdx>=0&&l.idx!==activeIdx;
           ctx.fillStyle=V.alpha(l.c,dim?.26:.72);
           ctx.beginPath(); ctx.arc(px,py,dim?1.1:p.sz,0,6.283); ctx.fill();
@@ -1065,7 +1161,16 @@
           const g=d3.select(this).select("g.hvg"), val=fd[tr.k], len=Lsc(tr)(val), ang=j*Math.PI/3;
           g.append("line").attr("x1",0).attr("y1",0).attr("x2",Math.sin(ang)*R).attr("y2",-Math.cos(ang)*R).attr("stroke",C.ink).attr("stroke-width",.7).attr("stroke-dasharray","2 2");
           const rx=Math.sin(ang)*(len+10), ry=-Math.cos(ang)*(len+10);
-          V.t(g,rx,ry+4,tr.fmt(val),{anchor:Math.sin(ang)>.2?"start":Math.sin(ang)<-.2?"end":"middle",weight:700,size:11.5,fill:C.ink,halo:3.5});
+          const [cx]=pos(fd.idx), colIdx=fd.idx%cols;
+          const cellL=Math.max(4,colIdx*cell+4), cellR=Math.min(w-4,(colIdx+1)*cell-4);
+          const txt=tr.fmt(val), estW=txt.length*6.4+4;
+          let anc=Math.sin(ang)>.2?"start":Math.sin(ang)<-.2?"end":"middle";
+          let ax=cx+rx;
+          if(anc==="start"&&ax+estW>cellR){ ax=cellR; anc="end"; }
+          else if(anc==="end"&&ax-estW<cellL){ ax=cellL; anc="start"; }
+          else if(anc==="middle"){ ax=clamp(ax,cellL+estW/2,cellR-estW/2); }
+          ax=clamp(ax,4,w-4);
+          V.t(g,ax-cx,ry+4,txt,{anchor:anc,weight:700,size:11.5,fill:C.ink,halo:3.5});
         });
         const comp=DATA.map(q=>`${q.n}: <b>${tr.fmt(q[tr.k])}</b>`).join(" · ");
         if(rd) rd.innerHTML=`<b>${tr.t} als quatre evangelis:</b> ${comp}.`;
@@ -1189,10 +1294,10 @@
     ]);
 
     V.mount(el,(node,w)=>{
-      const mob=w<640, top=48, left=mob?118:188, right=mob?16:36, rh=mob?38:44;
+      const mob=w<600, top=48, left=mob?8:188, right=mob?8:36, rh=mob?50:44;
       const h=top+WIT.length*rh+38;
       const s=V.svg(node,w,h,"Constel·lació cronològica de qui veu Jesús ressuscitat i on, des de la carta de Pau (≈ 55) fins a l'Evangeli de Joan (≈ 100).");
-      const x=d3.scalePoint(COLS.map(c=>c.k),[left+24,w-right-24]).padding(.12);
+      const x=d3.scalePoint(COLS.map(c=>c.k),[left+(mob?22:24),w-right-(mob?22:24)]).padding(.12);
       
 
       // columnes cronològiques
@@ -1205,9 +1310,10 @@
 
       const rows=s.selectAll("g.arow").data(WIT).join("g").attr("class","arow").style("cursor","pointer");
       rows.each(function(d,i){
-        const g=d3.select(this), cy=top+i*rh+16;
+        const g=d3.select(this), cy=mob?(top+i*rh+30):(top+i*rh+16);
         g.append("line").attr("x1",left).attr("x2",w-right).attr("y1",cy).attr("y2",cy).attr("stroke",C.grid).attr("stroke-width",.5);
-        V.t(g,left-10,cy+4,d.n,{anchor:"end",weight:600,size:mob?11:12.5,fill:C.ink});
+        if(mob) V.t(g,left,top+i*rh+12,d.n,{anchor:"start",weight:600,size:11.5,fill:C.ink});
+        else V.t(g,left-10,cy+4,d.n,{anchor:"end",weight:600,size:12.5,fill:C.ink});
 
         // fils de seda que uneixen les aparicions d'un mateix testimoni al llarg del temps
         const keys=COLS.map(c=>c.k).filter(k=>d.e[k]);
@@ -1238,8 +1344,8 @@
       const off=()=>{ rows.style("opacity",1); };
       outside(node,off);
       V.hover(s.node(),(ev,[px,py])=>{
-        const i=Math.round((py-top-16)/rh), d=WIT[i];
-        if(!d||Math.abs(py-(top+i*rh+16))>rh*.58){ off(); return; }
+        const i=mob?Math.floor((py-top)/rh):Math.round((py-top-16)/rh), d=WIT[i];
+        if(!d||(mob?(py<top||py>top+WIT.length*rh):Math.abs(py-(top+i*rh+16))>rh*.58)){ off(); return; }
         rows.style("opacity",q=>q===d?1:.48);
         if(rd) rd.innerHTML=`<b>${d.n}:</b> ${d.det}`;
       },off);

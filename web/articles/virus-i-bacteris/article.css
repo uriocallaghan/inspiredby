@@ -100,14 +100,15 @@
 .tlnav{display:flex;justify-content:space-between;max-width:680px;margin:8px auto 0;border-top:1px solid var(--hair);padding-top:6px}
 
 @media (pointer:coarse){
-  .fig .seg button,.graphic .seg button,.playb,.btn{min-height:42px}
+  .fig .seg button,.graphic .seg button,.playb,.btn{min-height:44px}
 }
 @media (max-width:899px){
   .vh strong{font-size:18.5px}
   .vh span{font-size:12.5px}
   .fig{margin:40px auto 30px}
   .graphic .src{display:none}
-  .graphic .vh{margin-bottom:6px}
+  .graphic .vh{margin-bottom:4px}
+  .graphic .vh span,.graphic .vh .lgs{display:none}
   .stats{grid-template-columns:minmax(0,1fr);gap:8px}
   .stats b{font-size:24px}
   .shfacts b{font-size:21px}

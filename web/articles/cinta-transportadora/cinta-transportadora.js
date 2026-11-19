@@ -137,7 +137,7 @@ function sfcAt(lon,lat){
     yTarget=depthY(n.d);if(instant||RM)yPar=yTarget;
     if(x){
       const px=x(cur.s), py=y(cur.t);
-      d3.select("#dpc").attr("cx",px).attr("cy",py);d3.select("#dpd").attr("cx",px).attr("cy",py);
+      d3.select("#dpc").attr("cx",px).attr("cy",py);d3.select("#dpd").attr("cx",px).attr("cy",py);d3.select("#dph").attr("cx",px).attr("cy",py);
       d3.select("#dpx").attr("x1",px).attr("x2",px).attr("y1",py).attr("y2",H-M.b);
       d3.select("#dpy").attr("x1",M.l).attr("x2",px).attr("y1",py).attr("y2",py);
     }
@@ -216,30 +216,38 @@ function sfcAt(lon,lat){
     gp.append("line").attr("id","dpy").attr("stroke",C.ink).attr("stroke-width",.6).attr("stroke-dasharray","2 3");
     gp.append("circle").attr("id","dpc").attr("r",7).attr("fill",C.paper).attr("stroke",C.ink).attr("stroke-width",2);
     gp.append("circle").attr("id","dpd").attr("r",3).attr("fill",C.ink);
+    const dph=gp.append("circle").attr("id","dph").attr("class","dp-hit").attr("r",22).attr("fill","transparent").style("touch-action","none");
 
     // Columna canvas
-    cw=col.clientWidth;ch=Math.round(m?H:clamp(H*.86,220,380));CM.l=m?42:52;
+    cw=col.clientWidth;ch=Math.round(m?clamp(H*.8,200,240):clamp(H*.86,220,380));CM.l=m?48:52;
     const dp2=DPR();col.width=cw*dp2;col.height=ch*dp2;col.style.height=ch+"px";
     yPar=yTarget=depthY(neutral(sig(cur.s,cur.t)).d);
     update(true);
 
-    // Hover dock + drag
+    // Hover dock + drag (pan-y al fons; touch-action: none només al mànec arrossegable #dph)
     const dock=IBV.tip(el);
-    const node=svg.node();
+    const node=svg.node(), handle=dph.node();
     let drag=false;
     const fromPt=([px,py])=>({s:clamp(x.invert(px),S0,S1),t:clamp(y.invert(py),-1.9,T1)});
-    node.addEventListener("pointerdown",e=>{
-      drag=true;try{node.setPointerCapture(e.pointerId)}catch(_){}
-      const p=fromPt(d3.pointer(e,node));target=null;cur.s=+p.s.toFixed(2);cur.t=+p.t.toFixed(1);setPressed(null);update();
-      dock.show(`<b>${num(p.t,1)} °C · salinitat ${num(p.s,2)}</b><br>Densitat: ${num(1000+sig(p.s,p.t),1)} kg/m³`);
-    });
-    node.addEventListener("pointerup",()=>{drag=false});
-    node.addEventListener("pointercancel",()=>{drag=false});
     IBV.hover(node,(e,pt)=>{
       const p=fromPt(pt);
       if(drag){cur.s=+p.s.toFixed(2);cur.t=+p.t.toFixed(1);update()}
       dock.show(`<b>${num(p.t,1)} °C · salinitat ${num(p.s,2)}</b><br>Densitat: ${num(1000+sig(p.s,p.t),1)} kg/m³`);
     },()=>dock.hide());
+    node.addEventListener("pointerdown",e=>{
+      const onHandle=e.target===handle;
+      if(e.pointerType==="mouse"||onHandle){
+        drag=true;
+        try{(onHandle?handle:node).setPointerCapture(e.pointerId)}catch(_){}
+      }
+      const p=fromPt(d3.pointer(e,node));target=null;cur.s=+p.s.toFixed(2);cur.t=+p.t.toFixed(1);setPressed(null);update();
+      dock.show(`<b>${num(p.t,1)} °C · salinitat ${num(p.s,2)}</b><br>Densitat: ${num(1000+sig(p.s,p.t),1)} kg/m³`);
+    });
+    const endDrag=()=>{drag=false};
+    node.addEventListener("pointerup",endDrag);
+    node.addEventListener("pointercancel",endDrag);
+    handle.addEventListener("pointerup",endDrag);
+    handle.addEventListener("pointercancel",endDrag);
   });
 
   IBV.loop(col,(t,dtMs)=>{
@@ -339,7 +347,15 @@ const GLOBE=(function(){
   let anns=[];
   function buildAnn(i){
     anns.forEach(a=>{a.el.style.opacity=0;setTimeout(()=>a.el.remove(),450)});anns=[];
-    (ST[i].ann||[]).forEach(([lon,lat,s,dx,dy,al])=>{
+    let list=ST[i].ann||[];
+    if(mob()&&i===5){
+      list=[
+        [-2,74.5,"<b>Mars nòrdics</b>",-10,-45,"r"],
+        [-53,57.5,"<b>Mar del Labrador</b>",-6,-40,"l"],
+        [-29,60,"<b>Irminger i Islàndia</b>",24,85,"c"]
+      ];
+    }
+    list.forEach(([lon,lat,s,dx,dy,al])=>{
       const el=document.createElement("div");el.className="ann "+(al==="r"?"r":al==="c"?"c":"");
       el.innerHTML=annText(s);el.style.opacity=0;ov.appendChild(el);
       anns.push({el,lon,lat,dx,dy,al,lead:dx!==0||dy!==0});
@@ -368,8 +384,7 @@ const GLOBE=(function(){
   }
   function layout(){
     const m=mob(), colW=graphic.clientWidth;
-    let size=!m?Math.min(colW,innerHeight-200):Math.min(colW,innerHeight*.38);
-    size=Math.max(220,Math.floor(size));
+    let size=!m?Math.max(220,Math.floor(Math.min(colW,innerHeight-200))):Math.round(Math.max(185,Math.min(colW,innerHeight*0.29,245)));
     gbox.style.maxWidth=size+"px";wrap.style.width=size+"px";
     W=H=size;const dp=DPR();cv.width=W*dp;cv.height=H*dp;cv.style.height=H+"px";R=W/2-4;
     renderLegend(S.lay);
@@ -788,6 +803,10 @@ const SEC=(function(){
       const w=el.offsetWidth, h=el.offsetHeight;
       let X=p[0]-w/2, Y=p[1]-h/2;
       if(dot){X=p[0]+6;Y=p[1]-h/2;el.className="ann"}
+      if(mob()){
+        if(n==="Mar de Noruega"){X-=16;Y-=10;}
+        else if(n==="Bergen"){Y+=10;}
+      }
       el.style.transform=`translate(${clamp(X,2,W-w-2)}px,${clamp(Y,2,H-h-2)}px)`;
       annEls.push(el);
     });
@@ -869,10 +888,11 @@ const SEC=(function(){
     const bands=[[17500,15000,m?"H1":"Heinrich 1"],[12896,11703,m?"DR":"Dryas recent"]];
     bands.forEach(([a,b,l])=>{
       svg.append("rect").attr("x",x(a)).attr("width",x(b)-x(a)).attr("y",M.t-14).attr("height",H-M.b-M.t+14).attr("fill",C.blau).attr("opacity",.08);
-      IBV.t(svg,(x(a)+x(b))/2,M.t-4,l,{size:IBV.FS.small,weight:700,fill:C.blau,anchor:"middle"});
+      const lx=(x(a)+x(b))/2+(m&&l==="DR"?5:0);
+      IBV.t(svg,lx,M.t-4,l,{size:IBV.FS.small,weight:700,fill:C.blau,anchor:"middle"});
     });
     IBV.t(svg,x(5800),M.t-4,"Holocè",{size:IBV.FS.small,fill:C.muted,anchor:"middle"});
-    IBV.t(svg,x(14000),M.t-4,m?"B-A":"Bølling-Allerød",{size:IBV.FS.small,fill:C.muted,anchor:"middle"});
+    IBV.t(svg,x(m?14300:14000),M.t-4,m?"B-A":"Bølling-Allerød",{size:IBV.FS.small,fill:C.muted,anchor:"middle"});
 
     // Quadrícules i eixos recessius
     IBV.gridY(svg,y1,M.l,W-M.r,[-44,-40,-36],d=>num(d,0),{unit:" ‰"});
@@ -1230,7 +1250,7 @@ const SEC=(function(){
     {n:"Ditlevsen i Ditlevsen",y:"2023, corregit el 2025",a:2037,b:2109,c:2065,k:"r",d:"Senyals d'alerta estadístics en la temperatura del mar al sud de Groenlàndia (1870–2020). Punt de no retorn: 2065; interval de confiança del 95 %: 2037–2109."},
     {n:"van Westen et al.",y:"2025, emissions intermèdies",a:2026,b:2095,c:2063,k:"r",d:"Indicador físic basat en els fluxos de flotabilitat de l'Atlàntic nord, aplicat a 25 models (escenari SSP2-4.5). Inici del col·lapse cap al 2063, amb un rang del 2026 al 2095."},
     {n:"van Westen et al.",y:"2025, emissions molt altes",a:2023,b:2076,c:2055,k:"r",d:"El mateix indicador, amb l'escenari SSP5-8.5. Inici del col·lapse cap al 2055, amb un rang del 2023 al 2076."},
-    {n:"Drijfhout et al.",y:"2025, simulacions fins al 2300 o el 2500",a:2100,b:2200,k:"after",d:"Models CMIP6 allargats més enllà del 2100: la cinta acaba per sota de 6 Sv en tots els que tenen emissions molt altes i en alguns amb emissions intermèdies o baixes. La convecció del nord s'atura abans, cap a mitjan segle."},
+    {n:"Drijfhout et al.",y:"2025, simulacions fins al 2300 o el 2500",ym:"2025, fins al 2300–2500",a:2100,b:2200,k:"after",d:"Models CMIP6 allargats més enllà del 2100: la cinta acaba per sota de 6 Sv en tots els que tenen emissions molt altes i en alguns amb emissions intermèdies o baixes. La convecció del nord s'atura abans, cap a mitjan segle."},
     {n:"Baker et al.",y:"2025, 34 models",a:2020,b:2100,k:"no",d:"Els vents de l'oceà Antàrtic mantenen una cinta afeblida fins i tot amb forçaments extrems: un col·lapse total és improbable aquest segle."},
     {n:"IPCC",y:"2021, sisè informe",a:2020,b:2100,k:"no",d:"Confiança mitjana que no hi haurà un col·lapse brusc abans del 2100. Confiança baixa en la magnitud de l'afebliment; els models tendeixen a ser massa estables."}
   ];
@@ -1263,7 +1283,7 @@ const SEC=(function(){
       if(m){
         const tEl=g.append("text").attr("x",M.l).attr("y",yy-12).attr("font-size",IBV.FS.small).attr("fill",C.ink);
         tEl.append("tspan").attr("font-weight",700).text(r.n);
-        tEl.append("tspan").attr("fill",C.muted).text(" · "+r.y);
+        tEl.append("tspan").attr("fill",C.muted).text(" · "+(r.ym||r.y));
       }else{
         IBV.t(g,M.l-12,yy-1,r.n,{size:IBV.FS.label,weight:700,anchor:"end"});
         IBV.t(g,M.l-12,yy+13,r.y,{size:IBV.FS.min,fill:C.muted,anchor:"end"});

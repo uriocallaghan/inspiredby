@@ -126,7 +126,7 @@ const A_TXT = [
 ];
 
 function geoA(w, h) {
-  const mob = w < 520;
+  const mob = w < 600;
   const padX = mob ? 14 : 24, padY = mob ? 28 : 34;
   const yMid = h * .53;
   // Zones netes sobre paper blanc (sense fons pintats)
@@ -252,7 +252,9 @@ function renderOverlayA() {
     if (s === 2) {
       ov.append("line").attr("x1", g.w * .71).attr("x2", g.w * .71).attr("y1", g.padY + 12).attr("y2", g.h - g.padY)
         .attr("stroke", C.hair).attr("stroke-width", .7);
-      V.t(ov, g.srcU.x0, g.padY + 6, `Ús del sòl · ${f1(R.U)} Gt`, { size: 12.5, weight: 700, fill: PAL.landUseEdge });
+      V.t(ov, mob ? g.w - g.padX : g.srcU.x0, g.padY + 6, `Ús del sòl · ${f1(R.U)} Gt`, {
+        size: mob ? 11.5 : 12.5, weight: 700, fill: PAL.landUseEdge, anchor: mob ? "end" : "start"
+      });
       hits.push({ id: "U", box: g.srcU, tip: `<b>Canvi d'ús del sòl</b> · ${f1(R.U)} Gt (${A.n.U} punts · ${pct(R.U / R.E)})` });
     }
   } else if (s >= 3 && s <= 7) {
@@ -487,7 +489,7 @@ V.legendCat(document.getElementById("bLg"), [
 
 function geoB(w, h) {
   const f = B.f == null ? 0 : B.f;
-  const mob = w < 520;
+  const mob = w < 600;
   const y0 = h * lerp(.36, .52, f);
   const shore = w * lerp(.36, .64, f);
   const mix = y0 + h * .15;
@@ -770,20 +772,39 @@ function renderOverlayB() {
   // Anotacions editorials per pas amb IBV.note (sense caixes opaques ni dianes)
   if (s === 0) {
     const mx = g.ox0 + (g.w - g.ox0) * .48;
-    V.note(ov, { x: mx - 12, y: g.y0 + 4, tx: mx - 38, ty: g.y0 - 44, kind: "curve", bend: -14, anchor: "end",
-      lines: [["En entra més", true, C.blau], ["per pressió de CO₂"]] });
-    V.note(ov, { x: mx + 14, y: g.y0 - 4, tx: mx + 40, ty: g.y0 - 34, kind: "curve", bend: 12, anchor: "start",
-      lines: [["En surt menys", false, C.ink2]] });
+    if (mob) {
+      V.note(ov, { x: mx - 14, y: g.y0 + 4, tx: clamp(mx - 28, 128, g.w - 8), ty: g.y0 - 52, kind: "curve", bend: -12, anchor: "end", size: 11.5,
+        lines: [["En entra més", true, C.blau], ["per pressió de CO₂"]] });
+      V.note(ov, { x: mx + 12, y: g.y0 - 4, tx: g.w - 8, ty: g.y0 - 22, kind: "curve", bend: 10, anchor: "end", size: 11.5,
+        lines: [["En surt menys", false, C.ink2]] });
+    } else {
+      V.note(ov, { x: mx - 12, y: g.y0 + 4, tx: mx - 38, ty: g.y0 - 44, kind: "curve", bend: -14, anchor: "end",
+        lines: [["En entra més", true, C.blau], ["per pressió de CO₂"]] });
+      V.note(ov, { x: mx + 14, y: g.y0 - 4, tx: mx + 40, ty: g.y0 - 34, kind: "curve", bend: 12, anchor: "start",
+        lines: [["En surt menys", false, C.ink2]] });
+    }
   } else if (s === 1) {
     const cx = g.ox0 + (g.w - g.ox0) * .5, cy = g.mix + (g.h - g.mix) * .42;
-    V.t(ov, cx, cy - 14, "CO₂ + H₂O + CO₃²⁻ → 2 HCO₃⁻", { size: mob ? 12.5 : 14.5, weight: 700, fill: C.ink, anchor: "middle", halo: 4 });
-    V.t(ov, cx, cy + 6, "El carbonat es converteix en bicarbonat", { size: 12, fill: C.ink2, anchor: "middle", halo: 3.5 });
-    V.t(ov, cx, cy + 26, "pH superficial: −0,1 unitats (+26 % acidesa)", { size: 12, weight: 700, fill: C.vermell, anchor: "middle", halo: 3.5 });
+    if (mob) {
+      const rx = g.w - 8;
+      V.t(ov, rx, cy - 20, "CO₂ + H₂O + CO₃²⁻ → 2 HCO₃⁻", { size: 12, weight: 700, fill: C.ink, anchor: "end", halo: 4 });
+      V.t(ov, rx, cy - 2, "Carbonat → bicarbonat", { size: 11.5, fill: C.ink2, anchor: "end", halo: 3.5 });
+      V.t(ov, rx, cy + 16, "pH superficial: −0,1", { size: 11.5, weight: 700, fill: C.vermell, anchor: "end", halo: 3.5 });
+      V.t(ov, rx, cy + 31, "(+26 % d'acidesa)", { size: 11.5, weight: 700, fill: C.vermell, anchor: "end", halo: 3.5 });
+    } else {
+      V.t(ov, cx, cy - 14, "CO₂ + H₂O + CO₃²⁻ → 2 HCO₃⁻", { size: 14.5, weight: 700, fill: C.ink, anchor: "middle", halo: 4 });
+      V.t(ov, cx, cy + 6, "El carbonat es converteix en bicarbonat", { size: 12, fill: C.ink2, anchor: "middle", halo: 3.5 });
+      V.t(ov, cx, cy + 26, "pH superficial: −0,1 unitats (+26 % acidesa)", { size: 12, weight: 700, fill: C.vermell, anchor: "middle", halo: 3.5 });
+    }
   } else if (s === 2) {
     const p1 = loopPosB(.25, .5), p2 = loopPosB(.5, 0);
-    V.note(ov, { x: p1[0], y: p1[1], tx: p1[0] - 18, ty: p1[1] - 28, kind: "elbow", anchor: "end",
+    V.note(ov, { x: p1[0], y: p1[1], tx: clamp(p1[0] - 18, 130, g.w - 8), ty: p1[1] - 28, kind: "elbow", anchor: "end", size: mob ? 11.5 : 12.5,
       lines: [["L'aigua freda s'enfonsa", true, C.blau], ["i arrossega el carboni"]] });
-    V.t(ov, p2[0], Math.min(g.h - 24, p2[1] + 12), "Dècades a mil·lennis al fons (> 2.000 m)", { size: 12, weight: 700, fill: C.ink, anchor: "middle", halo: 3.5 });
+    if (mob) {
+      V.t(ov, g.w - 8, Math.min(g.h - 26, p2[1] + 6), "Dècades a mil·lennis (> 2.000 m)", { size: 11.5, weight: 700, fill: C.ink, anchor: "end", halo: 3.5 });
+    } else {
+      V.t(ov, p2[0], Math.min(g.h - 24, p2[1] + 12), "Dècades a mil·lennis al fons (> 2.000 m)", { size: 12, weight: 700, fill: C.ink, anchor: "middle", halo: 3.5 });
+    }
   } else if (s === 3) {
     V.note(ov, { x: g.ox0 + 28, y: g.y0 + 14, tx: g.ox0 + 36, ty: g.y0 - 34, kind: "elbow", anchor: "start",
       lines: [["Fitoplàncton", true], ["fixa carboni a la llum"]] });
@@ -796,9 +817,15 @@ function renderOverlayB() {
     V.t(ov, 10, g.y0 + 22, "Respiració de plantes i sòl ↑", { size: 11.5, fill: C.ink2, halo: true });
   } else if (s === 5) {
     const fx = (g.fire[0] + g.fire[1]) / 2;
-    V.note(ov, { x: fx, y: g.y0 - 12, tx: fx + (mob ? -10 : 18), ty: g.y0 - g.h * .28, kind: "elbow", anchor: mob ? "end" : "start",
-      lines: [[`Tala i incendis: +${f1(BY[LASTREAL].U)} Gt`, true, C.vermell]] });
-    V.t(ov, 10, g.y0 - g.h * .28, `Absorció vegetal: −${f1(BY[LASTREAL].L)} Gt`, { size: 12.5, weight: 700, fill: C.ink, halo: 3.5 });
+    if (mob) {
+      V.t(ov, 10, Math.max(36, g.y0 - g.h * .36), `Absorció vegetal: −${f1(BY[LASTREAL].L)} Gt`, { size: 11.5, weight: 700, fill: C.ink, halo: 3.5 });
+      V.note(ov, { x: fx, y: g.y0 - 12, tx: g.w - 8, ty: Math.max(66, g.y0 - g.h * .20), kind: "elbow", anchor: "end", size: 11.5,
+        lines: [[`Tala i incendis: +${f1(BY[LASTREAL].U)} Gt`, true, C.vermell]] });
+    } else {
+      V.note(ov, { x: fx, y: g.y0 - 12, tx: fx + 18, ty: g.y0 - g.h * .28, kind: "elbow", anchor: "start",
+        lines: [[`Tala i incendis: +${f1(BY[LASTREAL].U)} Gt`, true, C.vermell]] });
+      V.t(ov, 10, g.y0 - g.h * .28, `Absorció vegetal: −${f1(BY[LASTREAL].L)} Gt`, { size: 12.5, weight: 700, fill: C.ink, halo: 3.5 });
+    }
   }
 }
 
@@ -1465,8 +1492,12 @@ V.mount(pPlot, (el, w) => {
   const y = d3.scaleLinear([0, 100], [top + ch, top]);
 
   V.gridY(svg, y, ml, w - mr, [0, 25, 50, 75, 100], v => v + " %", { zero: 0 });
-  const tv = [0, 1, 10, 100, 1e3, 1e4, 1e5, 1e6];
-  V.axisX(svg, x, top + ch, tv, v => mob && v >= 1e4 ? (v >= 1e6 ? "1 M" : (v / 1e3) + " mil") : f0(v));
+  const tv = mob ? [0, 10, 100, 1e3, 1e5, 1e6] : [0, 1, 10, 100, 1e3, 1e4, 1e5, 1e6];
+  const ax = V.axisX(svg, x, top + ch, tv, v => mob && v >= 1e4 ? (v >= 1e6 ? "1 M" : (v / 1e3) + " mil") : f0(v));
+  if (mob) {
+    ax.selectAll("text").filter((_, i) => i === 0).attr("text-anchor", "start");
+    ax.selectAll("text").filter((_, i, n) => i === n.length - 1).attr("text-anchor", "end").attr("x", w - 4);
+  }
   V.t(svg, w - mr, top + ch + 32, "Escala logarítmica · anys després de l'emissió →", { size: 11.5, italic: true, fill: C.muted, anchor: "end" });
 
   const ts = [];

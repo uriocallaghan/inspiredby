@@ -72,7 +72,7 @@ ol.fts li{scroll-margin-top:30vh;transition:background-color .4s;padding:2px 4px
   #s-nit .plot,#s-antropologia .plot{min-height:0}
   .graphic .src{display:none}
   .graphic .vh{margin-bottom:4px}
-  .graphic .vh span{display:none}
+  .graphic .vh span,.graphic .vh .lgs{display:none}
   .npop{display:none}
   .tri-grid{grid-template-columns:1fr;gap:18px}
 }

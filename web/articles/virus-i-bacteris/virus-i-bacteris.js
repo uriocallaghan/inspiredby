@@ -151,7 +151,7 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,drawT4,miniT4,miniHead,min
   /* ---- 1A. Cinta logarítmica IB-35 ---- */
   let renderArc=null;
   V.mount(ribEl,(el,w)=>{
-    const mob=w<560, h=mob?182:192, ml=mob?26:44, mr=mob?26:44, axisY=mob?108:112;
+    const mob=w<560, h=mob?210:192, ml=mob?26:44, mr=mob?26:44, axisY=mob?100:112;
     const s=V.svg(el,w,h,"Escala logarítmica comparativa d'un fag T4 (0,2 micres) fins a un òvul humà (120 micres): 600 vegades més gran. Clica qualsevol cercle per fixar-lo com a referència.");
     const g=s.append("g");
     const X=d3.scaleLinear([-0.9,2.28],[ml,w-mr]);
@@ -176,7 +176,7 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,drawT4,miniT4,miniHead,min
       q.append("circle").attr("class","core").attr("cx",x).attr("cy",axisY).attr("r",3.2)
         .attr("fill",d.c===C.groc?C.grocFosc:d.c).attr("stroke","#fff").attr("stroke-width",1.2);
       const row=mob?(i%2):0;
-      const yLab=axisY+(mob?38+row*22:42);
+      const yLab=axisY+(mob?34+row*26:42);
       const anc=i===0?"start":i===ITEMS.length-1?"end":"middle";
       q.append("line").attr("x1",x).attr("x2",x).attr("y1",axisY+rad+2).attr("y2",yLab-12).attr("stroke",C.hair).attr("stroke-width",.6);
       V.t(q,x,yLab,mob?d.ts:d.t,{size:11.5,weight:600,fill:C.ink,anchor:anc,halo:3});
@@ -291,8 +291,24 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,drawT4,miniT4,miniHead,min
 
       const lab=(px,py,lines,tx,ty,al,a)=>{
         if(a<=0)return;
-        lead(c,px,py,tx,ty,C.ink,a);
-        txt(c,lines,tx+(al==="right"?-4:4),ty+(ty<py?-4:fs),al,fs,a);
+        let lx=tx, ly=ty, alg=al||"left", tw=0;
+        lines.forEach(l=>{ if(!l||!l[0])return; c.font=`${l[1]?"700 ":""}${fs}px ${SSF}`; tw=Math.max(tw,c.measureText(l[0]).width); });
+        if(alg==="left"&&lx+4+tw>W-8){
+          if(lx-4-tw>=8){ alg="right"; }
+          else { lx=Math.max(8,W-8-tw-4); }
+        } else if(alg==="right"&&lx-4-tw<8){
+          if(lx+4+tw<=W-8){ alg="left"; }
+          else { lx=Math.min(W-8,8+tw+4); }
+        } else if(alg==="center"){
+          lx=clamp(lx,8+tw/2,W-8-tw/2);
+        }
+        const yOff=ly<py?-4-(lines.length-1)*fs*1.28:fs;
+        const top=ly+yOff-fs, bot=ly+yOff+(lines.length-1)*fs*1.28+3;
+        let sh=0;
+        if(top<6) sh=6-top;
+        else if(bot>H-24) sh=H-24-bot;
+        lead(c,px,py,lx,ly+sh,C.ink,a);
+        txt(c,lines,lx+(alg==="right"?-4:alg==="center"?0:4),ly+yOff+sh,alg,fs,a);
       };
       const vis=sz=>clamp((sz-18)/30,0,1)*clamp((W*1.6-sz)/(W*.6),0,1);
       let a=vis(R(120)); if(a>0){ const px=X(oc[0]+orr*.7), py=Y(oc[1]+orr*.7); lab(px,py,[["Òvul humà",true],["120 µm",false,C.ink2]],Math.min(W-10,px+30),Math.max(28,py-22),px+30>W-80?"right":"left",a); }
@@ -383,8 +399,8 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,drawT4,miniT4,miniHead,min
   }
 
   V.mount(vizEl,(el,W)=>{
-    const mob=innerWidth<900;
-    const H=mob?Math.round(clamp(innerHeight*.38,215,340)):Math.round(clamp(Math.min(innerHeight-230,W*.72),310,540));
+    const mob=innerWidth<900, nar=W<600;
+    const H=mob?Math.round(Math.max(195,Math.min(window.innerHeight*.27,235))):Math.round(clamp(Math.min(innerHeight-230,W*.72),310,540));
     const {c:cv,ctx:c}=V.canvas(el,W,H,"Esquema a escala d'un fag T4 que aterra sobre un bacteri E. coli, hi injecta el seu ADN, es multiplica i el fa esclatar; i d'un fag lambda que s'amaga al cromosoma del bacteri.");
     tp=V.tip(el);
     V.hover(cv,()=>{ tp.show(SC[scene].tip); },()=>tp.hide());
@@ -508,11 +524,13 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,drawT4,miniT4,miniHead,min
         }
         if(sc===0){
           const hx=X(0);
-          label(hx+42*s,Y(140+27+92.5+8+75),[["Cap · 115 × 85 nm",true],["guarda l'ADN: ~169.000 lletres",false,C.ink2]],hx+(mob?60:110)*s+18,Y(140+27+92.5+8+100),"left",la(.1));
-          label(hx+13*s,Y(140+27+45),[["Cua amb beina · 92,5 nm",true]],hx-(mob?60:120)*s-18,Y(140+27+70),"right",la(.3));
-          label(hx+26*s,Y(140+10),[["Placa basal",true]],hx+(mob?60:110)*s+14,Y(140+40),"left",la(.5));
-          label(hx-38*s,Y(140+70),[["Sis fibres · 145 nm",true],["els sensors",false,C.ink2]],hx-(mob?60:120)*s-18,Y(130),"right",la(.7));
-          label(W*.5+(mob?70:150)*s,Y(-4),[["Paret del bacteri",true,C.blau]],W*.5+(mob?108:190)*s,Y(60),"left",la(.9));
+          label(hx+42*s,Y(140+27+92.5+8+75),nar?[["Cap · 115 × 85 nm",true],["~169.000 lletres d'ADN",false,C.ink2]]:[["Cap · 115 × 85 nm",true],["guarda l'ADN: ~169.000 lletres",false,C.ink2]],hx+(mob?52:110)*s+14,Y(140+27+92.5+8+100),"left",la(.1));
+          label(hx+13*s,Y(140+27+45),[["Cua amb beina · 92,5 nm",true]],hx-(mob?52:120)*s-14,Y(140+27+70),"right",la(.3));
+          if(!nar){
+            label(hx+26*s,Y(140+10),[["Placa basal",true]],hx+(mob?60:110)*s+14,Y(140+40),"left",la(.5));
+            label(hx-38*s,Y(140+70),[["Sis fibres · 145 nm",true],["els sensors",false,C.ink2]],hx-(mob?60:120)*s-18,Y(130),"right",la(.7));
+          }
+          label(W*.5+(mob?60:150)*s,Y(-4),[["Paret del bacteri",true,C.blau]],W*.5+(mob?96:190)*s,Y(nar?38:60),"left",la(.9));
         }
         if(sc===1){
           label(X(110),Y(2),[["Les fibres reconeixen",true],["una molècula de la paret",false,C.ink2]],X(150),Y(120),"left",la(1.6));
@@ -807,12 +825,13 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,drawT4,miniT4,miniHead,min
     {id:"bv", a:"bac", b:"dom", f:[0,26], bend:76, c:C.vermell,sc:C.vermell,v:1,tip:"<b>Curtcircuit viral (lisi de bacteris)</b> · El contingut dels bacteris esclatats alimenta altres bacteris"}
   ];
 
-  let vir=1, runP=true, updateMode=null;
+  let vir=1, runP=true, updateMode=null, clearShuntHv=null;
+  document.addEventListener("pointerdown",ev=>{ if(ev.pointerType!=="mouse"&&!vizEl.contains(ev.target)&&clearShuntHv)clearShuntHv(); });
 
   V.mount(vizEl,(el,W)=>{
     if(el.__loop){ el.__loop.stop(); el.__loop=null; }
     const mob=W<640;
-    const F=mob?{w:400,h:520}:{w:1000,h:400};
+    const F=mob?{w:400,h:550}:{w:1000,h:400};
     const S=Math.min(mob?1.2:1.1,W/F.w), ox=(W-F.w*S)/2, H=Math.round(F.h*S);
     d3.select(el).selectAll("canvas.ibv,svg.ibv").remove();
     const s=V.svg(el,W,H,"Esquema de fluxos de carboni marí: amb virus, el curtcircuit viral retorna carboni d'algues i bacteris a matèria dissolta, augmentant el reciclatge microbià i reduint el flux cap als peixos.");
@@ -891,11 +910,11 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,drawT4,miniT4,miniHead,min
       gNotes.selectAll("*").remove();
       if(!vOn)return;
       const qL=curve(ED[6]), pL=qp(qL,.5);
-      V.t(gNotes,pL[0],pL[1]-(mob?24:22),"Curtcircuit viral",{size:mob?11.5:12.5,weight:700,fill:C.vermell,anchor:"middle",halo:3.5});
-      V.t(gNotes,pL[0],pL[1]-(mob?10:8),"els virus fan esclatar microbis",{size:11,fill:C.ink2,anchor:"middle",halo:3.5});
+      V.t(gNotes,pL[0],pL[1]-(mob?30:22),"Curtcircuit viral",{size:mob?11.5:12.5,weight:700,fill:C.vermell,anchor:"middle",halo:3.5});
+      V.t(gNotes,pL[0],pL[1]-(mob?16:8),"els virus fan esclatar microbis",{size:11,fill:C.ink2,anchor:"middle",halo:3.5});
       const pFish=qp(curve(ED[1]),.5), pMic=qp(curve(ED[3]),.5);
       V.t(gNotes,pFish[0],pFish[1]-(mob?10:18),"↓ Menys carboni als peixos",{size:11.5,weight:600,fill:C.vermell,anchor:mob?"end":"middle",halo:3.5});
-      V.t(gNotes,pMic[0],pMic[1]+(mob?22:24),"↑ Més reciclatge microbià",{size:11.5,weight:600,fill:C.blau,anchor:"middle",halo:3.5});
+      V.t(gNotes,pMic[0],mob?H-10:pMic[1]+24,"↑ Més reciclatge microbià",{size:11.5,weight:600,fill:C.blau,anchor:"middle",halo:3.5});
     }
 
     /* Micro-traços lents i contemplatius (IB-40: recorregut ~24–30 s!) */
@@ -974,7 +993,7 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,drawT4,miniT4,miniHead,min
       tp.show(nd.tip);
       if(RM||!runP)drawParticles();
     }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")clearHv(); });
-    document.addEventListener("pointerdown",ev=>{ if(ev.pointerType!=="mouse"&&!el.contains(ev.target))clearHv(); });
+    clearShuntHv=clearHv;
 
     applyStyle(true);
     updateMode=function(){ applyStyle(false); if(RM||!runP){ virA=vir; drawParticles(); } };

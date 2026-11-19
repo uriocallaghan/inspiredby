@@ -172,7 +172,9 @@
     const colOf=g=>g==="galilea"?C.vermell:g==="judea"?C.blau:C.groc;
 
     V.mount(el,(node,w)=>{
-      const mob=w<640, h=mob?295:280, m={t:92, r:mob?26:46, b:108, l:mob?26:46};
+      const vert=w<600, mob=w<640;
+      const h=vert?430:(mob?295:280);
+      const m=vert?{t:30,r:14,b:34,l:68}:{t:92,r:mob?26:46,b:108,l:mob?26:46};
       const s=V.svg(node,w,h,"Escala logarítmica de població del segle I: des dels ~350 habitants de Natzaret fins als ~900.000 de Roma imperial, amb rangs d'estimació arqueològica.");
       const defs=s.append("defs");
       const uid="sc"+Math.random().toString(36).slice(2,6);
@@ -182,31 +184,70 @@
         imperi:addWashGrad(defs,uid+"i",C.groc,.55,.28)
       };
 
-      const x=d3.scaleLog().domain([150, 1400000]).range([m.l, w-m.r]);
-      const r=d3.scaleSqrt().domain([300, 900000]).range([mob?8:10, mob?28:38]);
-      const cy=m.t+26;
+      const scLog=d3.scaleLog().domain([150, 1400000]).range(vert?[m.t+14, h-m.b-14]:[m.l, w-m.r]);
+      const r=d3.scaleSqrt().domain([300, 900000]).range(vert?[7, 23]:[mob?8:10, mob?28:38]);
+      const cy=m.t+26, cx=m.l;
 
       // eix base i marques d'ordre de magnitud (escala logarítmica anunciada — P5)
       const gAx=s.append("g");
-      gAx.append("line").attr("x1",m.l).attr("x2",w-m.r).attr("y1",cy).attr("y2",cy).attr("stroke",C.hair).attr("stroke-width",1);
-      [200,1000,10000,100000,1000000].forEach(t=>{
-        const tx=x(t);
-        gAx.append("line").attr("x1",tx).attr("x2",tx).attr("y1",cy-4).attr("y2",cy+4).attr("stroke",C.muted).attr("stroke-width",.8);
-        const lbl=t>=1000000?"1 M":t>=1000?(t/1000)+"k":String(t);
-        V.t(gAx,tx,cy+17,lbl,{anchor:"middle",size:11,fill:C.muted});
-      });
-      V.t(gAx,m.l,h-10,mob?"Escala log. (×10) · Toca per fixar l'àncora":"Escala logarítmica (cada marca multiplica per 10) · Clica una ciutat per fixar l'àncora",{size:11,fill:C.muted,italic:true});
+      if(vert){
+        gAx.append("line").attr("x1",cx).attr("x2",cx).attr("y1",m.t).attr("y2",h-m.b).attr("stroke",C.hair).attr("stroke-width",1);
+        [200,1000,10000,100000,1000000].forEach(t=>{
+          const ty=scLog(t);
+          gAx.append("line").attr("x1",cx-4).attr("x2",cx+4).attr("y1",ty).attr("y2",ty).attr("stroke",C.muted).attr("stroke-width",.8);
+          const lbl=t>=1000000?"1 M":t>=1000?(t/1000)+"k":String(t);
+          V.t(gAx,cx-9,ty+4,lbl,{anchor:"end",size:11,fill:C.muted});
+        });
+        V.t(gAx,8,h-10,"Escala log. (×10) · Toca per fixar l'àncora",{size:11,fill:C.muted,italic:true});
+      } else {
+        gAx.append("line").attr("x1",m.l).attr("x2",w-m.r).attr("y1",cy).attr("y2",cy).attr("stroke",C.hair).attr("stroke-width",1);
+        [200,1000,10000,100000,1000000].forEach(t=>{
+          const tx=scLog(t);
+          gAx.append("line").attr("x1",tx).attr("x2",tx).attr("y1",cy-4).attr("y2",cy+4).attr("stroke",C.muted).attr("stroke-width",.8);
+          const lbl=t>=1000000?"1 M":t>=1000?(t/1000)+"k":String(t);
+          V.t(gAx,tx,cy+17,lbl,{anchor:"middle",size:11,fill:C.muted});
+        });
+        V.t(gAx,m.l,h-10,"Escala logarítmica (cada marca multiplica per 10) · Clica una ciutat per fixar l'àncora",{size:11,fill:C.muted,italic:true});
+      }
 
       const gArc=s.append("g"), gRange=s.append("g"), gNodes=s.append("g");
 
       D.ciutats.forEach(d=>{
-        gRange.append("line").datum(d).attr("class","rng-bar")
-          .attr("x1",x(d.lo)).attr("x2",x(d.hi)).attr("y1",cy).attr("y2",cy)
-          .attr("stroke",colOf(d.g)).attr("stroke-width",3.2).attr("stroke-opacity",.35).attr("stroke-linecap","round");
+        if(vert){
+          gRange.append("line").datum(d).attr("class","rng-bar")
+            .attr("x1",cx).attr("x2",cx).attr("y1",scLog(d.lo)).attr("y2",scLog(d.hi))
+            .attr("stroke",colOf(d.g)).attr("stroke-width",3.2).attr("stroke-opacity",.35).attr("stroke-linecap","round");
+        } else {
+          gRange.append("line").datum(d).attr("class","rng-bar")
+            .attr("x1",scLog(d.lo)).attr("x2",scLog(d.hi)).attr("y1",cy).attr("y2",cy)
+            .attr("stroke",colOf(d.g)).attr("stroke-width",3.2).attr("stroke-opacity",.35).attr("stroke-linecap","round");
+        }
       });
 
+      // en mode vertical, calculem posicions d'etiquetes sense col·lisions (resolent Tiberíades vs Sèforis)
+      const lyMap=new Map();
+      if(vert){
+        const sorted=D.ciutats.slice().sort((a,b)=>a.v-b.v);
+        const ys=sorted.map(d=>scLog(d.v));
+        const minGap=34;
+        for(let pass=0;pass<6;pass++){
+          for(let i=1;i<ys.length;i++){
+            const diff=ys[i]-ys[i-1];
+            if(diff<minGap){ const push=(minGap-diff)/2; ys[i-1]-=push; ys[i]+=push; }
+          }
+          ys[0]=Math.max(m.t+10,ys[0]);
+          for(let i=1;i<ys.length;i++) ys[i]=Math.max(ys[i],ys[i-1]+minGap);
+          const maxY=h-m.b-12;
+          if(ys[ys.length-1]>maxY){
+            ys[ys.length-1]=maxY;
+            for(let i=ys.length-2;i>=0;i--) ys[i]=Math.min(ys[i],ys[i+1]-minGap);
+          }
+        }
+        sorted.forEach((d,i)=>lyMap.set(d.id,ys[i]));
+      }
+
       const nds=gNodes.selectAll("g.ct").data(D.ciutats).join("g").attr("class","ct")
-        .attr("transform",d=>`translate(${x(d.v)},${cy})`)
+        .attr("transform",d=>vert?`translate(${cx},${scLog(d.v)})`:`translate(${scLog(d.v)},${cy})`)
         .attr("tabindex","0")
         .attr("role","button")
         .attr("aria-label",d=>`${d.nom}, estimació central ${f0(d.v)} habitants, rang de ${f0(d.lo)} a ${f0(d.hi)}`)
@@ -218,43 +259,66 @@
       nds.append("circle").attr("class","ring").attr("r",d=>r(d.v))
         .attr("fill","none").attr("stroke",d=>d.id===anchorId?C.ink:"transparent").attr("stroke-width",1.5).attr("stroke-dasharray","3 2.5");
 
-      // Totes les etiquetes sota l'eix en 2 carrils ordenats amb guies ultra-fines (zero encreuament amb l'arc superior!)
-      const labCfg={
-        natzaret:{dy:42,anc:"start",dx:-4,mob:true},
-        cafarnaum:{dy:74,anc:"middle",dx:0,mob:true},
-        tiberiades:{dy:42,anc:"end",dx:-6,mob:false},
-        seforis:{dy:74,anc:"start",dx:4,mob:true},
-        jerusalem:{dy:42,anc:"middle",dx:0,mob:true},
-        pasqua:{dy:74,anc:"middle",dx:0,mob:false},
-        roma:{dy:42,anc:"end",dx:4,mob:true}
-      };
-      nds.each(function(d){
-        const q=d3.select(this), o=labCfg[d.id];
-        if(mob&&!o.mob)return;
-        q.append("line").attr("x1",0).attr("x2",0).attr("y1",r(d.v)+2).attr("y2",o.dy-12)
-          .attr("stroke",C.hair).attr("stroke-width",.7);
-        const shortNom=mob&&d.id==="jerusalem"?"Jerusalem":d.nom;
-        V.t(q,o.dx,o.dy,shortNom,{anchor:o.anc,weight:d.id==="natzaret"||d.id==="roma"?700:600,size:mob?11:12,fill:C.ink,halo:3});
-        const vStr=d.v>=100000?f0(d.v/1000)+"k":f0(d.v);
-        V.t(q,o.dx,o.dy+13,"≈ "+vStr,{anchor:o.anc,size:11,fill:C.muted,halo:2.5});
-      });
+      if(vert){
+        const labX=36;
+        nds.each(function(d){
+          const q=d3.select(this), dy=lyMap.get(d.id)-scLog(d.v);
+          // guia fina de connexió entre el cercle sobre l'eix i l'etiqueta a la dreta
+          q.append("line").attr("x1",r(d.v)+2).attr("y1",0).attr("x2",labX-5).attr("y2",dy)
+            .attr("stroke",C.hair).attr("stroke-width",.75);
+          // àrea tàctil còmoda
+          q.append("rect").attr("x",-22).attr("y",Math.min(-14,dy-14)).attr("width",w-cx+12).attr("height",32).attr("fill","transparent");
+          const vStr=d.v>=100000?f0(d.v/1000)+"k":f0(d.v);
+          V.t(q,labX,dy-1,d.nom,{anchor:"start",weight:d.id==="natzaret"||d.id==="roma"?700:600,size:12,fill:C.ink,halo:3});
+          V.t(q,labX,dy+12,`≈ ${vStr} hab.`,{anchor:"start",size:11,fill:C.muted,halo:2.5});
+        });
+      } else {
+        // Totes les etiquetes sota l'eix en 2 carrils ordenats amb guies ultra-fines (zero encreuament amb l'arc superior!)
+        const labCfg={
+          natzaret:{dy:42,anc:"start",dx:-4,mob:true},
+          cafarnaum:{dy:74,anc:"middle",dx:0,mob:true},
+          tiberiades:{dy:42,anc:"end",dx:-6,mob:false},
+          seforis:{dy:74,anc:"start",dx:4,mob:true},
+          jerusalem:{dy:42,anc:"middle",dx:0,mob:true},
+          pasqua:{dy:74,anc:"middle",dx:0,mob:false},
+          roma:{dy:42,anc:"end",dx:4,mob:true}
+        };
+        nds.each(function(d){
+          const q=d3.select(this), o=labCfg[d.id];
+          if(mob&&!o.mob)return;
+          q.append("line").attr("x1",0).attr("x2",0).attr("y1",r(d.v)+2).attr("y2",o.dy-12)
+            .attr("stroke",C.hair).attr("stroke-width",.7);
+          const shortNom=mob&&d.id==="jerusalem"?"Jerusalem":d.nom;
+          V.t(q,o.dx,o.dy,shortNom,{anchor:o.anc,weight:d.id==="natzaret"||d.id==="roma"?700:600,size:mob?11:12,fill:C.ink,halo:3});
+          const vStr=d.v>=100000?f0(d.v/1000)+"k":f0(d.v);
+          V.t(q,o.dx,o.dy+13,"≈ "+vStr,{anchor:o.anc,size:11,fill:C.muted,halo:2.5});
+        });
+      }
 
       function drawArc(target){
         gArc.selectAll("*").remove();
         const a=D.ciutats.find(c=>c.id===anchorId)||D.ciutats[0];
         const b=target||D.ciutats[D.ciutats.length-1];
         if(!b||a.id===b.id)return;
-        const x0=x(a.v), x1=x(b.v), xm=(x0+x1)/2;
-        const y0=cy-r(a.v)-3, y1=cy-r(b.v)-3;
-        const yTop=Math.max(26, Math.min(y0,y1)-Math.min(58, 28+Math.abs(x1-x0)*.08));
-        gArc.append("path").attr("d",`M${x0},${y0} Q${xm},${yTop} ${x1},${y1}`)
-          .attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.15).attr("stroke-dasharray","3 3");
         const ratio=b.v/a.v;
         const lbl=ratio>=1
           ? `×${ratio>=100?f0(ratio):f1(ratio)} més gran`
           : `÷${(1/ratio)>=100?f0(1/ratio):f1(1/ratio)} més petit`;
-        const lx=clamp(xm, 68, w-68);
-        V.t(gArc,lx,Math.max(16, (Math.min(y0,y1)+yTop)/2-14),lbl,{anchor:"middle",weight:700,size:12,fill:C.vermell,halo:3.5});
+        if(vert){
+          const y0=scLog(a.v), y1=scLog(b.v), ym=(y0+y1)/2;
+          const xArc=w-10, xCtrl=Math.max(cx+130, w-6);
+          gArc.append("path").attr("d",`M${cx+r(a.v)+3},${y0} Q${xCtrl},${ym} ${cx+r(b.v)+3},${y1}`)
+            .attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.1).attr("stroke-dasharray","3 3").attr("stroke-opacity",.45);
+          V.t(gArc,xArc,14,`${a.nom} → ${b.nom}: ${lbl}`,{anchor:"end",weight:700,size:11.5,fill:C.vermell,halo:3.5});
+        } else {
+          const x0=scLog(a.v), x1=scLog(b.v), xm=(x0+x1)/2;
+          const y0=cy-r(a.v)-3, y1=cy-r(b.v)-3;
+          const yTop=Math.max(26, Math.min(y0,y1)-Math.min(58, 28+Math.abs(x1-x0)*.08));
+          gArc.append("path").attr("d",`M${x0},${y0} Q${xm},${yTop} ${x1},${y1}`)
+            .attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.15).attr("stroke-dasharray","3 3");
+          const lx=clamp(xm, 68, w-68);
+          V.t(gArc,lx,Math.max(16, (Math.min(y0,y1)+yTop)/2-14),lbl,{anchor:"middle",weight:700,size:12,fill:C.vermell,halo:3.5});
+        }
       }
       drawArc(D.ciutats.find(c=>c.id==="roma"));
 
@@ -464,7 +528,7 @@
     const arcCol=t=>t==="imberbe"?C.blau:t==="barbut"?C.vermell:C.ink2;
 
     const M=V.mount(el,(node,w)=>{
-      const mob=w<640, hMap=mob?220:290, hTime=mob?92:102, h=hMap+hTime;
+      const mob=w<640, hMap=mob?165:290, hTime=mob?75:102, h=hMap+hTime;
       const s=V.svg(node,w,h,"Mapa mundial i cinta cronològica de 24 fites verificades de la representació visual de Jesús entre l'any 200 i el 2001.");
       const defs=s.append("defs");
       const uid="cr"+Math.random().toString(36).slice(2,6);
@@ -480,10 +544,10 @@
       const gMapClip=s.append("g").attr("clip-path",`url(#${clipId})`);
       const gLand=gMapClip.append("g"), gArcs=gMapClip.append("g");
       const gPts=s.append("g"), gAnn=s.append("g");
-      const gTime=s.append("g").attr("transform",`translate(0,${hMap+14})`);
+      const gTime=s.append("g").attr("transform",`translate(0,${hMap+(mob?6:14)})`);
 
       // Projecció plana neta Equal Earth enfocada a l'hemisferi nord/centre, retallada estrictament dins hMap
-      const proj=d3.geoEqualEarth().center([18, 30]).scale(mob?w*.225:w*.245).translate([w*.52, hMap*.60]);
+      const proj=d3.geoEqualEarth().center([18, 30]).scale(mob?w*.215:w*.245).translate([w*.52, hMap*.60]);
       const path=d3.geoPath(proj);
 
       function renderWorld(){
@@ -500,23 +564,23 @@
       if(!mob)V.t(gMapClip,jx+7,jy+4,"Judea (s. I)",{size:11,weight:700,fill:C.ink,halo:3});
 
       // Escala temporal no lineal per trams: separa amb claredat segles III-VII, Renaixement i 1889-2001!
-      const x0=mob?18:28, x1=w-(mob?18:28), sp=x1-x0;
+      const x0=mob?18:28, x1=w-(mob?18:28), sp=x1-x0, tY=mob?22:28;
       const xTime=d3.scaleLinear()
         .domain([190, 720, 1440, 1880, 2010])
         .range([x0, x0+sp*.34, x0+sp*.54, x0+sp*.76, x1]);
 
-      gTime.append("line").attr("x1",x0).attr("x2",x1).attr("y1",28).attr("y2",28).attr("stroke",C.hair).attr("stroke-width",1);
+      gTime.append("line").attr("x1",x0).attr("x2",x1).attr("y1",tY).attr("y2",tY).attr("stroke",C.hair).attr("stroke-width",1);
       (mob?[200,500,1100,1600,1940,2001]:[200,400,700,1100,1500,1900,1940,2001]).forEach(yr=>{
         const tx=xTime(yr);
-        gTime.append("line").attr("x1",tx).attr("x2",tx).attr("y1",24).attr("y2",32).attr("stroke",C.muted).attr("stroke-width",.8);
-        V.t(gTime,tx,46,String(yr),{anchor:"middle",size:11,fill:C.muted});
+        gTime.append("line").attr("x1",tx).attr("x2",tx).attr("y1",tY-4).attr("y2",tY+4).attr("stroke",C.muted).attr("stroke-width",.8);
+        V.t(gTime,tx,tY+18,String(yr),{anchor:"middle",size:11,fill:C.muted});
       });
-      V.t(gTime,x0,70,mob?"← s. III imberbe · s. IV–XX barbut →":"← Segle III: imberbe i cabell curt · · · Segles IV–XX: barba i europeïtzació →",{size:11,fill:C.muted,italic:true});
+      V.t(gTime,x0,mob?tY+36:70,mob?"← s. III imberbe · s. IV–XX barbut →":"← Segle III: imberbe i cabell curt · · · Segles IV–XX: barba i europeïtzació →",{size:11,fill:C.muted,italic:true});
 
       // Cercles al mapa (amb petita separació determinista per a les 5 fites de Roma) + punts a la cinta
       const items=D.iconografia.map((d,i)=>{
         const [bx,by]=proj([d.lon,d.lat]);
-        const sc=mob?.75:1;
+        const sc=mob?.72:1;
         const mx=bx+(d.ox||0)*sc, my=by+(d.oy||0)*sc;
         const tx=xTime(d.any);
         // lleuger desplaçament vertical alternat a la cinta quan dues fites són molt pròximes en anys
@@ -541,18 +605,22 @@
         .attr("tabindex","0").attr("role","button")
         .attr("aria-label",d=>`${d.nom}, ${d.data}, ${d.lloc}`)
         .style("cursor","pointer");
-      mPts.append("circle").attr("class","w").attr("r",d=>d.star?(mob?14:20):(mob?8:11.5))
+      mPts.append("circle").attr("class","w").attr("r",d=>d.star?(mob?12:20):(mob?7.5:11.5))
         .attr("fill",d=>wash[d.tipus]).style("mix-blend-mode","multiply");
-      mPts.append("circle").attr("class","rim").attr("r",d=>d.star?(mob?14:20):(mob?8:11.5))
+      mPts.append("circle").attr("class","rim").attr("r",d=>d.star?(mob?12:20):(mob?7.5:11.5))
         .attr("fill","none").attr("stroke","transparent").attr("stroke-width",1.5);
-      mPts.append("circle").attr("class","c").attr("r",d=>d.star?4:2.6)
+      mPts.append("circle").attr("class","c").attr("r",d=>d.star?3.8:2.5)
         .attr("fill",d=>d.tipus==="global"?C.ink:colT(d.tipus)).attr("stroke",C.paper).attr("stroke-width",.9);
 
+      // hitbox ampliada sobre tota la cinta temporal per seleccionar fàcilment el punt més proper amb el dit
+      const tHit=gTime.append("rect").attr("x",0).attr("y",0).attr("width",w).attr("height",hTime).attr("fill","transparent").style("cursor","pointer");
+
       const tPts=gTime.selectAll("g.tp").data(items).join("g").attr("class","tp")
-        .attr("transform",d=>`translate(${d.tx},${28+d.tyOff})`)
+        .attr("transform",d=>`translate(${d.tx},${tY+d.tyOff})`)
         .attr("tabindex","0").attr("role","button")
         .attr("aria-label",d=>`${d.nom}, ${d.data}`)
         .style("cursor","pointer");
+      tPts.append("circle").attr("r",16).attr("fill","transparent");
       tPts.append("circle").attr("class","tc").attr("r",d=>d.star?6.8:4.8)
         .attr("fill",d=>colT(d.tipus)).attr("fill-opacity",.72)
         .attr("stroke",d=>d.star?C.ink:C.paper).attr("stroke-width",d=>d.star?1.4:.8).style("mix-blend-mode","multiply");
@@ -567,13 +635,13 @@
         mPts.transition().duration(dur(360))
           .style("opacity",d=>d.fase===ph?1:d.fase<ph?.48:.18);
         mPts.select(".w").transition().duration(dur(360))
-          .attr("r",d=>d.fase===ph?(d.star?(mob?16:23):(mob?11:15)):(d.star?(mob?11:14):(mob?6.5:8.5)));
+          .attr("r",d=>d.fase===ph?(d.star?(mob?14:23):(mob?10:15)):(d.star?(mob?10:14):(mob?6:8.5)));
         mPts.select(".rim").attr("stroke","transparent");
         arcs.transition().duration(dur(360))
           .attr("stroke-opacity",d=>d.fase===ph?.46:d.fase<ph?.12:0);
         tPts.transition().duration(dur(360))
           .style("opacity",d=>d.fase===ph?1:d.fase<ph?.52:.22)
-          .attr("transform",d=>`translate(${d.tx},${(d.fase===ph?20:28)+d.tyOff})`);
+          .attr("transform",d=>`translate(${d.tx},${(d.fase===ph?tY-7:tY)+d.tyOff})`);
         tPts.select(".tc").attr("stroke",d=>d.star?C.ink:C.paper).attr("stroke-width",d=>d.star?1.4:.8);
 
         gAnn.selectAll("*").remove();
@@ -607,6 +675,11 @@
       };
       const resetHover=()=>updatePhase(curPhase);
       outside(node,resetHover);
+
+      V.hover(tHit.node(),(ev,[px])=>{
+        const near=d3.least(items,q=>Math.abs(px-q.tx));
+        if(near&&Math.abs(px-near.tx)<=(mob?28:18)) focusItem(near);
+      },resetHover);
 
       [mPts,tPts].forEach(sel=>{
         sel.on("pointerenter pointerdown",(ev,d)=>focusItem(d))
@@ -647,7 +720,7 @@
           {c:C.blau,t:"Acceptable al Regne Unit (2021)"},
           {c:C.groc,t:"Acceptable als EUA (2020)"}
         ]);
-        const h=mob?340:320, m={t:56, r:mob?20:48, b:38, l:mob?12:168};
+        const h=mob?376:320, m={t:56, r:mob?20:48, b:38, l:mob?12:168};
         const s=V.svg(node,w,h,"Enquestes YouGov al Regne Unit (2021) i als EUA (2020): el 58 % dels britànics solen veure un Jesús blanc i només el 22 % de l'Orient Mitjà, tot i que un 68 % (RU) i un 65 % (EUA) accepten la representació de l'Orient Mitjà.");
         const rows=D.yougov.veuVsAccepta;
         const x=d3.scaleLinear().domain([0,80]).range([m.l,w-m.r]);
@@ -687,9 +760,9 @@
           if(!mob){
             V.t(q,m.l-12,yy+4,d.nom,{anchor:"end",weight:d.k==="om"||d.k==="blanc"?700:400,size:12.5,fill:C.ink});
           } else {
-            V.t(q,m.l,yy-15,d.nom,{anchor:"start",weight:600,size:11.5,fill:C.ink,halo:3});
+            V.t(q,m.l,yy-16,d.nom,{anchor:"start",weight:600,size:11.5,fill:C.ink,halo:3});
           }
-          if(d.veuUK!=null) V.t(q,x(d.veuUK),yy-13,d.veuUK+" %",{anchor:"middle",weight:700,size:11,fill:C.vermell,halo:3});
+          if(d.veuUK!=null) V.t(q,x(d.veuUK),mob?yy+21:yy-13,d.veuUK+" %",{anchor:"middle",weight:700,size:11,fill:C.vermell,halo:3});
           // si el punt groc (EUA) és a la dreta del blau (RU), posem l'etiqueta blava a l'esquerra perquè no se solapi mai!
           const putLeft=d.accUS!=null&&d.accUS>d.accUK+2;
           V.t(q,putLeft?x(d.accUK)-11:x(d.accUK)+11,yy+dyUK(d)+4,d.accUK+" %",{anchor:putLeft?"end":"start",weight:600,size:11,fill:C.blau,halo:3});
@@ -738,9 +811,10 @@
           {c:C.blau,t:"Projecció política (mínim entre trets)"},
           {c:C.ghost,t:"No significatiu (p = 0,36)"}
         ]);
-        const h=mob?355:315, m={t:36, r:mob?16:44, b:40, l:mob?12:266};
-        const s=V.svg(node,w,h,"Resultats estadístics de Jackson, Hester i Gray (PLOS ONE, 2018; n = 511 cristians EUA): força de projecció (valor t) de l'edat, l'atractiu i la ideologia política sobre el rostre mental de Déu i Jesús.");
         const rows=D.yougov.plos;
+        const m={t:36, r:mob?16:44, b:40, l:mob?12:266};
+        const h=mob?Math.max(385,m.t+m.b+rows.length*54):315;
+        const s=V.svg(node,w,h,"Resultats estadístics de Jackson, Hester i Gray (PLOS ONE, 2018; n = 511 cristians EUA): força de projecció (valor t) de l'edat, l'atractiu i la ideologia política sobre el rostre mental de Déu i Jesús.");
         const x=d3.scaleLinear().domain([0, mob?16.5:18.5]).range([m.l,w-m.r]);
         const y=d3.scalePoint().domain(rows.map(d=>d.nom)).range([m.t+22,h-m.b-14]).padding(.38);
         const colG=g=>g==="ego"?C.vermell:g==="pol"?C.blau:C.ghost;
@@ -821,7 +895,8 @@
     ]);
 
     const M=V.mount(el,(node,w)=>{
-      const mob=w<640, h=mob?380:440, m={t:42, r:mob?22:48, b:46, l:mob?22:48};
+      const mob=w<600, h=mob?Math.round(Math.max(210,Math.min(window.innerHeight*.29,250))):440;
+      const m={t:mob?26:42, r:mob?14:48, b:mob?28:46, l:mob?14:48};
       const s=V.svg(node,w,h,"Esquema historiogràfic en dos eixos que situa el Jesús jueu galileu del segle I davant les projeccions posteriors: Crist Emperador bizantí, Jesús liberal i ari europeu, icona blanca de Warner Sallman i els Jesús a la carta del segle XXI.");
       const defs=s.append("defs");
       const uid="mr"+Math.random().toString(36).slice(2,6);
@@ -844,14 +919,14 @@
 
       V.t(gAx,m.l,cy-8,mob?"← Judaisme s. I":"← Arrelat al judaisme del s. I",{anchor:"start",size:mob?11:12,fill:C.ink2,weight:600,halo:3});
       V.t(gAx,w-m.r,cy-8,mob?"Occidentalitzat →":"Desjudaïtzat / occidentalitzat →",{anchor:"end",size:mob?11:12,fill:C.ink2,weight:600,halo:3});
-      V.t(gAx,cx,m.t-14,"↑ Apocalíptic, col·lectiu i polític",{anchor:"middle",size:mob?11:12,fill:C.ink2,weight:600,halo:3});
-      V.t(gAx,cx,h-m.b+24,"↓ Espiritual, individual i privat",{anchor:"middle",size:mob?11:12,fill:C.ink2,weight:600,halo:3});
+      V.t(gAx,cx,m.t-(mob?8:14),"↑ Apocalíptic, col·lectiu i polític",{anchor:"middle",size:mob?11:12,fill:C.ink2,weight:600,halo:3});
+      V.t(gAx,cx,h-m.b+(mob?18:24),"↓ Espiritual, individual i privat",{anchor:"middle",size:mob?11:12,fill:C.ink2,weight:600,halo:3});
 
       const lineGen=d3.line().x(d=>x(d.x)).y(d=>y(d.y)).curve(d3.curveCatmullRom.alpha(.5));
       const trail=s.append("path").datum(D.mirall).attr("d",lineGen)
         .attr("fill","none").attr("stroke",C.ink2).attr("stroke-width",.85).attr("stroke-dasharray","2 4").attr("stroke-opacity",.35);
 
-      const sc=mob?.72:1;
+      const sc=mob?.54:1;
       const strokeBase=d=>d.c==="groc"?"transparent":(C[d.c]||C.vermell);
       const orbs=s.selectAll("g.orb").data(D.mirall).join("g").attr("class","orb")
         .attr("transform",d=>`translate(${x(d.x)},${y(d.y)})`)
@@ -867,8 +942,10 @@
 
       orbs.each(function(d){
         const q=d3.select(this);
-        V.t(q,0,-5,d.nom,{anchor:"middle",weight:700,size:mob?11.5:13,fill:C.ink,halo:3.5});
-        V.t(q,0,12,d.sub,{anchor:"middle",size:mob?11:11.5,fill:C.ink2,halo:3});
+        const ox=x(d.x), halfW=Math.max(d.nom.length*6.4,d.sub.length*5.6)/2;
+        const dx=mob?clamp(ox,halfW+6,w-halfW-6)-ox:0;
+        V.t(q,dx,-5,d.nom,{anchor:"middle",weight:700,size:mob?11:13,fill:C.ink,halo:3.5});
+        V.t(q,dx,10,d.sub,{anchor:"middle",size:mob?11:11.5,fill:C.ink2,halo:3});
       });
 
       function applyStep(st){
