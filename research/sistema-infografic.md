@@ -28,6 +28,16 @@ Tots són obligatoris.
 | P9 | **Dada, simulació o esquema, sempre dit** | El peu diu què és: dades reals (font i any), simulació (quin model) o esquema. Mai una forma inventada que sembli una dada. |
 | P10 | **Es toca, es mou i cap a 390 px** | Tooltip amb ratolí, teclat i dit (`IBV.hover`). Moviment suau i amb sentit, que respecta `prefers-reduced-motion` (`IBV.reduced`). Cap scroll horitzontal. A mòbil, menys etiquetes, no més petites. |
 
+### Estètica orgànica: què diferencia una làmina d'un gràfic estàndard
+
+Les 11 referències de l'editor comparteixen un llenguatge de **gravat científic i atles contemporani** que s'allunya del tot dels gràfics de *dashboard* o d'Excel:
+
+- **Res de barres rectangulars massisses quan hi ha una forma més orgànica:** si pots mostrar les observacions reals com a **núvol de punts translúcids** (`IBV.cloud`, estil *Fair and square?*), **bombolles superposades** amb `mix-blend-mode: multiply` (*Major quakes*, *Incendios en Perú*), **anells concèntrics finíssims** (`IBV.rings`, *A sea of sand and sickness*), **corbes topogràfiques de densitat** (*Building strategy*) o **llaços polars sobre retícula finíssima** (`IBV.polarGrid`, *Typology demand* i *Parcs nacionals dels EUA*), tria sempre la forma orgànica.
+- **Ordenar el caos aparent:** quan hi ha centenars o milers de dades, deixa que els punts, les traces o els anells revelin l'estructura per densitat (`opacity 0,05–0,38`, `mix-blend-mode: multiply`), en lloc d'amagar-los darrere mitjanes o caixes opaques.
+- **Fils d'estructura ultra-fins:** retícules polars, cercles guia i línies base de `0,45–0,6 px`, sense graelles verticals feixugues que tallin les marques. Molt aire blanc al voltant.
+- **Anells concèntrics i gradients radials suaus:** als mapes de casos (*A sea of sand and sickness*) cada cas suma un anell fi (`0,65 px`) sobre rutes blanques gruixudes; a les roses horàries (*Typology demand*), els pètals fan servir gradients radials translúcids i es poden descompondre en petits múltiples a sota.
+- **Anotacions editorials amb fletxes corbes delicades:** `IBV.note(..., {kind:"curve"})` i caixes discontínues (`IBV.box`) que assenyalen el descobriment dins del núvol de dades.
+
 ---
 
 ## 2. Colors (`IBV.C`)
@@ -100,7 +110,7 @@ Números en català: coma decimal, punt de milers, signe menys tipogràfic. `IBV
 | C-07 | Controls | `.rng` (lliscant), `.seg` (botons de segment), `.playb` (Reprodueix) d'`article.css` | Sota el gràfic, separats per una línia. `aria-valuetext` llegible al lliscant. `.playb{padding:6px 0}` per tocar-lo amb el dit. |
 | C-08 | Tooltip | `const tp=IBV.tip(container)` + `IBV.hover(node,onMove,onLeave)` | Blanc amb vora fina, sense ombra. Negreta per a qui és, xifres tabulars. S'obre amb un toc i no es tanca en aixecar el dit. |
 
-Altres eines: `IBV.mount(el, draw)` (dibuixa i redibuixa quan canvia l'amplada), `IBV.svg(el,w,h,ariaLabel)`, `IBV.canvas(el,w,h,ariaLabel)`, `IBV.t(g,x,y,text,{size,weight,anchor,italic,serif,halo})`, `IBV.lines(...)`, `IBV.world()` (promesa amb `land`, `countries` i `borders` de world-atlas 110m), `IBV.rng(seed)` i `IBV.gauss(r)` per a esquemes repetibles.
+Altres eines: `IBV.mount(el, draw)` (dibuixa i redibuixa quan canvia l'amplada), `IBV.svg(el,w,h,ariaLabel)`, `IBV.canvas(el,w,h,ariaLabel)`, `IBV.t(g,x,y,text,{size,weight,anchor,italic,serif,halo})`, `IBV.lines(...)`, `IBV.rings(g,cx,cy,n,step,color,o)` (anells concèntrics finíssims estil *A sea of sand and sickness*), `IBV.polarGrid(g,cx,cy,R,rings,spokes,o)` (retícula polar de 0,5 px estil *Typology demand* i *Parcs nacionals*), `IBV.cloud(ctx,pts,color,o)` (boira orgànica de punts en canvas estil *Fair and square?*), `IBV.world()` (promesa amb `land`, `countries` i `borders` de world-atlas 110m), `IBV.rng(seed)` i `IBV.gauss(r)` per a esquemes repetibles.
 
 ### Lleugeresa (obligatori)
 
