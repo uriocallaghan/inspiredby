@@ -250,7 +250,45 @@
   // focus(sel, isOn): estat de hover estàndard: el que no toca baixa a 0,15.
   function focus(sel,isOn,o){ o=o||{}; sel.interrupt().transition().duration(160).style("opacity",d=>isOn==null||isOn(d)?1:(o.dim==null?.15:o.dim)); }
 
+  /* ---------- 12. Primitives orgàniques (anells, retícula polar, núvol de punts) ---------- */
+  // rings(g,cx,cy,n,step,color,o): anells concèntrics ultra-fins (1 anell = N casos, estil «A sea of sand and sickness»).
+  function rings(g,cx,cy,n,step,color,o){
+    o=o||{}; const rg=g.append("g").attr("class","ibv-rings");
+    const r0=o.r0==null?1.4:o.r0, maxN=o.max||40, count=Math.min(maxN,Math.max(1,Math.round(n)));
+    rg.append("circle").attr("cx",cx).attr("cy",cy).attr("r",r0).attr("fill",color).attr("fill-opacity",o.dotAlpha==null?.85:o.dotAlpha);
+    for(let i=1;i<=count;i++){
+      rg.append("circle").attr("cx",cx).attr("cy",cy).attr("r",r0+i*(step||1.8)).attr("fill","none")
+        .attr("stroke",color).attr("stroke-width",o.sw||.65).attr("stroke-opacity",o.alpha==null?.62:o.alpha);
+    }
+    return rg;
+  }
+  // polarGrid(g,cx,cy,R,ringCount,spokeCount,o): retícula polar finíssima (estil «Typology demand» i «Parcs nacionals»).
+  function polarGrid(g,cx,cy,R,ringCount,spokeCount,o){
+    o=o||{}; const pg=g.append("g").attr("class","ibv-pgrid").attr("transform",`translate(${cx},${cy})`);
+    const nr=ringCount||8, ns=spokeCount||12, rIn=o.rIn||0;
+    for(let i=1;i<=nr;i++){
+      const rr=rIn+(R-rIn)*(i/nr);
+      pg.append("circle").attr("r",rr).attr("fill","none").attr("stroke",i===nr?(o.outer||C.hair):(o.stroke||C.grid)).attr("stroke-width",i===nr?.75:.5);
+    }
+    for(let j=0;j<ns;j++){
+      const a=j/ns*2*Math.PI;
+      pg.append("line").attr("x1",rIn*Math.sin(a)).attr("y1",-rIn*Math.cos(a)).attr("x2",R*Math.sin(a)).attr("y2",-R*Math.cos(a))
+        .attr("stroke",o.stroke||C.grid).attr("stroke-width",.5);
+    }
+    return pg;
+  }
+  // cloud(ctx,pts,color,o): boira orgànica de punts en canvas (estil «Fair and square?» i «Building strategy»).
+  function cloud(ctx,pts,color,o){
+    o=o||{}; const r=o.r||1.1, a=o.alpha==null?.12:o.alpha;
+    ctx.save(); ctx.fillStyle=alpha(color,a);
+    for(let i=0;i<pts.length;i++){
+      const p=pts[i], pr=p[2]!=null?p[2]:r;
+      ctx.beginPath(); ctx.arc(p[0],p[1],pr,0,Math.PI*2); ctx.fill();
+    }
+    ctx.restore();
+  }
+
   window.IBV={C,CAT,CAT6,DIV,div,seq,seqInterp,heat,heatInterp,HEAT,alpha,SANS,SERIF,FS,fmt,loc,signed,MES,MES1,rng,gauss,
     mount,svg,canvas,t,halo,lines,note,box,rule,gridY,axisX,legendRamp,legendSize,legendCat,tip,hover,world,reduced,
-    DUR,EASE,onView,loop,focus};
+    DUR,EASE,onView,loop,focus,rings,polarGrid,cloud};
 })();
