@@ -64,7 +64,7 @@
         sub:"76 % únic · filosòfic, sense paràboles",det:"El més tardà i diferent (15.438 paraules). Tres quartes parts no surten als altres tres evangelis."}
     ];
     lg($("#intro-lg"),[
-      {c:C.vermell,t:"Jesús (anells) i Marc (1r)"},
+      {c:C.vermell,t:"Jesús i Marc (1r)"},
       {c:C.blau,t:"Mateu i Lluc (núvols agermanats)"},
       {c:C.groc,t:"Joan (76 % exclusiu)"},
       {c:C.muted,t:"1 punt = 100 paraules",k:"ho"}
@@ -95,17 +95,14 @@
         return {...d,cx,cy,spread,pts};
       });
 
-      // corbes topogràfiques de densitat (estil «Building strategy») per a cada núvol
-      const gp=d3.geoPath(), gRings=s.append("g"), gFil=s.append("g"), gTopo=s.append("g"), gLab=s.append("g");
+      // cercles translúcids suaus (sense anells concèntrics!) + eix temporal fi
+      const gRings=s.append("g"), gFil=s.append("g"), gHalo=s.append("g"), gLab=s.append("g");
 
       if(!mob){
-        // anells concèntrics de temps continguts dins 20..h-20
-        [{r:210,t:"+40 anys"},{r:385,t:"+55 anys"},{r:560,t:"+70 anys"}].forEach(a=>{
-          if(ox+a.r>w-150)return;
-          const ang=Math.min(.58,Math.asin(Math.min(.92,(oy-22)/a.r)));
-          const x1=ox+a.r*Math.cos(-ang), y1=oy+a.r*Math.sin(-ang), x2=ox+a.r*Math.cos(ang), y2=oy+a.r*Math.sin(ang);
-          gRings.append("path").attr("d",`M${x1},${y1} A${a.r},${a.r} 0 0,1 ${x2},${y2}`).attr("fill","none").attr("stroke",C.grid).attr("stroke-width",.65).attr("stroke-dasharray","2 4");
-          V.t(gRings,x1,y1-6,a.t,{anchor:"middle",size:11,fill:C.muted});
+        // línies verticals finíssimes de distància temporal des de la creu
+        [{x:items[0].cx,t:"+40 anys"},{x:(items[1].cx+items[2].cx)/2,t:"+55 anys"},{x:items[3].cx,t:"+70 anys"}].forEach(a=>{
+          gRings.append("line").attr("x1",a.x).attr("x2",a.x).attr("y1",22).attr("y2",h-18).attr("stroke",C.grid).attr("stroke-width",.6).attr("stroke-dasharray","2 4");
+          V.t(gRings,a.x,14,a.t,{anchor:"middle",size:11,fill:C.muted});
         });
       }
 
@@ -119,19 +116,28 @@
         }
       });
 
-      // corbes de nivell per cada evangeli (Mateu+Lluc es toquen i es fonen com sinòptics!)
-      const topoGroups=[];
-      items.forEach(d=>{
-        const cs=d3.contourDensity().x(p=>p[0]).y(p=>p[1]).size([w,h]).bandwidth(mob?11:15).thresholds(12)(d.pts);
-        const tg=gTopo.append("g").datum(d).attr("class","itopo").style("cursor","pointer");
-        if(cs[0]) tg.append("path").attr("d",gp(cs[0])).attr("fill",V.alpha(d.k==="Jn"?C.groc:d.c,.06)).attr("stroke","none");
-        cs.forEach((c,ci)=>tg.append("path").attr("d",gp(c)).attr("fill","none")
-          .attr("stroke",d.c).attr("stroke-width",ci===0?1.1:.48).attr("stroke-opacity",ci===0?.55:.28+.38*ci/cs.length));
-        topoGroups.push(tg);
+      // un sol cercle translúcid suau d'àrea proporcional darrere cada núvol de punts (zero anells!)
+      const hDefs=s.append("defs");
+      items.forEach((d,i)=>{
+        const gid="ih"+i+"-"+Math.random().toString(36).slice(2,5);
+        const rg=hDefs.append("radialGradient").attr("id",gid);
+        const col=d.k==="Jn"?C.groc:d.c;
+        rg.append("stop").attr("offset",0).attr("stop-color",col).attr("stop-opacity",d.k==="Jn"?.34:.22);
+        rg.append("stop").attr("offset",.72).attr("stop-color",col).attr("stop-opacity",d.k==="Jn"?.16:.1);
+        rg.append("stop").attr("offset",1).attr("stop-color",col).attr("stop-opacity",0);
+        const rad=d.spread*(mob?1.45:1.65);
+        gHalo.append("circle").datum(d).attr("class","itopo").attr("cx",d.cx).attr("cy",d.cy).attr("r",rad)
+          .attr("fill",`url(#${gid})`).style("mix-blend-mode","multiply").style("cursor","pointer");
       });
 
-      // origen: Jesús en anells concèntrics finíssims
-      V.rings(gLab,ox,oy,mob?6:9,mob?2.2:2.6,C.vermell,{r0:2.8,sw:.65,alpha:.62});
+      // origen: Jesús en cercle translúcid lluminós (sense anells concèntrics)
+      const jId="jg"+Math.random().toString(36).slice(2,6);
+      const jRg=hDefs.append("radialGradient").attr("id",jId);
+      jRg.append("stop").attr("offset",0).attr("stop-color",C.vermell).attr("stop-opacity",.45);
+      jRg.append("stop").attr("offset",.6).attr("stop-color",C.vermell).attr("stop-opacity",.18);
+      jRg.append("stop").attr("offset",1).attr("stop-color",C.vermell).attr("stop-opacity",0);
+      gLab.append("circle").attr("cx",ox).attr("cy",oy).attr("r",mob?22:32).attr("fill",`url(#${jId})`);
+      gLab.append("circle").attr("cx",ox).attr("cy",oy).attr("r",mob?5.5:7).attr("fill",C.vermell).attr("stroke",C.paper).attr("stroke-width",1.8);
       if(!mob){
         V.lines(gLab,ox,oy+36,[["Jesús de Natzaret",true,C.ink],["≈ 6 aC – ≈ 30 dC",false,C.ink2],["0 línies escrites",false,C.vermell]],{anchor:"middle",size:12,halo:3.5});
       } else {
@@ -140,8 +146,8 @@
 
       // etiquetes netes al costat de cada núvol
       items.forEach((d,i)=>{
-        const tx=mob?(i%2===0?d.cx+d.spread+18:d.cx-d.spread-18):d.cx+(d.k==="Jn"?0:d.k==="Mc"?-6:0);
-        const ty=mob?d.cy-4:(d.k==="Lc"?d.cy+d.spread+22:d.cy-d.spread-16);
+        const tx=mob?(i%2===0?d.cx+d.spread*1.4+10:d.cx-d.spread*1.4-10):d.cx+(d.k==="Jn"?0:d.k==="Mc"?-6:0);
+        const ty=mob?d.cy-4:(d.k==="Lc"?d.cy+d.spread+28:d.cy-d.spread-20);
         const anc=mob?(i%2===0?"start":"end"):"middle";
         V.lines(gLab,tx,ty,[[`${d.n} · ${d.yr}`,true,C.ink],[`${f0(d.w)} par. · ${d.u} % propi`,false,C.ink2]],{anchor:anc,size:mob?11:12,halo:3.5});
       });
@@ -150,19 +156,19 @@
         ctx.clearRect(0,0,w,h);
         items.forEach(d=>{
           const col=d.k==="Jn"?C.grocFosc:d.c;
-          const a=focusK==null?.34:focusK===d.k?.68:.07;
+          const a=focusK==null?.38:focusK===d.k?.74:.08;
           V.cloud(ctx,d.pts,col,{alpha:a});
         });
       }
       drawDots(null);
 
-      const reset=()=>{ drawDots(null); gTopo.selectAll(".itopo").style("opacity",1); gFil.selectAll(".ifil").attr("stroke-opacity",.22); tp.hide(); };
+      const reset=()=>{ drawDots(null); gHalo.selectAll(".itopo").style("opacity",1); gFil.selectAll(".ifil").attr("stroke-opacity",.22); tp.hide(); };
       outside(node,reset);
       V.hover(s.node(),(ev,[px,py])=>{
         const d=d3.least(items,q=>Math.hypot(px-q.cx,py-q.cy));
         if(!d||Math.hypot(px-d.cx,py-d.cy)>(mob?62:95)){ reset(); return; }
         drawDots(d.k);
-        gTopo.selectAll(".itopo").style("opacity",q=>q===d?1:.15);
+        gHalo.selectAll(".itopo").style("opacity",q=>q===d?1:.15);
         gFil.selectAll(".ifil").attr("stroke-opacity",q=>q===d?.7:.04);
         tp.show(`<b>Evangeli de ${d.n}</b> (${d.yr} · ${d.dt})<br>${d.det}`,clamp(d.cx+16,10,w-250),clamp(d.cy-32,8,h-74));
         if(rd) rd.innerHTML=`<b>${d.n} (${d.yr}):</b> ${d.det}`;
@@ -170,7 +176,7 @@
 
       V.onView(node,instant=>{
         if(instant)return;
-        gTopo.style("opacity",0).transition().duration(900).ease(ease).style("opacity",1);
+        gHalo.style("opacity",0).transition().duration(900).ease(ease).style("opacity",1);
       });
       if(rd) rd.innerHTML="<b>Quatre núvols de paraules:</b> observa com <b>Mateu</b> i <b>Lluc</b> formen una parella pròxima i densa, mentre <b>Joan</b> orbita separat amb un 76 % de text únic.";
     });
@@ -251,7 +257,7 @@
         ctx.clearRect(0,0,w,h);
         const mult=state==="vida"?.08:state==="oral"?1.15:.48;
         for(const p of mist){
-          const dx=V.reduced?0:Math.sin(t*.0012*p.sp+p.ph)*3.5;
+          const dx=V.reduced?0:Math.sin(t*.00028*p.sp+p.ph)*2.8;
           ctx.fillStyle=V.alpha(C.vermell,p.a*mult);
           ctx.beginPath(); ctx.arc(p.x+dx,p.y,p.r,0,6.283); ctx.fill();
         }
@@ -664,7 +670,7 @@
         particles=[];
         links.forEach(l=>{
           const nP=Math.max(14,Math.min(72,Math.round(l.w/280)));
-          for(let k=0;k<nP;k++) particles.push({l,t:r(),v:.11+r()*.08,off:.08+r()*.84,sz:1.1+r()*.8});
+          for(let k=0;k<nP;k++) particles.push({l,t:r(),v:.025+r()*.018,off:.08+r()*.84,sz:1.1+r()*.8});
         });
         if(rd) rd.innerHTML=hyp==="q"
           ?"<b>Hipòtesi 1 (Marc + Font Q):</b> Mateu i Lluc treballen per separat, però tots dos tenen Marc i una col·lecció perduda de dites (Q) damunt la taula."
@@ -955,5 +961,294 @@
 
       if(rd) rd.innerHTML="<b>Passa per qualsevol sector:</b> s'il·luminarà el mateix tret als quatre evangelis alhora. Mira com la silueta polar de <b>Joan</b> és l'invers de la dels sinòptics.";
     });
+  })();
+
+  /* =====================================================================
+     WOW #1 · ON POSA LA CÀMERA CADA EVANGELI? (#llocs-const)
+     15 poblacions reals en cercles translúcids multiply (sense anells!)
+     ===================================================================== */
+  (function(){
+    const el=$("#llocs-const"), rd=$("#llocs-const-r"); if(!el)return;
+    const BOOKS=["Mc","Mt","Lc","Jn"];
+    const BCOL={Mc:C.vermell,Mt:C.blau,Lc:C.blauClar,Jn:C.groc};
+    const TOWNS=E.llocs.map(d=>({...d,tot:d3.sum(BOOKS,b=>d.n[b])})).sort((a,b)=>b.tot-a.tot);
+    const rMax=31;
+    const rLeg=d3.scaleSqrt([0,rMax],[0,26]);
+    const lgEl=$("#llocs-const-lg");
+    if(lgEl){ lgEl.innerHTML=""; V.legendSize(lgEl,{title:"Mencions al text grec",values:[5,15,30],r:rLeg,f:f0}); }
+
+    V.mount(el,(node,w)=>{
+      const mob=w<640, top=mob?58:64, left=mob?108:156, right=mob?20:44, rh=mob?30:34;
+      const h=top+TOWNS.length*rh+24;
+      const s=V.svg(node,w,h,"Les quinze poblacions anomenades als quatre evangelis: cada cercle translúcid té l'àrea proporcional a les mencions en el text grec original.");
+      const x=d3.scalePoint(BOOKS,[left+36,w-right-30]).padding(.15);
+      const rSc=d3.scaleSqrt([0,rMax],[0,mob?20:30]);
+      const tp=V.tip(node);
+
+      // capçaleres de columna (els 4 evangelis) + fils verticals ultra-fins
+      BOOKS.forEach(b=>{
+        const cx=x(b);
+        s.append("line").attr("x1",cx).attr("x2",cx).attr("y1",top-24).attr("y2",h-14).attr("stroke",C.grid).attr("stroke-width",.55);
+        V.t(s,cx,top-34,NOM[b],{anchor:"middle",weight:700,size:mob?12:13.5,fill:b==="Mc"?C.vermell:C.ink});
+      });
+
+      const rows=s.selectAll("g.lrow").data(TOWNS).join("g").attr("class","lrow").style("cursor","pointer");
+      rows.each(function(d,i){
+        const g=d3.select(this), cy=top+i*rh+14;
+        g.append("line").attr("x1",left).attr("x2",w-right).attr("y1",cy).attr("y2",cy).attr("stroke",C.grid).attr("stroke-width",.5);
+        V.t(g,left-10,cy+4,d.nom,{anchor:"end",weight:i<3?700:500,size:mob?11.5:12.5,fill:i<3?C.ink:C.ink2});
+        BOOKS.forEach(b=>{
+          const v=d.n[b]; if(!v)return;
+          const cx=x(b), rad=Math.max(3.5,rSc(v)), col=BCOL[b];
+          g.append("circle").attr("class","lcir").datum({d,b,v,rad}).attr("cx",cx).attr("cy",cy).attr("r",rad)
+            .attr("fill",col).attr("fill-opacity",b==="Jn"?.62:.38)
+            .style("mix-blend-mode","multiply");
+          g.append("circle").attr("cx",cx).attr("cy",cy).attr("r",1.8).attr("fill",b==="Jn"?C.grocFosc:col);
+          if(v>=10||(d.nom==="Canà"&&b==="Jn")||(d.nom==="Betlem"&&b==="Mt")){
+            V.t(g,cx,cy+4,String(v),{anchor:"middle",weight:700,size:11.5,fill:C.ink,halo:3});
+          }
+        });
+      });
+
+      if(!mob){
+        V.note(s,{x:x("Lc")+rSc(31)*.75,y:top+14-rSc(31)*.4,tx:x("Jn")+24,ty:top+18,kind:"curve",bend:10,anchor:"start",
+          lines:[["31 vegades a Lluc",true],["el centre de gravetat"]],size:11.5});
+      }
+
+      const gHv=s.append("g").attr("pointer-events","none");
+      const off=()=>{ rows.style("opacity",1); gHv.selectAll("*").remove(); tp.hide(); };
+      outside(node,off);
+      V.hover(s.node(),(ev,[px,py])=>{
+        const i=Math.round((py-top-14)/rh), d=TOWNS[i];
+        if(!d||Math.abs(py-(top+i*rh+14))>rh*.6){ off(); return; }
+        rows.style("opacity",q=>q===d?1:.18);
+        const cy=top+i*rh+14;
+        gHv.selectAll("*").remove();
+        BOOKS.forEach(b=>{
+          const v=d.n[b]; if(!v)return;
+          const rad=Math.max(3.5,rSc(v));
+          gHv.append("circle").attr("cx",x(b)).attr("cy",cy).attr("r",rad+2.5).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.2);
+          if(rad>=11) V.t(gHv,x(b),cy+4,String(v),{anchor:"middle",weight:700,size:12,fill:C.ink,halo:3.5});
+          else V.t(gHv,x(b)+rad+6,cy+4,String(v),{anchor:"start",weight:700,size:11.5,fill:C.ink,halo:3.5});
+        });
+        const det=BOOKS.map(b=>`${NOM[b]}: <b>${d.n[b]}</b>`).join(" · ");
+        const refs=BOOKS.filter(b=>d.refs[b]&&d.refs[b].length).slice(0,2).map(b=>`${NOM[b]} ${d.refs[b].slice(0,3).join(", ")}${d.refs[b].length>3?"…":""}`).join(" | ");
+        tp.show(`<b>${d.nom}</b> (${d.tot} mencions)<br>${det}${refs?`<br><span style="color:${C.muted}">${refs}</span>`:""}${d.nota?`<br><i>${d.nota}</i>`:""}`,clamp(px+12,10,w-250),clamp(cy-38,8,h-76));
+        if(rd) rd.innerHTML=`<b>${d.nom} (${d.tot} mencions en total):</b> ${det}${d.nota?` — <i>${d.nota}</i>`:""}.`;
+      },off);
+
+      V.onView(node,instant=>{
+        if(instant)return;
+        s.selectAll("circle.lcir").attr("r",0).transition().delay((d,i)=>i*14).duration(650).ease(d3.easeCubicOut).attr("r",d=>d.rad);
+      });
+      if(rd) rd.innerHTML="<b>El mapa invisible de les paraules:</b> Lluc concentra el focus a <b>Jerusalem (31)</b>; només <b>Joan</b> anomena Canà (4) i Sicar (1); <b>Marc</b> no anomena mai Betlem.";
+    });
+  })();
+
+  /* =====================================================================
+     WOW #2 · QUI VEU JESÚS RESSUSCITAT, I ON? (#aparicions-orb)
+     Constel·lació cronològica de fils de seda i cercles translúcids
+     ===================================================================== */
+  (function(){
+    const el=$("#aparicions-orb"), rd=$("#aparicions-orb-r"); if(!el)return;
+    const COLS=[
+      {k:"Pau",n:"Pau (1Co 15)",yr:"≈ 55"},
+      {k:"Mc",n:"Marc 16,1–8",yr:"≈ 70"},
+      {k:"Mt",n:"Mateu 28",yr:"≈ 85"},
+      {k:"Lc",n:"Lluc 24 + Fets",yr:"≈ 90"},
+      {k:"Jn",n:"Joan 20–21",yr:"≈ 100"}
+    ];
+    // lloc: J = Jerusalem (vermell), G = Galilea (blau), X = Sense lloc / Damasc (groc), T = Només tomba buida (puntejat)
+    const WIT=[
+      {n:"Dones a la tomba",e:{Mc:"T",Mt:"J",Lc:"T",Jn:"T"},det:"A Pau no hi surten. A Marc original només troben la tomba oberta i fugen espantades."},
+      {n:"Maria Magdalena",e:{Mc:"T",Mt:"J",Lc:"T",Jn:"J"},det:"A Joan 20 és la primera persona que veu i reconeix Jesús ressuscitat, al jardí del sepulcre."},
+      {n:"Pere (Cefes)",e:{Pau:"X",Lc:"J",Jn:"G"},det:"És el primer de la llista de Pau (≈ 55). Lluc ho esmenta de passada; Joan ho situa al llac de Galilea."},
+      {n:"Els deixebles (Jerusalem)",e:{Pau:"X",Lc:"J",Jn:"J"},det:"Lluc reté totes les aparicions a Jerusalem i rodalia (Emmaús). Joan n'hi situa dues."},
+      {n:"Els deixebles (Galilea)",e:{Mt:"G",Jn:"G"},det:"Mateu i Joan porten Jesús ressuscitat de tornada a Galilea (la muntanya i la riba del llac)."},
+      {n:"Tomàs",e:{Jn:"J"},det:"Només apareix en aquest paper a Joan 20,24–29, vuit dies després a Jerusalem."},
+      {n:"Més de 500 i Pau",e:{Pau:"X"},det:"Només Pau (1Co 15,6–8) parla de més de cinc-cents germans alhora, de Jaume i de la seva pròpia visió."}
+    ];
+    const LCOL={J:C.vermell,G:C.blau,X:C.groc,T:C.ink2};
+    const LTXT={J:"Aparició a Jerusalem",G:"Aparició a Galilea",X:"Sense lloc especificat",T:"Només tomba buida (sense veure Jesús)"};
+    lg($("#aparicions-orb-lg"),[
+      {c:C.vermell,t:"A Jerusalem"},
+      {c:C.blau,t:"A Galilea"},
+      {c:C.groc,t:"Sense lloc (Pau)"},
+      {c:C.ink2,t:"Només tomba buida",k:"ho"}
+    ]);
+
+    V.mount(el,(node,w)=>{
+      const mob=w<640, top=48, left=mob?118:188, right=mob?16:36, rh=mob?38:44;
+      const h=top+WIT.length*rh+38;
+      const s=V.svg(node,w,h,"Constel·lació cronològica de qui veu Jesús ressuscitat i on, des de la carta de Pau (≈ 55) fins a l'Evangeli de Joan (≈ 100).");
+      const x=d3.scalePoint(COLS.map(c=>c.k),[left+24,w-right-24]).padding(.12);
+      const tp=V.tip(node);
+
+      // columnes cronològiques
+      COLS.forEach(c=>{
+        const cx=x(c.k);
+        s.append("line").attr("x1",cx).attr("x2",cx).attr("y1",top-8).attr("y2",h-26).attr("stroke",C.grid).attr("stroke-width",.6);
+        V.t(s,cx,top-26,mob?c.k:c.n,{anchor:"middle",weight:700,size:mob?11.5:12.5,fill:C.ink});
+        V.t(s,cx,top-12,c.yr,{anchor:"middle",size:11,fill:C.muted});
+      });
+
+      const rows=s.selectAll("g.arow").data(WIT).join("g").attr("class","arow").style("cursor","pointer");
+      rows.each(function(d,i){
+        const g=d3.select(this), cy=top+i*rh+16;
+        g.append("line").attr("x1",left).attr("x2",w-right).attr("y1",cy).attr("y2",cy).attr("stroke",C.grid).attr("stroke-width",.5);
+        V.t(g,left-10,cy+4,d.n,{anchor:"end",weight:600,size:mob?11:12.5,fill:C.ink});
+
+        // fils de seda que uneixen les aparicions d'un mateix testimoni al llarg del temps
+        const keys=COLS.map(c=>c.k).filter(k=>d.e[k]);
+        if(keys.length>1){
+          g.append("line").attr("x1",x(keys[0])).attr("x2",x(keys[keys.length-1])).attr("y1",cy).attr("y2",cy)
+            .attr("stroke",C.ink2).attr("stroke-width",1.1).attr("stroke-opacity",.3);
+        }
+
+        keys.forEach(k=>{
+          const tpK=d.e[k], cx=x(k), col=LCOL[tpK];
+          if(tpK==="T"){
+            g.append("circle").attr("class","abub").attr("cx",cx).attr("cy",cy).attr("r",mob?8:11)
+              .attr("fill",C.paper).attr("stroke",C.ink2).attr("stroke-width",1.2).attr("stroke-dasharray","2.5 2.5");
+          } else {
+            // cercle translúcid suau + puntet central (zero anells!)
+            g.append("circle").attr("class","abub").attr("cx",cx).attr("cy",cy).attr("r",mob?11:15)
+              .attr("fill",col).attr("fill-opacity",tpK==="X"?.55:.32).style("mix-blend-mode","multiply");
+            g.append("circle").attr("cx",cx).attr("cy",cy).attr("r",2.8).attr("fill",tpK==="X"?C.grocFosc:col);
+          }
+        });
+      });
+
+      if(!mob){
+        V.note(s,{x:x("Mc"),y:top+16+14,tx:x("Mc")+30,ty:h-12,kind:"curve",bend:-10,anchor:"start",
+          lines:[["Marc 16,8: ningú no veu Jesús",true]],size:11.5});
+      }
+
+      const off=()=>{ rows.style("opacity",1); tp.hide(); };
+      outside(node,off);
+      V.hover(s.node(),(ev,[px,py])=>{
+        const i=Math.round((py-top-16)/rh), d=WIT[i];
+        if(!d||Math.abs(py-(top+i*rh+16))>rh*.58){ off(); return; }
+        rows.style("opacity",q=>q===d?1:.18);
+        const list=COLS.filter(c=>d.e[c.k]).map(c=>`${c.n}: <b>${LTXT[d.e[c.k]]}</b>`).join("<br>");
+        tp.show(`<b>${d.n}</b><br>${list}`,clamp(px+12,10,w-260),clamp(top+i*rh-26,8,h-80));
+        if(rd) rd.innerHTML=`<b>${d.n}:</b> ${d.det}`;
+      },off);
+
+      V.onView(node,instant=>{
+        if(instant)return;
+        s.selectAll("circle.abub").attr("transform","scale(0.1)").style("transform-box","fill-box").style("transform-origin","center")
+          .transition().delay((d,i)=>i*30).duration(650).ease(d3.easeCubicOut).attr("transform","scale(1)");
+      });
+      if(rd) rd.innerHTML="<b>De Pau a Joan:</b> a la carta més antiga (Pau) no hi ha tomba ni dones; a Marc original només hi ha la tomba buida; Lluc concentra les aparicions a <b>Jerusalem</b>, mentre Mateu i Joan les porten a <b>Galilea</b>.";
+    });
+  })();
+
+  /* =====================================================================
+     WOW #3 · L'ADN VERBAL: 597 APARICIONS DE SET PARAULES CLAU (#ritme-mots)
+     Cercles translúcids multiply + ones de densitat kernel al llarg dels 4 llibres
+     ===================================================================== */
+  (function(){
+    const fig=$("#f-ritme-mots"), el=$("#ritme-mots"), segEl=$("#ritme-mots-seg"), rd=$("#ritme-mots-r");
+    if(!el||!segEl)return;
+    const ORDER=["εὐθύς","παραβολή","βασιλεία","πιστεύω","κόσμος","ἀγαπάω","Ἰουδαῖος"];
+    const MOTS=ORDER.map(g=>E.gnt.mots.find(m=>m.g===g)).filter(Boolean);
+    const NOTES={
+      "εὐθύς":"<b>Marc té pressa:</b> «de seguida» hi surt <b>42 vegades</b> — més del triple que als altres tres evangelis junts (12)!",
+      "παραβολή":"<b>Zero paràboles a Joan:</b> mentre Marc (13), Mateu (17) i Lluc (18) n'estan plens, Joan no fa servir la paraula ni una sola vegada.",
+      "βασιλεία":"<b>El «Regne» és el cor dels sinòptics:</b> 55 vegades a Mateu, 46 a Lluc i 20 a Marc; a Joan només 5.",
+      "πιστεύω":"<b>El verb de Joan:</b> «creure» hi esclata <b>98 vegades</b>, davant de només 9 a 11 vegades als altres tres llibres.",
+      "κόσμος":"<b>Una mirada còsmica:</b> Joan repeteix «món» <b>78 vegades</b>; Marc només 2 i Lluc 3.",
+      "ἀγαπάω":"<b>Estimar al comiat:</b> Joan concentra la majoria de les seves <b>37 aparicions</b> als discursos de l'últim sopar.",
+      "Ἰουδαῖος":"<b>Distància històrica:</b> Joan escriu més tard i diu «els jueus» <b>71 vegades</b>, en contrast amb 5 o 6 als sinòptics."
+    };
+    const BOOKS=["Mc","Mt","Lc","Jn"];
+    const BCOL={Mc:C.vermell,Mt:C.blau,Lc:C.blauClar,Jn:C.groc};
+    let curM=MOTS[0], drawWord=null;
+
+    // botons de les 7 paraules
+    segEl.innerHTML=MOTS.map((m,i)=>`<button type="button" aria-pressed="${i===0?"true":"false"}" data-k="${m.g}">«${m.ca}»</button>`).join("");
+    lg($("#ritme-mots-lg"),[{c:C.vermell,t:"Marc"},{c:C.blau,t:"Mateu i Lluc"},{c:C.groc,t:"Joan"}]);
+
+    // funció de densitat kernel suau (Gaussian KDE sobre [0..1])
+    function kde(vals,bins,bw){
+      const out=[];
+      for(let i=0;i<=bins;i++){
+        const u=i/bins; let s=0;
+        for(let j=0;j<vals.length;j++){ const d=(u-vals[j])/bw; s+=Math.exp(-.5*d*d); }
+        out.push([u,s]);
+      }
+      return out;
+    }
+
+    V.mount(el,(node,w)=>{
+      const mob=w<640, top=24, left=mob?58:84, right=mob?54:72, rowH=mob?68:76;
+      const h=top+BOOKS.length*rowH+26;
+      const s=V.svg(node,w,h,"Aparicions de set paraules clau al text grec original dels quatre evangelis, dibuixades com a cercles translúcids i corbes de densitat.");
+      const x=d3.scaleLinear([0,1],[left,w-right]);
+      const tp=V.tip(node);
+
+      // eix inferior 0 % → 100 % del llibre
+      [0,.25,.5,.75,1].forEach(p=>V.t(s,x(p),h-8,p===0?"Inici":p===1?"Final":Math.round(p*100)+" %",{anchor:"middle",size:11,fill:C.muted}));
+
+      const gRows=s.append("g");
+      const gHv=s.append("g").attr("pointer-events","none");
+
+      drawWord=function(m,anim){
+        curM=m; gRows.selectAll("*").remove(); gHv.selectAll("*").remove();
+        // calculem densitat màxima comuna entre els 4 llibres per comparar honestament
+        const kdes=BOOKS.map(b=>{
+          const tot=E.gnt.total[b], vals=m.pos[b].map(p=>p/tot);
+          return {b,vals,curve:kde(vals,80,.035)};
+        });
+        const maxD=Math.max(2.5,d3.max(kdes,k=>d3.max(k.curve,p=>p[1]))||1);
+
+        kdes.forEach((k,i)=>{
+          const b=k.b, baseY=top+(i+1)*rowH-14, col=BCOL[b], strokeCol=b==="Jn"?C.grocFosc:col;
+          const g=gRows.append("g").attr("class","mrow");
+          g.append("line").attr("x1",left).attr("x2",w-right).attr("y1",baseY).attr("y2",baseY).attr("stroke",C.hair).attr("stroke-width",.6);
+          V.t(g,left-10,baseY-2,NOM[b],{anchor:"end",weight:700,size:mob?12:13,fill:C.ink});
+          const cnt=k.vals.length;
+          V.t(g,w-right+12,baseY-2,cnt===0?"0×":`${cnt}×`,{anchor:"start",weight:700,size:mob?12.5:14,fill:cnt===0?C.ghost:(b==="Mc"?C.vermell:C.ink)});
+
+          // ona suau de densitat
+          if(cnt>0){
+            const ySc=d3.scaleLinear([0,maxD],[baseY,baseY-(rowH-24)]);
+            const area=d3.area().x(p=>x(p[0])).y0(baseY).y1(p=>ySc(p[1])).curve(d3.curveBasis);
+            const line=d3.line().x(p=>x(p[0])).y(p=>ySc(p[1])).curve(d3.curveBasis);
+            g.append("path").datum(k.curve).attr("d",area).attr("fill",col).attr("fill-opacity",b==="Jn"?.26:.13);
+            g.append("path").datum(k.curve).attr("d",line).attr("fill","none").attr("stroke",strokeCol).attr("stroke-width",1.15).attr("stroke-opacity",.72);
+          }
+
+          // cada aparició real és un cercle translúcid multiply sobre el fil!
+          const cs=g.selectAll("circle.mdot").data(k.vals).join("circle").attr("class","mdot")
+            .attr("cx",u=>x(u)).attr("cy",baseY).attr("r",mob?4.2:5.4)
+            .attr("fill",col).attr("fill-opacity",b==="Jn"?.55:.36).style("mix-blend-mode","multiply");
+          if(anim&&!V.reduced){
+            cs.attr("r",0).transition().delay((_,j)=>j*6).duration(420).ease(d3.easeCubicOut).attr("r",mob?4.2:5.4);
+          }
+        });
+        if(rd) rd.innerHTML=NOTES[m.g]||`<b>«${m.ca}» (${m.g}):</b> distribució real als quatre evangelis.`;
+      };
+
+      const off=()=>{ gHv.selectAll("*").remove(); tp.hide(); };
+      outside(node,off);
+      V.hover(s.node(),(ev,[px,py])=>{
+        const i=Math.floor((py-top)/rowH);
+        if(i<0||i>=BOOKS.length||px<left||px>w-right){ off(); return; }
+        const b=BOOKS[i], baseY=top+(i+1)*rowH-14, u=clamp((px-left)/(w-right-left),0,1);
+        const tot=E.gnt.total[b], vals=curM.pos[b].map(p=>p/tot);
+        const near=vals.filter(v=>Math.abs(v-u)<.04).length;
+        gHv.selectAll("*").remove();
+        gHv.append("line").attr("x1",px).attr("x2",px).attr("y1",top).attr("y2",h-22).attr("stroke",C.ink).attr("stroke-width",.8).attr("stroke-dasharray","2 2");
+        V.t(gHv,px,baseY-rowH+26,`${NOM[b]} · ${curM.pos[b].length}×`,{anchor:px>w-140?"end":"start",weight:700,size:11.5,fill:C.ink,halo:3.5});
+        tp.show(`<b>«${curM.ca}» (<i lang="el">${curM.g}</i>) a ${NOM[b]}</b><br>Total al llibre: <b>${curM.pos[b].length}</b> vegades<br><span style="color:${C.muted}">Punt ${Math.round(u*100)} % del llibre (${near} aparicions en aquest tram)</span>`,clamp(px+12,10,w-250),clamp(baseY-54,8,h-76));
+      },off);
+
+      drawWord(curM,false);
+      V.onView(node,instant=>{ if(!instant)drawWord(curM,true); });
+    });
+
+    seg(fig,k=>{ const m=MOTS.find(q=>q.g===k); if(m&&drawWord)drawWord(m,true); });
   })();
 })();

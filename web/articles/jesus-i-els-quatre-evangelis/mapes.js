@@ -199,17 +199,22 @@
           }
         }
 
-        // ciutats visibles amb anells concèntrics proporcionals a les mencions (estil «A sea of sand and sickness»)
+        // ciutats visibles amb cercles translúcids proporcionals a les mencions (àrea proporcional, sense anells)
         const show=new Set(SHOW[step]);
         const visible=E.llocs.filter(d=>show.has(d.nom));
+        const rM=d3.scaleSqrt([1,66],[mob?4:5,mob?18:24]);
         visible.forEach(d=>{
           const q=lf(d.lon,d.lat), totM=d3.sum(B,b=>d.n[b]);
           const isKey=(d.nom==="Jerusalem"&&(step===0||step>=2))||(d.nom==="Natzaret"&&step===1)||(d.nom==="Cafarnaüm"&&(step===1||step===3));
           const col=step===4?C.grocFosc:(isKey?C.vermell:C.blau);
-          const nRings=Math.min(14,Math.max(1,Math.round(totM/4)));
-          V.rings(gPts,q[0],q[1],nRings,mob?1.5:1.9,col,{r0:isKey?2.6:1.8,sw:.65,alpha:isKey?.68:.42});
+          const rad=rM(Math.max(1,totM));
+          gPts.append("circle").attr("cx",q[0]).attr("cy",q[1]).attr("r",rad)
+            .attr("fill",step===4?C.groc:col).attr("fill-opacity",isKey?.32:.2)
+            .style("mix-blend-mode","multiply");
+          gPts.append("circle").attr("cx",q[0]).attr("cy",q[1]).attr("r",isKey?3:2.1)
+            .attr("fill",col).attr("stroke",C.paper).attr("stroke-width",1.1);
           const leftSide=d.nom==="Natzaret"||d.nom==="Canà"||d.nom==="Betlem"||d.nom==="Sicar"||d.nom==="Jerusalem";
-          const dx=(leftSide?-1:1)*(Math.min(18,nRings*(mob?1.5:1.9)+7)), dy=d.nom==="Betlem"?10:d.nom==="Betània"?12:3;
+          const dx=(leftSide?-1:1)*(Math.max(9,rad+5)), dy=d.nom==="Betlem"?10:d.nom==="Betània"?12:3;
           V.t(gPts,q[0]+dx,q[1]+dy,d.nom,{anchor:leftSide?"end":"start",weight:isKey?700:500,size:mob?11.5:12.5,fill:isKey?C.ink:C.ink2,halo:3.5});
         });
 
@@ -417,22 +422,24 @@
       const nat=lf(L.Natzaret.lon,L.Natzaret.lat), bet=lf(L.Betlem.lon,L.Betlem.lat), jer=lf(L.Jerusalem.lon,L.Jerusalem.lat);
       const egi=p([34.25,31.22]); // direcció Egipte (SO)
 
-      // CAPA ESQUERRA: MATEU (vermell) amb trajectòries trenades i anells concèntrics
+      // CAPA ESQUERRA: MATEU (vermell) amb trajectòries trenades i cercles translúcids
       const gM=s.append("g").attr("clip-path",`url(#${id}l)`);
       braid(gM,[bet,egi],C.vermell,{w:2,n:4,spread:3,bend:-.16}).attr("marker-end",`url(#${id}am)`);
       braid(gM,[egi,[p([34.7,32.0])[0],p([34.7,32.0])[1]],nat],C.vermell,{w:1.7,n:3,spread:2.6,dash:"5 4"}).attr("marker-end",`url(#${id}am)`);
-      [[bet,"1. Betlem","Casa familiar · Mags",6],[egi,"2. Fugida a Egipte","Per por d'Herodes el Gran",4],[nat,"3. Natzaret","S'hi instal·len en tornar",3]].forEach(([pt,t1,t2,nr])=>{
-        V.rings(gM,pt[0],pt[1],nr,2.1,C.vermell,{r0:2.2,sw:.7,alpha:.72});
-        V.lines(gM,pt[0]+nr*2.1+8,pt[1]+(pt===bet?4:-4),[[t1,true,C.ink],[t2,false,C.ink2]],{size:mob?11:12,halo:3.5});
+      [[bet,"1. Betlem","Casa familiar · Mags",15],[egi,"2. Fugida a Egipte","Per por d'Herodes el Gran",11],[nat,"3. Natzaret","S'hi instal·len en tornar",9]].forEach(([pt,t1,t2,rad])=>{
+        gM.append("circle").attr("cx",pt[0]).attr("cy",pt[1]).attr("r",rad).attr("fill",C.vermell).attr("fill-opacity",.24).style("mix-blend-mode","multiply");
+        gM.append("circle").attr("cx",pt[0]).attr("cy",pt[1]).attr("r",3).attr("fill",C.vermell).attr("stroke",C.paper).attr("stroke-width",1.1);
+        V.lines(gM,pt[0]+rad+7,pt[1]+(pt===bet?4:-4),[[t1,true,C.ink],[t2,false,C.ink2]],{size:mob?11:12,halo:3.5});
       });
 
-      // CAPA DRETA: LLUC (blau) amb trajectòries trenades i anells concèntrics
+      // CAPA DRETA: LLUC (blau) amb trajectòries trenades i cercles translúcids
       const gL=s.append("g").attr("clip-path",`url(#${id}r)`);
       braid(gL,[nat,bet],C.blau,{w:2,n:4,spread:3,bend:.18}).attr("marker-end",`url(#${id}al)`);
       braid(gL,[bet,jer,nat],C.blau,{w:1.7,n:3,spread:2.6,dash:"5 4"}).attr("marker-end",`url(#${id}al)`);
-      [[nat,"1. Natzaret","Ja hi viuen Maria i Josep",5],[bet,"2. Betlem","Viatgen pel cens · Pastors",6],[jer,"3. Jerusalem","Temple · Tornen a Natzaret",4]].forEach(([pt,t1,t2,nr])=>{
-        V.rings(gL,pt[0],pt[1],nr,2.1,C.blau,{r0:2.2,sw:.7,alpha:.72});
-        const anc=pt===bet?"end":"start", dx=(pt===bet?-1:1)*(nr*2.1+8);
+      [[nat,"1. Natzaret","Ja hi viuen Maria i Josep",13],[bet,"2. Betlem","Viatgen pel cens · Pastors",15],[jer,"3. Jerusalem","Temple · Tornen a Natzaret",11]].forEach(([pt,t1,t2,rad])=>{
+        gL.append("circle").attr("cx",pt[0]).attr("cy",pt[1]).attr("r",rad).attr("fill",C.blau).attr("fill-opacity",.24).style("mix-blend-mode","multiply");
+        gL.append("circle").attr("cx",pt[0]).attr("cy",pt[1]).attr("r",3).attr("fill",C.blau).attr("stroke",C.paper).attr("stroke-width",1.1);
+        const anc=pt===bet?"end":"start", dx=(pt===bet?-1:1)*(rad+7);
         V.lines(gL,pt[0]+dx,pt[1]+(pt===jer?-12:4),[[t1,true,C.ink],[t2,false,C.ink2]],{anchor:anc,size:mob?11:12,halo:3.5});
       });
 
