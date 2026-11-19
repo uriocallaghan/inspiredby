@@ -499,99 +499,135 @@ piece(37,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-38 · CRESTES  (dades reals: ONI)
+   IB-38 · FILERA DE CERCLES TRANSLÚCIDS  (dades reals: ONI, 921 mesos)
+   Cada mes real és un cercle translúcid `multiply` sobre el fil de la seva dècada
+   o estació, amb l'àrea proporcional a la intensitat (estil «Major quakes» i
+   «Incendios en Perú»), sense crestes opaques que amaguin les files de darrere.
    ===================================================================== */
 let mode38="dec";
-function kde(vals,xs,bw){ const k=1/(vals.length*bw*Math.sqrt(2*Math.PI)); return xs.map(x=>{ let s=0; for(const v of vals){ const u=(x-v)/bw; s+=Math.exp(-.5*u*u); } return s*k; }); }
 function groups38(mode,mob){
   if(mode==="dec")return DECS.map(d=>{ const pts=ONI_PTS.filter(p=>p.y>=d&&p.y<d+10); return {id:d,t:decLab(d,mob),pts}; });
   return d3.range(12).map(k=>({id:k,t:SEASON[k],pts:ONI_PTS.filter(p=>p.k===k)}));
 }
-legend(38,el=>V.legendRamp(el,{scale:DIV25,min:-2.5,max:2.5,ticks:[-2,-1,0,1,2],f:v=>sgn(v,0),title:"Anomalia de cada mes (°C)",lo:"La Niña",hi:"El Niño"}));
+legend(38,el=>{
+  V.legendRamp(el,{scale:DIV25,min:-2.5,max:2.5,ticks:[-2,-1,0,1,2],f:v=>sgn(v,0),title:"Anomalia de cada mes (°C)",lo:"La Niña",hi:"El Niño"});
+  V.legendCat(el,[{c:C.vermell,a:.32,t:"1 cercle = 1 mes (àrea = intensitat)"},{c:C.ink,t:"Mediana del grup",kind:"line",w:1.6}]);
+});
 const M38=piece(38,(el,w)=>{
   const mob=w<640, G=groups38(mode38,mob), n=G.length;
-  const rowH=mode38==="dec"?(mob?36:44):(mob?27:31), over=rowH*2.4, m={t:over+8,l:mob?62:84,r:mob?8:24,b:40};
-  const s=V.svg(el,w,m.t+n*rowH+m.b,mode38==="dec"?"Una cresta per dècada, del 1950 al 2026, amb la distribució de l'índex ONI mes a mes. Totes estan centrades prop de zero; les dècades del 1980, el 1990 i el 2010 tenen la cua d'El Niño més llarga, fins a +2,6 °C.":"Una cresta per estació de tres mesos amb la distribució de l'ONI del 1950 al 2026: a la primavera boreal la distribució és estreta; a la tardor i l'hivern s'eixampla cap als dos costats.");
+  const rowH=mode38==="dec"?(mob?40:50):(mob?30:36);
+  const m={t:34,l:mob?66:88,r:mob?12:82,b:46};
+  const h=m.t+n*rowH+m.b;
+  el.style.height="";
+  const s=V.svg(el,w,h,mode38==="dec"?"Una fila per dècada, del 1950 al 2026, on cada mes real és un cercle translúcid situat segons l'índex ONI i d'àrea proporcional a la intensitat. Les dècades del 1980, el 1990 i el 2010 mostren els cercles vermells d'El Niño més grans, fins a +2,6 °C.":"Una fila per estació de tres mesos amb tots els mesos reals de 1950 a 2026 en cercles translúcids: a la primavera boreal els valors s'apinyen prop de zero; a la tardor i l'hivern els cercles creixen cap als dos extrems.");
   const g=s.append("g");
-  const x=d3.scaleLinear([-2.8,3],[m.l,w-m.r]), XS=d3.range(-2.8,3.0001,.04);
-  const dens=G.map(gr=>kde(gr.pts.map(p=>p.v),XS,.22));
-  const dm=d3.max(dens,a=>d3.max(a)), y=d3.scaleLinear([0,dm],[0,over]);
-  m.t=Math.max(26,d3.max(dens,(a,i)=>y(d3.max(a))-(i+1)*rowH)+30);
-  const h=m.t+n*rowH+m.b; s.attr("height",h).attr("viewBox",`0 0 ${w} ${h}`);
-  const base=i=>m.t+(i+1)*rowH;
-  // degradat de la rampa divergent al llarg de l'eix x
-  const gid="g38"+Math.random().toString(36).slice(2,7);
-  const gr=s.append("defs").append("linearGradient").attr("id",gid).attr("gradientUnits","userSpaceOnUse").attr("x1",x(-2.8)).attr("x2",x(3)).attr("y1",0).attr("y2",0);
-  d3.range(0,1.0001,.05).forEach(p=>gr.append("stop").attr("offset",p).attr("stop-color",DIV25(-2.8+5.8*p)));
-  // quadrícula
+  const x=d3.scaleLinear([-2.6,3.0],[m.l,w-m.r]);
+  const rS=d3.scaleSqrt([0,2.6],[mob?2.2:2.8,mob?14.5:21]);
+  const cy=i=>m.t+(i+.5)*rowH;
+
+  // 1. Quadrícula vertical ultra-fina i llindars El Niño / La Niña
   const ax=g.append("g");
-  [-2,-1,0,1,2,3].forEach(v=>{ ax.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",m.t-over*.3).attr("y2",h-m.b+4).attr("stroke",v===0?C.ink:C.grid).attr("stroke-width",v===0?.8:1).attr("stroke-opacity",v===0?.6:1);
-    V.t(ax,x(v),h-m.b+20,sgn(v,0)+(v===3?" °C":""),{size:11.5,fill:C.muted,anchor:"middle"}); });
-  [-.5,.5].forEach(v=>ax.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",m.t-over*.3).attr("y2",h-m.b).attr("stroke",C.ink2).attr("stroke-width",1.1).attr("stroke-dasharray","1.5 3.5").attr("stroke-linecap","round"));
-  if(!mob){ V.t(ax,x(-.5)-6,h-m.b+34,"◀ La Niña",{size:11.5,fill:C.ink2,anchor:"end",italic:true}); V.t(ax,x(.5)+6,h-m.b+34,"El Niño ▶",{size:11.5,fill:C.ink2,italic:true}); }
-  const area=d3.area().x((d,i)=>x(XS[i])).y0(0).y1(d=>-y(d)).curve(d3.curveBasis);
-  const line=d3.line().x((d,i)=>x(XS[i])).y(d=>-y(d)).curve(d3.curveBasis);
-  const flat=XS.map(()=>0);
-  const R=g.append("g").selectAll("g.r").data(G).join("g").attr("class","r").attr("transform",(d,i)=>`translate(0,${base(i)})`);
-  R.each(function(gd,i){ const q=d3.select(this);
-    gd.med=d3.median(gd.pts,p=>p.v); gd.dens=dens[i];
-    q.append("path").attr("class","a").attr("d",area(dens[i])).attr("fill",`url(#${gid})`).attr("fill-opacity",.92);
-    q.append("path").attr("class","l").attr("d",line(dens[i])).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1);
-    q.append("line").attr("x1",x(-2.8)).attr("x2",x(3)).attr("stroke",C.ink).attr("stroke-width",.6).attr("stroke-opacity",.35);
-    const rug=q.append("g").attr("class","rug");
-    rug.append("path").attr("d",gd.pts.map(p=>`M${x(p.v).toFixed(1)},1V5`).join("")).attr("stroke",C.ink).attr("stroke-opacity",.28).attr("stroke-width",.7);
-    const mi=Math.round((gd.med+2.8)/.04), mh=y(dens[i][Math.max(0,Math.min(XS.length-1,mi))]);
-    q.append("line").attr("class","med").attr("x1",x(gd.med)).attr("x2",x(gd.med)).attr("y1",0).attr("y2",-mh).attr("stroke",C.ink).attr("stroke-width",1.2);
-    const ml=q.append("g").attr("class","ml").style("opacity",0);
-    lab(ml,x(gd.med),-mh-8,`Mediana ${sgn(gd.med)} °C`,{size:12,weight:700,anchor:"middle"});
-    lab(q,m.l-10,-4,gd.t,{size:mob?11.5:12.5,anchor:"end",fill:C.ink2}).attr("class","rl");
+  [-2,-1,0,1,2,3].forEach(v=>{
+    ax.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",m.t-8).attr("y2",h-m.b+4)
+      .attr("stroke",v===0?C.ink:C.grid).attr("stroke-width",v===0?.9:.75).attr("stroke-opacity",v===0?.55:.85);
+    V.t(ax,x(v),h-m.b+20,sgn(v,0)+(v===3?" °C":""),{size:11.5,fill:v===0?C.ink:C.muted,weight:v===0?600:400,anchor:"middle"});
   });
-  // anotació del màxim
-  const an=g.append("g");
-  const mxP=ONI_PTS.reduce((a,b)=>b.v>a.v?b:a), gi=G.findIndex(gd=>gd.pts.includes(mxP));
-  if(gi>=0){ const X=x(mxP.v), Y=base(gi)-2;
-    V.note(an,{x:X,y:Y,tx:X-4,ty:base(gi)-rowH*(mob?2.1:1.6),kind:"elbow",anchor:"end",
-      lines:[["Màxim de la sèrie",true],[`${sgn(mxP.v)} °C, ${SEASON[mxP.k]} ${mxP.y}`]]}); }
-  if(mode38==="est"){ const sd=G.map(gd=>d3.deviation(gd.pts,p=>p.v)), kmin=d3.minIndex(sd), kmax=d3.maxIndex(sd);
-    // la cresta més estreta i la més ampla, marcades al nom de la fila
-    R.filter((d,i)=>i===kmin||i===kmax).each(function(){ d3.select(this).select(".rl").attr("font-weight",700).attr("fill",C.ink); });
-    if(!mob)V.note(an,{x:x(.75),y:base(kmin)-y(d3.max(dens[kmin]))*.55,tx:x(1.25),ty:base(kmin)-rowH*1.9,kind:"elbow",anchor:"start",lines:[[`${G[kmin].t}: la més estreta`,true],[`desviació ${f2(sd[kmin])} °C; ${G[kmax].t}, ${f2(sd[kmax])} °C`]]}); }
-  // hover: la cresta s'aixeca amb contorn gruixut, la resta s'apaga; guia de la mediana fins a l'eix, amb el valor
-  const hv=hvLayer(g), tp=V.tip(el), hit=s.append("rect").attr("width",w).attr("height",h).attr("fill","transparent").style("cursor","pointer");
-  let cur=-1;
-  const reset=()=>{ cur=-1; tp.hide(); hv.selectAll("*").remove();
-    R.interrupt("hv").transition("hv").duration(HT).attr("transform",(d,j)=>`translate(0,${base(j)})`).style("opacity",1);
-    R.select(".l").interrupt("hv").transition("hv").duration(HT).attr("stroke-width",1);
-    R.select(".rl").attr("font-weight",(d,i)=>d.__bold?700:400).attr("fill",d=>d.__bold?C.ink:C.ink2);
-    R.selectAll(".ml").style("opacity",0); dimTo(an,1); R.sort((a,b)=>G.indexOf(a)-G.indexOf(b)); };
-  R.select(".rl").each(function(d){ d.__bold=d3.select(this).attr("font-weight")==="700"; });
-  V.hover(hit.node(),(ev,[px,py])=>{
-    if(py>h-m.b+8){ if(cur>=0)reset(); return; }
-    let i=Math.floor((py-m.t)/rowH+.25); i=Math.max(0,Math.min(n-1,i));
-    const gd=G[i];
-    if(i!==cur){ cur=i;
-      R.interrupt("hv").transition("hv").duration(HT).ease(d3.easeCubicOut).attr("transform",(d,j)=>`translate(0,${base(j)-(j===i?10:0)})`).style("opacity",(d,j)=>j===i?1:.22);
-      R.select(".l").interrupt("hv").transition("hv").duration(HT).attr("stroke-width",(d,j)=>j===i?2:1);
-      R.select(".rl").attr("font-weight",(d,j)=>j===i||d.__bold?700:400).attr("fill",(d,j)=>j===i?C.ink:d.__bold?C.ink:C.ink2);
-      R.selectAll(".ml").style("opacity",(d)=>d===gd?1:0); dimTo(an,.15);
-      R.filter((d,j)=>j===i).raise();
-      hv.selectAll("*").remove();
-      const X=x(gd.med), Yb=base(i)-10;
-      hv.append("line").attr("x1",X).attr("x2",X).attr("y1",Yb).attr("y2",h-m.b+6).attr("stroke",C.ink).attr("stroke-width",.8).attr("stroke-dasharray","2 2");
-      hv.append("rect").attr("x",X-30).attr("y",h-m.b+7).attr("width",60).attr("height",17).attr("fill",C.paper);
-      axTag(hv,X,h-m.b+20,`${sgn(gd.med)} °C`,{halo:false});
+  [-.5,.5].forEach(v=>ax.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",m.t-8).attr("y2",h-m.b)
+    .attr("stroke",v<0?C.blau:C.vermell).attr("stroke-width",.9).attr("stroke-opacity",.45).attr("stroke-dasharray","2 3"));
+  if(!mob){
+    V.t(ax,x(-.5)-8,h-m.b+36,"◀ La Niña (≤ −0,5 °C)",{size:11.5,fill:C.blau,anchor:"end",italic:true});
+    V.t(ax,x(.5)+8,h-m.b+36,"El Niño (≥ +0,5 °C) ▶",{size:11.5,fill:C.vermell,italic:true});
+    V.t(ax,w-m.r+10,m.t-12,"Mediana",{size:11,fill:C.muted,anchor:"start"});
+  }
+
+  // 2. Files netes de cercles translúcids (sense muntanyes opaques encavalcades)
+  const R=g.append("g").selectAll("g.r").data(G).join("g").attr("class","r").attr("transform",(d,i)=>`translate(0,${cy(i)})`);
+  R.each(function(gd){
+    const q=d3.select(this);
+    gd.med=d3.median(gd.pts,p=>p.v);
+    // Fil base ultra-fi
+    q.append("line").attr("class","rail").attr("x1",m.l).attr("x2",w-m.r).attr("y1",0).attr("y2",0)
+      .attr("stroke",C.hair).attr("stroke-width",.65);
+    // Tots els mesos reals en cercles translúcids `multiply` (ordenats de petits a grans perquè els grans no ofeguin la lectura)
+    const sorted=gd.pts.slice().sort((a,b)=>Math.abs(a.v)-Math.abs(b.v));
+    q.selectAll("circle.m").data(sorted).join("circle").attr("class","m")
+      .attr("cx",p=>x(p.v)).attr("cy",0).attr("r",p=>rS(Math.abs(p.v)))
+      .attr("fill",p=>Math.abs(p.v)<.35?"#8A8A8A":DIV25(p.v))
+      .attr("fill-opacity",p=>Math.abs(p.v)<.35?.11:.23)
+      .attr("stroke",p=>Math.abs(p.v)<.5?"none":DIV25(p.v))
+      .attr("stroke-width",.65).attr("stroke-opacity",.52)
+      .style("mix-blend-mode","multiply");
+    // Marca discreta de la mediana en tinta
+    q.append("line").attr("class","med").attr("x1",x(gd.med)).attr("x2",x(gd.med)).attr("y1",-7).attr("y2",7)
+      .attr("stroke",C.ink).attr("stroke-width",1.6).attr("stroke-linecap","round");
+    // Etiqueta de la fila (esquerra) i mediana numèrica (dreta, escriptori)
+    lab(q,m.l-10,4,gd.t,{size:mob?11.5:12.5,anchor:"end",fill:C.ink2}).attr("class","rl");
+    if(!mob){
+      V.t(q,w-m.r+10,4,`${sgn(gd.med)} °C`,{size:11.5,fill:C.muted,anchor:"start"}).attr("class","rm");
     }
-    const vs=gd.pts.map(p=>p.v), mx=gd.pts.reduce((a,b)=>b.v>a.v?b:a), mn=gd.pts.reduce((a,b)=>b.v<a.v?b:a);
-    const all=d3.median(ONI_PTS,p=>p.v);
-    tp.show(`<b>${mode38==="dec"?decLab(gd.id,false):gd.t+", 1950–2026"}</b><br>Mediana ${sgn(gd.med)} °C (${gd.med>=all?"per sobre":"per sota"} de la de tota la sèrie, ${Math.abs(all)<.05?"0,0":sgn(all)} °C)<br>${vs.length} mesos · desviació ${f2(d3.deviation(vs))} °C<br>El Niño ${f0(vs.filter(v=>v>=.5).length/vs.length*100)} % · La Niña ${f0(vs.filter(v=>v<=-.5).length/vs.length*100)} % dels mesos<br>Extrems: ${sgn(mn.v)} (${mn.y}) i ${sgn(mx.v)} °C (${mx.y})`,px,base(i)-rowH*1.4);
+  });
+
+  // 3. Anotacions quirúrgiques (màxim 2)
+  const an=g.append("g").style("pointer-events","none");
+  const mxP=ONI_PTS.reduce((a,b)=>b.v>a.v?b:a), gi=G.findIndex(gd=>gd.pts.includes(mxP));
+  if(gi>=0){
+    const X=x(mxP.v), Y=cy(gi), rad=rS(Math.abs(mxP.v));
+    V.note(an,{x:X,y:Y-rad-2,tx:Math.min(w-m.r-8,X-14),ty:Math.max(18,Y-rowH*(mob?1.2:1.05)),kind:"curve",anchor:"end",size:mob?11.5:12.5,
+      lines:[["Màxim de la sèrie",true],[`${sgn(mxP.v)} °C · ${SEASON[mxP.k]} ${mxP.y}`]]});
+  }
+  if(mode38==="est"&&!mob){
+    const sd=G.map(gd=>d3.deviation(gd.pts,p=>p.v)), kmin=d3.minIndex(sd), kmax=d3.maxIndex(sd);
+    R.filter((d,i)=>i===kmin||i===kmax).each(function(){ d3.select(this).select(".rl").attr("font-weight",700).attr("fill",C.ink); });
+    V.note(an,{x:x(.65),y:cy(kmin),tx:x(1.45),ty:cy(kmin)-12,kind:"curve",anchor:"start",size:12,
+      lines:[[`${G[kmin].t}: primavera en calma`,true],[`dispersió ${f2(sd[kmin])} °C vs ${f2(sd[kmax])} °C a ${G[kmax].t}`]]});
+  }
+
+  // 4. Hover suau (atenuació ≥ 0,48) + cerca del mes exacte apuntat + lectura ancorada en 1 línia
+  const hv=hvLayer(g), tp=V.tip(el);
+  const tipEl=el.querySelector(":scope>.tip"); if(tipEl)el.appendChild(tipEl);
+  const hit=s.append("rect").attr("width",w).attr("height",h).attr("fill","transparent").style("cursor","crosshair");
+  let curRow=-1;
+  const reset=()=>{ curRow=-1; tp.hide(); hv.selectAll("*").remove();
+    R.interrupt("hv").transition("hv").duration(HT).style("opacity",1);
+    R.select(".rl").attr("font-weight",d=>d.__bold?700:400).attr("fill",d=>d.__bold?C.ink:C.ink2);
+    dimTo(an,1); };
+  R.select(".rl").each(function(d){ d.__bold=d3.select(this).attr("font-weight")==="700"; });
+
+  V.hover(hit.node(),(ev,[px,py])=>{
+    if(py<m.t-8||py>h-m.b+6){ if(curRow>=0)reset(); return; }
+    const i=Math.max(0,Math.min(n-1,Math.floor((py-m.t)/rowH)));
+    const gd=G[i], yR=cy(i);
+    // Troba el mes més proper horitzontalment dins la fila
+    const near=d3.least(gd.pts,p=>Math.abs(x(p.v)-px));
+    if(i!==curRow){
+      curRow=i;
+      R.interrupt("hv").transition("hv").duration(HT).style("opacity",(d,j)=>j===i?1:.48);
+      R.select(".rl").attr("font-weight",(d,j)=>j===i||d.__bold?700:400).attr("fill",(d,j)=>j===i?C.ink:d.__bold?C.ink:C.ink2);
+      dimTo(an,.5);
+    }
+    hv.selectAll("*").remove();
+    if(near){
+      const nx=x(near.v), nr=rS(Math.abs(near.v)), col=Math.abs(near.v)<.35?C.ink:DIV25(near.v);
+      hv.append("line").attr("x1",nx).attr("x2",nx).attr("y1",yR+nr+2).attr("y2",h-m.b+4)
+        .attr("stroke",C.ink).attr("stroke-width",.8).attr("stroke-dasharray","2 2");
+      hv.append("circle").attr("cx",nx).attr("cy",yR).attr("r",Math.max(5,nr))
+        .attr("fill",V.alpha(col,.32)).attr("stroke",C.ink).attr("stroke-width",1.5);
+      hv.append("circle").attr("cx",nx).attr("cy",yR).attr("r",2.2).attr("fill",C.ink);
+      const right=nx<w*.72;
+      V.t(hv,nx+(right?Math.max(8,nr+6):-Math.max(8,nr+6)),yR-6,`${sgn(near.v)} °C (${near.y})`,{anchor:right?"start":"end",size:12,weight:700,fill:C.ink,halo:3.4});
+      const vs=gd.pts.map(p=>p.v), pN=f0(vs.filter(v=>v>=.5).length/vs.length*100), pL=f0(vs.filter(v=>v<=-.5).length/vs.length*100);
+      tp.show(`<b>${SEASON[near.k]} ${near.y}</b> · ${sgn(near.v)} °C · ${mode38==="dec"?decLab(gd.id,false):gd.t}: mediana ${sgn(gd.med)} °C (El Niño ${pN} %, La Niña ${pL} %)`,nx,yR);
+    }
   },reset);
+
   const anim=inst=>{
-    if(inst){ R.select(".a").attr("d",(d,i)=>area(dens[i])); R.select(".l").attr("d",(d,i)=>line(dens[i])); R.style("opacity",1); an.style("opacity",1); return; }
-    R.style("opacity",0).transition().delay((d,i)=>i*110).duration(300).style("opacity",1);
-    R.select(".a").attr("d",area(flat)).transition().delay((d,i)=>i*110).duration(1000).ease(EIO).attr("d",(d,i)=>area(dens[i]));
-    R.select(".l").attr("d",line(flat)).transition().delay((d,i)=>i*110).duration(1000).ease(EIO).attr("d",(d,i)=>line(dens[i]));
-    R.selectAll(".med,.rug").style("opacity",0).transition().delay((d,i,nn)=>800+G.indexOf(d3.select(nn[i].parentNode).datum())*110).duration(400).style("opacity",1);
-    an.style("opacity",0).transition().delay(n*110+900).duration(500).style("opacity",1);
+    if(inst){ R.style("opacity",1); R.selectAll("circle.m").attr("r",p=>rS(Math.abs(p.v))); an.style("opacity",1); return; }
+    R.style("opacity",0).transition().delay((d,i)=>i*70).duration(320).style("opacity",1);
+    R.selectAll("circle.m").attr("r",0).transition().delay((d,i,nn)=>{
+      const rowIdx=G.indexOf(d3.select(nn[i].parentNode).datum());
+      return rowIdx*70+Math.abs(d.v)*90;
+    }).duration(550).ease(d3.easeCubicOut).attr("r",p=>rS(Math.abs(p.v)));
+    an.style("opacity",0).transition().delay(n*70+520).duration(420).style("opacity",1);
   };
   if(el.__again){ el.__again=false; anim(false); }
   else intro(el,()=>{ R.style("opacity",0); an.style("opacity",0); },anim);
