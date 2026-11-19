@@ -898,6 +898,7 @@ const P54=(function(){ const r=V.rng(54);
     return {id:i,n:"Lloc "+(i+1),g,vals}; }).sort((a,b)=>b.vals[b.vals.length-1].p-a.vals[a.vals.length-1].p); })();
 const S54={yr:V.reduced?2026:1980,play:false,hov:null};
 const STAR54=P54.reduce((a,b)=>Math.log(b.vals[b.vals.length-1].x/b.vals[0].x)>Math.log(a.vals[a.vals.length-1].x/a.vals[0].x)?b:a,P54[0]);
+const tcol54=g=>g===2?C.grocFosc:G54[g].c;
 function at54(e,yr){ const t=clamp(yr,1980,2026)-1980, i=Math.min(Math.floor(t),Y54.length-2), f=t-i, a=e.vals[i], b=e.vals[i+1];
   return {x:Math.pow(10,Math.log10(a.x)+(Math.log10(b.x)-Math.log10(a.x))*f),y:a.y+(b.y-a.y)*f,p:a.p+(b.p-a.p)*f}; }
 legend(54,el=>{ V.legendCat(el,G54.map(d=>({c:d.c,t:d.t,a:.6})));
@@ -907,25 +908,46 @@ function ui54(){ const r=$('[data-rng="54"]'), b=$('[data-play="54"]'), o=$('[da
 const M54=piece(54,(el,w)=>{
   if(el._lp){ el._lp.stop(); el._lp=null; } S54.hov=null;
   const mob=w<640, h=mob?360:480, m={t:14,r:mob?10:20,b:40,l:mob?30:44};
-  const s=V.svg(el,w,h,"Dispersió de trenta bombolles, una per lloc, que es mouen del 1980 al 2026: a la dreta, més ingressos per persona; amunt, més esperança de vida. Amb el temps la majoria es desplacen cap amunt i a la dreta. Dades d'exemple."), g=s.append("g");
+  const s=V.svg(el,w,h,"Dispersió de trenta bombolles, una per lloc, que es mouen del 1980 al 2026 deixant la seva estela: a la dreta, més ingressos per persona; amunt, més esperança de vida. Amb el temps la majoria es desplacen cap amunt i a la dreta. Dades d'exemple."), g=s.append("g");
   const x=d3.scaleLog([300,200000],[m.l,w-m.r]), y=d3.scaleLinear([34,85],[h-m.b,m.t]), r=d3.scaleSqrt([0,200],[0,mob?24:36]);
   const yrT=V.t(g,w-m.r-4,h-m.b-14,"1980",{anchor:"end",serif:true,weight:600,size:mob?84:168,fill:C.grid});
   V.gridY(g,y,m.l-(mob?30:44),w-m.r,[40,50,60,70,80],f0,{unit:" anys"});
   V.axisX(g,x,h-m.b,mob?[1000,10000,100000]:[500,1000,5000,10000,50000,100000],v=>f0(v)+(v===100000?" €":""));
   V.t(g,w-m.r,h-4,"Ingressos per persona · escala logarítmica",{anchor:"end",size:11.5,fill:C.ink2,italic:true});
-  const tr=g.append("g"), bg=g.append("g"), lb=g.append("g"), ng=g.append("g"), hg=g.append("g").style("pointer-events","none");
+  const bgTr=g.append("g").style("pointer-events","none"), tr=g.append("g").style("pointer-events","none"), bg=g.append("g"), lb=g.append("g"), ng=g.append("g"), hg=g.append("g").style("pointer-events","none");
+  const line54=d3.line().curve(d3.curveCatmullRom.alpha(.5));
+  const xy54=new Map(P54.map(d=>[d.id,d.vals.map(v=>[x(v.x),y(v.y)])]));
+  const trOrig=bgTr.selectAll("circle.tr54-o").data(P54,d=>d.id).join("circle").attr("class","tr54-o")
+    .attr("cx",d=>xy54.get(d.id)[0][0].toFixed(1)).attr("cy",d=>xy54.get(d.id)[0][1].toFixed(1))
+    .attr("r",d=>d===STAR54?2.2:1.4).attr("fill",d=>tcol54(d.g)).attr("fill-opacity",d=>d===STAR54?.6:.26)
+    .style("display","none");
+  const trPaths=bgTr.selectAll("path.tr54").data(P54,d=>d.id).join("path").attr("class","tr54")
+    .attr("fill","none").attr("stroke",d=>tcol54(d.g))
+    .attr("stroke-width",d=>d===STAR54?(mob?1.5:1.7):(mob?.85:1))
+    .attr("stroke-opacity",d=>d===STAR54?.58:(mob?.22:.26))
+    .attr("stroke-linecap","round").attr("stroke-linejoin","round");
+  trPaths.filter(d=>d===STAR54).raise();
   const bub=bg.selectAll("circle").data(P54,d=>d.id).join("circle").attr("fill",d=>V.alpha(G54[d.g].c,.55)).attr("stroke",d=>G54[d.g].c===C.groc?"#fff":d3.color(G54[d.g].c).darker(.5)).attr("stroke-width",.8).attr("r",0);
   const named=P54.filter(d=>d!==STAR54).slice(0,2);
   const tp=V.tip(el);
   let grow=V.reduced||el.__seen?1:0;
   // Lleuger: només es toca el DOM quan alguna cosa ha canviat (any, creixement, hover); etiquetes i nota es creen un cop
-  // i es mouen amb translate; l'estela es refà només quan canvia l'any sencer o la bombolla apuntada.
+  // i es mouen amb translate; l'estela de fons s'actualitza fins a S54.yr i la de hover es refà quan canvia el pas o la bombolla.
   const LBL=named.map(d=>V.t(lb,0,0,d.n,{italic:true,size:12,fill:C.ink2,halo:true}));
   let lastKey="", lastYr=-1, noteKey="", trailKey="";
   function render(){ const yr=S54.yr, key=yr.toFixed(4)+"/"+grow+"/"+(S54.hov?S54.hov.id:"");
     if(key===lastKey)return; lastKey=key;
     const yi=Math.floor(yr+1e-6); if(yi!==lastYr){ lastYr=yi; yrT.text(yi); }
     bub.each(function(d){ const p=at54(d,yr); d._p=p; this.setAttribute("cx",x(p.x).toFixed(1)); this.setAttribute("cy",y(p.y).toFixed(1)); this.setAttribute("r",(r(p.p)*grow).toFixed(1)); });
+    const t=clamp(yr,1980,2026)-1980, idx=Math.floor(t), frac=t-idx;
+    trOrig.style("display",grow>=1&&t>.05?null:"none");
+    trPaths.each(function(d){
+      if(grow<1||t<=1e-4){ this.setAttribute("d",""); return; }
+      const xy=xy54.get(d.id), pts=xy.slice(0,idx+1);
+      if(frac>1e-4&&idx<xy.length-1)pts.push([x(d._p.x),y(d._p.y)]);
+      this.setAttribute("d",pts.length>1?line54(pts):"");
+    });
+    bgTr.style("opacity",S54.hov?.28:1);
     lb.style("display",grow<1?"none":null); ng.style("display",grow<1||S54.hov?"none":null);
     if(grow<1)return;
     named.forEach((d,i)=>{ const X=x(d._p.x), Y=y(d._p.y), rr=r(d._p.p), right=X+rr+4+textW(d.n,12)<w-m.r;
@@ -935,7 +957,7 @@ const M54=piece(54,(el,w)=>{
         V.note(ng,{x:(left?-rr:rr)*.7,y:-rr*.7,tx:dx,ty:-(mob?44:60),kind:"elbow",anchor:left?"end":"start",size:mob?11.5:12.5,lines:[[e.n,true],["el que més ha crescut"]]}); }
       ng.attr("transform",`translate(${X.toFixed(1)},${Math.max(Y,m.t+20+(mob?44:60)).toFixed(1)})`); }
     hg.selectAll("*").remove(); lb.style("opacity",S54.hov?.25:1);
-    if(S54.hov){ const tk=S54.hov.id+"/"+yi; if(tk!==trailKey){ trailKey=tk; trail(S54.hov); } marks(S54.hov); tip54(S54.hov); }
+    if(S54.hov){ const tk=S54.hov.id+"/"+yr.toFixed(2); if(tk!==trailKey){ trailKey=tk; trail(S54.hov); } marks(S54.hov); tip54(S54.hov); }
     else if(trailKey){ trailKey=""; tr.selectAll("*").remove(); } }
   // marques de hover: contorn en tinta, guies fins als dos eixos amb el valor en negreta sobre l'eix i el nom al costat
   function marks(d){ const p=d._p, X=x(p.x), Y=y(p.y), rr=r(p.p)*grow;
@@ -952,12 +974,16 @@ const M54=piece(54,(el,w)=>{
     V.t(hg,right?X+rr+5:X-rr-5,Y-Math.min(rr,10)-4,d.n,{anchor:right?"start":"end",weight:700,size:12.5,halo:4}); }
   function tip54(d){ const p=d._p; if(!p)return; const yr=S54.yr, rk=1+P54.filter(q=>q._p&&q._p.x>p.x).length;
     tp.show(`<b>${d.n}</b> · ${G54[d.g].t} · ${Math.floor(yr+1e-6)}<br><b>${f0(Math.round(p.x/10)*10)} €</b> per persona · <b>${f1(p.y)} anys</b><br>Població: ${f1(p.p)} milions · posició ${rk} de ${P54.length} en ingressos`,x(p.x),y(p.y)-r(p.p)*grow); }
-  function trail(d){ tr.selectAll("*").remove(); const ys=Y54.filter(v=>v<=S54.yr); if(!ys.length)return;
-    const pts=ys.map(v=>at54(d,v)).concat([at54(d,S54.yr)]);
-    tr.append("path").attr("d",d3.line(p=>x(p.x),p=>y(p.y)).curve(d3.curveCatmullRom)(pts)).attr("fill","none").attr("stroke",G54[d.g].c).attr("stroke-width",2);
-    ys.forEach((v,i)=>{ const p=pts[i]; tr.append("circle").attr("cx",x(p.x)).attr("cy",y(p.y)).attr("r",v%10===0?2.6:1.4).attr("fill",G54[d.g].c);
-      if(v%10===0&&v!==Math.floor(S54.yr))V.t(tr,x(p.x)+5,y(p.y)-5,v,{size:11,fill:C.ink2,halo:true}); }); }
+  function trail(d){ tr.selectAll("*").remove(); const t=clamp(S54.yr,1980,2026)-1980, idx=Math.floor(t), frac=t-idx;
+    if(t<=1e-4)return;
+    const xy=xy54.get(d.id), pts=xy.slice(0,idx+1);
+    if(frac>1e-4&&idx<xy.length-1)pts.push([x(d._p.x),y(d._p.y)]);
+    if(pts.length>1)tr.append("path").attr("d",line54(pts)).attr("fill","none").attr("stroke",tcol54(d.g)).attr("stroke-width",2.2).attr("stroke-linecap","round");
+    for(let i=0;i<=idx;i++){ const v=Y54[i], p=xy[i];
+      tr.append("circle").attr("cx",p[0]).attr("cy",p[1]).attr("r",v%10===0?2.8:1.5).attr("fill",tcol54(d.g));
+      if(v%10===0&&v!==Math.floor(S54.yr))V.t(tr,p[0]+5,p[1]-5,v,{size:11,fill:C.ink2,halo:true}); } }
   function frame(t,dt){ if(S54.play){ S54.yr=Math.min(2026,S54.yr+dt/1000*4.2); if(S54.yr>=2026){ S54.play=false; } ui54(); } render(); }
+  el._render=render;
   render(); ui54();
   el._lp=V.loop(el,frame);
   // entrada: les bombolles creixen al 1980 i el temps comença a córrer
@@ -972,8 +998,9 @@ const M54=piece(54,(el,w)=>{
   ()=>{ S54.hov=null; tr.selectAll("*").remove(); hg.selectAll("*").remove(); V.focus(bub,null); tp.hide(); render(); });
 });
 (function(){ const r=$('[data-rng="54"]'), b=$('[data-play="54"]');
-  if(r)r.addEventListener("input",()=>{ S54.play=false; S54.yr=+r.value; ui54(); });
-  if(b)b.addEventListener("click",()=>{ if(V.reduced){ S54.yr=2026; ui54(); return; } if(S54.play){ S54.play=false; } else { if(S54.yr>=2026)S54.yr=1980; S54.play=true; } ui54(); });
+  const flush=()=>{ const el=$('[data-p="54"]'); if(el&&el._render)el._render(); };
+  if(r)r.addEventListener("input",()=>{ S54.play=false; S54.yr=+r.value; ui54(); flush(); });
+  if(b)b.addEventListener("click",()=>{ if(V.reduced){ S54.yr=2026; ui54(); flush(); return; } if(S54.play){ S54.play=false; } else { if(S54.yr>=2026)S54.yr=1980; S54.play=true; } ui54(); flush(); });
   ui54(); })();
 void M54;
 
