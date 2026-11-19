@@ -668,8 +668,8 @@ document.querySelector('[data-play="13"]').addEventListener("click",()=>{ const 
    ===================================================================== */
 const CAT14=[{c:C.vermell,t:"Categoria A"},{c:C.blau,t:"Categoria B"},{c:C.groc,t:"Categoria C"}];
 const R14=d3.scaleSqrt([0,30],[0,34]);
-legend(14,el=>{ V.legendCat(el,CAT14.map(d=>({c:d.c,t:d.t,kind:"ring"})).concat([{c:C.landEdge,t:"Ruta (blanc sobre terra)",kind:"line",w:2.2}]));
-  V.legendCat(el,[{c:C.ink2,t:"1 anell concèntric = 1 cas",kind:"none"}]); });
+legend(14,el=>{ V.legendCat(el,CAT14.map(d=>({c:d.c,t:d.t,a:.45})).concat([{c:C.landEdge,t:"Ruta (blanc sobre terra)",kind:"line",w:2.2}]));
+  V.legendSize(el,{title:"Casos per lloc",values:[1,10,25],r:R14,f:f0,stroke:C.ink2}); });
 const SITES=(function(){ const r=V.rng(14), out=[]; const hot=[[13,30.5],[10,18],[24,13.5],[29,15],[14,26],[3,22],[-5,16],[30,24]];
   for(let i=0;i<60;i++){ const hc=hot[Math.floor(r()*hot.length)], big=r()<.12;
     out.push({lon:hc[0]+V.gauss(r)*(big?2:4.5),lat:hc[1]+V.gauss(r)*(big?1.5:3),n:big?10+Math.floor(r()*16):1+Math.floor(r()**2.2*6),k:r()<.45?0:r()<.55?1:2}); }
@@ -677,21 +677,24 @@ const SITES=(function(){ const r=V.rng(14), out=[]; const hot=[[13,30.5],[10,18]
 const M14=piece(14,(el,w)=>{
   if(!W){ V.world().then(x=>{W=x;M14.redraw();}); return false; }
   const mob=w<640, h=Math.round(mob?w*.95:Math.min(620,w*.6)), k=mob?.65:1;
-  const s=V.svg(el,w,h,"Mapa del nord d'Àfrica amb anells concèntrics proporcionals (1 anell = 1 cas) sobre rutes blanques gruixudes. Estil «A sea of sand and sickness». Dades d'exemple."), g=s.append("g");
+  const s=V.svg(el,w,h,"Mapa del nord d'Àfrica amb cercles translúcids proporcionals (àrea = nombre de casos) sobre rutes blanques gruixudes. Dades d'exemple."), g=s.append("g");
   const proj=d3.geoMercator().fitExtent([[6,6],[w-6,h-6]],{type:"MultiPoint",coordinates:[[-18,4],[42,37]]}), path=d3.geoPath(proj);
   const id="cl14"+Math.random().toString(36).slice(2,6), defs=s.append("defs"); defs.append("clipPath").attr("id",id).append("rect").attr("width",w).attr("height",h); g.attr("clip-path",`url(#${id})`);
+  CAT14.forEach((c,i)=>{ const rg=defs.append("radialGradient").attr("id",id+"g"+i);
+    [[0,.52],[.58,.38],[.88,.2],[1,.06]].forEach(([o,a])=>rg.append("stop").attr("offset",o).attr("stop-color",c.c).attr("stop-opacity",a)); });
   g.append("path").attr("d",path(W.land)).attr("fill",C.land); g.append("path").attr("d",path(W.borders)).attr("fill","none").attr("stroke","#fff").attr("stroke-width",.8);
-  // rutes en blanc gruixut a sota dels anells (estil Amy Powell, Creu Roja britànica)
+  // rutes en blanc gruixut a sota dels cercles translúcids
   const routes=[[[-17,14.7],[-10,17],[-3,22],[2,28],[3,36.7]],[[-16,12.5],[-6,13],[2,13.5],[8,16],[12,23],[13.2,32.8]],[[32.5,15.6],[25,19],[19,25],[15,29],[13.2,32.8]],[[38.7,9],[33,15.6],[31.5,22],[31.2,30]]];
   const ln=d3.line().curve(d3.curveBasis), rt=g.append("g");
   routes.forEach(r=>{ const pts=r.map(p=>proj(p)); rt.append("path").attr("d",ln(pts)).attr("fill","none").attr("stroke","#FFFFFF").attr("stroke-width",mob?3:4.5).attr("stroke-linecap","round").attr("stroke-opacity",.92); });
   [[[-2,17.5],"Mali"],[[9,17.5],"Níger"],[[18.5,15],"Txad"],[[18,27],"Líbia"],[[2.5,27.5],"Algèria"],[[29.5,13],"Sudan"],[[29.5,26.5],"Egipte"],[[8,9.5],"Nigèria"],[[-10.5,20.5],"Mauritània"]]
     .forEach(([ll,t])=>{ const p=proj(ll); V.t(g,p[0],p[1],t,{anchor:"middle",size:mob?11:11.5,fill:C.muted}); });
-  const step=1.75*k, rr=d=>1.4+d.n*step, bl=g.append("g");
-  SITES.slice().sort((a,b)=>b.n-a.n).forEach(d=>{ const p=proj([d.lon,d.lat]), col=CAT14[d.k].c===C.groc?C.grocFosc:CAT14[d.k].c;
-    const sg=V.rings(bl,p[0],p[1],d.n,step,col,{r0:1.4,sw:.68,alpha:.72}).datum(d).attr("class","s14"); void sg; });
+  const rr=d=>Math.max(3.5,R14(d.n)*k), bl=g.append("g");
+  SITES.slice().sort((a,b)=>b.n-a.n).forEach(d=>{ const p=proj([d.lon,d.lat]), sg=bl.append("g").datum(d).attr("class","s14");
+    sg.append("circle").attr("cx",p[0]).attr("cy",p[1]).attr("r",rr(d)).attr("fill",`url(#${id}g${d.k})`).style("mix-blend-mode","multiply");
+    sg.append("circle").attr("cx",p[0]).attr("cy",p[1]).attr("r",1.5).attr("fill",d3.lab(CAT14[d.k].c).darker(.8)); });
   const big=d3.greatest(SITES,d=>d.n), bp=proj([big.lon,big.lat]), br=rr(big);
-  V.note(g,{x:bp[0]+br*.7,y:bp[1]-br*.7,tx:bp[0]+br+(mob?14:34),ty:bp[1]-br-(mob?10:22),kind:"curve",bend:10,anchor:"start",lines:[[`${big.n} casos`,true],["un anell per cada cas"]],size:12});
+  V.note(g,{x:bp[0]+br*.7,y:bp[1]-br*.7,tx:bp[0]+br+(mob?14:34),ty:bp[1]-br-(mob?10:22),kind:"curve",bend:10,anchor:"start",lines:[[`${big.n} casos`,true],["en un sol lloc"]],size:12});
   const tp=V.tip(el), H=hv(g), hit=hitRect(s,w,h,"pointer"), pts=SITES.map(d=>({d,p:proj([d.lon,d.lat])})), sites=bl.selectAll("g.s14"), tot=d3.sum(SITES,d=>d.n);
   V.hover(hit.node(),(ev,[px,py])=>{ const b=d3.least(pts,o=>Math.hypot(o.p[0]-px,o.p[1]-py)-rr(o.d)*.6), r0=rr(b.d);
     if(Math.hypot(b.p[0]-px,b.p[1]-py)>r0+14){ sites.style("opacity",1); rt.style("opacity",1); H.selectAll("*").remove(); return tp.hide(); }
