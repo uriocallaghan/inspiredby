@@ -19,13 +19,14 @@
 }
 
 /* ---------- unified navigation bar (home + all articles) ---------- */
-.ib-bar{position:relative;z-index:20;height:60px;background:rgba(252,252,250,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid #ecece7;display:flex;align-items:center;justify-content:center}
+.ib-bar{position:relative;z-index:25;height:60px;background:rgba(252,252,250,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid #ecece7;display:flex;align-items:center;justify-content:center}
 .ib-bar--sticky{position:sticky;top:0}
 .ib-bar a{display:block;line-height:0;-webkit-tap-highlight-color:transparent}
 .ib-bar img{height:19px;width:auto;display:block}
 .ib-progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:30;pointer-events:none;background:var(--ib-grey)}
 .ib-progress span{display:block;height:100%;width:100%;transform-origin:0 50%;transform:scaleX(0);background:#474747}
-.ib-article .ib-bar{margin-top:3px}
+.ib-article .ib-bar{position:sticky;top:3px;margin-top:3px;transition:transform .24s cubic-bezier(.22,1,.36,1)}
+.ib-article .ib-bar.ib-bar--hidden:not(:focus-within){transform:translateY(calc(-100% - 4px))}
 
 /* ---------- unified footer ---------- */
 .ib-foot{margin:0 auto;max-inline-size:1360px;padding:28px max(24px,env(safe-area-inset-left,0px)) 44px;border-top:1px solid var(--ib-grey);display:flex;justify-content:center}
@@ -79,7 +80,7 @@ body.ib-article{margin:0;background:var(--ib-paper)}
 .ib-card:hover h2,.ib-card:focus-visible h2{color:#C8442A}
 
 @media (prefers-reduced-motion:reduce){
-  .ib-card-media img,.ib-diptych-body h2,.ib-card h2,.ib-card-arrow{transition:none}
+  .ib-article .ib-bar,.ib-card-media img,.ib-diptych-body h2,.ib-card h2,.ib-card-arrow{transition:none}
   .ib-diptych-card:hover .ib-card-media img,.ib-diptych-card:focus-visible .ib-card-media img,.ib-card:hover .ib-card-media img,.ib-card:focus-visible .ib-card-media img,.ib-diptych-card:hover .ib-card-arrow,.ib-card:hover .ib-card-arrow{transform:none}
 }
 

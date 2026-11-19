@@ -1,13 +1,33 @@
-/* Reading progress for article pages (fixed 2px line under the browser chrome). */
+/* Reading progress + show-on-scroll-up navigation bar for article pages. */
 (function(){
-  var bar=document.getElementById('ibProgress');
-  if(!bar)return;
-  var ticking=false;
+  var prog=document.getElementById('ibProgress');
+  var bar=document.querySelector('.ib-article .ib-bar');
+  if(!prog&&!bar)return;
+  var ticking=false,lastY=Math.max(0,scrollY),dir=0,acc=0,hidden=false;
   function upd(){
     ticking=false;
-    var d=document.documentElement,max=d.scrollHeight-innerHeight;
-    var p=max>0?Math.min(1,Math.max(0,scrollY/max)):0;
-    bar.style.transform='scaleX('+p.toFixed(4)+')';
+    var d=document.documentElement,max=Math.max(0,d.scrollHeight-innerHeight);
+    var y=Math.min(max,Math.max(0,scrollY));
+    if(prog){
+      var p=max>0?y/max:0;
+      prog.style.transform='scaleX('+p.toFixed(4)+')';
+    }
+    if(bar){
+      var hideAfter=(bar.offsetHeight||60)+4;
+      if(y<=hideAfter){
+        if(hidden){hidden=false;bar.classList.remove('ib-bar--hidden')}
+        dir=0;acc=0;lastY=y;
+      }else{
+        var dy=y-lastY;
+        lastY=y;
+        if(dy){
+          var nd=dy>0?1:-1;
+          if(nd!==dir){dir=nd;acc=Math.abs(dy)}else{acc+=Math.abs(dy)}
+          if(dir===1&&acc>=10&&!hidden){hidden=true;bar.classList.add('ib-bar--hidden')}
+          else if(dir===-1&&acc>=6&&hidden){hidden=false;bar.classList.remove('ib-bar--hidden')}
+        }
+      }
+    }
   }
   function req(){if(!ticking){ticking=true;requestAnimationFrame(upd)}}
   addEventListener('scroll',req,{passive:true});
