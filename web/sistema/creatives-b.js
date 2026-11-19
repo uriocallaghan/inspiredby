@@ -95,7 +95,7 @@ const M45=piece(45,(el,w)=>{
   const tp=V.tip(el); let cur=null, curJ=-1; s.style("cursor","pointer");
   const MEAN45={}; V45.forEach(v=>MEAN45[v.k]=d3.mean(F45,q=>q[v.k]));
   const rank45=(d,k)=>1+F45.filter(q=>q[k]>d[k]).length;
-  function on(d,j){ if(cur===d&&curJ===j)return; if(cur!==d){ off(); cur=d; V.focus(fl,q=>q===d); ng.transition().duration(160).style("opacity",.15);
+  function on(d,j){ if(cur===d&&curJ===j)return; if(cur!==d){ off(); cur=d; V.focus(fl,q=>q===d); ng.transition().duration(160).style("opacity",.5);
       fl.filter(q=>q===d).raise().select("g.in").interrupt().transition().duration(160).attr("transform","scale(1.32)");
       fl.filter(q=>q===d).select("text.nm").transition().duration(160).style("opacity",0); }
     curJ=j; const n=fl.filter(q=>q===d), k=1.32;
@@ -328,7 +328,7 @@ const M47=piece(47,(el,w)=>{
   V.hover(s.node(),(ev,[px,py])=>{ if(px<m.l-4||px>w-m.r+4||py>h-4){ leave(); return; }
     const i=clamp(Math.round(x.invert(px))-1970,0,Y47.length-1), X=x(Y47[i]);
     const a=st.find(q=>py<=y(q[i][0])+1&&py>=y(q[i][1])-1)||d3.least(st,q=>Math.abs((y(q[i][0])+y(q[i][1]))/2-py));
-    if(curK!==a.key){ if(curK===null){ lg.transition("hv").duration(150).style("opacity",.25); ng.transition("hv").duration(150).style("opacity",.2); }
+    if(curK!==a.key){ if(curK===null){ lg.transition("hv").duration(150).style("opacity",.5); ng.transition("hv").duration(150).style("opacity",.5); }
       curK=a.key; V.focus(paths,q=>q.key===a.key,{dim:.2}); plain(); paths.filter(q=>q.key===a.key).raise().attr("stroke",C.ink).attr("stroke-width",1.5); }
     const k=K47.find(q=>q.k===a.key), v=R47[i][a.key], tot=d3.sum(K47,q=>R47[i][q.k]), y0=y(a[i][0]), y1=y(a[i][1]), ym=(y0+y1)/2;
     hg.selectAll("*").remove();
@@ -759,7 +759,7 @@ const M51=piece(51,(el,w)=>{
   V.hover(s.node(),(ev,[px,py])=>{ const P=lay[mode51].u, u=d3.least(U51,q=>{ const p=P[q.k]; return Math.hypot(px-(p.x+p.s/2),py-(p.y+p.s/2)); });
     const p=u&&P[u.k]; if(!u||Math.hypot(px-(p.x+p.s/2),py-(p.y+p.s/2))>Math.max(14,p.s*1.6)){ leave51(); return; }
     const gr=G51[u.gi];
-    if(curU!==u){ curU=u; hv.selectAll("*").remove(); V.focus(us,q=>q.gi===u.gi,{dim:.2}); lab.transition().duration(160).style("opacity",.25);
+    if(curU!==u){ curU=u; hv.selectAll("*").remove(); V.focus(us,q=>q.gi===u.gi,{dim:.48}); lab.transition().duration(160).style("opacity",.5);
       us.attr("stroke",null).attr("stroke-width",null); us.filter(q=>q===u).raise().attr("stroke",C.ink).attr("stroke-width",1.5);
       if(mode51===0){ const L=lay[0], c0=first[u.gi], c1=c0+gr.n-1, X0=L.x0+Math.floor(c0/4)*(L.W/60), X1=L.x0+(Math.floor(c1/4)+1)*(L.W/60), Yb=L.y0+L.H+8;
         hv.append("path").attr("d",`M${X0},${Yb-4}V${Yb}H${X1}V${Yb-4}`).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.2);
@@ -825,12 +825,12 @@ const M52=piece(52,(el,w)=>{
       octx.fillStyle=COL52[i]; octx.beginPath(); let any=false;
       while(rc.ns<n&&(V.reduced||T-ev[rc.ns]>=1.2)){ const k=rc.ns, X=fx+Math.floor(k/NR)*c+c/2, Y=fy[i]+(k%NR)*c+c/2; octx.moveTo(X+rr,Y); octx.arc(X,Y,rr,0,2*Math.PI); rc.ns++; any=true; }
       if(any)octx.fill();
-      ctx.globalAlpha=dim?.3:1; const sy=Math.max(0,fy[i]-2); ctx.drawImage(oc,(fx-2)*dpr,sy*dpr,(w-fx+2)*dpr,(fh+16)*dpr,fx-2,sy,w-fx+2,fh+16); ctx.globalAlpha=1;
+      ctx.globalAlpha=dim?.52:1; const sy=Math.max(0,fy[i]-2); ctx.drawImage(oc,(fx-2)*dpr,sy*dpr,(w-fx+2)*dpr,(fh+16)*dpr,fx-2,sy,w-fx+2,fh+16); ctx.globalAlpha=1;
       if(!V.reduced)for(let k=rc.ns;k<n;k++){ const q=(T-ev[k])/1.2, X=fx+Math.floor(k/NR)*c+c/2, Y=fy[i]+(k%NR)*c+c/2;
-        ctx.beginPath(); ctx.arc(X,Y,rr*(1+1.6*(1-q)),0,2*Math.PI); ctx.fillStyle=V.alpha(d.c,dim?.15:.95); ctx.fill();
-        ctx.beginPath(); ctx.arc(X,Y,rr+q*14,0,2*Math.PI); ctx.strokeStyle=V.alpha(d.c,(dim?.1:.6)*(1-q)); ctx.lineWidth=2; ctx.stroke(); }
+        ctx.beginPath(); ctx.arc(X,Y,rr*(1+1.6*(1-q)),0,2*Math.PI); ctx.fillStyle=V.alpha(d.c,dim?.45:.95); ctx.fill();
+        ctx.beginPath(); ctx.arc(X,Y,rr+q*14,0,2*Math.PI); ctx.strokeStyle=V.alpha(d.c,(dim?.28:.6)*(1-q)); ctx.lineWidth=2; ctx.stroke(); }
       if(shown[i]!==n){ shown[i]=n; cnt[i].text(f0(n)); }
-      if(lastHov!==hov)cnt[i].attr("opacity",dim?.3:1);
+      if(lastHov!==hov)cnt[i].attr("opacity",dim?.52:1);
       if(hov===i&&n){ const k=clamp(S52.hovK<0?n-1:S52.hovK,0,n-1), X=fx+Math.floor(k/NR)*c+c/2, Y=fy[i]+(k%NR)*c+c/2, age=T-ev[k];
         ctx.beginPath(); ctx.arc(X,Y,rr*1.6,0,2*Math.PI); ctx.fillStyle=d.c; ctx.fill(); ctx.strokeStyle=C.ink; ctx.lineWidth=1.5; ctx.stroke();
         const mk=i+"/"+k+"/"+Math.floor(age)+"/"+X.toFixed(1); if(mk!==lastMark){ lastMark=mk; hvMark(i,k,X,Y,rr,age); } } });
@@ -850,7 +850,7 @@ const M52=piece(52,(el,w)=>{
   V.hover(s.node(),(ev,[px,py])=>{ const i=Math.floor((py-top)/rowH); if(i<0||i>=R52.length){ S52.hov=-1; S52.hovK=-1; hv.selectAll("*").remove(); tp.hide(); return; }
     const d=R52[i], n=S52.ev[i].length, c=S52.cell[i];
     let k=-1; if(px>=fx&&n){ const col=Math.floor((px-fx)/c), row=clamp(Math.floor((py-fy[i])/c),0,NR-1); k=col*NR+row; if(k>=n)k=-1; }
-    S52.hov=i; S52.hovK=k; S52.tp=[px,py]; ng.style("opacity",.2); tip52(); },()=>{ S52.hov=-1; S52.hovK=-1; hv.selectAll("*").remove(); ng.style("opacity",1); tp.hide(); });
+    S52.hov=i; S52.hovK=k; S52.tp=[px,py]; ng.style("opacity",.5); tip52(); },()=>{ S52.hov=-1; S52.hovK=-1; hv.selectAll("*").remove(); ng.style("opacity",1); tp.hide(); });
   function tip52(){ const i=S52.hov; if(i<0||!S52.tp)return; const d=R52[i], n=S52.ev[i].length, tot=d3.sum(S52.ev,e=>e.length);
     tp.show(`<b>${d.t}</b><br><b>${f0(n)}</b> esdeveniments des que mires la peça · ${pct(tot?n/tot:0)} de tots<br>${f1(d.r)} per segon · ${f0(d.r*3600)} per hora`,S52.tp[0],S52.tp[1]); }
 });

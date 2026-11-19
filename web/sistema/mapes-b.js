@@ -57,13 +57,13 @@ function rampMark(n,v,min,max,txt){ const el=$(`[data-lg="${n}"]`), sv=el&&el.qu
   g.select("line").attr("x1",x).attr("x2",x).attr("y1",-2).attr("y2",11).attr("stroke",C.ink).attr("stroke-width",1.5);
   g.select("path").attr("d",`M${x-4},-7L${x+4},-7L${x},-2Z`).attr("fill",C.ink);
   g.select("text").attr("x",Math.max(16,Math.min(w-16,x))).attr("y",22).attr("text-anchor","middle").attr("font-size",11.5).attr("font-weight",700).attr("fill",C.ink).call(V.halo,4).style("font-variant-numeric","tabular-nums").text(txt);
-  tx.style("opacity",.15); }
+  tx.style("opacity",.48); }
 // hover: ressalta una franja de la llegenda per franges
 function stepsMark(n,k,txt){ const el=$(`[data-lg="${n}"]`), sv=el&&el.querySelector(".ibv-lg svg"); if(!sv)return;
   const s=d3.select(sv), rs=s.selectAll(":scope>rect").style("transition","opacity .15s"), tx=s.selectAll(":scope>text").style("transition","opacity .15s");
   let g=s.select("g.ibx-mk"); if(g.empty()){ g=s.append("g").attr("class","ibx-mk").attr("pointer-events","none"); g.append("rect"); g.append("text"); }
   if(k==null){ g.style("display","none"); rs.style("opacity",null); tx.style("opacity",null); return; }
-  const cw=+rs.attr("width")+1, x=k*cw; g.style("display",null); rs.style("opacity",(d,i)=>i===k?1:.3); tx.style("opacity",.15);
+  const cw=+rs.attr("width")+1, x=k*cw; g.style("display",null); rs.style("opacity",(d,i)=>i===k?1:.5); tx.style("opacity",.48);
   g.select("rect").attr("x",x-1).attr("y",-2).attr("width",cw+1).attr("height",12).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.5);
   g.select("text").attr("x",Math.max(16,Math.min(cw*rs.size()-16,x+cw/2))).attr("y",22).attr("text-anchor","middle").attr("font-size",11.5).attr("font-weight",700).attr("fill",C.ink).call(V.halo,4).style("font-variant-numeric","tabular-nums").text(txt); }
 const ord=n=>n+"a";   // 1a, 2a… (femení)
@@ -209,7 +209,7 @@ const M28=piece(28,(el,w)=>{
     hl.append("circle").attr("cx",px).attr("cy",py).attr("r",4.5).attr("fill",SPD28(sp*3.6)).attr("stroke",C.ink).attr("stroke-width",1.5);
     const dir=DIRS[Math.round(from/45)%8], right=px<w-150;
     V.lines(hl,px+(right?18:-18),py-6,[[`${f0(sp*3.6)} km/h`,true],[`vent ${dir}`]],{anchor:right?"start":"end",halo:true,size:12.5});
-    cnv.style.opacity=.28; ann.style("opacity",.15);
+    cnv.style.opacity=.55; ann.style("opacity",.5);
     rampMark(28,sp*3.6,0,110,f0(sp*3.6)+" km/h");
     const pc=Math.round(d3.bisect(SPS,sp)/SPS.length*100), pct=pc>=99?"entre els més forts del mapa":pc<=1?"entre els més fluixos del mapa":`més fort que el ${pc} % del mapa`;
     tp.show(`<b>Vent ${dir}</b> <span style="display:inline-block;transform:rotate(${to.toFixed(0)}deg)">↑</span><br>${f0(sp*3.6)} km/h (simulat)<br><span style="color:${C.muted}">${pct} · ${llFmt(ll[0],ll[1])}</span>`,px,py);
@@ -321,7 +321,7 @@ const M29=piece(29,(el,w)=>{
   // interacció
   const tp=V.tip(el);
   const tipEl=el.querySelector(":scope>.tip"); if(tipEl)el.appendChild(tipEl);
-  BV.hl=(i,j)=>{ if(i==null){ V.focus(cp,null); ann.transition().duration(160).style("opacity",1); return; } ann.transition().duration(160).style("opacity",.15); V.focus(cp,d=>d.i===i&&d.j===j,{dim:.12}); };
+  BV.hl=(i,j)=>{ if(i==null){ V.focus(cp,null); ann.transition().duration(160).style("opacity",1); return; } ann.transition().duration(160).style("opacity",.5); V.focus(cp,d=>d.i===i&&d.j===j,{dim:.48}); };
   // hover: el país (o el més proper, per als petits) i el seu grup de la reixa
   const cen=S.map(d=>({d,p:proj(d.c)})), rkA=new Map(d3.sort(S,d=>-d.amp).map((d,k)=>[d,k+1])), rkM=new Map(d3.sort(S,d=>-d.mean).map((d,k)=>[d,k+1]));
   const hv=g.append("g").attr("pointer-events","none");
@@ -330,7 +330,7 @@ const M29=piece(29,(el,w)=>{
   V.hover(s.node(),(ev,[px,py])=>{
     let d=ev.target&&ev.target.__data__; if(!d||!d.f){ const q=d3.least(cen,c=>(c.p[0]-px)**2+(c.p[1]-py)**2); d=q&&Math.hypot(q.p[0]-px,q.p[1]-py)<24?q.d:null; }
     if(!d)return off();
-    if(cur!==d){ cur=d; V.focus(cp,x=>x.i===d.i&&x.j===d.j,{dim:.22}); cp.filter(x=>x===d).raise(); ann.interrupt().style("opacity",.12);
+    if(cur!==d){ cur=d; V.focus(cp,x=>x.i===d.i&&x.j===d.j,{dim:.48}); cp.filter(x=>x===d).raise(); ann.interrupt().style("opacity",.5);
       ol.attr("d",path(d.f)); if(BV.mark)BV.mark(d.i,d.j); if(BV.cap)BV.cap(`${d.name}: ${sgn(d.mean)} °C · ${f0(d.amp)} °C`);
       hv.selectAll("*").remove(); const c=proj(d.c), right=c[0]<w-170;
       hv.append("circle").attr("cx",c[0]).attr("cy",c[1]).attr("r",9).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1);
@@ -553,7 +553,7 @@ const M31=piece(31,(el,w)=>{
     const ring=[]; const la0=Math.max(-90,la-1.25), la1=Math.min(90,la+1.25);
     for(let t=0;t<=4;t++)ring.push([lo-1.25+t*.625,la1]); for(let t=0;t<=4;t++)ring.push([lo+1.25-t*.625,la0]);
     const pts=ring.map(proj);
-    hv.selectAll("*").remove(); cA.style.opacity=.32; cB.style.opacity=.32; annA.style("opacity",.15); annB.style("opacity",.15);
+    hv.selectAll("*").remove(); cA.style.opacity=.58; cB.style.opacity=.58; annA.style("opacity",.5); annB.style("opacity",.5);
     hv.append("path").attr("d","M"+pts.join("L")+"Z").attr("fill",COL31[k]).attr("stroke",C.ink).attr("stroke-width",1.5);
     const c=proj([lo,la]); hv.append("circle").attr("cx",c[0]).attr("cy",c[1]).attr("r",16).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1);
     const lft=c[0]>90; V.lines(hv,c[0]+(lft?-22:22),c[1]+18,[[`${sgn(v)} °C`,true],[left?"al gener":"al juliol"]],{anchor:lft?"end":"start",halo:true,size:12.5});
@@ -667,7 +667,7 @@ const M32=piece(32,(el,w)=>{
   function at(km){ const i=Math.max(0,Math.min(D.pts.length-1,Math.round(km/D.tot*(D.pts.length-1)))); return D.pts[i]; }
   function show(km){ if(km==null){ cur.style("display","none"); tp.hide(); if(ann.style("opacity")!=="0")ann.style("opacity",1); cg.selectAll(".cty").style("opacity",1); bg.selectAll(".sg").style("opacity",null).filter("rect").style("fill",null); ax.style("opacity",null);
       gdot.attr("transform",`translate(${gp(A32)})`); r2.text(`${f0(D.tot)} km pel camí més curt`).attr("font-weight",null); r3.text(mob?"Temperatura al llarg del camí":"Temperatura de l'aire al gener i al juliol al llarg del camí"); r4.text(""); return; }
-    const d=at(km), x=X(d.km), right=x<w-90; ann.interrupt().style("opacity",.12);
+    const d=at(km), x=X(d.km), right=x<w-90; ann.interrupt().style("opacity",.5);
     cur.style("display",null); gl.attr("x1",x).attr("x2",x); cd.attr("cx",x);
     dJ.attr("cx",x).attr("cy",y(d.jan)); dL.attr("cx",x).attr("cy",y(d.jul));
     vJ.attr("x",right?x+8:x-8).attr("text-anchor",right?"start":"end").attr("y",y(d.jan)+(d.jan<d.jul?14:-6)).text(sgn(d.jan)+" °C");
@@ -677,7 +677,7 @@ const M32=piece(32,(el,w)=>{
     bg.selectAll(".sg").style("opacity",c=>c===d.cn?1:.25).filter("rect").style("fill",c=>c===d.cn?C.ink2:null);
     gJ.attr("x2",x).attr("y1",y(d.jan)).attr("y2",y(d.jan)); gL.attr("x2",x).attr("y1",y(d.jul)).attr("y2",y(d.jul));
     aJ.attr("y",y(d.jan)+(d.jan<d.jul?14:-5)).text(sgn(d.jan)+" °C"); aL.attr("y",y(d.jul)+(d.jan<d.jul?-5:14)).text(sgn(d.jul)+" °C");
-    cr.attr("cx",x); ax.style("opacity",.2); aK.attr("x",Math.max(30,Math.min(w-30,x))).text(f0(d.km)+" km");
+    cr.attr("cx",x); ax.style("opacity",.5); aK.attr("x",Math.max(30,Math.min(w-30,x))).text(f0(d.km)+" km");
     if(mob){ r2.text(`${d.cn||"Sobre el mar"} · ${f0(d.km)} km (${f0(d.km/D.tot*100)} %)`).attr("font-weight",700); r3.text(`Gener ${sgn(d.jan)} °C · juliol ${sgn(d.jul)} °C`); r4.text(`${f0(d.jul-d.jan)} °C de diferència`); return; }
     tp.show(`<b>${d.cn||"Sobre el mar"}</b><br>A ${f0(d.km)} km de Barcelona (${f0(d.km/D.tot*100)} % del camí)<br>Gener ${sgn(d.jan)} °C · juliol ${sgn(d.jul)} °C<br><span style="color:${C.muted}">${f0(d.jul-d.jan)} °C de diferència entre tots dos mesos</span>`,x,yc);
     r2.text(`A ${f0(d.km)} km de Barcelona${d.km>D.tot-15?" (arribada)":""}`);
@@ -770,7 +770,7 @@ const M33=piece(33,(el,w)=>{
   const country=()=>{ if(!CN){ H.forEach(d=>{ const f=findCountry(d.ll[0],d.ll[1]); d.cn=f?nomCA(f):null; }); CN=true; } };
   s.style("cursor","crosshair");
   function hoverHex(d,px,py){ const nw=HD!==d; HD=d; country(); const m=MON33, v=T33(d,m), mi=Math.round(m)%12;
-    if(nw){ GRP=d.cn?H.filter(x=>x.cn===d.cn):[d]; hexes(xG,GRP,m); cH.style.opacity=.22; ann.style("opacity",.15); }
+    if(nw){ GRP=d.cn?H.filter(x=>x.cn===d.cn):[d]; hexes(xG,GRP,m); cH.style.opacity=.52; ann.style("opacity",.5); }
     hvg.style("display",null); hring.attr("cx",d.x).attr("cy",d.y); hov.attr("transform",`translate(${d.x},${d.y}) scale(1.45)`).attr("fill",DIV33(v));
     hlab.selectAll("*").remove(); const right=d.x<w-150;
     V.lines(hlab,d.x+(right?rh*2.3+6:-rh*2.3-6),d.y-4,[[`${sgn(v)} °C`,true],[d.cn||llFmt(d.ll[0],d.ll[1])]],{anchor:right?"start":"end",halo:true,size:12.5});

@@ -169,7 +169,7 @@ piece(1,(el,w)=>{
     const k=d3.leastIndex(d3.range(12),i=>Math.abs(x(i)-px));
     const best=d3.least(ONI_YEARS.filter(yr=>D.oni[yr][k]!=null),yr=>Math.abs(y(D.oni[yr][k])-py)), v=D.oni[best][k];
     const rank=1+ONI_YEARS.filter(yr=>D.oni[yr][k]!=null&&D.oni[yr][k]>v).length, n=ONI_YEARS.filter(yr=>D.oni[yr][k]!=null).length;
-    hl.attr("d",line(D.oni[best])).attr("stroke",best===NOW?C.vermell:C.ink).attr("stroke-width",2.4).style("display",null).raise(); ctx.style("opacity",.35);
+    hl.attr("d",line(D.oni[best])).attr("stroke",best===NOW?C.vermell:C.ink).attr("stroke-width",2.4).style("display",null).raise(); ctx.style("opacity",.55);
     H.selectAll("*").remove(); H.raise();
     guide(H,x(k),m.t,x(k),h-m.b); guide(H,0,y(v),x(k),y(v));
     ring(H,x(k),y(v),5); H.append("circle").attr("cx",x(k)).attr("cy",y(v)).attr("r",3).attr("fill",C.ink);
@@ -206,7 +206,7 @@ piece(2,(el,w)=>{
     V.t(g,X,e.s>0?y(e.pk.v)-7:y(e.pk.v)+15,txt,{anchor:"middle",size:mob?11.5:12,weight:600,halo:true}); });
   const tp=V.tip(el), H=hv(g), hit=hitRect(s,w,h), base=g.selectAll("path").filter(function(){ return this.getAttribute("shape-rendering")==="crispEdges"; });
   V.hover(hit.node(),(ev,[px])=>{ const t=x.invert(px), p=d3.least(ONI_PTS,d=>Math.abs(d.t-t)), ep=EPIS.find(e=>e.b.t<=p.t&&p.t<=e.e.t);
-    H.selectAll("*").remove(); base.style("opacity",.3);
+    H.selectAll("*").remove(); base.style("opacity",.55);
     if(ep){ let d=""; ONI_PTS.forEach(q=>{ if(q.t>=ep.b.t&&q.t<=ep.e.t)d+=`M${x(q.t).toFixed(1)},${y(0).toFixed(1)}V${y(q.v).toFixed(1)}`; });
       H.append("path").attr("d",d).attr("stroke",ep.s>0?C.vermell:C.blau).attr("stroke-width",bw+.6).attr("shape-rendering","crispEdges");
       const X=x(ep.pk.t), lab=`${ep.s>0?"El Niño":"La Niña"} ${ep.b.y===ep.e.y?ep.b.y:ep.b.y+"–"+String(ep.e.y).slice(2)}`;
@@ -311,22 +311,23 @@ const SEQ5=V.seq(C.blau,[1930,2025]);
 legend(5,el=>{ V.legendRamp(el,{scale:SEQ5,min:1958,max:2025,ticks:[1970,1990,2010],f:d=>d,title:"Any",w:150});
   V.legendCat(el,[{c:C.vermell,t:"2026",kind:"line",w:2.2}]); });
 piece(5,(el,w)=>{
-  const mob=w<640, S=Math.min(w,mob?w:600), h=S, cx=w/2, cy=h/2, R=S/2-24;
+  const mob=w<640, S=Math.min(w,mob?w:540), h=S, cx=w/2, cy=h/2, R=S/2-18;
   const s=V.svg(el,w,h,"Espiral de la concentració mensual de CO₂ a Mauna Loa del 1958 al 2026: cada volta és un any i el radi creix de 315 a 432 ppm."), g=s.append("g"); s.attr("data-enter","seq");
-  const r=d3.scaleLinear([300,436],[R*.1,R]), A=k=>k/12*2*Math.PI, P=(k,v)=>[cx+r(v)*Math.sin(A(k)),cy-r(v)*Math.cos(A(k))];
-  [320,360,400,430].forEach(v=>{ g.append("circle").attr("cx",cx).attr("cy",cy).attr("r",r(v)).attr("fill","none").attr("stroke",C.grid); });
+  // Escala ajustada a les dades reals (313–434 ppm) des de gairebé el centre perquè no quedi un forat blanc buit
+  const r=d3.scaleLinear([313,434],[R*.04,R]), A=k=>k/12*2*Math.PI, P=(k,v)=>[cx+r(v)*Math.sin(A(k)),cy-r(v)*Math.cos(A(k))];
+  [330,360,390,420].forEach(v=>{ g.append("circle").attr("cx",cx).attr("cy",cy).attr("r",r(v)).attr("fill","none").attr("stroke",C.grid); });
   d3.range(12).forEach(k=>{ const [x2,y2]=[cx+R*Math.sin(A(k)),cy-R*Math.cos(A(k))]; g.append("line").attr("x1",cx).attr("y1",cy).attr("x2",x2).attr("y2",y2).attr("stroke",C.grid);
-    const [lx,ly]=[cx+(R+13)*Math.sin(A(k)),cy-(R+13)*Math.cos(A(k))]; V.t(g,lx,ly+4,V.MES1[k],{anchor:"middle",size:V.FS.small,fill:C.muted}); });
+    const [lx,ly]=[cx+(R+11)*Math.sin(A(k)),cy-(R+11)*Math.cos(A(k))]; V.t(g,lx,ly+4,V.MES1[k],{anchor:"middle",size:V.FS.small,fill:C.muted}); });
   const sp=d3.line().curve(d3.curveCatmullRom.alpha(.5));
   d3.groups(CO2,d=>d.y).forEach(([yr,ms])=>{ const nx=CO2.find(d=>d.y===yr+1&&d.k===0), pts=ms.concat(nx?[nx]:[]).map(d=>P(d.k,d.v));
-    g.append("path").datum(yr).attr("class","y5").attr("d",sp(pts)).attr("fill","none").attr("stroke",yr>=NOW?C.vermell:SEQ5(yr)).attr("stroke-width",yr>=NOW?2.2:1).attr("stroke-linecap","round"); });
-  [320,360,400,430].forEach((v,i)=>V.t(g,cx+4,cy-r(v)+12,f0(v)+(i===3?" ppm":""),{size:V.FS.small,fill:C.muted,halo:true}));
+    g.append("path").datum(yr).attr("class","y5").attr("d",sp(pts)).attr("fill","none").attr("stroke",yr>=NOW?C.vermell:SEQ5(yr)).attr("stroke-width",yr>=NOW?2.2:1.05).attr("stroke-linecap","round"); });
+  [330,360,390,420].forEach((v,i)=>V.t(g,cx+4,cy-r(v)+12,f0(v)+(i===3?" ppm":""),{size:V.FS.small,fill:C.muted,halo:true}));
   const last=CO2[CO2.length-1], first=CO2[0], mx=d3.greatest(CO2.filter(d=>d.y===NOW),d=>d.v);
-  const [fx,fy]=P(first.k,first.v); V.note(g,{x:fx,y:fy,tx:fx+(mob?30:44),ty:fy+(mob?26:34),kind:"straight",anchor:"start",lines:[["1958",true],[f1(first.v)+" ppm"]],size:12});
-  const [mx1,my1]=P(mx.k,mx.v); V.note(g,{x:mx1,y:my1,tx:mob?mx1-8:mx1+40,ty:my1+(mob?46:30),kind:"straight",anchor:mob?"end":"start",dot:true,lines:[[`${V.MES[mx.k]} 2026`,true,C.vermell],[f1(mx.v)+" ppm"]],size:12});
+  const [fx,fy]=P(first.k,first.v); V.note(g,{x:fx,y:fy,tx:fx+(mob?32:48),ty:fy+(mob?24:30),kind:"straight",anchor:"start",lines:[["1958",true],[f1(first.v)+" ppm"]],size:12});
+  const [mx1,my1]=P(mx.k,mx.v); V.note(g,{x:mx1,y:my1,tx:mob?mx1-8:mx1+36,ty:my1+(mob?44:28),kind:"straight",anchor:mob?"end":"start",dot:true,lines:[[`${V.MES[mx.k]} 2026`,true,C.vermell],[f1(mx.v)+" ppm"]],size:12});
   const pts=CO2.map(d=>({d,p:P(d.k,d.v)})), tp=V.tip(el), H=hv(g), hit=hitRect(s,w,h), yrs=g.selectAll("path.y5");
   V.hover(hit.node(),(ev,[px,py])=>{ const b=d3.least(pts,o=>(o.p[0]-px)**2+(o.p[1]-py)**2), yr=b.d.y;
-    dim(yrs,d=>d===yr,.12); yrs.filter(d=>d===yr).raise().attr("stroke-width",2.6).attr("stroke",yr>=NOW?C.vermell:C.ink);
+    dim(yrs,d=>d===yr,.48); yrs.filter(d=>d===yr).raise().attr("stroke-width",2.6).attr("stroke",yr>=NOW?C.vermell:C.ink);
     yrs.filter(d=>d!==yr).attr("stroke-width",d=>d>=NOW?2.2:1).attr("stroke",d=>d>=NOW?C.vermell:SEQ5(d));
     H.selectAll("*").remove(); H.raise(); guide(H,cx,cy,b.p[0],b.p[1]); ring(H,b.p[0],b.p[1],5);
     const lp=[cx+(R+13)*Math.sin(A(b.d.k)),cy-(R+13)*Math.cos(A(b.d.k))]; pill(H,lp[0],lp[1],V.MES1[b.d.k]);
@@ -411,7 +412,7 @@ piece(7,(el,w)=>{
   const all=CLOUD.concat(STARS), dl=d3.Delaunay.from(all,d=>x(d.n),d=>y(d.v)), tp=V.tip(el), H=hv(g), hit=hitRect(s,w,h), cv=el.querySelector("canvas.ibv");
   s.attr("aria-hidden",null);
   V.hover(hit.node(),(ev,[px,py])=>{ const d=all[dl.find(px,py)], X=x(d.n), Y=y(d.v), above=CLOUD.filter(q=>q.v>d.v).length;
-    cv.style.transition="opacity .15s"; cv.style.opacity=.35; H.selectAll("*").remove(); H.raise();
+    cv.style.transition="opacity .15s"; cv.style.opacity=.52; H.selectAll("*").remove(); H.raise();
     guide(H,X,Y,X,h-m.b); guide(H,0,Y,X,Y);
     H.append("circle").attr("cx",X).attr("cy",Y).attr("r",4.5).attr("fill",C.vermell); ring(H,X,Y,7);
     pill(H,X,h-m.b+16,f0(d.n)); pill(H,14,Y,f1(d.v));
@@ -427,15 +428,15 @@ const DUST=(function(){ const r=V.rng(8), out=[], cl=(v,a,b)=>Math.max(a,Math.mi
   for(let i=0;i<60000;i++){ const u=r(); let x,y;
     if(u<.32){ x=38+V.gauss(r)*7; y=33+V.gauss(r)*6+(x-38)*.35; }
     else if(u<.8){ x=60+V.gauss(r)*8; y=60+V.gauss(r)*8+(x-60)*.5; }
-    else { x=70+r()*30; y=x-3+V.gauss(r)*5; if(r()<.4)x=Math.round(x/5)*5; if(r()<.4)y=Math.round(y/5)*5; if(r()<.06){x=99+r();y=99+r();} }
+    else { x=70+r()*30; y=x-3+V.gauss(r)*5; if(r()<.28)x=Math.round(x/5)*5+(r()-.5)*.35; if(r()<.28)y=Math.round(y/5)*5+(r()-.5)*.35; if(r()<.05){x=98.5+r()*1.5;y=98.5+r()*1.5;} }
     out.push([cl(x,10,100),cl(y,20,100)]); }
   return out; })();
-legend(8,el=>V.legendCat(el,[{c:C.blau,t:"1 punt = 1 observació",a:.6}]));
+legend(8,el=>V.legendCat(el,[{c:C.blau,t:"1 punt = 1 observació",a:.75}]));
 piece(8,(el,w)=>{
   const mob=w<640, h=mob?360:470, m={t:30,r:mob?40:48,b:40,l:6};
   const {ctx,s}=layer(el,w,h,"Seixanta mil punts: la participació i el resultat de cada observació. A dalt a la dreta apareixen línies als valors acabats en 0 i en 5. Dades d'exemple.");
   const x=d3.scaleLinear([10,100],[m.l,w-m.r]), y=d3.scaleLinear([20,100],[h-m.b,m.t]), g=s.append("g");
-  ctx.fillStyle=V.alpha(C.blau,mob?.09:.07); const n=mob?30000:60000, sz=mob?1.2:1.3;
+  ctx.fillStyle=V.alpha(C.blau,mob?.24:.19); const n=mob?30000:60000, sz=mob?1.35:1.45;
   for(let i=0;i<n;i++){ const d=DUST[i]; ctx.fillRect(x(d[0])-sz/2,y(d[1])-sz/2,sz,sz); }
   d3.range(20,101,10).forEach(v=>{ g.append("line").attr("x1",w-m.r+8).attr("x2",w).attr("y1",y(v)).attr("y2",y(v)).attr("stroke",C.ink).attr("stroke-width",.8); V.t(g,w,y(v)-4,v,{anchor:"end",size:12.5,fill:C.ink}); });
   d3.range(10,101,10).forEach(v=>{ g.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",h-m.b+6).attr("y2",h-m.b+14).attr("stroke",C.ink).attr("stroke-width",.8);
@@ -562,7 +563,7 @@ const M11=piece(11,(el,w)=>{
   update(mode11,false);
   const tp=V.tip(el), H=hv(g), hit=hitRect(s,w,h,"pointer");
   V.hover(hit.node(),(ev,[px,py])=>{ const P=mode11?P1:P0, i=d3.leastIndex(P,p=>(p[0]+2-px)**2+(p[1]+58-py)**2), d=dots[i], u=UNITS[d.gi];
-    sel.interrupt().style("opacity",q=>q.gi===d.gi?1:.18).attr("r",q=>q.gi===d.gi?r*1.15:r);
+    sel.interrupt().style("opacity",q=>q.gi===d.gi?1:.5).attr("r",q=>q.gi===d.gi?r*1.15:r);
     H.selectAll("*").remove(); H.raise(); const gp=P.filter((p,j)=>dots[j].gi===d.gi), x0=d3.min(gp,p=>p[0])-cell/2, x1=d3.max(gp,p=>p[0])+cell/2, y0=d3.min(gp,p=>p[1])-cell/2, y1=d3.max(gp,p=>p[1])+cell/2;
     if(mode11){ H.append("rect").attr("x",x0-3).attr("y",y0-3).attr("width",x1-x0+6).attr("height",y1-y0+6).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.2); }
     pill(H,(x0+x1)/2,y1+14,`${u.t} · ${u.n} %`);
@@ -576,40 +577,62 @@ document.querySelectorAll('[data-seg="11"] button').forEach(b=>b.addEventListene
 void M11;
 
 /* =====================================================================
-   IB-12 · CAMP DE PUNTS SOBRE MAPA  (simulació + mapa real)
+   IB-12 · CAMP CONTINU I ISOLÍNIES SOBRE MAPA  (simulació + mapa real)
+   Franges litogràfiques translúcides (estil IB-26 i IB-34) + isolínies fines en vermell
+   i blau amb terra silenciosa a sobre, sense talls secs entre regions.
    ===================================================================== */
 let W=null;
 const DIV12=V.div(2.5);
-legend(12,el=>V.legendRamp(el,{scale:DIV12,min:-2.5,max:2.5,ticks:[-2,-1,0,1,2],f:v=>sgn(v,0),title:"Temperatura respecte al normal (°C)",lo:"Més freda",hi:"Més calenta"}));
+legend(12,el=>{
+  V.legendRamp(el,{scale:DIV12,min:-2.5,max:2.5,ticks:[-2,-1,0,1,2],f:v=>sgn(v,0),title:"Temperatura respecte al normal (°C)",lo:"Més freda",hi:"Més calenta"});
+  V.legendCat(el,[{c:C.vermell,t:"+0,5 / +1,5 °C",kind:"line",w:1.1},{c:C.blau,t:"−0,5 °C",kind:"line",w:1.1},{c:C.ink2,t:"0 °C",kind:"line",w:.9,dash:"3 3"}]);
+});
 function field12(lon,lat){ const L=lon<0?lon+360:lon;
   return 2.5*Math.exp(-(((L-262)/30)**2))*Math.exp(-((lat/(7+.09*Math.max(0,282-L)))**2))+1.1*Math.exp(-(((L-279)/5)**2)-(((lat+5)/7)**2))
     -.85*Math.exp(-(((L-150)/16)**2)-(((lat-9)/9)**2))-.5*Math.exp(-(((L-160)/14)**2)-(((lat+14)/8)**2))+.18*Math.sin(L/9)*Math.cos(lat/7); }
 const M12=piece(12,(el,w)=>{
   if(!W){ V.world().then(x=>{W=x;M12.redraw();}); return false; }
   const mob=w<640, h=Math.round(w*(mob?.62:.4));
-  const {ctx,s}=layer(el,w,h,"Mapa del Pacífic tropical amb una trama de punts: una llengua d'aigua més calenta que el normal s'estén des de la costa del Perú cap a l'oest per l'equador; a l'oest, l'aigua és una mica més freda. Simulació."), g=s.append("g"), cv=el.querySelector("canvas.ibv");
+  const {ctx,s}=layer(el,w,h,"Mapa del Pacífic tropical amb franges suaus translúcides i isolínies: una llengua d'aigua més calenta que el normal s'estén des de la costa del Perú cap a l'oest per l'equador; a l'oest, l'aigua és una mica més freda. Simulació."), g=s.append("g"), cv=el.querySelector("canvas.ibv");
   const proj=d3.geoEquirectangular().rotate([160,0]).fitSize([w,h],{type:"MultiPoint",coordinates:mob?[[125,-26],[-72,26]]:[[100,-33],[-68,33]]});
   const path=d3.geoPath(proj), id="cl12"+Math.random().toString(36).slice(2,6);
   s.append("defs").append("clipPath").attr("id",id).append("rect").attr("width",w).attr("height",h); g.attr("clip-path",`url(#${id})`);
-  g.append("path").attr("d",path(W.land)).attr("fill",C.land); g.append("path").attr("d",path(W.borders)).attr("fill","none").attr("stroke","#fff").attr("stroke-width",.7);
-  const eq=proj([0,0])[1]; g.append("line").attr("x1",0).attr("x2",w).attr("y1",eq).attr("y2",eq).attr("stroke",C.ghost).attr("stroke-dasharray","2 4");
-  const onLand=landMask(proj,w,h,W.land), sp=Math.max(mob?6:7,w/(mob?62:120)), dg=d3.select(cv);
-  for(let j=0,yy=sp/2;yy<h;j++,yy+=sp*.866)for(let xx=(j&1?sp/2:0)+sp/4;xx<w;xx+=sp){
-    if(onLand(xx,yy))continue; const ll=proj.invert([xx,yy]), v=field12(ll[0],ll[1]); if(Math.abs(v)<.15)continue;
-    ctx.fillStyle=DIV12(v); ctx.beginPath(); ctx.arc(xx,yy,sp*.5*Math.min(1,.32+Math.abs(v)/2.2),0,7); ctx.fill(); }
+  const onLand=landMask(proj,w,h,W.land), dg=d3.select(cv);
+  // 1. Franges litogràfiques translúcides (esglaons suaus de 0,4 °C mesclats amb blanc, sense tall sec)
+  const sc=mob?3:2, ow=Math.ceil(w/sc), oh=Math.ceil(h/sc), F=new Float64Array(ow*oh);
+  const off=document.createElement("canvas"); off.width=ow; off.height=oh;
+  const ox=off.getContext("2d"), im=ox.createImageData(ow,oh), d=im.data;
+  for(let py=0;py<oh;py++)for(let px=0;px<ow;px++){
+    const ll=proj.invert([(px+.5)*sc,(py+.5)*sc]), v=field12(ll[0],ll[1]);
+    F[py*ow+px]=v;
+    const q=Math.round(v/.4)*.4, rgb=d3.rgb(DIV12(q)), a=Math.abs(q)<.2?.12:.62, o=(py*ow+px)*4;
+    d[o]=Math.round(255*(1-a)+rgb.r*a); d[o+1]=Math.round(255*(1-a)+rgb.g*a); d[o+2]=Math.round(255*(1-a)+rgb.b*a); d[o+3]=255;
+  }
+  ox.putImageData(im,0,0); ctx.imageSmoothingEnabled=true; ctx.drawImage(off,0,0,w,h);
+  // 2. Isolínies netes sobre el mar (0 °C discontinu, vermell càlid, blau fred)
+  const gp=d3.geoPath(d3.geoIdentity().scale(sc));
+  const gIso=g.append("g");
+  d3.contours().size([ow,oh]).thresholds([-.5,0,.5,1,1.5,2])(F).forEach(c=>{
+    const v=c.value, isZ=v===0, col=isZ?C.ink2:(v>0?C.vermell:C.blau);
+    gIso.append("path").attr("d",gp(c)).attr("fill","none").attr("stroke",col)
+      .attr("stroke-width",isZ?.75:1.05).attr("stroke-opacity",isZ?.45:.82)
+      .attr("stroke-dasharray",isZ?"3 3":null).attr("stroke-linejoin","round");
+  });
+  // 3. Terra silenciosa i costes nítides a sobre
+  g.append("path").attr("d",path(W.land)).attr("fill",C.land).attr("stroke","#B4B2AC").attr("stroke-width",.75);
+  g.append("path").attr("d",path(W.borders)).attr("fill","none").attr("stroke","#fff").attr("stroke-width",.7);
+  const eq=proj([0,0])[1]; g.append("line").attr("x1",0).attr("x2",w).attr("y1",eq).attr("y2",eq).attr("stroke",C.ink2).attr("stroke-opacity",.35).attr("stroke-dasharray","2 4");
   V.t(g,proj([-150,22])[0],proj([-150,22])[1],"Oceà Pacífic",{anchor:"middle",italic:true,size:mob?12:13.5,fill:C.ink2,halo:true});
   V.t(g,proj([-170,0])[0],eq-5,"Equador",{italic:true,size:11.5,fill:C.muted,halo:true});
   [[[134,-24],"Austràlia"],[[114,-1.5],"Indonèsia"],[[-75,-9],"Perú"],[[-103,24],"Mèxic"]].forEach(([ll,t])=>{ const p=proj(ll); if(p[0]>20&&p[0]<w-20&&p[1]>10&&p[1]<h-10)V.t(g,p[0],p[1],t,{anchor:"middle",size:11.5,fill:C.muted}); });
-  const pk=proj([-96,-1]); V.note(g,{x:pk[0],y:pk[1],tx:pk[0]-(mob?40:70),ty:pk[1]-(mob?44:70),kind:"elbow",dot:true,anchor:"end",lines:[["Llengua d'aigua calenta",true],["fins a +2,5 °C"]],size:mob?12:12.5});
+  const pk=proj([-96,-1]); V.note(g,{x:pk[0],y:pk[1],tx:pk[0]-(mob?40:70),ty:pk[1]-(mob?44:70),kind:"curve",dot:true,anchor:"end",lines:[["Llengua d'aigua calenta",true],["fins a +2,5 °C"]],size:mob?12:12.5});
   const tp=V.tip(el), H=hv(g), hit=hitRect(s,w,h);
   V.hover(hit.node(),(ev,[px,py])=>{ H.selectAll("*").remove(); if(onLand(px,py)){ dg.style("opacity",1); return tp.hide(); }
-    const ll=proj.invert([px,py]), v=field12(ll[0],ll[1]); dg.style("opacity",.5); H.raise();
-    H.append("line").attr("x1",0).attr("x2",w).attr("y1",py).attr("y2",py).attr("stroke",C.ink).attr("stroke-width",.6).attr("stroke-dasharray","2 3");
-    H.append("line").attr("x1",px).attr("x2",px).attr("y1",0).attr("y2",h).attr("stroke",C.ink).attr("stroke-width",.6).attr("stroke-dasharray","2 3");
-    H.append("circle").attr("cx",px).attr("cy",py).attr("r",7).attr("fill",DIV12(v)).attr("stroke","#fff").attr("stroke-width",2); ring(H,px,py,9);
-    pill(H,px,h-10,`${f0(Math.abs(ll[0]))}° ${ll[0]>=0?"E":"O"}`); pill(H,4,py,`${f0(Math.abs(ll[1]))}° ${ll[1]>=0?"N":"S"}`,{anchor:"start"});
-    V.t(H,px+(px>w*.75?-16:16),py-12,`${sgn(v)} °C`,{anchor:px>w*.75?"end":"start",weight:700,size:14,halo:true});
-    tp.show(`<b>${sgn(v)} °C respecte al normal</b><br>${f0(Math.abs(ll[1]))}° ${ll[1]>=0?"N":"S"}, ${f0(Math.abs(ll[0]))}° ${ll[0]>=0?"E":"O"} · simulació`,px,py);
+    const ll=proj.invert([px,py]), v=field12(ll[0],ll[1]); dg.style("opacity",.62); H.raise();
+    H.append("circle").attr("cx",px).attr("cy",py).attr("r",6).attr("fill",V.alpha(DIV12(v),.35)).attr("stroke",C.ink).attr("stroke-width",1.4);
+    H.append("circle").attr("cx",px).attr("cy",py).attr("r",2.2).attr("fill",C.ink);
+    V.t(H,px+(px>w*.75?-12:12),py-10,`${sgn(v)} °C`,{anchor:px>w*.75?"end":"start",weight:700,size:13,halo:true});
+    tp.show(`<b>${sgn(v)} °C respecte al normal</b> · ${f0(Math.abs(ll[1]))}° ${ll[1]>=0?"N":"S"}, ${f0(Math.abs(ll[0]))}° ${ll[0]>=0?"E":"O"} (simulació)`,px,py);
   },()=>{ tp.hide(); dg.style("opacity",1); H.selectAll("*").remove(); });
 });
 
@@ -664,11 +687,12 @@ document.querySelector('[data-play="13"]').addEventListener("click",()=>{ const 
     .transition().duration(V.reduced?0:5200).ease(d3.easeLinear).attr("stroke-dashoffset",0).on("end",()=>p.attr("stroke-dasharray",null)); }); });
 
 /* =====================================================================
-   IB-14 · ANELLS PROPORCIONALS  (dades d'exemple + mapa real)
+   IB-14 · TAQUES PROPORCIONALS  (dades d'exemple + mapa real)
+   Taques translúcides planes (sense degradats radials) sobre rutes fines en tinta negra.
    ===================================================================== */
 const CAT14=[{c:C.vermell,t:"Categoria A"},{c:C.blau,t:"Categoria B"},{c:C.groc,t:"Categoria C"}];
 const R14=d3.scaleSqrt([0,30],[0,34]);
-legend(14,el=>{ V.legendCat(el,CAT14.map(d=>({c:d.c,t:d.t,a:.45})).concat([{c:C.landEdge,t:"Ruta (blanc sobre terra)",kind:"line",w:2.2}]));
+legend(14,el=>{ V.legendCat(el,CAT14.map(d=>({c:d.c,t:d.t,a:.38})).concat([{c:C.ink,t:"Ruta",kind:"line",w:.9}]));
   V.legendSize(el,{title:"Casos per lloc",values:[1,10,25],r:R14,f:f0,stroke:C.ink2}); });
 const SITES=(function(){ const r=V.rng(14), out=[]; const hot=[[13,30.5],[10,18],[24,13.5],[29,15],[14,26],[3,22],[-5,16],[30,24]];
   for(let i=0;i<60;i++){ const hc=hot[Math.floor(r()*hot.length)], big=r()<.12;
@@ -677,22 +701,21 @@ const SITES=(function(){ const r=V.rng(14), out=[]; const hot=[[13,30.5],[10,18]
 const M14=piece(14,(el,w)=>{
   if(!W){ V.world().then(x=>{W=x;M14.redraw();}); return false; }
   const mob=w<640, h=Math.round(mob?w*.95:Math.min(620,w*.6)), k=mob?.65:1;
-  const s=V.svg(el,w,h,"Mapa del nord d'Àfrica amb cercles translúcids proporcionals (àrea = nombre de casos) sobre rutes blanques gruixudes. Dades d'exemple."), g=s.append("g");
+  const s=V.svg(el,w,h,"Mapa del nord d'Àfrica amb taques translúcides proporcionals (àrea = nombre de casos) sobre rutes fines en tinta negra. Dades d'exemple."), g=s.append("g");
   const proj=d3.geoMercator().fitExtent([[6,6],[w-6,h-6]],{type:"MultiPoint",coordinates:[[-18,4],[42,37]]}), path=d3.geoPath(proj);
   const id="cl14"+Math.random().toString(36).slice(2,6), defs=s.append("defs"); defs.append("clipPath").attr("id",id).append("rect").attr("width",w).attr("height",h); g.attr("clip-path",`url(#${id})`);
-  CAT14.forEach((c,i)=>{ const rg=defs.append("radialGradient").attr("id",id+"g"+i);
-    [[0,.52],[.58,.38],[.88,.2],[1,.06]].forEach(([o,a])=>rg.append("stop").attr("offset",o).attr("stop-color",c.c).attr("stop-opacity",a)); });
   g.append("path").attr("d",path(W.land)).attr("fill",C.land); g.append("path").attr("d",path(W.borders)).attr("fill","none").attr("stroke","#fff").attr("stroke-width",.8);
-  // rutes en blanc gruixut a sota dels cercles translúcids
+  // rutes fines en tinta negra a sota de les taques translúcides
   const routes=[[[-17,14.7],[-10,17],[-3,22],[2,28],[3,36.7]],[[-16,12.5],[-6,13],[2,13.5],[8,16],[12,23],[13.2,32.8]],[[32.5,15.6],[25,19],[19,25],[15,29],[13.2,32.8]],[[38.7,9],[33,15.6],[31.5,22],[31.2,30]]];
   const ln=d3.line().curve(d3.curveBasis), rt=g.append("g");
-  routes.forEach(r=>{ const pts=r.map(p=>proj(p)); rt.append("path").attr("d",ln(pts)).attr("fill","none").attr("stroke","#FFFFFF").attr("stroke-width",mob?3:4.5).attr("stroke-linecap","round").attr("stroke-opacity",.92); });
+  routes.forEach(r=>{ const pts=r.map(p=>proj(p)); rt.append("path").attr("d",ln(pts)).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",mob?.75:.9).attr("stroke-linecap","round").attr("stroke-opacity",.55); });
   [[[-2,17.5],"Mali"],[[9,17.5],"Níger"],[[18.5,15],"Txad"],[[18,27],"Líbia"],[[2.5,27.5],"Algèria"],[[29.5,13],"Sudan"],[[29.5,26.5],"Egipte"],[[8,9.5],"Nigèria"],[[-10.5,20.5],"Mauritània"]]
     .forEach(([ll,t])=>{ const p=proj(ll); V.t(g,p[0],p[1],t,{anchor:"middle",size:mob?11:11.5,fill:C.muted}); });
   const rr=d=>Math.max(3.5,R14(d.n)*k), bl=g.append("g");
   SITES.slice().sort((a,b)=>b.n-a.n).forEach(d=>{ const p=proj([d.lon,d.lat]), sg=bl.append("g").datum(d).attr("class","s14");
-    sg.append("circle").attr("cx",p[0]).attr("cy",p[1]).attr("r",rr(d)).attr("fill",`url(#${id}g${d.k})`).style("mix-blend-mode","multiply");
-    sg.append("circle").attr("cx",p[0]).attr("cy",p[1]).attr("r",1.5).attr("fill",d3.lab(CAT14[d.k].c).darker(.8)); });
+    sg.append("circle").attr("cx",p[0]).attr("cy",p[1]).attr("r",rr(d)).attr("fill",CAT14[d.k].c).attr("fill-opacity",.34)
+      .attr("stroke",d3.lab(CAT14[d.k].c).darker(.3)).attr("stroke-width",.55).attr("stroke-opacity",.42).style("mix-blend-mode","multiply");
+    sg.append("circle").attr("cx",p[0]).attr("cy",p[1]).attr("r",1.4).attr("fill",d3.lab(CAT14[d.k].c).darker(.8)); });
   const big=d3.greatest(SITES,d=>d.n), bp=proj([big.lon,big.lat]), br=rr(big);
   V.note(g,{x:bp[0]+br*.7,y:bp[1]-br*.7,tx:bp[0]+br+(mob?14:34),ty:bp[1]-br-(mob?10:22),kind:"curve",bend:10,anchor:"start",lines:[[`${big.n} casos`,true],["en un sol lloc"]],size:12});
   const tp=V.tip(el), H=hv(g), hit=hitRect(s,w,h,"pointer"), pts=SITES.map(d=>({d,p:proj([d.lon,d.lat])})), sites=bl.selectAll("g.s14"), tot=d3.sum(SITES,d=>d.n);
@@ -708,12 +731,17 @@ const M14=piece(14,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-15 · ISOLÍNIES SOBRE CAMP  (simulació + mapa real)
+   IB-15 · ISOLÍNIES SOBRE TAQUES DE CAMP  (simulació + mapa real)
+   Taques discretes d'aquarel·la (pluja anual, estil «Germany») i isolínies negres
+   molt fines (0,75 px, sense vora blanca gruixuda) per a la temperatura mitjana.
    ===================================================================== */
-const R15=d3.scaleSqrt([150,2600],[.5,1]);
+const RAIN_TH=[150,400,700,1050,1450,1900];
+const RAIN_COL=["#EFF4FA","#D4E2F3","#AEC7E6","#7DA4D6","#4A7BC0","#234E92"];
 const TEMP_T=[14,16,18,20,22,24,26,28];
-legend(15,el=>{ V.legendSize(el,{title:"Pluja anual (mm)",values:[300,1000,2400],r:v=>R15(v)*9,f:v=>f0(v),stroke:C.blau});
-  V.legendCat(el,[{c:C.ink,t:"Temperatura mitjana (°C)",kind:"line",w:.9}]); });
+legend(15,el=>{
+  legendSteps(el,{title:"Pluja anual (mm)",colors:RAIN_COL,thresholds:RAIN_TH,f:f0,cw:34});
+  V.legendCat(el,[{c:C.ink,t:"Isoterma de temperatura (°C)",kind:"line",w:.8}]);
+});
 function rain15(lon,lat){ return 110*Math.sin(lon/1.7+lat/2.3)+80*Math.cos(lat/1.3-lon/3.1)+220+1600*Math.exp(-(((lat+12.5)/5)**2))*sig((lon-122)/4)+1100*Math.exp(-(((lon-154)/3.6)**2))*Math.exp(-(((lat+25)/11)**2))
   +800*Math.exp(-(((lon-115.5)/3)**2)-(((lat+34)/3)**2))+900*Math.exp(-(((lon-146)/2.2)**2)-(((lat+42)/2)**2))+300*Math.exp(-(((lon-146)/4)**2)-(((lat+37)/3)**2))
   -120*Math.exp(-(((lon-136)/9)**2)-(((lat+26)/6)**2))+70*Math.sin(lon/2.3)*Math.cos(lat/1.9); }
@@ -723,20 +751,30 @@ const M15=piece(15,(el,w)=>{
   if(!W){ V.world().then(x=>{W=x;M15.redraw();}); return false; }
   const mob=w<640, h=Math.round(mob?w*.92:Math.min(560,w*.58));
   const aus=W.countries.features.find(f=>f.id==="036");
-  const {ctx,s}=layer(el,w,h,"Mapa d'Austràlia fet de punts: com més gran i més blau el punt, més pluja; plou molt al nord tropical, a la costa est i al sud-oest, i gairebé gens a l'interior. Les línies fines són la temperatura mitjana, que baixa cap al sud. Simulació."), g=s.append("g"), cv=el.querySelector("canvas.ibv");
-  const proj=d3.geoMercator().fitExtent([[10,10],[w-10,h-10]],aus), path=d3.geoPath(proj);
+  const s=V.svg(el,w,h,"Mapa d'Austràlia amb taques discretes de pluja anual en blau i isolínies negres molt fines de temperatura mitjana. Plou molt al nord tropical, la costa est i el sud-oest; l'interior és sec. Simulació."), g=s.append("g");
+  const proj=d3.geoMercator().fitExtent([[12,12],[w-12,h-12]],aus), path=d3.geoPath(proj);
   const id="cl15"+Math.random().toString(36).slice(2,6); s.append("defs").append("clipPath").attr("id",id).append("path").attr("d",path(aus));
-  g.append("path").attr("d",path(aus)).attr("fill","none").attr("stroke",C.hair).attr("stroke-width",1);
-  const onL=landMask(proj,w,h,aus), sp=Math.max(mob?5.5:7,w/(mob?64:118)), dg=d3.select(cv), DOTS=[];
-  for(let j=0,yy=sp/2;yy<h;j++,yy+=sp*.866)for(let xx=(j&1?sp/2:0)+sp/4;xx<w;xx+=sp){ if(!onL(xx,yy))continue;
-    const ll=proj.invert([xx,yy]), rv=rain15(ll[0],ll[1]), r=sp*.5*R15(Math.max(150,rv)), c=V.seqInterp(C.blau)(.35+.6*Math.min(1,Math.max(0,(rv-200)/2000)));
-    DOTS.push({x:xx,y:yy,rv,tv:temp15(ll[0],ll[1])}); ctx.fillStyle=c; ctx.beginPath(); ctx.arc(xx,yy,r,0,7); ctx.fill(); }
-  const st=mob?4:5, nx=Math.ceil(w/st), ny=Math.ceil(h/st), T=new Float64Array(nx*ny);
-  for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){ const ll=proj.invert([(i+.5)*st,(j+.5)*st]); T[j*nx+i]=temp15(ll[0],ll[1]); }
+  const onL=landMask(proj,w,h,aus);
+
+  // 1. Taques discretes de pluja (polígons de contorn retallats dins Austràlia, sense degradat difús)
+  const st=mob?4:4.5, nx=Math.ceil(w/st), ny=Math.ceil(h/st), RV=new Float64Array(nx*ny), T=new Float64Array(nx*ny);
+  for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){ const ll=proj.invert([(i+.5)*st,(j+.5)*st]); RV[j*nx+i]=rain15(ll[0],ll[1]); T[j*nx+i]=temp15(ll[0],ll[1]); }
   const gp=d3.geoPath(d3.geoIdentity().scale(st)), cg=g.append("g").attr("clip-path",`url(#${id})`);
+  const gBlot=cg.append("g");
+  gBlot.append("path").attr("d",path(aus)).attr("fill",RAIN_COL[0]);
+  d3.contours().size([nx,ny]).thresholds(RAIN_TH)(RV).forEach((c,idx)=>{
+    gBlot.append("path").attr("d",gp(c)).attr("fill",RAIN_COL[Math.min(RAIN_COL.length-1,idx)]).attr("stroke","none");
+  });
+
+  // 2. Isolínies negres molt fines (0,75 px, ZERO línies blanques gruixudes!)
   const tc=d3.contours().size([nx,ny]).thresholds(TEMP_T)(T);
-  tc.forEach(c=>cg.append("path").attr("d",gp(c)).attr("fill","none").attr("stroke","#fff").attr("stroke-width",3).attr("stroke-opacity",.9).attr("stroke-linejoin","round"));
-  tc.forEach(c=>cg.append("path").datum(c.value).attr("class","t15").attr("d",gp(c)).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1).attr("stroke-linejoin","round"));
+  tc.forEach(c=>cg.append("path").datum(c.value).attr("class","t15").attr("d",gp(c))
+    .attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.75).attr("stroke-opacity",.82).attr("stroke-linejoin","round"));
+
+  // Contorn net de la costa
+  g.append("path").attr("d",path(aus)).attr("fill","none").attr("stroke","#A8A6A0").attr("stroke-width",.85);
+
+  // Etiquetes d'isotermes
   const lg=g.append("g"), placed=[];
   tc.forEach(c=>{ const cand=[]; c.coordinates.forEach(poly=>poly.forEach(rg=>{ for(let i=0;i<rg.length;i+=5){ const p=[rg[i][0]*st,rg[i][1]*st];
       if(p[0]<24||p[1]<24||p[0]>w-24||p[1]>h-24)continue; if(!onL(p[0],p[1]))continue; cand.push({rg,i,p}); } }));
@@ -744,79 +782,124 @@ const M15=piece(15,(el,w)=>{
     if(placed.some(q=>Math.hypot(q[0]-best.p[0],q[1]-best.p[1])<46))return; placed.push(best.p);
     const q=best.rg[Math.min(best.rg.length-1,best.i+3)], a0=Math.atan2(q[1]*st-best.p[1],q[0]*st-best.p[0])*180/Math.PI, a=a0>90?a0-180:a0<-90?a0+180:a0;
     lg.append("text").attr("transform",`translate(${best.p[0]},${best.p[1]}) rotate(${a})`).attr("dy","0.35em").attr("text-anchor","middle").attr("font-size",11).attr("font-weight",600).attr("fill",C.ink).text(c.value+" °C")
-      .attr("stroke","#fff").attr("stroke-width",5).attr("paint-order","stroke"); });
+      .attr("stroke","#fff").attr("stroke-width",3.2).attr("paint-order","stroke"); });
+
   [[[130.8,-12.4],"Darwin"],[[133.9,-23.7],"Alice Springs"],[[153,-27.5],"Brisbane"],[[151.2,-33.9],"Sydney"],[[145,-37.8],"Melbourne"],[[138.6,-34.9],"Adelaida"],[[115.9,-31.95],"Perth"]].forEach(([ll,t])=>{ const p=proj(ll), left=ll[0]>149;
-    g.append("circle").attr("cx",p[0]).attr("cy",p[1]).attr("r",3.2).attr("fill","#fff").attr("stroke",C.ink).attr("stroke-width",1.3);
-    V.t(g,p[0]+(left?-7:7),p[1]+4,t,{anchor:left?"end":"start",size:mob?11.5:12.5,weight:600,halo:4}); });
-  if(!mob){ const n1=proj([132,-17]); V.t(g,n1[0],n1[1],"Tròpics humits",{anchor:"middle",italic:true,size:13,fill:C.ink2,halo:4});
-    const n2=proj([127,-26.5]); V.t(g,n2[0],n2[1],"Interior sec",{anchor:"middle",italic:true,size:13,fill:C.ink2,halo:4}); }
-  const tp=V.tip(el), H=hv(g), hit=hitRect(s,w,h), dl=d3.Delaunay.from(DOTS,d=>d.x,d=>d.y), iso=cg.selectAll("path.t15");
-  V.hover(hit.node(),(ev,[px,py])=>{ H.selectAll("*").remove(); if(!DOTS.length)return; const d=DOTS[dl.find(px,py)];
-    if(Math.hypot(d.x-px,d.y-py)>sp*2){ dg.style("opacity",1); iso.style("opacity",1); return tp.hide(); }
-    const near=tc.reduce((a,c)=>Math.abs(c.value-d.tv)<Math.abs(a.value-d.tv)?c:a,tc[0]);
-    dg.style("opacity",.35); iso.style("opacity",v=>v===near.value?1:.25).attr("stroke-width",v=>v===near.value?2:1); H.raise();
-    const r=sp*.5*R15(Math.max(150,d.rv)); H.append("circle").attr("cx",d.x).attr("cy",d.y).attr("r",r*1.6).attr("fill",V.seqInterp(C.blau)(.35+.6*Math.min(1,Math.max(0,(d.rv-200)/2000)))).attr("stroke","#fff").attr("stroke-width",1.5);
-    ring(H,d.x,d.y,r*1.6+4);
-    V.lines(H,d.x+(d.x>w*.7?-16:16),d.y-6,[[`${f0(Math.round(d.rv/10)*10)} mm`,true],[`${f1(d.tv)} °C`]],{anchor:d.x>w*.7?"end":"start",size:13,halo:4});
-    const pct=DOTS.filter(q=>q.rv<d.rv).length/DOTS.length*100;
-    tp.show(`<b>Simulació</b><br>Pluja: ${f0(Math.round(d.rv/10)*10)} mm l'any · més que el ${f0(pct)} % del país<br>Temperatura: ${f1(d.tv)} °C · isoterma de ${near.value} °C`,d.x,d.y);
-  },()=>{ tp.hide(); dg.style("opacity",1); iso.style("opacity",1).attr("stroke-width",1); H.selectAll("*").remove(); });
+    g.append("circle").attr("cx",p[0]).attr("cy",p[1]).attr("r",2.8).attr("fill",C.ink).attr("stroke","#fff").attr("stroke-width",1.1);
+    V.t(g,p[0]+(left?-7:7),p[1]+4,t,{anchor:left?"end":"start",size:mob?11.5:12,weight:600,halo:3.2}); });
+  if(!mob){ const n1=proj([132,-17]); V.t(g,n1[0],n1[1],"Tròpics humits",{anchor:"middle",italic:true,size:12.5,fill:C.ink2,halo:3.2});
+    const n2=proj([127,-26.5]); V.t(g,n2[0],n2[1],"Interior sec",{anchor:"middle",italic:true,size:12.5,fill:C.ink2,halo:3.2}); }
+
+  const tp=V.tip(el), H=hv(g), hit=hitRect(s,w,h), iso=cg.selectAll("path.t15");
+  V.hover(hit.node(),(ev,[px,py])=>{ H.selectAll("*").remove(); if(!onL(px,py)){ gBlot.style("opacity",1); iso.style("opacity",.82).attr("stroke-width",.75); return tp.hide(); }
+    const ll=proj.invert([px,py]), rv=Math.max(120,rain15(ll[0],ll[1])), tv=temp15(ll[0],ll[1]);
+    const near=tc.reduce((a,c)=>Math.abs(c.value-tv)<Math.abs(a.value-tv)?c:a,tc[0]);
+    gBlot.style("opacity",.65); iso.style("opacity",v=>v===near.value?1:.48).attr("stroke-width",v=>v===near.value?1.6:.75); H.raise();
+    H.append("circle").attr("cx",px).attr("cy",py).attr("r",5.5).attr("fill",V.alpha(C.blau,.3)).attr("stroke",C.ink).attr("stroke-width",1.4);
+    H.append("circle").attr("cx",px).attr("cy",py).attr("r",2).attr("fill",C.ink);
+    V.t(H,px+(px>w*.7?-12:12),py-8,`${f0(Math.round(rv/10)*10)} mm · ${f1(tv)} °C`,{anchor:px>w*.7?"end":"start",size:12.5,weight:700,halo:3.4});
+    tp.show(`<b>Simulació</b> · Pluja: <b>${f0(Math.round(rv/10)*10)} mm/any</b> · Temperatura: <b>${f1(tv)} °C</b> (isoterma de ${near.value} °C)`,px,py);
+  },()=>{ tp.hide(); gBlot.style("opacity",1); iso.style("opacity",.82).attr("stroke-width",.75); H.selectAll("*").remove(); });
 });
 
 /* =====================================================================
-   IB-16 · TALL  (esquema)
+   IB-16 · TALL  (esquema · inspirat directament en el tall d'«El Niño i La Niña»)
+   Siluetes reals d'Indonèsia i els Andes (sense blocs rectangulars), circulació de Walker
+   en bucle discontinu amb fletxes fines, pluja delicada, termoclina i aflorament.
    ===================================================================== */
-const ST16={"-1":{dw:.66,de:.08,ts:6,wind:1.25,conv:.1,up:1,ew:-1.2,lbl:"Alisis molt forts"},"0":{dw:.56,de:.16,ts:4,wind:1,conv:.13,up:.75,ew:.2,lbl:"Alisis"},"1":{dw:.4,de:.34,ts:1,wind:.35,conv:.5,up:.08,ew:2.4,lbl:"Alisis febles"}};
+const ST16={"-1":{dw:.68,de:.10,ts:6,wind:1.25,conv:.12,up:1,ew:-1.2,lbl:"Alisis molt forts (125 %)"},"0":{dw:.56,de:.16,ts:4,wind:1,conv:.16,up:.75,ew:.2,lbl:"Alisis normals (100 %)"},"1":{dw:.40,de:.36,ts:1,wind:.32,conv:.52,up:.08,ew:2.4,lbl:"Alisis febles (32 %)"}};
 legend(16,el=>V.legendRamp(el,{scale:V.div(3),min:-3,max:3,ticks:[0],f:()=>"normal",title:"Temperatura de l'aigua",lo:"Més freda",hi:"Més calenta",w:150}));
 let st16=Object.assign({},ST16["0"]);
 const M16=piece(16,(el,w)=>{
-  const mob=w<640, h=mob?260:310;
-  const s=V.svg(el,w,h,"Tall esquemàtic del Pacífic equatorial, d'Indonèsia al Perú: una capa d'aigua calenta més gruixuda a l'oest, la termoclina i l'aigua freda a sota. Amb El Niño la capa calenta s'aplana i arriba a l'est."), g=s.append("g");
-  const lw=Math.max(34,w*.07), x0=lw, x1=w-lw, yS=mob?78:92, yB=h-10, D=yB-yS, div=V.div(3);
+  const mob=w<640, h=mob?260:320;
+  const s=V.svg(el,w,h,"Tall esquemàtic del Pacífic equatorial, d'Indonèsia als Andes del Perú: circulació d'aire dels alisis, pluja on l'aigua és més calenta, termoclina i aflorament d'aigua freda a l'est."), g=s.append("g");
+  const lw=Math.max(46,w*.09), rw=Math.max(54,w*.10), x0=lw, x1=w-rw, yS=mob?94:116, yB=h-10, D=yB-yS, div=V.div(3);
   const id="g16"+Math.random().toString(36).slice(2,6), defs=s.append("defs");
-  const gw=defs.append("linearGradient").attr("id",id+"w"); const gc=defs.append("linearGradient").attr("id",id+"c").attr("x1",0).attr("x2",0).attr("y1",0).attr("y2",1);
-  gc.append("stop").attr("offset",0).attr("stop-color","#DCE5F1"); gc.append("stop").attr("offset",1).attr("stop-color","#BFD0E7");
+  const gw=defs.append("linearGradient").attr("id",id+"w");
+  const gc=defs.append("linearGradient").attr("id",id+"c").attr("x1",0).attr("x2",0).attr("y1",0).attr("y2",1);
+  gc.append("stop").attr("offset",0).attr("stop-color","#DAE4F1"); gc.append("stop").attr("offset",1).attr("stop-color","#B8CCE5");
   const layer=g.append("g"), top=g.append("g");
-  let render=function(p){ layer.selectAll("*").remove(); top.selectAll("*").remove(); gw.selectAll("*").remove();
-    gw.append("stop").attr("offset",0).attr("stop-color",div(2.6)); gw.append("stop").attr("offset",.55).attr("stop-color",div(1.6+p.ew*.3)); gw.append("stop").attr("offset",1).attr("stop-color",div(p.ew));
+
+  let render=function(p){
+    layer.selectAll("*").remove(); top.selectAll("*").remove(); gw.selectAll("*").remove();
+    gw.append("stop").attr("offset",0).attr("stop-color",div(2.6));
+    gw.append("stop").attr("offset",.55).attr("stop-color",div(1.5+p.ew*.32));
+    gw.append("stop").attr("offset",1).attr("stop-color",div(p.ew));
     const surf=xx=>yS-p.ts+(xx-x0)/(x1-x0)*2*p.ts;
     const th=d3.range(0,1.0001,.05).map(f=>[x0+f*(x1-x0),yS+D*(p.dw+(p.de-p.dw)*(f*f*(3-2*f)))]);
-    layer.append("rect").attr("x",x0).attr("y",yS-p.ts).attr("width",x1-x0).attr("height",yB-yS+p.ts).attr("fill",`url(#${id}c)`);
-    const warm=d3.line().curve(d3.curveMonotoneX)([[x0,surf(x0)],[x1,surf(x1)]].concat(th.slice().reverse()));
+
+    // 1. Aigua freda profunda + capa càlida superficial + línies fines de superfície i termoclina
+    layer.append("rect").attr("x",x0-8).attr("y",yS-p.ts).attr("width",x1-x0+16).attr("height",yB-yS+p.ts).attr("fill",`url(#${id}c)`);
+    const warm=d3.line().curve(d3.curveMonotoneX)([[x0-6,surf(x0)],[x1+6,surf(x1)]].concat(th.slice().reverse()));
     layer.append("path").attr("d",warm+"Z").attr("fill",`url(#${id}w)`);
     layer.append("path").attr("d",d3.line().curve(d3.curveMonotoneX)(th)).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.9);
-    layer.append("rect").attr("x",0).attr("y",yS-18).attr("width",x0).attr("height",yB-yS+18).attr("fill",C.land);
-    layer.append("rect").attr("x",x1).attr("y",yS-24).attr("width",w-x1).attr("height",yB-yS+24).attr("fill",C.land);
-    V.t(top,x0/2,yS-24,"Indonèsia",{anchor:"middle",italic:true,size:11.5,fill:C.ink2});
-    V.t(top,x1+(w-x1)/2,yS-30,"Perú",{anchor:"middle",italic:true,size:11.5,fill:C.ink2});
-    const mid=th[10]; V.t(top,mid[0],mid[1]-6,"Termoclina",{anchor:"middle",italic:true,size:12,halo:true});
-    V.t(top,x0+12,yS+18,"Aigua calenta",{size:12.5,weight:700,halo:true});
-    V.t(top,(x0+x1)/2,yB-12,"Aigua freda",{anchor:"middle",size:12.5,weight:700,fill:C.blau,halo:true});
-    // vent
-    const wl=(x1-x0)*.42*p.wind, wy=yS-(mob?40:48), wx=(x0+x1)*.55;
-    top.append("path").attr("d",`M${wx+wl/2},${wy}L${wx-wl/2},${wy}`).attr("stroke",C.ink).attr("stroke-width",1.4);
-    top.append("path").attr("d",`M${wx-wl/2+7},${wy-5}L${wx-wl/2},${wy}L${wx-wl/2+7},${wy+5}`).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.4);
-    V.t(top,wx,wy-8,p.lbl,{anchor:"middle",size:12,weight:600,halo:true});
-    // cumulonimbus on l'aigua és més calenta: bolets de núvol units, base plana, enclusa a dalt i pluja fina
-    const cxv=x0+(x1-x0)*p.conv+24, cb=surf(cxv)-16, sc=(mob?.62:.9)*(.55+.45*Math.min(1,p.wind+.3)), cg16=top.append("g").attr("transform",`translate(${cxv},${cb}) scale(${sc})`);
-    const PF=[[-26,-9,11],[-12,-13,14],[6,-14,15],[22,-9,11],[-18,-28,12],[0,-33,16],[17,-27,12],[-9,-50,13],[8,-52,14],[-2,-66,12]];
-    const ANV=`M-34,-72 Q-8,-86 30,-80 Q44,-78 52,-71 Q20,-70 6,-64 Q-14,-68 -34,-72Z`, cid=id+"cb";
-    const cp=cg16.append("clipPath").attr("id",cid); cp.append("rect").attr("x",-80).attr("y",-120).attr("width",160).attr("height",120);
-    const body=cg16.append("g").attr("clip-path",`url(#${cid})`);
-    body.append("path").attr("d",ANV).attr("fill","none").attr("stroke",C.ink2).attr("stroke-width",1.8/sc);
-    PF.forEach(([x,y,r])=>body.append("circle").attr("cx",x).attr("cy",y).attr("r",r).attr("fill","none").attr("stroke",C.ink2).attr("stroke-width",1.8/sc));
-    body.append("path").attr("d",ANV).attr("fill","#fff");
-    PF.forEach(([x,y,r])=>body.append("circle").attr("cx",x).attr("cy",y).attr("r",r).attr("fill","#fff"));
-    PF.filter(f=>f[1]<-20).forEach(([x,y,r])=>body.append("path").attr("d",`M${x-r*.7},${y+r*.25} A${r},${r} 0 0 1 ${x+r*.55},${y-r*.55}`).attr("fill","none").attr("stroke","#E6E6E6").attr("stroke-width",1/sc));
-    cg16.append("line").attr("x1",-36).attr("x2",33).attr("y1",0).attr("y2",0).attr("stroke",C.ink2).attr("stroke-width",.9/sc);
-    for(let i=0;i<9;i++){ const xx=-30+i*7.5; cg16.append("line").attr("x1",xx).attr("x2",xx-4).attr("y1",3).attr("y2",14+((i*7)%5)).attr("stroke",C.blau).attr("stroke-width",.9/sc).attr("stroke-linecap","round"); }
-    V.t(top,cxv+42*sc+6,cb-50*sc,"Torre de tempesta",{size:12,weight:600,halo:true}); V.t(top,cxv+42*sc+6,cb-50*sc+14,"i pluja forta",{size:12,halo:true});
-    // aigua freda que puja a l'est
-    if(p.up>.15){ const ux=x1-(x1-x0)*.07; for(let i=0;i<3;i++){ const xx=ux-i*16, yb=yS+D*.62, yt=yS+10;
-      top.append("path").attr("d",`M${xx},${yb}C${xx},${(yb+yt)/2} ${xx+6},${yt+12} ${xx+8},${yt}`).attr("fill","none").attr("stroke",C.blau).attr("stroke-width",1.2).attr("stroke-opacity",p.up);
-      top.append("path").attr("d",`M${xx+3},${yt+6}L${xx+8},${yt}L${xx+11},${yt+7}`).attr("fill","none").attr("stroke",C.blau).attr("stroke-width",1.2).attr("stroke-opacity",p.up); }
-      if(!mob||p.up>.5)V.t(top,ux-38,yS+D*.72,"L'aigua freda puja",{anchor:"end",italic:true,size:12,fill:C.blau,halo:true}); }
-  }
+    layer.append("line").attr("x1",x0-4).attr("x2",x1+4).attr("y1",surf(x0)).attr("y2",surf(x1)).attr("stroke",C.ink).attr("stroke-width",1.1);
+
+    // 2. Siluetes topogràfiques reals d'Indonèsia (esquerra) i els Andes del Perú (dreta) — fora blocs rectangulars!
+    const indo=`M0,${yB} L0,${yS-16} Q${x0*.32},${yS-28} ${x0*.58},${yS-12} Q${x0*.82},${yS-20} ${x0},${surf(x0)+2} L${x0+10},${yB} Z`;
+    const peru=`M${x1-10},${yB} L${x1},${surf(x1)+2} Q${x1+rw*.22},${yS-16} ${x1+rw*.48},${yS-44} Q${x1+rw*.74},${yS-56} ${w},${yS-34} L${w},${yB} Z`;
+    layer.append("path").attr("d",indo).attr("fill",C.land).attr("stroke","#B4B2AC").attr("stroke-width",.85);
+    layer.append("path").attr("d",peru).attr("fill",C.land).attr("stroke","#B4B2AC").attr("stroke-width",.85);
+
+    // 3. Bucle de circulació atmosfèrica (Walker) en corba superel·líptica discontínua + fletxes fines (estil El Niño)
+    const cxv=x0+(x1-x0)*p.conv, ex=x1-(x1-x0)*.08;
+    const yT=mob?18:22, yL=yS-12;
+    const drawLoop=(xa,xb,dir,str)=>{
+      if(Math.abs(xb-xa)<44||str<.1)return;
+      const mx=(xa+xb)/2, my=(yT+yL)/2, rx=Math.abs(xb-xa)/2, ry=(yL-yT)/2;
+      const pts=d3.range(0,97).map(k=>{
+        const a=k/96*2*Math.PI, c=Math.cos(a), sn=Math.sin(a);
+        return [mx+rx*Math.sign(c)*Math.pow(Math.abs(c),.38), my+ry*Math.sign(sn)*Math.pow(Math.abs(sn),.38)];
+      });
+      top.append("path").attr("d",d3.line()(pts)).attr("fill","none")
+        .attr("stroke",C.ink).attr("stroke-width",.95).attr("stroke-opacity",Math.min(.78,str*.75))
+        .attr("stroke-dasharray","3 4");
+      // Fletxes direccionals a dalt i a baix del bucle
+      [Math.PI/2,Math.PI*1.5].forEach(a=>{
+        const c1=Math.cos(a), s1=Math.sin(a), c2=Math.cos(a+dir*.08), s2=Math.sin(a+dir*.08);
+        const p1=[mx+rx*Math.sign(c1)*Math.pow(Math.abs(c1),.38), my+ry*Math.sign(s1)*Math.pow(Math.abs(s1),.38)];
+        const p2=[mx+rx*Math.sign(c2)*Math.pow(Math.abs(c2),.38), my+ry*Math.sign(s2)*Math.pow(Math.abs(s2),.38)];
+        const an=Math.atan2(p2[1]-p1[1],p2[0]-p1[0]);
+        top.append("path").attr("d",`M${p2[0]-6*Math.cos(an-.5)},${p2[1]-6*Math.sin(an-.5)}L${p2[0]},${p2[1]}L${p2[0]-6*Math.cos(an+.5)},${p2[1]-6*Math.sin(an+.5)}`)
+          .attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.1).attr("stroke-opacity",Math.min(.85,str*.8));
+      });
+    };
+    drawLoop(cxv,ex,1,Math.max(.22,p.wind));
+    if(p.conv>.35) drawLoop(x0+10,cxv,-1,.55);
+
+    // 4. Pluja delicada vertical on puja l'aire calent (fora el núvol de dibuix animat!)
+    const gRain=top.append("g");
+    for(let i=0;i<9;i++){
+      const rx=cxv+(i-4)*5.5, y0r=yT+10+((i*13)%16), y1r=yL-4;
+      for(let yy=y0r;yy<y1r;yy+=14){
+        gRain.append("line").attr("x1",rx).attr("y1",yy).attr("x2",rx-1.8).attr("y2",Math.min(y1r,yy+7))
+          .attr("stroke",C.blau).attr("stroke-width",1).attr("stroke-opacity",.65).attr("stroke-linecap","round");
+      }
+    }
+
+    // 5. Aflorament d'aigua freda davant del Perú (fletxes ascendents suaus)
+    if(p.up>.15){
+      const ux=x1-(x1-x0)*.07;
+      for(let i=0;i<3;i++){
+        const xx=ux-i*16, yb=yS+D*.64, yt=yS+12;
+        top.append("path").attr("d",`M${xx},${yb}C${xx},${(yb+yt)/2} ${xx+5},${yt+12} ${xx+7},${yt}`)
+          .attr("fill","none").attr("stroke",C.blau).attr("stroke-width",1.25).attr("stroke-opacity",p.up*.85);
+        top.append("path").attr("d",`M${xx+2.5},${yt+6}L${xx+7},${yt}L${xx+10.5},${yt+6.5}`)
+          .attr("fill","none").attr("stroke",C.blau).attr("stroke-width",1.25).attr("stroke-opacity",p.up*.85);
+      }
+      if(!mob||p.up>.5) V.t(top,ux-40,yS+D*.72,"Aflorament d'aigua freda",{anchor:"end",italic:true,size:11.5,fill:C.blau,halo:3});
+    }
+
+    // 6. Tipografia editorial neta
+    V.t(top,x0*.42,yS-30,"Indonèsia",{anchor:"middle",size:11.5,fill:C.muted});
+    V.t(top,x1+rw*.55,yS-52,"Perú",{anchor:"middle",size:11.5,fill:C.muted});
+    V.t(top,(cxv+ex)/2,yL-5,p.lbl,{anchor:"middle",size:11.5,weight:600,fill:C.ink,halo:3});
+    const prRight=cxv<(x0+x1)*.5;
+    V.t(top,cxv+(prRight?28:-28),yT+16,"Pluja intensa",{anchor:prRight?"start":"end",size:11.5,weight:600,fill:C.blau,halo:3});
+    const mid=th[10]; V.t(top,mid[0],mid[1]-6,"Termoclina",{anchor:"middle",italic:true,size:11.5,fill:C.ink,halo:3});
+    V.t(top,x0+14,yS+20,"Aigua càlida",{size:12,weight:700,fill:C.ink,halo:3});
+    V.t(top,(x0+x1)*.45,yB-12,"Aigua freda profunda",{anchor:"middle",size:12,weight:700,fill:C.blau,halo:3});
+  };
   let G16=null;
   const _r=render; render=function(p){ _r(p); const th=d3.range(0,1.0001,.05).map(f=>[x0+f*(x1-x0),yS+D*(p.dw+(p.de-p.dw)*(f*f*(3-2*f)))]); G16={p,th}; };
   render(st16); el._render=render;
@@ -887,7 +970,7 @@ piece(17,(el,w)=>{
       V.t(g,side?ex+2:ex-2,ly+13,`${o.d.k?"Ecologia":"Tecnologia"} · ${f0(o.d.d*100)}`,{anchor:side?"start":"end",size:11,fill:C.muted,halo:true}); }); });
   const tp=V.tip(el), H=hv(g), hit=hitRect(s,w,h,"pointer"), dl=d3.Delaunay.from(BURST,d=>P(d)[0],d=>P(d)[1]), dots=dg.selectAll("circle.d17"), spk=sg.selectAll("path.sp17");
   V.hover(hit.node(),(ev,[px,py])=>{ const i=dl.find(px,py), d=BURST[i], p=P(d); if(Math.hypot(p[0]-px,p[1]-py)>30){ dots.style("opacity",1); spk.style("opacity",1); H.selectAll("*").remove(); return tp.hide(); }
-    dots.style("opacity",q=>q===d?1:q.k===d.k?.4:.12); spk.style("opacity",q=>q===d?0:.15);
+    dots.style("opacity",q=>q===d?1:q.k===d.k?.68:.48); spk.style("opacity",q=>q===d?0:.45);
     H.selectAll("*").remove(); H.raise();
     H.append("path").attr("d",stem(d)).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.6);
     H.append("circle").attr("cx",cx).attr("cy",cy).attr("r",d.d*R).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.7).attr("stroke-dasharray","2 3");
@@ -920,8 +1003,8 @@ piece(18,(el,w)=>{
   const tp=V.tip(el), hit=hitRect(s,w,h,"pointer"), ns=ng.selectAll("g.n18");
   V.hover(hit.node(),(ev,[px,py])=>{ const n=d3.least(nodes,o=>(o.side?Math.max(0,o.x-px):Math.max(0,px-o.x))*.2+Math.abs(o.y-py)+Math.abs(px-o.x)*.05);
     if(!n)return; const on=d=>n.side?d.j===n.i:d.i===n.i, ls=LINKS18.filter(on), peers=new Set(ls.map(d=>n.side?"0:"+d.i:"1:"+d.j));
-    lk.interrupt().attr("stroke-opacity",d=>on(d)?1:.06).attr("stroke-width",d=>on(d)?2:1); lk.filter(on).raise();
-    ns.style("opacity",o=>o===n||peers.has(o.side+":"+o.i)?1:.25);
+    lk.interrupt().attr("stroke-opacity",d=>on(d)?1:.24).attr("stroke-width",d=>on(d)?2:1); lk.filter(on).raise();
+    ns.style("opacity",o=>o===n||peers.has(o.side+":"+o.i)?1:.5);
     ns.select("text").attr("font-weight",o=>o===n?700:peers.has(o.side+":"+o.i)?600:400);
     ns.select("circle").attr("fill",o=>o===n?C.blau:"#fff").attr("r",o=>o===n?5:3.2);
     tp.show(`<b>${n.t}</b><br>${ls.length} ${ls.length===1?"enllaç":"enllaços"} ${n.side?"des de":"cap a"}:<br>${[...peers].map(k=>{ const [sd,i]=k.split(":"); return (+sd?R18:L18)[+i]; }).join(", ")}`,n.x+(n.side?40:-40),n.y);
