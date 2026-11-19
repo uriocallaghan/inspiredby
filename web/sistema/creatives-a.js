@@ -59,8 +59,8 @@ function lab(g,x,y,str,o){ return V.t(g,x,y,str,Object.assign({halo:true},o||{})
 const HT=150;
 function hvLayer(s){ return s.append("g").attr("class","ibx-hv").style("pointer-events","none"); }
 function axTag(g,x,y,str,o){ return V.t(g,x,y,str,Object.assign({size:12,weight:700,anchor:"middle",halo:4},o||{})); }
-function fo(sel,isOn,dim){ sel.interrupt("hv").transition("hv").duration(HT).style("opacity",d=>isOn==null||isOn(d)?1:(dim==null?.15:dim)); }
-function dimTo(sel,a){ sel.interrupt("hv").transition("hv").duration(HT).style("opacity",a); }
+function fo(sel,isOn,dim){ sel.interrupt("hv").transition("hv").duration(HT).style("opacity",d=>isOn==null||isOn(d)?1:Math.max(.46,dim==null?.5:dim)); }
+function dimTo(sel,a){ sel.interrupt("hv").transition("hv").duration(HT).style("opacity",a<1?Math.max(.48,a):1); }
 
 /* ---------- dades derivades de dades.js (ONI, reals) ---------- */
 const ONI_YEARS=Object.keys(D.oni).map(Number).sort((a,b)=>a-b);
