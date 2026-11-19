@@ -1,6 +1,5 @@
 /* Inspired by Magazine — bar, footer and homepage.
-   Typography and visual language come from the original site (2020–2021):
-   Helvetica Neue LT Pro, logomodern.png, #dedede rules.
+   Shared light paper (#FCFCFA), Helvetica Neue LT Pro, original logo.
    Articles keep their own styles; every class here is prefixed ib-. */
 
 @font-face{font-family:'Helvetica Neue LT Pro';src:url(fonts/helveticaneueltpro-th.woff2) format('woff2'),url(fonts/helveticaneueltpro-th.woff) format('woff');font-weight:300;font-style:normal;font-display:swap}
@@ -13,56 +12,56 @@
 :root{
   --ib-hn:'Helvetica Neue LT Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
   --ib-hn-text:'Helvetica Neue LT Pro text','Helvetica Neue LT Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
-  --ib-ink:#1d1d1d;
-  --ib-grey:#dedede;
-  --ib-tile:#ebebeb;
+  --ib-paper:#FCFCFA;
+  --ib-ink:#141414;
+  --ib-grey:#e5e5df;
+  --ib-tile:#efede8;
 }
 
-/* ---------- bar (thinner version of the original fixed header) ---------- */
-.ib-bar{position:relative;z-index:20;height:52px;background:#fff;box-shadow:8px 0 8px var(--ib-grey);display:flex;align-items:center;justify-content:center}
+/* ---------- unified navigation bar (home + all articles) ---------- */
+.ib-bar{position:relative;z-index:20;height:60px;background:rgba(252,252,250,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid #ecece7;display:flex;align-items:center;justify-content:center}
 .ib-bar--sticky{position:sticky;top:0}
 .ib-bar a{display:block;line-height:0;-webkit-tap-highlight-color:transparent}
 .ib-bar img{height:19px;width:auto;display:block}
 .ib-progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:30;pointer-events:none;background:var(--ib-grey)}
 .ib-progress span{display:block;height:100%;width:100%;transform-origin:0 50%;transform:scaleX(0);background:#474747}
 .ib-article .ib-bar{margin-top:3px}
-.ib-article .ib-foot{border-top:.5vh solid var(--ib-grey)}
 
-/* ---------- footer ---------- */
-.ib-foot{margin:0 auto;max-width:1200px;padding:28px max(20px,env(safe-area-inset-left,0px)) 44px;display:flex;justify-content:center}
+/* ---------- unified footer ---------- */
+.ib-foot{margin:0 auto;max-inline-size:1360px;padding:28px max(24px,env(safe-area-inset-left,0px)) 44px;border-top:1px solid var(--ib-grey);display:flex;justify-content:center}
 .ib-foot a{line-height:0}
 .ib-foot img{height:13px;width:auto}
-body.ib-article{margin:0}
+body.ib-article{margin:0;background:var(--ib-paper)}
 .ib-article .sh{scroll-margin-top:28px}
 
-/* ---------- homepage (10B — Museu de Silenci: Díptic + Sala 4 col) ---------- */
-.ib-home{margin:0;background:#FCFCFA;color:#141414;-webkit-font-smoothing:antialiased}
+/* ---------- homepage ---------- */
+.ib-home{margin:0;background:var(--ib-paper);color:var(--ib-ink);-webkit-font-smoothing:antialiased}
 .ib-home a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:rgba(222,222,222,.15)}
 .ib-home ::selection{background:var(--ib-grey)}
 .ib-sr-only{position:absolute;inline-size:1px;block-size:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
-
-.ib-home .ib-bar{height:66px;background:rgba(252,252,250,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:none;border-bottom:1px solid #ecece7;padding:0 max(24px,env(safe-area-inset-left,0px))}
-.ib-bar-inner{inline-size:100%;max-inline-size:1360px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:16px}
-.ib-bar-note{font-family:var(--ib-hn);font-weight:400;font-size:.78rem;color:#767670;letter-spacing:-.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ib-bar-note--right{text-align:right;font-variant-numeric:tabular-nums}
-.ib-home .ib-bar img{height:20px}
-
 .ib-page{max-inline-size:1360px;margin:0 auto;padding:0 max(24px,env(safe-area-inset-left,0px))}
 
+/* 404 helper styles */
+.ib-title{font-family:var(--ib-hn);font-weight:400;color:var(--ib-ink);font-size:clamp(2.5rem,6vw,5rem);line-height:1.06;letter-spacing:-.025em;margin:6dvh 0 2.5dvh}
+.ib-title .strong{font-weight:500;color:#000}
+.ib-title .soft{color:#666;font-weight:300}
+.ib-line{border:0;border-top:1px solid var(--ib-grey);margin:20px 0}
+.ib-name{font-family:var(--ib-hn);font-weight:500;font-size:15px;margin:0}
+
 /* Opening Diptych */
-.ib-diptych{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 44px;padding:clamp(28px,4dvh,48px) 0;border-bottom:1px solid #e5e5df}
+.ib-diptych{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 44px;padding:clamp(32px,4.5dvh,52px) 0;border-bottom:1px solid var(--ib-grey)}
 .ib-diptych-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:stretch;min-inline-size:0}
 .ib-diptych-card+.ib-diptych-card{padding-inline-start:44px;border-inline-start:1px solid #e8e8e2}
 .ib-diptych-card .ib-card-media{margin-block-end:0}
 .ib-diptych-body{display:flex;flex-direction:column;justify-content:space-between;padding:4px 0;min-inline-size:0}
-.ib-diptych-kicker{font-family:var(--ib-hn);font-weight:400;font-size:.75rem;color:#8a8a84;font-variant-numeric:tabular-nums}
-.ib-diptych-body h2{font-family:var(--ib-hn);font-weight:500;color:#000;font-size:clamp(1.625rem,.95rem + 1.15vw,2rem);line-height:1.08;letter-spacing:-.032em;text-wrap:balance;margin:14px 0 12px;transition:color .2s ease}
+.ib-diptych-copy{margin-block:auto}
+.ib-diptych-body h2{font-family:var(--ib-hn);font-weight:500;color:#000;font-size:clamp(1.625rem,.95rem + 1.15vw,2rem);line-height:1.08;letter-spacing:-.032em;text-wrap:balance;margin:0 0 12px;transition:color .2s ease}
 .ib-diptych-card:hover h2,.ib-diptych-card:focus-visible h2{color:#C8442A}
 .ib-diptych-body .ib-card-desc{font-size:.9375rem;line-height:1.5;margin:0 0 16px}
 .ib-diptych-card:focus-visible,.ib-card:focus-visible{outline:2px solid var(--ib-ink);outline-offset:6px;border-radius:2px}
 
 /* Shared 4:5 media & metadata */
-.ib-card-media{position:relative;aspect-ratio:4/5;background:#efede8;border-radius:2px;overflow:clip;margin-block-end:16px}
+.ib-card-media{position:relative;aspect-ratio:4/5;background:var(--ib-tile);border-radius:2px;overflow:clip;margin-block-end:16px}
 .ib-card-media::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(0,0,0,.055);pointer-events:none}
 .ib-card-media img{display:block;inline-size:100%;block-size:100%;object-fit:cover;transition:transform .68s cubic-bezier(.22,1,.36,1)}
 .ib-diptych-card:hover .ib-card-media img,.ib-diptych-card:focus-visible .ib-card-media img,.ib-card:hover .ib-card-media img,.ib-card:focus-visible .ib-card-media img{transform:scale(1.035)}
@@ -71,26 +70,16 @@ body.ib-article{margin:0}
 .ib-card-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-block-start:10px;border-top:1px solid #e8e8e2;font-family:var(--ib-hn);font-weight:400;font-size:.78rem;line-height:1.2;color:#787872;font-variant-numeric:tabular-nums}
 .ib-card-arrow{color:#8e8e87;transition:transform .25s cubic-bezier(.22,1,.36,1),color .2s ease}
 .ib-diptych-card:hover .ib-card-arrow,.ib-diptych-card:focus-visible .ib-card-arrow,.ib-card:hover .ib-card-arrow,.ib-card:focus-visible .ib-card-arrow{transform:translateX(3px);color:#C8442A}
-.ib-diptych-cta{font-weight:500;color:#141414;transition:color .2s ease}
-.ib-diptych-card:hover .ib-diptych-cta,.ib-diptych-card:focus-visible .ib-diptych-cta{color:#C8442A}
 
-/* 4-column Permanent Collection */
-.ib-collection{padding:clamp(32px,4.5dvh,48px) 0 24px}
-.ib-section-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-block-end:28px}
-.ib-section-head h2{font-family:var(--ib-hn);font-weight:500;font-size:.875rem;color:#141414;letter-spacing:-.01em;margin:0}
-.ib-section-head span{font-family:var(--ib-hn);font-weight:400;font-size:.78rem;color:#8a8a84;font-variant-numeric:tabular-nums}
-
+/* 4-column Grid */
+.ib-collection{padding:clamp(36px,5dvh,52px) 0 16px}
 .ib-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:30px;row-gap:0}
 .ib-card{display:grid;grid-row:span 4;grid-template-rows:auto auto 1fr auto;grid-template-rows:subgrid;align-content:start;padding-block-end:48px;min-inline-size:0}
-.ib-card h3{font-family:var(--ib-hn);font-weight:500;color:#000;font-size:clamp(1.15rem,.95rem + .32vw,1.25rem);line-height:1.16;letter-spacing:-.025em;text-wrap:balance;margin:0 0 8px;transition:color .2s ease}
-.ib-card:hover h3,.ib-card:focus-visible h3{color:#C8442A}
-
-/* Home Footer */
-.ib-home .ib-foot{max-inline-size:1360px;border-top:1px solid #e5e5df;padding:28px max(24px,env(safe-area-inset-left,0px)) 44px;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-.ib-foot-note{font-family:var(--ib-hn);font-size:.78rem;color:#7c7c76;margin:0}
+.ib-card h2{font-family:var(--ib-hn);font-weight:500;color:#000;font-size:clamp(1.15rem,.95rem + .32vw,1.25rem);line-height:1.16;letter-spacing:-.025em;text-wrap:balance;margin:0 0 8px;transition:color .2s ease}
+.ib-card:hover h2,.ib-card:focus-visible h2{color:#C8442A}
 
 @media (prefers-reduced-motion:reduce){
-  .ib-card-media img,.ib-diptych-body h2,.ib-card h3,.ib-card-arrow,.ib-diptych-cta{transition:none}
+  .ib-card-media img,.ib-diptych-body h2,.ib-card h2,.ib-card-arrow{transition:none}
   .ib-diptych-card:hover .ib-card-media img,.ib-diptych-card:focus-visible .ib-card-media img,.ib-card:hover .ib-card-media img,.ib-card:focus-visible .ib-card-media img,.ib-diptych-card:hover .ib-card-arrow,.ib-card:hover .ib-card-arrow{transform:none}
 }
 
@@ -100,22 +89,17 @@ body.ib-article{margin:0}
   .ib-grid{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px}
 }
 
-@media (max-width:720px){
-  .ib-bar-inner{grid-template-columns:minmax(0,1fr);justify-items:center}
-  .ib-bar-note{display:none}
-  .ib-home .ib-bar{height:56px}
-  .ib-home .ib-bar img{height:18px}
-}
-
 @media (max-width:600px){
+  .ib-bar{height:56px}
+  .ib-bar img{height:18px}
   .ib-page{padding:0 max(20px,env(safe-area-inset-left,0px))}
   .ib-diptych{padding:24px 0 32px;gap:32px}
   .ib-diptych-card{grid-template-columns:minmax(0,1fr);gap:16px}
   .ib-diptych-card+.ib-diptych-card{padding-block-start:32px}
-  .ib-diptych-body h2{font-size:1.5rem;margin:8px 0 8px}
+  .ib-diptych-body h2{font-size:1.5rem;margin:0 0 8px}
+  .ib-collection{padding:32px 0 12px}
   .ib-grid{grid-template-columns:minmax(0,1fr)}
   .ib-card{padding-block-end:38px}
-  .ib-card h3{font-size:1.3125rem}
+  .ib-card h2{font-size:1.3125rem}
   .ib-card-desc,.ib-diptych-body .ib-card-desc{font-size:.95rem}
-  .ib-home .ib-foot{justify-content:center;text-align:center}
 }
