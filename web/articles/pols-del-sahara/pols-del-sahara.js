@@ -129,6 +129,47 @@ function ensureWorld(cb){
   V.world().then(w=>{ WORLD=w; cb(w); }).catch(e=>console.error("No s'ha pogut carregar el mapa",e));
 }
 
+/* IB-59 · Mapa físic en relleu (recepta de web/sistema/mapes-b.js) adaptat a una vista que fa zoom:
+   com que la projecció és equirectangular, el relleu es calcula UNA vegada en una graella lon/lat
+   (una cel·la = un píxel) i a cada fotograma només s'escala amb drawImage. Dades: relleu.js (PS_DEM). */
+const PS_BANDS=[[200,[243,242,239]],[500,[235,233,228]],[800,[226,223,216]],[1500,[216,212,204]],[2200,[206,202,193]],[Infinity,[196,191,182]]];
+let PS_RELIEF=null;
+function psRelief(){
+  if(PS_RELIEF||!window.PS_DEM)return PS_RELIEF;
+  const D=window.PS_DEM, s=atob(D.b64), n=s.length, z=new Float32Array(n), kq=(D.mx-D.mn)/254;
+  for(let i=0;i<n;i++)z[i]=s.charCodeAt(i)*kq+D.mn;
+  const nx=D.nx, ny=D.ny, cv=document.createElement("canvas"); cv.width=nx; cv.height=ny;
+  const x=cv.getContext("2d"), im=x.createImageData(nx,ny), d=im.data, Z=(i,j)=>z[clamp(j,0,ny-1)*nx+clamp(i,0,nx-1)];
+  const kmY=D.st*111.32;
+  for(let j=0;j<ny;j++){
+    const kmX=kmY*Math.cos((D.lat1-(j+.5)*D.st)*DEG);
+    for(let i=0;i<nx;i++){
+      const zz=Z(i,j), gx=(Z(i+1,j)-Z(i-1,j))/(2*kmX), gy=(Z(i,j-1)-Z(i,j+1))/(2*kmY);
+      // ombra suau des del NO; amb cel·les de ~22 km el pendent satura abans (40 m/km)
+      const sh=clamp((-gx+gy)*.65/40,-1,1)*15;
+      let c;
+      if(zz<-40){ const t=clamp(-zz/420,0,1); c=[234-t*48,240-t*32,248-t*12]; }   // depressions sota el mar (Qattara)
+      else c=PS_BANDS.find(q=>zz<q[0])[1];
+      const o=(j*nx+i)*4; d[o]=clamp(c[0]+sh,0,255); d[o+1]=clamp(c[1]+sh,0,255); d[o+2]=clamp(c[2]+sh,0,255); d[o+3]=255;
+    }
+  }
+  x.putImageData(im,0,0);
+  const iso=[];
+  for(const c of d3.contours().size([nx,ny]).thresholds([500,1000,1500,2000,2500])(z)){
+    const lines=[];
+    for(const poly of c.coordinates)for(const ring of poly){
+      let seg=[];
+      for(const [gx,gy] of ring){
+        if(gx<=.05||gx>=nx-1.05||gy<=.05||gy>=ny-1.05){ if(seg.length>1)lines.push(seg); seg=[]; }
+        else seg.push([D.lon0+(gx+.5)*D.st,D.lat1-(gy+.5)*D.st]);
+      }
+      if(seg.length>1)lines.push(seg);
+    }
+    iso.push({type:"MultiLineString",coordinates:lines});
+  }
+  return (PS_RELIEF={cv,D,iso});
+}
+
 /* =====================================================================
    1. EL BODÉLÉ (IB-28 pur + IB-25 aquarel·la) · Scrolly
    2.200–2.800 micro-traços direccionals finíssims (0,9–1,3 px) amb estela
@@ -266,7 +307,19 @@ function initBodele(){
       baseCtx.beginPath(); gp(d3.geoGraticule().step([10,10])()); baseCtx.stroke();
       baseCtx.fillStyle=C.land;
       baseCtx.beginPath(); gp(WORLD.land); baseCtx.fill();
-      baseCtx.strokeStyle="#FFFFFF"; baseCtx.lineWidth=.75;
+      /* IB-59: relleu físic real a sobre de la terra (Tibesti, Ennedi, Ahaggar, la cubeta del Txad) */
+      const RL=psRelief();
+      if(RL){
+        const D=RL.D, a=P(D.lon0,D.lat1), sc=k*DEG*D.st;
+        baseCtx.save(); baseCtx.beginPath(); gp(WORLD.land); baseCtx.clip();
+        baseCtx.imageSmoothingEnabled=true; baseCtx.drawImage(RL.cv,a[0],a[1],D.nx*sc,D.ny*sc);
+        baseCtx.strokeStyle=V.alpha(C.ink,.14); baseCtx.lineWidth=.55;
+        RL.iso.forEach(g=>{ baseCtx.beginPath(); gp(g); baseCtx.stroke(); });
+        baseCtx.restore();
+        baseCtx.strokeStyle="#ABA8A1"; baseCtx.lineWidth=.9;
+        baseCtx.beginPath(); gp(WORLD.land); baseCtx.stroke();
+      }
+      baseCtx.strokeStyle=RL?"rgba(255,255,255,.7)":"#FFFFFF"; baseCtx.lineWidth=RL?.6:.75;
       baseCtx.beginPath(); gp(WORLD.borders); baseCtx.stroke();
       const eq0=P(-180,0), eq1=P(180,0);
       baseCtx.save(); baseCtx.setLineDash([2,4]); baseCtx.strokeStyle=C.muted; baseCtx.globalAlpha=.4; baseCtx.lineWidth=.55;
@@ -515,7 +568,7 @@ function initBodele(){
 
       /* Muntanyes Tibesti i Ennedi */
       const mA=clamp(st.diat*1.15,0,1)*(1-st.lake*.65);
-      if(mA>.02){
+      if(mA>.02&&!PS_RELIEF){   // amb el relleu real, els símbols de muntanya sobren
         ctx.save(); ctx.globalAlpha=mA*.48; ctx.strokeStyle=C.ink2; ctx.lineWidth=.7; ctx.lineJoin="round";
         ctx.beginPath(); drawMountains(16.4,20.6,19.4,22.6); drawMountains(21.2,23.8,15.9,18.4); ctx.stroke();
         ctx.restore();

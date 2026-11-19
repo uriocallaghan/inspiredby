@@ -22,6 +22,94 @@
     return pts;
   }
 
+  /* IB-59 · Mapa físic en relleu (copiat de web/sistema/mapes-b.js; relleu a relleu.js, generat amb scripts/relleu.mjs) */
+  // Franges hipsomètriques (m): grisos càlids, cada esglaó ~9 punts més fosc. Les quatre primeres són les dels evangelis.
+  const IB59_BANDS=[[200,[243,242,239]],[500,[235,233,228]],[800,[226,223,216]],[1500,[216,212,204]],[2200,[206,202,193]],[Infinity,[196,191,182]]];
+  const IB59_COAST="#ABA8A1", IB59_LAKE="#AEC6E6";
+  function dem59(D){ // descodifica una sola vegada; retorna {z(lon,lat), grid, D}
+    if(D.__dec)return D.__dec;
+    const s=atob(D.b64), a=new Float32Array(s.length), k=(D.mx-D.mn)/254;
+    for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i)*k+D.mn;
+    const z=(lon,lat)=>{ const fx=(lon-D.lon0)/D.st-.5, fy=(D.lat1-lat)/D.st-.5;
+      if(fx<0||fy<0||fx>D.nx-1||fy>D.ny-1)return NaN;
+      const i=Math.floor(fx), j=Math.floor(fy), u=fx-i, v=fy-j, i1=Math.min(i+1,D.nx-1), j1=Math.min(j+1,D.ny-1);
+      return (a[j*D.nx+i]*(1-u)+a[j*D.nx+i1]*u)*(1-v)+(a[j1*D.nx+i]*(1-u)+a[j1*D.nx+i1]*u)*v; };
+    return (D.__dec={z,grid:a,D});
+  }
+  // isolínies del relleu en lon/lat (talla els trams que toquen la vora de la graella)
+  function iso59(D,th){
+    const {grid}=dem59(D), out=[];
+    for(const c of d3.contours().size([D.nx,D.ny]).thresholds(th)(grid)){
+      const lines=[];
+      for(const poly of c.coordinates)for(const ring of poly){
+        let seg=[];
+        for(const [gx,gy] of ring){
+          if(gx<=.05||gx>=D.nx-1.05||gy<=.05||gy>=D.ny-1.05){ if(seg.length>1)lines.push(seg); seg=[]; }
+          else seg.push([D.lon0+(gx+.5)*D.st, D.lat1-(gy+.5)*D.st]);
+        }
+        if(seg.length>1)lines.push(seg);
+      }
+      out.push({v:c.value,geo:{type:"MultiLineString",coordinates:lines}});
+    }
+    return out;
+  }
+  function relleu59(ctx,proj,w,h,D,o){
+    o=o||{};
+    const {z}=dem59(D), clamp=(v,a,b)=>Math.max(a,Math.min(b,v)), pth=d3.geoPath(proj,ctx);
+    const land=o.land||null, sea=o.sea==null?0:o.sea;
+    const iso=o.iso||(D.mx>1500?[500,1000,1500,2000,2500,3000]:[300,600,900,1200]);
+    // 1. Ràster: una cel·la de pantalla per píxel CSS (prou: el relleu és suau). Funciona amb qualsevol projecció amb invert.
+    const sc=o.res||1, fw=Math.ceil(w/sc), fh=Math.ceil(h/sc);
+    const fc=document.createElement("canvas"); fc.width=fw; fc.height=fh;
+    const fx=fc.getContext("2d"), im=fx.createImageData(fw,fh), d=im.data;
+    const kmLon=111.32*Math.cos(((D.lat1-D.ny*D.st/2)*Math.PI)/180), dd=D.st*1.12;
+    for(let y=0;y<fh;y++)for(let x=0;x<fw;x++){
+      const ll=proj.invert([(x+.5)*sc,(y+.5)*sc]); if(!ll)continue;
+      const zz=z(ll[0],ll[1]); if(zz!==zz)continue;
+      if(!land&&zz<=sea)continue;                       // mar: blanc de paper
+      // ombra suau des del NO: pendent en m/km, saturada a ~100 m/km, ±15 punts
+      const gx=(z(ll[0]+dd,ll[1])-z(ll[0]-dd,ll[1]))/(2*dd*kmLon), gy=(z(ll[0],ll[1]+dd)-z(ll[0],ll[1]-dd))/(2*dd*111.32);
+      const shade=(gx!==gx||gy!==gy)?0:clamp((-gx+gy)*.65/98,-1,1)*15;
+      let r,g,b;
+      if(zz<0){ const t=clamp(-zz/420,0,1); r=234-t*48; g=240-t*32; b=248-t*12; }   // terra sota el nivell del mar: blau clar
+      else { const band=IB59_BANDS.find(q=>zz<q[0])[1]; r=band[0]; g=band[1]; b=band[2]; }
+      const i=(y*fw+x)*4; d[i]=clamp(r+shade,0,255); d[i+1]=clamp(g+shade,0,255); d[i+2]=clamp(b+shade,0,255); d[i+3]=255;
+    }
+    fx.putImageData(im,0,0);
+    ctx.save();
+    if(land){ ctx.beginPath(); pth(land); ctx.clip(); }
+    ctx.imageSmoothingEnabled=true; ctx.drawImage(fc,0,0,w,h);
+    // 2. Isolínies: fil gris finíssim; 0 m en blau discontinu només si hi ha terra sota el mar (amb «land»)
+    iso59(D,land?[0,...iso]:iso).forEach(c=>{
+      ctx.beginPath(); pth(c.geo);
+      if(c.v===0){ ctx.strokeStyle=IBV.alpha(C.blau,.48); ctx.lineWidth=.85; ctx.setLineDash([3,2.5]); }
+      else { ctx.strokeStyle=IBV.alpha(C.ink,.14); ctx.lineWidth=.55; ctx.setLineDash([]); }
+      ctx.stroke();
+    });
+    ctx.setLineDash([]); ctx.restore();
+    // 3. Costa nítida
+    ctx.beginPath();
+    if(land)pth(land); else iso59(D,[sea+.01]).forEach(c=>pth(c.geo));
+    ctx.strokeStyle=IB59_COAST; ctx.lineWidth=.9; ctx.lineJoin="round"; ctx.stroke();
+    // 4. Aigua dolça en blau
+    if(o.rivers){ ctx.beginPath(); pth(o.rivers); ctx.strokeStyle=IBV.alpha(C.blau,.78); ctx.lineWidth=1.25; ctx.lineCap="round"; ctx.stroke(); }
+    if(o.lakes){ ctx.beginPath(); pth(o.lakes); ctx.fillStyle=IB59_LAKE; ctx.fill(); ctx.strokeStyle=C.blau; ctx.lineWidth=.95; ctx.stroke(); }
+    // 5. Vores que s'esvaeixen (sense marc) on el relleu s'acaba en terra: o.fade = "neso" (qualsevol combinació de n, e, s, o)
+    if(o.fade){
+      const a=proj([D.lon0,D.lat1]), b=proj([D.lon0+D.nx*D.st,D.lat1-D.ny*D.st]);
+      const x0=Math.max(0,Math.min(a[0],b[0])), x1=Math.min(w,Math.max(a[0],b[0])), y0=Math.max(0,Math.min(a[1],b[1])), y1=Math.min(h,Math.max(a[1],b[1]));
+      const L=Math.min(x1-x0,y1-y0)*(o.fadeK||.09);
+      ctx.save(); ctx.globalCompositeOperation="destination-out";
+      const side=(gx0,gy0,gx1,gy1,rx,ry,rw,rh)=>{ const g=ctx.createLinearGradient(gx0,gy0,gx1,gy1); g.addColorStop(0,"rgba(0,0,0,0)"); g.addColorStop(1,"rgba(0,0,0,1)"); ctx.fillStyle=g; ctx.fillRect(rx,ry,rw,rh); };
+      if(o.fade.includes("e"))side(x1-L,0,x1,0,x1-L,-2,w-x1+L+2,h+4);
+      if(o.fade.includes("o"))side(x0+L,0,x0,0,-2,-2,x0+L+2,h+4);
+      if(o.fade.includes("n"))side(0,y0+L,0,y0,-2,-2,w+4,y0+L+2);
+      if(o.fade.includes("s"))side(0,y1-L,0,y1,-2,y1-L,w+4,h-y1+L+2);
+      ctx.restore();
+    }
+    return {z};
+  }
+
   /* Atles 50m per a Gran Bretanya i Irlanda (amb fallback automàtic a 110m si falla) */
   let ukWorldP = null;
   function ukWorld(){
@@ -86,12 +174,22 @@
 
       const wrap = d3.select(container).append("div")
         .style("position","relative").style("width", w + "px").style("height", h + "px").style("overflow","hidden");
+      /* Base física IB-59: relleu real en gris sota les rutes */
       const { c: cv, ctx } = IBV.canvas(wrap.node(), w, h, "");
       d3.select(cv).attr("aria-hidden","true").style("position","absolute")
         .style("left","0").style("top","0").style("pointer-events","none");
+      // (IBV.canvas esborra els altres canvas.ibv: el del relleu es crea a mà i va a sota de les partícules)
+      let relief = null;
+      if(window.SH_DEM){
+        const dpr = Math.min(2, window.devicePixelRatio || 1), rc = document.createElement("canvas");
+        rc.width = Math.round(w * dpr); rc.height = Math.round(h * dpr); rc.setAttribute("aria-hidden","true");
+        rc.style.cssText = `width:${w}px;height:${h}px;display:block;position:absolute;left:0;top:0;pointer-events:none`;
+        wrap.node().insertBefore(rc, cv);
+        const rctx = rc.getContext("2d"); rctx.scale(dpr, dpr); relief = { c: rc, ctx: rctx };
+      }
 
       const svg = IBV.svg(wrap.node(), w, h,
-        "Mapa de Gran Bretanya i Irlanda amb les rutes de les pedres i persones cap a Stonehenge: West Woods (25 km), Gal·les (230 km) i nord-est d'Escòcia (750 km o més).");
+        "Mapa físic de Gran Bretanya i Irlanda amb les rutes de les pedres i persones cap a Stonehenge: West Woods (25 km), Gal·les (230 km) i nord-est d'Escòcia (750 km o més).");
       svg.style("position","relative").style("z-index","1").style("overflow","hidden");
 
       const clipId = "clip-pedres-" + Math.random().toString(36).slice(2, 7);
@@ -110,9 +208,9 @@
       const path = d3.geoPath(proj);
 
       const gMap = svg.append("g").attr("clip-path", `url(#${clipId})`);
-      gMap.append("path").datum(d3.geoGraticule().step([4, 4])())
-        .attr("d", path).attr("fill","none").attr("stroke", C.grid).attr("stroke-width", 0.45);
-      if(worldData){
+      if(relief){
+        relleu59(relief.ctx, proj, w, h, window.SH_DEM, { fade: "es", iso: [300, 600, 900] });
+      } else if(worldData){
         gMap.append("path").datum(worldData.land).attr("d", path).attr("fill", C.land);
         gMap.append("path").datum(worldData.borders).attr("d", path).attr("fill","none").attr("stroke", C.paper).attr("stroke-width", 0.65);
       }
@@ -282,7 +380,7 @@
     }
 
     IBV.mount(el, (container, w) => {
-      if(worldData){ buildAndDraw(container, w); }
+      if(worldData || window.SH_DEM){ buildAndDraw(container, w); }
       else { ukWorld().then(wd => { worldData = wd; buildAndDraw(container, w); }); }
     });
 
