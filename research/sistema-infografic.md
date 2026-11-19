@@ -128,13 +128,12 @@ Els gràfics han de ser molt lleugers i fluids, també en un mòbil normal.
 
 - **Entrada:** `IBV.onView(el, inst => …)` anima el gràfic la primera vegada que es veu (línies que es dibuixen, punts que creixen, morph). Només una vegada; en redibuixar per amplada, va directe a l'estat final. Durada 700–1.300 ms, `d3.easeCubicInOut`.
 - **Animació contínua** (partícules, rellotges, rotació): `IBV.loop(el, (t, dt) => …)`, que s'atura quan el gràfic no es veu.
-- **Hover: sempre s'ha de saber què estàs apuntant.** Un tooltip sol no n'hi ha prou. Cada gràfic compleix aquestes sis coses:
-  1. **L'element apuntat es transforma**: contorn en tinta d'1,5 px, línia més gruixuda, cercle una mica més gran o color ple, i passa al davant (`raise()`).
-  2. **La resta s'apaga** a 0,15–0,3 (`IBV.focus`). Si l'element pertany a un grup (una sèrie, un any, una categoria), es ressalta el grup sencer.
-  3. **Guia fins a l'eix o fins a l'escala**: línia fina (vertical, horitzontal o radial) i el valor escrit sobre l'eix, en negreta. En mapes, un anell sobre el lloc.
-  4. **Etiqueta directa** del valor o del nom al costat de l'element, amb halo, a més del tooltip.
-  5. **Tooltip** amb el nom en negreta, el valor amb unitat i un context (posició, % del total, respecte a la mitjana).
-  6. **Zona de contacte més gran que la marca** (el més proper amb `d3.Delaunay` o `d3.least`), cursor `pointer` o `crosshair`, transicions de 120–180 ms, i en sortir tot torna a l'estat inicial. Amb el dit: un toc fa de hover i un toc fora el tanca.
+- **Hover: sempre s'ha de saber què estàs apuntant, sense tapar ni esborrar el gràfic (decisió de l'editor, 19-11-2026).** Cada gràfic compleix aquestes regles:
+  1. **L'element apuntat es transforma**: contorn en tinta d'1,4–1,5 px, línia més gruixuda o color ple, i passa al davant (`raise()`).
+  2. **La resta s'atenua suaument a 0,46–0,55 (`IBV.focus`)** — **mai a 0,15**: el context ha de continuar sent llegible i mai ha de desaparèixer.
+  3. **Guia fins a l'eix o fins a l'escala**: línia fina (vertical, horitzontal o radial) quan ajuda a llegir el valor.
+  4. **Lectura fixa d'una sola línia sota el gràfic (`IBV.tip` en mode `.ibv-dock`)**: **mai una caixa gran flotant al voltant del cursor que tapi les dades**. Una sola línia concisa (`Nom · valor`, màx. dues dades) que no mou la maquetació (`min-height: 24px`) i no cobreix mai ni un píxel del gràfic.
+  5. **Zona de contacte còmoda** (el més proper amb `d3.Delaunay` o `d3.least`), cursor `pointer` o `crosshair`, transicions de 120–160 ms, i en sortir tot torna a l'estat inicial. Amb el dit: un toc fa de hover i un toc fora el tanca.
 - **Controls que transformen:** quan un botó canvia la vista (mapa ↔ rànquing, mapa ↔ cercles, agrupacions), els elements es mouen al lloc nou; no es redibuixa en sec.
 - **Reduced motion** (`IBV.reduced`): estat final directe i cap bucle.
 

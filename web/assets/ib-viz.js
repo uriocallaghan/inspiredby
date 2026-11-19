@@ -193,15 +193,27 @@
     return d.node();
   }
 
-  /* ---------- 9. Tooltip (ratolí, teclat i dit) ---------- */
+  /* ---------- 9. Lectura de hover (fixa sota el gràfic, mai tapant el cursor) ---------- */
   // const tp=IBV.tip(container); IBV.hover(targetNode, (ev,[x,y])=>{ ...tp.show(html,x,y) }, ()=>tp.hide())
   function tip(el){
     if(getComputedStyle(el).position==="static")el.style.position="relative";
-    let n=el.querySelector(":scope>.tip"); if(!n){ n=document.createElement("div"); n.className="tip"; el.appendChild(n); }
+    let n=el.querySelector(":scope>.tip.ibv-dock");
+    if(!n){
+      n=document.createElement("div");
+      n.className="tip ibv-dock";
+      n.setAttribute("aria-live","polite");
+      el.appendChild(n);
+    } else {
+      el.appendChild(n);
+    }
     return {
-      show(html,x,y){ n.innerHTML=html; n.style.opacity=1; const W=el.clientWidth, tw=n.offsetWidth, th=n.offsetHeight;
-        let L=x+14; if(L+tw>W)L=x-tw-14; if(L<0)L=Math.max(0,Math.min(W-tw,x-tw/2));
-        let T=y-th-12; if(T<0)T=y+16; n.style.transform=`translate(${L}px,${T}px)`; },
+      show(html){
+        if(n.nextSibling)el.appendChild(n);
+        // condensa qualsevol tooltip llarg de diverses línies en una sola línia concisa (màx. 2 peces)
+        const parts=String(html).split(/<br\s*\/?>/i).map(s=>s.trim()).filter(Boolean).slice(0,2);
+        n.innerHTML=parts.join(" · ");
+        n.style.opacity=1;
+      },
       hide(){ n.style.opacity=0; }
     };
   }
@@ -247,8 +259,8 @@
     if(io)io.observe(el); else { on=true; raf=requestAnimationFrame(tick); }
     return {stop(){ dead=true; if(io)io.disconnect(); if(raf)cancelAnimationFrame(raf); }};
   }
-  // focus(sel, isOn): estat de hover estàndard: el que no toca baixa a 0,15.
-  function focus(sel,isOn,o){ o=o||{}; sel.interrupt().transition().duration(160).style("opacity",d=>isOn==null||isOn(d)?1:(o.dim==null?.15:o.dim)); }
+  // focus(sel, isOn): estat de hover suau (decisió de l'editor): el context baixa només fins a ~0,48–0,50 perquè no desaparegui mai.
+  function focus(sel,isOn,o){ o=o||{}; const lo=Math.max(.46,o.dim==null?.5:o.dim); sel.interrupt().transition().duration(160).style("opacity",d=>isOn==null||isOn(d)?1:lo); }
 
   /* ---------- 12. Primitives orgàniques (anells, retícula polar, núvol de punts) ---------- */
   // rings(g,cx,cy,n,step,color,o): anells concèntrics ultra-fins (1 anell = N casos, estil «A sea of sand and sickness»).

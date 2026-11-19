@@ -42,6 +42,8 @@ h1{font-family:var(--serif);font-weight:600;font-size:clamp(44px,6vw,68px);line-
 .fig figcaption,.cap{font-family:var(--sans);font-size:13px;color:var(--muted);margin:10px auto 0;max-width:640px;text-align:center;text-wrap:pretty}
 .cap{text-align:left;max-width:none;margin:12px 0 0}
 .tip{position:absolute;left:0;top:0;background:var(--paper);border:1px solid var(--hair);font-family:var(--sans);font-size:12.5px;line-height:1.35;padding:6px 9px;pointer-events:none;opacity:0;transition:opacity .12s;z-index:5;font-variant-numeric:tabular-nums;max-width:260px}
+.tip.ibv-dock{position:static;transform:none!important;background:transparent;border:0;border-top:1px solid var(--hair);padding:6px 0 0;margin-top:8px;max-width:none;min-height:24px;font-size:12.5px;line-height:1.4;color:var(--ink-2);white-space:normal}
+.tip.ibv-dock b{color:var(--ink);font-weight:600}
 .ctl-row{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center;font-family:var(--sans);font-size:13px;color:var(--ink-2)}
 .seg{display:inline-flex;gap:18px;font-family:var(--sans);font-size:13.5px}
 .seg button{border:0;background:none;padding:2px 0;cursor:pointer;color:var(--ink-2);border-bottom:1px solid transparent}

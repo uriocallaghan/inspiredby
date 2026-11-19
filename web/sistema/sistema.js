@@ -66,7 +66,7 @@ function ring(g,x,y,r,c){ g.append("circle").attr("cx",x).attr("cy",y).attr("r",
   return g.append("circle").attr("cx",x).attr("cy",y).attr("r",r).attr("fill","none").attr("stroke",c||C.ink).attr("stroke-width",1.6); }
 function guide(g,x1,y1,x2,y2){ return g.append("line").attr("x1",x1).attr("y1",y1).attr("x2",x2).attr("y2",y2).attr("stroke",C.ink).attr("stroke-width",.8).attr("stroke-dasharray","2 2.5"); }
 // apaga la resta: on(d)=true es queda a 1
-function dim(sel,on,lo){ sel.interrupt().transition().duration(150).style("opacity",on?function(d,i){ return on.call(this,d,i)?1:(lo==null?.18:lo); }:1); }
+function dim(sel,on,lo){ sel.interrupt().transition().duration(150).style("opacity",on?function(d,i){ return on.call(this,d,i)?1:Math.max(.46,lo==null?.5:lo); }:1); }
 function hitRect(s,w,h,cur){ return s.append("rect").attr("class","hit").attr("width",w).attr("height",h).attr("fill","transparent").style("cursor",cur||"crosshair"); }
 
 /* ---------- dades derivades (ONI i CO₂, reals) ---------- */
@@ -373,7 +373,7 @@ piece(6,(el,w)=>{
   });
   const tp=V.tip(el), H=hv(g), hit=s.append("rect").attr("width",w).attr("height",S).attr("fill","transparent").style("cursor","pointer"), wd=g.selectAll("path.w6");
   V.hover(hit.node(),(ev,[px,py])=>{ let a=Math.atan2(px-cx,-(py-cy)); if(a<0)a+=2*Math.PI; const hh=Math.floor(a/(2*Math.PI)*24)%24;
-    wd.interrupt().style("opacity",d=>d.hh===hh?1:.2).attr("stroke-width",d=>d.hh===hh?1.8:.8);
+    wd.interrupt().style("opacity",d=>d.hh===hh?1:.48).attr("stroke-width",d=>d.hh===hh?1.8:.8);
     wd.filter(d=>d.hh===hh).raise();
     H.selectAll("*").remove(); H.raise(); const am=A(hh+.5);
     guide(H,0,0,(R+2)*Math.sin(am),-(R+2)*Math.cos(am));
@@ -649,7 +649,7 @@ const M13=piece(13,(el,w)=>{
   const smp=[]; TRACKS.forEach((tr,ti)=>{ for(let j=0;j<tr.length;j+=3){ const p=proj(tr[j]); if(p)smp.push([p[0],p[1],ti,j]); } });
   const dl=d3.Delaunay.from(smp,d=>d[0],d=>d[1]), tp=V.tip(el), H=hv(g), hit=hitRect(s,w,h,"pointer");
   V.hover(hit.node(),(ev,[px,py])=>{ const q=smp[dl.find(px,py)]; if(Math.hypot(q[0]-px,q[1]-py)>24){ tg.style("opacity",1); H.selectAll("*").remove(); return tp.hide(); }
-    const tr=TRACKS[q[2]]; tg.style("opacity",.15); H.selectAll("*").remove(); H.raise();
+    const tr=TRACKS[q[2]]; tg.style("opacity",.45); H.selectAll("*").remove(); H.raise();
     H.append("path").attr("d",path({type:"LineString",coordinates:tr})).attr("fill","none").attr("stroke","#fff").attr("stroke-width",5).attr("stroke-linecap","round");
     H.append("path").attr("d",path({type:"LineString",coordinates:tr})).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.8).attr("stroke-linecap","round");
     const s0=proj(tr[0]), s1=proj(tr[tr.length-1]); H.append("circle").attr("cx",s0[0]).attr("cy",s0[1]).attr("r",3.5).attr("fill",C.ink);
@@ -698,7 +698,7 @@ const M14=piece(14,(el,w)=>{
   const tp=V.tip(el), H=hv(g), hit=hitRect(s,w,h,"pointer"), pts=SITES.map(d=>({d,p:proj([d.lon,d.lat])})), sites=bl.selectAll("g.s14"), tot=d3.sum(SITES,d=>d.n);
   V.hover(hit.node(),(ev,[px,py])=>{ const b=d3.least(pts,o=>Math.hypot(o.p[0]-px,o.p[1]-py)-rr(o.d)*.6), r0=rr(b.d);
     if(Math.hypot(b.p[0]-px,b.p[1]-py)>r0+14){ sites.style("opacity",1); rt.style("opacity",1); H.selectAll("*").remove(); return tp.hide(); }
-    sites.style("opacity",d=>d===b.d?1:d.k===b.d.k?.45:.15); rt.style("opacity",.3); sites.filter(d=>d===b.d).raise();
+    sites.style("opacity",d=>d===b.d?1:d.k===b.d.k?.68:.46); rt.style("opacity",.65); sites.filter(d=>d===b.d).raise();
     H.selectAll("*").remove(); H.raise(); ring(H,b.p[0],b.p[1],r0+3);
     const right=b.p[0]<w*.7; V.t(H,b.p[0]+(right?r0+10:-r0-10),b.p[1]+5,`${b.d.n} ${b.d.n===1?"cas":"casos"}`,{anchor:right?"start":"end",weight:700,size:14,halo:4});
     pill(H,b.p[0],b.p[1]-r0-16,CAT14[b.d.k].t);
@@ -949,7 +949,7 @@ piece(19,(el,w)=>{
   const inside=(c,p)=>c.coordinates.some(poly=>d3.polygonContains(poly[0],p)&&!poly.slice(1).some(hole=>d3.polygonContains(hole,p)));
   V.hover(hit.node(),(ev,[px,py])=>{ let k=-1; for(let i=cs.length-1;i>=0;i--){ if(inside(cs[i],[px,py])){ k=i; break; } }
     H.selectAll("*").remove(); if(k<0){ lv.style("opacity",1); return tp.hide(); }
-    lv.style("opacity",i=>i===k?1:i<k?.35:.15); H.raise();
+    lv.style("opacity",i=>i===k?1:i<k?.65:.46); H.raise();
     H.append("path").attr("d",gp(cs[k])).attr("fill",V.alpha(C.vermell,.08)).attr("stroke",C.ink).attr("stroke-width",1.8);
     const n=pts.filter(p=>inside(cs[k],p)).length;
     H.append("circle").attr("cx",px).attr("cy",py).attr("r",3).attr("fill",C.ink);
@@ -988,7 +988,7 @@ piece(20,(el,w)=>{
     const H=hv(p), hit=p.append("circle").attr("r",R+14).attr("fill","transparent").style("cursor","crosshair");
     V.hover(hit.node(),(ev,[px,py])=>{
       let a=Math.atan2(px,-py); if(a<0)a+=2*Math.PI; const k=Math.round(a/(2*Math.PI)*12)%12;
-      panels.forEach(q=>q.style("opacity",q===p?1:.25)); H.selectAll("*").remove(); H.raise();
+      panels.forEach(q=>q.style("opacity",q===p?1:.5)); H.selectAll("*").remove(); H.raise();
       const rm=rSc(d.mean[k]), x2=rm*Math.sin(A(k)), y2=-rm*Math.cos(A(k));
       guide(H,0,0,R*Math.sin(A(k)),-R*Math.cos(A(k)));
       H.append("circle").attr("cx",x2).attr("cy",y2).attr("r",3.8).attr("fill",C.vermell).attr("stroke","#fff").attr("stroke-width",1.4);
