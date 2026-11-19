@@ -710,7 +710,7 @@ const M40=piece(40,(el,w)=>{
   N40.links.forEach(l=>{ l.LX=new Float32Array(NS+1); l.LY=new Float32Array(NS+1);
     for(let i=0;i<=NS;i++){ const t=i/NS; l.LX[i]=bez(l.x0,l.xm,l.xm,l.x1,t); l.LY[i]=bez(l.sy,l.sy,l.ty,l.ty,t); }
     const nP=Math.max(1,Math.round(l.v*dens)); l.pt=new Float32Array(nP); l.po=new Float32Array(nP); l.ps=new Float32Array(nP);
-    for(let i=0;i<nP;i++){ l.pt[i]=rnd(); l.po[i]=(.08+rnd()*.84)*l.w; l.ps[i]=(.75+rnd()*.5)*.00011*(160/Math.max(120,l.x1-l.x0)); } });
+    for(let i=0;i<nP;i++){ l.pt[i]=rnd(); l.po[i]=(.08+rnd()*.84)*l.w; l.ps[i]=(.75+rnd()*.5)*.000032*(160/Math.max(120,l.x1-l.x0)); } });
   let foc=null, rev=1;
   function drawP(){
     ctx.clearRect(0,0,w,h);
