@@ -1,0 +1,109 @@
+{
+  "ingredients_origin": [
+    {
+      "id": "blat",
+      "nom": "Blat panificable",
+      "especie": "Triticum aestivum (AABBDD)",
+      "origen": "Creixent Fèrtil i sud del Caspi",
+      "lon": 42.5,
+      "lat": 37.8,
+      "epoca": "Fa ~10.000–8.500 anys",
+      "pas": "blat",
+      "color": "groc",
+      "font": "Marcussen et al. (2014), Science"
+    },
+    {
+      "id": "llevat",
+      "nom": "Llevat del pa",
+      "especie": "Saccharomyces cerevisiae",
+      "origen": "Àsia Oriental (Xina i Taiwan)",
+      "lon": 116.0,
+      "lat": 28.5,
+      "epoca": "Origen silvestre a la Xina; domesticacions múltiples",
+      "pas": "llevat",
+      "color": "blau",
+      "font": "Peter et al. (2018), Nature (1.011 genomes)"
+    },
+    {
+      "id": "olivera",
+      "nom": "Oli d'oliva",
+      "especie": "Olea europaea",
+      "origen": "Llevant (Mediterrani oriental)",
+      "lon": 35.8,
+      "lat": 33.2,
+      "epoca": "Fa ~6.000–7.000 anys",
+      "pas": "llevat",
+      "color": "groc",
+      "font": "Besnard et al. (2018), Annals of Botany"
+    },
+    {
+      "id": "bufala",
+      "nom": "Búfala d'aigua (mozzarella)",
+      "especie": "Bubalus bubalis",
+      "origen": "Subcontinent indi",
+      "lon": 76.5,
+      "lat": 24.5,
+      "epoca": "Fa ~4.500–5.000 anys; a Campània a l'edat mitjana",
+      "pas": "bufala",
+      "color": "blau",
+      "font": "Colli et al. (2018), Frontiers in Genetics"
+    },
+    {
+      "id": "alfabrega",
+      "nom": "Alfàbrega",
+      "especie": "Ocimum basilicum",
+      "origen": "Àsia tropical (Índia i sud-est asiàtic)",
+      "lon": 84.0,
+      "lat": 20.5,
+      "epoca": "Rutes antigues d'espècies cap al Mediterrani",
+      "pas": "bufala",
+      "color": "groc",
+      "font": "Botànica històrica d'Ocimum basilicum"
+    },
+    {
+      "id": "tomaquet_andes",
+      "nom": "Tomàquet (ancestre silvestre → domesticació)",
+      "especie": "Solanum lycopersicum",
+      "origen": "Andes (Perú/Equador) → Mesoamèrica (Mèxic)",
+      "lon": -99.1,
+      "lat": 19.4,
+      "andes": [-77.0, -9.5],
+      "epoca": "A Europa s. XVI (Mattioli, 1544); salsa a Nàpols (Latini, 1692)",
+      "pas": "tomaquet",
+      "color": "vermell",
+      "font": "Razifard et al. (2020), Mol. Biol. Evol."
+    }
+  ],
+  "napoli": [14.268, 40.852],
+  "lactose_malabsorption_pct": [
+    {"regio": "Dinamarca", "pct": 4, "grup": "Europa Nord", "font": "Storhaug et al. (2017)"},
+    {"regio": "Regne Unit i Irlanda (mitjana aprox.)", "pct": 8, "grup": "Europa Nord", "font": "Storhaug et al. (2017) / Itan et al. (2010)"},
+    {"regio": "Europa del Nord-oest", "pct": 12, "grup": "Europa Nord", "font": "Storhaug et al. (2017)"},
+    {"regio": "Itàlia (mitjana nacional)", "pct": 50, "grup": "Mediterrani", "font": "Storhaug et al. (2017)"},
+    {"regio": "Mitjana mundial adults", "pct": 68, "grup": "Món", "font": "Storhaug et al. (2017)"},
+    {"regio": "Sardenya (no persistència)", "pct": 85, "grup": "Mediterrani", "font": "Itan et al. (2010)"},
+    {"regio": "Xina i Àsia Oriental", "pct": 98, "grup": "Àsia Oriental", "font": "Storhaug et al. (2017)"}
+  ],
+  "lactose_dairy_g_per_100g": [
+    {"aliment": "Llet sencera líquida", "g": 4.81, "nota": "Sense fermentar ni escórrer el sèrum"},
+    {"aliment": "Mozzarella fresca", "g": 0.07, "nota": "0–0,07 g: el sèrum s'emporta gairebé tota la lactosa"},
+    {"aliment": "Parmigiano-Reggiano curat", "g": 0.0, "nota": "0 g: els bacteris làctics la consumeixen del tot"}
+  ],
+  "umami_glutamate_mg_per_100g": [
+    {"nom": "Mozzarella fresca", "min": 8, "max": 12, "mid": 10, "tipus": "base"},
+    {"nom": "Xampinyó fresc", "min": 40, "max": 100, "mid": 70, "tipus": "vegetal"},
+    {"nom": "Tomàquet fresc madur", "min": 140, "max": 250, "mid": 195, "tipus": "protagonista"},
+    {"nom": "Anxova curada", "min": 480, "max": 630, "mid": 555, "tipus": "sinergia"},
+    {"nom": "Tomàquet sec", "min": 600, "max": 700, "mid": 650, "tipus": "protagonista"},
+    {"nom": "Bolet sec (shiitake/cep)", "min": 1060, "max": 1140, "mid": 1100, "tipus": "sinergia"},
+    {"nom": "Parmigiano-Reggiano (24 m)", "min": 1200, "max": 1680, "mid": 1440, "tipus": "protagonista"}
+  ],
+  "italian_emigration_1876_1915": [
+    {"pais": "Estats Units", "sortides": 4156880, "pct": 29.0, "lon": -74.0, "lat": 40.7, "via": "transatlantica", "mutacio": "Nova York (Lombardi's 1905), Chicago deep-dish"},
+    {"pais": "Argentina", "sortides": 1795860, "pct": 13.0, "lon": -58.4, "lat": -34.6, "via": "transatlantica", "mutacio": "Pizza al molde, fugazzeta i fainá"},
+    {"pais": "França", "sortides": 1715510, "pct": 12.0, "lon": 5.4, "lat": 43.3, "via": "europea", "mutacio": "Camions de pizza a Marsella i pissaladière"},
+    {"pais": "Suïssa", "sortides": 1340260, "pct": 9.5, "lon": 8.5, "lat": 47.4, "via": "europea", "mutacio": "Difusió alpina i restaurants italians"},
+    {"pais": "Alemanya", "sortides": 1225820, "pct": 8.8, "lon": 10.4, "lat": 51.1, "via": "europea", "mutacio": "Pizzeries de la postguerra (Würzburg 1952)"},
+    {"pais": "Brasil", "sortides": 1225120, "pct": 9.0, "lon": -46.6, "lat": -23.5, "via": "transatlantica", "mutacio": "São Paulo: catupiry, frango i rodízio"}
+  ]
+}
