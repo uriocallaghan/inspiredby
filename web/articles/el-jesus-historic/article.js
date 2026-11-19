@@ -310,7 +310,7 @@
     const TRETS=[
       {t:"Alçada i constitució", w:"Sovint imaginat alt (~1,80 m) i estilitzat, seguint l'estàndard europeu i cinematogràfic.", h:"Mitjana masculina a la Judea del s. I: ~1,66 m (Nagar & Torge 2003; Taylor 2018), cos fibrós pel treball manual i les caminades."},
       {t:"Cabells i barba", w:"Cabells llargs fins a les espatlles, castany clar o ros, ratlla al mig i barba llarga cuidada.", h:"Cabells curts i foscos —Pau escriu que els cabells llargs en un home són «un deshonor» (1Co 11,14)— i barba curta natural."},
-      {t:"Pell i ulls", w:"Pell molt blanca i ulls blaus o clars (fixats per Heinrich Hofmann, Warner Sallman i Robert Powell).", h:"Pell olivàcia o bruna del Llevant mediterrani, bronzejada pel sol, i ulls marrons foscos (Taylor 2018)."},
+      {t:"Pell i ulls", w:"Pell molt blanca i ulls blaus o clars (fixats per Heinrich Hofmann, Warner Sallman i Robert Powell).", h:"Pell marró olivàcia pròpia de l'Orient Mitjà (encara més enfosquida per la vida a l'aire lliure) i ulls marrons foscos (Taylor 2018)."},
       {t:"Roba i calçat", w:"Túnica blanca impecable fins als turmells amb faixa o mantell net i teatral.", h:"Túnica curta de llana sense tenyir (chiton), mantell rectangular (himation) amb borles rituals (tzitzit, Mc 6,56) i sandàlies de cuir."}
     ];
 
