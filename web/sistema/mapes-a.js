@@ -599,80 +599,209 @@ const M25=piece(25,(el,w)=>{
 seg(25,m=>{ mode25=m; const el=$('[data-p="25"]'); el._go&&el._go(m); });
 
 /* =====================================================================
-   IB-26 · MAPA DE CRESTES  (dades reals: NCEP/NCAR R1, diferència amb la mitjana de la latitud)
+   IB-26 · MAPA DE FRANGES I ISOLÍNIES  (dades reals: NCEP/NCAR R1, diferència amb la mitjana de la latitud)
+   Projecció plana neta Equal Earth amb bandes suaus translúcides, costes recognoscibles
+   i isolínies etiquetades (estil «Germany — average rainfall and temperature»).
    ===================================================================== */
-legend(26,el=>V.legendCat(el,[{c:C.ink,t:"Una línia per latitud",kind:"line",w:1},{c:C.vermell,t:"Latitud destacada",kind:"line",w:2},{t:"Amunt, més calent que la mitjana de la latitud",kind:"none"}]));
+const DIV26=V.div(26);
+legend(26,el=>{
+  V.legendRamp(el,{scale:DIV26,min:-26,max:26,ticks:[-20,-10,0,10,20],f:v=>sgn(v,0),title:"Respecte a la latitud (°C)",lo:"Més fred",hi:"Més calent"});
+  V.legendCat(el,[{c:C.vermell,t:"+10 / +20 °C",kind:"line",w:1.3},{c:C.blau,t:"−10 / −20 °C",kind:"line",w:1.3},{c:C.ink2,t:"0 °C",kind:"line",w:1,dash:"3 3"}]);
+});
 let mode26=0;
+// Interpolació bilineal del camp NCEP sobre [-180,180] × [-90,90]
+function sampleField(arr,lon,lat){
+  const L=((lon%360)+360)%360, fx=L/STEP, fy=(90-clamp(lat,-90,90))/STEP;
+  const j0=Math.floor(fx)%NLON, j1=(j0+1)%NLON, i0=Math.min(NLAT-1,Math.max(0,Math.floor(fy))), i1=Math.min(NLAT-1,i0+1);
+  const ux=fx-Math.floor(fx), uy=fy-Math.floor(fy);
+  const a=arr[i0*NLON+j0], b=arr[i0*NLON+j1], c=arr[i1*NLON+j0], d=arr[i1*NLON+j1];
+  return (a*(1-ux)+b*ux)*(1-uy)+(c*(1-ux)+d*ux)*uy;
+}
+// Construeix isolínies GeoJSON netes (sense arestes de vora) per a un mes
+const ISO26_TH=[-20,-10,0,10,20];
+function buildIso26(m){
+  const WG=NLON+1, G=new Float32Array(WG*NLAT);
+  for(let i=0;i<NLAT;i++)for(let j=0;j<WG;j++){
+    const lon=-180+j*STEP, jj=Math.round(((lon+360)%360)/STEP)%NLON;
+    G[i*WG+j]=ANOM[m][i*NLON+jj];
+  }
+  const gen=d3.contours().size([WG,NLAT]).thresholds(ISO26_TH);
+  const out=[];
+  for(const c of gen(G)){
+    const v=c.value, lines=[];
+    for(const poly of c.coordinates){
+      for(const ring of poly){
+        let seg=[];
+        for(let k=0;k<ring.length;k++){
+          const [gx,gy]=ring[k];
+          const edge=gx<=.02||gx>=WG-1.02||gy<=.02||gy>=NLAT-1.02;
+          if(edge){ if(seg.length>=2)lines.push(seg); seg=[]; }
+          else seg.push([-180+gx*STEP,90-gy*STEP]);
+        }
+        if(seg.length>=2)lines.push(seg);
+      }
+    }
+    out.push({v,fc:{type:"MultiLineString",coordinates:lines},lines});
+  }
+  return out;
+}
+const ISO26=[buildIso26(0),buildIso26(1)];
+// Precomputa RGB de la rampa per a un renderitzat ràpid en bandes suaus de 5 °C
+const BAND26=(function(){
+  const m=new Map();
+  for(let b=-30;b<=30;b+=5){
+    const q=Math.abs(b)<2.5?0:b;
+    const rgb=d3.rgb(DIV26(q));
+    // Mescla suau amb blanc (72 %) per aconseguir l'efecte d'aquarel·la/litografia
+    const a=Math.abs(q)<2.5?.22:.68;
+    m.set(b,[Math.round(255*(1-a)+rgb.r*a),Math.round(255*(1-a)+rgb.g*a),Math.round(255*(1-a)+rgb.b*a)]);
+  }
+  return v=>{ const b=clamp(Math.round(v/5)*5,-30,30); return m.get(b); };
+})();
+
 const M26=piece(26,(el,w)=>{
-  const mob=w<640, stp=mob?2:1, ml=mob?6:62, mr=mob?6:16;
-  const rows=[]; for(let i=Math.round((90-(mob?75:77.5))/STEP);gLat(i)>=-60;i+=stp)rows.push(i);
-  const sp=mob?12:10.5, k=mob?2.3:3.1;
-  const lonArr=d3.range(NLON+1).map(j=>j*STEP-180);
-  const X=d3.scaleLinear([-180,180],[ml,w-mr]);
-  const val=(m,i,lon)=>{ let j=Math.round(((lon+360)%360)/STEP)%NLON; return ANOM[m][i*NLON+j]; };
-  let topPad=0; rows.forEach((i,r)=>{ const mx=Math.max(d3.max(lonArr,l=>val(0,i,l)),d3.max(lonArr,l=>val(1,i,l))); topPad=Math.max(topPad,mx*k-r*sp); });
-  const top=Math.ceil(topPad)+14, B=r=>top+r*sp, h=Math.ceil(B(rows.length-1)+(mob?34:40));
-  const s=V.svg(el,w,h,`El planeta dibuixat amb ${rows.length} línies, una per latitud, que s'aixequen on l'aire és més calent que la mitjana de la seva latitud. Al gener destaca el mar de Noruega, fins a 25,8 °C per sobre; el Tibet, per l'altitud, queda 31,9 °C per sota. Dades reals de la reanàlisi NCEP/NCAR, 1991–2020.`), g=s.append("g");
-  const line=d3.line().x(d=>X(d[0])).y(d=>d[1]).curve(d3.curveMonotoneX);
-  const pts=(r,i,m,amp)=>lonArr.map(l=>{ const a=m===0||m===1?val(m,i,l):val(0,i,l)+(val(1,i,l)-val(0,i,l))*m; return [l,B(r)-k*a*amp]; });
-  const L=g.append("g").selectAll("g").data(rows.map((i,r)=>({i,r,lat:gLat(i),amp:1,m:mode26}))).join("g");
-  const fill=L.append("path").attr("fill","#fff"), strk=L.append("path").attr("fill","none").attr("stroke",C.ink).attr("stroke-width",mob?.9:1).attr("stroke-linejoin","round");
-  function upd(d,node){ const p=pts(d.r,d.i,d.m,d.amp); const sel=d3.select(node);
-    sel.select("path:nth-of-type(1)").attr("d",line(p)+`L${X(180)},${h}L${X(-180)},${h}Z`); sel.select("path:nth-of-type(2)").attr("d",line(p)); }
-  L.each(function(d){ upd(d,this); });
-  // latitud i longitud
-  const ax=g.append("g");
-  rows.forEach((i,r)=>{ const lat=gLat(i); if(Math.abs(lat)%30!==0)return; if(!mob)V.t(ax,ml-10,B(r)+4,latS(lat),{anchor:"end",size:11.5,fill:C.muted});
-    else V.t(ax,ml,B(r)-3,latS(lat),{size:11.5,fill:C.muted,halo:true}); });
-  [-120,-60,0,60,120].forEach(l=>V.t(ax,X(l),h-8,lonS(l),{anchor:"middle",size:11.5,fill:C.muted}));
-  // escala vertical
-  { const sx=mob?ml+4:w-mr-60, sy=B(0)-(mob?14:22); ax.append("line").attr("x1",sx).attr("x2",sx).attr("y1",sy).attr("y2",sy-10*k).attr("stroke",C.ink).attr("stroke-width",1.2);
-    [0,10].forEach(v=>ax.append("line").attr("x1",sx-3).attr("x2",sx+3).attr("y1",sy-v*k).attr("y2",sy-v*k).attr("stroke",C.ink));
-    V.t(ax,sx+6,sy-10*k+4,"10 °C",{size:11.5,fill:C.ink2,halo:true}); }
-  const notes=g.append("g");
-  function drawNotes(m){ notes.selectAll("*").remove(); let mx=null, mn=null;
-    rows.forEach((i,r)=>lonArr.slice(0,-1).forEach(l=>{ const a=val(m,i,l); if(!mx||a>mx.a)mx={a,i,r,l}; if(!mn||a<mn.a)mn={a,i,r,l}; }));
-    const px=X(mx.l), py=B(mx.r)-k*mx.a, left=px>w*.6;
-    V.note(notes,{x:px,y:py-2,tx:px+(left?-1:1)*(mob?24:44),ty:py-(mob?18:22),kind:"straight",anchor:left?"end":"start",size:mob?12:12.5,
-      lines:[[placeName(mx.l,gLat(mx.i)),true],[`${sgn(mx.a)} °C sobre la mitjana`]]});
-    const nx=X(mn.l), ny=B(mn.r);
-    if(!mob||m===1)V.note(notes,{x:nx,y:ny,tx:nx+(nx>w*.6?-1:1)*40,ty:Math.min(h-44,ny+44),kind:"straight",anchor:nx>w*.6?"end":"start",size:mob?12:12.5,
-      lines:[[`${placeName(mn.l,gLat(mn.i))}, ${sgn(mn.a)} °C`,true],["fred per l'altitud"]]}); }
-  drawNotes(mode26);
-  const hl=g.append("path").attr("fill","none").attr("stroke",C.vermell).attr("stroke-width",2).style("pointer-events","none");
-  const dot=g.append("circle").attr("r",3.5).attr("fill",C.vermell).attr("stroke","#fff").style("opacity",0);
-  V.onView(el,instant=>{ if(instant)return;
-    notes.style("opacity",0); L.each(d=>d.amp=0).each(function(d){ upd(d,this); });
-    L.style("opacity",0).transition().delay(d=>d.r*(mob?40:24)).duration(300).style("opacity",1)
-      .transition().duration(1000).ease(EIO).tween("amp",function(d){ const node=this; return t=>{ d.amp=t; upd(d,node); }; });
-    notes.transition().delay(rows.length*(mob?40:24)+1200).duration(500).style("opacity",1); });
-  el._go=m=>{ el._off&&el._off(); const dur=V.reduced?0:1100; notes.transition().duration(dur*.3).style("opacity",0); hl.attr("d",null); dot.style("opacity",0);
-    L.transition("m").delay(d=>V.reduced?0:d.r*10).duration(dur).ease(EIO).tween("m",function(d){ const node=this, a=d.m; return t=>{ d.m=a+(m-a)*t; upd(d,node); }; });
-    setTimeout(()=>{ drawNotes(m); notes.style("opacity",0).transition().duration(400).style("opacity",1); },dur+rows.length*10); };
-  const hg=g.append("g").style("pointer-events","none"); dot.raise();
+  if(needWorld(()=>M26))return;
+  const mob=w<640, pad=mob?4:10;
+  const proj=d3.geoEqualEarth().fitWidth(w-pad*2,{type:"Sphere"});
+  const [[x0,y0],[x1,y1]]=d3.geoPath(proj).bounds({type:"Sphere"});
+  const dx=Math.round((w-(x1-x0))/2-x0), dy=Math.round(6-y0);
+  proj.translate([proj.translate()[0]+dx,proj.translate()[1]+dy]);
+  const h=Math.ceil(y1-y0+16);
+  const {under,c,ctx,s}=stack(el,w,h,"Mapa del món en projecció Equal Earth amb franges suaus i isolínies de la diferència de temperatura respecte a la mitjana de cada latitud. Al gener destaca el mar de Noruega (+25,8 °C sobre la mitjana) i el Tibet (−31,9 °C per l'altitud). Dades reals NCEP/NCAR, 1991–2020.");
+  const path=d3.geoPath(proj);
+
+  // Capa de fons: perfil del planeta
+  under.append("path").attr("d",path({type:"Sphere"})).attr("fill","#fff").attr("stroke",C.hair).attr("stroke-width",.8);
+
+  // Precalculem la graella de coordenades geogràfiques sobre un canvas reduït per a renderitzat instantani
+  const sc=mob?3:2, ow=Math.ceil(w/sc), oh=Math.ceil(h/sc);
+  const offC=document.createElement("canvas"); offC.width=ow; offC.height=oh;
+  const offX=offC.getContext("2d"), img=offX.createImageData(ow,oh);
+  const invLon=new Float32Array(ow*oh), invLat=new Float32Array(ow*oh), inSph=new Uint8Array(ow*oh);
+  // Màscara de l'esfera per evitar projeccions fora del globus
+  const spC=document.createElement("canvas"); spC.width=ow; spC.height=oh;
+  const spX=spC.getContext("2d"); spX.save(); spX.scale(1/sc,1/sc); spX.fillStyle="#000"; spX.beginPath(); d3.geoPath(proj,spX)({type:"Sphere"}); spX.fill(); spX.restore();
+  const spD=spX.getImageData(0,0,ow,oh).data;
+  for(let py=0;py<oh;py++){
+    for(let px=0;px<ow;px++){
+      const idx=py*ow+px;
+      if(spD[idx*4+3]<128)continue;
+      const ll=proj.invert([(px+.5)*sc,(py+.5)*sc]);
+      if(!ll||!isFinite(ll[0])||!isFinite(ll[1])||Math.abs(ll[0])>180||Math.abs(ll[1])>90)continue;
+      inSph[idx]=1; invLon[idx]=ll[0]; invLat[idx]=ll[1];
+    }
+  }
+
+  function paintBands(m){
+    const arr=ANOM[m], d=img.data;
+    for(let i=0;i<ow*oh;i++){
+      const p=i*4;
+      if(!inSph[i]){ d[p+3]=0; continue; }
+      const v=sampleField(arr,invLon[i],invLat[i]);
+      const rgb=BAND26(v);
+      d[p]=rgb[0]; d[p+1]=rgb[1]; d[p+2]=rgb[2]; d[p+3]=255;
+    }
+    offX.putImageData(img,0,0);
+    ctx.clearRect(0,0,w,h);
+    ctx.save();
+    ctx.beginPath(); d3.geoPath(proj,ctx)({type:"Sphere"}); ctx.clip();
+    ctx.imageSmoothingEnabled=true;
+    ctx.drawImage(offC,0,0,w,h);
+    ctx.restore();
+  }
+
+  // Capes SVG nítides a sobre: gratícula, costes, isolínies, etiquetes i anotacions
+  const g=s.append("g");
+  g.append("path").attr("d",path(d3.geoGraticule().step([30,30])())).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.45).attr("stroke-opacity",.12);
+  g.append("path").attr("d",path(W.borders)).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.4).attr("stroke-opacity",.18);
+  g.append("path").attr("d",path(W.land)).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",mob?.6:.75).attr("stroke-opacity",.68);
+  g.append("path").attr("d",path({type:"Sphere"})).attr("fill","none").attr("stroke",C.hair).attr("stroke-width",.9);
+
+  const gIso=g.append("g"), gIsoLab=g.append("g"), gNotes=g.append("g");
+
+  function drawIso(m){
+    gIso.selectAll("*").remove(); gIsoLab.selectAll("*").remove(); gNotes.selectAll("*").remove();
+    // Extrems càlid i fred dins [75°N, 60°S] (calculats abans per evitar col·lisions d'etiquetes)
+    let mx=null, mn=null;
+    for(let i=Math.round((90-75)/STEP);gLat(i)>=-60;i++){
+      for(let j=0;j<NLON;j++){
+        const a=ANOM[m][i*NLON+j], lon=gLon(j), lat=gLat(i);
+        if(!mx||a>mx.a)mx={a,lon,lat};
+        if(!mn||a<mn.a)mn={a,lon,lat};
+      }
+    }
+    const pmx=proj([mx.lon,mx.lat]), pmn=proj([mn.lon,mn.lat]);
+    const list=ISO26[m];
+    list.forEach(item=>{
+      const v=item.v, isZero=v===0, col=isZero?C.ink2:(v>0?C.vermell:C.blau);
+      const sw=isZero?.8:(Math.abs(v)>=20?1.45:1.1);
+      gIso.append("path").attr("d",path(item.fc)).attr("fill","none").attr("stroke",col)
+        .attr("stroke-width",mob?sw*.85:sw).attr("stroke-opacity",isZero?.55:.88)
+        .attr("stroke-dasharray",isZero?"3 3":null).attr("stroke-linejoin","round");
+      // Etiquetes puntuals sobre els trams més llargs (només escriptori i lluny de les anotacions)
+      if(mob||isZero)return;
+      const ranked=item.lines.filter(ln=>ln.length>=10).sort((a,b)=>b.length-a.length).slice(0,2);
+      ranked.forEach(ln=>{
+        const mid=ln[Math.floor(ln.length/2)], pt=proj(mid);
+        if(!pt||pt[0]<28||pt[0]>w-28||pt[1]<20||pt[1]>h-20)return;
+        if(Math.hypot(pt[0]-pmx[0],pt[1]-pmx[1])<64||Math.hypot(pt[0]-pmn[0],pt[1]-pmn[1])<64)return;
+        V.t(gIsoLab,pt[0],pt[1]+3,`${v>0?"+":""}${v}°`,{size:11,weight:700,fill:col,anchor:"middle",halo:3.2});
+      });
+    });
+
+    gNotes.append("circle").attr("cx",pmx[0]).attr("cy",pmx[1]).attr("r",3.2).attr("fill",C.vermell).attr("stroke","#fff").attr("stroke-width",1.2);
+    gNotes.append("circle").attr("cx",pmn[0]).attr("cy",pmn[1]).attr("r",3.2).attr("fill",C.blau).attr("stroke","#fff").attr("stroke-width",1.2);
+    // Anotacions col·locades sobre zones d'oceà obertes per màxima llegibilitat
+    V.note(gNotes,{x:pmx[0],y:pmx[1]-2,tx:clamp(pmx[0]-(mob?34:68),mob?90:130,w-80),ty:Math.max(20,pmx[1]-(mob?6:22)),
+      kind:"curve",anchor:"end",size:mob?11.5:12.5,
+      lines:[[placeName(mx.lon,mx.lat),true],[`${sgn(mx.a)} °C sobre la mitjana`]]});
+    if(!mob||m===0){
+      V.note(gNotes,{x:pmn[0],y:pmn[1]+3,tx:clamp(pmn[0]+(mob?-14:28),mob?80:110,w-(mob?80:130)),ty:Math.min(h-28,pmn[1]+(mob?42:62)),
+        kind:"curve",anchor:mob?"end":"start",size:mob?11.5:12.5,
+        lines:[[`${placeName(mn.lon,mn.lat)}, ${sgn(mn.a)} °C`,true],["fred per l'altitud"]]});
+    }
+  }
+
+  paintBands(mode26);
+  drawIso(mode26);
+
+  V.onView(el,instant=>{
+    if(instant)return;
+    c.style.opacity=0; gIso.style("opacity",0); gIsoLab.style("opacity",0); gNotes.style("opacity",0);
+    d3.select(c).transition().duration(650).ease(EIO).style("opacity",1);
+    gIso.transition().delay(220).duration(550).ease(EIO).style("opacity",1);
+    gIsoLab.transition().delay(420).duration(400).style("opacity",1);
+    gNotes.transition().delay(520).duration(450).style("opacity",1);
+  });
+
+  el._go=m=>{
+    el._off&&el._off();
+    paintBands(m); drawIso(m);
+    if(!V.reduced){
+      gIso.style("opacity",.35).transition().duration(420).ease(EIO).style("opacity",1);
+      gNotes.style("opacity",0).transition().delay(180).duration(380).style("opacity",1);
+    }
+  };
+
+  // Hover suau i lectura en una sola línia ancorada sota el gràfic
+  const hg=g.append("g").style("pointer-events","none");
   const tp=tipOf(el), hit=hitRect(s,w,h);
-  let curR=null;
-  function off(){ curR=null; hl.attr("d",null); dot.style("opacity",0); hg.selectAll("*").remove(); strk.interrupt().attr("stroke-opacity",1); notes.style("opacity",1); tp.hide(); }
+  function off(){ hg.selectAll("*").remove(); gNotes.style("opacity",1); tp.hide(); }
   el._off=off;
-  V.hover(hit.node(),(ev,[px,py])=>{ const lon=clamp(Math.round(X.invert(px)/STEP)*STEP,-180,180), sx=X(lon);
-    let best=null; L.each(d=>{ const a=val(mode26,d.i,lon), y=B(d.r)-k*a*d.amp; const q=Math.abs(y-py)+(y<py?0:2); if(!best||q<best.q)best={d,q,a,y}; });
-    if(!best||best.q>20){ off(); return; }
-    const d=best.d, i=d.i, T=TEMP[mode26][i*NLON+Math.round(((lon+360)%360)/STEP)%NLON];
-    if(d!==curR){ curR=d; hl.attr("d",line(pts(d.r,d.i,mode26,1))).raise(); notes.style("opacity",.2);
-      strk.interrupt().transition().duration(150).attr("stroke-opacity",o=>o===d?1:.25); }
-    dot.raise().attr("cx",sx).attr("cy",best.y).style("opacity",1);
-    // guies fins als dos eixos, amb el valor escrit sobre l'eix; anell i etiqueta directa
-    hg.selectAll("*").remove(); hg.raise(); hit.raise();
-    const yb=h-(mob?24:28), xl=mob?ml:ml-6;
-    hg.append("line").attr("x1",sx).attr("x2",sx).attr("y1",best.y+6).attr("y2",yb).attr("stroke",C.ink).attr("stroke-width",.8).attr("stroke-dasharray","2 2");
-    hg.append("line").attr("x1",xl).attr("x2",sx-6).attr("y1",best.y).attr("y2",best.y).attr("stroke",C.ink).attr("stroke-width",.8).attr("stroke-dasharray","2 2");
-    hg.append("rect").attr("x",sx-34).attr("y",h-22).attr("width",68).attr("height",18).attr("fill","#fff");
-    V.t(hg,clamp(sx,30,w-30),h-8,lonS(lon),{anchor:"middle",size:12,weight:700});
-    if(!mob){ hg.append("rect").attr("x",0).attr("y",best.y-10).attr("width",ml-6).attr("height",18).attr("fill","#fff"); V.t(hg,ml-10,best.y+4,latS(d.lat),{anchor:"end",size:12,weight:700}); }
-    else V.t(hg,ml+2,best.y-5,latS(d.lat),{size:12,weight:700,halo:true});
-    hg.append("circle").attr("cx",sx).attr("cy",best.y).attr("r",8).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.5);
-    const right=sx<Math.min(240,w*.4); V.t(hg,sx+(right?12:-12),best.y-10,`${sgn(best.a)} °C`,{anchor:right?"start":"end",size:13,weight:700,halo:true});
-    tp.show(`<b>${llS(lon,d.lat)}</b><br>${MES2[mode26][0].toUpperCase()+MES2[mode26].slice(1)}: ${f1(T)} °C<br>Mitjana de la latitud: ${f1(ZMEAN[mode26][i])} °C<br>Diferència: <b>${sgn(best.a)} °C</b>`,sx,best.y);
+  V.hover(hit.node(),(ev,[px,py])=>{
+    const ll=proj.invert([px,py]);
+    if(!ll||!isFinite(ll[0])||!isFinite(ll[1])||Math.abs(ll[0])>180||Math.abs(ll[1])>88){ off(); return; }
+    const back=proj(ll);
+    if(!back||Math.hypot(back[0]-px,back[1]-py)>3){ off(); return; }
+    const a=sampleField(ANOM[mode26],ll[0],ll[1]), t=sampleField(TEMP[mode26],ll[0],ll[1]);
+    const col=a>=0?C.vermell:C.blau;
+    gNotes.style("opacity",.5);
+    hg.selectAll("*").remove();
+    hg.append("circle").attr("cx",px).attr("cy",py).attr("r",6).attr("fill",V.alpha(col,.28)).attr("stroke",C.ink).attr("stroke-width",1.3);
+    hg.append("circle").attr("cx",px).attr("cy",py).attr("r",2.2).attr("fill",C.ink);
+    const right=px<w*.65;
+    V.t(hg,px+(right?10:-10),py-8,`${sgn(a)} °C`,{anchor:right?"start":"end",size:12.5,weight:700,fill:col,halo:3.2});
+    tp.show(`<b>${placeName(ll[0],ll[1])}</b> · ${sgn(a)} °C vs latitud (${MES2[mode26]}: ${f1(t)} °C)`,px,py);
   },off);
 });
 seg(26,m=>{ mode26=m; const el=$('[data-p="26"]'); el._go&&el._go(m); });
