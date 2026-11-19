@@ -21,7 +21,7 @@ Tots són obligatoris.
 | P2 | **Gris per al context, color per a la història** | El que no és protagonista va en gris fi (`ghost`, `grid`). Un o dos colors per gràfic. Cada color vol dir el mateix a tot l'article. |
 | P3 | **Molts elements, petits i translúcids** | Si hi ha milers de dades, es dibuixen totes, petites i amb opacitat baixa (0,05–0,5). La densitat ha d'aparèixer sola. |
 | P4 | **Anotar dins del gràfic** | La història s'escriu al lloc on passa: títol en negreta i una línia de detall, amb línia guia fina. La llegenda només explica la codificació. |
-| P5 | **Escales honestes i explicades** | Llegenda a la capçalera, amb el sentit escrit (◀ menys · més ▶). La unitat va al valor de dalt. El zero es marca en tinta. Si l'escala és logarítmica, el títol de l'eix ho diu. Àrees proporcionals (`d3.scaleSqrt`). |
+| P5 | **Escales honestes i explicades** | Llegenda a la capçalera, amb el sentit escrit (← menys · més →). La unitat va al valor de dalt. El zero es marca en tinta. Si l'escala és logarítmica, el títol de l'eix ho diu. Àrees proporcionals (`d3.scaleSqrt`). Mai facis servir `◀`, `▶`, `↔` ni cap caràcter Unicode amb presentació d'emoji (fletxes tipogràfiques `←` `→` `↑` `↓` sempre). |
 | P6 | **Una sola jerarquia de text** | Vegeu §3. Res per sota d'11 px reals a la pantalla. |
 | P7 | **La forma segueix el fenomen** | El temps cíclic (any, dia) va en cercle; el temps lineal, en línia. Un lloc va en mapa quan explica alguna cosa. Un mecanisme va en tall o esquema. |
 | P8 | **Petits múltiples abans que espaguetis de colors** | Si hi ha més de tres sèries, es fan gràfics petits amb la mateixa escala. Només vermell, blau i groc (i els seus tons). |

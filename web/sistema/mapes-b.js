@@ -45,7 +45,7 @@ function legendSteps(el,o){ // llegenda per franges
   o.colors.forEach((c,i)=>s.append("rect").attr("x",i*cw).attr("width",cw-1).attr("height",8).attr("fill",c));
   o.edges.forEach((v,i)=>{ if(!o.show||o.show(v)) s.append("text").attr("x",(i+1)*cw-.5).attr("y",21).attr("text-anchor","middle").attr("font-size",V.FS.min).attr("fill",C.muted).style("font-variant-numeric","tabular-nums").text(o.f?o.f(v):v); });
   if(o.lo||o.hi){ const r=s.append("g").attr("transform","translate(0,36)").attr("font-size",V.FS.min).attr("fill",C.ink2);
-    if(o.lo)r.append("text").text("◀ "+o.lo); if(o.hi)r.append("text").attr("x",cw*n).attr("text-anchor","end").text(o.hi+" ▶"); }
+    if(o.lo)r.append("text").text("← "+o.lo); if(o.hi)r.append("text").attr("x",cw*n).attr("text-anchor","end").text(o.hi+" →"); }
 }
 // hover: marca el valor apuntat sobre la llegenda de rampa (guia fins a l'escala)
 function rampMark(n,v,min,max,txt){ const el=$(`[data-lg="${n}"]`), sv=el&&el.querySelector(".ibv-lg svg"); if(!sv)return;
@@ -277,8 +277,8 @@ function legend29(el){
     .attr("font-size",(o&&o.size)||11.5).attr("fill",(o&&o.fill)||C.ink2).style("font-variant-numeric","tabular-nums").text(str); if(o&&o.bold)n.attr("font-weight",700); return n; };
   // eixos al llarg de les dues vores de baix
   const a1=P(1.5,0), a2=P(0,1.5), o=17*Math.SQRT1_2;
-  t(a1[0]+o,a1[1]+o+4,"Temperatura ▶",-45,{fill:C.ink});
-  t(a2[0]-o,a2[1]+o+4,"◀ Diferència",45,{fill:C.ink});
+  t(a1[0]+o,a1[1]+o+4,"Temperatura →",-45,{fill:C.ink});
+  t(a2[0]-o,a2[1]+o+4,"← Diferència",45,{fill:C.ink});
   const cut1=s.append("text").attr("x",cx).attr("y",H0-34).attr("text-anchor","middle").attr("font-size",11.5).attr("fill",C.muted).style("font-variant-numeric","tabular-nums");
   const cut2=s.append("text").attr("x",cx).attr("y",H0-20).attr("text-anchor","middle").attr("font-size",11.5).attr("fill",C.muted).style("font-variant-numeric","tabular-nums");
   const cap=s.append("text").attr("x",cx).attr("y",H0-2).attr("font-weight",700).attr("text-anchor","middle").attr("font-size",11.5).attr("fill",C.ink2).style("font-variant-numeric","tabular-nums");
@@ -527,7 +527,7 @@ const M31=piece(31,(el,w)=>{
   const hy=h/2, hc=dv.append("g");
   hc.append("circle").attr("r",15).attr("fill","#fff").attr("stroke",C.ink).attr("stroke-width",1.2);
   hc.append("path").attr("d","M-4,-5L-9,0L-4,5M4,-5L9,0L4,5").attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.3).attr("stroke-linejoin","round");
-  const lA=V.t(fg,0,mob?16:20,"◀ Gener",{anchor:"end",weight:700,size:mob?13:14,halo:true}).attr("pointer-events","none"), lB=V.t(fg,0,mob?16:20,"Juliol ▶",{weight:700,size:mob?13:14,halo:true}).attr("pointer-events","none");
+  const lA=V.t(fg,0,mob?16:20,"← Gener",{anchor:"end",weight:700,size:mob?13:14,halo:true}).attr("pointer-events","none"), lB=V.t(fg,0,mob?16:20,"Juliol →",{weight:700,size:mob?13:14,halo:true}).attr("pointer-events","none");
   function set(p){ POS31=Math.max(0,Math.min(1,p)); const x=Math.round(POS31*w);
     cA.style.clipPath=`inset(0 ${w-x}px 0 0)`; clA.attr("x",-60).attr("width",x+60); clB.attr("x",x).attr("width",w-x+60);
     dl.attr("x1",x).attr("x2",x); hc.attr("transform",`translate(${x},${hy})`);
@@ -805,7 +805,7 @@ function setPlay33(on){ const b=$('[data-play="33"]'); if(b){ b.textContent=on?"
 
 /* =====================================================================
    IB-34 · MAPA D'ISOTERMES MARÍ  (dades reals: World Ocean Atlas 2023 + mapa real)
-   Camp complet visible d'entrada: franges litogràfiques translúcides (blau ↔ vermell),
+   Camp complet visible d'entrada: franges litogràfiques translúcides (blau a vermell),
    isotermes fines cada 2 °C que esculpeixen els fronts oceànics, isotermes principals cada 5 °C
    amb etiquetes directes i terra silenciosa a sobre (estil IB-28 / «Germany»).
    ===================================================================== */

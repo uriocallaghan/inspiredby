@@ -540,8 +540,8 @@
       const hc=dv.append("g");
       hc.append("circle").attr("r",16).attr("fill",C.paper).attr("stroke",C.ink).attr("stroke-width",1.3);
       hc.append("path").attr("d","M-4,-5L-9,0L-4,5M4,-5L9,0L4,5").attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.3).attr("stroke-linejoin","round");
-      const labL=V.t(s,0,20,mob?"◀ Mateu":"◀ Mateu (mags i Egipte)",{anchor:"end",weight:700,size:mob?12:13.5,fill:C.vermell,halo:3.5}).attr("pointer-events","none");
-      const labR=V.t(s,0,20,mob?"Lluc ▶":"Lluc (cens i pastors) ▶",{anchor:"start",weight:700,size:mob?12:13.5,fill:C.blau,halo:3.5}).attr("pointer-events","none");
+      const labL=V.t(s,0,20,mob?"← Mateu":"← Mateu (mags i Egipte)",{anchor:"end",weight:700,size:mob?12:13.5,fill:C.vermell,halo:3.5}).attr("pointer-events","none");
+      const labR=V.t(s,0,20,mob?"Lluc →":"Lluc (cens i pastors) →",{anchor:"start",weight:700,size:mob?12:13.5,fill:C.blau,halo:3.5}).attr("pointer-events","none");
 
       // barra inferior: la bretxa de 10 anys
       const gb=s.append("g").attr("transform",`translate(0,${mapH+14})`);
