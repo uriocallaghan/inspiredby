@@ -18,7 +18,8 @@
 .plot svg{overflow:visible}
 .plot.map{overflow:hidden}
 .plot.map canvas{width:100%;display:block}
-.plot.map svg.ibv-ov{position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden}
+.plot svg.ibv-ov{position:absolute;left:0;top:0}
+.plot.map svg.ibv-ov{overflow:hidden}
 .plot .hit{cursor:pointer}
 .plot .ibv-hit{cursor:crosshair}
 
@@ -35,6 +36,10 @@
 /* Controls (C-07) */
 .ctlrow{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--hair);font-family:var(--sans);font-size:13px;color:var(--ink-2)}
 .ctlrow.top{margin-top:0;margin-bottom:10px;padding-top:0;padding-bottom:8px;border-top:0;border-bottom:1px solid var(--hair)}
+.ctlrow.sub-ctl{margin-top:-2px;padding-top:4px;border-bottom-color:var(--grid)}
+.ctlrow[hidden]{display:none}
+.plot canvas.ibv-flow-cv{position:absolute;left:0;top:0;pointer-events:none}
+.plot.map canvas{transition:opacity .16s ease}
 .ctlrow .rng-wrap{display:flex;flex-direction:column;gap:2px;flex:1;min-width:200px}
 .ctlrow .rng-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:12.5px;color:var(--muted)}
 .ctlrow .rng-head output{font-size:14px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
@@ -62,6 +67,7 @@
   .graphic .vh{margin-bottom:4px}
   .graphic .vh span,.graphic .vh .lgs{display:none}
   .graphic .src{display:none}
+  .graphic .tip.ibv-dock{margin-top:4px;padding-top:4px;min-height:20px;font-size:12px}
   .fig .seg button,.graphic .seg button,.playb{min-height:44px}
   .ctlrow .rng{height:40px}
   .ctlrow{gap:6px 14px;margin-top:8px;padding-top:8px}

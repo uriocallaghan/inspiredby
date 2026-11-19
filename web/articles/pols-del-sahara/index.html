@@ -187,15 +187,19 @@
   </section>
   <figure class="fig" id="figTrucks">
     <div class="vh">
-      <div aria-live="polite"><strong id="tTitle">182 milions de tones l'any</strong><span id="tOut">Surt d'Àfrica cada any (15° O) · 7,3 milions de camions de 25 t (~19.900 al dia)</span></div>
+      <div aria-live="polite"><strong id="tTitle">Del Sàhara a l'oceà, l'Amazònia i el Carib</strong><span id="tOut">182 milions de tones surten cada any d'Àfrica (15° O); 27,7 cauen a l'Amazònia, i només 22.000 t són fòsfor (0,08 %)</span></div>
       <div class="lgs" id="tLg"></div>
     </div>
     <div class="ctlrow top">
+      <div class="seg" id="tViewSeg" role="group" aria-label="Vista del flux"><button type="button" data-v="flow" aria-pressed="true">Flux de massa</button><button type="button" data-v="grid" aria-pressed="false">364 blocs de camions</button></div>
+      <button class="playb" id="tFlowPlay" type="button" aria-pressed="false">Atura</button>
+    </div>
+    <div class="ctlrow top sub-ctl" id="tStageRow" hidden>
       <div class="seg" id="tSeg" role="group" aria-label="Etapa del viatge"><button type="button" data-i="0" aria-pressed="true">Surt d'Àfrica</button><button type="button" data-i="1" aria-pressed="false">A mig oceà</button><button type="button" data-i="2" aria-pressed="false">Cau a l'Amazònia</button><button type="button" data-i="3" aria-pressed="false">Al Carib</button><button type="button" data-i="4" aria-pressed="false">El fòsfor</button></div>
       <button class="playb" id="tPlay" type="button">Reprodueix el viatge</button>
     </div>
     <div class="plot" id="trucksWrap"></div>
-    <figcaption class="src"><b>Dades reals</b> de flux anual (Yu et al. 2015, satèl·lit CALIPSO, mitjana 2007–2013); càlcul de camions propi. Cada cercle representa 20.000 camions de 25 tones (500.000 tones). La pols que cau a l'Amazònia no surt de la que arriba al Carib: cau abans, entre els 40–50° i els 75° oest.</figcaption>
+    <figcaption class="src"><b>Dades reals</b> de flux anual (Yu et al. 2015, satèl·lit CALIPSO, mitjana 2007–2013); càlcul de camions propi. A la vista de blocs, cada cercle representa 20.000 camions de 25 tones (500.000 tones). La pols que cau a l'Amazònia (27,7 Mt) no surt de la que arriba al Carib (43 Mt): cau abans, entre els 40–50° i els 75° oest.</figcaption>
   </figure>
 
   <section class="col">

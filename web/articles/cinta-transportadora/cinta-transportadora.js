@@ -172,8 +172,26 @@ function sfcAt(lon,lat){
       const jx=((Math.sin(k*12.9898)*43758.5453)%1)*.1-.05, jy=((Math.sin(k*78.233)*12345.678)%1)*.1-.05;
       pts.push([x(s+jx),y(t+jy)]);
     }
-    IBV.cloud(c,pts,C.muted,{r:.95,alpha:.2});
+    IBV.cloud(c,pts,C.muted,{r:.95,alpha:.18});
     svg.append("image").attr("href",cv.toDataURL()).attr("x",0).attr("y",0).attr("width",W).attr("height",H);
+
+    // Corbes topogràfiques de densitat (IB-19, 11 nivells ultra-fins 0,55 px en blau translúcid)
+    const clipId="ts-clip-"+Math.random().toString(36).slice(2,7);
+    svg.append("defs").append("clipPath").attr("id",clipId)
+      .append("rect").attr("x",M.l).attr("y",M.t).attr("width",W-M.l-M.r).attr("height",H-M.t-M.b);
+    const cs=d3.contourDensity().x(d=>d[0]).y(d=>d[1]).size([W,H]).bandwidth(m?11:15).thresholds(11)(pts);
+    const ipB=IBV.seqInterp(C.blau), gpC=d3.geoPath();
+    const gC=svg.append("g").attr("class","ts-contours").attr("clip-path",`url(#${clipId})`).attr("pointer-events","none");
+    if(cs[0]){
+      gC.append("path").attr("d",gpC(cs[0])).attr("fill",IBV.alpha(C.blau,.035)).attr("stroke","none");
+    }
+    cs.forEach((cn,i)=>{
+      const f=cs.length>1?i/(cs.length-1):0;
+      gC.append("path").attr("d",gpC(cn)).attr("fill","none")
+        .attr("stroke",i===0?IBV.alpha(C.blau,.45):ipB(.25+.68*f))
+        .attr("stroke-width",i===0?.75:.55)
+        .attr("stroke-opacity",i===0?.34:(.28+.38*f));
+    });
 
     // Isopicnes (línies d'igual densitat)
     const g=svg.append("g");
@@ -309,6 +327,13 @@ const GLOBE=(function(){
     ov2:{g:"deep",pts:[[-6,61.5],[-11,60.5],[-17,60],[-23,59],[-28,58],[-32,58.5],[-35,60],[-38,60.5],[-41,59.6]]}
   };
   const prng=IBV.rng(1768);
+  const GCOL={
+    warm:[C.vermell,"#D85A3F",C.vermellFosc],
+    north:[C.vermell,"#D85A3F",C.vermellFosc],
+    trop:[C.vermell,"#D85A3F",C.vermellClar],
+    gyre:[C.vermellClar,C.vermell],
+    deep:[C.blauFosc,C.blau,"#1E498C"]
+  };
   for(const k in PATHS){
     const P=PATHS[k], dense=[];
     for(let i=0;i<P.pts.length-1;i++){
@@ -316,8 +341,32 @@ const GLOBE=(function(){
       for(let s=0;s<n;s++)dense.push(ip(s/n));
     }
     dense.push(P.pts[P.pts.length-1]);P.d=dense;P.len=dense.length;
-    const n=Math.max(4,Math.round(P.len/(P.g==="deep"?40:30)));
-    P.parts=[];for(let i=0;i<n;i++)P.parts.push({u:i/n+prng()*.6/n});
+    // Normal lateral precalculada (en graus lon/lat) per crear una cinta sedosa de micro-traços (IB-28)
+    const norm=[];
+    for(let i=0;i<dense.length;i++){
+      const p0=dense[Math.max(0,i-1)], p1=dense[Math.min(dense.length-1,i+1)];
+      const cosL=Math.max(.2,Math.cos(dense[i][1]*Math.PI/180));
+      const dx=(p1[0]-p0[0])*cosL, dy=p1[1]-p0[1], L=Math.hypot(dx,dy)||1;
+      norm.push([(-dy/L)/cosL,dx/L]);
+    }
+    P.n=norm;
+    const deep=P.g==="deep", gyre=P.g==="gyre";
+    const spread=deep?1.15:gyre?.9:P.g==="warm"?1.25:.88;
+    const n=Math.max(18,Math.round(P.len/(deep?11:8)));
+    const pal=GCOL[P.g];
+    P.parts=[];
+    for(let i=0;i<n;i++){
+      const r1=prng(), r2=prng(), r3=prng();
+      const period=deep?(28+r3*4):(26+r3*5); // 26–32 s: moviment lent, serè i hipnòtic
+      P.parts.push({
+        u:(i+prng()*.85)/n,
+        off:(r1+r2-1)*spread,
+        spd:1/period,
+        tl:(deep?(16+r2*10):(14+r2*9))/P.len,
+        w:deep?(.95+r1*.45):gyre?(.85+r1*.35):(1.0+r1*.55),
+        col:pal[Math.floor(r3*pal.length)]
+      });
+    }
   }
   const GC={warm:C.vermell,north:C.vermell,trop:C.vermell,gyre:C.vermellClar,deep:C.blauFosc};
   const SINK=[["nord",-2,74.5],["irm",-37,61],["isl",-24,59.5],["lab",-53,57.5]];
@@ -424,35 +473,64 @@ const GLOBE=(function(){
     const f=clamp(u,0,1)*(P.len-1), i=Math.floor(f), t=f-i, a=P.d[i], b=P.d[Math.min(i+1,P.len-1)];
     return[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
   }
+  function ptOff(P,u,off){
+    const cu=clamp(u,0,1), f=cu*(P.len-1), i=Math.floor(f), t=f-i, i1=Math.min(i+1,P.len-1);
+    const a=P.d[i], b=P.d[i1], na=P.n[i], nb=P.n[i1];
+    const o=off?off*Math.min(1,cu*6,(1-cu)*6):0;
+    return[
+      a[0]+(b[0]-a[0])*t+(na[0]+(nb[0]-na[0])*t)*o,
+      a[1]+(b[1]-a[1])*t+(na[1]+(nb[1]-na[1])*t)*o
+    ];
+  }
   function drawCurrents(dt){
-    // Partícules lentes i contemplatives (~24–32 s per recorregut complet)
+    // Micro-traços direccionals sedosos amb estela que s'esvaeix (estil IB-28, lents ~26–32 s)
+    const K=clamp(W/580,.68,1.08), SEG=9;
+    ctx.lineCap="round";ctx.lineJoin="round";
     for(const k in PATHS){
       const P=PATHS[k];
       const al=S.cur[P.g==="north"&&k==="nord"?"nord":P.g]??0;
       const a=k==="nord"?Math.max(S.cur.nord,S.cur.north*.6):al;
       if(a<.02)continue;
       const col=GC[P.g], deep=P.g==="deep";
-      const spd=RM?0:1/(deep?32:24);
-      ctx.strokeStyle=col;ctx.lineCap="round";
-      ctx.globalAlpha=a*(deep?.4:.34);ctx.lineWidth=deep?1:1.1;ctx.setLineDash(deep?[3,4]:[]);
+      // Fil guia ultra-fi sota els micro-traços
+      ctx.strokeStyle=col;
+      ctx.globalAlpha=a*(deep?.24:.18);ctx.lineWidth=(deep?.8:.9)*K;ctx.setLineDash(deep?[3,4]:[]);
       ctx.beginPath();let pen=false;
       for(let i=0;i<P.len;i+=2){const q=project(P.d[i][0],P.d[i][1]);if(!q){pen=false;continue}pen?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]);pen=true}
       ctx.stroke();ctx.setLineDash([]);
-      const tl=(deep?20:16)/P.len;
+      // Micro-traços direccionals amb estela sedosa
       for(const p of P.parts){
-        p.u+=dt*spd;if(p.u>1)p.u-=1;
-        const fa=a*Math.min(1,p.u*8,(1-p.u)*8);if(fa<.02)continue;
-        const seg=[];for(let s=0;s<=8;s++){const q=ptAt(P,p.u-tl*(1-s/8));seg.push(project(q[0],q[1]))}
-        for(let pass=0;pass<2;pass++){
-          ctx.strokeStyle=pass?col:C.paper;ctx.lineWidth=pass?(deep?2.1:2.5):(deep?4.4:4.8);
-          for(let s=1;s<seg.length;s++){
-            const a0=seg[s-1], a1=seg[s];if(!a0||!a1)continue;
-            ctx.globalAlpha=fa*(pass?1:.82)*(s/(seg.length-1));
-            ctx.beginPath();ctx.moveTo(a0[0],a0[1]);ctx.lineTo(a1[0],a1[1]);ctx.stroke();
-          }
+        if(!RM){p.u+=dt*p.spd;if(p.u>1)p.u-=1}
+        const fa=a*Math.min(1,p.u*7,(1-p.u)*7);if(fa<.02)continue;
+        const seg=[];
+        for(let s=0;s<=SEG;s++){
+          const q=ptOff(P,p.u-p.tl*(1-s/SEG),p.off);
+          seg.push(project(q[0],q[1]));
+        }
+        const pw=p.w*K;
+        // Halo suau de paper només per separar del fons de punts WOA23
+        ctx.strokeStyle=C.paper;
+        for(let s=3;s<seg.length;s++){
+          const a0=seg[s-1], a1=seg[s];if(!a0||!a1)continue;
+          const frac=s/(seg.length-1);
+          ctx.lineWidth=pw+1.5;
+          ctx.globalAlpha=fa*.44*Math.pow(frac,1.35);
+          ctx.beginPath();ctx.moveTo(a0[0],a0[1]);ctx.lineTo(a1[0],a1[1]);ctx.stroke();
+        }
+        // Estela direccional sedosa que s'esvaeix cap a la cua
+        ctx.strokeStyle=p.col;
+        for(let s=1;s<seg.length;s++){
+          const a0=seg[s-1], a1=seg[s];if(!a0||!a1)continue;
+          const frac=s/(seg.length-1);
+          ctx.lineWidth=pw*(.42+.68*frac);
+          ctx.globalAlpha=fa*.94*Math.pow(frac,1.45);
+          ctx.beginPath();ctx.moveTo(a0[0],a0[1]);ctx.lineTo(a1[0],a1[1]);ctx.stroke();
         }
         const hd=seg[seg.length-1];
-        if(hd){ctx.globalAlpha=fa;ctx.fillStyle=col;ctx.beginPath();ctx.arc(hd[0],hd[1],deep?2.1:2.5,0,6.2832);ctx.fill()}
+        if(hd){
+          ctx.globalAlpha=fa*.96;ctx.fillStyle=p.col;
+          ctx.beginPath();ctx.arc(hd[0],hd[1],pw*.76,0,6.2832);ctx.fill();
+        }
       }
     }
     ctx.globalAlpha=1;
@@ -1148,7 +1226,7 @@ const SEC=(function(){
   });
 })();
 
-/* ================= 9. PROJECCIONS CAP AL 2100 (IB-10) ================= */
+/* ================= 9. PROJECCIONS CAP AL 2100 (IB-10 + IB-38) ================= */
 (function(){
   const wrap=$("pjw"), inp=$("pjR"), big=$("pjBig"), txt=$("pjTxt"), list=$("pjList");
   const ROWS=[
@@ -1162,8 +1240,8 @@ const SEC=(function(){
   let x, W=0, H=0, mk, svgSel=null;
 
   IBV.legendCat($("pj-lg"),[
-    {c:C.vermell,t:"Rang projectat",kind:"dot",a:.6},
-    {c:C.vermell,t:"Estimació central",kind:"line",w:2.4},
+    {c:C.vermell,t:"Rang projectat",kind:"line",w:5},
+    {c:C.vermell,t:"Estimació central",kind:"dot",a:.48},
     {c:C.blau,t:"Zona de col·lapse (< 6 Sv)",kind:"dot",a:.3}
   ]);
 
@@ -1174,9 +1252,14 @@ const SEC=(function(){
     mk.attr("transform",`translate(${x(v)},0)`);
     // Atenuació suau a 0,48 (mai invisible) i contorn nítid als rangs que inclouen el valor
     svgSel.selectAll(".pjbar")
-      .attr("opacity",function(){const r=ROWS[+this.dataset.i];return v>=r.a&&v<=r.b?.85:.48})
+      .attr("opacity",function(){const r=ROWS[+this.dataset.i];return v>=r.a&&v<=r.b?.58:.26})
       .attr("stroke",function(){const r=ROWS[+this.dataset.i];return v>=r.a&&v<=r.b?C.ink:"none"})
-      .attr("stroke-width",1.2);
+      .attr("stroke-width",1.1);
+    svgSel.selectAll(".pjwc")
+      .attr("opacity",function(){const r=ROWS[+this.dataset.i];return v>=r.a&&v<=r.b?1:.48});
+    svgSel.selectAll(".pjdot")
+      .attr("opacity",function(){const r=ROWS[+this.dataset.i];return v>=r.a&&v<=r.b?1:.52})
+      .attr("stroke",function(){const r=ROWS[+this.dataset.i];return v>=r.a&&v<=r.b?C.ink:C.paper});
     const sv=BASE*(1-v/100);
     big.innerHTML=`−${v} %<small>≈ ${num(sv,0)} Sv cap al 2100, des d'uns 17 avui</small>`;
     let t;
@@ -1191,7 +1274,7 @@ const SEC=(function(){
   }
 
   IBV.mount(wrap,(el,w)=>{
-    W=w;const m=mob(), rh=m?48:36, M={l:m?6:196,r:14,t:22,b:28};
+    W=w;const m=mob(), rh=m?50:40, M={l:m?6:196,r:14,t:m?36:26,b:28};
     H=M.t+M.b+rh*ROWS.length;
     const svg=IBV.svg(el,W,H,"Rangs d'afebliment de la cinta cap al 2100 segons l'IPCC i quatre estudis posteriors, en percentatge. IPCC emissions baixes: 24 per cent, de 4 a 46. IPCC emissions molt altes: 39 per cent, de 17 a 55. Weijer i col·legues 2020: de 34 a 45. Bonan i col·legues 2025: de 18 a 43. Portmann i col·legues 2026: de 43 a 59. A la dreta, la zona de col·lapse.");
     svgSel=svg;
@@ -1199,17 +1282,25 @@ const SEC=(function(){
 
     const defs=svg.append("defs");
     const pt=defs.append("pattern").attr("id","hatch-pj").attr("width",6).attr("height",6).attr("patternUnits","userSpaceOnUse").attr("patternTransform","rotate(45)");
-    pt.append("line").attr("x1",0).attr("y1",0).attr("x2",0).attr("y2",6).attr("stroke",C.blau).attr("stroke-width",1.2).attr("opacity",.35);
+    pt.append("line").attr("x1",0).attr("y1",0).attr("x2",0).attr("y2",6).attr("stroke",C.blau).attr("stroke-width",1.2).attr("opacity",.32);
+    const wcId="pj-wc-"+Math.random().toString(36).slice(2,6);
+    const gr=defs.append("radialGradient").attr("id",wcId);
+    gr.append("stop").attr("offset","0%").attr("stop-color",C.vermell).attr("stop-opacity",.46);
+    gr.append("stop").attr("offset","58%").attr("stop-color",C.vermell).attr("stop-opacity",.22);
+    gr.append("stop").attr("offset","100%").attr("stop-color",C.vermell).attr("stop-opacity",0);
+
     svg.append("rect").attr("x",x(COL)).attr("y",M.t-14).attr("width",x(90)-x(COL)).attr("height",H-M.t-M.b+14).attr("fill","url(#hatch-pj)");
+    svg.append("line").attr("x1",x(COL)).attr("x2",x(COL)).attr("y1",M.t-14).attr("y2",H-M.b).attr("stroke",C.blau).attr("stroke-width",.9).attr("stroke-dasharray","2 3").attr("opacity",.65);
     IBV.t(svg,(x(COL)+x(90))/2,M.t-4,"Col·lapse",{size:IBV.FS.small,weight:700,fill:C.blau,anchor:"middle"});
 
     IBV.axisX(svg,x,H-M.b,[0,20,40,60,80],d=>d?"−"+d+" %":"0 %",{grid:M.t});
 
-    const bars=[];
+    const bars=[], wcs=[], wcR=m?12:15;
     ROWS.forEach((r,i)=>{
       const yy=M.t+rh*i+rh/2+(m?7:0), g=svg.append("g");
+      g.append("line").attr("x1",M.l).attr("x2",W-M.r).attr("y1",yy).attr("y2",yy).attr("stroke",C.hair).attr("stroke-width",.55);
       if(m){
-        const tEl=g.append("text").attr("x",M.l).attr("y",yy-12).attr("font-size",IBV.FS.small).attr("fill",C.ink);
+        const tEl=g.append("text").attr("x",M.l).attr("y",yy-13).attr("font-size",IBV.FS.small).attr("fill",C.ink);
         tEl.append("tspan").attr("font-weight",700).text(r.n);
         tEl.append("tspan").attr("fill",C.muted).text(" · "+r.s);
       }else{
@@ -1217,14 +1308,43 @@ const SEC=(function(){
         IBV.t(g,M.l-12,yy+13,r.s,{size:IBV.FS.min,fill:C.muted,anchor:"end"});
       }
       const bw=x(r.b)-x(r.a);
-      const b=g.append("rect").attr("class","pjbar").attr("data-i",i).attr("x",x(r.a)).attr("y",yy-5).attr("height",10).attr("rx",5).attr("fill",C.vermell)
+      const b=g.append("rect").attr("class","pjbar").attr("data-i",i).attr("x",x(r.a)).attr("y",yy-4).attr("height",8).attr("rx",4).attr("fill",C.vermell)
         .attr("width",(!el.__seen&&!RM)?0:bw);
       bars.push({b,bw});
-      if(r.c!=null)g.append("rect").attr("x",x(r.c)-1.3).attr("width",2.6).attr("y",yy-8).attr("height",16).attr("fill",C.vermell);
+      if(r.c!=null){
+        const wc=g.append("circle").attr("class","pjwc").attr("data-i",i).attr("cx",x(r.c)).attr("cy",yy)
+          .attr("r",(!el.__seen&&!RM)?0:wcR).attr("fill",`url(#${wcId})`).style("mix-blend-mode","multiply");
+        wcs.push(wc);
+        g.append("circle").attr("class","pjdot").attr("data-i",i).attr("cx",x(r.c)).attr("cy",yy)
+          .attr("r",3.3).attr("fill",C.vermell).attr("stroke",C.paper).attr("stroke-width",1.2);
+        if(!m)IBV.t(g,x(r.c),yy-10,`−${r.c} %`,{size:IBV.FS.min,weight:600,fill:C.ink2,anchor:"middle",halo:true});
+      }
     });
 
+    // Anotacions netes amb IBV.note (sense solapaments a 1440 px ni 390 px)
+    const anG=svg.append("g").attr("pointer-events","none");
+    if(!m){
+      IBV.note(anG,{
+        x:x(COL),y:M.t+rh*1.5,tx:x(COL)+16,ty:M.t+rh*1.5,kind:"straight",anchor:"start",dot:true,
+        lines:[["Llindar de col·lapse",true],["per sota d'uns 6 Sv"]]
+      });
+      const yP=M.t+rh*4+rh/2;
+      IBV.note(anG,{
+        x:x(43)-3,y:yP,tx:x(36),ty:yP,kind:"straight",anchor:"end",dot:true,
+        lines:[["Estimació més alta (−51 %)",true],["corregeix el biaix de salinitat"]]
+      });
+    }else{
+      IBV.note(anG,{
+        x:x(COL),y:M.t-10,tx:x(COL)-10,ty:12,kind:"straight",anchor:"end",dot:true,size:11.5,
+        lines:[["Llindar de col·lapse (< 6 Sv)",true]]
+      });
+    }
+
     IBV.onView(el,inst=>{
-      if(!inst)bars.forEach(({b,bw},i)=>b.transition().duration(750).delay(i*70).ease(IBV.EASE).attr("width",bw));
+      if(!inst){
+        bars.forEach(({b,bw},i)=>b.transition().duration(750).delay(i*70).ease(IBV.EASE).attr("width",bw));
+        wcs.forEach((wc,i)=>wc.transition().duration(650).delay(160+i*90).ease(IBV.EASE).attr("r",wcR));
+      }
     });
 
     mk=svg.append("g");
@@ -1243,7 +1363,7 @@ const SEC=(function(){
   inp.addEventListener("input",update);
 })();
 
-/* ================= 10. LÍNIA DEL TEMPS DE COL·LAPSE (IB-10) ================= */
+/* ================= 10. LÍNIA DEL TEMPS DE COL·LAPSE (IB-10 + IB-38) ================= */
 (function(){
   const wrap=$("tipw");
   const ROWS=[
@@ -1256,13 +1376,13 @@ const SEC=(function(){
   ];
 
   IBV.legendCat($("tip-lg"),[
-    {c:C.blau,t:"Interval i estimació central",kind:"dot"},
+    {c:C.blau,t:"Interval i estimació central",kind:"dot",a:.48},
     {c:C.blauClar,t:"Aturada després del 2100",kind:"dot",a:.65},
     {c:C.muted,t:"Col·lapse improbable abans del 2100",kind:"hollow"}
   ]);
 
   IBV.mount(wrap,(el,W)=>{
-    const m=mob(), rh=m?48:38, M={l:m?6:224,r:m?12:24,t:24,b:28}, H=M.t+M.b+rh*ROWS.length;
+    const m=mob(), rh=m?50:42, M={l:m?6:224,r:m?12:24,t:26,b:28}, H=M.t+M.b+rh*ROWS.length;
     const svg=IBV.svg(el,W,H,"Línia del temps del 2020 al 2200 amb les estimacions publicades sobre un col·lapse de la cinta: Ditlevsen 2023 corregit, 2065 amb un interval del 2037 al 2109; van Westen 2025, inici cap al 2063 amb un rang del 2026 al 2095 amb emissions intermèdies i cap al 2055 amb emissions molt altes; Drijfhout 2025, aturada després del 2100 en simulacions allargades; Baker 2025 i l'IPCC, col·lapse improbable abans del 2100.");
     const x=d3.scaleLinear([2020,2200],[M.l,W-M.r]);
 
@@ -1275,13 +1395,20 @@ const SEC=(function(){
     const defs=svg.append("defs");
     const pt=defs.append("pattern").attr("id","hatch-tip").attr("width",5).attr("height",5).attr("patternUnits","userSpaceOnUse").attr("patternTransform","rotate(45)");
     pt.append("line").attr("x1",0).attr("y1",0).attr("x2",0).attr("y2",5).attr("stroke",C.muted).attr("stroke-width",1).attr("opacity",.55);
+    const wcId="tip-wc-"+Math.random().toString(36).slice(2,6);
+    const gr=defs.append("radialGradient").attr("id",wcId);
+    gr.append("stop").attr("offset","0%").attr("stop-color",C.blau).attr("stop-opacity",.48);
+    gr.append("stop").attr("offset","58%").attr("stop-color",C.blau).attr("stop-opacity",.22);
+    gr.append("stop").attr("offset","100%").attr("stop-color",C.blau).attr("stop-opacity",0);
 
+    const wcR=m?12:15;
     const rowGs=svg.append("g").selectAll("g.trow").data(ROWS).join("g").attr("class","trow").style("cursor","pointer");
     rowGs.each(function(r,i){
       const g=d3.select(this), yy=M.t+rh*i+rh/2+(m?7:0);
       g.append("rect").attr("x",0).attr("y",yy-rh/2-(m?7:0)).attr("width",W).attr("height",rh).attr("fill","transparent");
+      g.append("line").attr("x1",M.l).attr("x2",W-M.r).attr("y1",yy).attr("y2",yy).attr("stroke",C.hair).attr("stroke-width",.55);
       if(m){
-        const tEl=g.append("text").attr("x",M.l).attr("y",yy-12).attr("font-size",IBV.FS.small).attr("fill",C.ink);
+        const tEl=g.append("text").attr("x",M.l).attr("y",yy-13).attr("font-size",IBV.FS.small).attr("fill",C.ink);
         tEl.append("tspan").attr("font-weight",700).text(r.n);
         tEl.append("tspan").attr("fill",C.muted).text(" · "+(r.ym||r.y));
       }else{
@@ -1290,31 +1417,57 @@ const SEC=(function(){
       }
       if(r.k==="r"){
         const bw=Math.min(x(r.b),W-M.r)-x(r.a);
-        g.append("rect").attr("class","tbar").attr("x",x(r.a)).attr("width",(!el.__seen&&!RM)?0:bw).attr("y",yy-5).attr("height",10).attr("rx",5).attr("fill",C.blau).attr("opacity",.32).datum({bw});
-        g.append("circle").attr("cx",x(r.c)).attr("cy",yy).attr("r",5).attr("fill",C.blau);
-        if(!m)IBV.t(g,x(r.c),yy-9,String(r.c),{size:IBV.FS.min,weight:600,anchor:"middle",halo:true});
+        g.append("rect").attr("class","tbar").attr("x",x(r.a)).attr("width",(!el.__seen&&!RM)?0:bw).attr("y",yy-4).attr("height",8).attr("rx",4).attr("fill",C.blau).attr("opacity",.24).datum({bw});
+        g.append("circle").attr("class","twc").attr("cx",x(r.c)).attr("cy",yy).attr("r",(!el.__seen&&!RM)?0:wcR).attr("fill",`url(#${wcId})`).style("mix-blend-mode","multiply");
+        g.append("circle").attr("cx",x(r.c)).attr("cy",yy).attr("r",3.4).attr("fill",C.blau).attr("stroke",C.paper).attr("stroke-width",1.2);
+        if(!m)IBV.t(g,x(r.c),yy-10,String(r.c),{size:IBV.FS.min,weight:600,anchor:"middle",halo:true});
       }else if(r.k==="after"){
         const bw=x(r.b)-x(r.a);
-        g.append("rect").attr("class","tbar").attr("x",x(r.a)).attr("width",(!el.__seen&&!RM)?0:bw).attr("y",yy-5).attr("height",10).attr("fill",C.blau).attr("opacity",.22).datum({bw});
+        g.append("rect").attr("class","tbar").attr("x",x(r.a)).attr("width",(!el.__seen&&!RM)?0:bw).attr("y",yy-4).attr("height",8).attr("rx",4).attr("fill",C.blau).attr("opacity",.22).datum({bw});
         IBV.t(g,x(r.b)-6,yy+4,"després del 2100",{size:IBV.FS.min,fill:C.blauFosc,anchor:"end",halo:true});
       }else{
         const bw=x(r.b)-x(r.a);
-        g.append("rect").attr("class","tbar").attr("x",x(r.a)).attr("width",(!el.__seen&&!RM)?0:bw).attr("y",yy-5).attr("height",10).attr("fill","url(#hatch-tip)").datum({bw});
+        g.append("rect").attr("class","tbar").attr("x",x(r.a)).attr("width",(!el.__seen&&!RM)?0:bw).attr("y",yy-4).attr("height",8).attr("rx",4).attr("fill","url(#hatch-tip)").datum({bw});
         IBV.t(g,(x(r.a)+x(r.b))/2,yy+4,"col·lapse improbable",{size:IBV.FS.min,fill:C.ink2,anchor:"middle",halo:3});
       }
     });
 
+    // Anotacions netes amb IBV.note (a les zones lliures de la dreta, sense solapaments a 1440 px ni 390 px)
+    const anG=svg.append("g").attr("pointer-events","none");
+    if(!m){
+      const yCl=M.t+rh*1+rh/2;
+      IBV.note(anG,{
+        x:x(2095)+3,y:yCl,tx:x(2116),ty:yCl-4,kind:"curve",bend:-8,anchor:"start",
+        lines:[["Estimacions centrals: 2055–2065",true],["mètodes estadístics i físics"]]
+      });
+      const yMd=M.t+rh*4.5+rh/2;
+      IBV.note(anG,{
+        x:x(2100)+2,y:yMd,tx:x(2116),ty:yMd,kind:"straight",anchor:"start",dot:true,
+        lines:[["Models climàtics (CMIP6)",true],["sense col·lapse brusc abans del 2100"]]
+      });
+    }else{
+      const yMd=M.t+rh*4.85+7;
+      IBV.note(anG,{
+        x:x(2100)+2,y:yMd,tx:x(2112),ty:yMd,kind:"straight",anchor:"start",dot:true,size:11.5,
+        lines:[["Models climàtics",true],["improbable abans del 2100"]]
+      });
+    }
+
     IBV.onView(el,inst=>{
-      if(!inst)svg.selectAll(".tbar").transition().duration(800).delay((_,i)=>i*65).ease(IBV.EASE).attr("width",d=>d.bw);
+      if(!inst){
+        svg.selectAll(".tbar").transition().duration(800).delay((_,i)=>i*65).ease(IBV.EASE).attr("width",d=>d.bw);
+        svg.selectAll(".twc").transition().duration(650).delay((_,i)=>180+i*85).ease(IBV.EASE).attr("r",wcR);
+      }
     });
 
     const dock=IBV.tip(el);
-    rowGs.on("pointerenter pointerdown",(e,r)=>{
+    IBV.hover(svg.node(),(e,[,py])=>{
+      if(py<M.t||py>H-M.b){IBV.focus(rowGs,null);anG.style("opacity",1);dock.hide();return}
+      const idx=clamp(Math.floor((py-M.t)/rh),0,ROWS.length-1), r=ROWS[idx];
       IBV.focus(rowGs,d=>d===r,{dim:.5});
+      anG.style("opacity",.5);
       dock.show(`<b>${r.n} (${r.y})</b><br>${r.d}`);
-    }).on("pointerleave",e=>{
-      if(e.pointerType==="mouse"){IBV.focus(rowGs,null);dock.hide()}
-    });
+    },()=>{IBV.focus(rowGs,null);anG.style("opacity",1);dock.hide()});
   });
 })();
 

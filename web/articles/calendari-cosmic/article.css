@@ -54,8 +54,10 @@
   .vh strong{font-size:18.5px}
   .vh span{font-size:12.5px}
   .fig{margin:42px auto 32px}
+  .fig .seg{gap:4px 14px}
   .graphic .vh{margin-bottom:4px}
   .graphic .vh span,.graphic .vh .lgs,.graphic .src{display:none}
+  .graphic .tip.ibv-dock{margin-top:4px;padding-top:4px;min-height:20px;font-size:12px}
   .callist{font-size:11.5px;line-height:1.25;gap:2px 10px;margin-top:4px;max-height:52px;overflow:hidden}
   .callist b{min-width:16px;height:16px;font-size:11px}
   .ctlrow .rng-wrap{flex-wrap:wrap;gap:4px 12px}

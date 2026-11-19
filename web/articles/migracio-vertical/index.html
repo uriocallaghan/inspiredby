@@ -152,12 +152,18 @@
     <p>Al sud de l'Índic, la capa es quedava de dia a gairebé 600 metres, però només en pujava una cinquena part. Al Pacífic oriental, davant d'Amèrica, es quedava molt més amunt, a uns 350 metres, i en canvi hi pujava gairebé tota.</p>
     <p>La diferència va lligada, sobretot, a l'<b>oxigen</b>, tot i que també hi compten la temperatura i la transparència de l'aigua. Al Pacífic oriental, a pocs centenars de metres, hi ha una gran massa d'aigua gairebé sense oxigen. Els migradors baixen just fins al seu límit, i molts s'hi fiquen a dins durant el dia. Una hipòtesi és que els serveix d'amagatall: els seus depredadors, més grans i més actius, necessiten més oxigen i no els hi poden seguir.</p>
   </section>
-  <figure class="fig" id="regfig">
+  <figure class="fig wide" id="regfig">
     <div class="vh">
       <div class="vh-head"><strong>On és la capa de dia i on és de nit</strong><span>Fondària mitjana del senyal acústic (0–1.000 m) i proporció que migra en cinc regions</span></div>
-      <div class="lgs" id="regLgd"></div>
+      <div class="vh-right">
+        <div class="seg" id="regView" role="group" aria-label="Vista del gràfic">
+          <button type="button" data-view="atlas" aria-pressed="true">Atles oceànic</button>
+          <button type="button" data-view="depth" aria-pressed="false">Profunditat dia · nit</button>
+        </div>
+        <div class="lgs" id="regLgd"></div>
+      </div>
     </div>
-    <div class="seg" id="regSeg">
+    <div class="seg reg-subseg" id="regSeg" hidden>
       <button type="button" data-v="day" aria-pressed="true">De dia</button>
       <button type="button" data-v="night" aria-pressed="false">De nit</button>
       <button type="button" class="playb" id="regPlay">Reprodueix</button>
@@ -320,6 +326,7 @@
   <a href="../../"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
 <script src="../../assets/ib-viz.js"></script>
 <script src="../../assets/scrolly.js"></script>
 <script src="migracio.js"></script>
