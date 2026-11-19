@@ -29,7 +29,7 @@ window.STONEHENGE_DADES = {
     {
       id: "altar",
       nom: "Pedra de l'Altar (6 t)",
-      curt: "Conca Orcadiana (>=750 km)",
+      curt: "Conca Orcadiana (≥ 750 km)",
       origen: "NE d'Escòcia (aflorament exacte obert)",
       lon: -3.28, lat: 58.38,
       dist: 750, pes: "6 t (4,9 × 1,0 × 0,5 m)",
@@ -77,35 +77,35 @@ window.STONEHENGE_DADES = {
     {
       id: "f1", num: 1,
       titol: "Fase 1 · El fossat circular i el cementiri",
-      dates: "3100–2920 a 2965–2755 cal BC",
+      dates: "3100–2920 a 2965–2755", ini:[-3100,-2920], fi:[-2965,-2755], dIni:"3100–2920", dFi:"2965–2755",
       inici: -3010, fi: -2860,
       desc: "Talús i fossat de ~110 m, 56 forats Aubrey (amb possibles pedres blaves inicials) i el gran cementiri de cremacions."
     },
     {
       id: "f2", num: 2,
       titol: "Fase 2 · Els gegants de sarsen i la fusteria en pedra",
-      dates: "2760–2510 a 2470–2300 cal BC",
+      dates: "2760–2510 a 2470–2300", ini:[-2760,-2510], fi:[-2470,-2300], dIni:"2760–2510", dFi:"2470–2300",
       inici: -2635, fi: -2385,
       desc: "30 pilars sarsen + 30 llindes encaixades, 5 trílits, Pedra de l'Altar, 4 Station Stones i doble cercle Q/R."
     },
     {
       id: "f3", num: 3,
       titol: "Fase 3 · L'Avinguda cap al riu i l'onada Campaniforme",
-      dates: "2405–2225 a 2300–2100 cal BC",
+      dates: "2405–2225 a 2300–2100", ini:[-2405,-2225], fi:[-2300,-2100], dIni:"2405–2225", dFi:"2300–2100",
       inici: -2315, fi: -2200,
       desc: "Avinguda de 2,8 km cap a l'Avon (Bluestonehenge), entrada NE modificada i enterrament de l'Arquer d'Amesbury."
     },
     {
       id: "f4", num: 4,
       titol: "Fase 4 · La darrera coreografia de pedres blaves",
-      dates: "2210–2030 a 2160–1925 cal BC",
+      dates: "2210–2030 a 2160–1925", ini:[-2210,-2030], fi:[-2160,-1925], dIni:"2210–2030", dFi:"2160–1925",
       inici: -2120, fi: -2040,
       desc: "Es desmunta el doble cercle Q/R i s'erigeixen l'oval interior i el cercle exterior de pedres blaves que veiem avui."
     },
     {
       id: "f5", num: 5,
       titol: "Fase 5 · Els forats Y i Z i els gravats de bronze",
-      dates: "2020–1745 a 1620–1450 cal BC",
+      dates: "2020–1745 a 1620–1450", ini:[-2020,-1745], fi:[-1620,-1450], dIni:"2020–1745", dFi:"1620–1450",
       inici: -1880, fi: -1535,
       desc: "S'excaven 59 forats concèntrics Y i Z (c. 1630–1520 cal BC), es graven destrals i dagues sobre els sarsens i el lloc s'abandona."
     }
@@ -185,6 +185,51 @@ window.STONEHENGE_DADES = {
     { m: 9, nom: "Oct", sac: 13, naix: 0, nota: "Tardor · Pugen les matances (~7–8 mesos d'edat)" },
     { m: 10, nom: "Nov", sac: 21, naix: 0, nota: "Tardor tardana · Pic d'entrada de ramats (~8–9 mesos)" },
     { m: 11, nom: "Des", sac: 22, naix: 0, nota: "Solstici d'hivern · Clímax dels banquets a Durrington Walls" }
+  ],
+
+
+  /* 4b. Moure pedres: ritmes d'experiments documentats (Harris, UCL 2016; Richards & Whitby 1997, BBC 1994) */
+  moure: {
+    ritmes: [
+      { id: "ucl", k: 13.3, sub: "10 persones per cada 0,75 t", font: "UCL, 2016", detall: "Deu persones van moure una rèplica de formigó de ¾ de tona sobre un trineu senzill que llisca per troncs fixos" },
+      { id: "bbc", k: 5, sub: "200 persones per 40 t", font: "BBC, 1994", detall: "130 voluntaris van pujar una rèplica de 40 t per un pendent de 1:20 sobre un carril greixat; amb sèu en caldrien uns 200" }
+    ],
+    pedres: [
+      { id: "blava", nom: "Pedra blava", t: 3, l: 2.6, h: 1.0, def: false },
+      { id: "altar", nom: "Pedra de l'Altar", t: 6, l: 4.9, h: 0.5 },
+      { id: "sarsen", nom: "Sarsen mitjà", t: 25, l: 5.4, h: 1.1, def: true },
+      { id: "p56", nom: "Rèplica de la pedra 56", t: 40, l: 9.1, h: 1.2 }
+    ]
+  },
+
+  /* 6b. Plantes a la mateixa escala (diàmetres publicats) */
+  escala: [
+    { id: "durrington", nom: "Durrington Walls", curt: "Durrington", d: 480, data: "c. 2500 aC", det: "Henge de ~490 × 468 m vora l'Avon, amb cercles de pals i cases (Historic England)" },
+    { id: "stonehenge", nom: "Stonehenge (fossat)", curt: "Stonehenge", d: 110, data: "c. 3000 aC", det: "Fossat circular d'uns 110 m (English Heritage)" },
+    { id: "woodhenge", nom: "Woodhenge", curt: "Woodhenge", d: 110, data: "c. 2500 aC", det: "Sis anells de pals dins un fossat d'uns 110 m en total (Historic England)" },
+    { id: "waunmawn", nom: "Waun Mawn (Gal·les)", curt: "Waun Mawn", d: 110, data: "c. 3000 aC", dash: true, det: "Cercle desmantellat de diàmetre «idèntic» al fossat de Stonehenge, segons Parker Pearson et al. (2021); en debat" },
+    { id: "brodgar", nom: "Anell de Brodgar (Òrcades)", curt: "Brodgar", d: 104, data: "c. 2500 aC", det: "Cercle de 104 m, 60 pedres originals (Historic Environment Scotland)" },
+    { id: "sarsens", nom: "Cercle de sarsens", curt: "Sarsens", d: 30, data: "c. 2500 aC", det: "Els 30 pilars amb llindes fan un anell d'uns 30 m" },
+    { id: "gobekli", nom: "Göbekli Tepe, recinte D", curt: "Göbekli D", d: 14, data: "c. 9500 aC", det: "Recinte de ~14 m de diàmetre interior amb pilars en T de 5,5 m (Haklay i Gopher, 2020)" }
+  ],
+
+  /* 7. Cada segle s'inventa el seu Stonehenge */
+  mirall: [
+    { any: 1136, tipus: "dalt", clau: true, curt: "Merlí", det: "Geoffrey of Monmouth: la «Dansa dels Gegants», portada d'Irlanda per art de màgia" },
+    { any: 1655, tipus: "dalt", curt: "Temple romà", det: "Inigo Jones (publicat pòstumament): un temple d'ordre toscà" },
+    { any: 1740, tipus: "dalt", clau: true, curt: "Druides", det: "William Stukeley: «temple dels druides britànics», uns 2.000 anys massa tard" },
+    { any: 1797, tipus: "baix", curt: "Cau el trílit 57–58", det: "Dos pilars i la llinda cauen; no es redrecen fins al 1958" },
+    { any: 1901, tipus: "baix", curt: "Es redreça la pedra 56", det: "Excavació de William Gowland per redreçar el pilar més alt, que s'inclinava" },
+    { any: 1918, tipus: "baix", clau: true, curt: "Cecil Chubb el regala", det: "Comprat en una subhasta el 1915, el cedeix a la nació el 1918" },
+    { any: 1919, tipus: "baix", anyTxt: "1919–20", curt: "Grues i formigó", det: "Es redrecen les pedres 6, 7, 29, 30, 1 i 2" },
+    { any: 1958, tipus: "baix", anyTxt: "1958–59", curt: "Tornen a pujar 57–58", det: "Es redrecen el trílit caigut el 1797 i la pedra 22, caiguda el 1900" },
+    { any: 1963, tipus: "dalt", curt: "Ordinador", det: "Gerald Hawkins a Nature: «Stonehenge decoded», un calculador d'eclipsis" },
+    { any: 1964, tipus: "baix", curt: "Una pedra més", det: "Es redreça el sarsen que el vent va tombar el 10 de març del 1963" },
+    { any: 1985, tipus: "baix", clau: true, curt: "Camp de Faves", det: "1 de juny: uns 1.300 policies aturen la caravana del festival; més de 500 detinguts" },
+    { any: 1986, tipus: "baix", curt: "UNESCO", det: "Patrimoni Mundial amb Avebury" },
+    { any: 1998, tipus: "dalt", clau: true, curt: "Avantpassats", det: "Parker Pearson i Ramilisonina: pedra per als morts, fusta per als vius" },
+    { any: 2000, tipus: "baix", curt: "Accés obert", det: "Tornen les trobades lliures als solsticis; el 2025 n'hi van anar unes 25.000 persones" },
+    { any: 2024, tipus: "dalt", curt: "Unió de l'illa", det: "L'Altar ve del nord d'Escòcia: un monument de tota Gran Bretanya" }
   ],
 
   /* 6. Megalitisme comparat al món (12.000 anys) */

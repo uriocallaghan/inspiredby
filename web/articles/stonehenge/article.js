@@ -1,32 +1,40 @@
-/* «Per què van aixecar Stonehenge?»: 6 visualitzacions del sistema infogràfic (IBV + d3 7.9.0).
-   Paleta estricta: vermell #C8442A, blau #2C5DA8, groc #F5C518, grisos i terra #ECEBE8.
-   Mai text en groc; mai fons pintats; mai anells diana; hover suau IBV.focus (0,48) + IBV.tip dock. */
+/* «Per què van aixecar Stonehenge?» · part A: maqueta de línia, paisatge doble, mapa de procedències,
+   quanta gent cal per moure una pedra i com s'alça un trílit.
+   Paleta estricta: vermell #C8442A, blau #2C5DA8, groc #F5C518 i grisos. Mai text en groc, mai fons pintats,
+   hover suau (IBV.focus ≥ 0,46) i lectura d'una línia sota el gràfic (IBV.tip). */
 (function(){
   "use strict";
-  const D = window.STONEHENGE_DADES;
-  const C = IBV.C;
-  const F0 = IBV.fmt(",.0f");
-  const F1 = IBV.fmt(",.1f");
-  const F2 = IBV.fmt(",.2f");
+  const D = window.STONEHENGE_DADES, L = window.SH_LOCAL, S3 = window.SH3D, C = IBV.C;
+  const F0 = IBV.fmt(",.0f"), F1 = IBV.fmt(",.1f");
+  const D2R = Math.PI/180;
+  const MODEL = S3.buildModel(), GROUND = S3.buildGround();
+  const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+  const ease = d3.easeCubicInOut;
 
-  const COL = { vermell: C.vermell, blau: C.blau, groc: C.groc, gris: C.ink2 };
-  const TEXT_COL = { vermell: C.vermell, blau: C.blau, groc: C.ink, gris: C.ink2 }; // mai text en groc
-
-  function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
-
-  function greatCircleLine(a, b, n){
-    const interp = d3.geoInterpolate(a, b);
-    const pts = [];
-    const steps = n || 44;
-    for(let i = 0; i <= steps; i++) pts.push(interp(i / steps));
-    return pts;
+  // botons de segment (.seg): aria-pressed i retorn del valor
+  function segBind(root, attr, cb){
+    if(!root) return;
+    root.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+      root.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x===b ? "true" : "false"));
+      cb(b.dataset[attr], b);
+    }));
   }
+  // text amb halo al canvas
+  function ctext(ctx, x, y, str, o){
+    o = o||{};
+    ctx.save();
+    ctx.font = `${o.italic?"italic ":""}${o.weight||400} ${o.size||12.5}px ${IBV.SANS}`;
+    ctx.textAlign = o.anchor==="middle" ? "center" : (o.anchor||"left"); ctx.textBaseline = "middle";
+    ctx.lineJoin = "round"; ctx.lineWidth = 3.2; ctx.strokeStyle = S3.PAPER; ctx.strokeText(str, x, y);
+    ctx.fillStyle = o.fill||C.ink; ctx.fillText(str, x, y);
+    ctx.restore();
+  }
+  window.SHA = {segBind, ctext, MODEL, GROUND, clamp};
 
-  /* IB-59 · Mapa físic en relleu (copiat de web/sistema/mapes-b.js; relleu a relleu.js, generat amb scripts/relleu.mjs) */
-  // Franges hipsomètriques (m): grisos càlids, cada esglaó ~9 punts més fosc. Les quatre primeres són les dels evangelis.
+  /* ---------- IB-59 · Mapa físic en relleu (bloc copiat de web/sistema/mapes-b.js) ---------- */
   const IB59_BANDS=[[200,[243,242,239]],[500,[235,233,228]],[800,[226,223,216]],[1500,[216,212,204]],[2200,[206,202,193]],[Infinity,[196,191,182]]];
-  const IB59_COAST="#ABA8A1", IB59_LAKE="#AEC6E6";
-  function dem59(D){ // descodifica una sola vegada; retorna {z(lon,lat), grid, D}
+  const IB59_COAST="#ABA8A1";
+  function dem59(D){
     if(D.__dec)return D.__dec;
     const s=atob(D.b64), a=new Float32Array(s.length), k=(D.mx-D.mn)/254;
     for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i)*k+D.mn;
@@ -36,7 +44,6 @@
       return (a[j*D.nx+i]*(1-u)+a[j*D.nx+i1]*u)*(1-v)+(a[j1*D.nx+i]*(1-u)+a[j1*D.nx+i1]*u)*v; };
     return (D.__dec={z,grid:a,D});
   }
-  // isolínies del relleu en lon/lat (talla els trams que toquen la vora de la graella)
   function iso59(D,th){
     const {grid}=dem59(D), out=[];
     for(const c of d3.contours().size([D.nx,D.ny]).thresholds(th)(grid)){
@@ -55,1533 +62,522 @@
   }
   function relleu59(ctx,proj,w,h,D,o){
     o=o||{};
-    const {z}=dem59(D), clamp=(v,a,b)=>Math.max(a,Math.min(b,v)), pth=d3.geoPath(proj,ctx);
+    const {z}=dem59(D), pth=d3.geoPath(proj,ctx);
     const land=o.land||null, sea=o.sea==null?0:o.sea;
     const iso=o.iso||(D.mx>1500?[500,1000,1500,2000,2500,3000]:[300,600,900,1200]);
-    // 1. Ràster: una cel·la de pantalla per píxel CSS (prou: el relleu és suau). Funciona amb qualsevol projecció amb invert.
     const sc=o.res||1, fw=Math.ceil(w/sc), fh=Math.ceil(h/sc);
     const fc=document.createElement("canvas"); fc.width=fw; fc.height=fh;
     const fx=fc.getContext("2d"), im=fx.createImageData(fw,fh), d=im.data;
-    const kmLon=111.32*Math.cos(((D.lat1-D.ny*D.st/2)*Math.PI)/180), dd=D.st*1.12;
+    const kmLon=111.32*Math.cos(((D.lat1-D.ny*D.st/2)*Math.PI)/180), dd=D.st*1.12, sat=o.slope||98;
     for(let y=0;y<fh;y++)for(let x=0;x<fw;x++){
       const ll=proj.invert([(x+.5)*sc,(y+.5)*sc]); if(!ll)continue;
       const zz=z(ll[0],ll[1]); if(zz!==zz)continue;
-      if(!land&&zz<=sea)continue;                       // mar: blanc de paper
-      // ombra suau des del NO: pendent en m/km, saturada a ~100 m/km, ±15 punts
+      if(!land&&zz<=sea)continue;
       const gx=(z(ll[0]+dd,ll[1])-z(ll[0]-dd,ll[1]))/(2*dd*kmLon), gy=(z(ll[0],ll[1]+dd)-z(ll[0],ll[1]-dd))/(2*dd*111.32);
-      const shade=(gx!==gx||gy!==gy)?0:clamp((-gx+gy)*.65/98,-1,1)*15;
-      let r,g,b;
-      if(zz<0){ const t=clamp(-zz/420,0,1); r=234-t*48; g=240-t*32; b=248-t*12; }   // terra sota el nivell del mar: blau clar
-      else { const band=IB59_BANDS.find(q=>zz<q[0])[1]; r=band[0]; g=band[1]; b=band[2]; }
-      const i=(y*fw+x)*4; d[i]=clamp(r+shade,0,255); d[i+1]=clamp(g+shade,0,255); d[i+2]=clamp(b+shade,0,255); d[i+3]=255;
+      const shade=(gx!==gx||gy!==gy)?0:clamp((-gx+gy)*.65/sat,-1,1)*15;
+      const band=IB59_BANDS.find(q=>zz<q[0])[1];
+      const i=(y*fw+x)*4; d[i]=clamp(band[0]+shade,0,255); d[i+1]=clamp(band[1]+shade,0,255); d[i+2]=clamp(band[2]+shade,0,255); d[i+3]=255;
     }
     fx.putImageData(im,0,0);
     ctx.save();
     if(land){ ctx.beginPath(); pth(land); ctx.clip(); }
     ctx.imageSmoothingEnabled=true; ctx.drawImage(fc,0,0,w,h);
-    // 2. Isolínies: fil gris finíssim; 0 m en blau discontinu només si hi ha terra sota el mar (amb «land»)
-    iso59(D,land?[0,...iso]:iso).forEach(c=>{
-      ctx.beginPath(); pth(c.geo);
-      if(c.v===0){ ctx.strokeStyle=IBV.alpha(C.blau,.48); ctx.lineWidth=.85; ctx.setLineDash([3,2.5]); }
-      else { ctx.strokeStyle=IBV.alpha(C.ink,.14); ctx.lineWidth=.55; ctx.setLineDash([]); }
-      ctx.stroke();
-    });
-    ctx.setLineDash([]); ctx.restore();
-    // 3. Costa nítida
-    ctx.beginPath();
-    if(land)pth(land); else iso59(D,[sea+.01]).forEach(c=>pth(c.geo));
-    ctx.strokeStyle=IB59_COAST; ctx.lineWidth=.9; ctx.lineJoin="round"; ctx.stroke();
-    // 4. Aigua dolça en blau
-    if(o.rivers){ ctx.beginPath(); pth(o.rivers); ctx.strokeStyle=IBV.alpha(C.blau,.78); ctx.lineWidth=1.25; ctx.lineCap="round"; ctx.stroke(); }
-    if(o.lakes){ ctx.beginPath(); pth(o.lakes); ctx.fillStyle=IB59_LAKE; ctx.fill(); ctx.strokeStyle=C.blau; ctx.lineWidth=.95; ctx.stroke(); }
-    // 5. Vores que s'esvaeixen (sense marc) on el relleu s'acaba en terra: o.fade = "neso" (qualsevol combinació de n, e, s, o)
+    iso59(D,iso).forEach(c=>{ ctx.beginPath(); pth(c.geo); ctx.strokeStyle=IBV.alpha(C.ink,o.isoA||.14); ctx.lineWidth=.55; ctx.stroke(); });
+    ctx.restore();
+    if(o.coast!==false){
+      ctx.beginPath();
+      if(land)pth(land); else iso59(D,[sea+.01]).forEach(c=>pth(c.geo));
+      ctx.strokeStyle=IB59_COAST; ctx.lineWidth=.9; ctx.lineJoin="round"; ctx.stroke();
+    }
+    if(o.rivers){ ctx.beginPath(); pth(o.rivers); ctx.strokeStyle=IBV.alpha(C.blau,.78); ctx.lineWidth=o.riverW||1.25; ctx.lineCap="round"; ctx.lineJoin="round"; ctx.stroke(); }
     if(o.fade){
       const a=proj([D.lon0,D.lat1]), b=proj([D.lon0+D.nx*D.st,D.lat1-D.ny*D.st]);
       const x0=Math.max(0,Math.min(a[0],b[0])), x1=Math.min(w,Math.max(a[0],b[0])), y0=Math.max(0,Math.min(a[1],b[1])), y1=Math.min(h,Math.max(a[1],b[1]));
-      const L=Math.min(x1-x0,y1-y0)*(o.fadeK||.09);
+      const Lf=Math.min(x1-x0,y1-y0)*(o.fadeK||.09);
       ctx.save(); ctx.globalCompositeOperation="destination-out";
       const side=(gx0,gy0,gx1,gy1,rx,ry,rw,rh)=>{ const g=ctx.createLinearGradient(gx0,gy0,gx1,gy1); g.addColorStop(0,"rgba(0,0,0,0)"); g.addColorStop(1,"rgba(0,0,0,1)"); ctx.fillStyle=g; ctx.fillRect(rx,ry,rw,rh); };
-      if(o.fade.includes("e"))side(x1-L,0,x1,0,x1-L,-2,w-x1+L+2,h+4);
-      if(o.fade.includes("o"))side(x0+L,0,x0,0,-2,-2,x0+L+2,h+4);
-      if(o.fade.includes("n"))side(0,y0+L,0,y0,-2,-2,w+4,y0+L+2);
-      if(o.fade.includes("s"))side(0,y1-L,0,y1,-2,y1-L,w+4,h-y1+L+2);
+      if(o.fade.includes("e"))side(x1-Lf,0,x1,0,x1-Lf,-2,w-x1+Lf+2,h+4);
+      if(o.fade.includes("o"))side(x0+Lf,0,x0,0,-2,-2,x0+Lf+2,h+4);
+      if(o.fade.includes("n"))side(0,y0+Lf,0,y0,-2,-2,w+4,y0+Lf+2);
+      if(o.fade.includes("s"))side(0,y1-Lf,0,y1,-2,y1-Lf,w+4,h-y1+Lf+2);
       ctx.restore();
     }
-    return {z};
   }
-
-  /* Atles 50m per a Gran Bretanya i Irlanda (amb fallback automàtic a 110m si falla) */
-  let ukWorldP = null;
+  let ukP = null;
   function ukWorld(){
-    if(!ukWorldP){
-      ukWorldP = fetch("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json")
-        .then(r => { if(!r.ok) throw new Error("50m fetch"); return r.json(); })
-        .then(tp => ({
-          land: topojson.feature(tp, tp.objects.land),
-          borders: topojson.mesh(tp, tp.objects.countries, (a, b) => a !== b)
-        }))
-        .catch(() => IBV.world());
-    }
-    return ukWorldP;
+    if(!ukP) ukP = fetch("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json")
+      .then(r => { if(!r.ok) throw new Error("50m"); return r.json(); })
+      .then(tp => ({land: topojson.feature(tp, tp.objects.land)}))
+      .catch(() => IBV.world());
+    return ukP;
   }
 
   /* =========================================================================
-     1. SCROLLY 1 — MAPA D'UNA ILLA MOBILITZADA (IB-24 + IB-25)
+     V1 · MAQUETA DE LÍNIA (peça nova: IB-16 en 3D)
      ========================================================================= */
-  (function initPedres(){
-    const el = document.getElementById("pedres-viz");
-    const lgEl = document.getElementById("pedres-lg");
-    const playBtn = document.getElementById("pedres-play");
-    const tEl = document.getElementById("pedres-t");
-    const sEl = document.getElementById("pedres-s");
-    if(!el) return;
-
-    IBV.legendCat(lgEl, [
-      { c: C.groc, t: "Sarsens i connexió nord" },
-      { c: C.blau, t: "Gal·les (pedres i cremats)" },
-      { c: C.vermell, t: "Pedra de l'Altar i banquets" }
-    ]);
-
-    const STEPS = {
-      sarsen: { idx: 0, t: "Pas 1 · Els gegants de West Woods (~25 km)", s: "50 dels 52 sarsens venen del mateix bosc de Wiltshire (Nash et al., 2020)" },
-      gales:  { idx: 1, t: "Pas 2 · Les pedres blaves de Gal·les (~230 km)", s: "~80 blocs dels turons Preseli (Carn Goedog, Craig Rhos-y-felin i possible cercle Waun Mawn)" },
-      altar:  { idx: 2, t: "Pas 3 · La Pedra de l'Altar (≥750 km)", s: "Zircons laurèntians apunten al NE d'Escòcia (Clarke 2024); aflorament exacte obert (Pirrie 2026)" },
-      feast:  { idx: 3, t: "Pas 4 · Persones cremades i ramats en camí", s: "40 % dels cremats són forans (Snoeck 2018) i 131 porcs venen d'arreu de l'illa (Madgwick 2019)" },
-      illa:   { idx: 4, t: "Un mapa de pedra de tota Gran Bretanya", s: "L'únic entre ~900 cercles britànics fet íntegrament amb pedres portades de lluny" }
+  (function initMaqueta(){
+    const el = document.getElementById("maq-viz"); if(!el) return;
+    const fig = el.closest("figure");
+    const tp = IBV.tip(el);
+    const VIEWS = {
+      avinguda: {el:19, dist:54, tz:1.2, fov:36},
+      dalt:     {el:76, dist:72, tz:0,   fov:36},
+      terra:    {el:2.5, dist:31, tz:3.4, fov:58}
     };
+    let view = Object.assign({}, VIEWS.avinguda), az = S3.AX + 22, auto = !IBV.reduced, hoverId = null;
+    let W = 0, H = 0, ctx = null, hits = [], drag = false, tween = null, lastT = 0;
+    segBind(fig.querySelector(".seg"), "k", k => {
+      const from = Object.assign({}, view), to = VIEWS[k];
+      if(IBV.reduced){ view = Object.assign({}, to); draw(); return; }
+      tween = {from, to, t0: performance.now()};
+    });
+    const pressed = () => fig.querySelector(".seg button[aria-pressed=true]");
+    const isTerra = () => (pressed()||{}).dataset && pressed().dataset.k === "terra";
 
-    let curStep = "sarsen";
-    let paused = false;
-    let loopCtl = null;
-    let worldData = null;
-    let state = null;
-
-    if(playBtn){
-      if(IBV.reduced){ playBtn.style.display = "none"; }
-      playBtn.addEventListener("click", () => {
-        paused = !paused;
-        playBtn.textContent = paused ? "Reprodueix el flux" : "Atura el flux";
-      });
+    function labels(cam){
+      const mob = W < 600;
+      const L3 = (P, txt, dx, dy, o) => {
+        const q = cam.p(P); if(!q || q[0]<10 || q[0]>W-10 || q[1]<12 || q[1]>H-10) return;
+        const tx = clamp(q[0]+dx, 6, W-6), ty = clamp(q[1]+dy, 12, H-12);
+        ctx.beginPath(); ctx.moveTo(q[0], q[1]); ctx.lineTo(q[0], ty); ctx.lineTo(tx, ty);
+        ctx.strokeStyle = C.ink; ctx.lineWidth = .8; ctx.stroke();
+        ctx.beginPath(); ctx.arc(q[0], q[1], 1.8, 0, 7); ctx.fillStyle = C.ink; ctx.fill();
+        o = o||{};
+        const right = dx >= 0;
+        ctext(ctx, tx + (right?4:-4), ty-7, txt[0], {weight:700, anchor:right?"left":"right"});
+        if(txt[1]) ctext(ctx, tx + (right?4:-4), ty+8, txt[1], {anchor:right?"left":"right", fill:C.ink2});
+      };
+      const gt = S3.pol(6.0, S3.AX+180);
+      L3([gt[0], gt[1], 8.4], ["Gran Trílit", "uns 7 m sobre terra"], mob?36:-70, -34);
+      if(!mob){
+        const ab = S3.pol(44, S3.AX+3.2+20*360/56);
+        L3([ab[0], ab[1], 0], ["56 forats Aubrey", "el primer cementiri"], 40, 26);
+      }
+      const ht = S3.pol(79, S3.AX+1.6);
+      L3([ht[0], ht[1], 5.0], ["Pedra del Taló", "on surt el sol a l'estiu"], mob?-30:46, -30);
+      const pp = S3.pol(20.5, S3.AX+28);
+      L3([pp[0], pp[1], 1.75], ["Una persona", "1,7 m"], 70, 18);
     }
 
-    function buildAndDraw(container, w){
-      if(loopCtl){ loopCtl.stop(); loopCtl = null; }
-      const mob = w < 600;
-      const h = mob
-        ? Math.round(clamp(window.innerHeight * 0.25, 195, 224))
-        : Math.round(clamp(w * 0.62, 360, 445));
-      container.innerHTML = "";
-
-      const wrap = d3.select(container).append("div")
-        .style("position","relative").style("width", w + "px").style("height", h + "px").style("overflow","hidden");
-      /* Base física IB-59: relleu real en gris sota les rutes */
-      const { c: cv, ctx } = IBV.canvas(wrap.node(), w, h, "");
-      d3.select(cv).attr("aria-hidden","true").style("position","absolute")
-        .style("left","0").style("top","0").style("pointer-events","none");
-      // (IBV.canvas esborra els altres canvas.ibv: el del relleu es crea a mà i va a sota de les partícules)
-      let relief = null;
-      if(window.SH_DEM){
-        const dpr = Math.min(2, window.devicePixelRatio || 1), rc = document.createElement("canvas");
-        rc.width = Math.round(w * dpr); rc.height = Math.round(h * dpr); rc.setAttribute("aria-hidden","true");
-        rc.style.cssText = `width:${w}px;height:${h}px;display:block;position:absolute;left:0;top:0;pointer-events:none`;
-        wrap.node().insertBefore(rc, cv);
-        const rctx = rc.getContext("2d"); rctx.scale(dpr, dpr); relief = { c: rc, ctx: rctx };
-      }
-
-      const svg = IBV.svg(wrap.node(), w, h,
-        "Mapa físic de Gran Bretanya i Irlanda amb les rutes de les pedres i persones cap a Stonehenge: West Woods (25 km), Gal·les (230 km) i nord-est d'Escòcia (750 km o més).");
-      svg.style("position","relative").style("z-index","1").style("overflow","hidden");
-
-      const clipId = "clip-pedres-" + Math.random().toString(36).slice(2, 7);
-      svg.append("defs").append("clipPath").attr("id", clipId)
-        .append("rect").attr("x", 0).attr("y", 0).attr("width", w).attr("height", h);
-
-      const tp = IBV.tip(container);
-
-      const bbox = {
-        type: "MultiPoint",
-        coordinates: [[-7.2, 49.8], [1.9, 59.4], [-8.8, 55.2], [1.2, 51.0]]
-      };
-      const proj = d3.geoTransverseMercator()
-        .rotate([2, -54.5])
-        .fitExtent([[mob ? 12 : 18, mob ? 8 : 12], [w - (mob ? 12 : 18), h - (mob ? 8 : 12)]], bbox);
-      const path = d3.geoPath(proj);
-
-      const gMap = svg.append("g").attr("clip-path", `url(#${clipId})`);
-      if(relief){
-        relleu59(relief.ctx, proj, w, h, window.SH_DEM, { fade: "es", iso: [300, 600, 900] });
-      } else if(worldData){
-        gMap.append("path").datum(worldData.land).attr("d", path).attr("fill", C.land);
-        gMap.append("path").datum(worldData.borders).attr("d", path).attr("fill","none").attr("stroke", C.paper).attr("stroke-width", 0.65);
-      }
-
-      const shCoord = [D.stonehenge.lon, D.stonehenge.lat];
-      const shXY = proj(shCoord);
-
-      const routes = D["orígens"].map((d, idx) => {
-        const arc = greatCircleLine([d.lon, d.lat], shCoord, 36).map(pt => proj(pt)).filter(Boolean);
-        return { d, idx, pts: arc, xy: proj([d.lon, d.lat]) };
+    function draw(){
+      if(!ctx) return;
+      const v = view;
+      const camO = Object.assign(S3.orbit(az, v.el, v.dist, v.tz), {fov:v.fov, cy: v.el>60 ? .5 : v.el<5 ? .62 : .58});
+      const cam = S3.camera(camO, W, H);
+      hits = S3.render(ctx, W, H, cam, MODEL, GROUND, {
+        phase: 4, person: S3.pol(20.5, S3.AX+28), horizon: v.el < 8,
+        highlight: hoverId ? (s => s.id === hoverId) : null
       });
-
-      const gArcs = svg.append("g");
-      const gNodes = svg.append("g");
-      const gAnn = svg.append("g").style("pointer-events","none");
-
-      const lineGen = d3.line().x(p => p[0]).y(p => p[1]).curve(d3.curveCatmullRom.alpha(0.5));
-      const arcSel = gArcs.selectAll("g.ar").data(routes).join("g").attr("class","ar");
-      arcSel.each(function(r){
-        d3.select(this).append("path")
-          .attr("d", lineGen(r.pts))
-          .attr("fill","none")
-          .attr("stroke", COL[r.d.cat])
-          .attr("stroke-width", r.d.id === "altar" ? 2.1 : 1.5)
-          .attr("stroke-opacity", 0.72)
-          .attr("stroke-dasharray", (r.d.id === "porcs" || r.d.id === "cremats") ? "4 3" : null);
-      });
-
-      /* Cercles plens translúcids multiply + punt central (MAI anells diana) */
-      const nodeSel = gNodes.selectAll("g.nd").data(routes).join("g").attr("class","nd");
-      nodeSel.each(function(r){
-        const g = d3.select(this);
-        const col = COL[r.d.cat];
-        g.append("circle").attr("class","aura")
-          .attr("cx", r.xy[0]).attr("cy", r.xy[1])
-          .attr("r", mob ? r.d.r * 0.65 : r.d.r)
-          .attr("fill", col).attr("fill-opacity", 0.30).style("mix-blend-mode","multiply");
-        g.append("circle").attr("class","core")
-          .attr("cx", r.xy[0]).attr("cy", r.xy[1]).attr("r", 2.8)
-          .attr("fill", col).attr("stroke", C.paper).attr("stroke-width", 0.9);
-      });
-
-      /* Node destí: Stonehenge */
-      const gSh = svg.append("g");
-      gSh.append("circle").attr("cx", shXY[0]).attr("cy", shXY[1]).attr("r", mob ? 10 : 14)
-        .attr("fill", C.vermell).attr("fill-opacity", 0.24).style("mix-blend-mode","multiply");
-      gSh.append("circle").attr("cx", shXY[0]).attr("cy", shXY[1]).attr("r", 3.6)
-        .attr("fill", C.ink).attr("stroke", C.paper).attr("stroke-width", 1.2);
-
-      const offsets = {
-        sarsen:     mob ? [10, -10] : [14, -14],
-        bluestones: mob ? [-10, -8] : [-12, -12],
-        altar:      mob ? [10, 8]   : [14, 6],
-        cremats:    mob ? [-10, 14] : [-12, 16],
-        porcs:      mob ? [10, 0]   : [14, 0],
-        orkney:     mob ? [10, -6]  : [14, -10]
-      };
-
-      const annSel = gAnn.selectAll("g.an").data(routes).join("g").attr("class","an");
-      annSel.each(function(r){
-        const g = d3.select(this);
-        const off = offsets[r.d.id] || [10, -8];
-        const anc = (r.d.id === "bluestones" || r.d.id === "cremats") ? "end" : "start";
-        let lx = r.xy[0] + off[0];
-        lx = anc === "end" ? clamp(lx, 108, w - 8) : clamp(lx, 8, w - 122);
-        const ly = clamp(r.xy[1] + off[1], 14, h - 12);
-        IBV.t(g, lx, ly, mob ? r.d.curt : r.d.nom, {
-          size: mob ? 11 : 12, weight: 700, anchor: anc, fill: TEXT_COL[r.d.cat], halo: 3
-        });
-        if(!mob){
-          IBV.t(g, lx, ly + 13, r.d.origen, { size: 11, fill: C.ink2, anchor: anc, halo: 3 });
-        }
-      });
-
-      const shLbl = gAnn.append("g");
-      IBV.t(shLbl, clamp(shXY[0] + 12, 8, w - 78), clamp(shXY[1] + 15, 16, h - 8), "Stonehenge", {
-        size: mob ? 11.5 : 13, weight: 700, anchor: "start", fill: C.ink, halo: 3.5
-      });
-
-      /* Partícules lentes i contemplatives (~26–30 segons per recorregut) */
-      const particles = [];
-      routes.forEach((r, ri) => {
-        const count = mob ? 3 : 4;
-        for(let i = 0; i < count; i++){
-          particles.push({ r, phase: (i / count + ri * 0.19) % 1, speed: 1 / (25000 + (ri % 3) * 3000) });
-        }
-      });
-
-      function activeLimit(){ return STEPS[curStep].idx; }
-
-      function updateVisibility(instant){
-        const lim = activeLimit();
-        const dur = instant || IBV.reduced ? 0 : 420;
-        arcSel.transition().duration(dur)
-          .style("opacity", r => r.d.pas <= lim ? (r.d.pas === lim || lim === 4 ? 1 : 0.44) : 0.05);
-        nodeSel.transition().duration(dur)
-          .style("opacity", r => r.d.pas <= lim ? (r.d.pas === lim || lim === 4 ? 1 : 0.48) : 0.08);
-        annSel.transition().duration(dur)
-          .style("opacity", r => {
-            if(mob) return (r.d.pas === lim || (lim === 4 && (r.d.id === "altar" || r.d.id === "bluestones" || r.d.id === "sarsen"))) ? 1 : 0;
-            return r.d.pas <= lim ? (r.d.pas === lim || lim === 4 ? 1 : 0.40) : 0;
-          });
-        if(tEl) tEl.textContent = STEPS[curStep].t;
-        if(sEl) sEl.textContent = STEPS[curStep].s;
-      }
-
-      let hoveredId = null;
-      function setHover(r){
-        if(!svg.node().isConnected) return;
-        hoveredId = r ? r.d.id : null;
-        if(!r){
-          updateVisibility(true);
-          tp.hide();
-          return;
-        }
-        IBV.focus(arcSel, x => x.d.id === r.d.id, { dim: 0.48 });
-        IBV.focus(nodeSel, x => x.d.id === r.d.id, { dim: 0.48 });
-        nodeSel.selectAll("circle.core")
-          .attr("r", function(){ const d = d3.select(this.parentNode).datum(); return d.d.id === r.d.id ? 4.4 : 2.8; })
-          .attr("stroke", function(){ const d = d3.select(this.parentNode).datum(); return d.d.id === r.d.id ? C.ink : C.paper; });
-        tp.show(`<b>${r.d.nom}</b> (${r.d.dist} km) · ${r.d.pes} · ${r.d.detall}`);
-      }
-
-      IBV.hover(svg.node(), (ev, [mx, my]) => {
-        const lim = activeLimit();
-        const visible = routes.filter(r => r.d.pas <= lim);
-        const best = d3.least(visible, r => Math.hypot(r.xy[0] - mx, r.xy[1] - my));
-        if(best && Math.hypot(best.xy[0] - mx, best.xy[1] - my) < (mob ? 44 : 68)){
-          setHover(best);
-        } else if(hoveredId){
-          setHover(null);
-        }
-      }, () => setHover(null));
-
-      let simT = 0;
-      loopCtl = IBV.loop(container, (t, dt) => {
-        if(!paused) simT += dt;
-        ctx.clearRect(0, 0, w, h);
-        const lim = activeLimit();
-        particles.forEach(p => {
-          if(p.r.d.pas > lim) return;
-          if(hoveredId && p.r.d.id !== hoveredId) return;
-          const seg = p.r.pts;
-          if(seg.length < 2) return;
-          const u = (p.phase + simT * p.speed) % 1;
-          const f = u * (seg.length - 1);
-          const i0 = Math.floor(f), i1 = Math.min(seg.length - 1, i0 + 1), frac = f - i0;
-          const px = seg[i0][0] + (seg[i1][0] - seg[i0][0]) * frac;
-          const py = seg[i0][1] + (seg[i1][1] - seg[i0][1]) * frac;
-          const prevI = Math.max(0, i0 - 2);
-          ctx.beginPath();
-          ctx.moveTo(seg[prevI][0], seg[prevI][1]);
-          ctx.lineTo(px, py);
-          ctx.strokeStyle = IBV.alpha(COL[p.r.d.cat], 0.58);
-          ctx.lineWidth = 2.0;
-          ctx.lineCap = "round";
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.arc(px, py, 2.3, 0, Math.PI * 2);
-          ctx.fillStyle = COL[p.r.d.cat];
-          ctx.fill();
-        });
-      });
-
-      state = { updateVisibility };
-      updateVisibility(true);
+      labels(cam);
     }
 
     IBV.mount(el, (container, w) => {
-      if(worldData || window.SH_DEM){ buildAndDraw(container, w); }
-      else { ukWorld().then(wd => { worldData = wd; buildAndDraw(container, w); }); }
+      W = w; H = Math.round(clamp(w*.6, 330, 600));
+      ({ctx} = IBV.canvas(container, W, H, "Recreació en línia de Stonehenge cap al 2200 aC: el cercle de 30 sarsens amb llindes, cinc trílits en ferradura, les pedres blaves, l'Altar, la Pedra del Taló i el fossat circular amb els 56 forats Aubrey. Es pot girar arrossegant."));
+      const cv = container.querySelector("canvas.ibv");
+      container.appendChild(container.querySelector(".tip.ibv-dock") || document.createElement("div"));
+      S3.dragOrbit(cv, dx => { auto = false; drag = true; az -= dx*.35; hoverId = null; tp.hide(); draw(); }, () => { drag = false; });
+      cv.addEventListener("pointermove", ev => {
+        if(drag) return;
+        const r = cv.getBoundingClientRect(), x = ev.clientX - r.left, y = ev.clientY - r.top;
+        let best = null, bd = 26*26;
+        for(const h of hits){ const d = (h.x-x)**2 + (h.y-y)**2; if(d < bd || (best && d < bd*1.4 && h.d < best.d - 4)){ bd = Math.min(bd, d); best = h; } }
+        const id = best ? best.s.id : null;
+        if(id !== hoverId){ hoverId = id; draw(); }
+        if(best){ const s = best.s; tp.show(`<b>${s.nom}</b> · ${S3.GROUPS[s.g]}`); auto = false; }
+        else tp.hide();
+      });
+      cv.addEventListener("pointerleave", () => { hoverId = null; tp.hide(); draw(); });
+      draw();
     });
-
-    const stepsEl = document.querySelector("#s-pedres .steps");
-    const graphicEl = document.querySelector("#s-pedres .graphic");
-    if(stepsEl && graphicEl && window.IB && IB.scrolly){
-      IB.scrolly(stepsEl, graphicEl, (idx, stepEl) => {
-        const k = stepEl && stepEl.dataset && stepEl.dataset.s;
-        if(k && STEPS[k]){
-          curStep = k;
-          if(state) state.updateVisibility(false);
-        }
-      });
-    }
-  })();
-
-  /* =========================================================================
-     2. SCROLLY 2 — CINC MONUMENTS EN UN SOL LLOC (PLANTA MORPH + RADIOCARBONI)
-     ========================================================================= */
-  (function initFases(){
-    const el = document.getElementById("fases-viz");
-    const lgEl = document.getElementById("fases-lg");
-    const tEl = document.getElementById("fases-t");
-    const sEl = document.getElementById("fases-s");
-    if(!el) return;
-
-    IBV.legendCat(lgEl, [
-      { c: C.ink2, t: "Fossat, talús i Avinguda" },
-      { c: C.vermell, t: "Sarsens i trílits (~25 t)" },
-      { c: C.blau, t: "Pedres blaves i forats Aubrey (~3 t)" },
-      { c: C.groc, t: "Altar i forats Y/Z" }
-    ]);
-
-    let curIdx = 0;
-    let state = null;
-
-    function polarStoneXY(deg, r){
-      const a = deg * Math.PI / 180;
-      return [Math.sin(a) * r, -Math.cos(a) * r];
-    }
-
-    function draw(container, w){
-      container.innerHTML = "";
-      const mob = w < 600;
-      const h = mob
-        ? Math.round(clamp(window.innerHeight * 0.27, 200, 238))
-        : Math.round(clamp(w * 0.65, 380, 465));
-
-      const svg = IBV.svg(container, w, h,
-        "Planta arquitectònica evolutiva de Stonehenge a escala real en cinc fases bayesianes (3100–1450 aC): fossat circular, 56 forats Aubrey, cercle i ferradura de sarsens amb llindes, Avinguda, pedres blaves i forats Y/Z.");
-      const tp = IBV.tip(container);
-
-      const tlH = mob ? 48 : 74;
-      const planH = h - tlH;
-      const cx = mob ? w * 0.46 : w * 0.44;
-      const cy = planH * 0.52;
-      const scaleM = Math.min((planH * 0.42) / 58, (w * 0.36) / 58);
-
-      const gPlan = svg.append("g").attr("transform", `translate(${cx},${cy})`);
-
-      /* Guia solsticial molt tènue */
-      const axP1 = polarStoneXY(50, 74 * scaleM);
-      const axP2 = polarStoneXY(230, 62 * scaleM);
-      gPlan.append("line").attr("x1", axP2[0]).attr("y1", axP2[1]).attr("x2", axP1[0]).attr("y2", axP1[1])
-        .attr("stroke", C.hair).attr("stroke-width", 0.9).attr("stroke-dasharray", "3 3");
-
-      /* 1. Fossat circular (R = 55 m) amb obertura al NE (~44° a 57°) */
-      const gFossat = gPlan.append("g").attr("class","st-part").attr("data-part","fossat");
-      const arcDitch = d3.arc()
-        .innerRadius(53 * scaleM).outerRadius(56 * scaleM)
-        .startAngle(57 * Math.PI / 180).endAngle((360 + 43) * Math.PI / 180);
-      gFossat.append("path").attr("d", arcDitch())
-        .attr("fill", C.ghost).attr("fill-opacity", 0.65);
-      const arcBank = d3.arc()
-        .innerRadius(48 * scaleM).outerRadius(51 * scaleM)
-        .startAngle(57 * Math.PI / 180).endAngle((360 + 43) * Math.PI / 180);
-      gFossat.append("path").attr("d", arcBank())
-        .attr("fill", C.landEdge).attr("fill-opacity", 0.8);
-
-      /* Heel Stone (74 m NE) */
-      const heel = polarStoneXY(51, 70 * scaleM);
-      gFossat.append("circle").attr("cx", heel[0]).attr("cy", heel[1]).attr("r", Math.max(2.6, 2.2 * scaleM))
-        .attr("fill", C.ink);
-
-      /* 2. 56 Forats Aubrey (R = 43.6 m) */
-      const gAubrey = gPlan.append("g").attr("class","st-part").attr("data-part","aubrey");
-      const aubreyPts = d3.range(56).map(i => polarStoneXY(50 + i * (360 / 56), 43.6 * scaleM));
-      gAubrey.selectAll("circle").data(aubreyPts).join("circle")
-        .attr("cx", d => d[0]).attr("cy", d => d[1]).attr("r", Math.max(1.7, 0.95 * scaleM))
-        .attr("fill", C.blau).attr("fill-opacity", 0.72);
-
-      /* 3. Avinguda (Fase 3): dos bancs paral·lels sortint cap al NE ~50° */
-      const gAv = gPlan.append("g").attr("class","st-part").attr("data-part","avinguda");
-      const avDir = [Math.sin(50 * Math.PI / 180), -Math.cos(50 * Math.PI / 180)];
-      const avPerp = [Math.cos(50 * Math.PI / 180), Math.sin(50 * Math.PI / 180)];
-      [-10.5 * scaleM, 10.5 * scaleM].forEach(off => {
-        const x1 = avDir[0] * 50 * scaleM + avPerp[0] * off;
-        const y1 = avDir[1] * 50 * scaleM + avPerp[1] * off;
-        const x2 = avDir[0] * 86 * scaleM + avPerp[0] * off;
-        const y2 = avDir[1] * 86 * scaleM + avPerp[1] * off;
-        gAv.append("line").attr("x1", x1).attr("y1", y1).attr("x2", x2).attr("y2", y2)
-          .attr("stroke", C.ink2).attr("stroke-width", 1.8).attr("stroke-dasharray", "4 2");
-      });
-
-      /* 4. Station Stones rectangle (a=18m al llarg de 50°, b=39.7m perpendicular 140°) */
-      const gStations = gPlan.append("g").attr("class","st-part").attr("data-part","stations");
-      const sU = [Math.sin(50 * Math.PI / 180), -Math.cos(50 * Math.PI / 180)];
-      const sV = [Math.sin(140 * Math.PI / 180), -Math.cos(140 * Math.PI / 180)];
-      const rectCorners = [
-        [ 18 * scaleM,  39.7 * scaleM],
-        [-18 * scaleM,  39.7 * scaleM],
-        [-18 * scaleM, -39.7 * scaleM],
-        [ 18 * scaleM, -39.7 * scaleM]
-      ].map(([a, b]) => [a * sU[0] + b * sV[0], a * sU[1] + b * sV[1]]);
-      gStations.append("polygon")
-        .attr("points", rectCorners.map(p => p.join(",")).join(" "))
-        .attr("fill","none").attr("stroke", C.blau).attr("stroke-width", 1.1).attr("stroke-dasharray", "3 3");
-      gStations.selectAll("circle").data(rectCorners).join("circle")
-        .attr("cx", d => d[0]).attr("cy", d => d[1]).attr("r", Math.max(2.8, 1.8 * scaleM))
-        .attr("fill", C.blau).attr("stroke", C.paper).attr("stroke-width", 0.8);
-
-      /* 5. Forats Y i Z (Fase 5: 30 Z a 19.5 m + 29 Y a 26.8 m) */
-      const gYZ = gPlan.append("g").attr("class","st-part").attr("data-part","yz");
-      const yzPts = [
-        ...d3.range(30).map(i => polarStoneXY(i * 12 + 4, 19.8 * scaleM)),
-        ...d3.range(29).map(i => polarStoneXY(i * (360 / 29) + 2, 26.8 * scaleM))
-      ];
-      gYZ.selectAll("circle").data(yzPts).join("circle")
-        .attr("cx", d => d[0]).attr("cy", d => d[1]).attr("r", Math.max(1.6, 0.8 * scaleM))
-        .attr("fill", C.grocFosc);
-
-      /* 6. Forats Q i R (Fase 2: doble cercle temporal de bluestones) */
-      const gQR = gPlan.append("g").attr("class","st-part").attr("data-part","qr");
-      const qrPts = [
-        ...d3.range(34).map(i => polarStoneXY(i * (360 / 34), 11.4 * scaleM)),
-        ...d3.range(34).map(i => polarStoneXY(i * (360 / 34), 13.0 * scaleM))
-      ];
-      gQR.selectAll("circle").data(qrPts).join("circle")
-        .attr("cx", d => d[0]).attr("cy", d => d[1]).attr("r", Math.max(1.3, 0.65 * scaleM))
-        .attr("fill", C.blauClar);
-
-      /* 7. Cercle exterior de Sarsens (R = 15.4 m, 30 pilars + llindes) */
-      const gSarsens = gPlan.append("g").attr("class","st-part").attr("data-part","sarsens");
-      gSarsens.append("circle").attr("r", 15.4 * scaleM)
-        .attr("fill","none").attr("stroke", C.vermell).attr("stroke-width", Math.max(2.5, 2.2 * scaleM))
-        .attr("stroke-opacity", 0.35);
-      d3.range(30).forEach(i => {
-        const ang = i * 12;
-        const p = polarStoneXY(ang, 15.4 * scaleM);
-        gSarsens.append("rect")
-          .attr("x", -1.1 * scaleM).attr("y", -0.65 * scaleM)
-          .attr("width", 2.2 * scaleM).attr("height", 1.3 * scaleM)
-          .attr("transform", `translate(${p[0]},${p[1]}) rotate(${ang})`)
-          .attr("fill", C.vermell);
-      });
-
-      /* 8. Cercle i oval definitius de Bluestones (Fase 4) */
-      const gBlueFinal = gPlan.append("g").attr("class","st-part").attr("data-part","bluefinal");
-      d3.range(38).forEach(i => {
-        const p = polarStoneXY(i * (360 / 38), 11.7 * scaleM);
-        gBlueFinal.append("circle").attr("cx", p[0]).attr("cy", p[1]).attr("r", Math.max(1.5, 0.78 * scaleM))
-          .attr("fill", C.blau);
-      });
-      /* Ferradura / oval interior */
-      d3.range(19).forEach(i => {
-        const ang = 90 + (i / 18) * 280;
-        const p = polarStoneXY(ang, 5.4 * scaleM);
-        gBlueFinal.append("circle").attr("cx", p[0]).attr("cy", p[1]).attr("r", Math.max(1.6, 0.85 * scaleM))
-          .attr("fill", C.blau);
-      });
-
-      /* 9. Ferradura de 5 trílits gegants (oberta cap al NE 50°) */
-      const gTril = gPlan.append("g").attr("class","st-part").attr("data-part","trilithons");
-      const trilAngles = [132, 178, 230, 282, 328];
-      trilAngles.forEach(ang => {
-        [-7, 7].forEach(dA => {
-          const p = polarStoneXY(ang + dA, 8.2 * scaleM);
-          gTril.append("rect")
-            .attr("x", -1.4 * scaleM).attr("y", -0.95 * scaleM)
-            .attr("width", 2.8 * scaleM).attr("height", 1.9 * scaleM)
-            .attr("transform", `translate(${p[0]},${p[1]}) rotate(${ang})`)
-            .attr("fill", C.vermellFosc);
-        });
-      });
-
-      /* 10. Pedra de l'Altar (jacent al peu del Gran Trílit 230°) */
-      const altarP = polarStoneXY(230, 4.3 * scaleM);
-      gTril.append("rect")
-        .attr("x", -2.45 * scaleM).attr("y", -0.5 * scaleM)
-        .attr("width", 4.9 * scaleM).attr("height", 1.0 * scaleM)
-        .attr("transform", `translate(${altarP[0]},${altarP[1]}) rotate(${230})`)
-        .attr("fill", C.groc).attr("stroke", C.ink).attr("stroke-width", 0.7);
-
-      /* Anotació lateral només en desktop (a mòbil l'espai queda net per a la planta) */
-      const gInset = svg.append("g").style("pointer-events","none");
-      if(!mob){
-        const ix = w - 165, iy = 24;
-        IBV.t(gInset, ix, iy, "Fusteria en pedra (Fase 2)", { size: 12, weight: 700, fill: C.vermell, halo: 3 });
-        IBV.t(gInset, ix, iy + 15, "Caixa i metxa + encadellat", { size: 11, fill: C.ink2, halo: 3 });
-        /* Petit esquema de pilar + llinda encaixada */
-        const sx = ix + 18, sy = iy + 48;
-        gInset.append("rect").attr("x", sx).attr("y", sy + 14).attr("width", 18).attr("height", 34).attr("fill", C.vermell).attr("fill-opacity", 0.25).attr("stroke", C.vermell).attr("stroke-width", 1.2);
-        gInset.append("rect").attr("x", sx + 6).attr("y", sy + 8).attr("width", 6).attr("height", 6).attr("fill", C.vermell);
-        gInset.append("rect").attr("x", sx + 38).attr("y", sy + 14).attr("width", 18).attr("height", 34).attr("fill", C.vermell).attr("fill-opacity", 0.25).attr("stroke", C.vermell).attr("stroke-width", 1.2);
-        gInset.append("rect").attr("x", sx + 44).attr("y", sy + 8).attr("width", 6).attr("height", 6).attr("fill", C.vermell);
-        gInset.append("rect").attr("x", sx - 6).attr("y", sy - 6).attr("width", 68).attr("height", 14).attr("fill", C.groc).attr("fill-opacity", 0.45).attr("stroke", C.ink).attr("stroke-width", 1);
-        IBV.t(gInset, ix + 115, sy + 52, "escala: 110 m", { size: 11, fill: C.muted, anchor: "middle", halo: 3 });
-      } else {
-        IBV.t(gInset, w - 10, 16, "NE (Solstici)", { size: 11, anchor: "end", fill: C.ink2, halo: 3 });
+    IBV.loop(el, (t, dt) => {
+      if(tween){
+        const k = clamp((performance.now()-tween.t0)/1100, 0, 1), e = ease(k);
+        for(const key of ["el","dist","tz","fov"]) view[key] = tween.from[key] + (tween.to[key]-tween.from[key])*e;
+        if(k >= 1) tween = null;
+        draw(); return;
       }
-
-      /* Cinta inferior Bayesiana (3100–1450 aC) */
-      const ml = mob ? 14 : 28, mr = mob ? 14 : 28;
-      const xTime = d3.scaleLinear([-3150, -1450], [ml, w - mr]);
-      const yBar = h - (mob ? 28 : 42);
-      const gTl = svg.append("g");
-      IBV.axisX(gTl, xTime, yBar + 10, mob ? [-3000, -2500, -2000, -1500] : [-3000, -2600, -2200, -1800, -1500],
-        v => Math.abs(v) + " aC", { grid: false });
-
-      const bars = gTl.selectAll("g.fb").data(D.fases).join("g").attr("class","fb hit");
-      bars.append("rect")
-        .attr("x", f => xTime(f.inici))
-        .attr("width", f => Math.max(6, xTime(f.fi) - xTime(f.inici)))
-        .attr("y", yBar - 6).attr("height", 12).attr("rx", 3)
-        .attr("fill", C.ghost);
-      bars.append("text")
-        .attr("x", f => (xTime(f.inici) + xTime(f.fi)) / 2)
-        .attr("y", yBar - 11).attr("text-anchor","middle")
-        .attr("font-size", 11).attr("font-weight", 700).attr("fill", C.ink2)
-        .text(f => "F" + f.num);
-
-      function applyPhase(idx, instant){
-        const dur = instant || IBV.reduced ? 0 : 420;
-        const op = {
-          fossat: 1,
-          aubrey: idx === 0 ? 1 : 0.35,
-          stations: idx >= 1 ? (idx === 1 ? 1 : 0.45) : 0,
-          sarsens: idx >= 1 ? (idx === 1 ? 1 : 0.65) : 0,
-          trilithons: idx >= 1 ? (idx === 1 ? 1 : 0.72) : 0,
-          qr: idx === 1 ? 0.9 : (idx === 2 ? 0.45 : 0.08),
-          avinguda: idx >= 2 ? (idx === 2 ? 1 : 0.55) : 0,
-          bluefinal: idx >= 3 ? (idx === 3 ? 1 : 0.72) : 0,
-          yz: idx >= 4 ? 1 : 0
-        };
-        gFossat.transition().duration(dur).style("opacity", op.fossat);
-        gAubrey.transition().duration(dur).style("opacity", op.aubrey);
-        gStations.transition().duration(dur).style("opacity", op.stations);
-        gSarsens.transition().duration(dur).style("opacity", op.sarsens);
-        gTril.transition().duration(dur).style("opacity", op.trilithons);
-        gQR.transition().duration(dur).style("opacity", op.qr);
-        gAv.transition().duration(dur).style("opacity", op.avinguda);
-        gBlueFinal.transition().duration(dur).style("opacity", op.bluefinal);
-        gYZ.transition().duration(dur).style("opacity", op.yz);
-        gInset.transition().duration(dur).style("opacity", mob ? 1 : (idx === 1 ? 1 : 0.4));
-
-        bars.select("rect").transition().duration(dur)
-          .attr("fill", (d, i) => i === idx ? C.vermell : (i < idx ? C.blau : C.ghost))
-          .attr("fill-opacity", (d, i) => i === idx ? 0.92 : (i < idx ? 0.42 : 0.55));
-        bars.select("text").transition().duration(dur)
-          .attr("fill", (d, i) => i === idx ? C.vermell : C.muted);
-
-        const f = D.fases[idx];
-        if(tEl) tEl.textContent = f.titol;
-        if(sEl) sEl.textContent = `${f.dates} · ${f.desc}`;
-      }
-
-      IBV.hover(svg.node(), (ev, [mx, my]) => {
-        if(!svg.node().isConnected) return;
-        const hitBar = d3.least(D.fases, f => Math.abs(mx - (xTime(f.inici) + xTime(f.fi)) / 2));
-        if(my > yBar - 26 && hitBar){
-          tp.show(`<b>${hitBar.titol}</b> (${hitBar.dates}) · ${hitBar.desc}`);
-          return;
-        }
-        const dx = (mx - cx) / scaleM, dy = (my - cy) / scaleM;
-        const rM = Math.hypot(dx, dy);
-        if(rM <= 6) tp.show("<b>Pedra de l'Altar i ferradura interior</b> · 6 t de gres septentrional i pedres blaves");
-        else if(rM <= 10.5) tp.show("<b>5 Trílits de sarsen</b> · fins a 8,71 m totals (Pedra 56), oberts cap al NE");
-        else if(rM <= 18) tp.show("<b>Cercle exterior de sarsens (30,8 m Ø)</b> · 30 pilars de ~25 t units amb llindes encaixades");
-        else if(rM <= 29) tp.show("<b>Forats Y i Z (Fase 5, ~1630–1520 cal BC)</b> · 59 cavitats concèntriques mai omplertes");
-        else if(rM <= 47) tp.show("<b>56 Forats Aubrey i Station Stones</b> · cementiri de cremacions i rectangle perpendicular");
-        else tp.show("<b>Fossat, talús i Avinguda (110 m Ø)</b> · orientats al solstici i cap al riu Avon");
-      }, () => { if(svg.node().isConnected) tp.hide(); });
-
-      state = { applyPhase };
-      applyPhase(curIdx, true);
-    }
-
-    IBV.mount(el, draw);
-
-    const stepsEl = document.querySelector("#s-fases .steps");
-    const graphicEl = document.querySelector("#s-fases .graphic");
-    if(stepsEl && graphicEl && window.IB && IB.scrolly){
-      IB.scrolly(stepsEl, graphicEl, (idx, stepEl) => {
-        const i = Number(stepEl && stepEl.dataset && stepEl.dataset.idx);
-        if(!Number.isNaN(i) && D.fases[i]){
-          curIdx = i;
-          if(state) state.applyPhase(i, false);
-        }
-      });
-    }
-  })();
-
-  /* =========================================================================
-     3. FIGURA 3 — SIMULADOR ASTRONÒMIC POLAR (SOLSTICIS + LLUNA 18,6 ANYS)
-     ========================================================================= */
-  (function initCel(){
-    const el = document.getElementById("cel-viz");
-    const lgEl = document.getElementById("cel-lg");
-    const rng = document.getElementById("cel-rng");
-    const rngVal = document.getElementById("cel-rng-val");
-    const presetBtns = document.querySelectorAll("#f-cel .cel-presets button");
-    const eraBtns = document.querySelectorAll("#f-cel .cel-era button");
-    const rAz = document.getElementById("stat-az");
-    const rLloc = document.getElementById("stat-lloc");
-    const rLluna = document.getElementById("stat-lluna");
-    if(!el || !rng) return;
-
-    IBV.legendCat(lgEl, [
-      { c: C.groc, t: "Sortida solar" },
-      { c: C.vermell, t: "Posta solar (eix principal SO)" },
-      { c: C.blau, t: "Aturada lunar major (18,6 anys)" }
-    ]);
-
-    const PHI = 51.1789 * Math.PI / 180;
-    const DEG = 180 / Math.PI, RAD = Math.PI / 180;
-    let day = 355;
-    let era = "-2500";
-    let showLunarHighlight = false;
-
-    const MONTH_LEN = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    const MONTH_CAT = ["gen", "feb", "març", "abr", "maig", "juny", "jul", "ag", "set", "oct", "nov", "des"];
-    function dayToLabel(d){
-      let rem = Math.round(d);
-      for(let m = 0; m < 12; m++){
-        if(rem <= MONTH_LEN[m]) return `${rem} ${MONTH_CAT[m]}`;
-        rem -= MONTH_LEN[m];
-      }
-      return "21 des";
-    }
-
-    function calcAstro(d, eraKey){
-      const eps = eraKey === "-2500" ? 23.98 : 23.436;
-      const decl = Math.asin(Math.sin(eps * RAD) * Math.sin(2 * Math.PI * (d - 80) / 365.2422)) * DEG;
-      function azFromDecl(deltaDeg, hEffDeg){
-        const c = (Math.sin(deltaDeg * RAD) - Math.sin(PHI) * Math.sin(hEffDeg * RAD)) / (Math.cos(PHI) * Math.cos(hEffDeg * RAD));
-        const A = Math.acos(clamp(c, -1, 1)) * DEG;
-        return { rise: A, set: 360 - A };
-      }
-      const sun = azFromDecl(decl, 0.0);
-      const lunaN = azFromDecl(eps + 5.145, 0.88);
-      const lunaS = azFromDecl(-(eps + 5.145), 0.88);
-      return { eps, decl, sun, lunaN, lunaS };
-    }
-
-    function syncReadout(){
-      rng.style.setProperty("--attr-min", rng.min || 1);
-      rng.style.setProperty("--attr-max", rng.max || 365);
-      rng.style.setProperty("--control-value", rng.value);
-      const a = calcAstro(day, era);
-      const dTxt = dayToLabel(day);
-      const eTxt = era === "-2500" ? "2500 aC" : "2026 dC";
-      rng.setAttribute("aria-valuetext", `${dTxt} (${eTxt}): sortida solar a ${F1(a.sun.rise)} graus i posta a ${F1(a.sun.set)} graus`);
-      if(rngVal) rngVal.textContent = dTxt;
-      if(rAz) rAz.textContent = `${F1(a.sun.rise)}° / ${F1(a.sun.set)}°`;
-      if(rLloc){
-        const diffWS = Math.abs(a.sun.set - 229.6);
-        const diffSS = Math.abs(a.sun.rise - 49.6);
-        rLloc.textContent = diffWS < 1.5
-          ? "Posta alineada al Gran Trílit (SO)"
-          : (diffSS < 1.5 ? "Sortida alineada amb l'Avinguda (NE)" : (Math.abs(a.decl) < 2 ? "Prop de l'equinocci (E–O)" : "Horitzó intermedi"));
-      }
-      if(rLluna){
-        rLluna.textContent = `${F1(a.lunaN.set)}° NO · ${F1(a.lunaS.rise)}° SE`;
-      }
-    }
-
-    let updateSky = null;
-
-    function draw(container, w){
-      container.innerHTML = "";
-      const mob = w < 600;
-      const h = mob ? Math.min(320, Math.round(w * 0.90)) : 410;
-      const cx = w / 2, cy = h / 2;
-      const R = Math.min(w, h) * (mob ? 0.39 : 0.40);
-
-      const svg = IBV.svg(container, w, h,
-        "Brúixola astronòmica polar de Stonehenge a 51°11′ N comparant l'eix solar solsticial (NE–SO) amb el rectangle de les Station Stones i l'aturada lunar major (NO–SE) cada 18,6 anys.");
-      const tp = IBV.tip(container);
-
-      IBV.polarGrid(svg, cx, cy, R, 4, 12, { rIn: R * 0.25 });
-
-      const pt = (deg, rad) => [cx + Math.sin(deg * RAD) * rad, cy - Math.cos(deg * RAD) * rad];
-
-      /* Etiquetes cardinals */
-      [[0, "N (0°)"], [90, "E (90°)"], [180, "S (180°)"], [270, "O (270°)"]].forEach(([ang, lbl]) => {
-        const p = pt(ang, R + (mob ? 13 : 16));
-        IBV.t(svg, p[0], p[1] + 4, lbl, { size: 11, weight: 600, fill: C.muted, anchor: "middle", halo: 3 });
-      });
-
-      /* Planta central a escala: Station Stones rectangle + Cercle sarsen + Ferradura */
-      const gCore = svg.append("g");
-      const rCore = R * 0.34;
-      gCore.append("circle").attr("cx", cx).attr("cy", cy).attr("r", rCore * 0.65)
-        .attr("fill","none").attr("stroke", C.hair).attr("stroke-width", 1.2);
-      const sU = [Math.sin(50 * RAD), -Math.cos(50 * RAD)];
-      const sV = [Math.sin(140 * RAD), -Math.cos(140 * RAD)];
-      const corners = [[18, 39.7], [-18, 39.7], [-18, -39.7], [18, -39.7]].map(([a, b]) => {
-        const sc = rCore / 44;
-        return [cx + (a * sU[0] + b * sV[0]) * sc, cy + (a * sU[1] + b * sV[1]) * sc];
-      });
-      gCore.append("polygon").attr("points", corners.map(p => p.join(",")).join(" "))
-        .attr("fill","none").attr("stroke", C.blau).attr("stroke-width", 1.2).attr("stroke-dasharray", "3 2.5");
-      corners.forEach(p => gCore.append("circle").attr("cx", p[0]).attr("cy", p[1]).attr("r", 2.6).attr("fill", C.blau));
-
-      /* Solstici 2500 aC de referència (línia base grisa fina) */
-      const ref25 = calcAstro(355, "-2500");
-      const pRefNE = pt(ref25.sun.rise, R), pRefSW = pt(ref25.sun.set, R);
-      svg.append("line").attr("x1", pRefSW[0]).attr("y1", pRefSW[1]).attr("x2", pRefNE[0]).attr("y2", pRefNE[1])
-        .attr("stroke", C.ghost).attr("stroke-width", 1).attr("stroke-dasharray", "3 3");
-
-      /* Lluna: aturada major (cada 18,6 anys) */
-      const gLuna = svg.append("g");
-      const lunaLine1 = gLuna.append("line").attr("stroke", C.blau).attr("stroke-dasharray", "5 3");
-      const lunaLine2 = gLuna.append("line").attr("stroke", C.blau).attr("stroke-dasharray", "5 3");
-      const lunaDotN = gLuna.append("circle").attr("r", 5.2).attr("fill", C.blau).attr("stroke", C.paper).attr("stroke-width", 1.2);
-      const lunaDotS = gLuna.append("circle").attr("r", 5.2).attr("fill", C.blau).attr("stroke", C.paper).attr("stroke-width", 1.2);
-
-      /* Raigs solars dinàmics */
-      const gSun = svg.append("g");
-      const rayRise = gSun.append("line").attr("stroke", C.groc).attr("stroke-width", 2.8);
-      const raySet = gSun.append("line").attr("stroke", C.vermell).attr("stroke-width", 2.8);
-      const auraRise = gSun.append("circle").attr("r", 12).attr("fill", C.groc).attr("fill-opacity", 0.34).style("mix-blend-mode","multiply");
-      const dotRise = gSun.append("circle").attr("r", 5).attr("fill", C.groc).attr("stroke", C.ink).attr("stroke-width", 1.2);
-      const auraSet = gSun.append("circle").attr("r", 12).attr("fill", C.vermell).attr("fill-opacity", 0.28).style("mix-blend-mode","multiply");
-      const dotSet = gSun.append("circle").attr("r", 5).attr("fill", C.vermell).attr("stroke", C.paper).attr("stroke-width", 1.2);
-
-      const lblRise = IBV.t(gSun, 0, 0, "", { size: 11.5, weight: 700, fill: C.ink, halo: 3 });
-      const lblSet = IBV.t(gSun, 0, 0, "", { size: 11.5, weight: 700, fill: C.vermell, halo: 3 });
-      const lblLuna = IBV.t(gLuna, 0, 0, "", { size: 11, weight: 700, fill: C.blau, halo: 3 });
-
-      updateSky = () => {
-        const a = calcAstro(day, era);
-        const pRise = pt(a.sun.rise, R);
-        const pSet = pt(a.sun.set, R);
-        rayRise.attr("x1", cx).attr("y1", cy).attr("x2", pRise[0]).attr("y2", pRise[1]);
-        raySet.attr("x1", cx).attr("y1", cy).attr("x2", pSet[0]).attr("y2", pSet[1]);
-        auraRise.attr("cx", pRise[0]).attr("cy", pRise[1]);
-        dotRise.attr("cx", pRise[0]).attr("cy", pRise[1]);
-        auraSet.attr("cx", pSet[0]).attr("cy", pSet[1]);
-        dotSet.attr("cx", pSet[0]).attr("cy", pSet[1]);
-
-        lblRise.attr("x", clamp(pRise[0] + 10, 12, w - 95)).attr("y", clamp(pRise[1] - 8, 14, h - 12))
-          .text(`Sortida ${F1(a.sun.rise)}°`);
-        lblSet.attr("x", clamp(pSet[0] - 10, 95, w - 12)).attr("y", clamp(pSet[1] + 16, 14, h - 10))
-          .attr("text-anchor", pSet[0] < cx ? "end" : "start")
-          .text(`Posta ${F1(a.sun.set)}°`);
-
-        const pLN = pt(a.lunaN.set, R), pLS = pt(a.lunaS.rise, R);
-        const pLN2 = pt(a.lunaN.rise, R * 0.78), pLS2 = pt(a.lunaS.set, R * 0.78);
-        lunaLine1.attr("x1", pLN[0]).attr("y1", pLN[1]).attr("x2", pLS[0]).attr("y2", pLS[1])
-          .attr("stroke-width", showLunarHighlight ? 2.2 : 1.1).attr("stroke-opacity", showLunarHighlight ? 0.95 : 0.45);
-        lunaLine2.attr("x1", pLN2[0]).attr("y1", pLN2[1]).attr("x2", pLS2[0]).attr("y2", pLS2[1])
-          .attr("stroke-width", 0.8).attr("stroke-opacity", showLunarHighlight ? 0.45 : 0.2);
-        lunaDotN.attr("cx", pLN[0]).attr("cy", pLN[1]).attr("opacity", showLunarHighlight ? 1 : 0.6);
-        lunaDotS.attr("cx", pLS[0]).attr("cy", pLS[1]).attr("opacity", showLunarHighlight ? 1 : 0.6);
-        const lunaAtN = a.sun.set <= 285;
-        const lAnchor = lunaAtN ? pLN : pLS;
-        lblLuna
-          .attr("x", clamp(lAnchor[0] + (lunaAtN ? -8 : 8), lunaAtN ? 96 : 12, lunaAtN ? w - 10 : w - 96))
-          .attr("y", clamp(lAnchor[1] + (lunaAtN ? -10 : 14), 14, h - 10))
-          .attr("text-anchor", lunaAtN ? "end" : "start")
-          .text(lunaAtN ? `Lluna ${F1(a.lunaN.set)}° NO` : `Lluna ${F1(a.lunaS.rise)}° SE`)
-          .attr("opacity", showLunarHighlight || !mob ? 1 : 0);
-
-        syncReadout();
-      };
-
-      updateSky();
-
-      IBV.onView(container, instant => {
-        if(instant) return;
-        gCore.style("opacity", 0).transition().duration(750).ease(IBV.EASE).style("opacity", 1);
-        gSun.style("opacity", 0).transition().delay(180).duration(750).ease(IBV.EASE).style("opacity", 1);
-      });
-
-      IBV.hover(svg.node(), (ev, [mx, my]) => {
-        if(!svg.node().isConnected) return;
-        const a = calcAstro(day, era);
-        const ang = ((Math.atan2(mx - cx, -(my - cy)) * DEG) + 360) % 360;
-        tp.show(`<b>Azimut ${F1(ang)}°</b> · Solstici ${era === "-2500" ? "2500 aC" : "avui"}: ${F1(a.sun.rise)}° / ${F1(a.sun.set)}° · Lluna 18,6 a: ${F1(a.lunaN.set)}° / ${F1(a.lunaS.rise)}°`);
-      }, () => { if(svg.node().isConnected) tp.hide(); });
-    }
-
-    IBV.mount(el, draw);
-
-    rng.addEventListener("input", () => {
-      day = +rng.value;
-      presetBtns.forEach(b => b.setAttribute("aria-pressed", "false"));
-      if(updateSky) updateSky();
+      if(auto && !drag){ az += dt*.003; draw(); }
     });
-
-    presetBtns.forEach(b => b.addEventListener("click", () => {
-      presetBtns.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-      const k = b.dataset.k;
-      showLunarHighlight = k === "lluna";
-      if(k === "hivern") day = 355;
-      else if(k === "equinocci") day = 80;
-      else if(k === "estiu") day = 172;
-      else if(k === "lluna") day = 355;
-      rng.value = day;
-      if(updateSky) updateSky();
-    }));
-
-    eraBtns.forEach(b => b.addEventListener("click", () => {
-      eraBtns.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-      era = b.dataset.era;
-      if(updateSky) updateSky();
-    }));
-
-    syncReadout();
   })();
 
   /* =========================================================================
-     4. FIGURA 4 — PAISATGE FUSTA i PEDRA (3,2 KM) I ACÚSTICA (COX 2020)
+     V2 · PAISATGE DOBLE: FUSTA PER ALS VIUS, PEDRA PER ALS AVANTPASSATS (IB-59 + IB-13)
      ========================================================================= */
   (function initPaisatge(){
-    const el = document.getElementById("paisatge-viz");
-    const lgEl = document.getElementById("paisatge-lg");
-    const btns = document.querySelectorAll("#f-paisatge .seg button");
-    if(!el) return;
-
-    let mode = "corredor";
-
-    function renderLegend(){
-      lgEl.innerHTML = "";
-      if(mode === "corredor"){
-        IBV.legendCat(lgEl, [
-          { c: C.vermell, t: "Monuments en pedra (avantpassats)" },
-          { c: C.groc, t: "Monuments en fusta (vius)" },
-          { c: C.blau, t: "Riu Avon i Bluestonehenge" }
-        ]);
-      } else {
-        IBV.legendCat(lgEl, [
-          { c: C.vermell, t: "Stonehenge interior (maqueta 1:12)" },
-          { c: C.blau, t: "Stonehenge exterior (fossat)" },
-          { c: C.groc, t: "Referència sala moderna" }
-        ]);
-      }
-    }
-
-    function drawCorredor(container, w){
-      const mob = w < 600;
-      const h = mob ? 280 : 340;
-      const M = { l: mob ? 14 : 34, r: mob ? 14 : 34, t: 28, b: 38 };
-      const svg = IBV.svg(container, w, h,
-        "Plànol a escala del corredor cerimonial de la plana de Salisbury: Stonehenge en pedra, l'Avinguda fins a Bluestonehenge arran del riu Avon, Durrington Walls i Woodhenge en fusta, i la tomba de l'Arquer d'Amesbury a 5 km.");
-      const tp = IBV.tip(container);
-
-      const x = d3.scaleLinear([-1.0, 5.1], [M.l, w - M.r]);
-      const y = d3.scaleLinear([-2.2, 2.7], [h - M.b, M.t]);
-
-      /* Riu Avon serpentejant (corba en blau suau) */
-      const avonPts = [[1.6, 2.7], [2.4, 2.0], [2.2, 1.0], [2.5, 0.0], [2.35, -1.15], [3.0, -2.2]];
-      const riverLine = d3.line().x(d => x(d[0])).y(d => y(d[1])).curve(d3.curveCatmullRom);
-      svg.append("path").attr("d", riverLine(avonPts))
-        .attr("fill","none").attr("stroke", C.blauClar).attr("stroke-width", mob ? 7 : 10).attr("stroke-linecap","round").attr("stroke-opacity", 0.55);
-      IBV.t(svg, x(2.48), y(0.45), "Riu Avon", { size: 11.5, italic: true, fill: C.blau, halo: 3 });
-
-      /* Avinguda cerimonial: 2,8 km entre Stonehenge (0,0) i Bluestonehenge (2.35, -1.15) */
-      const avPts = [[0, 0], [0.6, 0.45], [1.4, 0.25], [2.05, -0.45], [2.35, -1.15]];
-      svg.append("path").attr("d", riverLine(avPts))
-        .attr("fill","none").attr("stroke", C.ink).attr("stroke-width", 1.5).attr("stroke-dasharray", "4 3");
-      IBV.t(svg, x(1.15), y(0.55), "L'Avinguda (~2,8 km)", { size: 11, fill: C.ink2, anchor: "middle", halo: 3 });
-
-      /* Gran Cursus: franja est-oest */
-      svg.append("rect").attr("x", x(-0.8)).attr("y", y(1.05)).attr("width", x(1.7) - x(-0.8)).attr("height", 8)
-        .attr("fill", C.landEdge).attr("stroke", C.ghost).attr("stroke-width", 0.8);
-
-      const nodes = D.paisatge_nodes.map(d => ({ ...d, px: x(d.x), py: y(d.y) }));
-      const sel = svg.selectAll("g.pn").data(nodes).join("g").attr("class","pn hit");
-      sel.each(function(d){
-        const g = d3.select(this);
-        const col = COL[d.cat] || C.ink2;
-        g.append("circle").attr("cx", d.px).attr("cy", d.py).attr("r", mob ? d.r * 0.72 : d.r)
-          .attr("fill", col).attr("fill-opacity", 0.30).style("mix-blend-mode","multiply");
-        g.append("circle").attr("cx", d.px).attr("cy", d.py).attr("r", 3.4)
-          .attr("fill", col).attr("stroke", C.paper).attr("stroke-width", 1);
-
-        const anc = (d.x > 3.6 || d.id === "bhenge") ? "end" : "start";
-        const offX = anc === "end" ? -10 : 10;
-        const offY = d.id === "wood" ? 16 : (d.id === "durr" ? -10 : (d.id === "archer" ? 16 : -10));
-        IBV.t(g, clamp(d.px + offX, 10, w - 10), clamp(d.py + offY, 14, h - 22), d.nom, {
-          size: mob ? 11 : 12, weight: 700, anchor: anc, fill: TEXT_COL[d.cat] || C.ink, halo: 3
-        });
-        if(!mob || d.id === "sh" || d.id === "durr"){
-          IBV.t(g, clamp(d.px + offX, 10, w - 10), clamp(d.py + offY + 13, 24, h - 10), d.mat, {
-            size: 11, fill: C.ink2, anchor: anc, halo: 3
-          });
-        }
-      });
-
-      /* Barra d'escala real: 1 km */
-      svg.append("line").attr("x1", M.l).attr("x2", M.l + (x(1) - x(0))).attr("y1", h - 14).attr("y2", h - 14)
-        .attr("stroke", C.ink).attr("stroke-width", 1.5);
-      IBV.t(svg, M.l + (x(1) - x(0)) + 6, h - 10, "1 km", { size: 11, fill: C.ink2, halo: 3 });
-
-      IBV.onView(container, instant => {
-        if(instant) return;
-        sel.style("opacity", 0).transition().delay((d, i) => i * 90).duration(700).ease(IBV.EASE).style("opacity", 1);
-      });
-
-      IBV.hover(svg.node(), (ev, [mx, my]) => {
-        if(!svg.node().isConnected) return;
-        const best = d3.least(nodes, d => Math.hypot(d.px - mx, d.py - my));
-        if(best && Math.hypot(best.px - mx, best.py - my) < 55){
-          IBV.focus(sel, x => x.id === best.id, { dim: 0.48 });
-          tp.show(`<b>${best.nom}</b> (${best.mat}) · ${best.detall}`);
-        } else {
-          IBV.focus(sel, null);
-          tp.hide();
-        }
-      }, () => { if(svg.node().isConnected){ IBV.focus(sel, null); tp.hide(); } });
-    }
-
-    function drawAcustica(container, w){
-      const mob = w < 600;
-      const items = D.acustica;
-      const tp = IBV.tip(container);
-
-      /* Dues mètriques de Cox et al. (2020): files netes amb cercles translúcids multiply (IB-38) */
-      const rowH = mob ? 56 : 52;
-      const M = { l: mob ? 8 : 245, r: mob ? 22 : 34, t: 28, b: 36 };
-      const h = M.t + items.length * rowH + M.b;
-
-      const svg = IBV.svg(container, w, h,
-        "Comparativa acústica de la maqueta 1:12 de Stonehenge (Cox, Fazenda & Greaney, 2020): reverberació mitjana de 0,64 s i amplificació de la parla de +4,3 dB dins del cercle.");
-
-      const xRt = d3.scaleSqrt([0, 4.6], [M.l, w - M.r]);
-      const rSc = d3.scaleSqrt([0, 9.0], [4, mob ? 14 : 18]);
-
-      IBV.axisX(svg, xRt, h - M.b, mob ? [0, 0.64, 2, 4.5] : [0, 0.2, 0.64, 1.5, 3.0, 4.5],
-        v => v === 0.64 ? "0,64 s" : F1(v) + " s", { grid: M.t });
-      IBV.t(svg, w - M.r, M.t - 10, "Reverberació (s, escala √) · àrea = guany parla (+dB)", {
-        size: 11, fill: C.muted, anchor: "end", halo: 3
-      });
-
-      const rows = svg.selectAll("g.ac").data(items).join("g").attr("class","ac hit");
-      rows.each(function(d, i){
-        const g = d3.select(this);
-        const y0 = M.t + i * rowH + (mob ? 34 : rowH / 2);
-        const col = COL[d.cat] || C.ink2;
-        const cxPos = xRt(d.rt);
-
-        g.append("line").attr("x1", M.l).attr("x2", w - M.r).attr("y1", y0).attr("y2", y0)
-          .attr("stroke", C.grid).attr("stroke-width", 0.7);
-        g.append("line").attr("x1", M.l).attr("x2", cxPos).attr("y1", y0).attr("y2", y0)
-          .attr("stroke", col).attr("stroke-width", d.id === "int" ? 2.2 : 1.2).attr("stroke-opacity", 0.7);
-
-        g.append("circle").attr("class","ac-aur").attr("cx", cxPos).attr("cy", y0).attr("r", 0)
-          .attr("fill", col).attr("fill-opacity", 0.30).style("mix-blend-mode","multiply");
-        g.append("circle").attr("cx", cxPos).attr("cy", y0).attr("r", 3.2)
-          .attr("fill", col).attr("stroke", C.paper).attr("stroke-width", 0.8);
-
-        if(mob){
-          IBV.t(g, M.l, y0 - 14, `${d.nom} · ${F2(d.rt)} s (+${F1(d.amp)} dB)`, {
-            size: 11.5, weight: d.id === "int" ? 700 : 600, fill: d.id === "int" ? C.vermell : C.ink, halo: 3
-          });
-        } else {
-          IBV.t(g, M.l - 12, y0 + 4, d.nom, {
-            size: 12.5, weight: d.id === "int" ? 700 : 400, anchor: "end", fill: d.id === "int" ? C.vermell : C.ink, halo: 3
-          });
-          const nearRight = cxPos > w - M.r - 110;
-          const lblX = nearRight ? cxPos - rSc(d.amp) - 8 : cxPos + rSc(d.amp) + 8;
-          IBV.t(g, lblX, y0 + 4,
-            `${F2(d.rt)} s · +${F1(d.amp)} dB`, {
-              size: 11.5, weight: d.id === "int" ? 700 : 400, anchor: nearRight ? "end" : "start",
-              fill: d.id === "int" ? C.vermell : C.ink2, halo: 3
-            });
-        }
-      });
-
-      IBV.onView(container, instant => {
-        rows.selectAll("circle.ac-aur").transition().duration(instant ? 0 : 800).ease(IBV.EASE)
-          .attr("r", d => d.amp > 0 ? rSc(d.amp) : 4.5);
-      });
-
-      IBV.hover(svg.node(), (ev, [mx, my]) => {
-        if(!svg.node().isConnected) return;
-        const best = d3.least(items, (d, i) => Math.abs(my - (M.t + i * rowH + (mob ? 34 : rowH / 2))));
-        if(best){
-          IBV.focus(rows, x => x.id === best.id, { dim: 0.48 });
-          tp.show(`<b>${best.nom}</b> · ${F2(best.rt)} s · +${F1(best.amp)} dB · ${best.detall}`);
-        }
-      }, () => { if(svg.node().isConnected){ IBV.focus(rows, null); tp.hide(); } });
-    }
+    const el = document.getElementById("pai-viz"); if(!el || !window.SHL_DEM) return;
+    const fig = el.closest("figure"), btn = fig.querySelector(".playb"), tp = IBV.tip(el);
+    const SITES = [
+      {id:"sh", nom:"Stonehenge", sub:"pedra · avantpassats", lon:-1.8262, lat:51.1789, c:C.vermell, r:55, k:"pedra", det:"Cercle de pedra sobre la carena seca; cementiri de cremacions"},
+      {id:"dw", nom:"Durrington Walls", sub:"fusta · vius", lon:-1.7875, lat:51.1920, c:C.groc, r:240, k:"fusta", det:"Recinte de ~500 m amb cercles de pals de roure, cases i restes de banquets d'hivern"},
+      {id:"bh", nom:"Bluestonehenge", sub:"vora el riu", lon:-1.7978, lat:51.1715, c:C.blau, r:12, k:"riu", det:"Petit cercle de pedres blaves al final de l'Avinguda, arran de l'Avon"},
+      {id:"bm", nom:"Blick Mead", sub:"font mesolítica", lon:-1.7878, lat:51.1774, c:C.ink2, r:0, k:"meso", det:"Campament de caçadors-recol·lectors mil·lennis anteriors al monument"},
+      {id:"mp", nom:"Pals mesolítics", sub:"c. 8500–7000 aC", lon:-1.8287, lat:51.18045, c:C.ink2, r:0, k:"meso", det:"Forats de grans pals de pi a l'antic aparcament, uns 5.000 anys abans del fossat"}
+    ];
+    const AV = [[-1.8250,51.17945],[-1.8212,51.1815],[-1.8197,51.18235],[-1.8118,51.1819],[-1.8091,51.1816],[-1.8066,51.1812],[-1.8049,51.1806],[-1.8030,51.1793]];
+    const AV2 = [[-1.8030,51.1793],[-1.8008,51.1760],[-1.7978,51.1715]];
+    // camí de la processó: DW → riu (OSM) → Bluestonehenge → Avinguda → Stonehenge
+    const near = (pts, p) => d3.minIndex(pts, q => (q[0]-p[0])**2 + (q[1]-p[1])**2);
+    const i0 = near(L.avon, [-1.7823,51.1905]), i1 = near(L.avon, [-1.7975,51.1713]);
+    const ROUTE = [[-1.7850,51.1915], ...L.avon.slice(i0, i1+1), ...AV2.slice().reverse().slice(1), ...AV.slice().reverse(), [-1.8262,51.1789]];
+    let anim = null;
 
     IBV.mount(el, (container, w) => {
-      container.innerHTML = "";
-      if(mode === "corredor") drawCorredor(container, w);
-      else drawAcustica(container, w);
-    });
-
-    btns.forEach(b => b.addEventListener("click", () => {
-      btns.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-      mode = b.dataset.k;
-      renderLegend();
-      el.innerHTML = "";
-      const w = Math.round(el.clientWidth);
-      if(w){ if(mode === "corredor") drawCorredor(el, w); else drawAcustica(el, w); }
-    }));
-    renderLegend();
-  })();
-
-  /* =========================================================================
-     5. FIGURA 5 — GENT: CREMACIONS, ADNa (100 PUNTS) I BANQUETS D'HIVERN
-     ========================================================================= */
-  (function initGent(){
-    const el = document.getElementById("gent-viz");
-    const lgEl = document.getElementById("gent-lg");
-    const btns = document.querySelectorAll("#f-gent .seg.main-seg button");
-    const eraBox = document.getElementById("gent-era-ctl");
-    const eraBtns = document.querySelectorAll("#gent-era-ctl button");
-    if(!el) return;
-
-    let mode = "cremacions";
-    let adnKey = "campaniforme";
-
-    function renderLegend(){
-      lgEl.innerHTML = "";
-      if(eraBox) eraBox.style.display = mode === "adn" ? "flex" : "none";
-      if(mode === "cremacions"){
-        IBV.legendCat(lgEl, [
-          { c: C.groc, t: "Creta local de Wessex (15 · 60 %)" },
-          { c: C.blau, t: "Fora de Wessex / Gal·les (10 · 40 %)" }
-        ]);
-      } else if(mode === "adn"){
-        IBV.legendCat(lgEl, [
-          { c: C.blau, t: "Caçadors-recol·lectors (WHG)" },
-          { c: C.groc, t: "Agricultors neolítics (EEF)" },
-          { c: C.vermell, t: "Onada Campaniforme / estepària" }
-        ]);
-      } else {
-        IBV.legendCat(lgEl, [
-          { c: C.blau, t: "Naixements de primavera (%)" },
-          { c: C.vermell, t: "Sacrifici (~9 mesos) a tardor-hivern (%)" }
-        ]);
-      }
-    }
-
-    function drawCremacions(container, w){
-      const mob = w < 600;
-      const h = mob ? 290 : 300;
-      const svg = IBV.svg(container, w, h,
-        "25 individus cremats dels forats Aubrey analitzats per Snoeck et al. (2018): 15 locals de Wessex (60 %) i almenys 10 forans compatibles amb l'oest de Gal·les (40 %).");
-      const tp = IBV.tip(container);
-
-      const cols = 5, rows = 5;
-      const gridW = Math.min(w - 40, mob ? 210 : 260);
-      const step = gridW / cols;
-      const x0 = mob ? (w - gridW) / 2 : 56;
-      const y0 = 42;
-
-      IBV.t(svg, mob ? w / 2 : x0, 22,
-        mob ? "25 cremats · estronci (Snoeck et al., 2018)" : "25 individus cremats analitzats amb estronci (Snoeck et al., 2018)", {
-          size: mob ? 12 : 13, weight: 700, anchor: mob ? "middle" : "start", fill: C.ink, halo: 3
-      });
-
-      const pts = d3.range(25).map(i => {
-        const isFora = i >= 15;
-        return {
-          i, isFora,
-          col: isFora ? C.blau : C.groc,
-          cat: isFora ? D.cremacions[1] : D.cremacions[0],
-          cx: x0 + (i % cols) * step + step / 2,
-          cy: y0 + Math.floor(i / cols) * step + step / 2
-        };
-      });
-
-      const dotSel = svg.selectAll("circle.cr").data(pts).join("circle").attr("class","cr hit")
-        .attr("cx", d => d.cx).attr("cy", d => d.cy)
-        .attr("r", 0)
-        .attr("fill", d => d.col).attr("fill-opacity", d => d.isFora ? 0.85 : 0.72)
-        .attr("stroke", C.paper).attr("stroke-width", 1.5);
-
-      IBV.onView(container, instant => {
-        dotSel.transition().delay((d, i) => instant ? 0 : i * 18).duration(instant ? 0 : 650).ease(IBV.EASE)
-          .attr("r", mob ? 13 : 16);
-      });
-
-      if(!mob){
-        const tx = x0 + gridW + 44;
-        IBV.t(svg, tx, y0 + 26, "15 locals (60 %)", { size: 15, weight: 700, fill: C.ink, halo: 3 });
-        IBV.t(svg, tx, y0 + 44, "Signatura compatible amb la creta de Wessex", { size: 12.5, fill: C.ink2, halo: 3 });
-        IBV.t(svg, tx, y0 + 96, "10 forans (40 %)", { size: 15, weight: 700, fill: C.blau, halo: 3 });
-        IBV.t(svg, tx, y0 + 114, "Van passar la vida lluny, compatibles amb Gal·les", { size: 12.5, fill: C.ink2, halo: 3 });
-        IBV.t(svg, tx, y0 + 168, "Total estimat al cementiri: 150–240 persones", { size: 12, weight: 600, fill: C.muted, halo: 3 });
-        IBV.t(svg, tx, y0 + 185, "Paritat d'homes i dones (Willis et al., 2016)", { size: 12, fill: C.muted, halo: 3 });
-      } else {
-        IBV.t(svg, w / 2, y0 + gridW + 22, "15 locals (60 %) · 10 de fora / Gal·les (40 %)", {
-          size: 12, weight: 700, anchor: "middle", fill: C.ink, halo: 3
+      const mob = w < 600, H = Math.round(clamp(w*.62, 320, 560));
+      const proj = d3.geoMercator().fitExtent([[6,6],[w-6,H-6]], {type:"MultiPoint", coordinates:[[-1.865,51.163],[-1.770,51.198]]});
+      d3.select(container).selectAll("*").remove();
+      const {ctx} = IBV.canvas(container, w, H, "");
+      relleu59(ctx, proj, w, H, window.SHL_DEM, {iso:d3.range(60,150,10), slope:30, coast:false, fade:"neso", fadeK:.06,
+        rivers:{type:"LineString", coordinates:L.avon}, riverW:1.6});
+      const svg = IBV.svg(container, w, H, "Mapa físic del paisatge de Stonehenge: Durrington Walls (fusta) al nord-est vora el riu Avon, l'Avinguda que puja des del riu fins a Stonehenge (pedra) i els pals mesolítics.");
+      svg.style("position","absolute").style("left",0).style("top",0);
+      const P = p => proj(p), line = d3.line().x(d=>P(d)[0]).y(d=>P(d)[1]).curve(d3.curveCatmullRom.alpha(.5));
+      const mPx = Math.abs(proj([-1.8262,51.1789])[1] - proj([-1.8262,51.1789+1/111.2])[1]) / 1000; // px per metre
+      const g = svg.append("g");
+      // Avinguda: contorn real (OSM) i tram final aproximat
+      L.avinguda.forEach(poly => g.append("path").attr("d", d3.line()(poly.map(P))).attr("fill", IBV.alpha(C.ink,.06)).attr("stroke", C.ink).attr("stroke-width",.7));
+      g.append("path").attr("d", line(AV2)).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.8).attr("stroke-dasharray","3 3");
+      // Woodhenge (OSM)
+      g.append("path").attr("d", d3.line()(L.woodhenge.map(P))+"Z").attr("fill", IBV.alpha(C.groc,.5)).attr("stroke", C.ink).attr("stroke-width",.6);
+      // el camí de la processó (latent)
+      const routeP = g.append("path").attr("d", line(ROUTE)).attr("fill","none").attr("stroke",C.vermell).attr("stroke-width",1.6).attr("stroke-opacity",.0);
+      // llocs
+      const sg = g.selectAll("g.site").data(SITES).join("g").attr("class","site").attr("transform", d => `translate(${P([d.lon,d.lat])})`).style("cursor","pointer");
+      sg.filter(d=>d.r>0).append("circle").attr("r", d => Math.max(4, d.r*mPx)).attr("fill", d => IBV.alpha(d.c, d.k==="fusta"?.38:.32)).style("mix-blend-mode","multiply");
+      sg.append("circle").attr("r", 2.4).attr("fill", d => d.k==="meso" ? "none" : C.ink).attr("stroke", C.ink).attr("stroke-width",.9);
+      // anotacions
+      const pSH = P([-1.8262,51.1789]), pDW = P([-1.7875,51.1920]), pBH = P([-1.7978,51.1715]), pMP = P([-1.8287,51.18045]);
+      if(mob) IBV.note(g, {x:pSH[0], y:pSH[1]-5, tx:pSH[0]+6, ty:pSH[1]-46, kind:"elbow", anchor:"start", lines:[["Stonehenge",true],["pedra, avantpassats"]]});
+      else IBV.note(g, {x:pSH[0]-6, y:pSH[1]+4, tx:pSH[0]-30, ty:pSH[1]+56, kind:"elbow", anchor:"start", lines:[["Stonehenge",true],["pedra per als avantpassats"]]});
+      IBV.note(g, {x:pDW[0]+4, y:pDW[1]-8, tx:pDW[0]+(mob?-8:-40), ty:pDW[1]-(mob?28:46), kind:"elbow", anchor:"end", lines:[["Durrington Walls i Woodhenge",true],["fusta per als vius"]]});
+      IBV.note(g, {x:pBH[0], y:pBH[1]+4, tx:pBH[0]-(mob?4:26), ty:pBH[1]+(mob?30:40), kind:"elbow", anchor:"end", lines:[["Bluestonehenge",true],["l'Avinguda neix al riu"]]});
+      if(!mob) IBV.note(g, {x:pMP[0], y:pMP[1]-3, tx:pMP[0]-20, ty:pMP[1]-36, kind:"elbow", anchor:"end", lines:[["Pals mesolítics",true],["c. 8500–7000 aC"]]});
+      const pAv = P(AV[4]);
+      IBV.t(g, pAv[0], pAv[1]-12, "L'Avinguda", {italic:true, size:12.5, anchor:"middle", fill:C.ink2, halo:true});
+      const pRv = P(L.avon[near(L.avon,[-1.7748,51.1830])]);
+      IBV.t(g, pRv[0]+(mob?-8:8), pRv[1], "riu Avon", {italic:true, size:12.5, fill:C.blau, halo:true, anchor:mob?"end":"start"});
+      // escala d'1 km
+      const sx = w-22-1000*mPx, sy = H-16;
+      g.append("path").attr("d",`M${sx},${sy-4}V${sy}H${sx+1000*mPx}V${sy-4}`).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.8);
+      IBV.t(g, sx+500*mPx, sy-8, "1 km", {size:11.5, anchor:"middle", fill:C.ink2, halo:true});
+      // hover
+      const dl = d3.Delaunay.from(SITES, d => P([d.lon,d.lat])[0], d => P([d.lon,d.lat])[1]);
+      IBV.hover(svg.node(), (ev,[x,y]) => {
+        const i = dl.find(x,y), d = SITES[i], p = P([d.lon,d.lat]);
+        if(Math.hypot(p[0]-x,p[1]-y) > 46){ IBV.focus(sg, null); tp.hide(); return; }
+        IBV.focus(sg, s => s===d);
+        tp.show(`<b>${d.nom}</b> · ${d.det}`);
+      }, () => { IBV.focus(sg, null); tp.hide(); });
+      // processó
+      const walker = g.append("circle").attr("r",4.2).attr("fill",C.vermell).attr("stroke",S3.PAPER).attr("stroke-width",1.5).style("opacity",0);
+      const len = routeP.node().getTotalLength();
+      const run = () => {
+        if(anim) anim.stop();
+        routeP.attr("stroke-opacity",.85).attr("stroke-dasharray",`0 ${len}`);
+        walker.style("opacity",1);
+        if(IBV.reduced){ routeP.attr("stroke-dasharray",null); const e = routeP.node().getPointAtLength(len); walker.attr("cx",e.x).attr("cy",e.y); return; }
+        const T = 24000;
+        anim = d3.timer(el2 => {
+          const k = Math.min(1, el2/T), L2 = len*d3.easeSinInOut(k), p = routeP.node().getPointAtLength(L2);
+          routeP.attr("stroke-dasharray",`${L2} ${len}`); walker.attr("cx",p.x).attr("cy",p.y);
+          if(k >= 1){ anim.stop(); anim = null; }
         });
-        IBV.t(svg, w / 2, y0 + gridW + 40, "Cementiri estimat: 150–240 persones (homes i dones)", {
-          size: 11.5, anchor: "middle", fill: C.muted, halo: 3
-        });
-      }
-
-      IBV.hover(svg.node(), (ev, [mx, my]) => {
-        if(!svg.node().isConnected) return;
-        const best = d3.least(pts, d => Math.hypot(d.cx - mx, d.cy - my));
-        if(best && Math.hypot(best.cx - mx, best.cy - my) < 28){
-          IBV.focus(dotSel, x => x.isFora === best.isFora, { dim: 0.48 });
-          tp.show(`<b>${best.cat.nom}</b> (${best.cat.pct} %) · ${best.cat.detall}`);
-        } else {
-          IBV.focus(dotSel, null);
-          tp.hide();
-        }
-      }, () => { if(svg.node().isConnected){ IBV.focus(dotSel, null); tp.hide(); } });
-    }
-
-    let updateAdn = null;
-
-    function drawAdn(container, w){
-      const mob = w < 600;
-      const h = mob ? 330 : 340;
-      const svg = IBV.svg(container, w, h,
-        "Reixa de 100 punts amb el reemplaçament genètic a Gran Bretanya segons l'ADNa: del Mesolític al Neolític (Brace et al., 2019) i el gir de ~90 % del Vas Campaniforme (Olalde et al., 2018).");
-      const tp = IBV.tip(container);
-
-      const gridW = Math.min(w - 36, mob ? 236 : 260);
-      const step = gridW / 10;
-      const x0 = mob ? (w - gridW) / 2 : 52;
-      const y0 = 56;
-
-      const tTitle = IBV.t(svg, mob ? w / 2 : x0, 22, "", {
-        size: mob ? 12.5 : 14, weight: 700, anchor: mob ? "middle" : "start", fill: C.ink, halo: 3
-      });
-      const tSub = IBV.t(svg, mob ? w / 2 : x0, 40, "", {
-        size: 11.5, anchor: mob ? "middle" : "start", fill: C.ink2, halo: 3
-      });
-
-      const dots = d3.range(100).map(i => ({
-        i,
-        cx: x0 + (i % 10) * step + step / 2,
-        cy: y0 + Math.floor(i / 10) * step + step / 2,
-        cat: "blau", grup: ""
-      }));
-
-      const dotSel = svg.selectAll("circle.ad").data(dots).join("circle").attr("class","ad hit")
-        .attr("cx", d => d.cx).attr("cy", d => d.cy)
-        .attr("r", mob ? 8.5 : 9.6)
-        .attr("stroke", C.paper).attr("stroke-width", 1.2);
-
-      const gSum = svg.append("g");
-
-      updateAdn = (instant) => {
-        const st = D.adn.find(x => x.id === adnKey) || D.adn[2];
-        tTitle.text(mob ? st.nom : st.titol);
-        tSub.text(mob ? st.grups.map(g => `${g.pct}%`).join(" / ") + " · " + st.nom.split(" ")[0] : st.desc);
-
-        let cursor = 0;
-        const assign = [];
-        st.grups.forEach(g => {
-          for(let k = 0; k < g.pct && cursor < 100; k++){
-            assign[cursor++] = g;
-          }
-        });
-        dots.forEach((d, idx) => {
-          const g = assign[idx] || st.grups[0];
-          d.cat = g.cat;
-          d.grup = g.nom;
-          d.pct = g.pct;
-        });
-
-        const dur = instant || IBV.reduced ? 0 : 480;
-        dotSel.transition().duration(dur).delay((d, i) => instant || IBV.reduced ? 0 : i * 3)
-          .attr("fill", d => COL[d.cat]);
-
-        gSum.selectAll("*").remove();
-        if(!mob){
-          const sx = x0 + gridW + 44;
-          st.grups.forEach((g, idx) => {
-            const yy = y0 + 28 + idx * 54;
-            gSum.append("circle").attr("cx", sx).attr("cy", yy - 4).attr("r", 6).attr("fill", COL[g.cat]);
-            IBV.t(gSum, sx + 14, yy, `${g.pct} % · ${g.nom}`, {
-              size: 14, weight: 700, fill: TEXT_COL[g.cat], halo: 3
-            });
-          });
-        } else {
-          st.grups.forEach((g, idx) => {
-            const yy = y0 + gridW + 22 + idx * 18;
-            IBV.t(gSum, w / 2, yy, `${g.pct} % · ${g.nom}`, {
-              size: 11.5, weight: 700, anchor: "middle", fill: TEXT_COL[g.cat], halo: 3
-            });
-          });
-        }
       };
-
-      updateAdn(true);
-
-      IBV.onView(container, instant => {
-        if(instant) return;
-        dotSel.attr("r", 0).transition().delay((d, i) => i * 5).duration(600).ease(IBV.EASE).attr("r", mob ? 8.5 : 9.6);
-      });
-
-      IBV.hover(svg.node(), (ev, [mx, my]) => {
-        if(!svg.node().isConnected) return;
-        const best = d3.least(dots, d => Math.hypot(d.cx - mx, d.cy - my));
-        if(best && Math.hypot(best.cx - mx, best.cy - my) < 26){
-          IBV.focus(dotSel, x => x.grup === best.grup, { dim: 0.48 });
-          tp.show(`<b>${best.grup}</b> (${best.pct} %) · Patrimoni genètic estimat en aquesta etapa`);
-        } else {
-          IBV.focus(dotSel, null);
-          tp.hide();
-        }
-      }, () => { if(svg.node().isConnected){ IBV.focus(dotSel, null); tp.hide(); } });
-    }
-
-    function drawBanquets(container, w){
-      const mob = w < 600;
-      const h = mob ? 310 : 380;
-      const cx = w / 2, cy = h / 2 + 6;
-      const R = Math.min(w, h) * (mob ? 0.37 : 0.38);
-
-      const svg = IBV.svg(container, w, h,
-        "Rosa anual del cicle de cria i sacrifici de porcs a Durrington Walls (síntesi de Wright et al., 2014): naixements concentrats a la primavera i pic de sacrificis als ~9 mesos a finals de tardor i ple hivern.");
-      const tp = IBV.tip(container);
-
-      IBV.polarGrid(svg, cx, cy, R, 4, 12);
-
-      const rSc = d3.scaleSqrt([0, 40], [0, R]);
-      const data = D.banquets_mesos;
-      const ang = i => (i / 12) * Math.PI * 2;
-
-      const areaGen = key => d3.areaRadial()
-        .angle(d => ang(d.m))
-        .innerRadius(0)
-        .outerRadius(d => rSc(d[key]))
-        .curve(d3.curveCardinalClosed.tension(0.35));
-
-      const pNaix = svg.append("path").datum(data).attr("transform", `translate(${cx},${cy})`)
-        .attr("d", areaGen("naix")).attr("fill", C.blau).attr("fill-opacity", 0.28)
-        .attr("stroke", C.blau).attr("stroke-width", 1.3);
-
-      const pSac = svg.append("path").datum(data).attr("transform", `translate(${cx},${cy})`)
-        .attr("d", areaGen("sac")).attr("fill", C.vermell).attr("fill-opacity", 0.32)
-        .attr("stroke", C.vermell).attr("stroke-width", 1.5);
-
-      IBV.onView(container, instant => {
-        if(instant) return;
-        pNaix.attr("transform", `translate(${cx},${cy}) scale(0.1)`).transition().duration(800).ease(IBV.EASE).attr("transform", `translate(${cx},${cy}) scale(1)`);
-        pSac.attr("transform", `translate(${cx},${cy}) scale(0.1)`).transition().delay(120).duration(850).ease(IBV.EASE).attr("transform", `translate(${cx},${cy}) scale(1)`);
-      });
-
-      data.forEach(d => {
-        const a = ang(d.m);
-        const lx = cx + Math.sin(a) * (R + 14);
-        const ly = cy - Math.cos(a) * (R + 14);
-        IBV.t(svg, lx, ly + 4, d.nom, { size: 11, weight: (d.m === 11 || d.m === 3) ? 700 : 400, anchor: "middle", fill: C.ink2, halo: 3 });
-      });
-
-      IBV.note(svg, {
-        x: cx + Math.sin(ang(11)) * rSc(22), y: cy - Math.cos(ang(11)) * rSc(22),
-        tx: clamp(cx - R * 0.45, 92, w - 20), ty: clamp(cy - R - 2, 22, h - 20),
-        lines: [["Pic d'hivern (~9 mesos)", true], ["Solstici i banquets"]], kind: "elbow", anchor: "end", size: 11, fill: C.vermell
-      });
-      if(!mob){
-        IBV.note(svg, {
-          x: cx + Math.sin(ang(3)) * rSc(38), y: cy - Math.cos(ang(3)) * rSc(38),
-          tx: clamp(cx + R + 34, 40, w - 120), ty: cy - 36,
-          lines: [["Parts de primavera", true], ["Fora de Wessex"]], kind: "elbow", anchor: "start", size: 11, fill: C.blau
-        });
-      }
-
-      const hitPts = data.map(d => {
-        const a = ang(d.m);
-        return { d, hx: cx + Math.sin(a) * (R * 0.65), hy: cy - Math.cos(a) * (R * 0.65) };
-      });
-      IBV.hover(svg.node(), (ev, [mx, my]) => {
-        if(!svg.node().isConnected) return;
-        const best = d3.least(hitPts, p => Math.hypot(p.hx - mx, p.hy - my));
-        if(best && Math.hypot(best.hx - mx, best.hy - my) < R * 0.55){
-          tp.show(`<b>${best.d.nom}</b> · Parts ~${best.d.naix} % · Sacrificis ~${best.d.sac} % · ${best.d.nota}`);
-        } else tp.hide();
-      }, () => { if(svg.node().isConnected) tp.hide(); });
-    }
-
-    function renderAll(){
-      renderLegend();
-      el.innerHTML = "";
-      const w = Math.round(el.clientWidth);
-      if(!w) return;
-      if(mode === "cremacions") drawCremacions(el, w);
-      else if(mode === "adn") drawAdn(el, w);
-      else drawBanquets(el, w);
-    }
-
-    IBV.mount(el, () => renderAll());
-    btns.forEach(b => b.addEventListener("click", () => {
-      btns.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-      mode = b.dataset.k;
-      renderAll();
-    }));
-    eraBtns.forEach(b => b.addEventListener("click", () => {
-      eraBtns.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-      adnKey = b.dataset.era;
-      if(mode === "adn" && updateAdn) updateAdn(false);
-    }));
-    renderLegend();
+      if(btn){ btn.onclick = run; }
+      IBV.onView(container, instant => { if(!instant) setTimeout(run, 600); else run(); });
+    });
   })();
 
   /* =========================================================================
-     6. FIGURA 6 — STONEHENGE AL MÓN: 12.000 ANYS DE MEGÀLITS (IB-49 + IB-25)
+     V3 · SCROLLY: UN MAPA DE PEDRA DE TOTA UNA ILLA (IB-59 + IB-13 + IB-25)
      ========================================================================= */
-  (function initMon(){
-    const el = document.getElementById("mon-viz");
-    const lgEl = document.getElementById("mon-lg");
-    const btns = document.querySelectorAll("#f-mon .seg button");
-    if(!el) return;
-
-    let mode = "cronologia";
-    let worldData = null;
-
-    function renderLegend(){
-      lgEl.innerHTML = "";
-      IBV.legendCat(lgEl, [
-        { c: C.vermell, t: "Stonehenge i tradicions monumentals" },
-        { c: C.blau, t: "Arc atlàntic i britànic" },
-        { c: C.groc, t: "Àfrica, Pacífic i Sud-est asiàtic" }
-      ]);
+  (function initPedres(){
+    const el = document.getElementById("pedres-viz"); if(!el) return;
+    const sec = document.getElementById("s-pedres"), tp = IBV.tip(el);
+    const tEl = document.getElementById("pedres-t"), sEl = document.getElementById("pedres-s");
+    IBV.legendCat(document.getElementById("pedres-lg"), [
+      {c:C.vermell, t:"El que es mou en aquest pas", kind:"line"},
+      {c:C.ghost, t:"Pas anterior", kind:"line"}
+    ]);
+    const SH = [D.stonehenge.lon, D.stonehenge.lat];
+    const O = D.orígens;
+    const STEPS = [
+      {k:"sarsen", ids:["sarsen"], t:"Els gegants de West Woods", s:"50 dels 52 sarsens, d'un bosc a 25 km (Nash et al., 2020)"},
+      {k:"gales", ids:["bluestones"], t:"Vuitanta pedres de Gal·les", s:"Turons Preseli, uns 230 km en línia recta"},
+      {k:"altar", ids:["altar"], t:"L'Altar ve de l'altra punta de l'illa", s:"Conca Orcadiana, com a mínim 750 km (Clarke et al., 2024)"},
+      {k:"feast", ids:["cremats","porcs"], t:"També viatjaven els morts i els porcs", s:"10 de 25 cremats i quasi tots els porcs dels banquets eren de fora"},
+      {k:"illa", ids:O.map(o=>o.id), t:"Tota una illa en un sol cercle", s:"L'únic dels ~900 cercles britànics fet amb pedres portades de lluny"}
+    ];
+    let cur = 0, st = null;
+    function apply(i){
+      cur = i; const S = STEPS[i];
+      tEl.textContent = S.t; sEl.textContent = S.s;
+      if(!st) return;
+      const seen = new Set(STEPS.slice(0,i).flatMap(s=>s.ids)), on = new Set(S.ids);
+      st.routes.transition().duration(IBV.reduced?0:700)
+        .attr("stroke", d => on.has(d.id) ? C.vermell : C.ghost)
+        .attr("stroke-width", d => on.has(d.id) ? 1.7 : 1)
+        .attr("stroke-opacity", d => on.has(d.id) ? .9 : seen.has(d.id) ? .9 : 0);
+      st.dots.transition().duration(IBV.reduced?0:700)
+        .attr("opacity", d => on.has(d.id) ? 1 : seen.has(d.id) ? .55 : 0);
+      st.labels.transition().duration(IBV.reduced?0:500).style("opacity", d => on.has(d.id) ? 1 : 0);
+      st.on = on;
     }
-
-    function fmtYear(y){ return y < 0 ? `${F0(Math.abs(y))} aC` : `${y} dC`; }
-
-    /* A mòbil (< 600 px) es transposa obligatòriament a línia del temps vertical! */
-    function drawCronologia(container, w){
-      const mob = w < 600;
-      const items = D.mon;
-      const tp = IBV.tip(container);
-
-      if(mob){
-        const rowH = 48;
-        const M = { l: 64, r: 14, t: 20, b: 22 };
-        const h = M.t + items.length * rowH + M.b;
-        const svg = IBV.svg(container, w, h,
-          "Línia del temps vertical de 12.000 anys de megalitisme mundial (de Göbekli Tepe al 9600 aC fins a Sumba Occidental avui).");
-
-        const y = d3.scaleLinear([-10000, 2026], [M.t + 12, h - M.b - 12]);
-        svg.append("line").attr("x1", M.l).attr("x2", M.l).attr("y1", M.t).attr("y2", h - M.b)
-          .attr("stroke", C.hair).attr("stroke-width", 1.2);
-
-        const rows = svg.selectAll("g.mv").data(items).join("g").attr("class","mv hit");
-        rows.each(function(d, i){
-          const g = d3.select(this);
-          const py = M.t + i * rowH + rowH / 2;
-          const col = COL[d.cat];
-          g.append("circle").attr("class","mh-dot").attr("cx", M.l).attr("cy", py).attr("r", 0)
-            .attr("fill", col).attr("stroke", C.paper).attr("stroke-width", 1.2);
-          IBV.t(g, M.l - 10, py + 4, fmtYear(d.mid), { size: 11, weight: 700, anchor: "end", fill: C.ink2, halo: 3 });
-          IBV.t(g, M.l + 14, py - 2, d.nom, { size: 12.5, weight: 700, fill: TEXT_COL[d.cat], halo: 3 });
-          IBV.t(g, M.l + 14, py + 13, `${d.lloc} · ~${F0(d.pes)} t`, { size: 11, fill: C.muted, halo: 3 });
-        });
-
-        IBV.onView(container, instant => {
-          rows.selectAll("circle.mh-dot").transition().delay((d, i) => instant ? 0 : i * 45).duration(instant ? 0 : 700).ease(IBV.EASE)
-            .attr("r", d => d.id === "stonehenge" ? 7 : 5);
-        });
-
-        IBV.hover(svg.node(), (ev, [mx, my]) => {
-          if(!svg.node().isConnected) return;
-          const best = d3.least(items, (d, i) => Math.abs(my - (M.t + i * rowH + rowH / 2)));
-          if(best){
-            IBV.focus(rows, x => x.id === best.id, { dim: 0.48 });
-            tp.show(`<b>${best.nom}</b> (${fmtYear(best.inici)} – ${fmtYear(best.fi)}) · ${best.detall}`);
-          }
-        }, () => { if(svg.node().isConnected){ IBV.focus(rows, null); tp.hide(); } });
-        return;
-      }
-
-      /* Desktop horitzontal (IB-49) */
-      const h = 320;
-      const M = { l: 38, r: 44, t: 32, b: 42 };
-      const svg = IBV.svg(container, w, h,
-        "Línia del temps de 12.000 anys de megalitisme mundial des de Göbekli Tepe fins a Rapa Nui i Sumba Occidental.");
-
-      const x = d3.scaleLinear([-10200, 2100], [M.l, w - M.r]);
-      const yAxis = h - M.b;
-
-      IBV.axisX(svg, x, yAxis, [-10000, -8000, -6000, -4000, -2000, 0, 2000], v => v === 0 ? "0" : (v < 0 ? Math.abs(v) + " aC" : v + " dC"), { grid: M.t });
-
-      const laneY = [M.t + 36, M.t + 104, M.t + 172];
-      const nodes = svg.selectAll("g.mh").data(items).join("g").attr("class","mh hit");
-      nodes.each(function(d){
-        const g = d3.select(this);
-        const ly = laneY[d.carril % 3];
-        const col = COL[d.cat];
-        const x1 = x(d.inici), x2 = x(d.fi), xm = x(d.mid);
-
-        g.append("line").attr("x1", xm).attr("x2", xm).attr("y1", ly).attr("y2", yAxis)
-          .attr("stroke", C.grid).attr("stroke-width", 0.8);
-        g.append("line").attr("x1", x1).attr("x2", Math.max(x1 + 4, x2)).attr("y1", ly).attr("y2", ly)
-          .attr("stroke", col).attr("stroke-width", d.id === "stonehenge" ? 6 : 4).attr("stroke-opacity", 0.72).attr("stroke-linecap","round");
-        g.append("circle").attr("class","mh-dot").attr("cx", xm).attr("cy", ly).attr("r", 0)
-          .attr("fill", col).attr("stroke", C.paper).attr("stroke-width", 1.2);
-
-        const anc = xm > w * 0.78 ? "end" : (xm < w * 0.16 ? "start" : "middle");
-        IBV.t(g, xm, ly - 12, d.nom, { size: 12, weight: 700, anchor: anc, fill: TEXT_COL[d.cat], halo: 3 });
-        IBV.t(g, xm, ly + 17, `${fmtYear(d.inici)}`, { size: 11, anchor: anc, fill: C.ink2, halo: 3 });
-      });
-
-      IBV.onView(container, instant => {
-        nodes.selectAll("circle.mh-dot").transition().delay((d, i) => instant ? 0 : i * 50).duration(instant ? 0 : 750).ease(IBV.EASE)
-          .attr("r", d => d.id === "stonehenge" ? 7 : 5);
-      });
-
-      IBV.hover(svg.node(), (ev, [mx, my]) => {
-        if(!svg.node().isConnected) return;
-        const best = d3.least(items, d => Math.hypot(mx - x(d.mid), my - laneY[d.carril % 3]));
-        if(best && Math.hypot(mx - x(best.mid), my - laneY[best.carril % 3]) < 95){
-          IBV.focus(nodes, p => p.id === best.id, { dim: 0.48 });
-          tp.show(`<b>${best.nom}</b> (${best.lloc}, ${fmtYear(best.inici)} – ${fmtYear(best.fi)}) · ${best.detall}`);
-        } else {
-          IBV.focus(nodes, null);
-          tp.hide();
-        }
-      }, () => { if(svg.node().isConnected){ IBV.focus(nodes, null); tp.hide(); } });
-    }
-
-    function drawMapa(container, w){
-      const mob = w < 600;
-      const h = mob ? 245 : Math.round(clamp(w * 0.47, 340, 420));
-      const svg = IBV.svg(container, w, h,
-        "Mapa del món en projecció Equal Earth amb nou grans tradicions megalítiques d'arreu del planeta i el pes típic dels blocs.");
-      const tp = IBV.tip(container);
-
-      const proj = d3.geoEqualEarth().fitExtent([[mob ? 4 : 12, 8], [w - (mob ? 4 : 12), h - 8]], { type: "Sphere" });
-      const path = d3.geoPath(proj);
-
-      svg.append("path").datum(d3.geoGraticule().step([30, 30])()).attr("d", path).attr("fill","none").attr("stroke", C.grid).attr("stroke-width", 0.45);
-      if(worldData){
-        svg.append("path").datum(worldData.land).attr("d", path).attr("fill", C.land);
-        svg.append("path").datum(worldData.borders).attr("d", path).attr("fill","none").attr("stroke", C.paper).attr("stroke-width", 0.5);
-      }
-
-      const rSc = d3.scaleSqrt([0.8, 25], [6, mob ? 16 : 24]);
-      const pts = D.mon.map(d => ({ ...d, xy: proj([d.lon, d.lat]) }));
-      const sel = svg.selectAll("g.mw").data(pts).join("g").attr("class","mw hit");
-      sel.each(function(d){
-        const g = d3.select(this);
-        const col = COL[d.cat];
-        g.append("circle").attr("class","mw-aur").attr("cx", d.xy[0]).attr("cy", d.xy[1]).attr("r", 0)
-          .attr("fill", col).attr("fill-opacity", 0.30).style("mix-blend-mode","multiply");
-        g.append("circle").attr("cx", d.xy[0]).attr("cy", d.xy[1]).attr("r", 2.8)
-          .attr("fill", col).attr("stroke", C.paper).attr("stroke-width", 0.8);
-
-        if(!mob || d.id === "gobekli" || d.id === "stonehenge" || d.id === "menorca" || d.id === "rapanui" || d.id === "sumba"){
-          if(d.id === "newgrange" || d.id === "brodgar") return; // evitar solapament amb Stonehenge al mapa global
-          const anc = d.lon < -60 ? "start" : (d.id === "carnac" ? "end" : "start");
-          const ox = anc === "end" ? -10 : 10;
-          const oy = d.id === "menorca" ? 16 : -8;
-          IBV.t(g, clamp(d.xy[0] + ox, 10, w - 10), clamp(d.xy[1] + oy, 14, h - 10), d.nom, {
-            size: mob ? 11 : 11.5, weight: 700, anchor: anc, fill: TEXT_COL[d.cat], halo: 3
-          });
-        }
-      });
-
-      IBV.onView(container, instant => {
-        sel.selectAll("circle.mw-aur").transition().duration(instant ? 0 : 800).ease(IBV.EASE)
-          .attr("r", d => rSc(d.pes));
-      });
-
-      IBV.hover(svg.node(), (ev, [mx, my]) => {
-        if(!svg.node().isConnected) return;
-        const best = d3.least(pts, d => Math.hypot(d.xy[0] - mx, d.xy[1] - my));
-        if(best && Math.hypot(best.xy[0] - mx, best.xy[1] - my) < 55){
-          IBV.focus(sel, x => x.id === best.id, { dim: 0.48 });
-          tp.show(`<b>${best.nom}</b> (${best.lloc}, ~${F0(best.pes)} t) · ${best.detall}`);
-        } else {
-          IBV.focus(sel, null);
-          tp.hide();
-        }
-      }, () => { if(svg.node().isConnected){ IBV.focus(sel, null); tp.hide(); } });
-    }
-
     IBV.mount(el, (container, w) => {
-      container.innerHTML = "";
-      if(mode === "cronologia") drawCronologia(container, w);
-      else if(worldData) drawMapa(container, w);
-      else IBV.world().then(wd => { worldData = wd; container.innerHTML = ""; drawMapa(container, w); });
+      const mob = w < 520;
+      const H = Math.round(clamp(Math.min(innerHeight*(innerWidth<900?.46:.74), w*1.25), 300, 760));
+      d3.select(container).selectAll("svg,canvas").remove();
+      const proj = d3.geoTransverseMercator().rotate([2.5,-54.5])
+        .fitExtent([[mob?6:16, 8],[w-(mob?6:16), H-8]], {type:"MultiPoint", coordinates:[[-5.6,50.3],[0.6,50.8],[-3.2,59.2],[-6.2,57.5]]});
+      const {ctx} = IBV.canvas(container, w, H, "");
+      const svg = IBV.svg(container, w, H, "Mapa físic de Gran Bretanya amb els camins de les pedres de Stonehenge: sarsens de West Woods (25 km), pedres blaves dels turons Preseli a Gal·les (230 km), la Pedra de l'Altar del nord-est d'Escòcia (750 km o més), i l'origen de morts cremats i porcs dels banquets.");
+      svg.style("position","absolute").style("left",0).style("top",0);
+      const pc = d3.select(container).append("canvas").attr("width",w*2).attr("height",H*2).style("width",w+"px").style("height",H+"px")
+        .style("position","absolute").style("left",0).style("top",0).style("pointer-events","none").node();
+      const pctx = pc.getContext("2d"); pctx.scale(2,2);
+      ukWorld().then(wd => {
+        relleu59(ctx, proj, w, H, window.SH_DEM, {land: wd.land, iso:[300,600,900], fade:""});
+      });
+      const P = p => proj(p), path = d3.geoPath(proj);
+      const R = O.map(o => ({...o, line:{type:"LineString", coordinates:[[o.lon,o.lat],SH]}}));
+      const g = svg.append("g");
+      const routes = g.selectAll("path.r").data(R).join("path").attr("class","r").attr("fill","none")
+        .attr("d", d => path(d.line)).attr("stroke", C.ghost).attr("stroke-opacity",0).attr("stroke-linecap","round");
+      const dots = g.selectAll("g.o").data(R).join("g").attr("class","o").attr("transform", d => `translate(${P([d.lon,d.lat])})`).attr("opacity",0);
+      const rS = d3.scaleSqrt().domain([0,850]).range([0, mob?20:30]);
+      dots.append("circle").attr("r", d => rS(d.dist)).attr("fill", IBV.alpha(C.vermell,.22)).style("mix-blend-mode","multiply");
+      dots.append("circle").attr("r", 2.6).attr("fill", C.ink);
+      const sh = P(SH);
+      g.append("circle").attr("cx",sh[0]).attr("cy",sh[1]).attr("r",4.5).attr("fill",C.vermell).attr("stroke",S3.PAPER).attr("stroke-width",1.5);
+      IBV.t(g, sh[0]+8, sh[1]+16, "Stonehenge", {weight:700, halo:true});
+      const labels = g.selectAll("g.lb").data(R).join("g").attr("class","lb").style("opacity",0);
+      labels.each(function(d){
+        const p = P([d.lon,d.lat]), left = p[0] > w*.55;
+        IBV.note(d3.select(this), {x:p[0], y:p[1], tx:p[0]+(left?-16:16), ty:p[1]-(d.id==="porcs"?26:18), kind:"elbow", anchor:left?"end":"start", lines:[[d.curt,true],[d.pes]]});
+      });
+      st = {routes, dots, labels, on:new Set()};
+      apply(cur);
+      // hover sobre els orígens
+      const dl = d3.Delaunay.from(R, d => P([d.lon,d.lat])[0], d => P([d.lon,d.lat])[1]);
+      IBV.hover(svg.node(), (ev,[x,y]) => {
+        const d = R[dl.find(x,y)], p = P([d.lon,d.lat]);
+        if(Math.hypot(p[0]-x,p[1]-y) > 40 || +d3.select(dots.nodes()[R.indexOf(d)]).attr("opacity") === 0){ tp.hide(); return; }
+        tp.show(`<b>${d.nom}</b> · ${d.detall}`);
+      }, () => tp.hide());
+      // partícules lentes sobre els camins actius (~25 s de recorregut)
+      const parts = d3.range(160).map((_,i) => ({r:i%R.length, t:Math.random()}));
+      const lens = routes.nodes().map(n => n.getTotalLength());
+      if(st.loop) st.loop.stop();
+      st.loop = IBV.loop(container, (t, dt) => {
+        pctx.clearRect(0,0,w,H);
+        if(IBV.reduced) return;
+        parts.forEach(p => {
+          const d = R[p.r]; if(!st.on.has(d.id)) return;
+          p.t = (p.t + dt/25000) % 1;
+          const n = routes.nodes()[p.r], q = n.getPointAtLength(lens[p.r]*p.t);
+          pctx.beginPath(); pctx.arc(q.x, q.y, 1.6, 0, 7); pctx.fillStyle = IBV.alpha(C.vermell, .75*Math.sin(Math.PI*p.t)); pctx.fill();
+        });
+      });
     });
+    IB.scrolly(sec.querySelector(".steps"), sec.querySelector(".graphic"), i => apply(i));
+  })();
 
-    btns.forEach(b => b.addEventListener("click", () => {
-      btns.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-      mode = b.dataset.k;
-      el.innerHTML = "";
-      const w = Math.round(el.clientWidth);
-      if(!w) return;
-      if(mode === "cronologia") drawCronologia(el, w);
-      else if(worldData) drawMapa(el, w);
-      else IBV.world().then(wd => { worldData = wd; el.innerHTML = ""; drawMapa(el, w); });
-    }));
+  /* =========================================================================
+     V4 · QUANTA GENT CAL PER MOURE UNA PEDRA (IB-11 amb figures de línia)
+     ========================================================================= */
+  (function initMoure(){
+    const el = document.getElementById("mou-viz"); if(!el) return;
+    const fig = el.closest("figure"), tp = IBV.tip(el), outN = fig.querySelector("#mou-n"), outS = fig.querySelector("#mou-s");
+    const STONES = D.moure.pedres, RATES = D.moure.ritmes;
+    let cur = STONES.find(s => s.def) || STONES[0], rate = RATES[0], shown = 0, W = 0, H = 0, ctx = null, t0 = 0, K = rate.k;
+    segBind(fig.querySelector(".seg.mou-p"), "k", k => { cur = STONES.find(s => s.id===k); t0 = performance.now(); upd(); });
+    segBind(fig.querySelector(".seg.mou-r"), "k", k => { rate = RATES.find(r => r.id===k); K = rate.k; t0 = performance.now(); upd(); });
+    function upd(){
+      const n = Math.round(cur.t*K);
+      outN.textContent = `≈ ${F0(n)} persones`;
+      outS.textContent = `${cur.nom}, ${F0(cur.t)} t · ${rate.sub}`;
+      tp.show(`<b>${cur.nom}</b> · ${F0(n)} persones si cada tona en demana ${F1(K)} (${rate.font})`);
+    }
+    function figure(x, y, s, ph, col){
+      // figura estirant: cos inclinat endavant, braços enrere cap a la corda
+      const sw = Math.sin(ph)*.22;
+      ctx.beginPath();
+      ctx.moveTo(x - .25*s + sw*s, y); ctx.lineTo(x, y - .9*s); ctx.lineTo(x + .25*s - sw*s, y);   // cames
+      ctx.moveTo(x, y - .9*s); ctx.lineTo(x + .38*s, y - 1.45*s);                                // tronc inclinat
+      ctx.moveTo(x + .3*s, y - 1.33*s); ctx.lineTo(x - .12*s, y - 1.12*s);                      // braços cap a la corda
+      ctx.strokeStyle = col; ctx.lineWidth = .8; ctx.stroke();
+      ctx.beginPath(); ctx.arc(x + .44*s, y - 1.58*s, .13*s, 0, 7); ctx.fillStyle = S3.PAPER; ctx.fill(); ctx.stroke();
+    }
+    function draw(t){
+      if(!ctx) return;
+      ctx.clearRect(0,0,W,H);
+      const mob = W < 600, n = Math.round(cur.t*K);
+      // files de tiradors: com a molt ~40 per corda; vista obliqua (cada fila més amunt i més a la dreta)
+      const ropes = Math.max(1, Math.ceil(n/(mob?24:40))), perRope = Math.ceil(n/ropes);
+      const maxL = 9.1 + 2.5 + .9*(mob?24:40);
+      const ppm = Math.min(mob?11:20, (W - 30)/maxL);
+      const rowGap = Math.min(16, (H - 90)/Math.max(1, ropes-1+.01)), shear = .55;
+      const gy = H - 24, x0 = 14;
+      // terra i travesses que llisquen a poc a poc (el moviment de l'arrossegament)
+      const off = IBV.reduced ? 0 : (t/1000*.35*ppm) % (1.2*ppm);
+      ctx.strokeStyle = IBV.alpha(C.ink,.45); ctx.lineWidth = .7;
+      ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
+      ctx.strokeStyle = IBV.alpha(C.ink,.25); ctx.beginPath();
+      for(let x = -off; x < x0 + (cur.l+1)*ppm; x += 1.2*ppm){ ctx.moveTo(x, gy+1); ctx.lineTo(x+.5*ppm, gy+6); }
+      ctx.stroke();
+      // trineu i pedra a escala
+      const sl = cur.l*ppm, sh = Math.max(3, cur.h*ppm), y0 = gy - .35*ppm;
+      ctx.beginPath(); ctx.rect(x0 - .2*ppm, y0, sl + .5*ppm, .35*ppm); ctx.fillStyle = S3.PAPER; ctx.fill(); ctx.strokeStyle = C.ink; ctx.lineWidth = .8; ctx.stroke();
+      const top = y0 - sh;
+      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x0 + sl, y0); ctx.lineTo(x0 + sl - .12*ppm, top + .12*ppm); ctx.lineTo(x0 + .18*ppm, top); ctx.closePath();
+      ctx.fillStyle = S3.TINT; ctx.fill(); ctx.strokeStyle = C.vermell; ctx.lineWidth = 1.2; ctx.stroke();
+      ctx.save(); ctx.clip(); ctx.beginPath();
+      for(let x = x0; x < x0 + sl + sh; x += 3.2){ ctx.moveTo(x, y0); ctx.lineTo(x - sh*.5, top); }
+      ctx.strokeStyle = IBV.alpha(C.vermell,.3); ctx.lineWidth = .5; ctx.stroke(); ctx.restore();
+      ctext(ctx, x0, top - 11, `${cur.nom} · ${F1(cur.l)} m`, {weight:700, size:12});
+      // persones: apareixen d'una en una quan canvia la pedra o el ritme
+      const appear = IBV.reduced ? n : Math.min(n, Math.floor((performance.now()-t0)/6));
+      const fx0 = x0 + sl + 2.2*ppm, s = clamp(ppm*.95, 6.5, 13), gap = .9*ppm;
+      let k = 0;
+      for(let r = ropes-1; r >= 0; r--){                 // de la fila del fons a la del davant
+        const count = Math.min(perRope, n - r*perRope); if(count <= 0) continue;
+        const ry = gy - r*rowGap, rx = fx0 + r*rowGap*shear;
+        const xEnd = rx + (count-1)*gap;
+        ctx.beginPath(); ctx.moveTo(x0 + sl, y0 - sh*.5); ctx.lineTo(rx - gap*.4, ry - 1.15*s); ctx.lineTo(xEnd + gap*.3, ry - 1.15*s);
+        ctx.strokeStyle = IBV.alpha(C.ink,.3); ctx.lineWidth = .6; ctx.stroke();
+        for(let i = 0; i < count; i++){
+          const idx = r*perRope + i; if(idx >= appear) continue;
+          figure(rx + i*gap, ry, s, t/650 + i*.7 + r*1.3, IBV.alpha(C.ink, .55 + .4*(1 - r/Math.max(1,ropes))));
+          k++;
+        }
+      }
+      shown = k;
+    }
+    IBV.mount(el, (container, w) => {
+      W = w; H = w < 600 ? 280 : 290;
+      ({ctx} = IBV.canvas(container, W, H, "Figures de línia que estiren una pedra sobre un trineu per uns carrils de fusta: el nombre de persones creix amb el pes de la pedra."));
+      container.appendChild(container.querySelector(".tip.ibv-dock"));
+      upd(); t0 = performance.now(); draw(0);
+    });
+    IBV.loop(el, t => draw(t));
+  })();
 
-    renderLegend();
+  /* =========================================================================
+     V5 · SCROLLY: COM S'ALÇA UN TRÍLIT (IB-16, alçat en gravat)
+     ========================================================================= */
+  (function initTrilit(){
+    const el = document.getElementById("tri-viz"); if(!el) return;
+    const sec = document.getElementById("s-trilit");
+    const tEl = document.getElementById("tri-t");
+    // estat: a1/a2 = angle dels pilars (0 ajagut, 90 dret); x1 = posició del primer; crib = nivells de troncs; lz = alçada de la llinda; det = detall dels encaixos
+    const ST = [
+      {a1:0,  b1:1.4,  a2:0, crib:0,  lz:-1,  det:0, t:"1 · La fossa i la rampa"},
+      {a1:30, b1:.1,   a2:0, crib:0,  lz:-1,  det:0, t:"2 · El pilar bascula dins la fossa"},
+      {a1:90, b1:-1.8, a2:1, crib:0,  lz:-1,  det:0, t:"3 · Cordes i palanques el redrecen"},
+      {a1:90, b1:-1.8, a2:1, crib:12, lz:6.6, det:0, t:"4 · La llinda puja sobre una torre de troncs"},
+      {a1:90, b1:-1.8, a2:1, crib:0,  lz:7.1, det:1, t:"5 · Encaixos de fuster en pedra"}
+    ];
+    const LEN = 8.9, WD = 2.0, X1 = -.7, X2 = 1.7, DEPTH = 1.8;
+    let cur = 0, S = Object.assign({}, ST[0]), svg = null, W = 0, H = 0, tm = null;
+    // geometria d'un pilar que gira sobre la base: a = 0 ajagut (el cap cap a l'esquerra), 90 dret
+    function pillar(a, x, b){
+      const th = (180-a)*D2R, dir = [Math.cos(th), Math.sin(th)], perp = [-Math.sin(th), Math.cos(th)];
+      const P = (u,v) => [x + u*dir[0] + (v-WD/2)*perp[0], b + u*dir[1] + (v-WD/2)*perp[1]];
+      return {pts:[P(0,0),P(0,WD),P(LEN,WD*.94),P(LEN,.06)], top:P(LEN,WD/2)};
+    }
+    function render(){
+      if(!svg) return;
+      svg.selectAll("g.sc").remove();
+      const g = svg.append("g").attr("class","sc");
+      const mob = W < 520, m = Math.min((W-16)/(mob?14.5:17.5), (H-30)/11.4);
+      const ox = W/2 + (mob?2.2:2.4)*m, gy = H - 12 - (DEPTH+.2)*m;
+      const X = x => ox + x*m, Y = z => gy - z*m;
+      const hatch = (pts, dens) => {
+        const id = "h" + Math.random().toString(36).slice(2,7);
+        g.append("clipPath").attr("id", id).append("path").attr("d", d3.line()(pts)+"Z");
+        const hg = g.append("g").attr("clip-path",`url(#${id})`);
+        const xs = d3.extent(pts, p=>p[0]), ys = d3.extent(pts, p=>p[1]), hh = ys[1]-ys[0];
+        const p = d3.path();
+        for(let x = xs[0]-hh*.4; x < xs[1]; x += dens){ p.moveTo(x, ys[1]); p.lineTo(x+hh*.35, ys[0]); }
+        hg.append("path").attr("d", p.toString()).attr("stroke",C.ink).attr("stroke-opacity",.2).attr("stroke-width",.5);
+      };
+      // terra de creta amb dues fosses: la primera amb rampa a l'esquerra
+      g.append("path").attr("d", `M0,${Y(0)}H${X(X1-3.3)}L${X(X1-.9)},${Y(-DEPTH)}H${X(X1+1.1)}V${Y(0)}H${X(X2-1.1)}V${Y(-DEPTH)}H${X(X2+1.1)}V${Y(0)}H${W}`)
+        .attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.9);
+      const tk = d3.path(); for(let x = 0; x < W; x += 9){ tk.moveTo(x, Y(0)+3); tk.lineTo(x-5, Y(0)+8); }
+      g.append("path").attr("d", tk.toString()).attr("stroke",C.ink).attr("stroke-opacity",.22).attr("stroke-width",.5);
+      // estaques contra la paret de la fossa
+      if(S.a1 < 80) [0,1,2].forEach(i => g.append("line").attr("x1",X(X1+1.2+i*.13)).attr("x2",X(X1+1.2+i*.13)).attr("y1",Y(-DEPTH)).attr("y2",Y(2.4)).attr("stroke",C.ink).attr("stroke-width",.8));
+      // trineu quan el pilar és ajagut
+      if(S.a1 < 6) g.append("rect").attr("x",X(X1-LEN-.2)).attr("y",Y(.4)).attr("width",(LEN+.6)*m).attr("height",.4*m).attr("fill",S3.PAPER).attr("stroke",C.ink).attr("stroke-width",.8);
+      const drawPillar = (a, x, b, on, op) => {
+        const pl = pillar(a, x, b), sp = pl.pts.map(p => [X(p[0]), Y(p[1])]);
+        g.append("path").attr("d", d3.line()(sp)+"Z").attr("fill", on ? S3.TINT : S3.PAPER).attr("stroke", on?C.vermell:C.ink).attr("stroke-width", on?1.3:.9).attr("opacity", op==null?1:op);
+        if(op==null || op > .5) hatch(sp, 4);
+        if(a >= 89) g.append("rect").attr("x",X(x-.25)).attr("y",Y(b+LEN+.25)).attr("width",.5*m).attr("height",.25*m).attr("fill",S3.PAPER).attr("stroke",C.ink).attr("stroke-width",.8);
+        return pl;
+      };
+      const p1 = drawPillar(S.a1, X1, S.b1, cur===1||cur===2);
+      if(S.a2 > .02) drawPillar(90, X2, -DEPTH, false, S.a2);
+      // pedres de falca a la base dels pilars drets
+      if(S.a1 >= 89){
+        const fp = d3.path();
+        [X1, X2].forEach(xc => d3.range(10).forEach(i => { const cx = X(xc-1 + (i%5)*.5 + (i>4?.25:0)), cy = Y(-DEPTH+.25+Math.floor(i/5)*.4); if(Math.abs(xc - (xc-1+(i%5)*.5)) > 1.02) return; fp.moveTo(cx+.14*m, cy); fp.arc(cx, cy, .14*m, 0, 7); }));
+        g.append("path").attr("d", fp.toString()).attr("fill","none").attr("stroke",C.ink).attr("stroke-opacity",.6).attr("stroke-width",.6);
+      }
+      // bastida en A i cordes (passos 2–3)
+      if(cur === 1 || cur === 2){
+        const apex = [X1-3.6, 6.4];
+        g.append("path").attr("d",`M${X(apex[0]-1.6)},${Y(0)}L${X(apex[0])},${Y(apex[1])}L${X(apex[0]+1.4)},${Y(0)}`).attr("fill","none").attr("stroke",C.ink2).attr("stroke-width",1).attr("stroke-dasharray","4 2");
+        g.append("path").attr("d",`M${X(p1.top[0])},${Y(p1.top[1])}L${X(apex[0])},${Y(apex[1])}L${X(apex[0]-3.6)},${Y(1.3)}`).attr("fill","none").attr("stroke",C.vermell).attr("stroke-width",1.1);
+        d3.range(mob?3:5).forEach(i => personSvg(g, X(apex[0]-3.7-i*.8), Y(0), m*.95, true));
+      }
+      if(cur === 0) d3.range(3).forEach(i => personSvg(g, X(X1-LEN-1-i*.9), Y(0), m*.95, false));
+      // torre de troncs i llinda
+      if(S.crib > .5){
+        const n = Math.round(S.crib), cx = (X1+X2)/2;
+        for(let i = 0; i < n; i++){
+          const z = i*.55;
+          if(i%2===0) g.append("rect").attr("x",X(cx-1.5)).attr("y",Y(z+.5)).attr("width",3*m).attr("height",.5*m).attr("rx",.25*m).attr("fill",S3.PAPER).attr("stroke",C.ink).attr("stroke-width",.7);
+          else [-1.2,1.2].forEach(o => g.append("circle").attr("cx",X(cx+o)).attr("cy",Y(z+.25)).attr("r",.25*m).attr("fill",S3.PAPER).attr("stroke",C.ink).attr("stroke-width",.7));
+        }
+      }
+      if(S.lz > 0){
+        const lx = (X1+X2)/2, lw = 5.2, lh = 1.0, z = S.lz;
+        const pts = [[X(lx-lw/2),Y(z)],[X(lx+lw/2),Y(z)],[X(lx+lw/2-.05),Y(z+lh)],[X(lx-lw/2+.05),Y(z+lh)]];
+        g.append("path").attr("d", d3.line()(pts)+"Z").attr("fill", cur>=3 ? S3.TINT : S3.PAPER).attr("stroke", cur>=3?C.vermell:C.ink).attr("stroke-width",1.2);
+        hatch(pts, 4);
+        if(S.det > .5){
+          [X1, X2].forEach(px => g.append("rect").attr("x",X(px-.3)).attr("y",Y(z+.33)).attr("width",.6*m).attr("height",.33*m).attr("fill","none").attr("stroke",C.vermell).attr("stroke-width",.9).attr("stroke-dasharray","2 2"));
+          IBV.note(g, {x:X(X2+.3), y:Y(z+.2), tx:X(X2+1.8), ty:Y(z+2.4), kind:"elbow", anchor:"start", lines:[["Caixa i metxa",true],["el pilar entra a la llinda"]]});
+          IBV.note(g, {x:X(lx-lw/2), y:Y(z+.5), tx:X(lx-lw/2-1.2), ty:Y(z+2.4), kind:"elbow", anchor:"end", lines:[["Encadellat",true],["entre llindes del cercle"]]});
+        }
+      }
+      personSvg(g, X(mob?4.3:5.6), Y(0), m*.95, false, true);
+      IBV.t(g, X(mob?4.3:5.6), Y(-.55), "1,7 m", {size:11.5, anchor:"middle", fill:C.ink2, halo:true});
+      tEl.textContent = ST[cur].t;
+    }
+    function personSvg(g, x, y, s, pulling, still){
+      const lean = pulling ? -.35 : still ? 0 : .18;
+      const p = d3.path();
+      p.moveTo(x-.22*s, y); p.lineTo(x, y-.9*s); p.lineTo(x+.22*s, y);
+      p.moveTo(x, y-.9*s); p.lineTo(x+lean*s, y-1.45*s);
+      p.moveTo(x+lean*s*.85, y-1.3*s); p.lineTo(x+(pulling?.35:-.3)*s, y-1.12*s);
+      g.append("path").attr("d", p.toString()).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.8);
+      g.append("circle").attr("cx", x+lean*s*1.05).attr("cy", y-1.6*s).attr("r", .12*s).attr("fill",S3.PAPER).attr("stroke",C.ink).attr("stroke-width",.8);
+    }
+    function go(i){
+      const from = Object.assign({}, S), to = ST[i]; cur = i;
+      if(tm) tm.stop();
+      if(IBV.reduced || !svg){ S = Object.assign({}, to); render(); return; }
+      const it = d3.interpolateObject(from, to);
+      tm = d3.timer(e => { const k = Math.min(1, e/1100); S = it(ease(k)); render(); if(k>=1){ tm.stop(); tm = null; } });
+    }
+    IBV.mount(el, (container, w) => {
+      W = w; H = Math.round(clamp(Math.min(innerHeight*(innerWidth<900?.42:.7), w*.8), 260, 620));
+      svg = IBV.svg(container, W, H, "Alçat lateral de com s'alçava un trílit: fossa amb rampa, palanques, cordes, una torre de troncs per pujar la llinda i els encaixos de caixa i metxa.");
+      render();
+    });
+    IB.scrolly(sec.querySelector(".steps"), sec.querySelector(".graphic"), i => go(i));
   })();
 })();

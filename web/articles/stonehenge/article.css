@@ -163,3 +163,9 @@ ol.fts li{scroll-margin-top:30vh;transition:background-color .4s;padding:2px 4px
   .cel-readout{grid-template-columns:1fr;gap:8px}
   .ctlrow .rng-wrap{flex-basis:100%;min-width:0}
 }
+
+/* Refeta del 19-11-2026: maqueta de línia i controls nous */
+#maq-viz canvas,#fases-viz canvas,#cel-viz canvas{touch-action:pan-y}
+#f-moure .seg+.seg{margin-top:-4px}
+#f-moure .vh strong{font-variant-numeric:tabular-nums}
+.plot .tip.ibv-dock{clear:both}

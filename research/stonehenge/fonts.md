@@ -2,6 +2,8 @@
 
 Document de traçabilitat de totes les afirmacions, xifres, dates i dades de l'article `web/articles/stonehenge/`. Tots els DOI i dades principals han estat verificats en línia el 19 de novembre de 2026.
 
+> **Correccions del 19-11-2026 (vegeu `fonts-v2.md`):** el cercle de sarsens fa uns 30 m (no 30,8); la pedra 56 fa 9,1 m de llargada (no 8,71); els forats Aubrey formen un cercle de 88 m; l'experiment d'UCL del 2016 va moure ¾ de tona amb 10 persones; Wright et al. (2014) diuen «primer hivern» i «segon any», i els «nou mesos» són d'English Heritage; a Sumba, les 2.000 persones eren convidats a la festa d'arribada.
+
 ## 1. Antropologia, paisatge i cronologia de construcció
 
 | Afirmació / dada | Dades verificades | Font primària |
