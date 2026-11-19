@@ -76,6 +76,20 @@
       return `M${a[0]},${a[1]}Q${mx-dy*bend},${my+dx*bend} ${b[0]},${b[1]}`; } return d3.line().curve(d3.curveCatmullRom.alpha(.5))(P); }
   function drawAnim(path,dur,delay){ const n=path.node(); if(!n||V.reduced)return; const len=n.getTotalLength();
     path.attr("stroke-dasharray",len+" "+len).attr("stroke-dashoffset",len).transition().delay(delay||0).duration(dur||1000).ease(ease).attr("stroke-dashoffset",0).on("end",()=>path.attr("stroke-dasharray",null)); }
+  // trajectòria trenada orgànica (estil «Iceberg alley»): 5 fils ultra-fins al voltant del fil central
+  function braid(g,pts,col,o){
+    o=o||{}; const strands=o.n||5, spread=o.spread||3.4, main=g.append("path").attr("d",curve(pts,o.bend)).attr("fill","none")
+      .attr("stroke",col).attr("stroke-width",o.w||1.5).attr("stroke-opacity",o.a==null?.9:o.a).attr("stroke-dasharray",o.dash||null);
+    if(o.anim) drawAnim(main,o.dur||1050,o.delay||0);
+    for(let k=1;k<=strands;k++){
+      const sgn=k%2?1:-1, mag=Math.ceil(k/2)*(spread/3);
+      const offPts=pts.map((p,i)=>i===0||i===pts.length-1?p:[p[0]+sgn*mag*Math.sin(i*1.7+k),p[1]+sgn*mag*.7*Math.cos(i*1.3+k)]);
+      const sp=g.append("path").attr("d",curve(offPts,o.bend?o.bend+sgn*.025*Math.ceil(k/2):0)).attr("fill","none")
+        .attr("stroke",col).attr("stroke-width",.55).attr("stroke-opacity",(o.a==null?.9:o.a)*.35).attr("stroke-dasharray",o.dash||null);
+      if(o.anim) drawAnim(sp,(o.dur||1050)+k*90,(o.delay||0)+k*45);
+    }
+    return main;
+  }
 
   /* =====================================================================
      V3 · EL TERRITORI DELS EVANGELIS (Scrollytelling IB-26 + IB-13 + Mini-mapa)
@@ -168,21 +182,16 @@
           V.lines(gNote,g2[0],g2[1]+18,[["JUDEA · Ponç Pilat",true,C.vermell],["Prefecte romà directe (26–36 dC)",false,C.ink2]],{anchor:"middle",size:mob?11.5:12.5,halo:3.5});
         }
 
-        // pas 3 i 4: rutes
+        // pas 3 i 4: rutes trenades (estil «Iceberg alley»)
         if(step===3||step===4){
           const ptsM=MARC_R.map(q=>lf(q[0],q[1]));
-          const pm=gRoute.append("path").attr("d",curve(ptsM)).attr("fill","none")
-            .attr("stroke",step===3?C.vermell:C.ghost).attr("stroke-width",step===3?2.4:1.4)
-            .attr("stroke-dasharray",step===4?"4 3":null);
-          if(step===3&&isEnd) drawAnim(pm,1100);
+          braid(gRoute,ptsM,step===3?C.vermell:C.ghost,{w:step===3?1.8:1.1,a:step===3?.95:.5,dash:step===4?"4 3":null,n:step===3?6:2,spread:4.2,anim:step===3&&isEnd,dur:1100});
         }
         if(step===4){
           JOAN_R.forEach((segPts,idx)=>{
             const pts=segPts.map(q=>lf(q[0],q[1]));
             const bend=idx===0?-.14:idx===1?.18:idx===2?.08:-.15;
-            const pj=gRoute.append("path").attr("d",curve(pts,pts.length===2?bend:0)).attr("fill","none")
-              .attr("stroke",C.grocFosc).attr("stroke-width",2.2).attr("stroke-opacity",.85);
-            if(isEnd) drawAnim(pj,900,idx*240);
+            braid(gRoute,pts,C.grocFosc,{w:1.7,a:.88,n:4,spread:3.2,bend:pts.length===2?bend:0,anim:isEnd,dur:900,delay:idx*220});
           });
           if(!mob){
             const jn=lf(35.02,32.15);
@@ -190,17 +199,17 @@
           }
         }
 
-        // ciutats visibles
+        // ciutats visibles amb anells concèntrics proporcionals a les mencions (estil «A sea of sand and sickness»)
         const show=new Set(SHOW[step]);
         const visible=E.llocs.filter(d=>show.has(d.nom));
         visible.forEach(d=>{
-          const q=lf(d.lon,d.lat);
+          const q=lf(d.lon,d.lat), totM=d3.sum(B,b=>d.n[b]);
           const isKey=(d.nom==="Jerusalem"&&(step===0||step>=2))||(d.nom==="Natzaret"&&step===1)||(d.nom==="Cafarnaüm"&&(step===1||step===3));
-          const col=step===4?C.grocFosc:(isKey?C.vermell:C.ink);
-          gPts.append("circle").attr("cx",q[0]).attr("cy",q[1]).attr("r",isKey?4.8:3.3)
-            .attr("fill",col).attr("stroke",C.paper).attr("stroke-width",1.3);
+          const col=step===4?C.grocFosc:(isKey?C.vermell:C.blau);
+          const nRings=Math.min(14,Math.max(1,Math.round(totM/4)));
+          V.rings(gPts,q[0],q[1],nRings,mob?1.5:1.9,col,{r0:isKey?2.6:1.8,sw:.65,alpha:isKey?.68:.42});
           const leftSide=d.nom==="Natzaret"||d.nom==="Canà"||d.nom==="Betlem"||d.nom==="Sicar"||d.nom==="Jerusalem";
-          const dx=leftSide?-9:9, dy=d.nom==="Betlem"?10:d.nom==="Betània"?12:3;
+          const dx=(leftSide?-1:1)*(Math.min(18,nRings*(mob?1.5:1.9)+7)), dy=d.nom==="Betlem"?10:d.nom==="Betània"?12:3;
           V.t(gPts,q[0]+dx,q[1]+dy,d.nom,{anchor:leftSide?"end":"start",weight:isKey?700:500,size:mob?11.5:12.5,fill:isKey?C.ink:C.ink2,halo:3.5});
         });
 
@@ -314,6 +323,10 @@
         const z=elev(d.lon,d.lat), cx=x(d.km), cy=y(z);
         s.append("line").attr("x1",cx).attr("y1",cy).attr("x2",cx).attr("y2",h-M.b).attr("stroke",C.hair).attr("stroke-dasharray","2 2");
         s.append("circle").attr("cx",cx).attr("cy",cy).attr("r",i===0||i===4?4.5:3.2).attr("fill",i===4?C.vermell:C.ink).attr("stroke",C.paper).attr("stroke-width",1.2);
+        if(d.nom==="Betània"){
+          V.lines(s,cx-8,cy-18,[["Betània",true,C.ink],[`+${Math.round(z)} m`,false,C.muted]],{anchor:"end",size:11,halo:3});
+          return;
+        }
         if(mob&&d.nom==="Jericó"){
           V.lines(s,cx-6,cy-22,[["Jericó",true,C.ink],[`${Math.round(z)} m`,false,C.blau]],{anchor:"end",size:11,halo:3});
           return;
@@ -404,25 +417,22 @@
       const nat=lf(L.Natzaret.lon,L.Natzaret.lat), bet=lf(L.Betlem.lon,L.Betlem.lat), jer=lf(L.Jerusalem.lon,L.Jerusalem.lat);
       const egi=p([34.25,31.22]); // direcció Egipte (SO)
 
-      // CAPA ESQUERRA: MATEU (vermell)
+      // CAPA ESQUERRA: MATEU (vermell) amb trajectòries trenades i anells concèntrics
       const gM=s.append("g").attr("clip-path",`url(#${id}l)`);
-      // Betlem -> Egipte -> Natzaret
-      gM.append("path").attr("d",curve([bet,egi],-.16)).attr("fill","none").attr("stroke",C.vermell).attr("stroke-width",2.4).attr("marker-end",`url(#${id}am)`);
-      gM.append("path").attr("d",curve([egi,[p([34.7,32.0])[0],p([34.7,32.0])[1]],nat])).attr("fill","none").attr("stroke",C.vermell).attr("stroke-width",2.2).attr("stroke-dasharray","5 4").attr("marker-end",`url(#${id}am)`);
-      [[bet,"1. Betlem","Casa familiar · Mags",true],[egi,"2. Fugida a Egipte","Per por d'Herodes el Gran",false],[nat,"3. Natzaret","S'hi instal·len en tornar",false]].forEach(([pt,t1,t2,hi])=>{
-        gM.append("circle").attr("cx",pt[0]).attr("cy",pt[1]).attr("r",hi?5.2:3.8).attr("fill",C.vermell).attr("stroke",C.paper).attr("stroke-width",1.3);
-        const dx=pt===egi?10:10;
-        V.lines(gM,pt[0]+dx,pt[1]+(pt===bet?4:-4),[[t1,true,C.ink],[t2,false,C.ink2]],{size:mob?11:12,halo:3.5});
+      braid(gM,[bet,egi],C.vermell,{w:2,n:4,spread:3,bend:-.16}).attr("marker-end",`url(#${id}am)`);
+      braid(gM,[egi,[p([34.7,32.0])[0],p([34.7,32.0])[1]],nat],C.vermell,{w:1.7,n:3,spread:2.6,dash:"5 4"}).attr("marker-end",`url(#${id}am)`);
+      [[bet,"1. Betlem","Casa familiar · Mags",6],[egi,"2. Fugida a Egipte","Per por d'Herodes el Gran",4],[nat,"3. Natzaret","S'hi instal·len en tornar",3]].forEach(([pt,t1,t2,nr])=>{
+        V.rings(gM,pt[0],pt[1],nr,2.1,C.vermell,{r0:2.2,sw:.7,alpha:.72});
+        V.lines(gM,pt[0]+nr*2.1+8,pt[1]+(pt===bet?4:-4),[[t1,true,C.ink],[t2,false,C.ink2]],{size:mob?11:12,halo:3.5});
       });
 
-      // CAPA DRETA: LLUC (blau)
+      // CAPA DRETA: LLUC (blau) amb trajectòries trenades i anells concèntrics
       const gL=s.append("g").attr("clip-path",`url(#${id}r)`);
-      // Natzaret -> Betlem -> Jerusalem -> Natzaret
-      gL.append("path").attr("d",curve([nat,bet],.18)).attr("fill","none").attr("stroke",C.blau).attr("stroke-width",2.4).attr("marker-end",`url(#${id}al)`);
-      gL.append("path").attr("d",curve([bet,jer,nat],0)).attr("fill","none").attr("stroke",C.blau).attr("stroke-width",2.1).attr("stroke-dasharray","5 4").attr("marker-end",`url(#${id}al)`);
-      [[nat,"1. Natzaret","Ja hi viuen Maria i Josep",true],[bet,"2. Betlem","Viatgen pel cens · Pastors",true],[jer,"3. Jerusalem","Temple · Tornen a Natzaret",false]].forEach(([pt,t1,t2,hi])=>{
-        gL.append("circle").attr("cx",pt[0]).attr("cy",pt[1]).attr("r",hi?5.2:3.8).attr("fill",C.blau).attr("stroke",C.paper).attr("stroke-width",1.3);
-        const anc=pt===bet?"end":"start", dx=pt===bet?-10:10;
+      braid(gL,[nat,bet],C.blau,{w:2,n:4,spread:3,bend:.18}).attr("marker-end",`url(#${id}al)`);
+      braid(gL,[bet,jer,nat],C.blau,{w:1.7,n:3,spread:2.6,dash:"5 4"}).attr("marker-end",`url(#${id}al)`);
+      [[nat,"1. Natzaret","Ja hi viuen Maria i Josep",5],[bet,"2. Betlem","Viatgen pel cens · Pastors",6],[jer,"3. Jerusalem","Temple · Tornen a Natzaret",4]].forEach(([pt,t1,t2,nr])=>{
+        V.rings(gL,pt[0],pt[1],nr,2.1,C.blau,{r0:2.2,sw:.7,alpha:.72});
+        const anc=pt===bet?"end":"start", dx=(pt===bet?-1:1)*(nr*2.1+8);
         V.lines(gL,pt[0]+dx,pt[1]+(pt===jer?-12:4),[[t1,true,C.ink],[t2,false,C.ink2]],{anchor:anc,size:mob?11:12,halo:3.5});
       });
 
@@ -434,8 +444,8 @@
       const hc=dv.append("g");
       hc.append("circle").attr("r",16).attr("fill",C.paper).attr("stroke",C.ink).attr("stroke-width",1.3);
       hc.append("path").attr("d","M-4,-5L-9,0L-4,5M4,-5L9,0L4,5").attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.3).attr("stroke-linejoin","round");
-      const labL=V.t(s,0,20,"◀ Mateu (mags i Egipte)",{anchor:"end",weight:700,size:mob?12:13.5,fill:C.vermell,halo:3.5}).attr("pointer-events","none");
-      const labR=V.t(s,0,20,"Lluc (cens i pastors) ▶",{anchor:"start",weight:700,size:mob?12:13.5,fill:C.blau,halo:3.5}).attr("pointer-events","none");
+      const labL=V.t(s,0,20,mob?"◀ Mateu":"◀ Mateu (mags i Egipte)",{anchor:"end",weight:700,size:mob?12:13.5,fill:C.vermell,halo:3.5}).attr("pointer-events","none");
+      const labR=V.t(s,0,20,mob?"Lluc ▶":"Lluc (cens i pastors) ▶",{anchor:"start",weight:700,size:mob?12:13.5,fill:C.blau,halo:3.5}).attr("pointer-events","none");
 
       // barra inferior: la bretxa de 10 anys
       const gb=s.append("g").attr("transform",`translate(0,${mapH+14})`);
@@ -452,7 +462,8 @@
         pos=clamp(f,0,1); const x=Math.round(pos*w);
         clL.attr("x",0).attr("width",x); clR.attr("x",x).attr("width",w-x);
         dl.attr("x1",x).attr("x2",x); hc.attr("transform",`translate(${x},${mapH/2})`);
-        labL.attr("x",x-12).style("opacity",x>120?1:0); labR.attr("x",x+12).style("opacity",x<w-120?1:0);
+        const minX=mob?76:160;
+        labL.attr("x",x-12).style("opacity",x>minX?1:0); labR.attr("x",x+12).style("opacity",x<w-minX?1:0);
         dv.attr("aria-valuenow",Math.round(pos*100))
           .attr("aria-valuetext",`${Math.round(pos*100)} % Mateu, ${Math.round((1-pos)*100)} % Lluc`);
         if(rd) rd.innerHTML=pos>.68
