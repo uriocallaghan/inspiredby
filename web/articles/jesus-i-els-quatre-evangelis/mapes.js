@@ -8,6 +8,10 @@
   const B=["Mt","Mc","Lc","Jn"], NOM={Mt:"Mateu",Mc:"Marc",Lc:"Lluc",Jn:"Joan"};
   const f0=V.fmt(",.0f");
   const $=s=>document.querySelector(s);
+  // en tocar o clicar fora d'un gràfic, el seu estat de hover desapareix
+  const OUTS=new Map();
+  document.addEventListener("pointerdown",ev=>{ OUTS.forEach((fn,n)=>{ if(n.isConnected&&!n.contains(ev.target))fn(); }); },true);
+  const outside=(node,fn)=>OUTS.set(node,fn);
   const ease=d3.easeCubicInOut, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   // les dades venen amb l'anell exterior en sentit antihorari: d3-geo el vol horari
   function wind(fc){ (fc.features||[fc]).forEach(f=>{ const g=f.geometry; if(!g)return;
@@ -179,8 +183,7 @@
         const d=d3.least(E.llocs,d=>{ const q=P(d.lon,d.lat); return Math.hypot(q[0]-mx,q[1]-my); }); const q=P(d.lon,d.lat);
         if(Math.hypot(q[0]-mx,q[1]-my)>22){ ring.style("opacity",0); tp.hide(); return; }
         ring.style("opacity",1).attr("cx",q[0]).attr("cy",q[1]);
-        tp.show(`<b>${d.nom}</b> · ${f0(zOf(d.lon,d.lat))} m${d.nota?`<br><i>${d.nota}</i>`:""}<br>Mencions: ${B.map(b=>`${b} ${d.n[b]}`).join(" · ")}`,q[0],q[1]); })
-        .on("pointerleave",ev=>{ if(ev.pointerType==="mouse"){ ring.style("opacity",0); tp.hide(); } });
+        tp.show(`<b>${d.nom}</b> · ${f0(zOf(d.lon,d.lat))} m${d.nota?`<br><i>${d.nota}</i>`:""}<br>Mencions: ${B.map(b=>`${b} ${d.n[b]}`).join(" · ")}`,q[0],q[1]); }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); }); function offH(){ ring.style("opacity",0); tp.hide() } outside(node,offH);
     });
     const sc=$("#s-mapa");
     IB.scrolly(sc.querySelector(".steps"),sc.querySelector(".graphic"),(i,stepEl)=>{ const k=+stepEl.dataset.s; if(api)api.go(k); else step=k; });
@@ -245,8 +248,7 @@
         if(mm){ const q=mm.P(d.lon,d.lat); mm.dot.style("opacity",1).attr("cx",q[0]).attr("cy",q[1]); } }
       const hit=s.append("rect").attr("x",x(0)).attr("y",0).attr("width",x(TOT)-x(0)).attr("height",H).attr("fill","transparent").attr("class","hit");
       hit.on("pointermove pointerdown",ev=>{ const km=x.invert(d3.pointer(ev,s.node())[0]); const d=d3.least(S,d=>Math.abs(d.km-km)); at(d);
-        out.innerHTML=`Quilòmetre <b>${f0(d.km)}</b> · <b>${f0(d.z)} m</b> ${d.z<0?"sota":"sobre"} el nivell del mar.`; })
-        .on("pointerleave",ev=>{ if(ev.pointerType==="mouse"){ cross.style("opacity",0); if(mm)mm.dot.style("opacity",0); out.innerHTML=base; } });
+        out.innerHTML=`Quilòmetre <b>${f0(d.km)}</b> · <b>${f0(d.z)} m</b> ${d.z<0?"sota":"sobre"} el nivell del mar.`; }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); }); function offH(){ cross.style("opacity",0); if(mm)mm.dot.style("opacity",0); out.innerHTML=base } outside(node,offH);
       const clipR=s.select(`#${cid} rect`);
       V.onView(node,inst=>{ const full=x(TOT)-x(0)+2;
         if(inst){ clipR.attr("width",full); an.style("opacity",1); return; }
@@ -339,7 +341,7 @@
       s.on("pointermove pointerdown",ev=>{ const [mx,my]=d3.pointer(ev,s.node()); let d=null;
         if(mx<mw&&my<mh){ d=d3.least(E.llocs,e=>Math.min(Math.hypot(e.x-mx,e.y-my),Math.abs(e.x-mx)+(my<e.y&&my>e.y-e.h?0:99))); if(Math.min(Math.hypot(d.x-mx,d.y-my),Math.abs(d.x-mx)+(my<d.y&&my>d.y-d.h?0:99))>16)d=null; }
         else if(mx>=rk.x&&my>=rk.y){ const i=Math.floor((my-rk.y)/24); const sorted=E.llocs.slice().sort((a,b)=>val(b,mode)-val(a,mode)||a.nom.localeCompare(b.nom)); d=sorted[i]&&i<nR?sorted[i]:null; }
-        hover(d); }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")hover(null); });
+        hover(d); }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); }); function offH(){ hover(null) } outside(node,offH);
     });
   })();
 
@@ -498,8 +500,7 @@
         if(Math.hypot(q[0]-mx,q[1]-my)>26){ tp.hide(); ring.style("opacity",0); return; }
         ring.style("opacity",1).attr("cx",q[0]).attr("cy",q[1]);
         const l=LET.find(e=>e.c===n);
-        tp.show(`<b>${n}</b>${n!=="Jerusalem"?`<br>${f0(km("Jerusalem",n))} km de Jerusalem en línia recta`:""}${l&&mode==="cartes"?`<br>${l.t}: ${f0(l.w)} paraules`:""}`,q[0],q[1]); })
-        .on("pointerleave",ev=>{ if(ev.pointerType==="mouse"){ tp.hide(); ring.style("opacity",0); } });
+        tp.show(`<b>${n}</b>${n!=="Jerusalem"?`<br>${f0(km("Jerusalem",n))} km de Jerusalem en línia recta`:""}${l&&mode==="cartes"?`<br>${l.t}: ${f0(l.w)} paraules`:""}`,q[0],q[1]); }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); }); function offH(){ tp.hide(); ring.style("opacity",0) } outside(node,offH);
     });
   })();
 })();

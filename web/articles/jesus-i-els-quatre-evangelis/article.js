@@ -8,6 +8,10 @@
   const B=["Mt","Mc","Lc","Jn"], NOM={Mt:"Mateu",Mc:"Marc",Lc:"Lluc",Jn:"Joan"};
   const f0=V.fmt(",.0f"), pc=v=>V.fmt(".0f")(v*100)+" %";
   const $=s=>document.querySelector(s);
+  // en tocar o clicar fora d'un gràfic, el seu estat de hover desapareix
+  const OUTS=new Map();
+  document.addEventListener("pointerdown",ev=>{ OUTS.forEach((fn,n)=>{ if(n.isConnected&&!n.contains(ev.target))fn(); }); },true);
+  const outside=(node,fn)=>OUTS.set(node,fn);
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   const ease=d3.easeCubicInOut;
   function seg(fig,cb){
@@ -107,7 +111,7 @@
         const mid=d.m!=null?d.m:(d.a+d.b)/2; guide.style("opacity",1).select("line").attr("x1",x(mid)).attr("x2",x(mid)).attr("y2",d.y+rh*.2);
         gtx.attr("x",x(mid)).text(d.l);
         tp.show(`<b>${d.n}</b><br>${d.l}${d.g!=="vida"?` · ${since(d)} després de la creu`:""}<br>${d.d}`,mx,d.y);
-      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse"){ hov=null; guide.style("opacity",0); tp.hide(); apply(150); } });
+      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); }); function offH(){ hov=null; guide.style("opacity",0); tp.hide(); apply(150) } outside(node,offH);
       api={set(k,first){ state=k; hov=null; guide.style("opacity",0); tp.hide(); apply(first?0:450);
         if(!first&&!V.reduced){ rows.filter(d=>d.g===k).select(".bar").attr("width",0).transition().duration(900).ease(ease).attr("width",d=>Math.max(d.ev?4:3,x(d.b)-x(d.a))); } }};
       api.set(state,true);
@@ -192,7 +196,7 @@
       hit.on("pointermove pointerdown",ev=>{ const [mx,my]=d3.pointer(ev,hit.node());
         const leftSide=mx<(xL+cw+xRight)/2;
         const d=leftSide?S.find(e=>my>=e.ly&&my<e.ly+e.lh):S.filter(e=>!e.sab).find(e=>my>=e.ry&&my<=e.ry+Math.max(e.rh,3));
-        show(d||null); }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")show(null); });
+        show(d||null); }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); }); function offH(){ show(null) } outside(node,offH);
       V.onView(node,inst=>{ if(inst)return;
         rib.style("opacity",0).transition().delay((e,i)=>200+i*120).duration(700).style("opacity",1);
         rb.attr("width",0).transition().delay((e,i)=>i*120).duration(700).ease(ease).attr("width",cw); });
@@ -260,7 +264,7 @@
       hit.on("pointermove pointerdown",ev=>{ const [mx,my]=d3.pointer(ev,hit.node());
         let best=null,bd=1e9; SC.forEach((d,i)=>B.forEach(b=>{ const dd=Math.hypot(X(b,d.pos[b])-mx,(yb(b)-my)*.5); if(dd<bd){bd=dd;best=[i,b];} }));
         if(best&&bd<60){ sel=best[0]; style(); const d=SC[sel]; tp.show(`<b>${d.nom}</b><br>${NOM[best[1]]} ${d.ref[best[1]]}: ${pc(d.pos[best[1]]/TOT[best[1]])} del llibre`,mx,my); }
-      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse"){ tp.hide(); } });
+      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); }); function offH(){ tp.hide(); const t=SC.findIndex(d=>d.nom==="Gest al Temple"); if(sel!==t){ sel=t; style(); } } outside(node,offH);
       draw(false);
       V.onView(node,inst=>{ if(inst)return; lines.selectAll("path").each(function(){ const L2=this.getTotalLength(); d3.select(this).attr("stroke-dasharray",`${L2} ${L2}`).attr("stroke-dashoffset",L2).transition().delay(200).duration(1200).ease(ease).attr("stroke-dashoffset",0).on("end",function(){ d3.select(this).attr("stroke-dasharray",null); }); }); });
     });
@@ -328,7 +332,7 @@
         if(j<0||j>=ROWS.length)return show(null);
         if(mx<L)return show({kind:"row",j},mx,my);
         const c=cells.find(e=>e.i===i&&e.j===j); show(c?Object.assign({kind:"cell"},c):{kind:"row",j},mx,my);
-      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")show(null); });
+      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); }); function offH(){ show(null) } outside(node,offH);
       V.onView(node,inst=>{ if(inst)return; cg.attr("transform",d=>`translate(${cx(d.i)},${cy(d.j)}) scale(0)`).transition().delay(d=>d.i*160+d.j*40).duration(600).ease(d3.easeBackOut).attr("transform",d=>`translate(${cx(d.i)},${cy(d.j)}) scale(1)`); });
     });
   })();
@@ -400,7 +404,7 @@
         if(!d||Math.hypot(d.x-mx,d.y-my)>16){ if(hov){hov=null;paint();tp.hide();} return; }
         if(hov!==d.b){ hov=d.b; paint(); }
         tp.show(`<b>${NM[d.b.k]}</b><br>${f0(d.b.w)} paraules${d.b.date?`<br>Escrit cap al ${d.b.date[0]}–${d.b.date[1]}`:""}`,mx,my);
-      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse"){ hov=null; paint(); tp.hide(); } });
+      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); }); function offH(){ hov=null; paint(); tp.hide() } outside(node,offH);
       V.onView(node,inst=>{ if(inst||mode!=="biblia")return; dots.forEach(d=>{ d.a=0; }); dots.forEach(d=>{ d.x0=d.x; d.y0=d.y; d.a0=0; });
         let t0=null; const st=now=>{ if(t0==null)t0=now; const t=now-t0; dots.forEach(d=>{ d.a=clamp((t-d.b.i*35-d.j*2)/300,0,1); }); paint(); if(t<2200)raf=requestAnimationFrame(st); }; raf=requestAnimationFrame(st); });
     });
@@ -446,7 +450,7 @@
         const why=d.r.k==="Mc"?(d.x[2]===3?"també a Mateu i a Lluc":d.x[2]===1?"també a Mateu":d.x[2]===2?"també a Lluc":"només a Marc"):(d.x[2]?"igual que a Marc":"pròpia");
         q.attr("opacity",e=>e.r===d.r&&e.x[1]===d.x[1]?1:.45);
         tp.show(`<b lang="grc">${d.x[0]}</b><br>${v} · ${why}`,mx,my);
-      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse"){ hl.style("opacity",0); tp.hide(); q.attr("opacity",1); } });
+      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); }); function offH(){ hl.style("opacity",0); tp.hide(); q.attr("opacity",1) } outside(node,offH);
       V.onView(node,inst=>{ if(inst)return; q.style("opacity",0).transition().delay(d=>d.i*6+(d.r.k==="Mc"?0:400)).duration(250).style("opacity",1); ib.style("opacity",0).transition().delay(1900).duration(600).style("opacity",1); });
     });
   })();
@@ -499,7 +503,7 @@
       s.attr("class","ibv hit").on("pointermove pointerdown",ev=>{ const [mx,my]=d3.pointer(ev,s.node());
         const b=d3.least(B,b=>Math.abs(yb(b)+rh/2-my)); if(Math.abs(yb(b)+rh/2-my)>rh*1.4)return show(null);
         const wpos=x.invert(mx); const sc=S[b].find(e=>wpos>=e.a&&wpos<e.z); show(sc||null,mx,my);
-      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")show(null); });
+      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); }); function offH(){ show(null) } outside(node,offH);
       V.onView(node,inst=>{ if(inst)return; prog=0; const t=d3.timer(el2=>{ prog=Math.min(1,ease(el2/1400)); paint(); if(el2>1400)t.stop(); }); });
     });
   })();
@@ -545,7 +549,10 @@
       api=k=>set(k,false); set(mode,true);
       nodes.on("pointerenter pointerdown",(ev,k)=>{ const t={Mc:"Marc: el més breu dels quatre. Totes dues hipòtesis el posen primer.",Mt:"Mateu: reaprofita gairebé tot Marc.",Lc:"Lluc: reaprofita una part de Marc i té molt material propi.",Q:"Q: una col·lecció de dites que explicaria el que Mateu i Lluc comparteixen sense Marc. No n'ha aparegut cap còpia.",Jn:"Joan: comparteix poc amb els altres tres. Si en coneixia algun, es discuteix."}[k];
         out.innerHTML=t; nodes.select("circle").attr("stroke-width",kk=>kk===k?2.4:(kk==="Q"||kk==="Jn"?1.4:1)).attr("stroke",kk=>kk===k?C.ink:(kk==="Q"?C.muted:kk==="Jn"?C.ink2:C.paper)); })
-        .on("pointerleave",()=>{ out.innerHTML=MSG[mode]; nodes.select("circle").attr("stroke-width",kk=>kk==="Q"||kk==="Jn"?1.4:1).attr("stroke",kk=>kk==="Q"?C.muted:kk==="Jn"?C.ink2:C.paper); });
+        .on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); });
+      function offH(){ out.innerHTML=MSG[mode]; nodes.select("circle").attr("stroke-width",kk=>kk==="Q"||kk==="Jn"?1.4:1).attr("stroke",kk=>kk==="Q"?C.muted:kk==="Jn"?C.ink2:C.paper); }
+      outside(node,offH);
+      s.on("pointerdown.bg",ev=>{ if(!ev.target.closest("g.hit"))offH(); });
       V.onView(node,inst=>{ if(inst)return; nodes.select("circle").attr("r",0).transition().duration(800).ease(d3.easeBackOut).attr("r",rad); });
     });
   })();
@@ -594,7 +601,7 @@
         const p=d3.least(ps,p=>Math.abs(x(p)-mx)); if(Math.abs(x(p)-mx)>24){ tp.hide(); hl.style("opacity",0); return; }
         hl.style("opacity",1).attr("x1",x(p)).attr("x2",x(p)).attr("y1",yb(b)).attr("y2",yb(b)+rh+5);
         tp.show(`<b>${NOM[b]}, capítol ${chapOf(b,p)}</b><br>«${M[cur].ca}» · ${ps.indexOf(p)+1}a de ${ps.length}`,mx,my);
-      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse"){ tp.hide(); hl.style("opacity",0); } });
+      }).on("pointerleave",ev=>{ if(ev.pointerType==="mouse")offH(); }); function offH(){ tp.hide(); hl.style("opacity",0) } outside(node,offH);
     });
   })();
 })();
