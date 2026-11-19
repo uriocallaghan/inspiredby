@@ -6,7 +6,7 @@ Revista web d'articles visuals per entendre el món, en català. Llegeix aquest 
 
 - **GitHub és la versió de referència.** La branca `main` de `uriocallaghan/inspiredby` és el que es veu a la web.
 - **Tot el que entra a `main` es publica sol** a Netlify, al domini https://inspiredby.uriocallaghan.com (Netlify està connectat al repositori). No publiquis a mà (res de `netlify deploy`).
-- **No treballis directament a `main`.** Crea una branca (`article/<slug>`, `sistema/<canvi>`, `fix/<què>`), fes-hi els commits i obre una pull request. Netlify en fa una previsualització (deploy preview) amb un enllaç propi: és el que l'editor revisa. L'editor és qui fusiona.
+- **Treballa directament a `main`.** Fes `git pull origin main` abans de començar, verifica en local, fes commit i `git push origin main` perquè es publiqui de seguida sense deixar branques obertes. Només crea una branca i una PR si l'editor t'ho demana explícitament.
 - No reescriguis l'historial de `main` ni facis `push --force` a `main`.
 
 ## Què hi ha
@@ -27,10 +27,10 @@ Revista web d'articles visuals per entendre el món, en català. Llegeix aquest 
 - **Paleta:** només vermell `#C8442A`, blau `#2C5DA8` i groc `#F5C518` (i els seus tons), grisos i terra. Mai text en groc. Cap gràfic pinta fons.
 - **Portada:** tipografia Helvetica Neue LT Pro i l'aspecte original. No la redissenyis.
 - **Gràfics:** animats en entrar, amb hover que mostra clarament què s'apunta, superlleugers (canvas per a molts elements) i sense scroll horitzontal a 390 px.
-- No modifiquis els fitxers compartits (`web/assets/*`) en una PR d'article; si cal canviar-los, fes-ho en una PR a part que ho expliqui.
+- No modifiquis els fitxers compartits (`web/assets/*`) sense explicar-ho clarament al commit i al resum a l'editor.
 
-## Abans d'obrir la PR
+## Abans de fer push a `main`
 
 - `node --check` de cada `.js` que hagis tocat.
 - Serveix `web/` en local (`python3 -m http.server 8000 --directory web`) i comprova 1440×900 i 390×844: zero errors a la consola, cap scroll horitzontal, cap etiqueta tallada.
-- A la descripció de la PR: què canvia, quines dades són reals (amb fonts) i què no has pogut verificar.
+- Al missatge de commit i a la resposta a l'editor: què canvia, quines dades són reals (amb fonts) i què no has pogut verificar.
