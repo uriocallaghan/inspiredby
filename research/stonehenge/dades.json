@@ -1,0 +1,315 @@
+{
+  "stonehenge_coord": [-1.8262, 51.1789],
+  "fons_roques": [
+    {
+      "id": "sarsen",
+      "nom": "Sarsens (50 de 52)",
+      "origen": "West Woods (Marlborough Downs)",
+      "lon": -1.785,
+      "lat": 51.402,
+      "dist_km": 25,
+      "pes_t": 25,
+      "n_pedres": "30 pilars + 30 llindes + 5 trílits",
+      "epoca": "Fase 2 (~2600–2480 aC)",
+      "pas": "sarsen",
+      "cat": "groc",
+      "detall": "Gres silicificat molt dur; 50 de 52 analitzats comparteixen la mateixa signatura química (Nash et al., 2020)"
+    },
+    {
+      "id": "bluestones",
+      "nom": "Pedres blaves (Carn Goedog i Craig Rhos-y-felin)",
+      "origen": "Turons Preseli (oest de Gal·les)",
+      "lon": -4.74,
+      "lat": 51.96,
+      "dist_km": 230,
+      "pes_t": 3,
+      "n_pedres": "~80 blocs (dolerita, riolita, tuf)",
+      "epoca": "Pedreres ~3400–3000 cal BC · Waun Mawn c. 3000 aC",
+      "pas": "gales",
+      "cat": "blau",
+      "detall": "Extretes a Carn Goedog i Craig Rhos-y-felin; possible cercle previ a Waun Mawn en debat (Parker Pearson et al., 2019, 2021)"
+    },
+    {
+      "id": "altar",
+      "nom": "Pedra de l'Altar (Stone 80)",
+      "origen": "Conca Orcadiana (NE d'Escòcia; aflorament exacte obert)",
+      "lon": -3.3,
+      "lat": 58.35,
+      "dist_km": 750,
+      "pes_t": 6,
+      "n_pedres": "1 llosa jacent (4,9 × 1,0 × 0,5 m)",
+      "epoca": "Posada al centre (~2600–2500 aC)",
+      "pas": "altar",
+      "cat": "vermell",
+      "detall": "Zircons d'edat laurèntia apunten a >=750 km al NE d'Escòcia (Clarke et al., 2024), però cap aflorament concret encaixa al 100 % (Pirrie et al., 2026)"
+    },
+    {
+      "id": "porcs_ne",
+      "nom": "Ramats dels banquets (NE d'Anglaterra / Escòcia)",
+      "origen": "Nord de Gran Bretanya",
+      "lon": -1.95,
+      "lat": 55.2,
+      "dist_km": 460,
+      "pes_t": 1,
+      "n_pedres": "131 porcs analitzats (Madgwick et al., 2019)",
+      "epoca": "c. 2800–2400 aC",
+      "pas": "feast",
+      "cat": "vermell",
+      "detall": "Multi-isòtops a Durrington Walls demostren porcs duts vius o en canal des de tota l'illa per a banquets d'hivern"
+    },
+    {
+      "id": "cremats_wales",
+      "nom": "Morts cremats (40 % forans)",
+      "origen": "Oest de Gal·les / fora de Wessex",
+      "lon": -4.45,
+      "lat": 51.85,
+      "dist_km": 215,
+      "pes_t": 1,
+      "n_pedres": "10 de 25 individus analitzats (Snoeck et al., 2018)",
+      "epoca": "c. 3000–2500 aC",
+      "pas": "feast",
+      "cat": "blau",
+      "detall": "El 40 % dels cremats als forats Aubrey van viure lluny de la creta local de Wessex"
+    },
+    {
+      "id": "orkney",
+      "nom": "Anell de Brodgar i Skara Brae (Òrcades)",
+      "origen": "Illes Òrcades",
+      "lon": -3.22,
+      "lat": 59.0,
+      "dist_km": 840,
+      "pes_t": 2,
+      "n_pedres": "Paral·lels d'arquitectura domèstica i ritual",
+      "epoca": "c. 3000–2400 aC",
+      "pas": "illa",
+      "cat": "groc",
+      "detall": "Cases quadrades de Durrington Walls segueixen el mateix patró espacial que Skara Brae (Parker Pearson et al., 2024)"
+    }
+  ],
+  "fases_bayesianes": [
+    {
+      "fase": 1,
+      "nom": "Fase 1 · El recinte circular i el cementiri",
+      "inici": -3010,
+      "fi": -2860,
+      "interval_text": "3100–2920 a 2965–2755 cal BC",
+      "resum": "Fossat circular de ~110 m de diàmetre, talús interior, 56 forats Aubrey (amb possibles pedres blaves inicials) i el gran cementiri de cremacions."
+    },
+    {
+      "fase": 2,
+      "nom": "Fase 2 · Els gegants de sarsen i la fusteria en pedra",
+      "inici": -2635,
+      "fi": -2385,
+      "interval_text": "2760–2510 a 2470–2300 cal BC",
+      "resum": "Cercle de 30 pilars sarsen amb 30 llindes encaixades, ferradura de 5 trílits monumentals, Pedra de l'Altar, 4 Station Stones i doble cercle Q/R."
+    },
+    {
+      "fase": 3,
+      "nom": "Fase 3 · L'Avinguda cap al riu i el nou ordre",
+      "inici": -2315,
+      "fi": -2200,
+      "interval_text": "2405–2225 a 2300–2100 cal BC",
+      "resum": "Excavació de l'Avinguda cerimonial cap al riu Avon (Bluestonehenge), reorganització de l'entrada NE i arribada de l'Arquer d'Amesbury."
+    },
+    {
+      "fase": 4,
+      "nom": "Fase 4 · La darrera coreografia de pedres blaves",
+      "inici": -2120,
+      "fi": -2040,
+      "interval_text": "2210–2030 a 2160–1925 cal BC",
+      "resum": "Desmuntatge dels forats Q/R i col·locació definitiva de l'oval interior i el cercle exterior de pedres blaves dins el marc de sarsens."
+    },
+    {
+      "fase": 5,
+      "nom": "Fase 5 · Els forats Y/Z i els gravats de bronze",
+      "inici": -1880,
+      "fi": -1535,
+      "interval_text": "2020–1745 a 1620–1450 cal BC",
+      "resum": "Excavació dels 59 forats concèntrics Y i Z (c. 1630–1520 cal BC), gravat de destrals i dagues de bronze sobre els sarsens i abandonament gradual."
+    }
+  ],
+  "cremacions_snoeck": {
+    "total_analitzats": 25,
+    "locals_wessex": 15,
+    "forans_gal_les": 10,
+    "estimacio_total_min": 150,
+    "estimacio_total_max": 240,
+    "ah7_mni": 27,
+    "ah7_adults": 22,
+    "ah7_subadults": 5
+  },
+  "adn_antic": [
+    {
+      "id": "mesolitic",
+      "nom": "Mesolític (~8500–4000 aC)",
+      "sub": "Caçadors-recol·lectors occidentals (WHG, tipus Cheddar Man)",
+      "grups": [
+        { "nom": "Caçadors-recol·lectors locals (WHG)", "pct": 100, "cat": "blau" },
+        { "nom": "Agricultors egeus / anatòlics (EEF)", "pct": 0, "cat": "groc" },
+        { "nom": "Poblacions continentals d'ascendència estepària", "pct": 0, "cat": "vermell" }
+      ],
+      "nota": "Pell fosca i ulls clars; població poc nombrosa abans de l'agricultura (Brace et al., 2019)."
+    },
+    {
+      "id": "neolitic",
+      "nom": "Neolític (c. 4000–2500 aC · Constructors del Stonehenge I–II)",
+      "sub": "Substitució quasi completa per agricultors procedents de la Mediterrània",
+      "grups": [
+        { "nom": "Agricultors neolítics (EEF, tipus Iberia/Egeu)", "pct": 78, "cat": "groc" },
+        { "nom": "Mescla WHG residual del camí continental", "pct": 22, "cat": "blau" },
+        { "nom": "Ascendència estepària (encara absent)", "pct": 0, "cat": "vermell" }
+      ],
+      "nota": "Pell bruna/olivàcia, cabell i ulls foscos; els seus descendents van alçar els grans sarsens (Brace et al., 2019)."
+    },
+    {
+      "id": "campaniforme",
+      "nom": "Vas Campaniforme (c. 2450–1800 aC · Fase III–V)",
+      "sub": "Migració massiva des del Baix Rin reemplaça ~90 % del pool genètic",
+      "grups": [
+        { "nom": "Nou patrimoni continental / estepari", "pct": 90, "cat": "vermell" },
+        { "nom": "Continuïtat neolítica britànica", "pct": 10, "cat": "groc" }
+      ],
+      "nota": "En pocs segles, l'onada del Vas Campaniforme (com l'Arquer d'Amesbury) transforma el mapa genètic de l'illa (Olalde et al., 2018)."
+    }
+  ],
+  "banquets_cicle": [
+    { "mes": 0, "nom": "Gen", "sacrifici": 14, "naixement": 2, "etapa": "Ple hivern · Banquets de carn fresca i festa del solstici" },
+    { "mes": 1, "nom": "Feb", "sacrifici": 9, "naixement": 5, "etapa": "Final d'hivern · Darreres trobades abans de la sembra" },
+    { "mes": 2, "nom": "Mar", "sacrifici": 3, "naixement": 26, "etapa": "Principi de primavera · Farrowing (parts dels porcs)" },
+    { "mes": 3, "nom": "Abr", "sacrifici": 2, "naixement": 38, "etapa": "Primavera · Pics de naixements (0–1 mes d'edat)" },
+    { "mes": 4, "nom": "Mai", "sacrifici": 2, "naixement": 20, "etapa": "Final de primavera · Garrins pasturant a distància" },
+    { "mes": 5, "nom": "Jun", "sacrifici": 3, "naixement": 6, "etapa": "Solstici d'estiu · Pocs sacrificis als abocadors de Durrington" },
+    { "mes": 6, "nom": "Jul", "sacrifici": 2, "naixement": 2, "etapa": "Estiu · Ramats dispersos fora de Wessex" },
+    { "mes": 7, "nom": "Ago", "sacrifici": 3, "naixement": 1, "etapa": "Final d'estiu · Collita i engreix de tardor" },
+    { "mes": 8, "nom": "Set", "sacrifici": 6, "naixement": 0, "etapa": "Principi de tardor · Aproximació de les primeres comitives" },
+    { "mes": 9, "nom": "Oct", "sacrifici": 13, "naixement": 0, "etapa": "Tardor · Inici dels sacrificis (~7–8 mesos d'edat)" },
+    { "mes": 10, "nom": "Nov", "sacrifici": 21, "naixement": 0, "etapa": "Final de tardor · Gran pic d'arribada de porcs (~8–9 mesos)" },
+    { "mes": 11, "nom": "Des", "sacrifici": 22, "naixement": 0, "etapa": "Solstici d'hivern · Clímax dels banquets a Durrington Walls" }
+  ],
+  "acustica_cox": [
+    { "id": "camp", "nom": "Camp obert (sense pedres)", "rt": 0.0, "amp": 0.0, "cat": "gris", "nota": "Referència a camp obert sense reflexions laterals" },
+    { "id": "exterior", "nom": "Stonehenge · Fora del cercle (fossat)", "rt": 0.14, "amp": 0.4, "cat": "blau", "nota": "Fora dels sarsens la parla gairebé no s'amplifica" },
+    { "id": "interior", "nom": "Stonehenge · Dins el cercle (~2200 aC)", "rt": 0.64, "amp": 4.3, "cat": "vermell", "nota": "Maqueta 1:12 (Cox et al., 2020): 0,64 ± 0,03 s i +4,3 ± 0,9 dB" },
+    { "id": "sala", "nom": "Sala de conferències / estudi modern", "rt": 0.65, "amp": 5.0, "cat": "groc", "nota": "Reverberació pròpia d'una sala tancada per escoltar la veu nítida" },
+    { "id": "catedral", "nom": "Catedral gòtica de pedra", "rt": 4.5, "amp": 9.0, "cat": "gris", "nota": "Eco molt llarg que embulla la parla ràpida" }
+  ],
+  "megalits_mon": [
+    {
+      "id": "gobekli",
+      "nom": "Göbekli Tepe",
+      "lloc": "Anatòlia SE (Turquia)",
+      "inici": -9600,
+      "fi": -8200,
+      "mid": -8900,
+      "pes_t": 16,
+      "lon": 38.922,
+      "lat": 37.223,
+      "cat": "vermell",
+      "detall": "Pilars en T de fins a 16–20 t aixecats per caçadors-recol·lectors abans de la ceràmica i l'agricultura (Dietrich, 2011)"
+    },
+    {
+      "id": "nabta",
+      "nom": "Nabta Playa",
+      "lloc": "Desert de Núbia (Egipte)",
+      "inici": -4800,
+      "fi": -4500,
+      "mid": -4650,
+      "pes_t": 0.8,
+      "lon": 30.72,
+      "lat": 22.51,
+      "cat": "groc",
+      "detall": "Cercle calendàric de pastors nòmades alineat amb el solstici d'estiu del tròpic (Wendorf, Schild & Malville)"
+    },
+    {
+      "id": "carnac",
+      "nom": "Carnac",
+      "lloc": "Bretanya (França)",
+      "inici": -4600,
+      "fi": -3300,
+      "mid": -4000,
+      "pes_t": 20,
+      "lon": -3.08,
+      "lat": 47.59,
+      "cat": "blau",
+      "detall": "Milers de menhirs en alineacions kilomètriques anteriors a Stonehenge en més d'un mil·lenni"
+    },
+    {
+      "id": "newgrange",
+      "nom": "Newgrange",
+      "lloc": "Vall del Boyne (Irlanda)",
+      "inici": -3200,
+      "fi": -3000,
+      "mid": -3150,
+      "pes_t": 10,
+      "lon": -6.475,
+      "lat": 53.694,
+      "cat": "blau",
+      "detall": "Tomba de corredor amb caixa de llum orientada exactament a la sortida del solstici d'hivern"
+    },
+    {
+      "id": "stonehenge",
+      "nom": "Stonehenge",
+      "lloc": "Wiltshire (Gran Bretanya)",
+      "inici": -3010,
+      "fi": -1535,
+      "mid": -2500,
+      "pes_t": 25,
+      "lon": -1.826,
+      "lat": 51.179,
+      "cat": "vermell",
+      "detall": "Únic cercle britànic on totes les pedres provenen d'entre 25 i >=750 km, amb llindes encaixades"
+    },
+    {
+      "id": "brodgar",
+      "nom": "Anell de Brodgar",
+      "lloc": "Illes Òrcades (Escòcia)",
+      "inici": -2600,
+      "fi": -2000,
+      "mid": -2350,
+      "pes_t": 6,
+      "lon": -3.229,
+      "lat": 59.001,
+      "cat": "blau",
+      "detall": "Gran cercle de 104 m de diàmetre contemporani de la gran arquitectura de les Òrcades"
+    },
+    {
+      "id": "menorca",
+      "nom": "Menorca Talaiòtica",
+      "lloc": "Menorca (Illes Balears)",
+      "inici": -1200,
+      "fi": -200,
+      "mid": -900,
+      "pes_t": 18,
+      "lon": 4.13,
+      "lat": 39.96,
+      "cat": "vermell",
+      "detall": "Naveta des Tudons (976–822 aC) i recintes de Taula (~1100–200 aC); Patrimoni Mundial UNESCO (2023)"
+    },
+    {
+      "id": "rapanui",
+      "nom": "Rapa Nui (Moai)",
+      "lloc": "Illa de Pasqua (Polinèsia)",
+      "inici": 1100,
+      "fi": 1600,
+      "mid": 1350,
+      "pes_t": 14,
+      "lon": -109.28,
+      "lat": -27.12,
+      "cat": "groc",
+      "detall": "Centenars d'estàtues d'avantpassats de pedra volcànica (~14 t de mitjana) transportades sense roda"
+    },
+    {
+      "id": "sumba",
+      "nom": "Sumba Occidental",
+      "lloc": "Nusa Tenggara (Indonèsia)",
+      "inici": 1800,
+      "fi": 2026,
+      "mid": 2000,
+      "pes_t": 17,
+      "lon": 119.35,
+      "lat": -9.58,
+      "cat": "groc",
+      "detall": "Tradició megalítica viva: 100–1.000 persones arrosseguen lloses de 17–30+ t entre festins de porcs i búfals (Adams, 2007)"
+    }
+  ]
+}

@@ -1,5 +1,13 @@
 [
   {
+    "slug": "stonehenge",
+    "title": "Per què van aixecar Stonehenge?",
+    "desc": "Cap druida no hi va posar un peu, la festa gran era a l'hivern i les pedres van viatjar fins a 750 km. L'arqueologia recent revela un cementiri neolític, un pacte d'illa i un mirall de cada època.",
+    "category": "Antropologia i arqueologia",
+    "minutes": 20,
+    "thumbAlt": "Corrent abstracte de blau profund i taronja càlid entrellaçats."
+  },
+  {
     "slug": "viatge-de-la-pizza",
     "title": "El viatge de la pizza",
     "desc": "Un pa pla nascut abans de l'agricultura, un fruit andí que Europa va témer com a verí i una búfala de l'Índia. Com el pa de carrer de Nàpols va conquerir tot el planeta.",
