@@ -45,6 +45,11 @@ Les 11 referències de l'editor comparteixen un llenguatge de **gravat científi
   4. **La forma és el fenomen:** milers de micro-traços direccionals deixen aparèixer l'estructura orgànica (espirals, corrents, fluxos) sense caixes ni símbols artificials; funciona tant animat (a poc a poc) com congelat.
   5. **Anotacions quirúrgiques de mecanisme:** només 2–3 anotacions breus (títol en negreta + 4–5 paraules que expliquen *com funciona*, no què es veu) amb colze ultra-fi en tinta.
   6. **Aplicable més enllà de la meteorologia:** reutilitza aquesta gramàtica per a rutes marítimes, migracions, difusió cultural o de llengües, comerç antic o fluxos econòmics.
+- **Segon model de referència de l'editor — IB-37 («Calendari de calor», 19-11-2026):** complementa IB-28 amb la mateixa fórmula mestra aplicada a sèries temporals denses:
+  1. **Macro + micro simultanis (totes les dades d'un cop):** més de mil registres individuals visibles alhora permeten llegir en mig segon quatre capes (estacionalitat, ritme setmanal, excepcions culturals com les vacances d'agost i tendència interanual) sense amagar res darrere mitjanes ni lliscants.
+  2. **Gamma tonal única i càlida (`IBV.heat`):** de crema quasi blanc a vermell fosc sense salts bruscos; els dies excepcionals destaquen sols com una brasa fosca.
+  3. **Ordre tipogràfic d'alta precisió:** cel·les respirades amb blanc fi, fronteres de mes esglaonades en gris d'1 px, anys apilats amb la mateixa alineació vertical per comparar-los a cop d'ull i un resum discret a la capçalera de cada fila (`2023 · 45/dia`).
+  4. **Minimalisme en etiquetes i anotacions:** només els dies alterns (`dl / dc / dv / dg`), mesos escrits una sola vegada i màxim 2 anotacions quirúrgiques amb colze fi que assenyalen un extrem i una anomalia estructural.
 - **Anotacions editorials amb fletxes corbes delicades:** `IBV.note(..., {kind:"curve"})` i caixes discontínues (`IBV.box`) que assenyalen el descobriment dins del núvol de dades.
 
 ---
