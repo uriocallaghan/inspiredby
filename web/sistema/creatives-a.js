@@ -948,128 +948,206 @@ const M40=piece(40,(el,w)=>{
   b.addEventListener("click",()=>{ run40=!run40; b.textContent=run40?"Atura els fils":"Torna a moure els fils"; b.setAttribute("aria-pressed",!run40); }); void M40; })();
 
 /* =====================================================================
-   IB-41 · BOMBOLLES NIADES  (dades reals: IHME GBD, morts per causa)
+   IB-41 · CONSTEL·LACIÓ DE CERCLES TRANSLÚCIDS  (dades reals: IHME GBD, morts per causa)
+   Cercles plens d'aquarel·la translúcids (`radialGradient` + `multiply`) agrupats en
+   4 constel·lacions suaus, sense vores dures ni punts que embrutin el text. Clic en
+   un grup per fer-hi zoom suau.
    ===================================================================== */
-const GRP41=[{id:"ncd",t:"Malalties no transmissibles",c:C.blau},{id:"inf",t:"Infeccions, morts maternes i de nadons",ts:"Infeccions i nadons",c:C.groc,cs:C.grocFosc},{id:"inj",t:"Lesions i violència",c:C.vermell},{id:"oth",t:"Altres causes",c:C.muted}];
-const DOT41=50000;
+const GRP41=[
+  {id:"ncd",t:"Malalties no transmissibles",ts:"No transmissibles",c:C.blau,tc:C.blau},
+  {id:"inf",t:"Infeccions, maternes i nadons",ts:"Infeccions i nadons",c:C.groc,cs:C.grocFosc,tc:C.ink},
+  {id:"inj",t:"Lesions i violència",ts:"Lesions i violència",c:C.vermell,tc:C.vermell},
+  {id:"oth",t:"Altres causes",ts:"Altres causes",c:C.muted,tc:C.ink2}
+];
 let yr41="2023", zoom41=null;
 function tree41(yr){
   const idx=yr==="2019"?3:4, M=(DA.mort||{c:[]}).c;
   const root={id:"root",children:GRP41.map(gp=>({id:gp.id,gp,children:M.filter(c=>c[2]===gp.id).map(c=>({id:c[0],t:c[0],ts:c[1],gp,v:c[idx],v19:c[3],v23:c[4]}))}))};
-  const H=d3.hierarchy(root).sum(d=>d.children?0:Math.max(0,d.v)).sort((a,b)=>b.value-a.value);
-  return H;
+  return d3.hierarchy(root).sum(d=>d.children?0:Math.max(0,d.v)).sort((a,b)=>b.value-a.value);
 }
-legend(41,el=>{ V.legendCat(el,GRP41.map(gp=>({c:gp.c,t:gp.ts||gp.t})));
-  const d=d3.select(el).append("div").attr("class","ibv-lg"); d.append("div").attr("class","ibv-lg-t").text("Cada punt");
-  const sv=d.append("svg").attr("width",120).attr("height",14); sv.append("circle").attr("cx",5).attr("cy",7).attr("r",3).attr("fill",C.ink2);
-  sv.append("text").attr("x",14).attr("y",11).attr("font-size",12).attr("fill",C.ink2).text("50.000 morts"); });
+legend(41,el=>{
+  V.legendCat(el,GRP41.map(gp=>({c:gp.c,a:.45,t:gp.ts||gp.t})));
+  V.legendCat(el,[{t:"Àrea proporcional a les morts · clica un grup per fer-hi zoom",kind:"none"}]);
+});
 const M41=piece(41,(el,w)=>{
-  const mob=w<640, Dm=Math.min(w-4,mob?w-4:640);
-  const H=tree41(yr41); d3.pack().size([1000,1000]).padding(d=>d.depth===0?30:4)(H);
+  const mob=w<640, Dm=Math.min(w-(mob?12:180),mob?w-12:520);
+  const H=tree41(yr41); d3.pack().size([1000,1000]).padding(d=>d.depth===0?38:7)(H);
   const gx0=d3.min(H.children,c=>c.x-c.r), gx1=d3.max(H.children,c=>c.x+c.r), gy0=d3.min(H.children,c=>c.y-c.r), gy1=d3.max(H.children,c=>c.y+c.r);
-  const dH=Math.max(gx1-gx0,gy1-gy0)*(1+56/Dm), HOME=[(gx0+gx1)/2,(gy0+gy1)/2,dH];
-  const h=Math.round(Math.min(Dm,(gy1-gy0)*Dm/dH+60));
-  const {ctx,s}=layer(el,w,h,`Bombolles niades amb les morts del món el ${yr41} per causa, agrupades en malalties no transmissibles, infeccions i lesions. Cada punt són 50.000 morts. Un toc en un grup hi fa zoom. Dades reals de l'IHME.`);
-  const c41="c41"+Math.random().toString(36).slice(2,6);
-  s.append("defs").append("clipPath").attr("id",c41).append("rect").attr("width",w).attr("height",h);
-  const g=s.append("g").attr("clip-path",`url(#${c41})`);
-  const OX=(w-Dm)/2, OY=h/2-Dm/2+6;
-  const leaves=H.leaves(), grps=H.children;
-  // punts de cada fulla (fil·lotaxi): posicions relatives al centre i al radi
-  leaves.forEach(L=>{ const n=Math.floor(L.data.v/DOT41); L.dots=d3.range(n).map(i=>{ const rr=Math.sqrt((i+.5)/Math.max(n,1))*.9, a=i*2.39996; return [rr*Math.cos(a),rr*Math.sin(a)]; }); L.dr=n?Math.min(.36/Math.sqrt(n)*.95,.28):0; });
-  // vista: [x,y,diàmetre] en coordenades del pack
-  let view=zoom41?[zoom41.x,zoom41.y,zoom41.r*2.08*Math.max(1,Dm/h)]:HOME, grow=1, foc=null;
+  const dH=Math.max(gx1-gx0,gy1-gy0)*(1+48/Dm), HOME=[(gx0+gx1)/2,(gy0+gy1)/2,dH];
+  const h=Math.round(Math.min(mob?420:510,(gy1-gy0)*Dm/dH+(mob?84:96)));
+  d3.select(el).selectAll("canvas.ibv,svg.ibv").remove(); el.style.height="";
+  const s=V.svg(el,w,h,`Constel·lació de cercles translúcids amb les morts del món el ${yr41} per causa, agrupades en malalties no transmissibles, infeccions, lesions i altres causes. Àrea proporcional al nombre de morts. Clica un grup per fer-hi zoom. Dades reals de l'IHME.`);
+  const defs=s.append("defs"), uid="w41"+Math.random().toString(36).slice(2,6);
+  // Gradients radials suaus d'aquarel·la per a les 4 famílies (halo de grup + cercle de causa)
+  GRP41.forEach(gp=>{
+    const col=gp.c;
+    const rgG=defs.append("radialGradient").attr("id",`${uid}-g-${gp.id}`);
+    rgG.append("stop").attr("offset","0%").attr("stop-color",col).attr("stop-opacity",gp.id==="inf"?.11:.07);
+    rgG.append("stop").attr("offset","78%").attr("stop-color",col).attr("stop-opacity",gp.id==="inf"?.06:.035);
+    rgG.append("stop").attr("offset","100%").attr("stop-color",col).attr("stop-opacity",0);
+    const rgL=defs.append("radialGradient").attr("id",`${uid}-l-${gp.id}`).attr("cx","38%").attr("cy","34%").attr("r","68%");
+    const aHi=gp.id==="inf"?.56:gp.id==="oth"?.30:.44, aLo=gp.id==="inf"?.30:gp.id==="oth"?.16:.22;
+    rgL.append("stop").attr("offset","0%").attr("stop-color",col).attr("stop-opacity",aHi);
+    rgL.append("stop").attr("offset","100%").attr("stop-color",col).attr("stop-opacity",aLo);
+  });
+  defs.append("clipPath").attr("id",uid+"-c").append("rect").attr("width",w).attr("height",h);
+  const g=s.append("g").attr("clip-path",`url(#${uid}-c)`);
+  const OX=(w-Dm)/2, OY=h/2-Dm/2+4;
+  const leaves=H.leaves(), grps=H.children, TOT=d3.sum(leaves,l=>l.data.v);
+  let view=zoom41?[zoom41.x,zoom41.y,zoom41.r*2.18*Math.max(1,Dm/h)]:HOME, grow=1, foc=null;
   const Pt=(x,y)=>{ const kk=Dm/view[2]; return [OX+Dm/2+(x-view[0])*kk,OY+Dm/2+(y-view[1])*kk]; };
-  const GC=g.append("g").selectAll("circle").data(grps).join("circle").attr("fill","none").attr("stroke",d=>d.data.gp.cs||d.data.gp.c).attr("stroke-width",1).attr("stroke-opacity",.55);
-  const LC=g.append("g").selectAll("circle").data(leaves).join("circle").attr("fill",d=>V.alpha(d.data.gp.c,.08)).attr("stroke",d=>d.data.gp.cs||d.data.gp.c).attr("stroke-width",.8).attr("stroke-opacity",.75);
-  const defs=s.append("defs"), uid="a41"+Math.random().toString(36).slice(2,6);
-  const GLp=defs.selectAll("path").data(grps).join("path").attr("id",(d,i)=>uid+i);
-  const GL=g.append("g").selectAll("text").data(grps).join("text").attr("font-size",mob?12:13).attr("font-weight",700).attr("fill",d=>d.data.gp.id==="oth"||d.data.gp.id==="inf"?C.ink2:d.data.gp.c)
-    .call(V.halo,3);
-  GL.append("textPath").attr("href",(d,i)=>"#"+uid+i).attr("startOffset","50%").attr("text-anchor","middle").text(d=>`${mob&&d.data.gp.ts?d.data.gp.ts:d.data.gp.t} · ${f1(d.value/1e6)} M`);
+
+  // 1. Aures suaus dels 4 grups (sense parets gruixudes de placa de Petri)
+  const GC=g.append("g").selectAll("circle").data(grps).join("circle")
+    .attr("fill",d=>`url(#${uid}-g-${d.data.gp.id})`)
+    .attr("stroke",d=>d.data.gp.cs||d.data.gp.c).attr("stroke-width",.7).attr("stroke-opacity",.22)
+    .attr("stroke-dasharray","3 4").style("cursor","pointer");
+
+  // 2. Cercles translúcids d'aquarel·la per a cada causa (zero puntets darrere el text!)
+  const LC=g.append("g").selectAll("circle").data(leaves).join("circle")
+    .attr("fill",d=>`url(#${uid}-l-${d.data.gp.id})`)
+    .attr("stroke",d=>d.data.gp.cs||d.data.gp.c).attr("stroke-width",.7).attr("stroke-opacity",.32)
+    .style("mix-blend-mode","multiply").style("cursor","pointer");
+
+  // 3. Etiquetes netes dins de cada causa (100 % llegibles sobre l'aquarel·la suau)
   const LL=g.append("g").selectAll("g").data(leaves).join("g").style("pointer-events","none");
-  LL.each(function(d){ const q=d3.select(this); d.ls=[0,1,2].map(i=>lab(q,0,0,"",{size:i<2?12:11.5,weight:i<2?700:400,anchor:"middle",fill:i<2?C.ink:C.ink2})); });
+  LL.each(function(d){
+    const q=d3.select(this);
+    d.ls=[0,1,2].map(i=>lab(q,0,0,"",{size:i<2?(mob?11.5:12.5):11.5,weight:i<2?600:400,anchor:"middle",fill:i<2?C.ink:C.ink2,halo:2.5}));
+  });
+
+  // 4. Etiquetes horitzontals netes dels 4 grups (mai text corbat de costat!)
+  const GL=g.append("g").style("pointer-events","none");
   const wch=(t,sz)=>t.length*sz*.53;
+  const hv=hvLayer(g);
+
+  function drawGroupLabs(kk){
+    GL.selectAll("*").remove();
+    if(zoom41){
+      const gp=zoom41.data.gp;
+      V.t(GL,14,22,`${gp.t} · ${f1(zoom41.value/1e6)} M (${f0(zoom41.value/TOT*100)} %)`,{size:mob?13:15,serif:true,weight:600,fill:gp.tc,halo:3.5});
+      return;
+    }
+    const [hcX,hcY]=Pt(HOME[0],HOME[1]);
+    grps.forEach(d=>{
+      const [cx,cy]=Pt(d.x,d.y), r=d.r*kk*grow;
+      const gp=d.data.gp, ttl=`${mob?gp.ts:gp.t}`, sub=`${f1(d.value/1e6)} M · ${f0(d.value/TOT*100)} %`;
+      if(!mob){
+        if(gp.id==="oth")return; // «Altres causes» ja porta el nom i la xifra dins del cercle
+        const right=cx>=hcX-12, down=cy>hcY+24;
+        const ex=cx+(right?1:-1)*r*.84, ey=cy+(down?.52:-.68)*r;
+        const tx=Math.max(12,Math.min(w-12,cx+(right?1:-1)*(r+22))), ty=Math.max(20,Math.min(h-26,ey+(down?14:-14)));
+        GL.append("line").attr("x1",ex).attr("y1",ey).attr("x2",tx+(right?-4:4)).attr("y2",ty-2)
+          .attr("stroke",gp.cs||gp.c).attr("stroke-width",.8).attr("stroke-opacity",.55);
+        const anc=right?"start":"end";
+        V.t(GL,tx,ty-4,ttl,{size:12.5,weight:700,fill:gp.tc,anchor:anc,halo:3.5});
+        V.t(GL,tx,ty+11,sub,{size:11.5,fill:C.muted,anchor:anc,halo:3.5});
+      } else {
+        // Mòbil: 4 posicions dedicades que no es trepitgen mai entre si ni sobre altres grups
+        if(gp.id==="ncd") V.t(GL,6,18,`No transmissibles · ${f1(d.value/1e6)} M`,{size:11.5,weight:700,fill:gp.tc,anchor:"start",halo:3.5});
+        else if(gp.id==="inj") V.t(GL,w-6,18,`Lesions · ${f1(d.value/1e6)} M`,{size:11.5,weight:700,fill:gp.tc,anchor:"end",halo:3.5});
+        else if(gp.id==="inf") V.t(GL,w-6,Math.min(h-12,cy+r+16),`Infeccions · ${f1(d.value/1e6)} M`,{size:11.5,weight:700,fill:gp.tc,anchor:"end",halo:3.5});
+        else V.t(GL,Math.max(60,Math.min(w-60,cx)),Math.min(h-12,cy+r+16),`Altres · ${f1(d.value/1e6)} M`,{size:11.5,weight:700,fill:gp.tc,anchor:"middle",halo:3.5});
+      }
+    });
+  }
+
   function render(){
     const kk=Dm/view[2];
     GC.attr("cx",d=>Pt(d.x,d.y)[0]).attr("cy",d=>Pt(d.x,d.y)[1]).attr("r",d=>d.r*kk*grow);
     LC.attr("cx",d=>Pt(d.x,d.y)[0]).attr("cy",d=>Pt(d.x,d.y)[1]).attr("r",d=>d.r*kk*grow);
-    GLp.attr("d",d=>{ const [cx,cy]=Pt(d.x,d.y), r=d.r*kk*grow+4; return `M${cx-r},${cy}A${r},${r} 0 0 1 ${cx+r},${cy}`; });
-    GL.style("visibility",d=>{ const r=d.r*kk; return zoom41||d.data.gp.id==="oth"||r<=(mob?62:40)?"hidden":null; });
     LL.attr("transform",d=>{ const [x,y]=Pt(d.x,d.y); return `translate(${x},${y-2})`; }).each(function(d){
       const r=d.r*kk*grow, t=d.data.t, ts=d.data.ts; let L=null;
-      if(r>(mob?22:20)){ if(wch(t,12)<1.8*r)L=[t]; else if(wch(ts,12)<1.8*r)L=[ts];
-        else if(r>34){ const wds=t.split(" "), k=Math.ceil(wds.length/2), a=wds.slice(0,k).join(" "), b=wds.slice(k).join(" "); if(b&&Math.max(wch(a,12),wch(b,12))<1.7*r)L=[a,b]; } }
-      const show=!!L; if(show&&r>(L.length>1?40:28))L.push(`${f1(d.data.v/1e6)} M`);
-      const n=show?L.length:0; d.ls.forEach((tx,i)=>tx.text(i<n?L[i]:"").attr("y",(i-(n-1)/2)*14+4));
-      d3.select(this).style("visibility",show?null:"hidden"); });
-    ctx.clearRect(0,0,w,h);
-    leaves.forEach(L=>{ if(!L.dots.length)return; const [cx,cy]=Pt(L.x,L.y), R=L.r*kk*grow; if(R<1)return;
-      ctx.fillStyle=L.data.gp.c; ctx.globalAlpha=.72; const dr=Math.max(.6,L.dr*R);
-      ctx.beginPath(); L.dots.forEach(([a,b])=>{ ctx.moveTo(cx+a*R+dr,cy+b*R); ctx.arc(cx+a*R,cy+b*R,dr,0,6.2832); }); ctx.fill(); });
-    ctx.globalAlpha=1;
+      if(r>(mob?20:17)){
+        if(wch(t,12)<1.82*r)L=[t];
+        else if(wch(ts,12)<1.88*r)L=[ts];
+        else if(r>30){
+          const wds=t.split(" "), k=Math.ceil(wds.length/2), a=wds.slice(0,k).join(" "), b=wds.slice(k).join(" ");
+          if(b&&Math.max(wch(a,12),wch(b,12))<1.75*r)L=[a,b];
+        }
+      }
+      const show=!!L; if(show&&r>(L.length>1?38:26))L.push(`${f1(d.data.v/1e6)} M`);
+      const n=show?L.length:0;
+      d.ls.forEach((tx,i)=>tx.text(i<n?L[i]:"").attr("y",(i-(n-1)/2)*14+4));
+      d3.select(this).style("visibility",show?null:"hidden");
+    });
+    drawGroupLabs(kk);
     drawHv();
   }
-  // capa de hover: vora en tinta, radi fins a la vora amb el valor i nom al costat
-  const hv=hvLayer(s);
+
   function drawHv(){
-    hv.selectAll("*").remove(); LL.style("opacity",d=>foc&&d===foc?0:null); if(!foc)return;
+    hv.selectAll("*").remove();
+    if(!foc){
+      LC.style("opacity",1); GC.style("opacity",1); LL.style("opacity",1); GL.style("opacity",1);
+      return;
+    }
+    const isHit=d=>foc.depth===2?(d===foc):(d.parent===foc);
+    LC.style("opacity",d=>isHit(d)?1:.48);
+    GC.style("opacity",d=>(foc.depth===1?d===foc:d===foc.parent)?1:.52);
+    LL.style("opacity",d=>isHit(d)?1:.5);
+    GL.style("opacity",.55);
     const kk=Dm/view[2], [cx,cy]=Pt(foc.x,foc.y), R=foc.r*kk*grow;
-    // vel blanc amb un forat a la bombolla: la resta s'apaga sense redibuixar el canvas
-    hv.append("path").attr("d",`M0,0H${w}V${h}H0Z M${cx-R-1},${cy}a${R+1},${R+1} 0 1,0 ${2*R+2},0a${R+1},${R+1} 0 1,0 ${-2*R-2},0Z`).attr("fill-rule","evenodd").attr("fill",C.paper).attr("fill-opacity",.78);
-    if(foc.depth===2){ // el nom de la bombolla es redibuixa a sobre; la resta del grup, una mica visible
-      foc.parent.children.forEach(L=>{ if(L===foc)return; const [lx,ly]=Pt(L.x,L.y); hv.append("circle").attr("cx",lx).attr("cy",ly).attr("r",L.r*kk*grow).attr("fill","none").attr("stroke",L.data.gp.cs||L.data.gp.c).attr("stroke-opacity",.6).attr("stroke-width",.8); }); }
-    hv.append("circle").attr("cx",cx).attr("cy",cy).attr("r",R+(foc.depth===2?1.5:0)).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.5);
-    const right=cx+R+70<w, ex=right?cx+R:cx-R;
-    hv.append("line").attr("x1",cx).attr("y1",cy).attr("x2",ex+(right?5:-5)).attr("y2",cy).attr("stroke",C.ink).attr("stroke-width",.8).attr("stroke-dasharray","2 2");
-    hv.append("circle").attr("cx",cx).attr("cy",cy).attr("r",2).attr("fill",C.ink);
-    axTag(hv,ex+(right?8:-8),cy+4,`${f1((foc.depth===2?foc.data.v:foc.value)/1e6)} M`,{anchor:right?"start":"end"});
-    const nm=foc.depth===2?foc.data.t:(foc.data.gp.ts||foc.data.gp.t);
-    const inside=foc.depth===2&&R>26;
-    lab(hv,Math.max(70,Math.min(w-70,cx)),inside?cy-9:Math.max(14,cy-R-7),nm,{size:13,weight:700,anchor:"middle"});
+    hv.append("circle").attr("cx",cx).attr("cy",cy).attr("r",R+1).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",1.5);
+    if(foc.depth===2&&R<26){
+      const nm=foc.data.t, val=`${f1(foc.data.v/1e6)} M`;
+      V.t(hv,Math.max(66,Math.min(w-66,cx)),Math.max(16,cy-R-8),`${nm} · ${val}`,{size:12,weight:700,fill:C.ink,anchor:"middle",halo:3.5});
+    }
   }
+
   el.__render=render;
   function zoomTo(nd){
     zoom41=nd&&nd!==H?nd:null;
-    const target=zoom41?[nd.x,nd.y,nd.r*2.08*Math.max(1,Dm/h)]:HOME;
+    const target=zoom41?[nd.x,nd.y,nd.r*2.18*Math.max(1,Dm/h)]:HOME;
     const b=$('[data-zoom41]'); if(b)b.style.visibility=zoom41?"visible":"hidden";
     if(V.reduced){ view=target; render(); return; }
     const I=d3.interpolateZoom(view,target);
-    d3.select(el).transition("z").duration(Math.min(1400,Math.max(700,I.duration*.9))).ease(EIO).tween("z",()=>t=>{ view=I(t); render(); });
+    d3.select(el).transition("z").duration(Math.min(1200,Math.max(650,I.duration*.85))).ease(EIO).tween("z",()=>t=>{ view=I(t); render(); });
   }
   el._zoom=zoomTo;
-  // clic: zoom al grup; amb el dit, el primer toc fa de hover i el segon fa el zoom
   let prevFoc=null;
   s.on("pointerdown.z",()=>{ prevFoc=foc; });
-  s.on("click",ev=>{ const [px,py]=d3.pointer(ev,s.node()), d=pick(px,py);
+  s.on("click",ev=>{
+    const [px,py]=d3.pointer(ev,s.node()), d=pick(px,py);
     if(!d){ if(zoom41)zoomTo(null); return; }
     if(ev.pointerType&&ev.pointerType!=="mouse"&&d!==prevFoc)return;
-    const gpn=d.depth===1?d:d.parent; if(zoom41===gpn)zoomTo(null); else zoomTo(gpn); });
-  // hover: la bombolla (o el grup) més propera al punter, amb zona de contacte de 6 px més
+    const gpn=d.depth===1?d:d.parent; if(zoom41===gpn)zoomTo(null); else zoomTo(gpn);
+  });
+
   const tp=V.tip(el);
-  const pick=(px,py)=>{ const kk=Dm/view[2];
-    let L=null, bd=1e9; leaves.forEach(l=>{ if(!l.data.v)return; const [cx,cy]=Pt(l.x,l.y), dd=Math.hypot(px-cx,py-cy)-l.r*kk*grow; if(dd<6&&dd<bd){ bd=dd; L=l; } });
+  const tipEl=el.querySelector(":scope>.tip"); if(tipEl)el.appendChild(tipEl);
+  const pick=(px,py)=>{
+    const kk=Dm/view[2];
+    let L=null, bd=1e9;
+    leaves.forEach(l=>{ if(!l.data.v)return; const [cx,cy]=Pt(l.x,l.y), dd=Math.hypot(px-cx,py-cy)-l.r*kk*grow; if(dd<6&&dd<bd){ bd=dd; L=l; } });
     if(L&&bd<=0)return L;
     const Gp=grps.find(gp=>{ const [cx,cy]=Pt(gp.x,gp.y); return Math.hypot(px-cx,py-cy)<gp.r*kk*grow+4; });
-    return L||Gp||null; };
+    return L||Gp||null;
+  };
   V.hover(s.node(),(ev,[px,py])=>{
     const d=pick(px,py);
     if(!d){ if(foc){ foc=null; drawHv(); } tp.hide(); return; }
-    const T=d3.sum(H.leaves(),l=>l.data.v);
-    if(d.depth===2){ if(foc!==d){ foc=d; drawHv(); }
+    if(foc!==d){ foc=d; drawHv(); }
+    if(d.depth===2){
       const o=d.data, other=yr41==="2019"?o.v23:o.v19;
-      tp.show(`<b>${o.t}</b><br>${f2(o.v/1e6)} milions de morts el ${yr41}<br>${f1(o.v/T*100)} % del total · ${d.parent.data.gp.t.toLowerCase()}<br>${yr41==="2019"?"El 2023":"El 2019"}: ${f2(other/1e6)} milions`,px,py); }
-    else { if(foc!==d){ foc=d; drawHv(); }
-      tp.show(`<b>${d.data.gp.t}</b><br>${f1(d.value/1e6)} milions de morts (${f0(d.value/T*100)} %)<br>${zoom41===d?"Clic fora per tornar a la vista sencera":"Clic (o un segon toc) per fer-hi zoom"}`,px,py); }
+      tp.show(`<b>${o.t}</b> · ${f2(o.v/1e6)} M (${f1(o.v/TOT*100)} % del total el ${yr41} · ${yr41==="2019"?"2023":"2019"}: ${f2(other/1e6)} M)`,px,py);
+    } else {
+      tp.show(`<b>${d.data.gp.t}</b> · ${f1(d.value/1e6)} M (${f0(d.value/TOT*100)} % del total) · ${zoom41===d?"Clica fora per tornar":"Clica per fer-hi zoom"}`,px,py);
+    }
   },()=>{ foc=null; tp.hide(); drawHv(); });
+
   render();
-  intro(el,()=>{ grow=0; render(); },inst=>{ if(inst||V.reduced){ grow=1; render(); return; }
-    d3.select(el).transition("g").duration(1300).ease(d3.easeBackOut.overshoot(.6)).tween("g",()=>t=>{ grow=t; render(); }); });
-  el.__morph=(prev)=>{ // transició entre anys: mateixa jerarquia, posicions noves
+  intro(el,()=>{ grow=0; render(); },inst=>{
+    if(inst||V.reduced){ grow=1; render(); return; }
+    d3.select(el).transition("g").duration(1000).ease(d3.easeCubicOut).tween("g",()=>t=>{ grow=t; render(); });
+  });
+  el.__morph=(prev)=>{
     if(!prev||V.reduced)return;
     const P=new Map(); prev.forEach(p=>P.set(p.id,p));
     const all=leaves.concat(grps), tgt=all.map(n=>({x:n.x,y:n.y,r:n.r}));
-    d3.select(el).transition("m").duration(1100).ease(EIO).tween("m",()=>t=>{ all.forEach((n,i)=>{ const p=P.get(n.data.id)||{x:tgt[i].x,y:tgt[i].y,r:0}; n.x=p.x+(tgt[i].x-p.x)*t; n.y=p.y+(tgt[i].y-p.y)*t; n.r=p.r+(tgt[i].r-p.r)*t; }); render(); });
+    d3.select(el).transition("m").duration(950).ease(EIO).tween("m",()=>t=>{
+      all.forEach((n,i)=>{ const p=P.get(n.data.id)||{x:tgt[i].x,y:tgt[i].y,r:0}; n.x=p.x+(tgt[i].x-p.x)*t; n.y=p.y+(tgt[i].y-p.y)*t; n.r=p.r+(tgt[i].r-p.r)*t; });
+      render();
+    });
   };
   el.__snap=()=>leaves.concat(grps).map(n=>({id:n.data.id,x:n.x,y:n.y,r:n.r}));
 });
