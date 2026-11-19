@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Per què riem? · Inspired by Magazine</title>
+<meta name="description" content="Gairebé mai no riem d'un acudit. Què diuen la biologia evolutiva, la neurociència i l'antropologia sobre un reflex més antic que el llenguatge.">
+<meta property="og:title" content="Per què riem?">
+<meta property="og:description" content="Gairebé mai no riem d'un acudit. Què diuen la biologia evolutiva, la neurociència i l'antropologia sobre un reflex més antic que el llenguatge.">
+<meta property="og:image" content="cover.jpg">
+<link rel="icon" sizes="192x192" href="../../assets/icon192.png">
+<link rel="apple-touch-icon" href="../../assets/icon192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../../assets/ib.css">
+<link rel="stylesheet" href="../../assets/article.css">
+<link rel="stylesheet" href="article.css">
+</head>
+<body class="ib-article">
+<header class="ib-bar">
+  <a href="../../" aria-label="Inspired by Magazine"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</header>
+<div class="ib-progress" aria-hidden="true"><span id="ibProgress"></span></div>
+
+<main class="page">
+<header class="open col">
+  <h1>Per què riem?</h1>
+  <p class="dek">Tens més de trenta vegades més probabilitats de riure quan estàs amb algú que quan estàs sol, i gairebé mai no ho fas per un acudit. La rialla no va néixer per a la comèdia: és una eina biològica més antiga que el llenguatge.</p>
+  <p class="meta">15 min de lectura · Dades: Provine (1993), Davila-Ross et al. (2009), Bryant et al. (2016, 2018), Manninen et al. (2017), Wood et al. (2017) · Actualitzat el 19 de novembre de 2026</p>
+</header>
+
+<section class="intro col">
+  <p class="dl">A principis dels anys noranta, el neurocientífic <b>Robert Provine</b> va enviar els seus estudiants a passejar per centres comercials, voreres i patis universitaris amb una missió poc habitual: parar l'orella d'amagat cada vegada que sentissin algú riure i anotar exactament què s'acabava de dir just abans.<sup class="nr"><a href="#nota-1" id="ref-1" aria-label="Nota 1">1</a></sup></p>
+  <p>Quan van aplegar <b>1.200 episodis naturals</b>, el resultat va tombar la idea que tothom dona per feta. Menys d'una cinquena part d'aquelles rialles venien després d'un acudit o d'una frase remotament enginyosa. La immensa majoria esclataven després de comentaris absolutament banals —«On has estat?», «Ja ens veurem», «N'estàs segur?»— que fora de context no farien gràcia a ningú.<sup class="nr"><a href="#nota-1" id="ref-1b" aria-label="Nota 1">1</a></sup></p>
+  <p>Encara més sorprenent: <b>qui parla riu un 46 % més que qui escolta</b>, i en els 1.200 casos enregistrats la rialla només va tallar una frase a mitges <b>vuit vegades</b>. Gairebé sempre queia netament a les pauses, com un signe de puntuació. I quan Provine va demanar a voluntaris que portessin un diari de les seves rialles, va comprovar que riem unes <b>trenta vegades més</b> en companyia que sols.<sup class="nr"><a href="#nota-2" id="ref-2" aria-label="Nota 2">2</a></sup></p>
+</section>
+
+<figure class="fig wide" id="f-provine">
+  <div class="vh">
+    <div><strong>1.200 rialles al carrer: gairebé mai no és un acudit</strong><span>Cada cercle representa 12 episodis naturals observats per Provine (1993). Canvia de pregunta per reagrupar les mateixes 1.200 rialles</span></div>
+    <div class="lgs" id="provine-lg"></div>
+  </div>
+  <div class="seg" role="group" aria-label="Desglossament de les 1.200 rialles">
+    <button type="button" aria-pressed="true" data-k="humor">Humor vs. conversa banal</button>
+    <button type="button" aria-pressed="false" data-k="rol">Qui riu: parlant o oient</button>
+    <button type="button" aria-pressed="false" data-k="puntuacio">On cau dins la frase</button>
+  </div>
+  <div class="plot" id="provine-viz"></div>
+  <figcaption class="src"><b>Dades reals.</b> Observació naturalista de 1.200 episodis de rialla en espais públics (Provine, <i>Ethology</i>, 1993). El bloc «Humor» mostra 18 punts (dins del sostre &lt; 20 % informat per l'autor); el repartiment parlant/oient correspon al 46 % més de rialles del parlant (~59 % vs. ~41 %); només 8 casos (0,7 %) van interrompre una frase a mitges.<sup class="nr"><a href="#nota-1" id="ref-1c" aria-label="Nota 1">1</a></sup></figcaption>
+</figure>
+
+<!-- ==================== CAPÍTOL 1: EVOLUCIÓ ==================== -->
+<section class="col">
+  <h2 class="sh">1. Un so més antic que les paraules</h2>
+  <p>Si la rialla depengués dels jocs de paraules o de la ironia, hauria nascut amb el llenguatge humà. Però no és així. Un nadó comença a riure cap als <b>tres o quatre mesos</b> —vuit mesos abans de dir la primera paraula—, i també riuen els nadons nascuts sords o cecs, que no han pogut imitar mai ningú.<sup class="nr"><a href="#nota-3" id="ref-3" aria-label="Nota 3">3</a></sup></p>
+  <p>Per entendre d'on surt aquest reflex cal mirar fora de la nostra espècie. Quan dos cadells es mosseguen jugant, corren un risc real: que l'altre malinterpreti el gest i la baralla es torni de debò. Al llarg de l'evolució, desenes de mamífers —i fins i tot alguns ocells— van desenvolupar un senyal sonor que vol dir una cosa molt precisa: <b>«això és joc, no et faré mal»</b>. Una revisió comparada del 2021 n'ha documentat almenys <b>65 espècies</b>, des de gossos, guineus i foques fins a rates i lloros kea.<sup class="nr"><a href="#nota-4" id="ref-4" aria-label="Nota 4">4</a></sup></p>
+  <p>Baixa per recórrer l'arbre evolutiu d'aquest so —i veure com el nostre cos el va transformar en el «ha-ha-ha» que reconeixem avui.</p>
+</section>
+
+<section class="scrolly" id="s-evolucio">
+  <div class="steps">
+    <div class="step" data-s="animals"><div class="step-in">
+      <span class="when">Almenys 65 espècies animals</span>
+      <p><b>L'origen és el panteix del joc.</b> En molts mamífers, la vocalització de joc no és res més que una respiració accelerada i modificada durant l'esforç físic de jugar. Les rates de laboratori, quan els fan pessigolles, emeten xiulets ultrasònics d'uns <b>50 kHz</b> —massa aguts per a l'orella humana— i busquen activament la mà que les fa riure.<sup class="nr"><a href="#nota-4" id="ref-4b" aria-label="Nota 4">4</a></sup><sup class="nr"><a href="#nota-5" id="ref-5" aria-label="Nota 5">5</a></sup></p>
+    </div></div>
+    <div class="step" data-s="avantpassat"><div class="step-in">
+      <span class="when">Fa entre 10 i 16 milions d'anys</span>
+      <p><b>L'arbre acústic dels grans simis.</b> El 2009, la primatòloga <b>Marina Davila-Ross</b> i el seu equip van fer pessigolles a cries i joves d'orangutans, goril·les, ximpanzés, bonobos i nadons humans. En comparar les propietats acústiques dels sons, l'arbre que en va sortir calcava l'arbre genètic dels homínids: la nostra rialla ja existia en l'avantpassat comú fa entre <b>10 i 16 milions d'anys</b>.<sup class="nr"><a href="#nota-6" id="ref-6" aria-label="Nota 6">6</a></sup></p>
+    </div></div>
+    <div class="step" data-s="panteix"><div class="step-in">
+      <span class="when">El so del ximpanzé</span>
+      <p><b>Entra aire, surt aire.</b> Si escoltes riure un ximpanzé, sona com una serra o un panteix ràpid: fa soroll tant en inspirar com en espirar. Com que camina recolzant-se amb les quatre extremitats, cada pas comprimeix el tòrax i lliga estretament la respiració al moviment.<sup class="nr"><a href="#nota-6" id="ref-6b" aria-label="Nota 6">6</a></sup></p>
+    </div></div>
+    <div class="step" data-s="egressiu"><div class="step-in">
+      <span class="when">El gir humà</span>
+      <p><b>Exclusivament cap enfora.</b> Els goril·les i els bonobos ja poden encadenar seqüències llargues només espirant (fins a <b>13,2 segons</b> en goril·les i <b>10,5 s</b> en bonobos), però només els humans hem passat a una rialla <b>exclusivament egressiva</b>. En posar-nos drets i alliberar el tòrax, vam guanyar el control fi de la respiració que permet trossejar una sola exhalació en ràfegues vocàliques nítides i sonores.<sup class="nr"><a href="#nota-6" id="ref-6c" aria-label="Nota 6">6</a></sup></p>
+    </div></div>
+    <div class="step" data-s="cadencia"><div class="step-in">
+      <span class="when">~75 ms cada ~210 ms</span>
+      <p><b>Un metrònom biològic.</b> Les mesures acústiques de Provine i Yong (1991) mostren que la rialla humana típica consta de notes vocàliques breus d'uns <b>75 mil·lisegons</b> repetides cada <b>210 mil·lisegons</b> (unes quatre o cinc notes per segon). El patró és tan estereotipat que gairebé ningú pot produir de forma natural un «ha-ho-ha-ho» alternant vocals diferents.<sup class="nr"><a href="#nota-7" id="ref-7" aria-label="Nota 7">7</a></sup></p>
+    </div></div>
+  </div>
+  <div class="graphic"><div class="gbox">
+    <div class="vh">
+      <div><strong id="evo-t">L'arbre evolutiu de la rialla</strong><span id="evo-s">Filogènia acústica dels homínids (Davila-Ross et al., 2009) i patró respiratori comparat</span></div>
+      <div class="lgs" id="evo-lg"></div>
+    </div>
+    <div class="plot" id="evo-viz"></div>
+    <p class="src"><b>Dades reals</b> de divergència i durada màxima de seqüències egressives en grans simis (Davila-Ross et al., <i>Current Biology</i>, 2009) i cadència humana (~75 ms / ~210 ms, Provine &amp; Yong, 1991). La banda inferior és un <b>esquema</b> del flux d'aire.<sup class="nr"><a href="#nota-6" id="ref-6d" aria-label="Nota 6">6</a></sup><sup class="nr"><a href="#nota-7" id="ref-7b" aria-label="Nota 7">7</a></sup></p>
+  </div></div>
+</section>
+
+<!-- ==================== CAPÍTOL 2: CERVELL I COS ==================== -->
+<section class="col">
+  <h2 class="sh">2. Dos circuits al cervell i una química invisible</h2>
+  <p>Tothom ha fet alguna vegada una rialla educada quan un conegut explica una anècdota fluixa, i tothom ha patit un atac de riure incontrolable en el moment més inoportú. No és només una qüestió d'intensitat: <b>al cervell són dos circuits anatòmics diferents</b>.<sup class="nr"><a href="#nota-8" id="ref-8" aria-label="Nota 8">8</a></sup></p>
+  <p>La <b>rialla espontània</b> neix en estructures evolutivament antigues i profundes —l'amígdala, el tàlem, els nuclis basals i la substància grisa periaqüeductal del tronc encefàlic— que comparteixen bona part dels mamífers. La <b>rialla voluntària</b> o social, en canvi, arrenca de l'escorça motora, la mateixa regió moderna que controla la parla deliberada. Són tan independents que certs pacients amb lesions a l'escorça motora no poden somriure ni riure quan el metge els ho demana, però esclaten a riure amb total normalitat quan escolten una broma.<sup class="nr"><a href="#nota-8" id="ref-8b" aria-label="Nota 8">8</a></sup></p>
+  <p>I el nostre cos nota la diferència. Quan la rialla és espontània, la freqüència fonamental puja, les ràfegues es tornen més curtes i irregulars i el to varia molt més.<sup class="nr"><a href="#nota-9" id="ref-9" aria-label="Nota 9">9</a></sup> A més, l'esforç sostingut del diafragma i dels músculs intercostals —com un petit esprint respiratori— desencadena una cascada neuroquímica clau: el 2017, un equip finlandès i britànic va escanejar el cervell de dotze voluntaris amb tomografia PET després de <b>trenta minuts de rialla compartida amb amics</b> i va confirmar per primera vegada l'alliberament directe d'<b>opioides endògens</b> (endorfines) al tàlem, al nucli caudat i a la ínsula anterior.<sup class="nr"><a href="#nota-10" id="ref-10" aria-label="Nota 10">10</a></sup></p>
+  <p class="note">Anys abans, Robin Dunbar i els seus col·laboradors ja havien observat que quinze minuts de rialla social en grup augmenten el llindar del dolor físic —un efecte clàssic de les endorfines—, cosa que no passa veient documentals neutres ni rient sol amb la mateixa intensitat.<sup class="nr"><a href="#nota-11" id="ref-11" aria-label="Nota 11">11</a></sup></p>
+</section>
+
+<figure class="fig wide" id="f-acustica">
+  <div class="vh">
+    <div><strong>Dues rialles, dos circuits neurals</strong><span>Compara el camí cerebral i l'ona acústica entre la rialla espontània (subcortical) i la voluntària (cortical)</span></div>
+    <div class="lgs" id="acustica-lg"></div>
+  </div>
+  <div class="seg" role="group" aria-label="Tipus de rialla">
+    <button type="button" aria-pressed="true" data-k="espontania">Espontània (involuntària)</button>
+    <button type="button" aria-pressed="false" data-k="voluntaria">Voluntària (social)</button>
+  </div>
+  <div class="plot" id="acustica-viz"></div>
+  <div class="ctlrow">
+    <button type="button" class="playb" id="acustica-play">Atura l'ona</button>
+    <div class="rng-wrap">
+      <label for="acustica-rng">Grau d'espontaneïtat</label>
+      <input type="range" class="rng" id="acustica-rng" min="0" max="100" value="90" aria-valuetext="90 %, rialla espontània">
+    </div>
+  </div>
+  <figcaption class="src"><b>Esquema anatòmic i acústic</b> basat en Wild et al. (<i>Brain</i>, 2003), Manninen et al. (<i>J. Neurosci.</i>, 2017, regions PET d'opioides endògens), Lavan et al. (2016) i els paràmetres reals de 395 rialles de Wood et al. (<i>PLOS ONE</i>, 2017: freqüència fonamental mitjana F0 de 411 Hz en dones i 313 Hz en homes; durada mediana ~1,4 s).<sup class="nr"><a href="#nota-8" id="ref-8c" aria-label="Nota 8">8</a></sup><sup class="nr"><a href="#nota-10" id="ref-10b" aria-label="Nota 10">10</a></sup><sup class="nr"><a href="#nota-12" id="ref-12" aria-label="Nota 12">12</a></sup></figcaption>
+</figure>
+
+<!-- ==================== CAPÍTOL 3: ANTROPOLOGIA I GROOMING ==================== -->
+<section class="col">
+  <h2 class="sh">3. El «desparasitat» a distància</h2>
+  <p>Aquest bany d'endorfines resol un dels grans enigmes de l'antropologia humana. Els primats mantenen la pau i les aliances dins del grup mitjançant el <b>desparasitat social</b> (<i lang="en">grooming</i>): es passen hores raspallant-se el pelatge els uns als altres. El tacte suau allibera endorfines, redueix l'estrès i crea vincles de confiança duradors.<sup class="nr"><a href="#nota-13" id="ref-13" aria-label="Nota 13">13</a></sup></p>
+  <p>Però el desparasitat té un coll d'ampolla implacable: <b>només pots fer-ho d'un en un</b>, i mentre raspalles un company no pots buscar menjar ni vigilar. L'antropòleg <b>Robin Dunbar</b> va demostrar que els primats no poden dedicar gaire més d'un <b>20 % del temps actiu del dia</b> a desparasitar-se, cosa que posa un sostre pràctic a la mida dels seus grups (al voltant de cinquanta individus en els ximpanzés).<sup class="nr"><a href="#nota-13" id="ref-13b" aria-label="Nota 13">13</a></sup></p>
+  <p>Quan els nostres avantpassats van començar a viure en comunitats molt més grans —cap als cent cinquanta coneguts propers que estimen els models del cervell social—, mantenir els llaços mà a mà hauria exigit més del 40 % del dia. Calia una drecera. I la solució va ser <b>riure en grup</b>: el mateix premi d'endorfines del tacte, però sense tocar-se i per a diverses persones alhora.<sup class="nr"><a href="#nota-14" id="ref-14" aria-label="Nota 14">14</a></sup></p>
+</section>
+
+<section class="scrolly" id="s-grooming">
+  <div class="steps">
+    <div class="step" data-s="sostre"><div class="step-in">
+      <span class="when">Fins a ~50 individus</span>
+      <p><b>El sostre del 20 %.</b> En micos del Vell Món com papions i gelades, com més gran és la tropa, més percentatge del dia dediquen a desparasitar-se. Cap al 20 % del temps diürn el pressupost s'esgota: cal menjar, desplaçar-se i descansar.<sup class="nr"><a href="#nota-13" id="ref-13c" aria-label="Nota 13">13</a></sup></p>
+    </div></div>
+    <div class="step" data-s="bretxa"><div class="step-in">
+      <span class="when">La bretxa humana (~150)</span>
+      <p><b>No hi ha prou hores al dia.</b> Si els humans haguéssim de cohesionar les nostres xarxes socials amb desparasitat físic 1 a 1, necessitaríem més de quatre de cada deu hores desperts. La cohesió de grups grans exigia un mecanisme que escalés més enllà de la parella.<sup class="nr"><a href="#nota-13" id="ref-13d" aria-label="Nota 13">13</a></sup><sup class="nr"><a href="#nota-14" id="ref-14b" aria-label="Nota 14">14</a></sup></p>
+    </div></div>
+    <div class="step" data-s="cor"><div class="step-in">
+      <span class="when">Grups de 3 a 4 persones</span>
+      <p><b>Un multiplicador per tres.</b> Quan Guillaume Dezecache i Robin Dunbar van mesurar la mida dels grups naturals de conversa i rialla en bars i places, van veure que el límit natural volta les <b>3 o 4 persones</b>. En lloc de vincular un sol company cada vegada, una rialla compartida «desparasita» tres persones simultàniament.<sup class="nr"><a href="#nota-14" id="ref-14c" aria-label="Nota 14">14</a></sup></p>
+    </div></div>
+    <div class="step" data-s="contagi"><div class="step-in">
+      <span class="when">El circuit mirall</span>
+      <p><b>Per què la rialla s'encomana.</b> L'any 2006, un equip encapçalat per Jane Warren i Sophie Scott va posar voluntaris dins d'un escàner de ressonància magnètica mentre escoltaven sons humans. Només sentir riure activava automàticament l'<b>escorça premotora</b> que prepara els músculs de la cara per somriure i riure. El cervell humà està cablejat per sumar-se al cor abans i tot que ho decideixis.<sup class="nr"><a href="#nota-15" id="ref-15" aria-label="Nota 15">15</a></sup></p>
+    </div></div>
+  </div>
+  <div class="graphic"><div class="gbox">
+    <div class="vh">
+      <div><strong id="grm-t">Del desparasitat 1 a 1 al cor de rialles</strong><span id="grm-s">Com la rialla resol el sostre temporal del vincle social en primats</span></div>
+      <div class="lgs" id="grm-lg"></div>
+    </div>
+    <div class="plot" id="grm-viz"></div>
+    <p class="src"><b>Esquema conceptual amb llindars reals</b> basats en Dunbar (<i>Folia Primatol.</i>, 1991: sostre del ~20 % del temps en primats) i Dezecache &amp; Dunbar (<i>Evol. Hum. Behav.</i>, 2012: mida natural dels grups de rialla ~3–4 persones).<sup class="nr"><a href="#nota-13" id="ref-13e" aria-label="Nota 13">13</a></sup><sup class="nr"><a href="#nota-14" id="ref-14d" aria-label="Nota 14">14</a></sup></p>
+  </div></div>
+</section>
+
+<!-- ==================== CAPÍTOL 4: CULTURA, UNIVERSALS I CARA FOSCA ==================== -->
+<section class="col">
+  <h2 class="sh">4. Un detector universal d'amics — i la cara fosca de la rialla</h2>
+  <p>Si la rialla és un senyal d'aliança evolutiu, hauria d'entendre's més enllà de les fronteres culturals i dels idiomes. El 2016, l'investigador <b>Gregory Bryant</b> i un equip internacional van fer una prova audaç: van fer escoltar clips d'<b>un sol segon</b> de dues persones estatunidenques rient juntes a <b>966 oients de 24 societats</b> d'arreu del planeta —des d'estudiants del Japó o del Perú fins a caçadors-recol·lectors hadza de Tanzània, tsimané de Bolívia i shuar de l'Equador.<sup class="nr"><a href="#nota-16" id="ref-16" aria-label="Nota 16">16</a></sup></p>
+  <p>Sense entendre ni una sola paraula del que havia passat abans, els oients de <b>totes vint-i-quatre societats</b> van distingir si aquelles dues persones eren <b>amigues o desconegudes</b> amb una precisió clarament superior a l'atzar (entre el <b>53 % i el 67 %</b>, amb una mitjana del 61 %). Dos anys més tard, un segon estudi amb <b>884 oients de 21 societats</b> va demostrar que arreu del món també distingim una rialla espontània d'una de voluntària (entre el <b>56 % i el 69 %</b> d'encerts).<sup class="nr"><a href="#nota-17" id="ref-17" aria-label="Nota 17">17</a></sup></p>
+  <p>La nostra orella, doncs, actua com un radar social ultraràpid. I aquest radar no detecta només afecte. Quan els psicòlegs <b>Adrienne Wood, Jared Martin i Paula Niedenthal</b> van analitzar acústicament <b>395 rialles</b> i les van fer avaluar a 762 persones, van veure que el cervell classifica la rialla en tres funcions socials ben diferents: <b>recompensa</b> (alegria espontània), <b>afiliació</b> (calmar i apropar) i <b>dominància</b> (marcar jerarquia o burlar-se d'algú).<sup class="nr"><a href="#nota-12" id="ref-12b" aria-label="Nota 12">12</a></sup></p>
+</section>
+
+<figure class="fig wide" id="f-cultures">
+  <div class="vh">
+    <div><strong>Què llegeix l'orella humana en un segon de rialla</strong><span>A l'esquerra, els dos experiments transculturals reals (Bryant et al.); a la dreta, el mapa de les tres funcions socials (Wood et al.)</span></div>
+    <div class="lgs" id="cultures-lg"></div>
+  </div>
+  <div class="plot" id="cultures-viz"></div>
+  <figcaption class="src"><b>Esquerra (dades reals):</b> rangs de precisió per sobre de l'atzar (50 %) a les 24 societats de Bryant et al. (<i>PNAS</i>, 2016, N = 966) i les 21 societats de Bryant et al. (<i>Psychol. Sci.</i>, 2018, N = 884). <b>Dreta (esquema conceptual):</b> les tres funcions socials de la rialla identificades a Wood, Martin &amp; Niedenthal (<i>PLOS ONE</i>, 2017, 395 rialles).<sup class="nr"><a href="#nota-16" id="ref-16b" aria-label="Nota 16">16</a></sup><sup class="nr"><a href="#nota-17" id="ref-17b" aria-label="Nota 17">17</a></sup><sup class="nr"><a href="#nota-12" id="ref-12c" aria-label="Nota 12">12</a></sup></figcaption>
+</figure>
+
+<div class="tri-grid">
+  <div class="tri-card" style="border-top-color:var(--warm)">
+    <h3>Recompensa</h3>
+    <p>Espontània, aguda i plena d'energia. Reforça els comportaments que ens agraden i dispara la sensació de benestar compartit.<sup class="nr"><a href="#nota-12" id="ref-12d" aria-label="Nota 12">12</a></sup></p>
+  </div>
+  <div class="tri-card" style="border-top-color:var(--cold)">
+    <h3>Afiliació</h3>
+    <p>Més suau i controlada. Serveix per greixar les converses quotidianes, rebaixar una crítica i assenyalar que no som una amenaça.<sup class="nr"><a href="#nota-12" id="ref-12e" aria-label="Nota 12">12</a></sup></p>
+  </div>
+  <div class="tri-card" style="border-top-color:#F5C518">
+    <h3>Dominància</h3>
+    <p>Més forta, greu o irònica. En lloc d'incloure, exclou: recorda a qui rep la burla quin lloc ocupa dins del grup.<sup class="nr"><a href="#nota-12" id="ref-12f" aria-label="Nota 12">12</a></sup></p>
+  </div>
+</div>
+
+<section class="col">
+  <p style="margin-top:36px">Per això la rialla té també una cara fosca. Algunes persones desenvolupen <b>gelotofòbia</b> —la por persistent que els altres es riguin d'elles—, fins al punt d'interpretar qualsevol rialla càlida com una amenaça hostil.<sup class="nr"><a href="#nota-18" id="ref-18" aria-label="Nota 18">18</a></sup> I la força del contagi social pot arribar a desbordar del tot el control conscient: el gener del 1962, en un internat de noies de Kashasha (a l'actual Tanzània), un brot de rialla incontrolable es va anar encomanant d'escola en escola i de poble en poble durant mesos, obligant a tancar aules i causant plors, desmais i angoixa, tal com van documentar els metges A. M. Rankin i P. J. Philip el 1963. Tot i que avui es classifica com un episodi psicogènic massiu lligat a l'estrès social, mostra fins a quin punt la rialla pot funcionar com una onada col·lectiva aliena a l'alegria.<sup class="nr"><a href="#nota-19" id="ref-19" aria-label="Nota 19">19</a></sup></p>
+  <p>En el fons, riem perquè som animals ultrasocials atrapats dins de cossos que necessiten confiar en desenes de persones cada dia. L'acudit només és el pretext modern. Sota la superfície, cada vegada que deixes anar un «ha-ha-ha» en una pausa de la conversa, estàs fent sonar un codi de pau de més de deu milions d'anys: una manera ràpida, gratuïta i sense mans de dir als qui tens davant que jugueu al mateix equip.</p>
+</section>
+
+<!-- ==================== PARAULES CLAU ==================== -->
+<section class="col">
+  <h2 class="sh">Paraules clau</h2>
+  <dl class="gl">
+    <dt>Rialla egressiva</dt>
+    <dd>Vocalització produïda només mentre expulsem l'aire dels pulmons. Els grans simis alternen sons en inspirar i espirar; els humans hem especialitzat la rialla en ràfegues egressives ritmades.</dd>
+    <dt>Desparasitat vocal</dt>
+    <dd>Hipòtesi de l'antropòleg Robin Dunbar segons la qual la rialla en grup (i més tard el cant i la conversa) va substituir el desparasitat físic per alliberar endorfines i cohesionar grups humans massa grans per vincular-se d'un en un.</dd>
+    <dt>Opioides endògens</dt>
+    <dd>Molècules produïdes pel propi cervell (com les endorfines) que redueixen la percepció del dolor i reforcen els vincles socials. S'alliberen tant amb el tacte afectuós com amb la rialla compartida.</dd>
+    <dt>Efecte de puntuació</dt>
+    <dd>Observació de Robert Provine segons la qual la rialla en conversa gairebé mai no talla una frase a mitges: es col·loca a les pauses naturals del discurs.</dd>
+    <dt>Gelotofòbia</dt>
+    <dd>Del grec <i lang="el">gélōs</i> («rialla») i <i lang="el">phóbos</i> («por»). Temor marcat de ser objecte de burla, descrit i mesurat empíricament per Willibald Ruch i René Proyer.</dd>
+  </dl>
+</section>
+
+<!-- ==================== METODOLOGIA, NOTES I FONTS ==================== -->
+<section class="col fn" id="notes">
+  <h2>Metodologia</h2>
+  <p>Aquest article separa explícitament les <b>dades empíriques verificades</b> dels <b>esquemes conceptuals</b>. Els recomptes dels 1.200 episodis naturals provenen de Provine (1993); la cadència acústica (~75 ms / ~210 ms), de Provine i Yong (1991); les durades màximes egressives dels grans simis, de Davila-Ross et al. (2009); els rangs de precisió transcultural (24 societats, N = 966; 21 societats, N = 884), de Bryant et al. (2016, 2018); i les mesures acústiques de 395 rialles, de la taula 2 de Wood et al. (2017). El tall cerebral, les ones de respiració i el diagrama de grups de Dunbar són esquemes il·lustratius basats en els articles citats. L'article reconeix que la hipòtesi del desparasitat vocal és un marc evolutiu influent, però que continua debatent-se juntament amb altres explicacions centrades en el joc i la detecció d'aliances.</p>
+
+  <h2>Notes</h2>
+  <p class="nt-i">Cada número del text porta aquí. La fletxa (↑) et torna al punt on llegies; els números entre claudàtors enllacen amb les fonts.</p>
+  <ol class="nts">
+    <li id="nota-1"><a class="bk" href="#ref-1" aria-label="Torna al text">↑</a> Observació naturalista de 1.200 episodis de rialla: menys del 20 % segueixen humor, el parlant riu un 46 % més que l'audiència (dones parlants +127 % davant audiència masculina) i només 8 casos interrompen una frase a mitges (tots del mateix parlant) <a class="fr" href="#font-1">[1]</a>.</li>
+    <li id="nota-2"><a class="bk" href="#ref-2" aria-label="Torna al text">↑</a> Multiplicador social (~30 vegades més probable en companyia que sol) i síntesi d'estudis de camp <a class="fr" href="#font-2">[2]</a>.</li>
+    <li id="nota-3"><a class="bk" href="#ref-3" aria-label="Torna al text">↑</a> Aparició de la rialla als 3–4 mesos d'edat i caràcter innat (també en nadons nascuts sords o cecs) <a class="fr" href="#font-2">[2]</a> <a class="fr" href="#font-15">[15]</a> <a class="fr" href="#font-16">[16]</a>.</li>
+    <li id="nota-4"><a class="bk" href="#ref-4" aria-label="Torna al text">↑</a> Revisió comparada de vocalitzacions de joc en almenys 65 espècies de mamífers i aus <a class="fr" href="#font-4">[4]</a>.</li>
+    <li id="nota-5"><a class="bk" href="#ref-5" aria-label="Torna al text">↑</a> Vocalitzacions ultrasòniques (~50 kHz) en rates durant el joc i les pessigolles <a class="fr" href="#font-5">[5]</a>.</li>
+    <li id="nota-6"><a class="bk" href="#ref-6" aria-label="Torna al text">↑</a> Reconstrucció filogenètica de la rialla en orangutans, goril·les, bonobos, ximpanzés i humans (avantpassat comú fa 10–16 Ma) i seqüències egressives màximes (13,2 s goril·la; 10,5 s bonobo; 4,2 s orangutan; 3,3 s ximpanzé) <a class="fr" href="#font-3">[3]</a>.</li>
+    <li id="nota-7"><a class="bk" href="#ref-7" aria-label="Torna al text">↑</a> Notes de ~75 ms repetides cada ~210 ms en la rialla humana estereotipada <a class="fr" href="#font-6">[6]</a>.</li>
+    <li id="nota-8"><a class="bk" href="#ref-8" aria-label="Torna al text">↑</a> Dues vies neurals independents (subcortical involuntària vs. cortical motora voluntària) i dissociacions clíniques <a class="fr" href="#font-7">[7]</a>.</li>
+    <li id="nota-9"><a class="bk" href="#ref-9" aria-label="Torna al text">↑</a> Diferències acústiques i fisiològiques entre rialla espontània i rialla voluntària <a class="fr" href="#font-8">[8]</a>.</li>
+    <li id="nota-10"><a class="bk" href="#ref-10" aria-label="Torna al text">↑</a> Estudi amb PET ([11C]carfentanil) en 12 homes després de 30 min de rialla social: alliberament d'opioides endògens al tàlem, nucli caudat i ínsula anterior <a class="fr" href="#font-11">[11]</a>.</li>
+    <li id="nota-11"><a class="bk" href="#ref-11" aria-label="Torna al text">↑</a> Elevació del llindar del dolor després de rialla social en grup <a class="fr" href="#font-10">[10]</a>.</li>
+    <li id="nota-12"><a class="bk" href="#ref-12" aria-label="Torna al text">↑</a> Anàlisi acústica de 395 rialles avaluades per 762 persones i classificació en recompensa, afiliació i dominància <a class="fr" href="#font-14">[14]</a>.</li>
+    <li id="nota-13"><a class="bk" href="#ref-13" aria-label="Torna al text">↑</a> Relació entre mida de grup i temps de desparasitat social en primats (~20 % sostre pràctic) <a class="fr" href="#font-9">[9]</a>.</li>
+    <li id="nota-14"><a class="bk" href="#ref-14" aria-label="Torna al text">↑</a> Mida natural dels grups de rialla (~3–4 persones) i multiplicador de cohesió social respecte al desparasitat 1 a 1 <a class="fr" href="#font-12">[12]</a>.</li>
+    <li id="nota-15"><a class="bk" href="#ref-15" aria-label="Torna al text">↑</a> Sistema auditiu-motor mirall per a vocalitzacions positives (activació premotora en sentir rialles) <a class="fr" href="#font-13">[13]</a>.</li>
+    <li id="nota-16"><a class="bk" href="#ref-16" aria-label="Torna al text">↑</a> Identificació d'amics vs. desconeguts a partir d'1 segon de rialla compartida en 966 oients de 24 societats (precisió 53–67 %, mitjana 61 %) <a class="fr" href="#font-17">[17]</a>.</li>
+    <li id="nota-17"><a class="bk" href="#ref-17" aria-label="Torna al text">↑</a> Identificació de rialla espontània vs. voluntària en 884 oients de 21 societats (precisió 56–69 %) <a class="fr" href="#font-18">[18]</a>.</li>
+    <li id="nota-18"><a class="bk" href="#ref-18" aria-label="Torna al text">↑</a> Gelotofòbia: definició empírica i diferències individuals <a class="fr" href="#font-19">[19]</a>.</li>
+    <li id="nota-19"><a class="bk" href="#ref-19" aria-label="Torna al text">↑</a> Informe mèdic original de l'epidèmia de rialla del districte de Bukoba (Tanganyika, 1962) <a class="fr" href="#font-20">[20]</a>.</li>
+  </ol>
+
+  <h2>Fonts</h2>
+  <ol class="fts">
+    <li id="font-1">Provine, R. R. (1993). «Laughter Punctuates Speech: Linguistic, Social and Gender Contexts of Laughter». <i>Ethology</i>, 95(4), 291–298. DOI: <a href="https://doi.org/10.1111/j.1439-0310.1993.tb00478.x">10.1111/j.1439-0310.1993.tb00478.x</a></li>
+    <li id="font-2">Provine, R. R. (2016). «Laughter as a scientific problem: An adventure in sidewalk neuroscience». <i>Journal of Comparative Neurology</i>, 524(8), 1532–1539. DOI: <a href="https://doi.org/10.1002/cne.23845">10.1002/cne.23845</a></li>
+    <li id="font-3">Davila-Ross, M., Owren, M. J., &amp; Zimmermann, E. (2009). «Reconstructing the Evolution of Laughter in Great Apes and Humans». <i>Current Biology</i>, 19(13), 1106–1111. DOI: <a href="https://doi.org/10.1016/j.cub.2009.05.028">10.1016/j.cub.2009.05.028</a></li>
+    <li id="font-4">Winkler, S. L., &amp; Bryant, G. A. (2021). «Play vocalisations and human laughter: a comparative review». <i>Bioacoustics</i>, 30(5), 499–526. DOI: <a href="https://doi.org/10.1080/09524622.2021.1905065">10.1080/09524622.2021.1905065</a></li>
+    <li id="font-5">Panksepp, J., &amp; Burgdorf, J. (2003). «“Laughing” rats and the evolutionary antecedents of human joy?». <i>Physiology &amp; Behavior</i>, 79(3), 533–547. DOI: <a href="https://doi.org/10.1016/s0031-9384(03)00159-8">10.1016/s0031-9384(03)00159-8</a></li>
+    <li id="font-6">Provine, R. R., &amp; Yong, Y. L. (1991). «Laughter: A Stereotyped Human Vocalization». <i>Ethology</i>, 89(2), 115–124. DOI: <a href="https://doi.org/10.1111/j.1439-0310.1991.tb00298.x">10.1111/j.1439-0310.1991.tb00298.x</a></li>
+    <li id="font-7">Wild, B., Rodden, F. A., Grodd, W., &amp; Ruch, W. (2003). «Neural correlates of laughter and humour». <i>Brain</i>, 126(10), 2121–2138. DOI: <a href="https://doi.org/10.1093/brain/awg226">10.1093/brain/awg226</a></li>
+    <li id="font-8">Lavan, N., Scott, S. K., &amp; McGettigan, C. (2016). «Laugh Like You Mean It: Authenticity Modulates Acoustic, Physiological and Perceptual Properties of Laughter». <i>Journal of Nonverbal Behavior</i>, 40(2), 133–149. DOI: <a href="https://doi.org/10.1007/s10919-015-0222-8">10.1007/s10919-015-0222-8</a></li>
+    <li id="font-9">Dunbar, R. I. M. (1991). «Functional Significance of Social Grooming in Primates». <i>Folia Primatologica</i>, 57(3), 121–131. DOI: <a href="https://doi.org/10.1159/000156574">10.1159/000156574</a></li>
+    <li id="font-10">Dunbar, R. I. M., et al. (2012). «Social laughter is correlated with an elevated pain threshold». <i>Proceedings of the Royal Society B</i>, 279(1731), 1161–1167. DOI: <a href="https://doi.org/10.1098/rspb.2011.1373">10.1098/rspb.2011.1373</a></li>
+    <li id="font-11">Manninen, S., et al. (2017). «Social Laughter Triggers Endogenous Opioid Release in Humans». <i>Journal of Neuroscience</i>, 37(25), 6125–6131. DOI: <a href="https://doi.org/10.1523/JNEUROSCI.0688-16.2017">10.1523/JNEUROSCI.0688-16.2017</a></li>
+    <li id="font-12">Dezecache, G., &amp; Dunbar, R. I. M. (2012). «Sharing the joke: the size of natural laughter groups». <i>Evolution and Human Behavior</i>, 33(6), 775–779. DOI: <a href="https://doi.org/10.1016/j.evolhumbehav.2012.07.002">10.1016/j.evolhumbehav.2012.07.002</a></li>
+    <li id="font-13">Warren, J. E., Sauter, D. A., Eisner, F., et al. (2006). «Positive Emotions Preferentially Engage an Auditory–Motor “Mirror” System». <i>Journal of Neuroscience</i>, 26(50), 13067–13075. DOI: <a href="https://doi.org/10.1523/JNEUROSCI.3907-06.2006">10.1523/JNEUROSCI.3907-06.2006</a> · Revisió: Scott, S. K., et al. (2014). <i>Trends in Cognitive Sciences</i>, 18(12), 618–620. DOI: <a href="https://doi.org/10.1016/j.tics.2014.09.002">10.1016/j.tics.2014.09.002</a></li>
+    <li id="font-14">Wood, A., Martin, J., &amp; Niedenthal, P. (2017). «Towards a social functional account of laughter: Acoustic features convey reward, affiliation, and dominance». <i>PLOS ONE</i>, 12(8), e0183811. DOI: <a href="https://doi.org/10.1371/journal.pone.0183811">10.1371/journal.pone.0183811</a></li>
+    <li id="font-15">Sroufe, L. A., &amp; Wunsch, J. P. (1972). «The Development of Laughter in the First Year of Life». <i>Child Development</i>, 43(4), 1326–1344. DOI: <a href="https://doi.org/10.1111/j.1467-8624.1972.tb02088.x">10.1111/j.1467-8624.1972.tb02088.x</a></li>
+    <li id="font-16">Mireault, G. C., et al. (2012). «Humour Perception and Creation between Parents and 3- to 6-month-old Infants». <i>Infant and Child Development</i>, 21(4), 338–347. DOI: <a href="https://doi.org/10.1002/icd.757">10.1002/icd.757</a></li>
+    <li id="font-17">Bryant, G. A., et al. (2016). «Detecting affiliation in colaughter across 24 societies». <i>PNAS</i>, 113(17), 4682–4687. DOI: <a href="https://doi.org/10.1073/pnas.1524993113">10.1073/pnas.1524993113</a></li>
+    <li id="font-18">Bryant, G. A., et al. (2018). «The Perception of Spontaneous and Volitional Laughter Across 21 Societies». <i>Psychological Science</i>, 29(9), 1515–1525. DOI: <a href="https://doi.org/10.1177/0956797618778235">10.1177/0956797618778235</a></li>
+    <li id="font-19">Ruch, W., &amp; Proyer, R. T. (2008). «The fear of being laughed at: Individual and group differences in Gelotophobia». <i>Humor</i>, 21(1), 47–67. DOI: <a href="https://doi.org/10.1515/HUMOR.2008.002">10.1515/HUMOR.2008.002</a></li>
+    <li id="font-20">Rankin, A. M., &amp; Philip, P. J. (1963). «An epidemic of laughing in the Bukoba district of Tanganyika». <i>Central African Journal of Medicine</i>, 9(5), 167–170. <a href="https://pubmed.ncbi.nlm.nih.gov/13973013/">PMID: 13973013</a></li>
+  </ol>
+</section>
+</main>
+
+<footer class="ib-foot">
+  <a href="../../"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="../../assets/scrolly.js"></script>
+<script src="../../assets/ib-viz.js"></script>
+<script src="dades.js"></script>
+<script src="article.js"></script>
+<script src="cites.js"></script>
+<script src="../../assets/ib.js"></script>
+</body>
+</html>
