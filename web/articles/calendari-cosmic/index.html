@@ -15,28 +15,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=STIX+Two+Text:ital,wght@0,400;0,500;1,400&display=swap">
 <link rel="stylesheet" href="../../assets/ib.css">
 <link rel="stylesheet" href="../../assets/article.css">
-<style>
-.ghead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:2px 16px;font-family:var(--sans);margin-bottom:6px}
-.ghead strong{font-family:var(--serif-display);font-weight:400;font-size:24px;letter-spacing:-.048em}
-.ghead span{font-size:13.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.legend{display:flex;gap:18px;font-family:var(--sans);font-size:12.5px;color:var(--ink-2);margin-top:4px}
-.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0}
-.callist{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:4px 20px;font-family:var(--sans);font-size:13.5px;min-height:1.4em}
-.callist li{display:flex;align-items:baseline;gap:6px}
-.callist b{display:inline-block;min-width:17px;height:17px;line-height:17px;text-align:center;color:#fff;font-size:11px;border-radius:2px}
-.callist span{color:var(--muted)}
-.lifectl{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;font-family:var(--sans);font-size:14px}
-.lifectl label{font-size:12.5px;color:var(--muted)}
-.rng{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;margin:0;cursor:pointer}
-.rng::-webkit-slider-runnable-track{height:1px;background:var(--ink)}
-.rng::-moz-range-track{height:1px;background:var(--ink)}
-.rng::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--ink);margin-top:-8px;border:3px solid var(--paper);box-shadow:0 0 0 1px var(--ink)}
-.rng::-moz-range-thumb{width:11px;height:11px;border-radius:50%;background:var(--ink);border:3px solid var(--paper);box-shadow:0 0 0 1px var(--ink)}
-#lifeOut{font-family:var(--serif);font-size:19px;line-height:1.45;margin:4px 0 0;min-height:2.9em}
-.words{font-family:var(--sans);font-size:17px;line-height:1.7;color:var(--ink-2)}
-.words b{color:var(--ink);font-weight:600}
-@media (max-width:899px){.ghead strong{font-size:19px}.ghead span{font-size:12px}.legend{font-size:11px;gap:12px}}
-</style>
+<link rel="stylesheet" href="article.css">
 </head>
 <body class="ib-article">
 <header class="ib-bar">
@@ -136,10 +115,13 @@
     </div>
     <div class="graphic" id="calgraphic">
       <div class="gbox" id="calbox">
-        <div class="ghead" aria-live="polite"><strong id="calName">Tot l'any</strong><span id="calSub">1 dia = 37,8 milions d'anys</span></div>
-        <svg id="cal" role="img" aria-label="Línia del temps de l'any còsmic. A mesura que es baixa, s'apropa al final de l'any: tot l'any, el desembre, el 31 de desembre, l'última hora, l'últim minut i els últims segons."></svg>
+        <div class="vh" aria-live="polite">
+          <div><strong id="calName">Tot l'any</strong><span id="calSub">1 dia = 37,8 milions d'anys</span></div>
+          <div class="lgs" id="calLg"></div>
+        </div>
+        <div class="plot" id="calplot"></div>
         <ol class="callist" id="calList"></ol>
-        <div class="legend"><span><i style="background:#2C5DA8"></i>Univers</span><span><i style="background:#3F7F2A"></i>Terra i vida</span><span><i style="background:#C8442A"></i>Humans</span></div>
+        <p class="src"><b>Dades reals:</b> Planck Collaboration (2020) per a l'edat de l'univers (13.787 Ma) i estimacions científiques citades al final.</p>
       </div>
     </div>
   </section>
@@ -148,22 +130,38 @@
     <h2 class="sh" id="l-any-repartit">L'any, repartit</h2>
     <p>Si es mira l'any sencer de cop, la proporció és clara: durant dues terceres parts no existia ni el Sol. La vida microscòpica ocupa gairebé tota la resta. I el llinatge humà és una franja tan prima que costa veure-la.</p>
   </section>
-  <figure class="fig wide">
-    <div id="erasbox"><svg id="eras" role="img" aria-label="Barra de l'any còsmic dividida en trams: abans del Sol, el 67 %; la Terra sense vida coneguda, el 8 %; vida microscòpica, el 21 %; animals i plantes, el 4 %; llinatge humà, el 0,05 %."></svg></div>
-    <figcaption>Proporció de l'any còsmic que ocupa cada etapa. Els límits són el naixement del Sol, els primers fòssils de vida, els primers animals grans i la separació entre humans i ximpanzés.</figcaption>
+  <figure class="fig wide" id="erasFig">
+    <div class="vh">
+      <div><strong id="erasTitle">L'any repartit per àrea</strong><span id="erasSub">Cada quadrat mostra el temps des d'aquell llindar fins avui · 1 quadradet = 1 dia còsmic (37,8 Ma)</span></div>
+      <div class="lgs" id="erasLg"></div>
+    </div>
+    <div class="seg" role="group" aria-label="Vista de les etapes de l'univers">
+      <button type="button" data-eras="area" aria-pressed="true">Proporcions (àrea)</button>
+      <button type="button" data-eras="log" aria-pressed="false">Temps profund (escala logarítmica)</button>
+    </div>
+    <div class="plot" id="erasbox"></div>
+    <figcaption class="src"><b>Dades reals:</b> Planck Collaboration (2020) i fonts citades al final. Proporció de l'any còsmic que ocupa cada etapa: els límits són el naixement del Sol, els primers fòssils de vida, els primers animals grans i la separació entre humans i ximpanzés.</figcaption>
   </figure>
 
   <section class="col">
     <h2 class="sh" id="la-teva-vida">La teva vida, al calendari</h2>
     <p>En aquesta escala, cada segon equival a 437 anys. Una vida humana sencera no arriba ni a un quart de segon.</p>
-    <div class="fig" style="max-width:640px;margin-top:28px">
-      <div class="lifectl">
-        <label for="lifeRange">Arrossega per triar una edat</label>
-        <input class="rng" id="lifeRange" type="range" min="1" max="120" step="1" value="80">
-        <div id="lifebox"><svg id="life" role="img" aria-label="L'últim segon de l'any còsmic, amb la durada d'una vida humana marcada al final."></svg></div>
-        <p id="lifeOut" aria-live="polite"></p>
+    <figure class="fig" style="max-width:740px;margin-top:28px">
+      <div class="vh">
+        <div><strong>L'últim segon de l'any</strong><span>437 anys comprimits entre les 23:59:59 i mitjanit</span></div>
+        <div class="lgs" id="lifeLg"></div>
       </div>
-    </div>
+      <div class="plot" id="lifebox"></div>
+      <div class="ctlrow">
+        <div class="rng-wrap">
+          <label for="lifeRange">Arrossega per triar una edat</label>
+          <input class="rng" id="lifeRange" type="range" min="1" max="120" step="1" value="80" aria-valuetext="80 anys, 0,18 segons de l'any còsmic">
+          <span class="rng-val" id="lifeVal">80 anys</span>
+        </div>
+      </div>
+      <p id="lifeOut" aria-live="polite"></p>
+      <figcaption class="src"><b>Dades reals:</b> escala Planck Collaboration (2020), on 1 segon equival a 437 anys; fites històriques situades a escala real.</figcaption>
+    </figure>
   </section>
 
   <section class="col">
@@ -225,6 +223,7 @@
   <a href="../../"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="../../assets/ib-viz.js"></script>
 <script src="../../assets/scrolly.js"></script>
 <script src="calendari.js"></script>
 <script src="../../assets/ib.js"></script>

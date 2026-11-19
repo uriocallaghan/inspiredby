@@ -15,77 +15,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=STIX+Two+Text:ital,wght@0,400;0,500;1,400&display=swap">
 <link rel="stylesheet" href="../../assets/ib.css">
 <link rel="stylesheet" href="../../assets/article.css">
-<style>
-:root{--dust:#B07434;--dry:#9A6326;--bio:#4C8A2E;--wet:#16786C;--sea:#E6EDF5}
-.k-d{color:var(--dry);font-weight:600}.k-b{color:var(--bio);font-weight:600}
-.page{overflow-x:clip}
-.step b{font-weight:600}
-.ghead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:10px;font-family:var(--sans)}
-.state{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
-.state strong{font-family:var(--serif-display);font-weight:400;font-size:22px;letter-spacing:-.048em;line-height:1.2}
-.state .val{font-size:14.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.state .src{font-size:12.5px;color:var(--muted)}
-.lg{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--ink-2);flex:none}
-.lg span{display:flex;align-items:center;gap:7px}
-.lg i{display:inline-block;width:16px;height:9px;border-radius:2px}
-.lg .dd{background:radial-gradient(circle,var(--dust) 1.3px,transparent 1.6px) 0 0/4.5px 4.5px}
-.map{position:relative}
-.map canvas{display:block;width:100%;-webkit-mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent),linear-gradient(to bottom,transparent,#000 7%,#000 93%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent),linear-gradient(to bottom,transparent,#000 7%,#000 93%,transparent);mask-composite:intersect}
-.ov{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.ann{left:0;top:0;transition:opacity .45s ease;will-change:transform}
-.ann.r{text-align:right}.ann.c{text-align:center}
-.ann .n{font-variant-numeric:tabular-nums}
-.ann.big b{font-family:var(--serif);font-size:19px;font-weight:600;line-height:1.1}
-.cap2{font-family:var(--sans);font-size:12px;color:var(--muted);margin:8px 0 0}
-.ctl2{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--hair);font-family:var(--sans);font-size:12.5px;color:var(--ink-2)}
-.ctl2 .lbl{grid-column:1/-1;display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
-.months{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);grid-column:2;margin-top:-6px;font-variant-numeric:tabular-nums}
-.fig .gh{flex-wrap:wrap}
-.figbox{position:relative}
-.segrow{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between;margin:0 0 12px;font-family:var(--sans)}
-.seg{flex-wrap:wrap;gap:6px 16px}
-.seg button{min-height:30px}
-.readout{font-family:var(--sans);font-size:14px;color:var(--ink-2);margin:0 0 10px;font-variant-numeric:tabular-nums;min-height:2.8em}
-.readout b{color:var(--ink);font-weight:600}
-.readout .big{display:block;font-family:var(--serif-display);font-size:26px;font-weight:600;color:var(--ink);line-height:1.2}
-#sal,#trucks,#budget,#years{display:block;width:100%}
-#years{overflow:visible}
-.estm{font-family:var(--sans)}
-.estm .row{cursor:pointer}
-.estm .row:hover text,.estm .row:focus text{fill:var(--ink)}
-.verdict{font-family:var(--sans);font-size:15px;line-height:1.45;margin:12px 0 0;min-height:3em}
-.verdict b{font-weight:700}
-.sl-row{display:grid;grid-template-columns:minmax(0,1fr);gap:2px;font-family:var(--sans)}
-.sl-row .lbl{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;color:var(--muted)}
-.sl-row .lbl output{font-size:14px;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
-.tipx{position:absolute;left:0;top:0;background:var(--paper);border:1px solid var(--hair);font-family:var(--sans);font-size:12.5px;line-height:1.4;padding:6px 9px;pointer-events:none;opacity:0;transition:opacity .12s;z-index:5;font-variant-numeric:tabular-nums;white-space:nowrap}
-.tipx b{font-weight:700}
-.mk{font-family:var(--sans);font-size:11.5px}
-.playb{padding:6px 0}
-#years:focus:not(:focus-visible){outline:none}
-@media (max-width:899px){
-  .ghead{margin-bottom:4px;gap:10px}
-  .state strong{font-size:17px}
-  .state .val{font-size:12.5px}
-  .state .src,.lg{display:none}
-  .ann{font-size:10.5px;max-width:118px}
-  .ann.big b{font-size:15px}
-  .ann.hm{display:none}
-  .cap2{font-size:10.5px;margin-top:4px}
-  .ctl2{margin-top:4px;padding-top:4px;gap:0 10px}
-  .ctl2 .lbl{display:none}
-  .months{margin-top:-4px;font-size:11px}
-  .readout .big{font-size:21px}
-  .readout{font-size:13px}
-  .seg{font-size:13px;gap:4px 14px}
-  .rng{height:34px}
-  .playb{min-height:32px}
-}
-@media (max-width:899px) and (max-height:760px){
-  .state .val{display:none}
-  .cap2{display:none}
-}
-</style>
+<link rel="stylesheet" href="article.css">
 </head>
 <body class="ib-article">
 <header class="ib-bar">
@@ -153,15 +83,12 @@
     </div>
     <div class="graphic" id="bgraphic">
       <div class="gbox" id="bbox">
-        <div class="ghead">
-          <div class="state" aria-live="polite"><strong id="bName">Avui</strong><span class="val" id="bVal">El Bodélé, al nord del Txad</span></div>
-          <div class="lg"><span><i style="background:#9DBBDD"></i>Llac Megatxad (contorn aproximat)</span><span><i style="background:#F4F1E8;border:1px solid #CFC7B4"></i>Diatomita</span><span><i class="dd"></i>Pols</span></div>
+        <div class="vh">
+          <div aria-live="polite"><strong id="bName">Avui</strong><span id="bVal">El Bodélé, al nord del Txad</span></div>
+          <div class="lgs" id="bLg"></div>
         </div>
-        <div class="map" id="bmap">
-          <canvas id="bcv" role="img" aria-label="Mapa del nord d'Àfrica. Mostra la depressió del Bodélé al Txad, l'antic llac Megatxad que la cobria, el fons de diatomita que va deixar, el vent harmattan que s'accelera entre el Tibesti i l'Ennedi i la pols que surt cap al golf de Guinea i l'Atlàntic."></canvas>
-          <div class="ov" id="bov"></div>
-        </div>
-        <p class="cap2">Esquema sobre un mapa real. El contorn del llac és aproximat. Fonts: Washington et al. 2009; Armitage et al. 2015; Bristow et al. 2010.</p>
+        <div class="plot map" id="bmap"></div>
+        <p class="src"><b>Esquema</b> sobre geografia real (Natural Earth). El contorn del llac Megatxad és aproximat. Fonts: Washington et al. 2009; Armitage et al. 2015; Bristow et al. 2010.</p>
       </div>
     </div>
   </section>
@@ -172,14 +99,17 @@
     <p>Quan arriba a la costa, aquest aire calent i sec no es barreja amb l'aire del mar, que és més fresc i humit. Com que és més fresc, és més dens, i l'aire del Sàhara hi passa per sobre, com l'aire calent que es queda a dalt d'una habitació mentre a terra fa fresca. Els meteoròlegs en diuen <b>capa d'aire del Sàhara</b> (SAL, en anglès). La van descriure per primer cop Toby Carlson i Joseph Prospero el 1972.</p>
     <p>A l'hivern la capa és més baixa i va més cap al sud. La pols viatja gairebé arran de mar, dins els vents alisis, i apunta cap a Sud-amèrica. Tria una estació per veure-ho de costat.</p>
   </section>
-  <figure class="fig">
-    <div class="segrow">
+  <figure class="fig" id="figSal">
+    <div class="vh">
+      <div aria-live="polite"><strong id="salTitle">Tall de la capa d'aire del Sàhara · Hivern</strong><span id="salSub">La capa va de 0 a 3 km a la costa africana i baixa a 0–2 km prop de Sud-amèrica · Surt el 23 % de la pols anual</span></div>
+      <div class="lgs" id="salLg"></div>
+    </div>
+    <div class="ctlrow top">
       <div class="seg" id="salSeg" role="group" aria-label="Estació"><button type="button" data-w="0" aria-pressed="true">Hivern</button><button type="button" data-w="1" aria-pressed="false">Primavera</button><button type="button" data-w="2" aria-pressed="false">Estiu</button><button type="button" data-w="3" aria-pressed="false">Tardor</button></div>
       <button class="playb" id="salPlay" type="button">Reprodueix l'any</button>
     </div>
-    <p class="readout" id="salOut" aria-live="polite"></p>
-    <div class="figbox"><canvas id="sal" role="img" aria-label="Tall vertical de l'atmosfera des del Sàhara fins a Amèrica. La capa d'aire del Sàhara, calenta, seca i plena de pols, va de 0 a 3 km a l'hivern i d'1 a 5 km a l'estiu a la costa africana, i baixa a mesura que s'acosta a Amèrica."></canvas></div>
-    <figcaption>Esquema basat en les mesures del satèl·lit CALIPSO (Tsamalis et al. 2013, juny 2006 – maig 2011). Altura molt exagerada respecte a la distància. Els percentatges són dades reals de Yu et al. 2015 (mitjana 2007–2013).</figcaption>
+    <div class="plot" id="salWrap"></div>
+    <figcaption class="src"><b>Esquema</b> basat en les mesures del satèl·lit CALIPSO (Tsamalis et al. 2013, juny 2006 – maig 2011). Escala vertical molt exagerada respecte a la distància. Percentatges de flux i deposició: <b>dades reals</b> de Yu et al. 2015 (mitjana 2007–2013).</figcaption>
   </figure>
 
   <section class="col">
@@ -233,21 +163,19 @@
     </div>
     <div class="graphic" id="mgraphic">
       <div class="gbox" id="mbox">
-        <div class="ghead">
-          <div class="state" aria-live="polite"><strong id="mName">Gener</strong><span class="val" id="mVal"></span><span class="src" id="mSrc"></span></div>
-          <div class="lg"><span><i class="dd"></i>Pols a l'aire</span><span><i style="background:var(--dry);opacity:.55"></i>Pols que cau</span><span><i style="border:1px dashed var(--bio);background:none"></i>Conca amazònica (rectangle de l'estudi)</span></div>
+        <div class="vh">
+          <div aria-live="polite"><strong id="mName">Gener</strong><span id="mVal"></span></div>
+          <div class="lgs" id="mLg"></div>
         </div>
-        <div class="map" id="mmap">
-          <canvas id="mcv" role="img" aria-label="Mapa de l'Atlàntic tropical amb la pols del Sàhara que viatja cap a Amèrica: cap a Sud-amèrica i l'Amazònia a l'hivern i la primavera, cap al Carib, Florida i el golf de Mèxic a l'estiu, i alguns dies cap a la península Ibèrica."></canvas>
-          <div class="ov" id="mov"></div>
-        </div>
-        <div class="ctl2">
-          <div class="lbl"><label for="mRng">Mes de l'any</label><span>Recorregut esquemàtic · quantitats reals</span></div>
+        <div class="plot map" id="mmap"></div>
+        <div class="ctlrow">
           <button class="playb" id="mPlay" type="button">Reprodueix</button>
-          <input class="rng" id="mRng" type="range" min="0" max="11.99" step="0.01" value="0.5" aria-label="Mes de l'any">
-          <div class="months" aria-hidden="true"><span>gen</span><span>mar</span><span>mai</span><span>jul</span><span>set</span><span>nov</span></div>
+          <div class="rng-wrap">
+            <input class="rng" id="mRng" type="range" min="0" max="11.99" step="0.01" value="0.5" aria-label="Mes de l'any">
+            <div class="months" aria-hidden="true"><span>gen</span><span>mar</span><span>mai</span><span>jul</span><span>set</span><span>nov</span></div>
+          </div>
         </div>
-        <p class="cap2">Recorregut i altura segons Tsamalis et al. 2013 i Yu et al. 2015. La quantitat de pols segueix els percentatges per estació de CALIPSO, repartits entre els mesos.</p>
+        <p class="src"><b>Esquema</b> de recorregut i altura (Tsamalis et al. 2013) amb <b>dades reals</b> de flux i percentatges per estació de CALIPSO (Yu et al. 2015, mitjana 2007–2013).</p>
       </div>
     </div>
   </section>
@@ -257,14 +185,17 @@
     <p>Si carreguéssim en camions de 25 tones la pols que cau cada any sobre l'Amazònia, en caldrien 1,1 milions: uns <b>3.000 camions cada dia</b>. Posats en fila, l'un tocant a l'altre, farien 18.000 quilòmetres, gairebé mitja volta a la Terra.</p>
     <p>I tanmateix, escampada sobre una superfície tan gran, és una capa que no es veu: uns 3 grams per metre quadrat en tot un any. Del fòsfor, que és el que importa, en cauen unes 22.000 tones. Cabrien en 880 camions.</p>
   </section>
-  <figure class="fig">
-    <div class="segrow">
+  <figure class="fig" id="figTrucks">
+    <div class="vh">
+      <div aria-live="polite"><strong id="tTitle">182 milions de tones l'any</strong><span id="tOut">Surt d'Àfrica cada any (15° O) · 7,3 milions de camions de 25 t (~19.900 al dia)</span></div>
+      <div class="lgs" id="tLg"></div>
+    </div>
+    <div class="ctlrow top">
       <div class="seg" id="tSeg" role="group" aria-label="Etapa del viatge"><button type="button" data-i="0" aria-pressed="true">Surt d'Àfrica</button><button type="button" data-i="1" aria-pressed="false">A mig oceà</button><button type="button" data-i="2" aria-pressed="false">Cau a l'Amazònia</button><button type="button" data-i="3" aria-pressed="false">Al Carib</button><button type="button" data-i="4" aria-pressed="false">El fòsfor</button></div>
       <button class="playb" id="tPlay" type="button">Reprodueix el viatge</button>
     </div>
-    <p class="readout" id="tOut" aria-live="polite"></p>
-    <div class="figbox"><svg id="trucks" role="img" aria-label="Camions de pols: cada icona són 20.000 camions de 25 tones. 182 milions de tones surten d'Àfrica i 132 arriben a mig oceà. D'aquí, 28 cauen a l'Amazònia i una altra part, 43, arriba al Carib. El fòsfor que cau a l'Amazònia equival a 880 camions, una 23a part d'una icona."></svg></div>
-    <figcaption>Cada icona representa 20.000 camions de 25 tones (500.000 tones). La pols que cau a l'Amazònia no surt de la que arriba al Carib: cau abans, entre els 40–50° i els 75° oest. Quantitats anuals de Yu et al. 2015; càlcul de camions propi.</figcaption>
+    <div class="plot" id="trucksWrap"></div>
+    <figcaption class="src"><b>Dades reals</b> de flux anual (Yu et al. 2015, satèl·lit CALIPSO, mitjana 2007–2013); càlcul de camions propi. Cada cercle representa 20.000 camions de 25 tones (500.000 tones). La pols que cau a l'Amazònia no surt de la que arriba al Carib: cau abans, entre els 40–50° i els 75° oest.</figcaption>
   </figure>
 
   <section class="col">
@@ -274,14 +205,20 @@
     <p>La selva sobreviu perquè gairebé no en perd. Les fulles cauen, es descomponen i les arrels en recuperen el fòsfor. Cada any hi circulen entre 1.400 i 4.100 grams per hectàrea. Però l'aigua que s'escola cap als rius se n'emporta una mica: de <b>8 a 40 grams</b> per hectàrea i any.</p>
     <p>És com un compte corrent on els diners es mouen sense parar, però cada mes el banc cobra una petita comissió. Si no hi entrés mai cap ingrés, el compte s'aniria buidant a poc a poc. La pols del Sàhara és un d'aquests ingressos: petit, però arriba cada any de l'altra banda de l'oceà.</p>
   </section>
-  <figure class="fig">
-    <div class="sl-row">
-      <div class="lbl"><label for="bRng">Pols africana que cau a l'Amazònia cada any</label><output id="bOutD" for="bRng">28 milions de tones</output></div>
-      <input class="rng" id="bRng" type="range" min="0" max="55" step="0.1" value="27.7">
+  <figure class="fig" id="figBudget">
+    <div class="vh">
+      <div><strong>Quanta pols cau i quant fòsfor aporta?</strong><span>Clica qualsevol estimació o arrossega el control per comparar l'entrada de fòsfor amb les pèrdues pels rius</span></div>
+      <div class="lgs" id="bLg2"></div>
     </div>
-    <div class="figbox"><svg id="budget" role="img" aria-label="Balanç de fòsfor de l'Amazònia. A dalt, les estimacions publicades de la pols que hi cau, de 9 a 50 milions de tones l'any. A baix, el fòsfor que aporta la pols comparat amb el que es perd pels rius, de 8 a 40 grams per hectàrea i any, amb tot el fòsfor que cau de l'aire, de 161 a 300 grams, i amb el que recicla la selva, de 1.400 a 4.100 grams."></svg><div class="tipx" id="bTip"></div></div>
+    <div class="plot" id="budgetWrap"></div>
+    <div class="ctlrow">
+      <div class="rng-wrap">
+        <div class="rng-head"><label for="bRng">Pols africana que cau a l'Amazònia cada any</label><output id="bOutD" for="bRng">28 milions de tones</output></div>
+        <input class="rng" id="bRng" type="range" min="0" max="55" step="0.1" value="27.7">
+      </div>
+    </div>
     <p class="verdict" id="bVerdict" aria-live="polite"></p>
-    <figcaption>Estimacions publicades recollides per Yu et al. 2015 i Prospero et al. 2020 (regions i anys diferents). Fòsfor com a Yu et al.: pols × 780 parts per milió ÷ 9,6 milions de km². Pèrdues, reciclatge i fòsfor que cau de l'aire: Vitousek i Sanford 1986, via Yu et al. 2015.</figcaption>
+    <figcaption class="src"><b>Dades reals</b>: estimacions publicades recollides per Yu et al. 2015 i Prospero et al. 2020 (regions i anys diferents). Fòsfor com a Yu et al.: pols × 780 parts per milió ÷ 9,6 milions de km². Pèrdues pels rius, deposició total de l'aire i reciclatge: Vitousek i Sanford 1986, via Yu et al. 2015.</figcaption>
   </figure>
   <section class="col">
     <p>Amb els números del satèl·lit, l'ingrés i la comissió s'assemblen molt: unes 22.000 tones de fòsfor l'any, uns 23 grams per hectàrea (entre 7 i 39). Per això els autors creuen que, sense la pols, el sòl de la selva s'aniria empobrint en qüestió de dècades o segles. Però avisen que encara no se sap quanta pols necessita de debò.</p>
@@ -313,9 +250,13 @@
     <h2 class="sh" id="cada-any">Un adob que canvia cada any</h2>
     <p>La quantitat de pols que creua l'oceà no és mai la mateixa. El 2007, segons CALIPSO, en van sortir d'Àfrica 227 milions de tones; el 2011, 133. La que cau a l'Amazònia també canvia: segons l'any, s'aparta fins a un 29% de la mitjana. Passa el cursor o toca el gràfic per veure cada any.</p>
   </section>
-  <figure class="fig">
-    <div class="figbox"><svg id="years" role="img" aria-label="Pols africana que creua l'Atlàntic cada any del 2007 al 2013 a tres meridians. A 15 graus oest va de 133 a 227 milions de tones, a 35 graus oest de 106 a 175 i a 75 graus oest de 28 a 51. El 2011 és l'any amb menys pols."></svg><div class="tipx" id="yTip"></div></div>
-    <figcaption>Pols que creua cada meridià entre 10° S i 30° N, en milions de tones l'any. La línia és la millor estimació i la franja, l'interval entre els dos escenaris del càlcul. Dades: Yu et al. 2015, Remote Sensing of Environment (taula 2).</figcaption>
+  <figure class="fig" id="figYears">
+    <div class="vh">
+      <div><strong>Pols africana a través de l'Atlàntic, any a any</strong><span>Millor estimació i interval entre escenaris (LDF–UDF) a tres meridians, entre 10° S i 30° N</span></div>
+      <div class="lgs" id="yLg"></div>
+    </div>
+    <div class="plot" id="yearsWrap"></div>
+    <figcaption class="src"><b>Dades reals</b>: pols que creua cada meridià entre 10° S i 30° N, en milions de tones l'any. La línia és la millor estimació i la franja translúcida, l'interval entre els dos escenaris del càlcul. Font: Yu et al. 2015, <i>Remote Sensing of Environment</i> (taula 2, satèl·lit CALIPSO).</figcaption>
   </figure>
   <section class="col">
     <p>Una de les claus és al Sahel, la franja semiàrida al sud del Sàhara: els anys que hi plou poc, l'any següent creua l'oceà més pols. Ja ho mostraven les mesures de Barbados, on la pols va créixer molt amb les grans sequeres dels anys setanta. El mecanisme exacte encara no s'entén del tot.</p>
@@ -385,6 +326,7 @@
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script src="../../assets/ib-viz.js"></script>
 <script src="../../assets/scrolly.js"></script>
 <script src="pols-del-sahara.js"></script>
 <script src="../../assets/ib.js"></script>

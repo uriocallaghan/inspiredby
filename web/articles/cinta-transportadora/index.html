@@ -15,130 +15,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=STIX+Two+Text:ital,wght@0,400;0,500;1,400&display=swap">
 <link rel="stylesheet" href="../../assets/ib.css">
 <link rel="stylesheet" href="../../assets/article.css">
-<style>
-:root{--salt:#16786C;--deep:#1F3F73}
-.k-s{color:var(--salt);font-weight:600}
-.step b,.col b{font-weight:600}
-.page{overflow-x:clip}
-
-/* sticky graphic heads */
-.ghead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;font-family:var(--sans);margin-bottom:8px;min-height:44px}
-.ghead .st{display:flex;flex-direction:column;min-width:0}
-.ghead strong{font-family:var(--serif-display);font-weight:400;font-size:22px;letter-spacing:-.048em;line-height:1.15}
-.ghead .sub{font-size:13.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.ramp{display:grid;grid-template-columns:repeat(3,1fr);gap:3px 0;width:170px;flex:none;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
-.ramp .t{grid-column:1/-1;font-size:12px;color:var(--ink-2)}
-.ramp .bar{grid-column:1/-1;height:6px}
-.ramp span:nth-of-type(3){text-align:center}.ramp span:nth-of-type(4){text-align:right}
-.lgline{display:flex;flex-wrap:wrap;gap:4px 16px;font-family:var(--sans);font-size:12px;color:var(--ink-2);margin-top:6px}
-.lgline i{display:inline-block;width:18px;height:0;border-top:2px solid currentColor;vertical-align:3px;margin-right:6px}
-.lgline i.d{border-top-style:dashed}
-.lgline .dot{width:9px;height:9px;border-radius:50%;border:0;background:currentColor;vertical-align:-1px}
-
-.gwrap{position:relative;margin:0 auto}
-.gwrap canvas{display:block;width:100%}
-.ov{position:absolute;inset:0;pointer-events:none}
-.ann{left:0;top:0;transition:opacity .45s ease;max-width:150px}
-.ann.r{text-align:right}.ann.c{text-align:center}
-.ann .v{font-variant-numeric:tabular-nums}
-.gcap{font-family:var(--sans);font-size:12px;color:var(--muted);margin:8px 0 0}
-
-/* figures */
-.fig .gh{flex-wrap:wrap}
-.btns{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--sans);font-size:13.5px}
-.btns button{border:0;background:none;padding:4px 0;cursor:pointer;color:var(--ink-2);border-bottom:1px solid transparent}
-.btns button[aria-pressed="true"]{font-weight:700;color:var(--ink);border-bottom-color:currentColor}
-.chart{position:relative}
-.chart svg{display:block;width:100%;height:auto;overflow:visible}
-.ax text{font-family:var(--sans);font-size:11.5px;fill:var(--muted)}
-.ax line,.ax path{stroke:var(--hair)}
-.lab{font-family:var(--sans);font-size:12px;fill:var(--ink)}
-.lab.m{fill:var(--muted)}
-.lab.b{font-weight:700}
-
-/* density explorer */
-.den{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px;align-items:start}
-.den .panel{min-width:0}
-.den .ptitle{font-family:var(--sans);font-size:13px;font-weight:700;margin:0 0 6px}
-.den .ptitle span{font-weight:400;color:var(--muted)}
-.read{font-family:var(--sans);display:flex;flex-wrap:wrap;gap:4px 22px;align-items:baseline;margin:2px 0 10px}
-.read strong{font-family:var(--serif);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
-.read span{font-size:13.5px;color:var(--ink-2)}
-.verdict{font-family:var(--serif);font-size:17px;line-height:1.45;min-height:3em;margin:0 0 8px;text-wrap:pretty}
-.sl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px 24px;margin-top:6px}
-.sl .lbl{font-family:var(--sans);font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
-.sl .lbl b{color:var(--ink);font-variant-numeric:tabular-nums}
-.presets{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--sans);font-size:13px;margin:10px 0 0}
-.presets button{border:0;background:none;padding:4px 0;cursor:pointer;color:var(--ink-2);border-bottom:1px solid transparent;text-align:left}
-.presets button[aria-pressed="true"]{color:var(--ink);font-weight:700;border-bottom-color:currentColor}
-#ts{touch-action:none;cursor:crosshair}
-#colc{display:block;width:100%}
-
-/* flow */
-.units{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
-.urow{display:grid;grid-template-columns:200px minmax(0,1fr);gap:16px;align-items:start;font-family:var(--sans)}
-.urow .nm{font-size:13.5px;line-height:1.3}
-.urow .nm b{display:block;font-size:14px}
-.urow .nm span{color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums}
-.ugrid{display:flex;flex-wrap:wrap;gap:2px}
-.ugrid i{width:9px;height:9px;display:block;background:var(--hair);transform:scale(0);transition:transform .25s ease,background .25s}
-.ugrid i.on{transform:scale(1)}
-.ugrid i.half{clip-path:inset(0 50% 0 0)}
-
-/* stommel */
-.stm{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:28px;align-items:start}
-.stm .side{font-family:var(--sans);font-size:14px;line-height:1.45;color:var(--ink-2)}
-.stm .side strong{display:block;font-family:var(--serif);font-size:20px;color:var(--ink);margin-bottom:4px}
-
-/* projections */
-.pj-read{font-family:var(--sans);display:grid;grid-template-columns:200px minmax(0,1fr);gap:4px 24px;margin-top:10px;align-items:start}
-.pj-read .big{font-family:var(--serif);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
-.pj-read .big small{display:block;font-family:var(--sans);font-size:12.5px;font-weight:400;color:var(--muted)}
-.pj-read p{margin:0;font-family:var(--serif);font-size:16.5px;line-height:1.5;color:var(--ink)}
-.pj-read ul{margin:6px 0 0;padding-left:1.1em;font-size:13.5px;color:var(--ink-2);line-height:1.45}
-
-.den .mb{display:none}
-.den .ptitle .tt{font-weight:700;color:var(--ink)}
-.playb{padding:6px 0}
-
-.fn ol li{margin-bottom:.45em}
-dl.gl dt{font-weight:700}
-
-@media (max-width:899px){
-  .ghead{min-height:0;margin-bottom:4px}
-  .ghead strong{font-size:17px}
-  .ghead .sub{font-size:12px}
-  .ramp{width:120px}
-  .ramp .t{display:none}
-  .lgline{font-size:10.5px;gap:2px 10px;margin-top:2px}
-  #ggraphic .gcap{display:none}
-  #ggraphic .lgline::after{content:"Corrents: esquema";color:var(--muted)}
-  .ann{font-size:10.5px;max-width:112px}
-  .ann.hm{display:none}
-  .gcap{font-size:10.5px;margin-top:4px}
-  /* density explorer: diagram and Labrador column side by side, controls right below */
-  .den{grid-template-columns:minmax(0,1fr) 112px;grid-template-areas:"tst colt" "tsc colw" "read read" "ver ver" "sl sl" "pre pre";gap:4px 10px}
-  .den .panel{display:contents}
-  .den .tst{grid-area:tst}.den .tsc{grid-area:tsc}.den .colt{grid-area:colt}.den .colw{grid-area:colw}
-  .den .read{grid-area:read;margin:8px 0 2px}.den .verdict{grid-area:ver;font-size:15.5px;min-height:2.9em;margin:0}
-  .den .sl{grid-area:sl}.den .presets{grid-area:pre;margin-top:4px}
-  .den .tst span,.den .dsk{display:none}.den .mb{display:inline}
-  .den .ptitle{font-size:12px;margin:0}
-  .read strong{font-size:19px}.read span{font-size:12.5px}
-  #gov .ann{background:rgba(255,255,255,.8);padding:1px 4px;border-radius:2px}
-  .urow{grid-template-columns:minmax(0,1fr);gap:6px}
-  .ugrid i{width:7px;height:7px}
-  .stm{grid-template-columns:minmax(0,1fr);gap:12px}
-  .pj-read{grid-template-columns:minmax(0,1fr)}
-  .sl{gap:2px 16px}
-  .rng::-webkit-slider-thumb{width:22px;height:22px;margin-top:-11px}
-  .rng{height:36px}
-}
-@media (max-width:899px) and (max-height:760px){
-  .gcap{display:none}
-  .lgline{display:none}
-}
-</style>
+<link rel="stylesheet" href="article.css">
 </head>
 <body class="ib-article">
 <header class="ib-bar">
@@ -164,10 +41,14 @@ dl.gl dt{font-weight:700}
     <p>Sembla poca cosa, però aquests quatre grams decideixen on s'enfonsa l'aigua. Tria una aigua, o canvia'n la temperatura i la sal, i mira fins on baixaria al mar del Labrador.</p>
   </section>
   <figure class="fig wide" id="denfig">
+    <div class="vh">
+      <div><strong>Densitat de l'aigua de mar</strong><span>Arrossega el punt o mou els controls per veure fins on baixaria l'aigua al mar del Labrador</span></div>
+      <div class="lgs" id="den-lg"></div>
+    </div>
     <div class="den">
       <div class="panel">
         <p class="ptitle tst">Temperatura i salinitat</p>
-        <div class="chart tsc" id="tsw"><svg id="ts" role="img" aria-label="Diagrama de temperatura i salinitat amb línies d'igual densitat. Un punt mòbil representa l'aigua triada; els punts grisos són l'aigua de superfície de tot el món i la línia blava, la columna del mar del Labrador a l'hivern."></svg><div class="tip" id="tstip"></div></div>
+        <div class="plot tsc" id="tsw"></div>
         <div class="sl">
           <div><div class="lbl"><label for="dT">Temperatura</label><b id="dTv">27,0 °C</b></div><input class="rng" id="dT" type="range" min="-1.9" max="30" step="0.1" value="27"></div>
           <div><div class="lbl"><label for="dS">Salinitat</label><b id="dSv">36,15</b></div><input class="rng" id="dS" type="range" min="31" max="38" step="0.01" value="36.15"></div>
@@ -184,10 +65,10 @@ dl.gl dt{font-weight:700}
         <p class="ptitle colt"><span class="dsk tt">Mar del Labrador a l'hivern</span><span class="mb tt">Labrador, hivern</span><span class="dsk"> · densitat per fondària</span></p>
         <div class="read" aria-live="polite"><strong id="dRho">1.023,6 kg/m³</strong><span id="dSig"></span></div>
         <p class="verdict" id="dVer"></p>
-        <div class="chart colw"><canvas id="colc" role="img" aria-label="Columna d'aigua del mar del Labrador a l'hivern, de la superfície fins a 3.600 metres, acolorida segons la densitat. L'aigua triada baixa fins a la fondària on troba aigua de la seva mateixa densitat."></canvas></div>
+        <div class="plot colw"><canvas id="colc" role="img" aria-label="Columna d'aigua del mar del Labrador a l'hivern, de la superfície fins a 3.600 metres, acolorida segons la densitat. L'aigua triada baixa fins a la fondària on troba aigua de la seva mateixa densitat."></canvas></div>
       </div>
     </div>
-    <figcaption>Cada línia grisa uneix aigües de la mateixa densitat (EOS-80, a la pressió de superfície). Dades: World Ocean Atlas 2023 (NOAA). Punts grisos: superfície de tots els oceans, mitjana anual. Columna: perfil mitjà de gener a març al mar del Labrador; amb aquesta mitjana, l'aigua de superfície només es barreja amb els primers cent metres, i la barreja profunda arriba els hiverns més freds. L'última opció és l'aigua de Groenlàndia amb una unitat menys de salinitat.</figcaption>
+    <figcaption class="src"><b>Dades reals.</b> Cada línia grisa uneix aigües de la mateixa densitat (EOS-80, a la pressió de superfície). Dades: World Ocean Atlas 2023 (NOAA). Punts grisos: superfície de tots els oceans, mitjana anual. Columna: perfil mitjà de gener a març al mar del Labrador; amb aquesta mitjana, l'aigua de superfície només es barreja amb els primers cent metres, i la barreja profunda arriba els hiverns més freds. L'última opció és l'aigua de Groenlàndia amb una unitat menys de salinitat.</figcaption>
   </figure>
   <section class="col">
     <p>D'aquí en surten dues lliçons. L'aigua tropical és tan lleugera que, tal com arriba, no s'enfonsaria enlloc: primer s'ha de refredar molt. I en aigua tèbia mana la temperatura, però en aigua gairebé gelada la sal hi pesa tant com el fred: ho veus en les línies grises, que a baix es tornen gairebé verticals. Per això, al nord, una mica més d'aigua dolça, de pluja, de rius o de gel fos, pot bastar perquè l'aigua deixi d'enfonsar-se.</p>
@@ -236,16 +117,15 @@ dl.gl dt{font-weight:700}
     </div>
     <div class="graphic" id="ggraphic">
       <div class="gbox" id="gbox">
-        <div class="ghead">
-          <div class="st" aria-live="polite"><strong id="gName">Temperatura del mar</strong><span class="sub" id="gSub">Mitjana anual de la superfície</span></div>
-          <div class="ramp" id="gRamp"></div>
+        <div class="vh">
+          <div aria-live="polite"><strong id="gName">Temperatura del mar</strong><span id="gSub">Mitjana anual de la superfície</span></div>
+          <div class="lgs" id="g-lg"></div>
         </div>
-        <div class="gwrap" id="gwrap">
+        <div class="gwrap plot" id="gwrap">
           <canvas id="globe" role="img" aria-label="Globus centrat a l'oceà Atlàntic, amb la temperatura, la salinitat o la densitat de la superfície del mar en punts de colors, i un esquema dels corrents: el corrent del Golf porta aigua calenta cap al nord, l'aigua s'enfonsa als mars del nord i torna cap al sud pel fons."></canvas>
           <div class="ov" id="gov"></div>
         </div>
-        <div class="lgline" aria-hidden="true"><span style="color:var(--warm)"><i></i>Corrent de superfície</span><span style="color:var(--cold)"><i class="d"></i>Corrent de fons</span><span style="color:var(--ink)"><i class="dot"></i>On s'enfonsa l'aigua</span></div>
-        <p class="gcap">Punts: World Ocean Atlas 2023 (NOAA), mitjana anual. Corrents: esquema simplificat, no dades.</p>
+        <p class="src"><b>Dades reals i esquema.</b> Punts: World Ocean Atlas 2023 (NOAA), mitjana anual. Corrents i zones d'enfonsament: esquema simplificat.</p>
       </div>
     </div>
   </section>
@@ -276,16 +156,15 @@ dl.gl dt{font-weight:700}
     </div>
     <div class="graphic" id="xgraphic">
       <div class="gbox" id="xbox">
-        <div class="ghead">
-          <div class="st" aria-live="polite"><strong id="xName">Temperatura</strong><span class="sub">Tall per 25,5° O, de l'Antàrtida a Islàndia</span></div>
-          <div class="ramp" id="xRamp"></div>
+        <div class="vh">
+          <div aria-live="polite"><strong id="xName">Temperatura</strong><span>Tall per 25,5° O, de l'Antàrtida a Islàndia</span></div>
+          <div class="lgs" id="x-lg"></div>
         </div>
-        <div class="gwrap" id="xwrap">
+        <div class="gwrap plot" id="xwrap">
           <canvas id="sec" role="img" aria-label="Tall vertical de l'oceà Atlàntic per 25,5 graus oest, de 70 graus sud a 64 graus nord i de la superfície fins a 5.500 metres, amb la temperatura o la salinitat mesurades. Mostra la capa calenta de superfície, la llengua salada de l'aigua profunda de l'Atlàntic nord, l'aigua mediterrània cap als 1.000 metres i les aigües antàrtiques."></canvas>
           <div class="ov" id="xov"></div>
-          <div class="tip" id="xtip"></div>
         </div>
-        <p class="gcap">Dades: World Ocean Atlas 2023 (NOAA), mitjana anual. Escala vertical no lineal. Passa o toca per llegir els valors.</p>
+        <p class="src"><b>Dades reals i esquema.</b> Dades: World Ocean Atlas 2023 (NOAA), mitjana anual. Fletxes del pas 4: esquema. Escala vertical no lineal (exagerada). Passa o toca per llegir els valors.</p>
       </div>
     </div>
   </section>
@@ -296,19 +175,27 @@ dl.gl dt{font-weight:700}
     <p>I amb l'aigua viatja calor: uns <b>1,2 petawatts</b> (1.200 terawatts) cap al nord, al voltant del 60 % de la que porten tots els oceans a aquesta latitud i unes seixanta vegades l'energia que consumeix la humanitat.</p>
   </section>
   <figure class="fig" id="flowfig">
-    <div class="gh"><strong id="flowT">Aigua que es mou cada segon</strong><div class="btns" role="group" aria-label="Què es compara"><button type="button" data-k="w" aria-pressed="true">Aigua</button><button type="button" data-k="h" aria-pressed="false">Calor</button></div></div>
-    <div class="units" id="units" role="img" aria-label="Comparació en quadradets. Aigua: cada quadradet és 0,1 milions de metres cúbics per segon; l'Amazones en té 2, tots els rius del món 12, la cinta de l'Atlàntic 170 i el corrent de Florida 317. Calor: cada quadradet és 10 terawatts; l'energia que consumeix la humanitat en té 2 i la calor que porta l'Atlàntic a 26,5 graus nord, 120."></div>
-    <figcaption id="flowCap">Cada quadradet és 0,1 Sv (100.000 m³/s). Rius: Dai i Trenberth (2002). Cinta i corrent de Florida: mitjanes de RAPID, abril del 2004 a març del 2024.</figcaption>
+    <div class="vh">
+      <div><strong id="flowT">Aigua que es mou cada segon</strong><span id="flowSub">Cada quadrat representa 0,1 Sv (100.000 m³/s)</span></div>
+      <div class="seg" role="group" aria-label="Què es compara"><button type="button" data-k="w" aria-pressed="true">Aigua</button><button type="button" data-k="h" aria-pressed="false">Calor</button></div>
+    </div>
+    <div class="plot" id="floww">
+      <div class="units" id="units" role="img" aria-label="Comparació en quadradets. Aigua: cada quadradet és 0,1 milions de metres cúbics per segon; l'Amazones en té 2, tots els rius del món 12, la cinta de l'Atlàntic 170 i el corrent de Florida 317. Calor: cada quadradet és 10 terawatts; l'energia que consumeix la humanitat en té 2 i la calor que porta l'Atlàntic a 26,5 graus nord, 120."></div>
+    </div>
+    <figcaption class="src" id="flowCap"><b>Dades reals.</b> Cada quadradet és 0,1 Sv (100.000 m³/s). Rius: Dai i Trenberth (2002). Cinta i corrent de Florida: mitjanes de RAPID, abril del 2004 a març del 2024.</figcaption>
   </figure>
   <section class="col">
     <h2 class="sh" id="per-que-a-noruega-no-fa-tant-de-fred">Per què a Noruega no fa tant de fred</h2>
     <p>Bergen, a la costa de Noruega, és a la mateixa latitud que la badia de Hudson. Però al gener, a Bergen la mitjana ronda els 2 °C, i a la badia de Hudson baixa de −25 °C. El mapa mostra quants graus més calent o més fred és cada lloc que la mitjana de la seva latitud.</p>
   </section>
   <figure class="fig wide" id="winfig">
-    <div class="gh"><strong id="winT">Al gener, respecte a la mitjana de la latitud</strong><div class="btns" role="group" aria-label="Mes"><button type="button" data-m="jan" aria-pressed="true">Gener</button><button type="button" data-m="jul" aria-pressed="false">Juliol</button></div></div>
-    <div class="chart" id="winw"><canvas id="win" role="img" aria-label="Mapa de l'hemisferi nord amb la temperatura de l'aire a prop de la superfície respecte a la mitjana de cada latitud. Al gener, el nord-oest d'Europa i el mar de Noruega són fins a més de 20 graus més calents que la mitjana; l'est del Canadà i Sibèria, més de 15 graus més freds; la costa d'Alaska també és més calenta."></canvas><div class="ov" id="winov"></div><div class="tip" id="wintip"></div></div>
-    <div class="ramp" id="winRamp" style="width:220px;margin-top:10px"></div>
-    <figcaption>Temperatura de l'aire a prop de la superfície, mitjana 1991–2020, menys la mitjana de la seva latitud. Dades: reanàlisi NCEP/NCAR (NOAA PSL). Passa o toca el mapa per llegir els valors.</figcaption>
+    <div class="vh">
+      <div><strong id="winT">Al gener, respecte a la mitjana de la latitud</strong><span>Temperatura de l'aire a prop de la superfície (1991–2020) menys la mitjana del paral·lel</span></div>
+      <div class="lgs" id="win-lg"></div>
+    </div>
+    <div class="seg" role="group" aria-label="Mes"><button type="button" data-m="jan" aria-pressed="true">Gener</button><button type="button" data-m="jul" aria-pressed="false">Juliol</button></div>
+    <div class="plot" id="winw"><canvas id="win" role="img" aria-label="Mapa de l'hemisferi nord amb la temperatura de l'aire a prop de la superfície respecte a la mitjana de cada latitud. Al gener, el nord-oest d'Europa i el mar de Noruega són fins a més de 20 graus més calents que la mitjana; l'est del Canadà i Sibèria, més de 15 graus més freds; la costa d'Alaska també és més calenta."></canvas><div class="ov" id="winov"></div></div>
+    <figcaption class="src"><b>Dades reals.</b> Temperatura de l'aire a prop de la superfície, mitjana 1991–2020, menys la mitjana de la seva latitud. Dades: reanàlisi NCEP/NCAR (NOAA PSL). Passa o toca el mapa per llegir els valors.</figcaption>
   </figure>
   <section class="col">
     <p>Al gener, el mar de Noruega és més de 20 graus més calent que la mitjana. És temptador donar-ne tot el mèrit a la cinta, però el 2002 un equip de la Universitat de Colúmbia encapçalat per Richard Seager va mostrar que és més complicat.</p>
@@ -322,8 +209,12 @@ dl.gl dt{font-weight:700}
     <p>Al fang, la proporció entre protoactini i tori, dos elements radioactius, indica quanta aigua profunda hi passava. El protoactini triga més a caure al fons, i una cinta forta se l'emporta lluny, com un corrent que s'emporta la sorra fina i deixa la grava. Si la cinta s'atura, tots dos cauen on es formen i la proporció puja fins a 0,093.</p>
   </section>
   <figure class="fig wide" id="paleofig">
-    <div class="chart" id="paleow"><svg id="paleo" role="img" aria-label="Dos gràfics dels últims 20.000 anys. A dalt, la temperatura de Groenlàndia segons el gel de NGRIP: freda fins fa 14.700 anys, un salt calent, un retorn al fred durant el Dryas recent i un altre salt fa 11.700 anys. A sota, la intensitat de la circulació segons el protoactini i el tori del fang de les Bermudes: gairebé aturada fa 17.500 anys, recuperada fa 14.700 anys, afeblida durant el Dryas recent i estable des de llavors."></svg><div class="tip" id="ptip"></div></div>
-    <figcaption>A dalt: isòtops d'oxigen (δ¹⁸O) del gel de NGRIP, escala GICC05. A sota: ràtio ²³¹Pa/²³⁰Th d'un nucli de 4.550 m de fondària a prop de les Bermudes (McManus et al., 2004), amb l'eix invertit: amunt, circulació més forta. Dades: NOAA NCEI. H1: Heinrich 1; B-A: Bølling-Allerød; DR: Dryas recent.</figcaption>
+    <div class="vh">
+      <div><strong>Vint mil anys de temperatura i circulació</strong><span>Gel de Groenlàndia (δ¹⁸O, NGRIP) i sediments del fons de l'Atlàntic (²³¹Pa/²³⁰Th, Bermudes)</span></div>
+      <div class="lgs" id="paleo-lg"></div>
+    </div>
+    <div class="plot" id="paleow"></div>
+    <figcaption class="src"><b>Dades reals.</b> A dalt: isòtops d'oxigen (δ¹⁸O) del gel de NGRIP, escala GICC05. A sota: ràtio ²³¹Pa/²³⁰Th d'un nucli de 4.550 m de fondària a prop de les Bermudes (McManus et al., 2004), amb l'eix invertit: amunt, circulació més forta. Dades: NOAA NCEI. H1: Heinrich 1; B-A: Bølling-Allerød; DR: Dryas recent.</figcaption>
   </figure>
   <section class="col">
     <p>Fa uns 17.500 anys, al final de l'última glaciació, una allau d'icebergs es va desprendre del gel del Canadà i va deixar capes de pedres al fons de l'Atlàntic: és un dels <b>esdeveniments de Heinrich</b>. Al fang de les Bermudes, el protoactini s'enfila fins gairebé el màxim: la cinta va quedar gairebé o del tot aturada. L'aigua dolça dels icebergs hi va contribuir, però potser no en va ser la causa: alguns estudis troben que el fred va començar abans que arribessin.</p>
@@ -336,9 +227,13 @@ dl.gl dt{font-weight:700}
     <p>La cinta és la suma de tres peces: el <b>corrent de Florida</b>, mesurat amb un cable submarí des del 1982; el corrent que el <b>vent</b> empeny a la capa de dalt; i el de <b>l'oceà obert</b> fins a 1.100 metres, que surt de les densitats mesurades als amarratges. Tria quines peces vols veure.</p>
   </section>
   <figure class="fig wide" id="rapidfig">
-    <div class="gh"><strong>La cinta a 26,5° N, mes a mes</strong><div class="btns" id="rbtn" role="group" aria-label="Components"><button type="button" data-k="moc" aria-pressed="true">Total</button><button type="button" data-k="gs" aria-pressed="false">Corrent de Florida</button><button type="button" data-k="ek" aria-pressed="false">Vent</button><button type="button" data-k="umo" aria-pressed="false">Oceà obert</button></div></div>
-    <div class="chart" id="rapidw"><svg id="rapid" role="img" aria-label="Sèrie temporal de la cinta a 26,5 graus nord, de l'abril del 2004 al març del 2024, en milions de metres cúbics per segon. Mitjana de 17. Una caiguda forta el 2009 i el 2010, fins a valors mensuals de 8, i valors una mica més baixos després del 2008 que abans."></svg><div class="tip" id="rtip"></div></div>
-    <figcaption>Mitjanes mensuals de RAPID-MOCHA-WBTS (v2024.1a), de l'abril del 2004 al març del 2024; la línia gruixuda és la mitjana mòbil de 12 mesos. Amb aquesta versió de les dades, les mitjanes d'alguns períodes difereixen unes dècimes de les publicades. Font: rapid.ac.uk.</figcaption>
+    <div class="vh">
+      <div><strong>La cinta a 26,5° N, mes a mes</strong><span>Mesures directes de RAPID (2004–2024) en sverdrups; la línia gruixuda és la mitjana mòbil de 12 mesos</span></div>
+      <div class="lgs" id="rapid-lg"></div>
+    </div>
+    <div class="seg" id="rbtn" role="group" aria-label="Components"><button type="button" data-k="moc" aria-pressed="true">Total</button><button type="button" data-k="gs" aria-pressed="false">Corrent de Florida</button><button type="button" data-k="ek" aria-pressed="false">Vent</button><button type="button" data-k="umo" aria-pressed="false">Oceà obert</button></div>
+    <div class="plot" id="rapidw"></div>
+    <figcaption class="src"><b>Dades reals.</b> Mitjanes mensuals de RAPID-MOCHA-WBTS (v2024.1a), de l'abril del 2004 al març del 2024; la línia gruixuda és la mitjana mòbil de 12 mesos. Amb aquesta versió de les dades, les mitjanes d'alguns períodes difereixen unes dècimes de les publicades. Font: rapid.ac.uk.</figcaption>
   </figure>
   <section class="col">
     <p>La primera lliçó va ser que la cinta és molt nerviosa: hi ha mesos amb 25 Sv i mesos amb menys de 10. Entre el 2009 i el 2010 va caure un 30 % durant un any, de 18,5 a 12,8 Sv, en part per vents anòmals. Aquesta caiguda, sumada a uns vents i unes pressions poc habituals, va fer pujar 128 mil·límetres en dos anys el nivell del mar al nord de Nova York, un salt sense precedents.</p>
@@ -357,8 +252,12 @@ dl.gl dt{font-weight:700}
     <p>El model més senzill que ho mostra té dues caixes d'aigua, una al nord i una al sud. Afegeix aigua dolça al nord amb el control, o reprodueix l'experiment.</p>
   </section>
   <figure class="fig wide" id="stfig">
+    <div class="vh">
+      <div><strong>Bifurcació i histèresi (model de Stommel)</strong><span>Intensitat de la cinta segons l'aigua dolça que arriba al nord</span></div>
+      <div class="lgs" id="stom-lg"></div>
+    </div>
     <div class="stm">
-      <div class="chart" id="stw"><svg id="stom" role="img" aria-label="Gràfic del model de Stommel. Eix horitzontal: aigua dolça que arriba al nord. Eix vertical: intensitat de la cinta. Hi ha una branca superior estable on la cinta funciona, que s'acaba en un punt de no retorn, i una branca inferior on la cinta queda aturada. Un punt mostra l'estat actual del model."></svg></div>
+      <div class="plot" id="stw"></div>
       <div class="side">
         <strong id="stState">La cinta funciona</strong>
         <span id="stTxt"></span>
@@ -368,7 +267,7 @@ dl.gl dt{font-weight:700}
         </div>
       </div>
     </div>
-    <figcaption>Model conceptual de dues caixes de Stommel (1961), en unitats adimensionals. No és una predicció. La línia de punts és l'equilibri inestable que separa els dos estats.</figcaption>
+    <figcaption class="src"><b>Simulació conceptual.</b> Model de dues caixes de Stommel (1961), en unitats adimensionals. No és una predicció. La línia de punts és l'equilibri inestable que separa els dos estats.</figcaption>
   </figure>
   <section class="col">
     <p>Fixa't en el que passa quan tornes enrere: un cop la cinta s'ha aturat, no n'hi ha prou de treure l'aigua dolça per tornar-la a engegar. És la <b>histèresi</b>. Passa com amb un caiac: si t'hi inclines una mica, es redreça sol; passat un punt, bolca, i per redreçar-lo no n'hi ha prou de deixar d'inclinar-se. Per això preocupa tant un col·lapse: desfer-lo costaria molt més que provocar-lo.</p>
@@ -380,7 +279,11 @@ dl.gl dt{font-weight:700}
     <p>Diversos estudis posteriors ho han afinat comparant els models amb les observacions. Arrossega el control per veure quins inclouen cada nivell d'afebliment.</p>
   </section>
   <figure class="fig wide" id="pjfig">
-    <div class="chart" id="pjw"><svg id="pj" role="img" aria-label="Rangs d'afebliment de la cinta cap al 2100 segons l'IPCC i quatre estudis posteriors, en percentatge. IPCC emissions baixes: 24 per cent, de 4 a 46. IPCC emissions molt altes: 39 per cent, de 17 a 55. Weijer i col·legues 2020: de 34 a 45. Bonan i col·legues 2025: de 18 a 43. Portmann i col·legues 2026: de 43 a 59. A la dreta, la zona de col·lapse."></svg></div>
+    <div class="vh">
+      <div><strong>Afebliment projectat cap al 2100</strong><span>Arrossega el control per comparar el percentatge d'afebliment amb l'IPCC i els estudis recents</span></div>
+      <div class="lgs" id="pj-lg"></div>
+    </div>
+    <div class="plot" id="pjw"></div>
     <div class="ctl" style="border-top:0;margin-top:2px;padding-top:0">
       <input class="rng" id="pjR" type="range" min="0" max="90" step="1" value="30" aria-label="Afebliment de la cinta cap al 2100, en percentatge">
     </div>
@@ -388,7 +291,7 @@ dl.gl dt{font-weight:700}
       <div class="big" id="pjBig"></div>
       <div><p id="pjTxt"></p><ul id="pjList"></ul></div>
     </div>
-    <figcaption>Afebliment cap al 2100 respecte al clima recent, segons cada font (les referències no són idèntiques); els sverdrups són una conversió aproximada des dels 17 Sv de RAPID. Fonts: IPCC AR6, capítol 9; Weijer et al. (2020), restringit amb RAPID; Bonan et al. (2025); Portmann et al. (2026), escenari intermedi, interval del 90 %. La zona de col·lapse és per sota d'uns 6 Sv, el llindar de diversos estudis.</figcaption>
+    <figcaption class="src"><b>Dades reals (projeccions publicades).</b> Afebliment cap al 2100 respecte al clima recent, segons cada font (les referències no són idèntiques); els sverdrups són una conversió aproximada des dels 17 Sv de RAPID. Fonts: IPCC AR6, capítol 9; Weijer et al. (2020), restringit amb RAPID; Bonan et al. (2025); Portmann et al. (2026), escenari intermedi, interval del 90 %. La zona de col·lapse és per sota d'uns 6 Sv, el llindar de diversos estudis.</figcaption>
   </figure>
   <section class="col">
     <h2 class="sh" id="quan-podria-passar">Quan podria passar?</h2>
@@ -398,8 +301,12 @@ dl.gl dt{font-weight:700}
     <p><b>Els models de clima.</b> Cap dels models de l'IPCC no mostra un col·lapse brusc aquest segle, i un estudi del 2025 amb 34 models troba que els vents de l'oceà Antàrtic mantenen la cinta en marxa, afeblida. Però allargant les simulacions més enllà del 2100, amb emissions molt altes la cinta acaba molt feble en tots. I l'IPCC admet que els models tendeixen a ser massa estables.</p>
   </section>
   <figure class="fig wide" id="tipfig">
-    <div class="chart" id="tipw"><svg id="tip" role="img" aria-label="Línia del temps del 2020 al 2200 amb les estimacions publicades sobre un col·lapse de la cinta: Ditlevsen 2023 corregit, 2065 amb un interval del 2037 al 2109; van Westen 2025, inici cap al 2063 amb un rang del 2026 al 2095 amb emissions intermèdies i cap al 2055 amb emissions molt altes; Drijfhout 2025, aturada després del 2100 en simulacions allargades; Baker 2025 i l'IPCC, col·lapse improbable abans del 2100."></svg><div class="tip" id="tiptip"></div></div>
-    <figcaption>Estimacions publicades, no prediccions d'aquest article; cada mètode respon una pregunta una mica diferent. Passa o toca cada fila per veure'n el detall.</figcaption>
+    <div class="vh">
+      <div><strong>Estimacions sobre un possible col·lapse</strong><span>Horitzó 2020–2200 segons el mètode estadístic, físic o climàtic de cada estudi</span></div>
+      <div class="lgs" id="tip-lg"></div>
+    </div>
+    <div class="plot" id="tipw"></div>
+    <figcaption class="src"><b>Dades reals (estudis publicats).</b> Estimacions publicades, no prediccions d'aquest article; cada mètode respon una pregunta una mica diferent. Passa o toca cada fila per veure'n el detall.</figcaption>
   </figure>
   <section class="col">
     <p>Si passés, què canviaria? Segons l'IPCC, molt probablement el cinturó de pluges tropicals es desplaçaria cap al sud, els monsons de l'Àfrica i de l'Àsia s'afeblirien i Europa s'assecaria. Al model d'Utrecht, sense escalfament global, el nord-oest d'Europa es refredava més d'1 °C per dècada, i a l'Amazònia l'estació seca i la humida s'intercanviaven. Amb l'escalfament de fons el refredament seria menor, però els hiverns extrems del nord-oest d'Europa serien més freds.</p>
@@ -475,6 +382,7 @@ dl.gl dt{font-weight:700}
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script src="../../assets/ib-viz.js"></script>
 <script src="../../assets/scrolly.js"></script>
 <script src="dades.js"></script>
 <script src="cinta-transportadora.js"></script>

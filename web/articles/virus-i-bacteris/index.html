@@ -15,94 +15,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=STIX+Two+Text:ital,wght@0,400;0,500;1,400&display=swap">
 <link rel="stylesheet" href="../../assets/ib.css">
 <link rel="stylesheet" href="../../assets/article.css">
-<style>
-:root{--dry:#9A6326;--wet:#16786C;--bio:#4C8A2E}
-.k-v{color:var(--warm);font-weight:600}.k-b{color:var(--cold);font-weight:600}.k-m{color:var(--wet);font-weight:600}
-.page{overflow-x:clip}
-.gh{flex-wrap:wrap;gap:2px 16px}
-.gh strong{font-size:21px}
-.gh span{font-size:13px}
-.box{position:relative}
-.box canvas{display:block;width:100%}
-.ctl-row{margin-top:10px}
-.ctl-row .lbl{font-size:12px;color:var(--muted)}
-.btns{display:flex;flex-wrap:wrap;gap:8px}
-.btn{font-family:var(--sans);font-size:13px;font-weight:600;border:1px solid var(--ink);background:var(--paper);color:var(--ink);padding:6px 11px;border-radius:2px;cursor:pointer;line-height:1.2}
-.btn:hover{background:#F4F3F0}
-.btn.v{border-color:var(--warm);color:var(--warm)}
-.btn.d{border-color:var(--dry);color:var(--dry)}
-.btn.m{border-color:var(--wet);color:var(--wet)}
-.btn[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
-.btn.v[aria-pressed="true"]{background:var(--warm);border-color:var(--warm)}
-.btn.m[aria-pressed="true"]{background:var(--wet);border-color:var(--wet)}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 24px;font-family:var(--sans);margin:0 0 16px;max-width:640px}
-.stats div{border-top:2px solid var(--ink);padding-top:6px}
-.stats b{display:block;font-family:var(--serif);font-weight:600;font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
-.stats span{font-size:13px;color:var(--ink-2);line-height:1.35;display:block;margin-top:2px}
-.stats .v b{color:var(--warm)}.stats .b b{color:var(--cold)}
-#scRng{max-width:none}
-.sc-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:var(--sans);margin-bottom:6px;flex-wrap:wrap}
-.sc-head strong{font-family:var(--serif);font-weight:600;font-size:21px}
-.sc-head span{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
-#igraphic .gbox,#cgraphic .gbox{max-width:760px;margin:0 auto}
-.istate{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:var(--sans);margin-bottom:6px}
-.istate strong{font-family:var(--serif);font-weight:600;font-size:20px}
-.istate span{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
-.ictl{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--hair);font-family:var(--sans);font-size:12.5px;color:var(--muted)}
-.simwrap{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:18px 28px;align-items:start}
-.simside{font-family:var(--sans);font-size:13px;color:var(--ink-2)}
-.simside h3{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--muted);margin:0 0 6px}
-.simside .btns{margin-bottom:16px}
-.simside .btns .btn{flex:1 1 100%;text-align:left}
-.cnt{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:4px;font-variant-numeric:tabular-nums}
-.cnt li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid var(--hair);padding:3px 0}
-.cnt i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px}
-#simMsg{font-family:var(--serif);font-size:16px;line-height:1.45;color:var(--ink);min-height:4.4em;margin:12px 0 0}
-#simChart{display:block;width:100%;height:140px;margin-top:10px}
-.tlcard{max-width:640px;margin:14px auto 0;font-family:var(--sans);font-size:15px;line-height:1.5;color:var(--ink-2);min-height:9.5em}
-.tlcard .y{font-family:var(--serif);font-weight:600;font-size:26px;color:var(--ink);margin-right:10px}
-.tlcard h3{font-family:var(--sans);font-size:16px;margin:2px 0 6px;color:var(--ink)}
-.tlcard p{margin:0 0 6px}
-.tlcard .src{font-size:12.5px;color:var(--muted)}
-.tlnav{display:flex;justify-content:space-between;max-width:640px;margin:8px auto 0}
-#tline{display:block;width:100%;cursor:pointer;touch-action:pan-y}
-.defnote{font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:6px}
-.legend .sq{border-radius:1px}
-.playb{padding:6px 0}
-.sc-head{min-height:2.7em;align-content:flex-start}
-.shfacts{margin:14px 0 0;max-width:none}
-.shfacts b{font-size:24px}
-.simleg{margin:8px 0 0;gap:4px 14px;font-size:12px}
-.simleg i{width:12px;height:12px;vertical-align:-2px}
-.simleg i.ring{border-radius:50%;background:#EEF3F9;border:1.2px solid #2C5DA8;box-sizing:border-box}
-.simleg i.ring.inf{background:#F6DCD3;border:2px solid #C8442A}
-.simleg i.ring.dead{background:#fff;border:1px solid #D4D4D2}
-.simleg i.ring.cut{background:#fff;border:2.4px solid #16786C}
-.simleg i.strip{width:4px;height:12px;margin-right:1px;border-radius:0}
-.simleg i.strip+i.strip+i.strip{margin-right:6px}
-@media (max-width:899px){
-  .gh strong{font-size:18px}
-  .stats{grid-template-columns:minmax(0,1fr);gap:8px}
-  .stats b{font-size:24px}
-  .istate strong{font-size:16px}.istate span{font-size:11.5px}
-  .ictl{margin-top:4px;padding-top:4px;gap:6px 10px}
-  .ictl .lbl{display:none}
-  .btn{font-size:12.5px;padding:5px 9px}
-  .simwrap{grid-template-columns:minmax(0,1fr)}
-  .simside .btns .btn{flex:1 1 auto}
-  .simside{order:-1}.simwrap{display:flex;flex-direction:column;gap:10px}
-  .simside .btns{margin-bottom:8px}
-  .cnt{grid-template-columns:1fr 1fr;column-gap:16px;font-size:12px;margin-bottom:6px}
-  #simMsg{min-height:3em;font-size:15px;margin-top:6px}
-  .tlcard{min-height:12em;font-size:14.5px}
-  .shfacts b{font-size:21px}
-  .sc-head{min-height:3.6em}
-}
-@media (max-width:899px) and (max-height:760px){
-  .istate{margin-bottom:2px}
-  .step p{font-size:16px;line-height:1.5}
-}
-</style>
+<link rel="stylesheet" href="article.css">
 </head>
 <body class="ib-article">
 <header class="ib-bar">
@@ -130,15 +43,24 @@
     <p>Un fag és poca cosa: una closca de proteïna amb material genètic a dins i una màquina per injectar-lo en un bacteri. No menja, no respira i no es pot reproduir sol. Fora d'una cèl·lula és inert, com un llapis de memòria sense ordinador. Només quan entra en un bacteri es converteix en una fàbrica.</p>
     <p>I és minúscul: només es veu amb un microscopi electrònic. Baixa amb el control des d'un òvul humà, la cèl·lula més gran del nostre cos, fins a un fag aterrat sobre un bacteri.</p>
   </section>
-  <figure class="fig">
-    <div class="sc-head"><strong id="scName">Un òvul humà</strong><span id="scVal">Amplada de la imatge: 300 µm</span></div>
-    <div class="box"><canvas id="scale" role="img" aria-label="Comparació de mides a escala: un òvul humà de 120 micres, una cèl·lula humana de 20 micres, un glòbul vermell de 8 micres, un bacteri E. coli de 2 micres de llarg i un fag T4 d'uns 0,2 micres aterrat a la seva superfície."></canvas></div>
-    <div class="ctl" style="max-width:none">
-      <div class="lbl"><label for="scRng">Apropa't</label><button class="playb" id="scPlay" type="button">Reprodueix el zoom</button></div>
-      <input class="rng" id="scRng" type="range" min="0" max="1000" step="1" value="0" aria-label="Nivell de zoom">
-      <div class="seg" id="scSeg" style="flex-wrap:wrap;gap:6px 16px"></div>
+  <figure class="fig" id="f-scale">
+    <div class="vh">
+      <div><strong id="scName">Un òvul humà</strong><span id="scVal">Amplada de la imatge: 300 µm · Clica qualsevol mida de la cinta logarítmica per fixar-la com a referència</span></div>
+      <div class="lgs" id="scale-lg"></div>
     </div>
-    <figcaption>Totes les formes estan dibuixades a escala, amb les mides típiques de cada cèl·lula. Fonts: Milo i Phillips, <i>Cell Biology by the Numbers</i> (cèl·lules); Yap i Rossmann 2014 (fag T4).</figcaption>
+    <div class="scale-stack">
+      <div class="plot" id="scale-ribbon"></div>
+      <div class="plot scale-canvas-wrap" id="scale-viz"></div>
+    </div>
+    <div class="ctlrow">
+      <div class="rng-wrap">
+        <label for="scRng">Apropa't</label>
+        <input class="rng" id="scRng" type="range" min="0" max="1000" step="1" value="0" aria-label="Nivell de zoom">
+      </div>
+      <div class="seg" id="scSeg" role="group" aria-label="Mides de referència"></div>
+      <button class="playb" id="scPlay" type="button">Reprodueix el zoom</button>
+    </div>
+    <figcaption class="src"><b>Dades reals.</b> Totes les formes estan dibuixades a escala, amb les mides típiques de cada cèl·lula; la cinta superior és en escala logarítmica. Fonts: Milo i Phillips, <i>Cell Biology by the Numbers</i> (cèl·lules); Yap i Rossmann 2014 (fag T4).</figcaption>
   </figure>
 
   <section class="col">
@@ -199,9 +121,17 @@
     </div>
     <div class="graphic" id="igraphic">
       <div class="gbox" id="ibox">
-        <div class="istate" aria-live="polite"><strong id="iName">El fag T4</strong><span id="iClock"></span></div>
-        <div class="box"><canvas id="inf" role="img" aria-label="Dibuix d'un fag T4, a escala, que aterra sobre un bacteri, hi injecta el seu ADN, es multiplica a dins i el fa esclatar; i esquema d'un fag lambda que s'amaga al cromosoma del bacteri."></canvas></div>
-        <div class="ictl"><span class="lbl">Cicle</span><div class="btns" id="iSeg"><button class="btn v" type="button" data-c="lit" aria-pressed="false">Lític (T4)</button><button class="btn" type="button" data-c="lis" aria-pressed="false">Lisogènic (lambda)</button></div><button class="playb" id="iPlay" type="button">Reprodueix</button></div>
+        <div class="vh" aria-live="polite">
+          <div><strong id="iName">El fag T4</strong><span id="iClock">Dibuix a escala del fag sobre la paret bacteriana</span></div>
+          <div class="lgs" id="inf-lg"></div>
+        </div>
+        <div class="plot" id="inf-viz"></div>
+        <div class="ctlrow">
+          <span class="lbl">Cicle</span>
+          <div class="seg" id="iSeg" role="group" aria-label="Tria el cicle"><button type="button" data-c="lit" aria-pressed="false">Lític (T4)</button><button type="button" data-c="lis" aria-pressed="false">Lisogènic (lambda)</button></div>
+          <button class="playb" id="iPlay" type="button">Reprodueix</button>
+        </div>
+        <p class="src"><b>Esquema a escala.</b> El fag T4 i el bacteri <i>E. coli</i> respecten les mides publicades (Yap i Rossmann 2014); els processos interns i el fag lambda són esquemàtics.</p>
       </div>
     </div>
   </section>
@@ -218,19 +148,24 @@
     <p>Els virus d'una mostra d'aigua es poden comptar un a un, amb microscopis o fent passar l'aigua per davant d'un làser. El 2016, un equip va reunir milers de mesures d'aquest tipus, de l'Àrtic a l'Índic i de la superfície fins a gairebé 6.000 metres de fondària. El 2017 en van corregir la compilació: tres dels conjunts de dades eren d'aigua dolça, no de mar. Sense aquests, queden <b>5.508 mesures</b> de 22 campanyes.</p>
     <p>Cada punt és una mostra d'aigua: com més a la dreta, més bacteris; com més amunt, més virus. Les diagonals marquen quants virus hi ha per bacteri.</p>
   </section>
-  <figure class="fig">
+  <figure class="fig" id="f-sea">
     <div class="stats" id="seaStats">
       <div class="v"><b>6,8 milions</b><span>de virus en un mil·lilitre d'aigua dels primers 100 metres (mediana)</span></div>
       <div class="b"><b>540.000</b><span>bacteris en el mateix mil·lilitre</span></div>
       <div><b>11 a 1</b><span>virus per cada bacteri en aquests 100 metres, de mediana. Però en 8 de cada 10 mostres va d'unes 5 a unes 70</span></div>
     </div>
-    <div class="gh"><strong>Virus i bacteris en 5.508 mostres d'aigua de mar</strong><span id="seaN">Totes les fondàries</span></div>
-    <div class="box" id="seaBox"><canvas id="sea" role="img" aria-label="Gràfic de dispersió logarítmic amb 5.508 mostres d'aigua de mar: bacteris per mil·lilitre a l'eix horitzontal, de 5.000 a 18 milions, i virus per mil·lilitre a l'eix vertical, de 100.000 a 600 milions. La majoria de punts queden entre les línies d'1 i de 100 virus per bacteri; les mostres profundes tenen menys cèl·lules però més virus per cèl·lula."></canvas><div class="tip" id="seaTip"></div></div>
-    <div class="ctl-row" style="justify-content:space-between">
-      <div class="seg" id="seaSeg"><button type="button" data-d="all" aria-pressed="true">Totes</button><button type="button" data-d="0" aria-pressed="false">0–100 m</button><button type="button" data-d="1" aria-pressed="false">100–1.000 m</button><button type="button" data-d="2" aria-pressed="false">Més de 1.000 m</button></div>
-      <div class="legend" style="margin-top:0"><span><i style="background:#2C5DA8"></i>0–100 m</span><span><i style="background:#86A9D6"></i>100–1.000 m</span><span><i style="background:#9A6326"></i>Més de 1.000 m</span></div>
+    <div class="vh">
+      <div><strong>Virus i bacteris en 5.508 mostres d'aigua de mar</strong><span id="seaN">Totes les fondàries · Escala logarítmica als dos eixos</span></div>
+      <div class="lgs" id="sea-lg"></div>
     </div>
-    <figcaption>Dades reals: 5.508 parells de mesures de 22 campanyes, compilades per Wigington et al. 2016 (<i>Nature Microbiology</i>), amb la correcció del 2017, que en va treure tres conjunts d'aigua dolça. Medianes i tendència: càlcul propi. Passa o toca sobre un punt per veure'n els valors.</figcaption>
+    <div class="seg" id="seaSeg" role="group" aria-label="Filtra per fondària">
+      <button type="button" data-d="all" aria-pressed="true">Totes</button>
+      <button type="button" data-d="0" aria-pressed="false">0–100 m</button>
+      <button type="button" data-d="1" aria-pressed="false">100–1.000 m</button>
+      <button type="button" data-d="2" aria-pressed="false">Més de 1.000 m</button>
+    </div>
+    <div class="plot" id="sea-viz"></div>
+    <figcaption class="src"><b>Dades reals.</b> 5.508 parells de mesures de 22 campanyes, compilades per Wigington et al. 2016 (<i>Nature Microbiology</i>), amb la correcció del 2017, que en va treure tres conjunts d'aigua dolça. Medianes i tendència: càlcul propi. Passa o toca sobre un punt per veure'n els valors.</figcaption>
   </figure>
   <section class="col">
     <p>La regla de «deu virus per bacteri» funciona com a mitjana, però amaga molt. En aigües de superfície, plenes de vida, la proporció sol ser més baixa. Per sota dels 1.000 metres, on hi ha pocs bacteris, la mediana passa de 30 virus per cèl·lula.</p>
@@ -242,15 +177,26 @@
     <p>Tots aquests virus maten. A l'oceà, segons una estimació del viròleg marí Curtis Suttle, els virus maten cada dia aproximadament <b>el 20% de la biomassa microbiana</b>. En alguns llocs maten tants bacteris com els protists, els microorganismes que se'ls mengen; en d'altres, són la primera causa de mort.</p>
     <p>Quan un bacteri o una alga microscòpica esclata, el seu contingut queda dissolt a l'aigua: carboni, nitrogen, fòsfor. Això no arriba directament als peixos: ho consumeixen sobretot altres bacteris. Els oceanògrafs en diuen el <b>curtcircuit viral</b>.</p>
   </section>
-  <figure class="fig">
-    <div class="gh"><strong>On va a parar el carboni del plàncton</strong><span class="seg" id="shSeg"><button type="button" data-v="0" aria-pressed="false">Sense virus</button><button type="button" data-v="1" aria-pressed="true">Amb virus</button></span></div>
-    <div class="box"><canvas id="shunt" role="img" aria-label="Esquema de la xarxa alimentària marina. El carboni que fixen les algues microscòpiques passa al zooplàncton i als peixos, o es dissol a l'aigua i el consumeixen els bacteris. Quan hi ha virus, una part de les algues i dels bacteris esclata i el seu carboni torna a l'aigua dissolt: es recicla més carboni entre els microbis i en puja menys cap als peixos."></canvas></div>
+  <figure class="fig" id="f-shunt">
+    <div class="vh">
+      <div><strong>On va a parar el carboni del plàncton</strong><span id="shSub">Esquema de fluxos de carboni: els virus retenen nutrients entre microbis i en resten als peixos</span></div>
+      <div class="lgs" id="shunt-lg"></div>
+    </div>
+    <div class="seg" id="shSeg" role="group" aria-label="Escenari de la xarxa tròfica">
+      <button type="button" data-v="0" aria-pressed="false">Sense virus</button>
+      <button type="button" data-v="1" aria-pressed="true">Amb virus</button>
+    </div>
+    <div class="plot" id="shunt-viz"></div>
+    <div class="ctlrow">
+      <button class="playb" id="shPlay" type="button" aria-pressed="false">Atura els fils</button>
+      <span class="lbl">Passa o toca qualsevol node o flux per veure'n el paper</span>
+    </div>
     <div class="stats shfacts">
       <div class="v"><b>~20%</b><span>de la biomassa microbiana de l'oceà mor cada dia per culpa dels virus (estimació de Suttle 2007).</span></div>
       <div><b>56° N</b><span>A l'Atlàntic Nord, al sud d'aquesta latitud els virus són una causa important de mort de les algues; al nord, hi mana el zooplàncton (Mojica et al. 2016).</span></div>
       <div><b>?</b><span>Quant carboni passa pel curtcircuit a escala mundial encara no se sap: hi ha molt poques mesures directes (Weitz i Wilhelm 2012).</span></div>
     </div>
-    <figcaption>Esquema, no dades: el gruix de les fletxes és il·lustratiu i només indica cap a on canvien els fluxos quan hi ha virus, segons el model de Weitz et al. 2015.</figcaption>
+    <figcaption class="src"><b>Esquema</b> (no dades): el gruix dels fluxos és il·lustratiu i només indica cap a on canvien quan hi ha virus, segons el model de Weitz et al. 2015.</figcaption>
   </figure>
   <section class="col">
     <p>Així, una part dels nutrients es queda circulant entre els microbis de la capa de dalt de l'oceà, en lloc de pujar per la cadena alimentària. Segons els models, amb virus les algues fins i tot creixen més, perquè tenen més nutrients a l'abast.</p>
@@ -265,11 +211,17 @@
     <p><b>Sacrificar-se.</b> Quan detecten un virus, la cèl·lula infectada se suïcida abans que el fag acabi de fabricar còpies. Mor un bacteri, però el virus no s'escampa per la resta de la colònia. Es diu <b>infecció avortiva</b>. Un d'aquests sistemes, el CBASS, s'assembla tant a una via d'alarma antiviral de les nostres cèl·lules que els investigadors creuen que totes dues tenen un origen comú molt antic.</p>
     <p>El 2018, un equip de l'Institut Weizmann, a Israel, en va descobrir deu de cop i els va posar noms de déus protectors: Thoeris, Gabija, Zorya, Hachiman… Des de llavors n'han aparegut desenes més.</p>
   </section>
-  <figure class="fig">
-    <div class="gh"><strong id="defTitle">Quins sistemes de defensa porten bacteris i arqueus</strong><span class="seg" id="defSeg"><button type="button" data-v="0" aria-pressed="true">Quins</button><button type="button" data-v="1" aria-pressed="false">Quants per genoma</button></span></div>
-    <div class="box" id="defBox"><svg id="def" role="img" aria-label="Percentatge de genomes de bacteris i arqueus que porten cada família de sistemes antivirals: restricció-modificació al 83%, CRISPR-Cas al 39%, Gabija al 15%, i la resta per sota del 15%. En una segona vista, la distribució de quants sistemes té cada genoma, amb una mitjana de 5."></svg><div class="tip" id="defTip"></div></div>
-    <div class="legend"><span><i class="sq" style="background:#121212"></i>Restricció-modificació i CRISPR-Cas</span><span><i class="sq" style="background:#16786C"></i>Descrits el 2018 (Doron et al.)</span><span><i class="sq" style="background:#ADADAD"></i>Altres sistemes</span></div>
-    <figcaption>Dades reals: 21.738 genomes complets de bacteris i arqueus (Tesson et al. 2022, <i>Nature Communications</i>). Es mostren les 25 famílies més freqüents de les 60 detectades. Passa o toca una barra per veure'n el detall.</figcaption>
+  <figure class="fig" id="f-def">
+    <div class="vh">
+      <div><strong id="defTitle">Quins sistemes de defensa porten bacteris i arqueus</strong><span id="defSub">Percentatge de genomes amb cada família (les 25 més freqüents de 60) · Àrea proporcional</span></div>
+      <div class="lgs" id="def-lg"></div>
+    </div>
+    <div class="seg" id="defSeg" role="group" aria-label="Vista dels sistemes de defensa">
+      <button type="button" data-v="0" aria-pressed="true">Quins</button>
+      <button type="button" data-v="1" aria-pressed="false">Quants per genoma</button>
+    </div>
+    <div class="plot" id="def-viz"></div>
+    <figcaption class="src"><b>Dades reals.</b> 21.738 genomes complets de bacteris i arqueus (Tesson et al. 2022, <i>Nature Communications</i>). Es mostren les 25 famílies més freqüents de les 60 detectades. Passa o toca una fila per veure'n el detall.</figcaption>
   </figure>
   <section class="col">
     <p>Les tisores de restricció són les més esteses: les porten més de vuit de cada deu genomes. De mitjana, cada genoma de bacteri o d'arqueu té cinc sistemes antivirals de tres famílies diferents, però la variació és enorme: n'hi ha que no en tenen cap i n'hi ha un que en té 57.</p>
@@ -330,9 +282,12 @@
     </div>
     <div class="graphic" id="cgraphic">
       <div class="gbox" id="cbox">
-        <div class="istate" aria-live="polite"><strong id="cName">L'arxiu CRISPR</strong><span id="cSub">Esquema</span></div>
-        <div class="box"><canvas id="cr" role="img" aria-label="Esquema d'un bacteri amb l'arxiu CRISPR al cromosoma. Un virus injecta ADN, el bacteri en guarda un fragment com a espaiador nou, el transmet a les filles, el converteix en ARN guia i, quan el virus torna, la proteïna Cas9 talla el seu ADN."></canvas></div>
-        <div class="cap" style="margin-top:6px">Esquema, no a escala. Les mides i les quantitats de molècules no són reals.</div>
+        <div class="vh" aria-live="polite">
+          <div><strong id="cName">L'arxiu CRISPR</strong><span id="cSub">Esquema del mecanisme immunitari bacterià</span></div>
+          <div class="lgs" id="cr-lg"></div>
+        </div>
+        <div class="plot" id="cr-viz"></div>
+        <p class="src"><b>Esquema</b> (no a escala). Les mides i les quantitats de molècules no són reals.</p>
       </div>
     </div>
   </section>
@@ -342,25 +297,22 @@
     <p>Aquesta és una colònia de bacteris de mentida: cada cercle és un bacteri, i cada franja de color, un espaiador guardat. Allibera un virus, mira què passa i torna-hi. Després prova amb un mutant, o amb un virus que porti un anti-CRISPR (en parlem tot seguit).</p>
     <p class="note">També pots tocar la colònia per deixar-hi caure un virus A.</p>
   </section>
-  <figure class="fig wide">
+  <figure class="fig wide" id="f-sim">
+    <div class="vh">
+      <div><strong>Colònia de bacteris amb memòria CRISPR</strong><span>Cada cercle és un bacteri; les franges de color indiquen els espaiadors guardats. Toca la colònia o prem un botó per alliberar un virus</span></div>
+      <div class="lgs" id="sim-lg"></div>
+    </div>
     <div class="simwrap">
       <div>
-        <div class="box"><canvas id="sim" role="img" aria-label="Simulació d'una colònia de bacteris. Quan s'allibera un virus, infecta i mata bacteris; alguns supervivents guarden un espaiador i es tornen immunes, i la colònia es refà amb bacteris que recorden el virus."></canvas></div>
-        <div class="legend simleg" aria-hidden="true">
-          <span><i class="ring"></i>Bacteri viu</span>
-          <span><i class="ring inf"></i>Infectat</span>
-          <span><i class="ring dead"></i>Mort (lloc buit)</span>
-          <span><i class="strip" style="background:#C8442A"></i><i class="strip" style="background:#9A6326"></i><i class="strip" style="background:#EFB9A8"></i>Espaiadors: A, B, mutant</span>
-          <span><i class="ring cut"></i>Ha reconegut el virus i l'ha tallat</span>
-        </div>
-        <canvas id="simChart" aria-hidden="true"></canvas>
+        <div class="plot" id="sim-viz"></div>
+        <div class="plot" id="simChart-viz"></div>
       </div>
       <div class="simside">
         <h3>Allibera</h3>
         <div class="btns" id="simBtns">
           <button class="btn v" type="button" data-v="0">Virus A</button>
-          <button class="btn d" type="button" data-v="1">Virus B</button>
-          <button class="btn v" type="button" data-v="2" style="border-color:#EFB9A8">Virus A mutant</button>
+          <button class="btn g" type="button" data-v="1">Virus B</button>
+          <button class="btn vc" type="button" data-v="2">Virus A mutant</button>
           <button class="btn" type="button" data-v="3">Virus A amb anti-CRISPR</button>
         </div>
         <h3>Colònia</h3>
@@ -369,7 +321,7 @@
         <p id="simMsg" aria-live="polite">La colònia encara no ha vist cap virus. Cap bacteri no té espaiadors.</p>
       </div>
     </div>
-    <figcaption>Simulació amb un model molt simplificat, no dades reals. Les probabilitats estan exagerades: a la natura, només una fracció molt petita dels bacteris atacats sobreviu i guarda un espaiador.</figcaption>
+    <figcaption class="src"><b>Simulació</b> amb un model simplificat (no dades reals). Les probabilitats estan exagerades: a la natura, només una fracció molt petita dels bacteris atacats sobreviu i guarda un espaiador.</figcaption>
   </figure>
 
   <section class="col">
@@ -384,10 +336,15 @@
     <h2 class="sh" id="del-laboratori-al-nobel">Del laboratori al Nobel</h2>
     <p>De la prova del iogurt al Nobel van passar tretze anys. Recorre la línia del temps.</p>
   </section>
-  <figure class="fig">
-    <svg id="tline" role="img" aria-label="Línia del temps del CRISPR del 1987 al 2023: repeticions a E. coli, Mojica a Alacant, el nom CRISPR, l'origen víric dels espaiadors, la prova experimental, Cas9 com a eina, el Nobel del 2020 i el primer medicament el 2023."></svg>
+  <figure class="fig" id="f-tline">
+    <div class="vh">
+      <div><strong>Del descobriment al primer medicament (1987–2023)</strong><span>Tretze fites des de les repeticions d'<i>E. coli</i> fins a l'autorització del Casgevy. Passa o clica cada cercle</span></div>
+      <div class="lgs" id="tline-lg"></div>
+    </div>
+    <div class="plot" id="tline-viz"></div>
     <div class="tlnav"><button class="playb" id="tlPrev" type="button">← Anterior</button><button class="playb" id="tlNext" type="button">Següent →</button></div>
     <div class="tlcard" id="tlCard" aria-live="polite"></div>
+    <figcaption class="src"><b>Dades reals.</b> Cronologia basada en les publicacions originals i resolucions oficials (1987–2023), detallades a les fonts.</figcaption>
   </figure>
   <section class="col">
     <p>El Nobel de Química del 2020 va ser per a Charpentier i Doudna, «pel desenvolupament d'un mètode per editar genomes». L'informe científic de l'Acadèmia sueca repassa tota la història i cita quatre treballs de Mojica, però el premi no el va incloure.</p>
@@ -485,6 +442,7 @@
   <a href="../../"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="../../assets/ib-viz.js"></script>
 <script src="../../assets/scrolly.js"></script>
 <script src="dades.js"></script>
 <script src="virus-i-bacteris.js"></script>

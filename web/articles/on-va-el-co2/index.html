@@ -15,66 +15,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=STIX+Two+Text:ital,wght@0,400;0,500;1,400&display=swap">
 <link rel="stylesheet" href="../../assets/ib.css">
 <link rel="stylesheet" href="../../assets/article.css">
-<style>
-:root{--dry:#9A6326;--bio:#4C8A2E;--wet:#16786C;--sea:#E4ECF6}
-.k-a{color:var(--warm);font-weight:600}.k-o{color:var(--cold);font-weight:600}.k-l{color:var(--bio);font-weight:600}.k-f{color:var(--ink);font-weight:600}.k-u{color:var(--dry);font-weight:600}.k-i{color:var(--muted);font-weight:600}
-.gbox{margin:0 auto}
-.ghead{display:flex;justify-content:space-between;align-items:flex-end;gap:6px 18px;flex-wrap:wrap;font-family:var(--sans);margin-bottom:8px}
-.ghead strong{display:block;font-family:var(--serif-display);font-weight:400;font-size:22px;letter-spacing:-.048em;line-height:1.2}
-.ghead .val{display:block;font-size:14.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.lg{display:flex;flex-wrap:wrap;gap:4px 16px;font-family:var(--sans);font-size:12.5px;color:var(--ink-2);margin:8px 0 0}
-.lg span{white-space:nowrap}
-.lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0}
-.lg i.sq{border-radius:1px}
-.lg i.ring{background:none!important;border:1.3px dashed var(--muted)}
-.chartwrap{position:relative}
-.chartwrap svg{display:block;width:100%;overflow:visible}
-.axis text{font-family:var(--sans);font-size:11.5px;fill:var(--muted);font-variant-numeric:tabular-nums}
-.axis line,.axis path{stroke:var(--hair)}
-.lbl{font-family:var(--sans);font-size:12.5px;fill:var(--ink)}
-.lbl.b{font-weight:700}
-.lbl.m{fill:var(--muted)}
-.halo{paint-order:stroke;stroke:var(--paper);stroke-width:3.5px;stroke-linejoin:round}
-.ctlbar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 22px;font-family:var(--sans);font-size:13px;margin:0 0 10px}
-.seg{flex-wrap:wrap;gap:6px 18px}
-.seg button{min-height:30px}
-.yearpanel{font-family:var(--sans);font-size:14px;line-height:1.45;color:var(--ink-2);min-height:9.5em}
-.yearpanel h3{font-family:var(--serif-display);font-size:24px;font-weight:400;color:var(--ink);margin:0 0 2px}
-.yearpanel .em{font-size:13px;color:var(--muted);margin:0 0 10px}
-.yp-rows{display:grid;grid-template-columns:minmax(0,1fr);gap:5px;margin:0 0 10px}
-.yp-row{display:grid;grid-template-columns:118px minmax(0,1fr) 96px;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
-.yp-row .bar{height:9px;background:var(--hair);position:relative;border-radius:1px}
-.yp-row .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:1px}
-.yp-row .v{text-align:right;color:var(--ink)}
-.yp-note{font-size:13.5px;margin:0;color:var(--ink-2)}
-.yearlay{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:28px;align-items:start}
-.fig .cap2{font-family:var(--sans);font-size:12.5px;color:var(--muted);margin:6px 0 0}
-.pers-out{font-family:var(--sans);font-size:14.5px;color:var(--ink-2);font-variant-numeric:tabular-nums;margin:2px 0 0;min-height:1.5em}
-.pers-out b{color:var(--ink)}
-.rngrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:10px}
-.mini{margin:18px 0 0}
-#scA .gbox,#scB .gbox{max-width:760px}
-#aCv,#bCv{display:block;width:100%}
-.step .src{font-family:var(--sans);font-size:12.5px;color:var(--muted);margin:0}
-.fn ol{margin:6px 0 0}
-.fn li{margin:0 0 .45em}
-.bigfig{font-family:var(--serif-display);font-weight:600;font-size:42px;line-height:1;margin:0;color:var(--ink)}
-@media (max-width:899px){
-  .ghead strong{font-size:17px}.ghead .val{font-size:12.5px}
-  .lg{font-size:11px;gap:2px 10px;margin-top:4px}
-  .yearlay{grid-template-columns:minmax(0,1fr);gap:12px}
-  .yearpanel{min-height:0}
-  .yp-row{grid-template-columns:96px minmax(0,1fr) 84px}
-  .axis text{font-size:10.5px}
-  .lbl{font-size:11px}
-  .step .src{font-size:11.5px}
-}
-@media (max-width:899px){#scA .lg{display:none}#scA .cap,#scB .cap{font-size:10.5px;margin-top:4px}}
-@media (max-width:899px) and (max-height:760px){
-  #scA .lg,#scB .lg{display:none}
-  .ghead{margin-bottom:4px}
-}
-</style>
+<link rel="stylesheet" href="article.css">
 </head>
 <body class="ib-article">
 <header class="ib-bar">
@@ -152,10 +93,12 @@
     </div>
     <div class="graphic" id="aGraphic">
       <div class="gbox" id="aBox">
-        <div class="ghead"><div aria-live="polite"><strong id="aTitle">Emissions del 2025</strong><span class="val" id="aVal">427 punts · 1 punt = 0,1 Gt de CO₂</span></div></div>
-        <canvas id="aCv" role="img" aria-label="Esquema animat: 427 punts representen les 42,75 gigatones de CO₂ emeses el 2025. 384 surten de combustibles fòssils i 43 de la tala de boscos. 117 acaben a l'oceà, 133 a la vegetació i els sòls, 160 es queden a l'atmosfera i 17 són el desquadrament del balanç."></canvas>
-        <div class="lg" aria-hidden="true"><span><i style="background:var(--ink)"></i>Fòssil i ciment</span><span><i style="background:var(--dry)"></i>Ús del sòl</span><span><i style="background:var(--warm)"></i>Es queda a l'aire</span><span><i style="background:var(--cold)"></i>Oceà</span><span><i style="background:var(--bio)"></i>Terra</span><span><i class="ring"></i>Desquadrament</span></div>
-        <p class="cap">Esquema. Les quantitats són dades reals del Global Carbon Budget 2026 per a l'any 2025, arrodonides a la desena de gigatona.</p>
+        <div class="vh">
+          <div aria-live="polite"><strong id="aTitle">Emissions del 2025</strong><span id="aVal">427 punts · 1 punt = 0,1 Gt de CO₂</span></div>
+          <div class="lgs" id="aLg"></div>
+        </div>
+        <div class="plot" id="aPlot"></div>
+        <p class="src"><b>Esquema amb dades reals.</b> Cada punt equival a 0,1 Gt de CO₂ del 2025 (427 punts = 42,8 Gt), arrodonit a la desena de gigatona. Font: Global Carbon Budget 2026 (Friedlingstein et al.).</p>
       </div>
     </div>
   </section>
@@ -202,9 +145,12 @@
     </div>
     <div class="graphic" id="bGraphic">
       <div class="gbox" id="bBox">
-        <div class="ghead"><div aria-live="polite"><strong id="bTitle">L'oceà</strong><span class="val" id="bVal">Absorbeix el CO₂ per química</span></div></div>
-        <canvas id="bCv" role="img" aria-label="Tall esquemàtic de la terra i l'oceà: el CO₂ es dissol a la superfície del mar, es converteix en bicarbonat, baixa amb l'aigua que s'enfonsa i amb la neu de plàncton; a terra, les plantes l'absorbeixen per fotosíntesi i la tala i els incendis el tornen a l'aire."></canvas>
-        <p class="cap">Esquema, no a escala. La fondària de l'oceà està molt exagerada respecte a l'amplada.</p>
+        <div class="vh">
+          <div aria-live="polite"><strong id="bTitle">Dissolució</strong><span id="bVal">Hi entren més molècules de les que en surten</span></div>
+          <div class="lgs" id="bLg"></div>
+        </div>
+        <div class="plot" id="bPlot"></div>
+        <p class="src"><b>Esquema</b>, no a escala (la fondària de l'oceà està molt exagerada). Xifres del Global Carbon Budget 2026 (2025) i IPCC AR6.</p>
       </div>
     </div>
   </section>
@@ -216,9 +162,13 @@
     <p>Arrossega la finestra sobre la corba sencera per veure qualsevol moment des del 1958.</p>
   </section>
   <figure class="fig wide" id="keelFig">
-    <div class="ctlbar"><div class="seg" id="kSeg" role="group" aria-label="Períodes"><button type="button" data-y="1958.2" aria-pressed="false">1958–1962</button><button type="button" data-y="1996" aria-pressed="false">1996–1999</button><button type="button" data-y="2022.75" aria-pressed="true">2022–2026</button></div></div>
-    <div class="chartwrap" id="kWrap"><svg id="kSvg" role="img" aria-label="Corba de Keeling: concentració mensual de CO₂ a Mauna Loa des del març del 1958, de 315,7 a 432,3 ppm, amb una ampliació que mostra el cicle estacional, amb el màxim al maig i el mínim al setembre o l'octubre."></svg><div class="tip" id="kTip"></div></div>
-    <figcaption>Mitjana mensual de CO₂ a l'observatori de Mauna Loa (3.397 m), en parts per milió. La línia grisa de l'ampliació és la mateixa sèrie sense el cicle estacional. Entre el desembre del 2022 i el juliol del 2023, per l'erupció del volcà, les mesures es van fer a Maunakea, a 34 km. Dades: NOAA Global Monitoring Laboratory i Scripps (fins al 1974), fins al setembre del 2026.</figcaption>
+    <div class="vh">
+      <div><strong>La corba de Keeling: 68 anys de respiració planetària</strong><span>Concentració mensual de CO₂ a Mauna Loa (1958–2026) i ampliació del cicle estacional</span></div>
+      <div class="lgs" id="kLg"></div>
+    </div>
+    <div class="seg" id="kSeg" role="group" aria-label="Períodes"><button type="button" data-y="1958.2" aria-pressed="false">1958–1962</button><button type="button" data-y="1996" aria-pressed="false">1996–1999</button><button type="button" data-y="2022.75" aria-pressed="true">2022–2026</button></div>
+    <div class="plot" id="kPlot"></div>
+    <figcaption class="src"><b>Dades reals.</b> Mitjana mensual de CO₂ a l'observatori de Mauna Loa (3.397 m), en parts per milió. La línia discontínua de l'ampliació és la mateixa sèrie sense el cicle estacional. Entre el desembre del 2022 i el juliol del 2023, per l'erupció del volcà, les mesures es van fer a Maunakea, a 34 km. Font: NOAA Global Monitoring Laboratory i Scripps (fins al 1974), fins al setembre del 2026.</figcaption>
   </figure>
   <section class="col">
     <p>La serra ha crescut. Mesures fetes amb avions entre 3 i 6 km d'altura mostren que, al nord dels 45 graus, l'amplitud del cicle era el 2009–2011 un 50% més gran que a finals dels anys cinquanta. Els ecosistemes del nord, sobretot els boscos boreals, intercanvien amb l'aire entre un 30 i un 60% més de CO₂ cada estació. A Mauna Loa, en canvi, l'amplitud va créixer fins als anys vuitanta i des de llavors gairebé no ha canviat.</p>
@@ -232,13 +182,16 @@
     <p>Tria un any al gràfic per veure com es van repartir les emissions.</p>
   </section>
   <figure class="fig wide" id="yearFig">
-    <div class="ctlbar"><div class="seg" id="ySeg" role="group" aria-label="Anys destacats"><button type="button" data-y="1987" aria-pressed="false">1987</button><button type="button" data-y="1992" aria-pressed="false">1992</button><button type="button" data-y="1998" aria-pressed="false">1998</button><button type="button" data-y="2023" aria-pressed="false">2023</button><button type="button" data-y="2024" aria-pressed="false">2024</button><button type="button" data-y="2025" aria-pressed="true">2025</button></div></div>
+    <div class="vh">
+      <div><strong>Cada any és un pols entre emissions i embornals</strong><span>Repartiment anual del CO₂ (1959–2026) i índex d'El Niño (ONI) a sota</span></div>
+      <div class="lgs" id="yLg"></div>
+    </div>
+    <div class="seg" id="ySeg" role="group" aria-label="Anys destacats"><button type="button" data-y="1987" aria-pressed="false">1987</button><button type="button" data-y="1992" aria-pressed="false">1992</button><button type="button" data-y="1998" aria-pressed="false">1998</button><button type="button" data-y="2023" aria-pressed="false">2023</button><button type="button" data-y="2024" aria-pressed="false">2024</button><button type="button" data-y="2025" aria-pressed="true">2025</button></div>
     <div class="yearlay">
-      <div class="chartwrap" id="yWrap"><svg id="ySvg" tabindex="0" role="img" aria-label="Gràfic de barres del 1959 al 2026: per a cada any, el CO₂ que es va quedar a l'atmosfera, el que va absorbir l'oceà i el que va absorbir la terra, i una línia amb les emissions totals. A sota, l'índex d'El Niño de cada any. Fes servir les fletxes per canviar d'any."></svg><div class="tip" id="yTip"></div></div>
+      <div class="plot" id="yPlot"></div>
       <div class="yearpanel" id="yPanel" aria-live="polite"></div>
     </div>
-    <div class="lg" aria-hidden="true"><span><i class="sq" style="background:var(--warm)"></i>Es queda a l'aire</span><span><i class="sq" style="background:var(--cold)"></i>Oceà</span><span><i class="sq" style="background:var(--bio)"></i>Terra</span><span><i class="sq" style="background:var(--ink);height:2px;width:14px;vertical-align:3px"></i>Emissions totals</span><span><i class="sq" style="background:linear-gradient(90deg,#2C5DA8,#E4E4E2,#C8442A);width:26px"></i>Índex El Niño (ONI)</span></div>
-    <figcaption>Fonts i embornals de CO₂ per any, en gigatones de CO₂. Quan les barres no arriben a la línia, o la passen, la diferència és el desquadrament del balanç. El 2026 és una projecció. Dades: Global Carbon Budget 2026 (Friedlingstein et al.); índex ONI: NOAA Climate Prediction Center, mitjana de l'any (el 2026, fins a l'octubre).</figcaption>
+    <figcaption class="src"><b>Dades reals.</b> Fonts i embornals de CO₂ per any, en gigatones de CO₂. Quan les barres no arriben a la línia, o la passen, la diferència és el desquadrament del balanç. El 2026 és una projecció. Fonts: Global Carbon Budget 2026 (Friedlingstein et al.); índex ONI: NOAA Climate Prediction Center, mitjana de l'any (el 2026, fins a l'octubre).</figcaption>
   </figure>
   <section class="col">
     <p>El 2023 i el 2024 van ser dos anys dolents seguits. El 2023, una anàlisi ràpida feta per un equip internacional va estimar que l'embornal terrestre net havia caigut fins a 1,6 Gt de CO₂, el més feble des del 2003. Hi van pesar la sequera de l'Amazònia a la segona meitat de l'any i els incendis rècord del Canadà, que van emetre per si sols unes 2,1 Gt de CO₂.</p>
@@ -261,10 +214,13 @@
     <p>A la part de dalt del gràfic hi ha el que hem emès; a la de baix, on ha anat a parar. Passa el ratolí o el dit per sobre per veure cada any, i canvia a la vista acumulada.</p>
   </section>
   <figure class="fig wide" id="histFig">
-    <div class="ctlbar"><div class="seg" id="hSeg" role="group" aria-label="Vista"><button type="button" data-v="0" aria-pressed="true">Cada any</button><button type="button" data-v="1" aria-pressed="false">Acumulat des del 1850</button></div></div>
-    <div class="chartwrap" id="hWrap"><svg id="hSvg" role="img" aria-label="Fonts i destins del CO₂ del 1850 al 2026. A dalt, emissions fòssils i per canvi d'ús del sòl; a baix, el CO₂ que s'acumula a l'atmosfera, a l'oceà i a la terra. Del 1850 al 2025 es van emetre 2.765 gigatones de CO₂: un 39% es va quedar a l'aire, un 26% a l'oceà i un 25% a la terra."></svg><div class="tip" id="hTip"></div></div>
-    <div class="lg" aria-hidden="true"><span><i class="sq" style="background:var(--ink)"></i>Fòssil i ciment</span><span><i class="sq" style="background:var(--dry)"></i>Ús del sòl</span><span><i class="sq" style="background:var(--warm)"></i>Atmosfera</span><span><i class="sq" style="background:var(--cold)"></i>Oceà</span><span><i class="sq" style="background:var(--bio)"></i>Terra</span></div>
-    <figcaption>Gigatones de CO₂. Abans del 1959, el creixement atmosfèric es reconstrueix a partir de les bombolles d'aire atrapades al gel, i per això la corba és més suau. Els embornals de l'oceà i de la terra surten sempre, en bona part, de models. El 2026 és una projecció. La diferència entre la part de dalt i la de baix és el desquadrament: un 9% del total des del 1850. Dades: Global Carbon Budget 2026 (Friedlingstein et al.).</figcaption>
+    <div class="vh">
+      <div><strong>175 anys de comptes: del bosc al carbó i del cel al mar</strong><span>Emissions amunt (fòssil i ús del sòl) i destins avall (atmosfera, oceà i terra), 1850–2026</span></div>
+      <div class="lgs" id="hLg"></div>
+    </div>
+    <div class="seg" id="hSeg" role="group" aria-label="Vista"><button type="button" data-v="0" aria-pressed="true">Cada any</button><button type="button" data-v="1" aria-pressed="false">Acumulat des del 1850</button></div>
+    <div class="plot" id="hPlot"></div>
+    <figcaption class="src"><b>Dades reals i models històrics.</b> Gigatones de CO₂. Abans del 1959, el creixement atmosfèric es reconstrueix a partir de les bombolles d'aire atrapades al gel, i per això la corba és més suau. Els embornals de l'oceà i de la terra surten sempre, en bona part, de models. El 2026 és una projecció. La diferència entre la part de dalt i la de baix és el desquadrament: un 9% del total des del 1850. Font: Global Carbon Budget 2026 (Friedlingstein et al.).</figcaption>
   </figure>
   <section class="col">
     <p>Del total acumulat, l'atmosfera se n'ha quedat un <span class="k-a">39%</span>, l'oceà un <span class="k-o">26%</span> i la terra un <span class="k-l">25%</span>. El 9% que falta és el desquadrament: o bé les emissions antigues estan una mica sobreestimades, o bé els embornals han absorbit una mica més del que creiem.</p>
@@ -277,10 +233,19 @@
     <p>Per saber com baixa, els científics simulen una emissió sobtada de 100 gigatones de carboni (unes 366 Gt de CO₂, més de vuit anys d'emissions al ritme actual) i miren quant en queda a l'aire amb el temps. Arrossega el control.</p>
   </section>
   <figure class="fig wide" id="persFig">
-    <div class="chartwrap" id="pWrap"><svg id="pSvg" role="img" aria-label="Model de la mitjana de molts models del cicle del carboni: d'una emissió sobtada de CO₂, al cap de 20 anys en queda a l'aire un 60%, al cap de 100 anys un 41% i al cap de 1.000 anys un 25%. La resta ha anat a l'oceà i a la terra. Més enllà dels 1.000 anys, la reacció amb els carbonats del fons del mar i la meteorització de les roques n'eliminen la resta en desenes o centenars de milers d'anys."></svg></div>
-    <div class="rngrow"><label for="pRng">Anys després de l'emissió</label><input class="rng" id="pRng" type="range" min="0" max="300" step="1" value="200" aria-label="Anys després de l'emissió, en escala logarítmica"></div>
+    <div class="vh">
+      <div><strong>La cua llarga d'una emissió de CO₂</strong><span>Fracció que resta a l'aire després d'un pols de 100 Gt de carboni (escala logarítmica d'anys)</span></div>
+      <div class="lgs" id="pLg"></div>
+    </div>
+    <div class="plot" id="pPlot"></div>
+    <div class="ctlrow">
+      <div class="rng-wrap">
+        <label for="pRng">Anys després de l'emissió</label>
+        <input class="rng" id="pRng" type="range" min="0" max="300" step="1" value="200" aria-label="Anys després de l'emissió, en escala logarítmica">
+      </div>
+    </div>
     <p class="pers-out" id="pOut" aria-live="polite"></p>
-    <figcaption>Model, no dades mesurades. La corba és l'ajust a la mitjana de 15 models d'una emissió de 100 gigatones de carboni afegida a una atmosfera amb 389 ppm (Joos et al. 2013), vàlid fins als 1.000 anys. L'ajust dona un 23,5% a l'aire als 1.000 anys; la mitjana dels models és del 25 ± 9%. Les franges de sota són els temps aproximats dels processos que retiren el CO₂ (IPCC, 5è informe, Box 6.1); els anys són en escala logarítmica.</figcaption>
+    <figcaption class="src"><b>Simulació (model multimodel).</b> La corba és l'ajust a la mitjana de 15 models d'una emissió de 100 gigatones de carboni afegida a una atmosfera amb 389 ppm (Joos et al., 2013), vàlid fins als 1.000 anys. L'ajust dona un 23,5% a l'aire als 1.000 anys; la mitjana dels models és del 25 ± 9%. Les franges de sota són els temps aproximats dels processos que retiren el CO₂ (IPCC, 5è informe, Box 6.1); els anys són en escala logarítmica.</figcaption>
   </figure>
   <section class="col">
     <p>La primera part va de pressa: al cap de vint anys, a l'aire només en queda un 60%; la resta l'han absorbit la terra i la superfície del mar. Després s'alenteix, perquè el que limita és el ritme al qual el mar profund es barreja amb el de superfície. Als cent anys en queda un 41% (segons els models, entre un 28 i un 54%), i als mil, aproximadament una quarta part.</p>
@@ -339,6 +304,7 @@
   <a href="../../"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="../../assets/ib-viz.js"></script>
 <script src="../../assets/scrolly.js"></script>
 <script src="dades.js"></script>
 <script src="on-va-el-co2.js"></script>
