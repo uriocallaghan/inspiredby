@@ -38,6 +38,137 @@
   });
 
   /* =====================================================================
+     V0 · OBERTURA: UNA SOLA VIDA, QUATRE RETRATS (#intro-viz)
+     ===================================================================== */
+  (function(){
+    const el=$("#intro-viz"), rd=$("#intro-r"); if(!el)return;
+    const EV=[
+      {k:"Mc",n:"Marc",yr:"≈ 65–75",dt:"+40 anys",w:E.gnt.total.Mc,u:Math.round(EUS.Mc.uniqPct),c:C.vermell,
+        sub:"El primer · breu i urgent",det:"El més antic i curt (11.085 paraules). Sense relat de naixement; el 94 % reapareix a Mateu i Lluc."},
+      {k:"Mt",n:"Mateu",yr:"≈ 80–90",dt:"+55 anys",w:E.gnt.total.Mt,u:Math.round(EUS.Mt.uniqPct),c:C.blau,
+        sub:"El mestre jueu · mags i Egipte",det:"Escriu per a lectors d'arrel jueva (18.329 paraules). Afegeix el Sermó de la Muntanya i el relat dels mags."},
+      {k:"Lc",n:"Lluc",yr:"≈ 80–100",dt:"+58 anys",w:E.gnt.total.Lc,u:Math.round(EUS.Lc.uniqPct),c:C.blauClar,
+        sub:"Pastors · bon samarità · Jerusalem",det:"El més llarg (19.446 paraules). Posa el focus en els pobres, les dones i el viatge cap a Jerusalem."},
+      {k:"Jn",n:"Joan",yr:"≈ 90–110",dt:"+70 anys",w:E.gnt.total.Jn,u:Math.round(EUS.Jn.uniqPct),c:C.groc,
+        sub:"76 % únic · filosòfic, sense paràboles",det:"El més tardà i diferent (15.438 paraules). Tres quartes parts no surten als altres tres evangelis."}
+    ];
+    lg($("#intro-lg"),[
+      {c:C.vermell,t:"Vida de Jesús i Marc (1r)"},
+      {c:C.blau,t:"Mateu i Lluc (sinòptics)"},
+      {c:C.groc,t:"Joan (camí propi)"}
+    ]);
+
+    V.mount(el,(node,w)=>{
+      const mob=w<680, tp=V.tip(node);
+      const rSc=d3.scaleSqrt([0,20000],[0,mob?22:34]);
+      const h=mob?380:330;
+      const s=V.svg(node,w,h,"Esquema d'obertura: d'una sola vida sense textos propis (Jesús, ~6 aC – ~30 dC) en sorgeixen quatre evangelis escrits entre 40 i 70 anys després.");
+
+      if(!mob){
+        // ESCRIPTORI: Jesús a l'esquerra → 4 arcs radials cap a la dreta (ordre cronològic)
+        const ox=118, oy=h/2;
+        const gRings=s.append("g"), gArcs=s.append("g"), gNodes=s.append("g");
+
+        // anells concèntrics de temps des de la creu (continguts estrictament dins 22..h-22)
+        [{r:210,t:"+40 anys"},{r:360,t:"+55 anys"},{r:510,t:"+70 anys"}].forEach(a=>{
+          if(ox+a.r>w-180)return;
+          const maxAng=Math.asin(Math.min(.92,(oy-24)/a.r));
+          const ang=Math.min(.62,maxAng);
+          const xTop=ox+a.r*Math.cos(-ang), yTop=oy+a.r*Math.sin(-ang);
+          const xBot=ox+a.r*Math.cos(ang), yBot=oy+a.r*Math.sin(ang);
+          gRings.append("path").attr("d",`M${xTop},${yTop} A${a.r},${a.r} 0 0,1 ${xBot},${yBot}`)
+            .attr("fill","none").attr("stroke",C.grid).attr("stroke-width",1).attr("stroke-dasharray","3 4");
+          V.t(gRings,xTop,yTop-6,a.t,{anchor:"middle",size:11,fill:C.muted});
+        });
+
+        // posicions dels 4 evangelis: x segons distància temporal, y repartida netament
+        const xMin=Math.min(w*.42,ox+230), xMax=Math.min(w-250,ox+520);
+        const xPos=[xMin, xMin+(xMax-xMin)*.42, xMin+(xMax-xMin)*.52, xMax];
+        const yPos=[56, 134, 214, 286];
+
+        const items=EV.map((d,i)=>({...d,x:xPos[i],y:yPos[i],r:rSc(d.w)}));
+
+        // arcs des de Jesús cap a cada evangeli
+        const arcs=gArcs.selectAll("path.ia").data(items).join("path").attr("class","ia")
+          .attr("d",d=>{ const mx=(ox+d.x)/2; return `M${ox},${oy} C${mx},${oy} ${mx},${d.y} ${d.x-d.r-2},${d.y}`; })
+          .attr("fill","none").attr("stroke",d=>d.c===C.groc?C.grocFosc:d.c).attr("stroke-width",d=>d.k==="Mc"?2.2:1.8)
+          .attr("stroke-opacity",.55).style("cursor","pointer");
+
+        // origen: Jesús
+        gNodes.append("circle").attr("cx",ox).attr("cy",oy).attr("r",26).attr("fill",V.alpha(C.vermell,.1)).attr("stroke",V.alpha(C.vermell,.35)).attr("stroke-dasharray","2 3");
+        gNodes.append("circle").attr("cx",ox).attr("cy",oy).attr("r",7.5).attr("fill",C.vermell).attr("stroke",C.paper).attr("stroke-width",2);
+        V.lines(gNodes,ox,oy+42,[["Jesús de Natzaret",true,C.ink],["≈ 6 aC – ≈ 30 dC",false,C.ink2],["0 línies escrites",false,C.vermell]],{anchor:"middle",size:12,halo:3});
+
+        // els 4 evangelis
+        const gEv=gNodes.selectAll("g.iev").data(items).join("g").attr("class","iev").style("cursor","pointer");
+        gEv.each(function(d){
+          const g=d3.select(this);
+          g.append("circle").attr("class","bg").attr("cx",d.x).attr("cy",d.y).attr("r",d.r)
+            .attr("fill",V.alpha(d.c,d.c===C.groc?.72:.22)).attr("stroke",d.c===C.groc?"none":d.c).attr("stroke-width",1.3);
+          // cercle interior proporcional al % exclusiu
+          const ri=d.r*Math.sqrt(d.u/100);
+          g.append("circle").attr("cx",d.x).attr("cy",d.y).attr("r",ri)
+            .attr("fill",V.alpha(d.c,d.c===C.groc?.95:.55));
+          V.t(g,d.x+d.r+12,d.y-4,`${d.n} · ${d.yr}`,{weight:700,size:13.5,fill:C.ink});
+          V.t(g,d.x+d.r+12,d.y+12,`${d.sub} (${f0(d.w)} par.)`,{size:11.5,fill:C.ink2});
+        });
+
+        V.onView(node,instant=>{
+          if(instant)return;
+          arcs.each(function(d,i){ const len=this.getTotalLength(); d3.select(this).attr("stroke-dasharray",len+" "+len).attr("stroke-dashoffset",len)
+            .transition().delay(i*120).duration(850).ease(ease).attr("stroke-dashoffset",0).on("end",function(){ d3.select(this).attr("stroke-dasharray",null); }); });
+          gEv.style("opacity",0).transition().delay((d,i)=>250+i*120).duration(550).style("opacity",1);
+        });
+
+        const reset=()=>{ arcs.attr("stroke-opacity",.55).attr("stroke-width",d=>d.k==="Mc"?2.2:1.8); gEv.style("opacity",1); tp.hide(); };
+        outside(node,reset);
+        V.hover(s.node(),(ev,[px,py])=>{
+          const d=d3.least(items,q=>Math.hypot(px-q.x,py-q.y));
+          if(!d||Math.hypot(px-d.x,py-d.y)>d.r+95){ reset(); return; }
+          arcs.attr("stroke-opacity",q=>q===d?1:.1).attr("stroke-width",q=>q===d?3:1.4);
+          gEv.style("opacity",q=>q===d?1:.22);
+          tp.show(`<b>Evangeli de ${d.n}</b> (${d.yr} · ${d.dt})<br>${d.det}`,clamp(d.x-10,10,w-260),clamp(d.y-d.r-48,8,h-70));
+          if(rd) rd.innerHTML=`<b>${d.n} (${d.yr}):</b> ${d.det}`;
+        },reset);
+      } else {
+        // MÒBIL: Jesús a dalt, 4 arcs verticals nets cap a cada evangeli
+        const ox=w/2, oy=30;
+        const gArcs=s.append("g"), gNodes=s.append("g");
+        const items=EV.map((d,i)=>({...d,x:38,y:122+i*66,r:rSc(d.w)}));
+
+        gNodes.append("circle").attr("cx",ox).attr("cy",oy).attr("r",6.5).attr("fill",C.vermell).attr("stroke",C.paper).attr("stroke-width",1.8);
+        V.t(gNodes,ox,oy+22,"Jesús de Natzaret · ≈ 6 aC – ≈ 30 dC (0 línies escrites)",{anchor:"middle",weight:700,size:11.5,fill:C.ink});
+
+        items.forEach(d=>{
+          gArcs.append("path").attr("d",`M${ox},${oy+30} C${ox},${oy+56} ${d.x},${d.y-24} ${d.x},${d.y-d.r-2}`)
+            .attr("fill","none").attr("stroke",d.c===C.groc?C.grocFosc:d.c).attr("stroke-width",1.4).attr("stroke-opacity",.45);
+        });
+        const gEv=gNodes.selectAll("g.iev").data(items).join("g").attr("class","iev").style("cursor","pointer");
+        gEv.each(function(d){
+          const g=d3.select(this);
+          g.append("circle").attr("cx",d.x).attr("cy",d.y).attr("r",d.r)
+            .attr("fill",V.alpha(d.c,d.c===C.groc?.72:.22)).attr("stroke",d.c===C.groc?"none":d.c).attr("stroke-width",1.2);
+          g.append("circle").attr("cx",d.x).attr("cy",d.y).attr("r",d.r*Math.sqrt(d.u/100))
+            .attr("fill",V.alpha(d.c,d.c===C.groc?.95:.55));
+          V.t(g,d.x+d.r+12,d.y-3,`${d.n} · ${d.yr} (${d.dt})`,{weight:700,size:12.5,fill:C.ink});
+          V.t(g,d.x+d.r+12,d.y+13,d.sub,{size:11.5,fill:C.ink2});
+        });
+
+        const reset=()=>{ gEv.style("opacity",1); tp.hide(); };
+        outside(node,reset);
+        V.hover(s.node(),(ev,[px,py])=>{
+          const d=d3.least(items,q=>Math.abs(py-q.y));
+          if(!d||Math.abs(py-d.y)>34){ reset(); return; }
+          gEv.style("opacity",q=>q===d?1:.25);
+          if(rd) rd.innerHTML=`<b>${d.n} (${d.yr}):</b> ${d.det}`;
+        },reset);
+      }
+
+      if(rd) rd.innerHTML="<b>Quatre mirades:</b> el cercle interior més fosc mostra la part exclusiva de cada evangeli — molt petita a <b>Marc</b> (6 %) i enorme a <b>Joan</b> (76 %).";
+    });
+  })();
+
+  /* =====================================================================
      V1 · LA VIDA, EL SILENCI I ELS LLIBRES (Scrollytelling IB-49 adaptat)
      ===================================================================== */
   (function(){
@@ -45,9 +176,9 @@
     const G={
       vida:{c:C.vermell,t:"Vida de Jesús"},
       cartes:{c:C.blauClar,t:"Cartes de Pau"},
-      escrits:{c:C.blau,t:"Quatre evangelis"},
-      externes:{c:C.groc,t:"Fonts fora de l'Església"},
-      canon:{c:C.ink2,t:"Fixació dels 4 llibres"}
+      escrits:{c:C.blau,t:"Els quatre evangelis"},
+      externes:{c:C.groc,t:"Referències externes (jueva i romana)"},
+      canon:{c:C.ink2,t:"Selecció dels 4 llibres"}
     };
     const D=[
       {g:"vida",n:"Naixement",a:-6,b:-4,l:"≈ 6–4 aC",d:"En vida d'Herodes el Gran (mort el 4 aC). L'any exacte no es coneix."},
@@ -59,8 +190,8 @@
       {g:"escrits",n:"Evangeli de Mateu",s:"Mateu",a:80,b:90,l:"≈ 80–90",d:"Aprofita Marc i afegeix el relat de Betlem i grans discursos."},
       {g:"escrits",n:"Evangeli de Lluc",s:"Lluc",a:80,b:100,l:"≈ 80–100",d:"Primer volum d'una obra que continua als Fets dels Apòstols."},
       {g:"escrits",n:"Evangeli de Joan",s:"Joan",a:90,b:110,l:"≈ 90–110",d:"El més tardà i diferent: tres quartes parts no surten als altres tres."},
-      {g:"externes",n:"Flavi Josep (historiador jueu)",s:"Flavi Josep",a:93,b:94,l:"93–94",d:"Esmenta Jaume, «germà de Jesús, l'anomenat Crist»."},
-      {g:"externes",n:"Tàcit (historiador romà)",s:"Tàcit",a:105,b:120,l:"s. II",d:"Esmenta Crist, executat sota Tiberi per ordre de Pilat."},
+      {g:"externes",n:"Flavi Josep (historiador jueu)",s:"Flavi Josep (jueu)",a:93,b:94,l:"93–94",d:"Esmenta Jaume, «germà de Jesús, l'anomenat Crist»."},
+      {g:"externes",n:"Tàcit (historiador romà)",s:"Tàcit (romà)",a:105,b:120,l:"s. II",d:"Esmenta Crist, executat sota Tiberi per ordre de Pilat."},
       {g:"canon",n:"Ireneu defensa que són quatre",s:"Ireneu",a:178,b:182,l:"≈ 180",d:"Compara els quatre evangelis amb els quatre vents."},
       {g:"canon",n:"Atanasi fixa els 27 llibres",s:"Atanasi",a:367,b:367,l:"367",d:"Primera llista exacta del Nou Testament actual.",ev:1}
     ];
@@ -72,15 +203,24 @@
       externes:["vida","cartes","escrits","externes"],
       canon:["vida","cartes","escrits","externes","canon"]
     };
+    lg($("#temps-lg"),Object.values(G).map(g=>({c:g.c,t:g.t})));
     let state="vida", api=null;
 
     V.mount(el,(node,w)=>{
-      const mob=w<640, rh=mob?22:28, gap=mob?8:12, top=34;
-      const L=mob?0:168, R=w-(mob?10:16);
+      const mob=w<640, rh=mob?20:25, hdrH=mob?18:20, gap=mob?10:14, top=28;
+      const L=mob?0:166, R=w-(mob?8:16);
       let y=top; const groups=[];
-      Object.keys(G).forEach(g=>{ groups.push({g,y}); D.filter(d=>d.g===g).forEach(d=>{ d.y=y; y+=rh; }); y+=gap; });
-      const h=y+26;
-      const s=V.svg(node,w,h,"Cronologia comparada entre la vida de Jesús (6 aC a 30 dC), els vint anys de memòria oral, les cartes de Pau, els quatre evangelis, els historiadors externs i la fixació del cànon.");
+      Object.keys(G).forEach((g,gi)=>{
+        const divY=gi>0?y-6:null;
+        const hy=y+11;
+        y+=hdrH;
+        const rowsG=D.filter(d=>d.g===g);
+        rowsG.forEach(d=>{ d.y=y+6; y+=rh; });
+        groups.push({g,divY,hy,y0:hy-11,y1:y});
+        y+=gap;
+      });
+      const h=y+22;
+      const s=V.svg(node,w,h,"Cronologia dividida en cinc blocs: vida de Jesús, cartes de Pau, els quatre evangelis, referències externes (jueva i romana) i selecció dels quatre llibres.");
 
       // escala partida: -10..120 ocupa el 78 % de l'amplada; 120..380 ocupa el 22 %
       const split=L+(R-L)*.78;
@@ -119,13 +259,24 @@
       }
       drawWaves(0);
       const gOralLab=gOral.append("g");
-      V.lines(gOralLab,(ox0+ox1)/2,top+(mob?58:38),[["Memòria oral",true,C.vermell],["20–40 anys de boca en boca",false,C.ink2]],{anchor:"middle",size:mob?11:11.5,halo:3.5});
+      V.lines(gOralLab,(ox0+ox1)/2,top+(mob?96:88),[["Memòria oral",true,C.vermell],["20–40 anys de boca en boca",false,C.ink2]],{anchor:"middle",size:mob?11:11.5,halo:3.5});
       V.loop(node,(t)=>{ if(state==="oral"||state==="cartes"||state==="escrits") drawWaves(t*1.4); });
 
       // destrucció del Temple (any 70)
       const g70=s.append("g");
       g70.append("line").attr("x1",x(70)).attr("y1",20).attr("x2",x(70)).attr("y2",h-22).attr("stroke",C.ink2).attr("stroke-width",1).attr("stroke-dasharray","2 3");
       V.t(g70,x(70)+4,h-8,mob?"70 · Temple":"70 · Destrucció del Temple",{size:11,fill:C.ink2,halo:2});
+
+      // separadors i capçaleres de cada un dels 5 blocs
+      const gHdrs=s.selectAll("g.ghdr").data(groups).join("g").attr("class","ghdr");
+      gHdrs.each(function(gr){
+        const g=d3.select(this), meta=G[gr.g];
+        if(gr.divY!=null){
+          g.append("line").attr("x1",0).attr("y1",gr.divY).attr("x2",R).attr("y2",gr.divY).attr("stroke",C.hair).attr("stroke-width",.8);
+        }
+        g.append("circle").attr("cx",5).attr("cy",gr.hy-3.5).attr("r",4).attr("fill",meta.c);
+        V.t(g,14,gr.hy,meta.t,{size:mob?11.5:12,weight:700,fill:C.ink,halo:3});
+      });
 
       // files
       const rows=s.selectAll("g.trow").data(D).join("g").attr("class","trow").style("cursor","pointer");
@@ -135,11 +286,11 @@
         if(d.ev){
           g.append("circle").attr("cx",x1).attr("cy",cy).attr("r",4.8).attr("fill",c);
         } else {
-          g.append("rect").attr("class","bar").attr("x",x1).attr("y",cy-5.5).attr("width",x2-x1).attr("height",11).attr("rx",5.5)
-            .attr("fill",c).attr("fill-opacity",c===C.groc?.85:.82);
+          g.append("rect").attr("class","bar").attr("x",x1).attr("y",cy-5).attr("width",x2-x1).attr("height",10).attr("rx",5)
+            .attr("fill",c).attr("fill-opacity",c===C.groc?.88:.84);
         }
         const lx=x2+6, short=mob?(d.s||d.n)+" · "+d.l:d.l;
-        const anc=lx>w-70?"end":"start", tx=lx>w-70?x1-6:lx;
+        const anc=lx>w-72?"end":"start", tx=lx>w-72?x1-6:lx;
         V.t(g,tx,cy+4,short,{anchor:anc,size:11.5,fill:C.ink,halo:3});
       });
 
@@ -150,7 +301,8 @@
         state=st;
         const allow=new Set(STEP_GROUPS[st]||STEP_GROUPS.canon);
         const dur=anim&&!V.reduced?450:0;
-        rows.transition().duration(dur).style("opacity",d=>allow.has(d.g)?1:.18);
+        rows.transition().duration(dur).style("opacity",d=>allow.has(d.g)?1:.22);
+        gHdrs.transition().duration(dur).style("opacity",gr=>allow.has(gr.g)?1:.42);
         gOral.transition().duration(dur).style("opacity",st==="vida"?.05:st==="oral"?1:.42);
         gOralLab.transition().duration(dur).style("opacity",st==="oral"?1:0);
         g70.transition().duration(dur).style("opacity",st==="escrits"||st==="externes"||st==="canon"?1:.15);
