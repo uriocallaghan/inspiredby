@@ -948,10 +948,10 @@ const M40=piece(40,(el,w)=>{
   b.addEventListener("click",()=>{ run40=!run40; b.textContent=run40?"Atura els fils":"Torna a moure els fils"; b.setAttribute("aria-pressed",!run40); }); void M40; })();
 
 /* =====================================================================
-   IB-41 · CONSTEL·LACIÓ DE CERCLES TRANSLÚCIDS  (dades reals: IHME GBD, morts per causa)
-   Cercles plens d'aquarel·la translúcids (`radialGradient` + `multiply`) agrupats en
-   4 constel·lacions suaus, sense vores dures ni punts que embrutin el text. Clic en
-   un grup per fer-hi zoom suau.
+   IB-41 · CONSTEL·LACIÓ DE CERCLES  (dades reals: IHME GBD, morts per causa)
+   Cercles translúcids de color pla (`fill-opacity` + `multiply`, estil IB-55,
+   sense degradats) agrupats en 4 constel·lacions, sense vores dures ni punts
+   que embrutin el text. Clic en un grup per fer-hi zoom suau.
    ===================================================================== */
 const GRP41=[
   {id:"ncd",t:"Malalties no transmissibles",ts:"No transmissibles",c:C.blau,tc:C.blau},
@@ -978,18 +978,6 @@ const M41=piece(41,(el,w)=>{
   d3.select(el).selectAll("canvas.ibv,svg.ibv").remove(); el.style.height="";
   const s=V.svg(el,w,h,`Constel·lació de cercles translúcids amb les morts del món el ${yr41} per causa, agrupades en malalties no transmissibles, infeccions, lesions i altres causes. Àrea proporcional al nombre de morts. Clica un grup per fer-hi zoom. Dades reals de l'IHME.`);
   const defs=s.append("defs"), uid="w41"+Math.random().toString(36).slice(2,6);
-  // Gradients radials suaus d'aquarel·la per a les 4 famílies (halo de grup + cercle de causa)
-  GRP41.forEach(gp=>{
-    const col=gp.c;
-    const rgG=defs.append("radialGradient").attr("id",`${uid}-g-${gp.id}`);
-    rgG.append("stop").attr("offset","0%").attr("stop-color",col).attr("stop-opacity",gp.id==="inf"?.11:.07);
-    rgG.append("stop").attr("offset","78%").attr("stop-color",col).attr("stop-opacity",gp.id==="inf"?.06:.035);
-    rgG.append("stop").attr("offset","100%").attr("stop-color",col).attr("stop-opacity",0);
-    const rgL=defs.append("radialGradient").attr("id",`${uid}-l-${gp.id}`).attr("cx","38%").attr("cy","34%").attr("r","68%");
-    const aHi=gp.id==="inf"?.56:gp.id==="oth"?.30:.44, aLo=gp.id==="inf"?.30:gp.id==="oth"?.16:.22;
-    rgL.append("stop").attr("offset","0%").attr("stop-color",col).attr("stop-opacity",aHi);
-    rgL.append("stop").attr("offset","100%").attr("stop-color",col).attr("stop-opacity",aLo);
-  });
   defs.append("clipPath").attr("id",uid+"-c").append("rect").attr("width",w).attr("height",h);
   const g=s.append("g").attr("clip-path",`url(#${uid}-c)`);
   const OX=(w-Dm)/2, OY=h/2-Dm/2+4;
@@ -997,19 +985,22 @@ const M41=piece(41,(el,w)=>{
   let view=zoom41?[zoom41.x,zoom41.y,zoom41.r*2.18*Math.max(1,Dm/h)]:HOME, grow=1, foc=null;
   const Pt=(x,y)=>{ const kk=Dm/view[2]; return [OX+Dm/2+(x-view[0])*kk,OY+Dm/2+(y-view[1])*kk]; };
 
-  // 1. Aures suaus dels 4 grups (sense parets gruixudes de placa de Petri)
+  // 1. Cercles suaus dels 4 grups en color pla translúcid (estil IB-55, sense degradats)
   const GC=g.append("g").selectAll("circle").data(grps).join("circle")
-    .attr("fill",d=>`url(#${uid}-g-${d.data.gp.id})`)
-    .attr("stroke",d=>d.data.gp.cs||d.data.gp.c).attr("stroke-width",.7).attr("stroke-opacity",.22)
-    .attr("stroke-dasharray","3 4").style("cursor","pointer");
-
-  // 2. Cercles translúcids d'aquarel·la per a cada causa (zero puntets darrere el text!)
-  const LC=g.append("g").selectAll("circle").data(leaves).join("circle")
-    .attr("fill",d=>`url(#${uid}-l-${d.data.gp.id})`)
-    .attr("stroke",d=>d.data.gp.cs||d.data.gp.c).attr("stroke-width",.7).attr("stroke-opacity",.32)
+    .attr("fill",d=>d.data.gp.c)
+    .attr("fill-opacity",d=>d.data.gp.id==="inf"?.14:.09)
+    .attr("stroke",d=>d.data.gp.cs||d.data.gp.c).attr("stroke-width",.75).attr("stroke-opacity",.25)
+    .attr("stroke-dasharray","3 4")
     .style("mix-blend-mode","multiply").style("cursor","pointer");
 
-  // 3. Etiquetes netes dins de cada causa (100 % llegibles sobre l'aquarel·la suau)
+  // 2. Cercles de color pla translúcid per a cada causa (fill-opacity + multiply, zero degradats)
+  const LC=g.append("g").selectAll("circle").data(leaves).join("circle")
+    .attr("fill",d=>d.data.gp.c)
+    .attr("fill-opacity",d=>d.data.gp.id==="inf"?.40:d.data.gp.id==="oth"?.22:.26)
+    .attr("stroke","none")
+    .style("mix-blend-mode","multiply").style("cursor","pointer");
+
+  // 3. Etiquetes netes dins de cada causa (100 % llegibles sobre els cercles plans)
   const LL=g.append("g").selectAll("g").data(leaves).join("g").style("pointer-events","none");
   LL.each(function(d){
     const q=d3.select(this);
