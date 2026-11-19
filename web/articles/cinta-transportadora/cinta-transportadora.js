@@ -63,13 +63,14 @@ function sfcAt(lon,lat){
 
 /* ================= 1. EXPLORADOR DE DENSITAT (IB-08 + IB-16) ================= */
 (function(){
-  const wrap=$("tsw"), col=$("colc"), cx=col.getContext("2d");
+  const wrap=$("tsw"), col=$("colc"), cx=col.getContext("2d"), colDock=IBV.tip(col.parentNode);
   const iT=$("dT"), iS=$("dS"), oT=$("dTv"), oS=$("dSv"), oR=$("dRho"), oG=$("dSig"), oV=$("dVer");
   const P=D.prof_labrador;
   const prof=P.d.map((d,i)=>({d,t:P.t[i],s:P.s[i],g:sig(P.s[i],P.t[i])}));
   const S0=31, S1=38, T0=-2, T1=30, dMax=3600;
   let W=0, H=0, x, y, cw=0, ch=0, cur={t:27,s:36.15}, target=null, yPar=0, yTarget=0;
-  let M={l:42,r:46,t:12,b:34};
+  let hov=null, hovCol=null, setTsHover=null;
+  let M={l:42,r:50,t:22,b:34};
   const CM={t:16,b:10,l:52};
   const NARROW=()=>cw<170;
 
@@ -85,6 +86,42 @@ function sfcAt(lon,lat){
     for(let k=0;k<40;k++){const m=(a+b)/2;if((sig(S,a)-v)*(sig(S,m)-v)<=0)b=m;else a=m}
     return(a+b)/2;
   }
+  function isoLine(v,step=.06){
+    const pts=[];
+    for(let S=S0;S<S1;S+=step){
+      const T=isoT(v,S);if(T!=null)pts.push([x(S),y(T)]);
+    }
+    const Te=isoT(v,S1);if(Te!=null)pts.push([x(S1),y(Te)]);
+    return pts;
+  }
+  function profAtDepth(d){
+    const dd=clamp(d,prof[0].d,prof[prof.length-1].d);
+    for(let i=1;i<prof.length;i++){
+      if(prof[i].d>=dd){
+        const a=prof[i-1], b=prof[i];
+        const f=b.d>a.d?clamp((dd-a.d)/(b.d-a.d),0,1):0;
+        return{d:dd,t:lerp(a.t,b.t,f),s:lerp(a.s,b.s,f),g:lerp(a.g,b.g,f)};
+      }
+    }
+    const last=prof[prof.length-1];
+    return{d:last.d,t:last.t,s:last.s,g:last.g};
+  }
+  function nearestLabrador(px,py){
+    if(!x||!y)return null;
+    let best=null;
+    for(let i=0;i<prof.length-1;i++){
+      const a=prof[i], b=prof[i+1];
+      const ax=x(a.s), ay=y(a.t), bx=x(b.s), by=y(b.t);
+      const dx=bx-ax, dy=by-ay, l2=dx*dx+dy*dy;
+      const f=l2>0?clamp(((px-ax)*dx+(py-ay)*dy)/l2,0,1):0;
+      const cx2=ax+f*dx, cy2=ay+f*dy;
+      const dist=Math.hypot(px-cx2,py-cy2);
+      if(!best||dist<best.dist){
+        best={dist,d:lerp(a.d,b.d,f),t:lerp(a.t,b.t,f),s:lerp(a.s,b.s,f),g:lerp(a.g,b.g,f)};
+      }
+    }
+    return best;
+  }
   function depthY(d){return CM.t+(ch-CM.t-CM.b)*d/dMax}
   function neutral(g){
     if(g<prof[0].g)return{d:0,k:"float"};
@@ -97,6 +134,12 @@ function sfcAt(lon,lat){
     if(d<150)return IBV.fmt(",.0f")(Math.round(d/10)*10);
     if(d<1000)return IBV.fmt(",.0f")(Math.round(d/50)*50);
     return IBV.fmt(",.0f")(Math.round(d/100)*100);
+  }
+  function sinkPhrase(n){
+    if(n.k==="float")return"sura a superfície";
+    if(n.k==="bottom")return"fins al fons (>3.500 m)";
+    if(n.d<120)return"capa superficial (~"+fmtDepth(n.d)+" m)";
+    return"fins a ~"+fmtDepth(n.d)+" m";
   }
   function drawCol(){
     if(!cw)return;
@@ -122,6 +165,30 @@ function sfcAt(lon,lat){
     cx.strokeStyle=C.ink;cx.lineWidth=.8;cx.setLineDash([2,3]);cx.beginPath();cx.moveTo(xp,CM.t);cx.lineTo(xp,yp);cx.stroke();cx.setLineDash([]);
     cx.beginPath();cx.arc(xp,yp,9,0,6.2832);cx.fillStyle=S_COL(g);cx.fill();
     cx.lineWidth=2;cx.strokeStyle=g>27.85?C.paper:C.ink;cx.stroke();
+    if(hov){
+      const yH=depthY(hov.d), onCur=!hov.onLab&&x&&y&&Math.hypot(x(hov.s)-x(cur.s),y(hov.t)-y(cur.t))<11;
+      if(!onCur){
+        cx.save();
+        cx.strokeStyle=hov.d>400?"rgba(255,255,255,.72)":"rgba(18,18,18,.55)";
+        cx.lineWidth=1;cx.setLineDash([3,3]);
+        cx.beginPath();cx.moveTo(x0,yH);cx.lineTo(x1,yH);cx.stroke();
+        cx.setLineDash([]);
+        cx.beginPath();cx.arc(xp,yH,6,0,6.2832);
+        cx.lineWidth=3.2;cx.strokeStyle=C.paper;cx.stroke();
+        cx.lineWidth=1.8;cx.strokeStyle=hov.onLab?C.blau:C.vermell;cx.stroke();
+        cx.restore();
+      }
+    }else if(hovCol){
+      const yC=depthY(hovCol.d);
+      cx.save();
+      cx.strokeStyle=hovCol.d>400?"rgba(255,255,255,.85)":C.ink;
+      cx.lineWidth=1.1;
+      cx.beginPath();cx.moveTo(x0,yC);cx.lineTo(x1,yC);cx.stroke();
+      cx.beginPath();cx.arc(x0+10,yC,3.5,0,6.2832);
+      cx.fillStyle=C.paper;cx.fill();
+      cx.lineWidth=1.6;cx.strokeStyle=C.blau;cx.stroke();
+      cx.restore();
+    }
   }
   function update(instant){
     const g=sig(cur.s,cur.t), n=neutral(g), gs=prof[0].g;
@@ -157,7 +224,7 @@ function sfcAt(lon,lat){
 
   IBV.mount(wrap,(el,w)=>{
     W=w;const m=mob();
-    M=m?{l:34,r:38,t:10,b:32}:{l:42,r:48,t:12,b:34};
+    M=m?{l:34,r:40,t:22,b:34}:{l:42,r:50,t:22,b:34};
     H=Math.round(m?clamp(W*1.05,240,300):clamp(W*.78,260,430));
     const svg=IBV.svg(el,W,H,"Diagrama de temperatura i salinitat amb línies d'igual densitat. Un punt mòbil representa l'aigua triada; els punts grisos són l'aigua de superfície de tot el món i la línia blava, la columna del mar del Labrador a l'hivern.");
     x=d3.scaleLinear([S0,S1],[M.l,W-M.r]);
@@ -194,26 +261,28 @@ function sfcAt(lon,lat){
     });
 
     // Isopicnes (línies d'igual densitat)
-    const g=svg.append("g");
+    const isoG=svg.append("g");
     const levels=[20,21,22,23,24,25,26,27,27.5,28], labLv=new Set(m?[20,22,24,26,27,28]:[20,22,24,26,27,27.5,28]);
     levels.forEach(v=>{
       const pts2=[];for(let S=S0;S<=S1+1e-6;S+=.05){const T=isoT(v,S);if(T!=null&&T>=T0-.01&&T<=T1+.01)pts2.push([x(S),y(T)])}
       if(pts2.length<2)return;
-      g.append("path").attr("d",d3.line()(pts2)).attr("fill","none")
+      isoG.append("path").attr("d",d3.line()(pts2)).attr("fill","none")
         .attr("stroke",v===27.5?C.muted:C.ghost).attr("stroke-width",.8).attr("stroke-dasharray",v===27.5?"3 3":null);
       if(!labLv.has(v))return;
       const e=pts2[pts2.length-1];
-      IBV.t(g,e[0]+3,e[1]+(e[1]<M.t+10?10:4),num(1000+v,v%1?1:0),{size:IBV.FS.min,fill:C.muted,halo:true});
+      const ly=e[0]>=W-M.r-2?Math.max(M.t+9,e[1]+4):M.t+11;
+      IBV.t(isoG,e[0]+3,ly,num(1000+v,v%1?1:0),{size:IBV.FS.min,fill:C.muted,halo:true});
     });
-    IBV.t(g,W-M.r+3,M.t+2,"kg/m³",{size:IBV.FS.min,fill:C.muted});
+    IBV.t(isoG,W-M.r+3,M.t-8,"kg/m³",{size:IBV.FS.min,fill:C.muted});
 
     // Eixos recessius
-    IBV.axisX(svg,x,H-M.b,m?[32,34,36,38]:[31,32,33,34,35,36,37,38],d=>num(d,0));
+    const xAx=IBV.axisX(svg,x,H-M.b,m?[32,34,36,38]:[31,32,33,34,35,36,37,38],d=>num(d,0));
     const yAx=svg.append("g").attr("class","ibv-axis");
     [0,5,10,15,20,25,30].forEach(v=>{
       yAx.append("line").attr("x1",M.l-4).attr("x2",M.l).attr("y1",y(v)).attr("y2",y(v)).attr("stroke",C.muted);
       IBV.t(yAx,M.l-7,y(v)+4,v+(v===30?" °C":"°"),{size:IBV.FS.small,fill:C.muted,anchor:"end"});
     });
+    const xTicks=xAx.selectAll("text"), yTicks=yAx.selectAll("text");
     svg.append("line").attr("x1",M.l).attr("x2",W-M.r).attr("y1",H-M.b).attr("y2",H-M.b).attr("stroke",C.hair);
     IBV.t(svg,W-M.r,H-2,"Salinitat →",{size:IBV.FS.min,fill:C.muted,anchor:"end"});
     if(!m)IBV.t(svg,M.l+6,M.t+11,"↑ Més calenta",{size:IBV.FS.min,fill:C.muted,halo:true});
@@ -224,7 +293,7 @@ function sfcAt(lon,lat){
     if(!m)IBV.t(svg,x(31.2),y(-1.7)-4,"es glaça",{size:IBV.FS.min,fill:C.muted,italic:true,halo:true});
 
     // Columna del Labrador
-    svg.append("path").attr("d",d3.line()(prof.map(p=>[x(p.s),y(p.t)]))).attr("stroke",C.blau).attr("stroke-width",1.8).attr("fill","none");
+    const labPath=svg.append("path").attr("d",d3.line()(prof.map(p=>[x(p.s),y(p.t)]))).attr("stroke",C.blau).attr("stroke-width",1.8).attr("fill","none");
     const tp=prof.reduce((a,b)=>b.t>a.t?b:a);
     IBV.t(svg,x(tp.s)+6,y(tp.t)-8,m?"Labrador":"Columna del Labrador",{size:IBV.FS.small,weight:600,fill:C.blau,halo:true});
 
@@ -232,9 +301,71 @@ function sfcAt(lon,lat){
     const gp=svg.append("g").attr("id","dpar");
     gp.append("line").attr("id","dpx").attr("stroke",C.ink).attr("stroke-width",.6).attr("stroke-dasharray","2 3");
     gp.append("line").attr("id","dpy").attr("stroke",C.ink).attr("stroke-width",.6).attr("stroke-dasharray","2 3");
-    gp.append("circle").attr("id","dpc").attr("r",7).attr("fill",C.paper).attr("stroke",C.ink).attr("stroke-width",2);
+    const dpc=gp.append("circle").attr("id","dpc").attr("r",7).attr("fill",C.paper).attr("stroke",C.ink).attr("stroke-width",2);
     gp.append("circle").attr("id","dpd").attr("r",3).attr("fill",C.ink);
     const dph=gp.append("circle").attr("id","dph").attr("class","dp-hit").attr("r",22).attr("fill","transparent").style("touch-action","none");
+
+    // Capa visual de hover dins l'SVG (isopicna viva, guies fins als eixos, píndoles i anell)
+    const gHov=svg.append("g").attr("class","ts-hover").attr("pointer-events","none").style("opacity",0);
+    const hovIso=gHov.append("path").attr("clip-path",`url(#${clipId})`).attr("fill","none").attr("stroke-width",1.4).attr("stroke-opacity",.85);
+    const hovGx=gHov.append("line").attr("y2",H-M.b).attr("stroke-width",.85).attr("stroke-dasharray","2 2").attr("stroke-opacity",.78);
+    const hovGy=gHov.append("line").attr("x1",M.l).attr("stroke-width",.85).attr("stroke-dasharray","2 2").attr("stroke-opacity",.78);
+    const hovPillX=IBV.t(gHov,0,H-M.b+16,"",{size:IBV.FS.small,weight:700,fill:C.ink,anchor:"middle",halo:4});
+    const hovPillY=IBV.t(gHov,M.l-7,0,"",{size:IBV.FS.small,weight:700,fill:C.ink,anchor:"end",halo:4});
+    const hovRing=gHov.append("circle").attr("r",5.5).attr("fill",C.paper).attr("stroke-width",2);
+    const hovDot=gHov.append("circle").attr("r",2);
+
+    function renderTsHover(state){
+      if(!state){
+        gHov.style("opacity",0);
+        isoG.style("opacity",1);
+        gp.style("opacity",1);
+        labPath.attr("stroke-width",1.8);
+        dpc.attr("r",7).attr("stroke-width",2);
+        xTicks.attr("opacity",1);yTicks.attr("opacity",1);
+        return;
+      }
+      gHov.style("opacity",1);
+      const hx=x(state.s), hy=y(state.t), colr=state.onLab?C.blau:C.vermell;
+      const ipts=isoLine(state.g);
+      hovIso.attr("d",ipts.length>1?d3.line()(ipts):null);
+      if(state.dragging){
+        hovIso.attr("stroke",C.ink).attr("stroke-opacity",.55);
+        hovGx.attr("opacity",0);hovGy.attr("opacity",0);
+        hovPillX.attr("opacity",0);hovPillY.attr("opacity",0);
+        hovRing.attr("opacity",0);hovDot.attr("opacity",0);
+        isoG.style("opacity",.55);gp.style("opacity",1);
+        labPath.attr("stroke-width",1.8);
+        dpc.attr("r",8.5).attr("stroke-width",2.4);
+        xTicks.attr("opacity",1);yTicks.attr("opacity",1);
+        return;
+      }
+      hovIso.attr("stroke",colr).attr("stroke-opacity",.85);
+      const onParcel=!state.onLab&&Math.hypot(hx-x(cur.s),hy-y(cur.t))<11;
+      isoG.style("opacity",.55);
+      labPath.attr("stroke-width",state.onLab?2.6:1.8);
+      const px=clamp(hx,M.l+18,W-M.r-18), py=clamp(hy+4,M.t+4,H-M.b-2);
+      hovPillX.attr("x",px).text(num(state.s,2)).attr("opacity",1);
+      hovPillY.attr("y",py).text(num(state.t,1)+"°").attr("opacity",1);
+      xTicks.attr("opacity",function(){return Math.abs(+this.getAttribute("x")-px)<26?0:1});
+      yTicks.attr("opacity",function(){return Math.abs(+this.getAttribute("y")-py)<13?0:1});
+      if(onParcel){
+        gp.style("opacity",1);
+        dpc.attr("r",8.5).attr("stroke-width",2.4);
+        hovGx.attr("opacity",0);hovGy.attr("opacity",0);
+        hovRing.attr("opacity",0);hovDot.attr("opacity",0);
+      }else{
+        gp.style("opacity",.52);
+        dpc.attr("r",7).attr("stroke-width",2);
+        hovGx.attr("x1",hx).attr("x2",hx).attr("y1",hy).attr("y2",H-M.b).attr("stroke",colr).attr("opacity",1);
+        hovGy.attr("x1",M.l).attr("x2",hx).attr("y1",hy).attr("y2",hy).attr("stroke",colr).attr("opacity",1);
+        hovRing.attr("cx",hx).attr("cy",hy).attr("stroke",colr).attr("opacity",1);
+        hovDot.attr("cx",hx).attr("cy",hy).attr("fill",colr).attr("opacity",1);
+      }
+    }
+    setTsHover=renderTsHover;
+    if(hovCol)renderTsHover({s:hovCol.s,t:hovCol.t,g:hovCol.g,onLab:true,dragging:false});
+    else{hov=null;renderTsHover(null);}
 
     // Columna canvas
     cw=col.clientWidth;ch=Math.round(m?clamp(H*.8,200,240):clamp(H*.86,220,380));CM.l=m?48:52;
@@ -247,25 +378,108 @@ function sfcAt(lon,lat){
     const node=svg.node(), handle=dph.node();
     let drag=false;
     const fromPt=([px,py])=>({s:clamp(x.invert(px),S0,S1),t:clamp(y.invert(py),-1.9,T1)});
+    const inPlot=([px,py])=>px>=M.l-4&&px<=W-M.r+4&&py>=M.t-4&&py<=H-M.b+4;
+    function formatTsDock(p,g,n,onLab,labD,isDrag){
+      if(onLab)return`<b>Labrador a ${fmtDepth(labD)} m</b><br>${num(p.t,1)} °C · salinitat ${num(p.s,2)} · ${num(1000+g,2)} kg/m³`;
+      if(isDrag)return`<b>Aigua triada · ${num(p.t,1)} °C · salinitat ${num(p.s,2)}</b><br>${num(1000+g,1)} kg/m³ · ${sinkPhrase(n)}`;
+      return`<b>${num(p.t,1)} °C · salinitat ${num(p.s,2)}</b><br>${num(1000+g,1)} kg/m³ · ${sinkPhrase(n)}`;
+    }
+    function clearTsHover(){
+      hov=null;
+      renderTsHover(null);
+      dock.hide();
+      if(RM)drawCol();
+    }
+    function applyHover(pt){
+      if(!inPlot(pt)){clearTsHover();return}
+      const lab=nearestLabrador(pt[0],pt[1]), onLab=!!(lab&&lab.dist<=13);
+      let n;
+      if(onLab){
+        n={d:lab.d,k:"mid"};
+        hov={s:lab.s,t:lab.t,g:lab.g,d:lab.d,k:"mid",onLab:true,labD:lab.d};
+      }else{
+        const p=fromPt(pt), g=sig(p.s,p.t);
+        n=neutral(g);
+        hov={s:p.s,t:p.t,g,d:n.d,k:n.k,onLab:false,labD:0};
+      }
+      if(hovCol){hovCol=null;colDock.hide();}
+      renderTsHover({s:hov.s,t:hov.t,g:hov.g,onLab:hov.onLab,dragging:false});
+      dock.show(formatTsDock(hov,hov.g,n,hov.onLab,hov.labD,false));
+      if(RM)drawCol();
+    }
     IBV.hover(node,(e,pt)=>{
-      const p=fromPt(pt);
-      if(drag){cur.s=+p.s.toFixed(2);cur.t=+p.t.toFixed(1);update()}
-      dock.show(`<b>${num(p.t,1)} °C · salinitat ${num(p.s,2)}</b><br>Densitat: ${num(1000+sig(p.s,p.t),1)} kg/m³`);
-    },()=>dock.hide());
+      if(drag&&e.pointerType==="mouse"&&(e.buttons&1)===0)drag=false;
+      if(e.type==="pointerdown")return;
+      if(drag){
+        const p=fromPt(pt);
+        cur.s=+p.s.toFixed(2);cur.t=+p.t.toFixed(1);update();
+        const g=sig(cur.s,cur.t), n=neutral(g);
+        hov=null;
+        renderTsHover({s:cur.s,t:cur.t,g,dragging:true,onLab:false});
+        dock.show(formatTsDock(cur,g,n,false,0,true));
+        return;
+      }
+      applyHover(pt);
+    },()=>{
+      if(drag)return;
+      dock.hide();
+      if(!hovCol){hov=null;renderTsHover(null);if(RM)drawCol();}
+    });
     node.addEventListener("pointerdown",e=>{
-      const onHandle=e.target===handle;
+      if(e.pointerType==="mouse"&&e.button!==0)return;
+      const onHandle=e.target===handle, pt=d3.pointer(e,node);
+      if(!onHandle&&!inPlot(pt))return;
       if(e.pointerType==="mouse"||onHandle){
+        e.preventDefault();
         drag=true;
         try{(onHandle?handle:node).setPointerCapture(e.pointerId)}catch(_){}
       }
-      const p=fromPt(d3.pointer(e,node));target=null;cur.s=+p.s.toFixed(2);cur.t=+p.t.toFixed(1);setPressed(null);update();
-      dock.show(`<b>${num(p.t,1)} °C · salinitat ${num(p.s,2)}</b><br>Densitat: ${num(1000+sig(p.s,p.t),1)} kg/m³`);
+      const p=fromPt(pt);target=null;cur.s=+p.s.toFixed(2);cur.t=+p.t.toFixed(1);setPressed(null);update();
+      const g=sig(cur.s,cur.t), n=neutral(g);
+      hov=null;
+      if(hovCol){hovCol=null;colDock.hide();}
+      renderTsHover({s:cur.s,t:cur.t,g,dragging:drag,onLab:false});
+      dock.show(formatTsDock(cur,g,n,false,0,drag));
     });
-    const endDrag=()=>{drag=false};
+    const endDrag=e=>{
+      const was=drag;
+      drag=false;
+      if(!was)return;
+      if(e.type==="pointercancel"||e.type==="lostpointercapture"){clearTsHover();return}
+      if(e.pointerType==="mouse"){
+        const pt=d3.pointer(e,node);
+        if(inPlot(pt))applyHover(pt);else clearTsHover();
+      }else{
+        const g=sig(cur.s,cur.t);
+        renderTsHover({s:cur.s,t:cur.t,g,dragging:false,onLab:false});
+      }
+    };
     node.addEventListener("pointerup",endDrag);
     node.addEventListener("pointercancel",endDrag);
+    node.addEventListener("lostpointercapture",endDrag);
     handle.addEventListener("pointerup",endDrag);
     handle.addEventListener("pointercancel",endDrag);
+    handle.addEventListener("lostpointercapture",endDrag);
+  });
+
+  IBV.hover(col,(e,[px,py])=>{
+    if(!cw||px<CM.l-6||px>cw-2||py<CM.t-4||py>ch-CM.b+4){
+      const had=!!hovCol;
+      hovCol=null;colDock.hide();
+      if(had&&setTsHover)setTsHover(null);
+      if(had&&RM)drawCol();
+      return;
+    }
+    const d=clamp((py-CM.t)/(ch-CM.t-CM.b),0,1)*dMax, lp=profAtDepth(d);
+    hov=null;hovCol=lp;
+    colDock.show(`<b>Labrador a ${fmtDepth(lp.d)} m</b><br>${num(lp.t,1)} °C · salinitat ${num(lp.s,2)} · ${num(1000+lp.g,2)} kg/m³`);
+    if(setTsHover)setTsHover({s:lp.s,t:lp.t,g:lp.g,onLab:true,dragging:false});
+    if(RM)drawCol();
+  },()=>{
+    const had=!!hovCol;
+    hovCol=null;colDock.hide();
+    if(had&&setTsHover)setTsHover(null);
+    if(had&&RM)drawCol();
   });
 
   IBV.loop(col,(t,dtMs)=>{

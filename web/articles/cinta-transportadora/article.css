@@ -53,10 +53,14 @@
 .presets{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--sans);font-size:13px;margin:8px 0 0}
 .presets button{border:0;background:none;padding:4px 0;min-height:36px;cursor:pointer;color:var(--ink-2);border-bottom:1px solid transparent;text-align:left}
 .presets button[aria-pressed="true"]{color:var(--ink);font-weight:700;border-bottom-color:currentColor}
-#tsw svg{cursor:crosshair}
+#tsw svg{cursor:crosshair;user-select:none;-webkit-user-select:none}
+#tsw svg text{pointer-events:none}
 #tsw .dp-hit{touch-action:none;cursor:grab}
 #tsw .dp-hit:active{cursor:grabbing}
-#colc{display:block;width:100%}
+#tsw .tip.ibv-dock{border-top:0;margin-top:2px;padding:2px 0 0;min-height:22px;line-height:1.35}
+.colw .tip.ibv-dock{border-top:0;margin-top:4px;padding:2px 0 0;min-height:22px;line-height:1.35}
+.den .sl{margin-top:6px;padding-top:8px}
+#colc{display:block;width:100%;cursor:crosshair}
 
 /* Reixa d'unitats (aigua i calor) */
 .units{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
