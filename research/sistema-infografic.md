@@ -38,6 +38,13 @@ Les 11 referències de l'editor comparteixen un llenguatge de **gravat científi
 - **Partícules lentes i contemplatives (decisió de l'editor, 19-11-2026):** totes les partícules que es mouen (fluxos IB-40, boires de punts, arcs de flux, vents) han d'anar **molt a poc a poc** — recorregut complet en ~20–35 segons, moviment serè i hipnòtic, mai ràpid ni nerviós.
 - **Ordenar el caos aparent:** quan hi ha centenars o milers de dades, deixa que els punts, les traces o els cercles revelin l'estructura per densitat (`opacity 0,05–0,38`, `mix-blend-mode: multiply`), en lloc d'amagar-los darrere mitjanes o caixes opaques.
 - **Fils d'estructura ultra-fins:** retícules polars, cercles guia i línies base de `0,45–0,6 px`, sense graelles verticals feixugues que tallin les marques. Molt aire blanc al voltant.
+- **Model de referència de l'editor — IB-28 («Camp de vent animat», 19-11-2026):** aquesta peça resumeix la gramàtica visual ideal de la revista:
+  1. **Monocromia rica:** un sol to seqüencial (blau) modulat en intensitat, sense soroll de colors.
+  2. **Doble o triple codificació natural:** la intensitat es nota alhora pel **to**, la **llargada del traç** i la **densitat** — s'entén en mig segon sense mirar la llegenda.
+  3. **Geografia ultra-silenciosa:** terra plana en `#ECEBE8` sense vores dures, aigua en blanc de paper, gratícula gairebé invisible; el mapa s'identifica a l'instant però cedeix el 100 % del protagonisme al fenomen.
+  4. **La forma és el fenomen:** milers de micro-traços direccionals deixen aparèixer l'estructura orgànica (espirals, corrents, fluxos) sense caixes ni símbols artificials; funciona tant animat (a poc a poc) com congelat.
+  5. **Anotacions quirúrgiques de mecanisme:** només 2–3 anotacions breus (títol en negreta + 4–5 paraules que expliquen *com funciona*, no què es veu) amb colze ultra-fi en tinta.
+  6. **Aplicable més enllà de la meteorologia:** reutilitza aquesta gramàtica per a rutes marítimes, migracions, difusió cultural o de llengües, comerç antic o fluxos econòmics.
 - **Anotacions editorials amb fletxes corbes delicades:** `IBV.note(..., {kind:"curve"})` i caixes discontínues (`IBV.box`) que assenyalen el descobriment dins del núvol de dades.
 
 ---
