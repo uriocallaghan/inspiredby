@@ -1,0 +1,557 @@
+{
+ "families": [
+  {
+   "prefix": "TIME",
+   "ca": "Temps",
+   "question": "Quan passa: sèries, cicles i cronologies"
+  },
+  {
+   "prefix": "MAP",
+   "ca": "Mapes",
+   "question": "On passa"
+  },
+  {
+   "prefix": "SCALE",
+   "ca": "Escala",
+   "question": "Com de gran és, comparat amb una altra cosa"
+  },
+  {
+   "prefix": "SPREAD",
+   "ca": "Distribució",
+   "question": "Quina forma tenen les dades"
+  },
+  {
+   "prefix": "PART",
+   "ca": "Parts d'un total",
+   "question": "De què està fet"
+  },
+  {
+   "prefix": "LINK",
+   "ca": "Relacions i fluxos",
+   "question": "Què connecta amb què"
+  },
+  {
+   "prefix": "HOW",
+   "ca": "Com funciona",
+   "question": "Per dins i pas a pas"
+  },
+  {
+   "prefix": "CASE",
+   "ca": "Comparar casos",
+   "question": "Molts casos i moltes variables"
+  }
+ ],
+ "pieces": [
+  {
+   "code": "TIME-01",
+   "old": null,
+   "en": "Annotated series",
+   "ca": "Sèrie temporal anotada",
+   "family": "TIME"
+  },
+  {
+   "code": "TIME-02",
+   "old": "IB-01",
+   "en": "Year bundle",
+   "ca": "Feix d'anys",
+   "family": "TIME"
+  },
+  {
+   "code": "TIME-03",
+   "old": "IB-02",
+   "en": "Pulse index",
+   "ca": "Índex de pulsacions",
+   "family": "TIME"
+  },
+  {
+   "code": "TIME-04",
+   "old": "IB-47",
+   "en": "Stacked stream",
+   "ca": "Corrent apilat",
+   "family": "TIME"
+  },
+  {
+   "code": "TIME-05",
+   "old": "IB-44",
+   "en": "Horizon",
+   "ca": "Horitzó",
+   "family": "TIME"
+  },
+  {
+   "code": "TIME-06",
+   "old": "IB-03",
+   "en": "Distribution band",
+   "ca": "Franja de distribució",
+   "family": "TIME"
+  },
+  {
+   "code": "TIME-07",
+   "old": "IB-37",
+   "en": "Heat calendar",
+   "ca": "Calendari de calor",
+   "family": "TIME"
+  },
+  {
+   "code": "TIME-08",
+   "old": "IB-04",
+   "en": "Bubble rows",
+   "ca": "Files de bombolles",
+   "family": "TIME"
+  },
+  {
+   "code": "TIME-09",
+   "old": "IB-05",
+   "en": "Year spiral",
+   "ca": "Espiral anual",
+   "family": "TIME"
+  },
+  {
+   "code": "TIME-10",
+   "old": "IB-53",
+   "en": "Year ring",
+   "ca": "Anell de l'any",
+   "family": "TIME"
+  },
+  {
+   "code": "TIME-11",
+   "old": "IB-06",
+   "en": "Hour rose",
+   "ca": "Rosa horària",
+   "family": "TIME"
+  },
+  {
+   "code": "TIME-12",
+   "old": "IB-48",
+   "en": "A day in a minute",
+   "ca": "Un dia en un minut",
+   "family": "TIME"
+  },
+  {
+   "code": "TIME-13",
+   "old": null,
+   "en": "Icon timeline",
+   "ca": "Cronologia amb icones",
+   "family": "TIME"
+  },
+  {
+   "code": "TIME-14",
+   "old": null,
+   "en": "State lanes",
+   "ca": "Carrils d'estat",
+   "family": "TIME"
+  },
+  {
+   "code": "TIME-15",
+   "old": "IB-49",
+   "en": "Deep time",
+   "ca": "Temps profund",
+   "family": "TIME"
+  },
+  {
+   "code": "MAP-01",
+   "old": "IB-59",
+   "en": "Physical relief",
+   "ca": "Mapa físic en relleu",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-02",
+   "old": null,
+   "en": "Soft choropleth",
+   "ca": "Coropleta suau",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-03",
+   "old": "IB-25",
+   "en": "Translucent circle map",
+   "ca": "Mapa de cercles translúcids",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-04",
+   "old": "IB-14",
+   "en": "Proportional rings",
+   "ca": "Anells proporcionals",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-05",
+   "old": "IB-23",
+   "en": "Dot density",
+   "ca": "Densitat de punts",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-06",
+   "old": "IB-12",
+   "en": "Dot field",
+   "ca": "Camp de punts sobre mapa",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-07",
+   "old": "IB-26",
+   "en": "Bands and isolines",
+   "ca": "Mapa de franges i isolínies",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-08",
+   "old": "IB-15",
+   "en": "Isolines over a field",
+   "ca": "Isolínies sobre camp",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-09",
+   "old": "IB-34",
+   "en": "Sea isotherms",
+   "ca": "Mapa d'isotermes marí",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-10",
+   "old": "IB-29",
+   "en": "Bivariate map",
+   "ca": "Mapa bivariant",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-11",
+   "old": "IB-13",
+   "en": "Tracks",
+   "ca": "Trajectòries",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-12",
+   "old": "IB-24",
+   "en": "Flow arcs",
+   "ca": "Arcs de flux",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-13",
+   "old": "IB-32",
+   "en": "Strip map",
+   "ca": "Mapa en franja",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-14",
+   "old": "IB-30",
+   "en": "Distance from a point",
+   "ca": "Distància des d'un punt",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-15",
+   "old": "IB-31",
+   "en": "Before and after",
+   "ca": "Abans i després",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-16",
+   "old": "IB-33",
+   "en": "Hexagons over time",
+   "ca": "Hexàgons en el temps",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-17",
+   "old": "IB-22",
+   "en": "Circle cartogram",
+   "ca": "Cartograma de cercles",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-18",
+   "old": "IB-27",
+   "en": "Spinning globe",
+   "ca": "Globus que gira",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-19",
+   "old": "IB-28",
+   "en": "Wind field",
+   "ca": "Camp de vent animat",
+   "family": "MAP"
+  },
+  {
+   "code": "SCALE-01",
+   "old": "IB-10",
+   "en": "Threshold scale",
+   "ca": "Escala amb llindar",
+   "family": "SCALE"
+  },
+  {
+   "code": "SCALE-02",
+   "old": "IB-43",
+   "en": "Nested squares",
+   "ca": "Quadrats d'escala",
+   "family": "SCALE"
+  },
+  {
+   "code": "SCALE-03",
+   "old": null,
+   "en": "People count",
+   "ca": "Retrat de figures",
+   "family": "SCALE"
+  },
+  {
+   "code": "SCALE-04",
+   "old": "IB-35",
+   "en": "Comparative scale",
+   "ca": "Escala comparativa",
+   "family": "SCALE"
+  },
+  {
+   "code": "SCALE-05",
+   "old": null,
+   "en": "Same-scale plans",
+   "ca": "Plantes a la mateixa escala",
+   "family": "SCALE"
+  },
+  {
+   "code": "SCALE-06",
+   "old": null,
+   "en": "Crew at scale",
+   "ca": "Escena de colla a escala",
+   "family": "SCALE"
+  },
+  {
+   "code": "SPREAD-01",
+   "old": null,
+   "en": "Uncertainty intervals",
+   "ca": "Intervals d'incertesa",
+   "family": "SPREAD"
+  },
+  {
+   "code": "SPREAD-02",
+   "old": "IB-07",
+   "en": "Cloud with protagonists",
+   "ca": "Núvol amb protagonistes",
+   "family": "SPREAD"
+  },
+  {
+   "code": "SPREAD-03",
+   "old": "IB-39",
+   "en": "Force swarm",
+   "ca": "Eixam de forces",
+   "family": "SPREAD"
+  },
+  {
+   "code": "SPREAD-04",
+   "old": "IB-08",
+   "en": "Dot dust",
+   "ca": "Pols de punts",
+   "family": "SPREAD"
+  },
+  {
+   "code": "SPREAD-05",
+   "old": "IB-09",
+   "en": "Hex mosaic",
+   "ca": "Mosaic hexagonal",
+   "family": "SPREAD"
+  },
+  {
+   "code": "SPREAD-06",
+   "old": "IB-19",
+   "en": "Density topography",
+   "ca": "Topografia de densitat",
+   "family": "SPREAD"
+  },
+  {
+   "code": "SPREAD-07",
+   "old": "IB-54",
+   "en": "Moving bubbles",
+   "ca": "Bombolles en moviment",
+   "family": "SPREAD"
+  },
+  {
+   "code": "PART-01",
+   "old": "IB-11",
+   "en": "Unit grid",
+   "ca": "Reixa d'unitats",
+   "family": "PART"
+  },
+  {
+   "code": "PART-02",
+   "old": null,
+   "en": "Waterfall",
+   "ca": "Cascada",
+   "family": "PART"
+  },
+  {
+   "code": "PART-03",
+   "old": null,
+   "en": "Nested mosaic",
+   "ca": "Mosaic jeràrquic",
+   "family": "PART"
+  },
+  {
+   "code": "PART-04",
+   "old": "IB-51",
+   "en": "Breaking bar",
+   "ca": "Barra que es trenca",
+   "family": "PART"
+  },
+  {
+   "code": "PART-05",
+   "old": "IB-17",
+   "en": "Radial burst",
+   "ca": "Esclat radial",
+   "family": "PART"
+  },
+  {
+   "code": "PART-06",
+   "old": "IB-41",
+   "en": "Circle constellation",
+   "ca": "Constel·lació de cercles",
+   "family": "PART"
+  },
+  {
+   "code": "PART-07",
+   "old": "IB-58",
+   "en": "Radial hive",
+   "ca": "Rusc radial d'hexàgons",
+   "family": "PART"
+  },
+  {
+   "code": "LINK-01",
+   "old": null,
+   "en": "Sets",
+   "ca": "Conjunts",
+   "family": "LINK"
+  },
+  {
+   "code": "LINK-02",
+   "old": "IB-18",
+   "en": "Link arcs",
+   "ca": "Arcs d'enllaç",
+   "family": "LINK"
+  },
+  {
+   "code": "LINK-03",
+   "old": "IB-40",
+   "en": "Particle flow",
+   "ca": "Flux amb partícules",
+   "family": "LINK"
+  },
+  {
+   "code": "LINK-04",
+   "old": "IB-46",
+   "en": "Circular network",
+   "ca": "Xarxa circular amb ones",
+   "family": "LINK"
+  },
+  {
+   "code": "LINK-05",
+   "old": "IB-55",
+   "en": "Concept map on an axis",
+   "ca": "Mapa conceptual sobre eix",
+   "family": "LINK"
+  },
+  {
+   "code": "HOW-01",
+   "old": "IB-16",
+   "en": "Cutaway",
+   "ca": "Tall",
+   "family": "HOW"
+  },
+  {
+   "code": "HOW-02",
+   "old": null,
+   "en": "Engraved elevation",
+   "ca": "Alçat en gravat",
+   "family": "HOW"
+  },
+  {
+   "code": "HOW-03",
+   "old": null,
+   "en": "Line model",
+   "ca": "Maqueta de línia",
+   "family": "HOW"
+  },
+  {
+   "code": "HOW-04",
+   "old": null,
+   "en": "Ray simulation",
+   "ca": "Simulació de raigs",
+   "family": "HOW"
+  },
+  {
+   "code": "HOW-05",
+   "old": "IB-36",
+   "en": "Galton board",
+   "ca": "Màquina de Galton",
+   "family": "HOW"
+  },
+  {
+   "code": "CASE-01",
+   "old": null,
+   "en": "Ranked bars",
+   "ca": "Barres ordenades",
+   "family": "CASE"
+  },
+  {
+   "code": "CASE-02",
+   "old": null,
+   "en": "Dumbbells",
+   "ca": "Halteres",
+   "family": "CASE"
+  },
+  {
+   "code": "CASE-03",
+   "old": "IB-42",
+   "en": "Slopes",
+   "ca": "Pendents",
+   "family": "CASE"
+  },
+  {
+   "code": "CASE-04",
+   "old": "IB-38",
+   "en": "Translucent circle rows",
+   "ca": "Filera de cercles translúcids",
+   "family": "CASE"
+  },
+  {
+   "code": "CASE-05",
+   "old": "IB-20",
+   "en": "Small multiples",
+   "ca": "Petits múltiples",
+   "family": "CASE"
+  },
+  {
+   "code": "CASE-06",
+   "old": "IB-56",
+   "en": "Monochrome matrix",
+   "ca": "Matriu monocroma",
+   "family": "CASE"
+  },
+  {
+   "code": "CASE-07",
+   "old": "IB-50",
+   "en": "Parallel coordinates",
+   "ca": "Coordenades paral·leles",
+   "family": "CASE"
+  },
+  {
+   "code": "CASE-08",
+   "old": "IB-57",
+   "en": "Organic radar",
+   "ca": "Radar orgànic",
+   "family": "CASE"
+  },
+  {
+   "code": "CASE-09",
+   "old": "IB-45",
+   "en": "Data flowers",
+   "ca": "Flors de dades",
+   "family": "CASE"
+  }
+ ]
+}

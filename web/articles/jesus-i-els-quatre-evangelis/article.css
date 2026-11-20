@@ -37,7 +37,7 @@
 .ctlrow .rng{flex:1;touch-action:pan-y}
 .playb{padding:6px 0;min-height:36px;display:inline-flex;align-items:center}
 
-/* divisor IB-31: focus visible sense caixa ni ombra */
+/* divisor MAP-15: focus visible sense caixa ni ombra */
 .ibx-handle:focus-visible line{stroke:var(--warm);stroke-width:2.2}
 .ibx-handle:focus-visible circle{stroke:var(--warm);stroke-width:2}
 

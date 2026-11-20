@@ -65,22 +65,22 @@ L'article s'ha reescrit i tots els gràfics s'han refet. Dades i com s'han obtin
 - Comprovació de valors: Jerusalem 764 m; Jericó −213 m; llac de Galilea −214 m (superfície real ≈ −212 m); mar Mort −415 m.
 - Al perfil del camí de Marc, la pujada de Jericó a Jerusalem surt d'uns 950 m en uns 23 km. El traçat entre els punts que dona el text (l'altra banda del Jordà, Jericó, Betània) és un esquema i així ho diu el peu.
 - **Peces:**
-  - IB-26 (crestes) per al mapa del territori i per als itineraris de la infància;
-  - IB-32 (franja amb perfil) per a la pujada a Jerusalem;
-  - IB-25 (pics) per als llocs anomenats;
-  - IB-30 (azimutal equidistant centrada a Jerusalem) per a la xarxa de Pau.
+  - MAP-07 (crestes) per al mapa del territori i per als itineraris de la infància;
+  - MAP-13 (franja amb perfil) per a la pujada a Jerusalem;
+  - MAP-03 (pics) per als llocs anomenats;
+  - MAP-14 (azimutal equidistant centrada a Jerusalem) per a la xarxa de Pau.
 
 
 ## Replantejament divulgatiu i visual v2 (19-11-2026)
 
 L'article s'ha reescrit de cap a peus per a lectors sense coneixements previs, amb una estructura lineal de 6 capítols (cronologia → territori → vida cronològica → còpies i fonts → retrats dels 4 evangelis → cànon i consens històric) i 8 visualitzacions creatives sobre el sistema infogràfic:
 
-- **V1 (`#temps`, IB-49 adaptat):** esquema cronològic amb banda animada de memòria oral (anys 30–70) i datacions orientatives ja verificades (Sanders, Martin, Lathrop, Josep, Tàcit, Ireneu, Atanasi).
-- **V2 (`#biblio`, IB-51):** unitats que volen en arc entre l'ordre tradicional de la Bíblia i l'ordre probable d'escriptura (1 punt = 100 paraules gregues reals SBLGNT).
-- **V3 (`#mapa`, IB-26 + IB-13 + mini-mapa Mediterrani):** relleu real NASA SRTM, mini-mapa de situació amb Natural Earth (`EVG.geoM`), divisió política Antipes/Pilat i contrast entre l'únic viatge de Marc i les 4 pujades de Joan.
-- **V4 (`#pujada`, IB-32 + IB-16):** perfil real SRTM de Cafarnaüm (−212 m) a Jericó (−213 m) i Jerusalem (+764 m; +977 m en ~23 km), amb control interactiu arrossegable i animat.
-- **V5 (`#betlem`, IB-31):** comparador abans/després amb divisor interactiu (ratolí, dit i teclat) entre l'itinerari de Mateu (Betlem → Egipte → Natzaret, ~4 aC) i el de Lluc (Natzaret → Betlem → Jerusalem → Natzaret, 6 dC), amb barra de diferència de 10 anys.
+- **V1 (`#temps`, TIME-15 adaptat):** esquema cronològic amb banda animada de memòria oral (anys 30–70) i datacions orientatives ja verificades (Sanders, Martin, Lathrop, Josep, Tàcit, Ireneu, Atanasi).
+- **V2 (`#biblio`, PART-04):** unitats que volen en arc entre l'ordre tradicional de la Bíblia i l'ordre probable d'escriptura (1 punt = 100 paraules gregues reals SBLGNT).
+- **V3 (`#mapa`, MAP-07 + MAP-11 + mini-mapa Mediterrani):** relleu real NASA SRTM, mini-mapa de situació amb Natural Earth (`EVG.geoM`), divisió política Antipes/Pilat i contrast entre l'únic viatge de Marc i les 4 pujades de Joan.
+- **V4 (`#pujada`, MAP-13 + HOW-01):** perfil real SRTM de Cafarnaüm (−212 m) a Jericó (−213 m) i Jerusalem (+764 m; +977 m en ~23 km), amb control interactiu arrossegable i animat.
+- **V5 (`#betlem`, MAP-15):** comparador abans/després amb divisor interactiu (ratolí, dit i teclat) entre l'itinerari de Mateu (Betlem → Egipte → Natzaret, ~4 aC) i el de Lluc (Natzaret → Betlem → Jerusalem → Natzaret, 6 dC), amb barra de diferència de 10 anys.
 - **V6 (`#setmana`):** zoom narratiu sobre Marc (11.085 paraules totals; 3.968 = 35,8 % a l'última setmana; 1.681 = 15,2 % a les últimes 24 hores) + comparació de la posició real de 9 escenes clau als 4 evangelis (destacant el Gest al Temple al 7 % de Joan vs 66–79 % als sinòptics).
-- **V7a (`#flux`, IB-40):** diagrama de flux animat amb partícules en canvas i botó visible d'aturada, amb amplades proporcionals als volums reals d'Eusebi/SBLGNT i commutador entre la hipòtesi Marc + Q i la hipòtesi Sense Q.
-- **V7b (`#corda`, IB-46):** diagrama de corda calculat directament sobre les 10 taules d'Eusebi alineades amb SBLGNT (Marc 94,0 % compartit / 6,0 % exclusiu; Mateu 75,6 % / 24,4 %; Lluc 65,8 % / 34,2 %; Joan 23,9 % / 76,1 %).
-- **V8 (`#flors`, IB-45):** quatre flors de dades amb 6 pètals verificats sobre MorphGNT/SBLGNT, `llocs.json` i Eusebi: extensió (Mc 11.085, Jn 15.438, Mt 18.329, Lc 19.446), paràboles (`παραβολή`: Jn 0, Mc 13, Mt 17, Lc 18), última setmana (`passio`: Lc 22,4 %, Mt 34,6 %, Mc 35,8 %, Jn 40,7 %), Jerusalem (Mc 10, Jn 12, Mt 13, Lc 31), material exclusiu (Mc 6,0 %, Mt 24,4 %, Lc 34,2 %, Jn 76,1 %) i «creure» (`πιστεύω`: Lc 9, Mc 10, Mt 11, Jn 98).
+- **V7a (`#flux`, LINK-03):** diagrama de flux animat amb partícules en canvas i botó visible d'aturada, amb amplades proporcionals als volums reals d'Eusebi/SBLGNT i commutador entre la hipòtesi Marc + Q i la hipòtesi Sense Q.
+- **V7b (`#corda`, LINK-04):** diagrama de corda calculat directament sobre les 10 taules d'Eusebi alineades amb SBLGNT (Marc 94,0 % compartit / 6,0 % exclusiu; Mateu 75,6 % / 24,4 %; Lluc 65,8 % / 34,2 %; Joan 23,9 % / 76,1 %).
+- **V8 (`#flors`, CASE-09):** quatre flors de dades amb 6 pètals verificats sobre MorphGNT/SBLGNT, `llocs.json` i Eusebi: extensió (Mc 11.085, Jn 15.438, Mt 18.329, Lc 19.446), paràboles (`παραβολή`: Jn 0, Mc 13, Mt 17, Lc 18), última setmana (`passio`: Lc 22,4 %, Mt 34,6 %, Mc 35,8 %, Jn 40,7 %), Jerusalem (Mc 10, Jn 12, Mt 13, Lc 31), material exclusiu (Mc 6,0 %, Mt 24,4 %, Lc 34,2 %, Jn 76,1 %) i «creure» (`πιστεύω`: Lc 9, Mc 10, Mt 11, Jn 98).

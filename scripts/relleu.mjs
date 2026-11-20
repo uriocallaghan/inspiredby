@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Genera el fitxer de relleu d'un mapa físic IB-59 per a qualsevol regió.
+/* Genera el fitxer de relleu d'un mapa físic MAP-01 per a qualsevol regió.
 
    Font: Mapzen Terrain Tiles a AWS Open Data (https://registry.opendata.aws/terrain-tiles/),
    format «terrarium» (PNG, alçada = R·256 + G + B/256 − 32768 m). Combinen NASA SRTM,
@@ -109,7 +109,7 @@ const MX = args.mx != null ? Number(args.mx) : Math.ceil(zmax / 100) * 100;
 const q = Buffer.alloc(nx * ny);
 for (let k = 0; k < z.length; k++) q[k] = Math.max(0, Math.min(254, Math.round(((z[k] - MN) / (MX - MN)) * 254)));
 
-const head = `/* Relleu IB-59: Mapzen Terrain Tiles (AWS Open Data; NASA SRTM, GMTED2010, ETOPO1), zoom ${ZOOM}, mitjana per cel·les de ${ST}°, ${LON0}–${LON1} °E, ${LAT0}–${LAT1} °N.
+const head = `/* Relleu MAP-01: Mapzen Terrain Tiles (AWS Open Data; NASA SRTM, GMTED2010, ETOPO1), zoom ${ZOOM}, mitjana per cel·les de ${ST}°, ${LON0}–${LON1} °E, ${LAT0}–${LAT1} °N.
    Generat amb scripts/relleu.mjs. Alçada en m = byte/254·(${MX}−(${MN}))+(${MN}). */\n`;
 const body = `window.${args.var}=${JSON.stringify({ lon0: LON0, lat1: LAT1, st: ST, nx, ny, mn: MN, mx: MX, b64: q.toString("base64") })};\n`;
 fs.mkdirSync(path.dirname(args.out), { recursive: true });

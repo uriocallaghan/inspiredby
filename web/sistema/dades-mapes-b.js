@@ -1,4 +1,4 @@
-/* Dades reals per a les peces IB-29 a IB-34 (mapes, segona tanda). Codificades en text compacte:
+/* Dades reals per a les peces MAP-10 a MAP-09 (mapes, segona tanda). Codificades en text compacte:
    cada valor (dècimes de °C) = 2 caràcters de l'alfabet A (base 91, desplaçament +4000); "!" = sense dada.
    ncep: NOAA PSL, NCEP/NCAR Reanalysis 1, air.sig995.mon.ltm.1991-2020 (temperatura de l'aire a prop de la superfície,
          mitjanes 1991–2020, 2,5°). 73 latituds (90 → −90) × 144 longituds (0 → 357,5 E). Gener (jan) i juliol (jul).

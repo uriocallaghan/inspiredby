@@ -1,10 +1,10 @@
 /* La gran migració de cada nit — atles oceanogràfic (sistema infogràfic IBV).
-   1. Tall de l'oceà 24 h (IB-16 gravat lluminós + IB-28 esteles + IB-06/IB-48 rellotge polar 24 h)
-   2. Comparació del copèpode (IB-16 columna 500 m + IB-35 cinta d'arcs de proporció)
-   3. Dades Malaspina per regions (IB-25 atles Equal Earth + IB-42/IB-38 profunditat dia · nit)
-   4. Ecograma simulat (IB-56 matriu acústica monocroma blava + IB-19 isolínies blanques + perfil vertical)
-   5. Bomba de carboni (IB-40 flux vertical d'aquarel·la + ~1.000 micro-traços lents + horitzons de segrest)
-   6. Estimacions de carboni (IB-38 cercles d'aquarel·la amb bigotis d'incertesa + IB-10 llindar 6,5 PgC/any) */
+   1. Tall de l'oceà 24 h (HOW-01 gravat lluminós + MAP-19 esteles + TIME-11/TIME-12 rellotge polar 24 h)
+   2. Comparació del copèpode (HOW-01 columna 500 m + SCALE-04 cinta d'arcs de proporció)
+   3. Dades Malaspina per regions (MAP-03 atles Equal Earth + CASE-03/CASE-04 profunditat dia · nit)
+   4. Ecograma simulat (CASE-06 matriu acústica monocroma blava + SPREAD-06 isolínies blanques + perfil vertical)
+   5. Bomba de carboni (LINK-03 flux vertical d'aquarel·la + ~1.000 micro-traços lents + horitzons de segrest)
+   6. Estimacions de carboni (CASE-04 cercles d'aquarel·la amb bigotis d'incertesa + SCALE-01 llindar 6,5 PgC/any) */
 (function () {
   "use strict";
   if (!window.IBV || !window.d3) return;
@@ -103,7 +103,7 @@
 
   /* =========================================================
      1. TALL DE L'OCEÀ DE 24 HORES
-        IB-16 gravat lluminós + IB-28 esteles verticals + IB-06/IB-48 rellotge polar
+        HOW-01 gravat lluminós + MAP-19 esteles verticals + TIME-11/TIME-12 rellotge polar
      ========================================================= */
   (function () {
     const stack = $("oStack"), plotEl = $("oPlot");
@@ -130,7 +130,7 @@
     const surfL = t => lxSun(sunEl(t, 0, 0));
     const PREF = surfL(12) - KD * DAYZ;
 
-    // Perfil de pols de migració 24 h per a la rosa polar IB-06 (0 = fons, 1 = superfície)
+    // Perfil de pols de migració 24 h per a la rosa polar TIME-11 (0 = fons, 1 = superfície)
     const PULSE24 = d3.range(0, 24).map(h => {
       const dist = DAYZ - 55, durD = dist / VD, durU = dist / VU;
       let z;
@@ -279,7 +279,7 @@
       c.fill(); c.restore();
     }
 
-    /* Rellotge polar 24 h prominent (IB-06 + IB-48 sobre IBV.polarGrid, mitjanit a dalt) */
+    /* Rellotge polar 24 h prominent (TIME-11 + TIME-12 sobre IBV.polarGrid, mitjanit a dalt) */
     function buildClockSvg() {
       if (!overSvg) return;
       overSvg.selectAll("*").remove();
@@ -310,7 +310,7 @@
       // Retícula polar finíssima (0,5 px) amb IBV.polarGrid
       IBV.polarGrid(g, 0, 0, clockR, 4, 12, { outer: C.hair, stroke: C.grid });
 
-      // Rosa horària IB-06 del pols de migració cap a la superfície (mitjanit a dalt)
+      // Rosa horària TIME-11 del pols de migració cap a la superfície (mitjanit a dalt)
       const rPulse = d3.scaleSqrt([0, 1], [clockR * 0.16, clockR * 0.94]);
       const radialLine = d3.lineRadial()
         .angle(d => (d.h / 24) * 2 * Math.PI)
@@ -336,7 +336,7 @@
         IBV.t(g, 0, clockR + 28, "Pols 24 h (a dalt de nit)", { size: IBV.FS.min, anchor: "middle", fill: C.ink2, italic: true, halo: 2.5 });
       }
 
-      // Agulla en temps real IB-48
+      // Agulla en temps real TIME-12
       clockPulse = g.append("circle").attr("r", 4).attr("fill", "none")
         .attr("stroke", C.vermell).attr("stroke-width", 1).attr("opacity", 0);
       clockHand = g.append("line").attr("x1", 0).attr("y1", 0)
@@ -436,7 +436,7 @@
         c.restore();
       }
 
-      // 2. Columna d'aigua (IB-16): gravat oceànic lluminós d'aquarel·la blava sobre paper blanc
+      // 2. Columna d'aigua (HOW-01): gravat oceànic lluminós d'aquarel·la blava sobre paper blanc
       const wg = c.createLinearGradient(0, y0, 0, H);
       const topA = lerp(0.10, 0.012, dayF);
       const midA = lerp(0.16, 0.085, dayF);
@@ -550,14 +550,14 @@
         });
       }
 
-      // 7. ~1.800 partícules orgàniques lentes amb estela vertical subtil (estil IB-28)
+      // 7. ~1.800 partícules orgàniques lentes amb estela vertical subtil (estil MAP-19)
       const rs = S.f.res;
       const plotW = W - ML - MR - 12;
       if (S.f.types < 0.05) {
         const resPts = [], migPts = [];
         const rad = m ? 1.25 : 1.55;
 
-        // Esteles verticals subtils per als migradors en moviment (IB-28)
+        // Esteles verticals subtils per als migradors en moviment (MAP-19)
         c.save();
         c.lineCap = "round";
         c.strokeStyle = IBV.alpha(C.vermell, 0.24 - rs * 0.10);
@@ -708,7 +708,7 @@
   })();
 
   /* =========================================================
-     2. COMPARACIÓ DEL COPÈPODE (IB-16 columna 500 m + IB-35 arcs de proporció)
+     2. COMPARACIÓ DEL COPÈPODE (HOW-01 columna 500 m + SCALE-04 arcs de proporció)
      ========================================================= */
   (function () {
     const copWrap = $("szCopWrap"), humWrap = $("szHumWrap");
@@ -766,7 +766,7 @@
       }
     }
 
-    /* Columna d'aigua 500 m (gravat d'escala IB-16 + silueta del copèpode) */
+    /* Columna d'aigua 500 m (gravat d'escala HOW-01 + silueta del copèpode) */
     IBV.mount(copWrap, (el, w) => {
       const m = mob(), h = m ? 196 : 310;
       const s = IBV.svg(el, w, h, "Una columna d'aigua de 500 metres. El copèpode, de 5 mil·límetres, la recorre de baix a dalt cada vespre.");
@@ -815,11 +815,11 @@
       syncCop(RM ? 1 : 0, RM ? 0.99 : 0);
     });
 
-    /* Cinta comparativa IB-35 amb cercles d'aquarel·la multiply i arcs corbats de raó exacta */
+    /* Cinta comparativa SCALE-04 amb cercles d'aquarel·la multiply i arcs corbats de raó exacta */
     IBV.mount(humWrap, (el, w) => {
       const vert = w < 520;
       const h = vert ? 310 : 194;
-      const s = IBV.svg(el, w, h, "Cinta comparativa IB-35 de la distància a escala humana, amb cercles d'aquarel·la i arcs de proporció amb maratons i ciutats des de Barcelona.");
+      const s = IBV.svg(el, w, h, "Cinta comparativa SCALE-04 de la distància a escala humana, amb cercles d'aquarel·la i arcs de proporció amb maratons i ciutats des de Barcelona.");
       const defs = s.append("defs");
       const uid = "sz" + Math.random().toString(36).slice(2, 6);
       const washRed = addWashGrad(defs, uid + "r", C.vermell, 0.48, 0.22);
@@ -828,7 +828,7 @@
       const rDist = d3.scaleSqrt([0, KMAX], [7, vert ? 18 : 22]);
 
       if (vert) {
-        // Transposició vertical neta per a mòbil (guia-mobil.md §3 · IB-35)
+        // Transposició vertical neta per a mòbil (guia-mobil.md §3 · SCALE-04)
         const axX = 64, mt = 24, mb = 22;
         const Y = d3.scaleLinear([0, KMAX], [mt, h - mb]);
 
@@ -909,7 +909,7 @@
         return;
       }
 
-      // Escriptori: cinta horitzontal IB-35 amb cercles d'aquarel·la i arcs corbats de proporció
+      // Escriptori: cinta horitzontal SCALE-04 amb cercles d'aquarel·la i arcs corbats de proporció
       const ml = 16, mr = 24, ty = 104;
       const X = d3.scaleLinear([0, KMAX], [ml, w - mr]);
 
@@ -930,14 +930,14 @@
       IBV.t(s, X(0), ty - 14, "Barcelona", { size: IBV.FS.small, fill: C.ink, weight: 600 });
       s.append("circle").attr("cx", X(0)).attr("cy", ty).attr("r", 3).attr("fill", C.ink);
 
-      // Capa d'arcs de proporció IB-35 (per sobre de l'espina)
+      // Capa d'arcs de proporció SCALE-04 (per sobre de l'espina)
       const arcG = s.append("g").attr("class", "ib35-arcs");
       const mainArc = arcG.append("path").attr("fill", "none").attr("stroke", C.vermell).attr("stroke-width", 1.35);
       const mainArcTxt = IBV.t(arcG, X(85), ty - 56, "", { size: IBV.FS.small, anchor: "middle", weight: 700, fill: C.vermell, halo: 3.5 });
       const hoverArc = arcG.append("path").attr("fill", "none").attr("stroke", C.ink).attr("stroke-width", 1.3).attr("stroke-dasharray", "4 3").style("opacity", 0);
       const hoverArcTxt = IBV.t(arcG, X(100), ty - 72, "", { size: IBV.FS.small, anchor: "middle", weight: 700, fill: C.ink, halo: 3.5 }).style("opacity", 0);
 
-      // Ciutats com a cercles d'aquarel·la multiply (IB-35)
+      // Ciutats com a cercles d'aquarel·la multiply (SCALE-04)
       const cityG = s.append("g").selectAll("g.city").data(CD).join("g").attr("class", "city hit");
       cityG.append("circle").attr("class", "cwash")
         .attr("cx", d => X(d.d)).attr("cy", ty).attr("r", 0)
@@ -987,7 +987,7 @@
         cityG.select(".crim").transition().duration(dur).delay((_, i) => instant ? 0 : i * 75).ease(IBV.EASE).attr("r", d => rDist(d.d));
       });
 
-      // Clic per fixar àncora; hover per veure la raó exacta amb arc IB-35
+      // Clic per fixar àncora; hover per veure la raó exacta amb arc SCALE-04
       cityG.on("click", (_ev, d) => {
         anchorCity = anchorCity === d ? null : d;
         cityG.select(".crim")
@@ -1044,7 +1044,7 @@
 
   /* =========================================================
      3. DADES MALASPINA PER REGIONS
-        Doble vista .seg: «Atles oceànic» (IB-25) + «Profunditat dia · nit» (IB-42/IB-38)
+        Doble vista .seg: «Atles oceànic» (MAP-03) + «Profunditat dia · nit» (CASE-03/CASE-04)
      ========================================================= */
   (function () {
     const wrap = $("regwrap"), fig = $("regfig"), lgdEl = $("regLgd");
@@ -1120,7 +1120,7 @@
 
       const ARIA = "Dades de l'expedició Malaspina (Klevjer et al., 2016) en cinc regions oceàniques. Pacífic oriental: 348 m de dia, 97 m de nit, migra el 91 %. Sud de l'Índic: 591 i 470 m, migra el 20 %. Mitjana global: 486 i 303 m, migra el 46 %.";
 
-      /* ---- VISTA 1: ATLES OCEÀNIC (IB-25 Equal Earth + cercles d'aquarel·la multiply) ---- */
+      /* ---- VISTA 1: ATLES OCEÀNIC (MAP-03 Equal Earth + cercles d'aquarel·la multiply) ---- */
       if (view === "atlas") {
         moveFn = null;
         const narrow = w < 600;
@@ -1161,7 +1161,7 @@
           .attr("fill", "none").attr("stroke", C.blau).attr("stroke-opacity", 0.34)
           .attr("stroke-width", 1).attr("stroke-dasharray", "3 3");
 
-        // Cercles d'aquarel·la IB-25 proporcionals al % migrador
+        // Cercles d'aquarel·la MAP-03 proporcionals al % migrador
         const pts = GEO_D.map(d => {
           const [px, py] = proj([d.lon, d.lat]);
           return Object.assign({}, d, { px, py, r: rMap(d.p) });
@@ -1249,7 +1249,7 @@
         return;
       }
 
-      /* ---- VISTA 2: PROFUNDITAT DIA · NIT (IB-42 / IB-38 amb cercles d'aquarel·la) ---- */
+      /* ---- VISTA 2: PROFUNDITAT DIA · NIT (CASE-03 / CASE-04 amb cercles d'aquarel·la) ---- */
       const m = mob(), narrow = w < 600;
       if (narrow) {
         const ml = 8, mr = 14, mt = 44, mb = 28, rowH = 62, gap = 14;
@@ -1364,7 +1364,7 @@
         return;
       }
 
-      // Escriptori: columnes verticals de profunditat (IB-42 / IB-38 amb cercles d'aquarel·la)
+      // Escriptori: columnes verticals de profunditat (CASE-03 / CASE-04 amb cercles d'aquarel·la)
       const h = m ? 420 : 470;
       const mt = 32, mb = 78, ml = 8, gx0 = 48, mr = 14;
       const s = IBV.svg(el, w, h, ARIA);
@@ -1488,7 +1488,7 @@
 
   /* =========================================================
      4. ECOGRAMA SIMULAT
-        IB-56 matriu acústica monocroma blava + IB-19 isolínies blanques + perfil vertical
+        CASE-06 matriu acústica monocroma blava + SPREAD-06 isolínies blanques + perfil vertical
      ========================================================= */
   (function () {
     const stack = $("echoStack"), wrap = $("echowrap"), lgdEl = $("echoLgd");
@@ -1618,7 +1618,7 @@
       }
       o.putImageData(id, 0, 0);
 
-      // Reixa blanca subtil estil IB-56 (fils blancs de 0,7 px)
+      // Reixa blanca subtil estil CASE-06 (fils blancs de 0,7 px)
       o.save();
       o.strokeStyle = "rgba(255,255,255,0.28)";
       o.lineWidth = 0.7;
@@ -1634,7 +1634,7 @@
       }
       o.restore();
 
-      // Isolínies blanques IB-19 sobre el camp acústic suau (d3.contours)
+      // Isolínies blanques SPREAD-06 sobre el camp acústic suau (d3.contours)
       const gw = 132, gh = 66;
       const grid = new Float32Array(gw * gh);
       for (let gy = 0; gy < gh; gy++) {
@@ -1836,7 +1836,7 @@
   })();
 
   /* =========================================================
-     5. BOMBA DE CARBONI (IB-40 flux vertical d'aquarel·la + ~1.000 micro-traços lents)
+     5. BOMBA DE CARBONI (LINK-03 flux vertical d'aquarel·la + ~1.000 micro-traços lents)
      ========================================================= */
   (function () {
     const stack = $("cStack"), plotEl = $("cPlot"), lgdEl = $("cLgd");
@@ -1884,7 +1884,7 @@
       for (let i = 0; i < (m ? 180 : 300); i++) {
         PH.push({ x: r(), z: clamp(12 + Math.pow(r(), 0.9) * 125, 4, 165), w: r() * 6.283 });
       }
-      // ~1.000 micro-traços lents (~25–30 s de recorregut vertical complet, estil IB-40 / IB-28)
+      // ~1.000 micro-traços lents (~25–30 s de recorregut vertical complet, estil LINK-03 / MAP-19)
       SNOW_STR = [];
       const nSnow = m ? 260 : 480;
       for (let i = 0; i < nSnow; i++) {
@@ -2077,7 +2077,7 @@
         });
       }
 
-      // 1. BANDES VERTICALS D'AQUAREL·LA IB-40 (multiply)
+      // 1. BANDES VERTICALS D'AQUAREL·LA LINK-03 (multiply)
       const xLeft = ML + plotW * 0.27;
       const xRight = ML + plotW * 0.68;
 
@@ -2131,7 +2131,7 @@
       const phPts = PH.map(p => [ML + 4 + p.x * (plotW - 8) + Math.sin(tt * 0.16 + p.w) * 3, yz(p.z), m ? 1.3 : 1.6]);
       IBV.cloud(c, phPts, C.blau, { alpha: 0.36 });
 
-      // 3. ~1.000 MICRO-TRAÇOS LENTS (IB-40 / IB-28)
+      // 3. ~1.000 MICRO-TRAÇOS LENTS (LINK-03 / MAP-19)
       // 3a. Micro-traços de neu marina passiva (banda esquerra, s'esvaeixen amb la profunditat)
       if (F.snow > 0.02) {
         c.save();
@@ -2253,7 +2253,7 @@
 
   /* =========================================================
      6. ESTIMACIONS DE CARBONI
-        IB-38 cercles d'aquarel·la amb bigotis d'incertesa + IB-10 llindar 6,5 PgC/any
+        CASE-04 cercles d'aquarel·la amb bigotis d'incertesa + SCALE-01 llindar 6,5 PgC/any
      ========================================================= */
   (function () {
     const wrap = $("estwrap"), lgdEl = $("estLgd");
@@ -2291,7 +2291,7 @@
       const x = d3.scaleLinear([0, 7], [ml, w - mr]);
       const rVal = d3.scaleSqrt([0, 4], [9, narrow ? 20 : 26]);
 
-      // IB-10 Zona de llindar (6,5–7,0 PgC/any) en gris pàl·lid neutre
+      // SCALE-01 Zona de llindar (6,5–7,0 PgC/any) en gris pàl·lid neutre
       s.append("rect").attr("x", x(6.5)).attr("width", x(7) - x(6.5))
         .attr("y", mt - 14).attr("height", h - 26 - (mt - 14))
         .attr("fill", C.neutral).attr("fill-opacity", 0.65);
@@ -2304,7 +2304,7 @@
       const ax = IBV.axisX(s, x, h - 26, [0, 1, 2, 3, 4, 5, 6, 7], v => (v === 7 ? "7 PgC/any" : String(v)), { tick: false });
       ax.selectAll("text").filter((_, i, n) => i === n.length - 1).attr("text-anchor", "end").attr("x", w - 2);
 
-      // Línia puntejada de llindar IB-10 (6,5 PgC/any)
+      // Línia puntejada de llindar SCALE-01 (6,5 PgC/any)
       s.append("line").attr("x1", x(6.5)).attr("x2", x(6.5)).attr("y1", mt - 18).attr("y2", h - 26)
         .attr("stroke", C.ink).attr("stroke-width", 1.35).attr("stroke-dasharray", "1.5 3.5").attr("stroke-linecap", "round");
       IBV.t(s, x(6.5) - 6, mt - 22, narrow ? "Exportació total: 6,5 PgC/any" : "Llindar d'exportació total de l'oceà: 6,5 PgC/any (model del 2019)", {
@@ -2351,7 +2351,7 @@
           });
         }
 
-        // Cercle d'aquarel·la multiply proporcional al valor central/punt mitjà (IB-38)
+        // Cercle d'aquarel·la multiply proporcional al valor central/punt mitjà (CASE-04)
         const rad = rVal(mid);
         g.append("circle").attr("class", "ewash")
           .attr("cx", x(mid)).attr("cy", yc).attr("r", 0).attr("data-r", rad)

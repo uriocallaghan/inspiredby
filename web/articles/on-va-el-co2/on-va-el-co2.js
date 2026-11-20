@@ -1,10 +1,10 @@
 /* On va el CO₂ que emetem — visualitzacions editorials d'aquarel·la i gravat científic (IBV).
-   1. #scA      IB-40 Riu d'aquarel·la de carboni amb ~1.200 micro-traços lents (transposat a vertical en mòbil)
-   2. #scB      IB-16 + IB-28/IB-40 Tall científic oceà–bosc amb ~900 micro-traços i capçades d'aquarel·la
-   3. #keelFig  IB-01 Sèrie i zoom enllaçat + IB-05 Espiral respiratòria polar (doble vista .seg)
-   4. #yearFig  IB-38 Cercles translúcids anuals (multiply) + IB-02 Pulsacions ONI
-   5. #histFig  IB-47 Corrent apilat bidireccional d'aquarel·la (morph Anual ↔ Acumulat)
-   6. #persFig  IB-49 Horitzó logarítmic de temps profund (hover + lliscant sincronitzats)
+   1. #scA      LINK-03 Riu d'aquarel·la de carboni amb ~1.200 micro-traços lents (transposat a vertical en mòbil)
+   2. #scB      HOW-01 + MAP-19/LINK-03 Tall científic oceà–bosc amb ~900 micro-traços i capçades d'aquarel·la
+   3. #keelFig  TIME-02 Sèrie i zoom enllaçat + TIME-09 Espiral respiratòria polar (doble vista .seg)
+   4. #yearFig  CASE-04 Cercles translúcids anuals (multiply) + TIME-03 Pulsacions ONI
+   5. #histFig  TIME-04 Corrent apilat bidireccional d'aquarel·la (morph Anual ↔ Acumulat)
+   6. #persFig  TIME-15 Horitzó logarítmic de temps profund (hover + lliscant sincronitzats)
    Dades: dades.js (Global Carbon Budget 2026, NOAA GML, NOAA CPC). */
 (function(){
 "use strict";
@@ -114,7 +114,7 @@ function scrollyMobH() {
 }
 
 /* =====================================================================
-   1. SCROLLY A — IB-40 RIU D'AQUAREL·LA DE CARBONI AMB ~1.200 MICRO-TRAÇOS
+   1. SCROLLY A — LINK-03 RIU D'AQUAREL·LA DE CARBONI AMB ~1.200 MICRO-TRAÇOS
       Emissions del 2025 (42,8 Gt CO₂): Fòssils + Ús del sòl → Aire / Oceà / Terra / Desq.
       A mòbil (w < 600): flux transposat en vertical (dalt → baix), alçada ≤ 260 px.
    ===================================================================== */
@@ -251,7 +251,7 @@ function buildRiverA(w, h) {
     });
   }
 
-  // Micro-traços corbats molt lents (~28 s de recorregut complet, estil IB-28/IB-40)
+  // Micro-traços corbats molt lents (~28 s de recorregut complet, estil MAP-19/LINK-03)
   const dens = totalParticles / (R25.E * 2);
   links.forEach(l => {
     const nP = Math.max(12, Math.round(l.v * dens));
@@ -401,7 +401,7 @@ function renderRiverSVG_A() {
     return;
   }
 
-  // Passos 0–7: Riu d'aquarel·la IB-40
+  // Passos 0–7: Riu d'aquarel·la LINK-03
   const act = activeGroupsA(s);
   const pid = "ra" + Math.random().toString(36).slice(2, 6);
 
@@ -694,7 +694,7 @@ function onStepA(i) {
 }
 
 /* =====================================================================
-   2. SCROLLY B — IB-16 + IB-28/IB-40 TALL CIENTÍFIC OCEÀ–BOSC
+   2. SCROLLY B — HOW-01 + MAP-19/LINK-03 TALL CIENTÍFIC OCEÀ–BOSC
       Perfil silenciós #ECEBE8, capes oceàniques d'aquarel·la, batimetria fina,
       capçades d'aquarel·la groga (radialGradient + multiply) i ~900 micro-traços lents.
    ===================================================================== */
@@ -917,7 +917,7 @@ function drawB(tMs, dtMs) {
     ctx.restore();
   }
 
-  // Cinta de circulació profunda al pas 2 (aquarel·la IB-40)
+  // Cinta de circulació profunda al pas 2 (aquarel·la LINK-03)
   if (s === 2) {
     ctx.save();
     ctx.globalCompositeOperation = "multiply";
@@ -954,7 +954,7 @@ function drawB(tMs, dtMs) {
     ctx.restore();
   }
 
-  // 6. ~900 micro-traços lents amb estela corba (estil IB-28 / IB-40)
+  // 6. ~900 micro-traços lents amb estela corba (estil MAP-19 / LINK-03)
   ctx.save();
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
@@ -1181,8 +1181,8 @@ function onStepB(i) {
 
 /* =====================================================================
    3. CORBA DE KEELING — DOBLE VISTA .seg:
-      (a) «Sèrie i zoom» (IB-01) · 1958–2026 + ampliació interactiva
-      (b) «Espiral respiratòria» (IB-05) · 68 voltes sobre IBV.polarGrid
+      (a) «Sèrie i zoom» (TIME-02) · 1958–2026 + ampliació interactiva
+      (b) «Espiral respiratòria» (TIME-09) · 68 voltes sobre IBV.polarGrid
    ===================================================================== */
 const K = {
   mode: "series",
@@ -1546,7 +1546,7 @@ document.querySelectorAll("#kSeg button").forEach(b => b.addEventListener("click
 }));
 
 /* =====================================================================
-   4. ANYS BONS I ANYS DOLENTS — IB-38 CERCLES TRANSLÚCIDS + IB-02 ONI
+   4. ANYS BONS I ANYS DOLENTS — CASE-04 CERCLES TRANSLÚCIDS + TIME-03 ONI
       1959–2026: cercles d'aquarel·la multiply per atmosfera / oceà / terra,
       línia d'emissions totals al damunt i tira de pulsacions ONI a sota.
    ===================================================================== */
@@ -1621,7 +1621,7 @@ V.mount(yPlot, (el, w) => {
 
   V.gridY(svg, yy, ml, w - mr, [0, 10, 20, 30, 40], v => f0(v), { zero: 0, unit: " Gt CO₂" });
 
-  // Eix de zero i llindars per a les pulsacions ONI (IB-02)
+  // Eix de zero i llindars per a les pulsacions ONI (TIME-03)
   const oniZeroY = yOni(0);
   svg.append("line").attr("x1", ml).attr("x2", w - mr).attr("y1", oniZeroY).attr("y2", oniZeroY)
     .attr("stroke", C.ink).attr("stroke-width", .7);
@@ -1643,7 +1643,7 @@ V.mount(yPlot, (el, w) => {
     .attr("fill", "none").attr("stroke", C.ink).attr("stroke-width", 1.5)
     .attr("d", d3.line().x(d => x(d.y)).y(d => yy(d.E)).curve(d3.curveMonotoneX));
 
-  // Cercles translúcids IB-38 per any + pulsacions ONI IB-02
+  // Cercles translúcids CASE-04 per any + pulsacions ONI TIME-03
   const yrG = svg.append("g");
   const yrGroups = yrG.selectAll("g.yg").data(Y.rows).join("g").attr("class", "yg");
 
@@ -1674,7 +1674,7 @@ V.mount(yPlot, (el, w) => {
         .attr("fill", rimC).attr("fill-opacity", isProj ? .45 : .78);
     });
 
-    // Pulsació ONI (IB-02): barres fines ≤ 2,2 px, color només fora de ±0,5 °C
+    // Pulsació ONI (TIME-03): barres fines ≤ 2,2 px, color només fora de ±0,5 °C
     const o = ONI(r.y);
     if (o != null) {
       const strong = Math.abs(o) >= .5;
@@ -1795,7 +1795,7 @@ document.querySelectorAll("#ySeg button").forEach(b => b.addEventListener("click
 }));
 
 /* =====================================================================
-   5. DES DEL 1850 — IB-47 CORRENT APILAT BIDIRECCIONAL D'AQUAREL·LA
+   5. DES DEL 1850 — TIME-04 CORRENT APILAT BIDIRECCIONAL D'AQUAREL·LA
       Capes suavitzades (curveMonotoneX), degradats d'aquarel·la multiply,
       separadors blancs 0,7 px, zero en tinta i morph Anual ↔ Acumulat.
    ===================================================================== */
@@ -1985,7 +1985,7 @@ document.querySelectorAll("#hSeg button").forEach(b => b.addEventListener("click
 }));
 
 /* =====================================================================
-   6. PERSISTÈNCIA DEL CO₂ — IB-49 HORITZÓ LOGARÍTMIC DE TEMPS PROFUND
+   6. PERSISTÈNCIA DEL CO₂ — TIME-15 HORITZÓ LOGARÍTMIC DE TEMPS PROFUND
       Capes translúcides multiply, línies guia verticals (10 / 100 / 1.000 /
       10.000 / 100.000 anys), cua mil·lenària gravada i hover + lliscant sincronitzats.
    ===================================================================== */
@@ -2118,7 +2118,7 @@ V.mount(pPlot, (el, w) => {
     svg.append("circle").attr("cx", x(t)).attr("cy", y(v)).attr("r", 3).attr("fill", C.ink).attr("stroke", C.paper).attr("stroke-width", 1);
   });
 
-  // Franges de processos de retirada en temps profund (IB-49 càpsules d'aquarel·la)
+  // Franges de processos de retirada en temps profund (TIME-15 càpsules d'aquarel·la)
   const bandsG = svg.append("g");
   BANDS.forEach(([nm, a, b, col], i) => {
     const by = top + ch + 54 + i * bg;

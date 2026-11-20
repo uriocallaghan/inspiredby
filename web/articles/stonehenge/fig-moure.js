@@ -6,7 +6,7 @@
   const F0 = IBV.fmt(",.0f"), F1 = IBV.fmt(",.1f");
 
   /* =========================================================================
-     V4 · QUANTA GENT CAL PER MOURE UNA PEDRA (IB-11 amb figures de línia)
+     V4 · QUANTA GENT CAL PER MOURE UNA PEDRA (PART-01 amb figures de línia)
      Escena obliqua en gravat: la pedra a escala sobre un trineu de roure, el camí (troncs fixos a UCL,
      carril de bigues greixades a la BBC) i tantes figures com persones donaria el ritme de l'experiment,
      repartides en cordes a banda i banda del camí. A sota, totes les pedres amb els dos ritmes.

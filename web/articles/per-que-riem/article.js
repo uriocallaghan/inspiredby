@@ -8,7 +8,7 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
 const $=s=>document.querySelector(s);
 
 /* =====================================================================
-   FIGURA 1 · IB-11 / IB-51 · 1.200 RIALLES AL CARRER (Provine, 1993)
+   FIGURA 1 · PART-01 / PART-04 · 1.200 RIALLES AL CARRER (Provine, 1993)
    100 unitats translúcides (1 cercle = 12 rialles) que volen entre 3 vistes.
    ===================================================================== */
 (function provineFig(){
@@ -322,7 +322,7 @@ const $=s=>document.querySelector(s);
 })();
 
 /* =====================================================================
-   FIGURA 2 · IB-16 · TALL CEREBRAL I MORFOLOGIA ACÚSTICA INTERACTIVA
+   FIGURA 2 · HOW-01 · TALL CEREBRAL I MORFOLOGIA ACÚSTICA INTERACTIVA
    ===================================================================== */
 (function acusticaFig(){
   const el=$("#acustica-viz"), lg=$("#acustica-lg"), rng=$("#acustica-rng"), playBtn=$("#acustica-play");
@@ -626,7 +626,7 @@ const $=s=>document.querySelector(s);
 })();
 
 /* =====================================================================
-   FIGURA 3 · DADES TRANSCULTURALS (Bryant 2016/2018) + IB-55 (Wood 2017)
+   FIGURA 3 · DADES TRANSCULTURALS (Bryant 2016/2018) + LINK-05 (Wood 2017)
    ===================================================================== */
 (function culturesFig(){
   const el=$("#cultures-viz"), lg=$("#cultures-lg");
@@ -684,7 +684,7 @@ const $=s=>document.querySelector(s);
       V.focus(rows,null); tp.hide();
     });
 
-    // ---- Panell B: IB-55 Mapa conceptual de cercles translúcids (Wood et al., 2017) ----
+    // ---- Panell B: LINK-05 Mapa conceptual de cercles translúcids (Wood et al., 2017) ----
     const bx0=mob?14:w*0.54, bx1=w-14;
     const by0=mob?274:28, by1=mob?480:280;
     const bcx=(bx0+bx1)/2, bcy=(by0+by1)/2+8;
@@ -727,7 +727,7 @@ const $=s=>document.querySelector(s);
 })();
 
 /* =====================================================================
-   FIGURA 4 · IB-25 · MAPA ETNOGRÀFIC DELS USOS RITUALS I POLÍTICS DEL RIURE
+   FIGURA 4 · MAP-03 · MAPA ETNOGRÀFIC DELS USOS RITUALS I POLÍTICS DEL RIURE
    ===================================================================== */
 (function etnografiaFig(){
   const el=$("#etno-viz"), lg=$("#etno-lg");

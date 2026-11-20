@@ -61,7 +61,7 @@ function sfcAt(lon,lat){
   return t==null||s==null?null:{t,s,g:sig(s,t)};
 }
 
-/* ================= 1. EXPLORADOR DE DENSITAT (IB-08 + IB-16) ================= */
+/* ================= 1. EXPLORADOR DE DENSITAT (SPREAD-04 + HOW-01) ================= */
 (function(){
   const wrap=$("tsw"), col=$("colc"), cx=col.getContext("2d"), colDock=IBV.tip(col.parentNode);
   const iT=$("dT"), iS=$("dS"), oT=$("dTv"), oS=$("dSv"), oR=$("dRho"), oG=$("dSig"), oV=$("dVer");
@@ -230,7 +230,7 @@ function sfcAt(lon,lat){
     x=d3.scaleLinear([S0,S1],[M.l,W-M.r]);
     y=d3.scaleLinear([T0,T1],[H-M.b,M.t]);
 
-    // Núvol de punts reals de la superfície mundial (IB-08 en canvas prerenderitzat)
+    // Núvol de punts reals de la superfície mundial (SPREAD-04 en canvas prerenderitzat)
     const cv=document.createElement("canvas"), dp=DPR();cv.width=W*dp;cv.height=H*dp;
     const c=cv.getContext("2d");c.scale(dp,dp);
     const pts=[];
@@ -242,7 +242,7 @@ function sfcAt(lon,lat){
     IBV.cloud(c,pts,C.muted,{r:.95,alpha:.18});
     svg.append("image").attr("href",cv.toDataURL()).attr("x",0).attr("y",0).attr("width",W).attr("height",H);
 
-    // Corbes topogràfiques de densitat (IB-19, 11 nivells ultra-fins 0,55 px en blau translúcid)
+    // Corbes topogràfiques de densitat (SPREAD-06, 11 nivells ultra-fins 0,55 px en blau translúcid)
     const clipId="ts-clip-"+Math.random().toString(36).slice(2,7);
     svg.append("defs").append("clipPath").attr("id",clipId)
       .append("rect").attr("x",M.l).attr("y",M.t).attr("width",W-M.l-M.r).attr("height",H-M.t-M.b);
@@ -497,7 +497,7 @@ function sfcAt(lon,lat){
   });
 })();
 
-/* ================= 2. GLOBUS SCROLLY (IB-27 + IB-12 + IB-24/IB-28) ================= */
+/* ================= 2. GLOBUS SCROLLY (MAP-18 + MAP-06 + MAP-12/MAP-19) ================= */
 const GLOBE=(function(){
   const cv=$("globe"), ctx=cv.getContext("2d"), wrap=$("gwrap"), ov=$("gov"), gbox=$("gbox"), graphic=$("ggraphic");
   const nameEl=$("gName"), subEl=$("gSub"), lgEl=$("g-lg");
@@ -555,7 +555,7 @@ const GLOBE=(function(){
       for(let s=0;s<n;s++)dense.push(ip(s/n));
     }
     dense.push(P.pts[P.pts.length-1]);P.d=dense;P.len=dense.length;
-    // Normal lateral precalculada (en graus lon/lat) per crear una cinta sedosa de micro-traços (IB-28)
+    // Normal lateral precalculada (en graus lon/lat) per crear una cinta sedosa de micro-traços (MAP-19)
     const norm=[];
     for(let i=0;i<dense.length;i++){
       const p0=dense[Math.max(0,i-1)], p1=dense[Math.min(dense.length-1,i+1)];
@@ -697,7 +697,7 @@ const GLOBE=(function(){
     ];
   }
   function drawCurrents(dt){
-    // Micro-traços direccionals sedosos amb estela que s'esvaeix (estil IB-28, lents ~26–32 s)
+    // Micro-traços direccionals sedosos amb estela que s'esvaeix (estil MAP-19, lents ~26–32 s)
     const K=clamp(W/580,.68,1.08), SEG=9;
     ctx.lineCap="round";ctx.lineJoin="round";
     for(const k in PATHS){
@@ -832,7 +832,7 @@ const GLOBE=(function(){
   return{layout,goStep};
 })();
 
-/* ================= 3. TALL DE L'ATLÀNTIC (IB-16) ================= */
+/* ================= 3. TALL DE L'ATLÀNTIC (HOW-01) ================= */
 const SEC=(function(){
   const cv=$("sec"), ctx=cv.getContext("2d"), wrap=$("xwrap"), ov=$("xov"), box=$("xbox"), graphic=$("xgraphic");
   const nameEl=$("xName"), lgEl=$("x-lg");
@@ -992,7 +992,7 @@ const SEC=(function(){
   return{layout,goStep};
 })();
 
-/* ================= 4. REIXA D'UNITATS (IB-11) ================= */
+/* ================= 4. REIXA D'UNITATS (PART-01) ================= */
 (function(){
   const box=$("units"), wrap=$("floww"), T=$("flowT"), sub=$("flowSub"), cap=$("flowCap");
   const dock=IBV.tip(wrap);
@@ -1052,7 +1052,7 @@ const SEC=(function(){
   IBV.onView(box,inst=>render(!inst));
 })();
 
-/* ================= 5. MAPA D'ANOMALIA D'HIVERN / ESTIU (IB-26 / IB-34) ================= */
+/* ================= 5. MAPA D'ANOMALIA D'HIVERN / ESTIU (MAP-07 / MAP-09) ================= */
 (function(){
   const cv=$("win"), ctx=cv.getContext("2d"), wrap=$("winw"), ov=$("winov"), T=$("winT"), lgEl=$("win-lg");
   const dock=IBV.tip(wrap);
@@ -1159,7 +1159,7 @@ const SEC=(function(){
   landReady.push(()=>draw());
 })();
 
-/* ================= 6. PALEOCLIMA: NGRIP + Pa/Th (IB-01) ================= */
+/* ================= 6. PALEOCLIMA: NGRIP + Pa/Th (TIME-02) ================= */
 (function(){
   const wrap=$("paleow");
   const NG=D.ngrip.filter(d=>d[0]<=20000), PA=D.pa.filter(d=>d[0]<=20);
@@ -1237,7 +1237,7 @@ const SEC=(function(){
   });
 })();
 
-/* ================= 7. RAPID 2004–2024 (IB-01) ================= */
+/* ================= 7. RAPID 2004–2024 (TIME-02) ================= */
 (function(){
   const wrap=$("rapidw"), lgEl=$("rapid-lg");
   const R=D.rapid, n=R.moc.length, dates=R.moc.map((_,i)=>new Date(R.y0,R.m0-1+i,15));
@@ -1440,7 +1440,7 @@ const SEC=(function(){
   });
 })();
 
-/* ================= 9. PROJECCIONS CAP AL 2100 (IB-10 + IB-38) ================= */
+/* ================= 9. PROJECCIONS CAP AL 2100 (SCALE-01 + CASE-04) ================= */
 (function(){
   const wrap=$("pjw"), inp=$("pjR"), big=$("pjBig"), txt=$("pjTxt"), list=$("pjList");
   const ROWS=[
@@ -1577,7 +1577,7 @@ const SEC=(function(){
   inp.addEventListener("input",update);
 })();
 
-/* ================= 10. LÍNIA DEL TEMPS DE COL·LAPSE (IB-10 + IB-38) ================= */
+/* ================= 10. LÍNIA DEL TEMPS DE COL·LAPSE (SCALE-01 + CASE-04) ================= */
 (function(){
   const wrap=$("tipw");
   const ROWS=[

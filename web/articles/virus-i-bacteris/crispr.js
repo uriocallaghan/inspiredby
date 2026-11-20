@@ -1,8 +1,8 @@
 /* «La guerra invisible» — gràfics 2 (sistema infogràfic IBV, gravat científic i aquarel·la editorial):
-   5. IB-41 Constel·lació de cercles d'aquarel·la (d3.pack amb zoom) ↔ IB-38 Distribució (21.738 genomes)
-   6. IB-16 Gravat molecular de precisió del mecanisme CRISPR-Cas9 (scrollytelling)
-   7. Colònia bacteriana d'aquarel·la (càpsules + halos daurats) + sèrie temporal IB-01 en directe
-   8. IB-49 Cronologia editorial del CRISPR (1987–2023) */
+   5. PART-06 Constel·lació de cercles d'aquarel·la (d3.pack amb zoom) ↔ CASE-04 Distribució (21.738 genomes)
+   6. HOW-01 Gravat molecular de precisió del mecanisme CRISPR-Cas9 (scrollytelling)
+   7. Colònia bacteriana d'aquarel·la (càpsules + halos daurats) + sèrie temporal TIME-02 en directe
+   8. TIME-15 Cronologia editorial del CRISPR (1987–2023) */
 (function(){
 "use strict";
 const V=window.IBV, H=window.VIB; if(!V||!H)return;
@@ -11,7 +11,7 @@ const {SSF,RM,clamp,lerp,ease,fmtN,txt,lead,addWashGrad,canvasWash}=H;
 const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
 
 /* =====================================================================
-   5. IB-41 CONSTEL·LACIÓ D'AQUAREL·LA ↔ IB-38 DISTRIBUCIÓ (21.738 GENOMES)
+   5. PART-06 CONSTEL·LACIÓ D'AQUAREL·LA ↔ CASE-04 DISTRIBUCIÓ (21.738 GENOMES)
    ===================================================================== */
 (function(){
   const vizEl=document.getElementById("def-viz"); if(!vizEl||!window.VIB_DATA)return;
@@ -70,7 +70,7 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
       const uid="df"+Math.random().toString(36).slice(2,6);
 
       if(view===0){
-        /* ---- VISTA 0: IB-41 CONSTEL·LACIÓ DE CERCLES D'AQUAREL·LA (d3.pack + zoom) ---- */
+        /* ---- VISTA 0: PART-06 CONSTEL·LACIÓ DE CERCLES D'AQUAREL·LA (d3.pack + zoom) ---- */
         title.textContent="Quins sistemes de defensa porten bacteris i arqueus";
         sub.textContent="Percentatge de genomes amb cada família (25 més freqüents de 60) · Àrea proporcional · Clica un cercle per ampliar-lo";
         const H=mob?380:430;
@@ -152,7 +152,7 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
           }
         }
 
-        /* Zoom suau en clicar (estil IB-41) */
+        /* Zoom suau en clicar (estil PART-06) */
         let zoomed=null;
         function zoomTo(d){
           zoomed=d;
@@ -212,7 +212,7 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
         }
 
       } else {
-        /* ---- VISTA 1: IB-38 DISTRIBUCIÓ PER GENOMA AMB AQUAREL·LA ---- */
+        /* ---- VISTA 1: CASE-04 DISTRIBUCIÓ PER GENOMA AMB AQUAREL·LA ---- */
         title.textContent="Quants sistemes de defensa té cada genoma";
         sub.textContent="Distribució dels 21.738 genomes segons el nombre de sistemes antivirals (mitjana: 5,2; màxim: 57)";
         const H=mob?300:340, ml=mob?42:54, mr=mob?14:24, mt=mob?58:36, mb=44;
@@ -292,7 +292,7 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
 })();
 
 /* =====================================================================
-   6. IB-16 GRAVAT MOLECULAR DE PRECISIÓ — CRISPR PAS A PAS (SCROLLY)
+   6. HOW-01 GRAVAT MOLECULAR DE PRECISIÓ — CRISPR PAS A PAS (SCROLLY)
    ===================================================================== */
 (function(){
   const vizEl=document.getElementById("cr-viz"); if(!vizEl)return;
@@ -633,7 +633,7 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
 })();
 
 /* =====================================================================
-   7. COLÒNIA D'AQUAREL·LA (CÀPSULES + HALOS DAURATS) + IB-01 EN DIRECTE
+   7. COLÒNIA D'AQUAREL·LA (CÀPSULES + HALOS DAURATS) + TIME-02 EN DIRECTE
    ===================================================================== */
 (function(){
   const simEl=document.getElementById("sim-viz"), chEl=document.getElementById("simChart-viz");
@@ -797,7 +797,7 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
     });
     const n=hist.length;
     if(n>1){
-      /* Bany d'aquarel·la sota la corba de bacteris vius (IB-01) */
+      /* Bany d'aquarel·la sota la corba de bacteris vius (TIME-02) */
       const ag=cc.createLinearGradient(0,mt,0,Yc(0));
       ag.addColorStop(0,V.alpha(C.blau,.14)); ag.addColorStop(1,V.alpha(C.blau,.01));
       cc.fillStyle=ag; cc.beginPath(); cc.moveTo(ml,Yc(0));
@@ -863,7 +863,7 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
 })();
 
 /* =====================================================================
-   8. IB-49 CRONOLOGIA EDITORIAL DEL CRISPR (1987–2023)
+   8. TIME-15 CRONOLOGIA EDITORIAL DEL CRISPR (1987–2023)
    ===================================================================== */
 (function(){
   const vizEl=document.getElementById("tline-viz"); if(!vizEl)return;
@@ -955,7 +955,7 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
       return;
     }
 
-    /* Escriptori: cronologia editorial IB-49 amb cercles d'aquarel·la i fites anotades */
+    /* Escriptori: cronologia editorial TIME-15 amb cercles d'aquarel·la i fites anotades */
     const H=148, ml=22, mr=22, y0=86;
     const s=V.svg(el,W,H,"Línia del temps del CRISPR del 1987 al 2023: repeticions a E. coli, Mojica a Alacant, el nom CRISPR, l'origen víric dels espaiadors, la prova experimental, Cas9 com a eina, el Nobel del 2020 i el primer medicament el 2023.");
     s.attr("tabindex",0);

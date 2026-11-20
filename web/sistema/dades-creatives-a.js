@@ -1,4 +1,4 @@
-/* Dades reals per a les peces IB-40 a IB-43 (creatives-a).
+/* Dades reals per a les peces LINK-03 a SCALE-02 (creatives-a).
    mort: IHME Global Burden of Disease 2023 via Our World in Data (research/causes-mort.csv): morts per causa el 2019 i el 2023.
          Grups com a «De què mor el món?»: ncd = no transmissibles, inf = infeccions, morts maternes i de nadons, inj = lesions i violència.
    gcb:  Global Carbon Budget 2026 (Friedlingstein et al. 2026), full «Historical Budget», GtC acumulades per període

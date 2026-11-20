@@ -5,7 +5,7 @@
   const PAPER = S3.PAPER;
 
   /* =========================================================================
-     V12 · CADA SEGLE S'INVENTA EL SEU STONEHENGE (IB-38, filera cronològica)
+     V12 · CADA SEGLE S'INVENTA EL SEU STONEHENGE (CASE-04, filera cronològica)
      A dalt, sis lectures amb una vinyeta de línia cadascuna; al mig, l'eix trencat;
      a baix, l'estat físic de les pedres i del lloc carril per carril (dret, caigut, redreçat).
      Totes les dates surten de D.mirall i de research/stonehenge/fonts-v2.md (§15–16).

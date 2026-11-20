@@ -7,7 +7,7 @@
   const STONE = "#E4DFD5", STONE2 = "#CFC8BA";
 
   /* =========================================================================
-     V9 · QUI HI HAVIA (IB-11 + IB-53)
+     V9 · QUI HI HAVIA (PART-01 + TIME-10)
      Tres vistes: els morts del recinte (planta de la fase 1 amb els 56 forats Aubrey i el forat 7),
      el canvi d'ascendència (cent persones que canvien de color sobre una línia de temps)
      i l'any dels porcs (espiral de dos anys amb els parts i els sacrificis d'hivern).

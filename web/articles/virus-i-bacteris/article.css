@@ -63,7 +63,7 @@
 .shfacts{margin:16px 0 0;max-width:none}
 .shfacts b{font-size:24px}
 
-/* Escala comparativa (IB-35 + gravat) */
+/* Escala comparativa (SCALE-04 + gravat) */
 .scale-stack{display:grid;gap:8px}
 .scale-canvas-wrap{position:relative;width:100%}
 
@@ -91,7 +91,7 @@
 #simMsg{font-family:var(--serif);font-size:16px;line-height:1.45;color:var(--ink);min-height:4.4em;margin:12px 0 0}
 #simChart-viz{margin-top:12px}
 
-/* Línia del temps (IB-49) */
+/* Línia del temps (TIME-15) */
 .tlcard{max-width:680px;margin:14px auto 0;font-family:var(--sans);font-size:15px;line-height:1.5;color:var(--ink-2);min-height:9em}
 .tlcard .y{font-family:var(--serif-display);font-weight:400;font-size:28px;letter-spacing:-.04em;color:var(--ink);margin-right:10px}
 .tlcard h3{font-family:var(--sans);font-size:16px;margin:2px 0 6px;color:var(--ink)}

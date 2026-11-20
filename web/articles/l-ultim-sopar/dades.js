@@ -140,7 +140,7 @@ window.SOPAR_DADES = {
     }
   ],
 
-  /* V3 · Comparador IB-31 Leonardo vs Giampietrino: coordenades calibrades al canvas 1600×586 */
+  /* V3 · Comparador MAP-15 Leonardo vs Giampietrino: coordenades calibrades al canvas 1600×586 */
   cenacolo: {
     vp: { x: 0.502, y: 0.258 }, // Forat del clau a la templa dreta de Crist
     porta1652: { x0: 0.365, x1: 0.648, yTop: 0.700, ySide: 0.755 },

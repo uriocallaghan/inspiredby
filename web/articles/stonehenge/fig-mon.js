@@ -39,7 +39,7 @@
   }
 
   /* =========================================================================
-     V11 · DOTZE MIL ANYS MOVENT PEDRES (IB-49 lineal + IB-25)
+     V11 · DOTZE MIL ANYS MOVENT PEDRES (TIME-15 lineal + MAP-03)
      ========================================================================= */
   (function initMon(){
     const el = document.getElementById("mon-viz"); if(!el) return;

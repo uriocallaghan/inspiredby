@@ -9,7 +9,7 @@
   const yr = y => y < 0 ? `${F0(-y)} aC` : `${y}`;
 
   /* =========================================================================
-     V5 · SCROLLY: COM S'ALÇA UN TRÍLIT (IB-16, alçat en gravat)
+     V5 · SCROLLY: COM S'ALÇA UN TRÍLIT (HOW-01, alçat en gravat)
      ========================================================================= */
   (function initTrilit(){
     const el = document.getElementById("tri-viz"); if(!el) return;

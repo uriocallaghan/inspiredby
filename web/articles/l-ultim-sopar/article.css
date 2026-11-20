@@ -40,7 +40,7 @@
 #s-taula .plot{min-height:410px}
 #s-mur .plot{min-height:420px}
 
-/* Comparador interactiu IB-31: Leonardo vs Giampietrino + capa SVG */
+/* Comparador interactiu MAP-15: Leonardo vs Giampietrino + capa SVG */
 .cmp-wrap{position:relative;width:100%}
 .cmp-stage{position:relative;width:100%;aspect-ratio:1600/586;overflow:hidden;user-select:none;touch-action:pan-y;background:#ECEBE8}
 .cmp-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:block;pointer-events:none}

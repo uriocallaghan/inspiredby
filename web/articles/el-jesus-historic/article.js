@@ -1,7 +1,7 @@
 /* «Qui era realment Jesús?» · visualitzacions orgàniques (sistema infogràfic IBV)
-   V3 (#viz-cos):     IB-38/IB-10 Bioarqueologia d'alçada real (Judea s. I) + comparador de trets.
-   V4 (#s-cares):     Scrollytelling 1 · IB-25 Mapa Equal Earth + cinta cronològica (29 fites, 200–2001).
-   V5 (#viz-enquesta):IB-42/IB-10 Dades empíriques YouGov (2020–2021) i estudi PLOS ONE (2018).
+   V3 (#viz-cos):     CASE-04/SCALE-01 Bioarqueologia d'alçada real (Judea s. I) + comparador de trets.
+   V4 (#s-cares):     Scrollytelling 1 · MAP-03 Mapa Equal Earth + cinta cronològica (29 fites, 200–2001).
+   V5 (#viz-enquesta):CASE-03/SCALE-01 Dades empíriques YouGov (2020–2021) i estudi PLOS ONE (2018).
    V8–V10 (nom, cronologia, Alcorà): vegeu nom-i-temps.js. */
 (function(){
   if(!window.d3||!window.IBV||!window.JH)return;
@@ -38,7 +38,7 @@
   }
 
   /* =====================================================================
-     V3 · IB-38 / IB-10 ALÇADA BIOARQUEOLÒGICA + COMPARADOR (#viz-cos)
+     V3 · CASE-04 / SCALE-01 ALÇADA BIOARQUEOLÒGICA + COMPARADOR (#viz-cos)
      Només mesures puntuals publicades (zero barres d'error sintètiques, zero fons pintat P1).
      ===================================================================== */
   (function(){
@@ -176,7 +176,7 @@
 
   /* =====================================================================
      V4 · SCROLLYTELLING 1 · MAPA + CINTA ICONOGRÀFICA (#s-cares)
-     IB-25 (mapa net Equal Earth amb clipPath estricte) + cinta temporal no lineal per trams (29 fites)
+     MAP-03 (mapa net Equal Earth amb clipPath estricte) + cinta temporal no lineal per trams (29 fites)
      ===================================================================== */
   (function(){
     const sec=$("#s-cares"), el=$("#cares"), rd=$("#cares-r");

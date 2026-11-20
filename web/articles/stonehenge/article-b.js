@@ -10,7 +10,7 @@
   const yr = y => y < 0 ? `${F0(-y)} aC` : `${y}`;
 
   /* =========================================================================
-     V6 · SCROLLY: CINC MONUMENTS APILATS (maqueta de línia + IB-49)
+     V6 · SCROLLY: CINC MONUMENTS APILATS (maqueta de línia + TIME-15)
      ========================================================================= */
   (function initFases(){
     const el = document.getElementById("fases-viz"); if(!el) return;

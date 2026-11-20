@@ -1,8 +1,8 @@
 /* «Jesús i els quatre evangelis» · mapes
-   Base comuna: relleu topogràfic pla amb ombra suau i isolínies (NASA SRTM, IB-26) + costes Natural Earth.
-   Peces: V3 (#mapa) scrollytelling mapa topogràfic + IB-13 + mini-mapa Mediterrani;
-          V4 (#pujada) IB-32 franja + IB-16 perfil interactiu;
-          V5 (#betlem) IB-31 comparador abans/després amb divisor arrossegable (Mateu vs Lluc). */
+   Base comuna: relleu topogràfic pla amb ombra suau i isolínies (NASA SRTM, MAP-07) + costes Natural Earth.
+   Peces: V3 (#mapa) scrollytelling mapa topogràfic + MAP-11 + mini-mapa Mediterrani;
+          V4 (#pujada) MAP-13 franja + HOW-01 perfil interactiu;
+          V5 (#betlem) MAP-15 comparador abans/després amb divisor arrossegable (Mateu vs Lluc). */
 (function(){
   if(!window.d3||!window.IBV||!window.EVG||!window.topojson||!window.EVG_DEM)return;
   const V=IBV, C=V.C, E=window.EVG, DM=window.EVG_DEM;
@@ -188,7 +188,7 @@
   }
 
   /* =====================================================================
-     V3 · EL TERRITORI DELS EVANGELIS (Scrollytelling IB-26 + IB-13 + Mini-mapa)
+     V3 · EL TERRITORI DELS EVANGELIS (Scrollytelling MAP-07 + MAP-11 + Mini-mapa)
      ===================================================================== */
   (function(){
     const el=$("#mapa"); if(!el)return;
@@ -352,7 +352,7 @@
   })();
 
   /* =====================================================================
-     V4 · PUJAR A JERUSALEM (IB-32 franja + IB-16 perfil interactiu)
+     V4 · PUJAR A JERUSALEM (MAP-13 franja + HOW-01 perfil interactiu)
      ===================================================================== */
   (function(){
     const el=$("#pujada"); if(!el)return;
@@ -485,7 +485,7 @@
   })();
 
   /* =====================================================================
-     V5 · DOS CAMINS A BETLEM (IB-31 Abans i després amb divisor arrossegable)
+     V5 · DOS CAMINS A BETLEM (MAP-15 Abans i després amb divisor arrossegable)
      ===================================================================== */
   (function(){
     const el=$("#betlem"); if(!el)return;
@@ -538,7 +538,7 @@
         V.lines(gL,pt[0]+dx,pt[1]+dy,[[t1,true,C.ink],[t2,false,C.ink2]],{anchor:anc,size:mob?11:12,halo:3.5});
       });
 
-      // divisor interactiu (IB-31) — touch-action: none només sobre el mànec/franja de 44 px
+      // divisor interactiu (MAP-15) — touch-action: none només sobre el mànec/franja de 44 px
       const dv=s.append("g").attr("class","ibx-handle").attr("tabindex",0).attr("role","slider")
         .attr("aria-label","Divisor entre el relat de Mateu i el de Lluc")
         .attr("aria-valuemin",0).attr("aria-valuemax",100).style("cursor","ew-resize").style("outline","none").style("touch-action","none");

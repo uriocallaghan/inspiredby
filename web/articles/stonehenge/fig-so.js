@@ -7,7 +7,7 @@
   const D2R = Math.PI/180, AX = S3.AX;
 
   /* =========================================================================
-     V8 · UNA CAMBRA DE RESSONÀNCIA (IB-28 aplicat al so: raigs que reboten)
+     V8 · UNA CAMBRA DE RESSONÀNCIA (MAP-19 aplicat al so: raigs que reboten)
      A l'esquerra, la planta de les pedres (estat c. 2200 aC) en gravat, amb raigs de so que surten d'una veu:
      blau mentre és so directe, vermell un cop les pedres l'han retornat. A la dreta, el que es va mesurar
      (Cox, Fazenda i Greaney, 2020): com s'apaga la veu segons la reverberació i quant s'amplifica.

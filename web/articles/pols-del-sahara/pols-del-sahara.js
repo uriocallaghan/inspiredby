@@ -1,11 +1,11 @@
 /* La pols que adoba l'Amazònia — sistema infogràfic d'Inspired by Magazine (IBV).
-   Joia de la corona del model IB-28 combinat amb IB-25, IB-16, IB-06/IB-53, IB-40, IB-11, IB-38, IB-10 i IB-01:
-   1. Bodélé (#bmap): IB-28 pur (2.200–2.800 micro-traços) + IB-25 aquarel·la (Megatxad i diatomita)
-   2. Capa d'aire del Sàhara (#salWrap): IB-16 (gravat atmosfèric) + mini anell estacional IB-06/IB-53
-   3. Viatge a l'Atlàntic (#mmap): IB-28 atlàntic (2.800–3.400 micro-traços) + IB-25 deposició amazònica
-   4. Quant són 28 Mt? (#trucksWrap): Doble vista .seg — Flux de massa (IB-40, ~1.000 micro-traços) + 364 blocs (IB-11)
-   5. Balanç de fòsfor (#budgetWrap): IB-38 (cercles d'aquarel·la) + IB-10 (escala interactiva 0–60 g/ha)
-   6. Any a any 2007–2013 (#yearsWrap): IB-01 (sèries multi-meridià amb embolcalls d'aquarel·la LDF–UDF)
+   Joia de la corona del model MAP-19 combinat amb MAP-03, HOW-01, TIME-11/TIME-10, LINK-03, PART-01, CASE-04, SCALE-01 i TIME-02:
+   1. Bodélé (#bmap): MAP-19 pur (2.200–2.800 micro-traços) + MAP-03 aquarel·la (Megatxad i diatomita)
+   2. Capa d'aire del Sàhara (#salWrap): HOW-01 (gravat atmosfèric) + mini anell estacional TIME-11/TIME-10
+   3. Viatge a l'Atlàntic (#mmap): MAP-19 atlàntic (2.800–3.400 micro-traços) + MAP-03 deposició amazònica
+   4. Quant són 28 Mt? (#trucksWrap): Doble vista .seg — Flux de massa (LINK-03, ~1.000 micro-traços) + 364 blocs (PART-01)
+   5. Balanç de fòsfor (#budgetWrap): CASE-04 (cercles d'aquarel·la) + SCALE-01 (escala interactiva 0–60 g/ha)
+   6. Any a any 2007–2013 (#yearsWrap): TIME-02 (sèries multi-meridià amb embolcalls d'aquarel·la LDF–UDF)
    Dades i fonts: research/pols-del-sahara/ (Yu et al. 2015, Tsamalis et al. 2013, Prospero et al. 2020, Vitousek & Sanford 1986). */
 (function(){
 "use strict";
@@ -78,7 +78,7 @@ function summer(m){
   return pw(n,((m%12)+12)%12);
 }
 
-/* Rampes IB-28: monocromia rica per al vent (blau) i la pols (càlid vermell–groc) */
+/* Rampes MAP-19: monocromia rica per al vent (blau) i la pols (càlid vermell–groc) */
 const WIND_SC=d3.scaleSequential(V.seqInterp(C.blau)).domain([-.12,1.12]).clamp(true);
 const DUST_INTERP=d3.piecewise(d3.interpolateLab,[C.grocClar,C.vermellClar,C.vermell,C.vermellFosc]);
 const DUST_SC=d3.scaleSequential(DUST_INTERP).domain([0,1]).clamp(true);
@@ -129,7 +129,7 @@ function ensureWorld(cb){
   V.world().then(w=>{ WORLD=w; cb(w); }).catch(e=>console.error("No s'ha pogut carregar el mapa",e));
 }
 
-/* IB-59 · Mapa físic en relleu (recepta de web/sistema/mapes-b.js) adaptat a una vista que fa zoom:
+/* MAP-01 · Mapa físic en relleu (recepta de web/sistema/mapes-b.js) adaptat a una vista que fa zoom:
    com que la projecció és equirectangular, el relleu es calcula UNA vegada en una graella lon/lat
    (una cel·la = un píxel) i a cada fotograma només s'escala amb drawImage. Dades: relleu.js (PS_DEM). */
 const PS_BANDS=[[200,[243,242,239]],[500,[235,233,228]],[800,[226,223,216]],[1500,[216,212,204]],[2200,[206,202,193]],[Infinity,[196,191,182]]];
@@ -171,7 +171,7 @@ function psRelief(){
 }
 
 /* =====================================================================
-   1. EL BODÉLÉ (IB-28 pur + IB-25 aquarel·la) · Scrolly
+   1. EL BODÉLÉ (MAP-19 pur + MAP-03 aquarel·la) · Scrolly
    2.200–2.800 micro-traços direccionals finíssims (0,9–1,3 px) amb estela
    de 10–14 punts en typed arrays (~26–30 s de recorregut contemplatiu),
    modulant to, llargada i densitat sobre geografia silenciosa #ECEBE8.
@@ -218,7 +218,7 @@ function initBodele(){
     {v:[-38,32,-8,30],name:"Avui, de desembre a març",val:"La pols viatja cap al golf de Guinea i l'Atlàntic",monsoon:0,lake:0,shrink:1,diat:1,wind:.48,dust:1,reach:1,spot:0,inset:0}
   ];
 
-  /* Només 2–3 anotacions quirúrgiques de mecanisme per pas (P4 + IB-28) */
+  /* Només 2–3 anotacions quirúrgiques de mecanisme per pas (P4 + MAP-19) */
   const ANNS=[
     {lon:17.6,lat:17.3,lines:[["Bodélé",true],["0,2 % del Sàhara"]],dx:22,dy:22,lead:true,steps:[0]},
     {lon:4,lat:25.5,lines:[["Sàhara",true]],anchor:"middle",steps:[0]},
@@ -302,12 +302,12 @@ function initBodele(){
       baseCtx.setTransform(dpr,0,0,dpr,0,0);
       baseCtx.clearRect(0,0,W,H);
       const gp=d3.geoPath(proj,baseCtx);
-      /* IB-28: geografia ultra-silenciosa #ECEBE8 sobre paper blanc, fronteres blanques */
+      /* MAP-19: geografia ultra-silenciosa #ECEBE8 sobre paper blanc, fronteres blanques */
       baseCtx.strokeStyle=C.grid; baseCtx.lineWidth=.45;
       baseCtx.beginPath(); gp(d3.geoGraticule().step([10,10])()); baseCtx.stroke();
       baseCtx.fillStyle=C.land;
       baseCtx.beginPath(); gp(WORLD.land); baseCtx.fill();
-      /* IB-59: relleu físic real a sobre de la terra (Tibesti, Ennedi, Ahaggar, la cubeta del Txad) */
+      /* MAP-01: relleu físic real a sobre de la terra (Tibesti, Ennedi, Ahaggar, la cubeta del Txad) */
       const RL=psRelief();
       if(RL){
         const D=RL.D, a=P(D.lon0,D.lat1), sc=k*DEG*D.st;
@@ -327,7 +327,7 @@ function initBodele(){
       baseDirty=false;
     }
 
-    /* Motor IB-28 en typed arrays: 2.500 micro-traços (1.150 a mòbil) amb estela de 10–13 punts */
+    /* Motor MAP-19 en typed arrays: 2.500 micro-traços (1.150 a mòbil) amb estela de 10–13 punts */
     const KT=mob?10:13, BINS=5;
     const NW=mob?340:760, ND=mob?820:1780;
     const WXS=new Float32Array(NW*KT), WYS=new Float32Array(NW*KT), WHD=new Uint8Array(NW), WNN=new Uint8Array(NW), WBIN=new Uint8Array(NW);
@@ -429,7 +429,7 @@ function initBodele(){
 
     function stepParticles(dt,moving){
       const reachS=lerp(sD+1.2,sEnd,st.reach);
-      /* ~28 s de recorregut contemplatiu (IB-28) */
+      /* ~28 s de recorregut contemplatiu (MAP-19) */
       const spd=.62*clamp((view[1]-view[0])/28,.62,2.0);
       if(st.wind>.02){
         const limW=sD+(st.reach>.5?3.5:.4);
@@ -514,7 +514,7 @@ function initBodele(){
         ctx.restore();
       }
 
-      /* IB-25 Aquarel·la: Llac Megatxad i Llac Txad actual (radialGradient + multiply, sense polígons rígids) */
+      /* MAP-03 Aquarel·la: Llac Megatxad i Llac Txad actual (radialGradient + multiply, sense polígons rígids) */
       if(st.lake>.01){
         const ff=lerp(1,.18,sm(st.shrink));
         const lakeA=st.lake*(1-.78*sm(st.shrink));
@@ -547,7 +547,7 @@ function initBodele(){
         ctx.restore();
       }
 
-      /* IB-25 Aquarel·la: Conca de diatomita del Bodélé (grocClar + vermellClar multiply) */
+      /* MAP-03 Aquarel·la: Conca de diatomita del Bodélé (grocClar + vermellClar multiply) */
       if(st.diat>.01){
         const dp=P(17.65,17.25);
         const rx=Math.max(10,1.55*k*DEG), ry=Math.max(8,1.15*k*DEG);
@@ -574,17 +574,17 @@ function initBodele(){
         ctx.restore();
       }
 
-      /* IB-28: Micro-traços direccionals de vent harmattan (blau seqüencial) */
+      /* MAP-19: Micro-traços direccionals de vent harmattan (blau seqüencial) */
       if(st.wind>.02){
         drawTrails(NW,WXS,WYS,WHD,WNN,WBIN,WIDX,WCNT,wCols,.56*st.wind,.85,1.25);
       }
 
-      /* IB-28: Micro-traços direccionals de pols del Bodélé (càlid vermell–vermellFosc) */
+      /* MAP-19: Micro-traços direccionals de pols del Bodélé (càlid vermell–vermellFosc) */
       if(st.dust>.02){
         drawTrails(ND,DXS,DYS,DHD,DNN,DBIN,DIDX,DCNT,dCols,.76*st.dust,.9,1.3);
       }
 
-      /* Pas 0: Cercle d'aquarel·la translúcid multiply al Bodélé (IB-25) */
+      /* Pas 0: Cercle d'aquarel·la translúcid multiply al Bodélé (MAP-03) */
       if(st.spot>.02){
         const b=P(17.7,17.2), R=mob?18:26;
         ctx.save(); ctx.globalCompositeOperation="multiply";
@@ -610,7 +610,7 @@ function initBodele(){
       renderAnns(); paint();
     };
 
-    /* Hover IB-28: línia de corrent en tinta + punt d'interès al dock */
+    /* Hover MAP-19: línia de corrent en tinta + punt d'interès al dock */
     V.hover(hit.node(),(ev,[px,py])=>{
       const [lon,lat]=inv(px,py);
       let near=null, best=Infinity;
@@ -619,7 +619,7 @@ function initBodele(){
         if(dist<best){ best=dist; near=q; }
       });
       gHl.selectAll("*").remove();
-      /* Si estem en un pas amb vent o pols, dibuixem la línia de corrent (IB-28) */
+      /* Si estem en un pas amb vent o pols, dibuixem la línia de corrent (MAP-19) */
       if(st.wind>.2||st.dust>.5){
         let bestS=sBod, bestD=Infinity, bestQ=0;
         for(let s=0;s<sEnd;s+=.6){
@@ -683,7 +683,7 @@ function initBodele(){
 }
 
 /* =====================================================================
-   2. TALL DE LA CAPA D'AIRE DEL SÀHARA (IB-16) + ANELL ESTACIONAL (IB-06/IB-53)
+   2. TALL DE LA CAPA D'AIRE DEL SÀHARA (HOW-01) + ANELL ESTACIONAL (TIME-11/TIME-10)
    Gravat atmosfèric amb ploma SAL en aquarel·la vermell→groc sobre aire marí
    blau, micro-traços lents seguint la inversió tèrmica, i mini rellotge
    estacional integrat a escriptori que mostra els 12 mesos en temps real.
@@ -761,7 +761,7 @@ function initSAL(){
     const gHl=svg.append("g").attr("pointer-events","none");
     const hit=svg.append("rect").attr("x",mg.l).attr("y",mg.t).attr("width",mainW-mg.l-mg.r).attr("height",H-mg.t-mg.b).attr("fill","transparent").attr("class","ibv-hit");
 
-    /* Mini anell estacional IB-06 / IB-53 integrat a escriptori */
+    /* Mini anell estacional TIME-11 / TIME-10 integrat a escriptori */
     let ringWedge=null, ringCenterA=null, ringCenterB=null;
     if(hasRing){
       const rx0=mainW+16, rW=W-rx0, cx=rx0+rW/2, cy=H*.51;
@@ -821,7 +821,7 @@ function initSAL(){
       updateRing=null;
     }
 
-    /* Partícules IB-28 lentes dins del tall (typed arrays, ~27 s per creuar) */
+    /* Partícules MAP-19 lentes dins del tall (typed arrays, ~27 s per creuar) */
     const KT=mob?8:10, N=mob?200:460, BINS=4;
     const PXS=new Float32Array(N*KT), PYS=new Float32Array(N*KT), PHD=new Uint8Array(N), PNN=new Uint8Array(N), PBIN=new Uint8Array(N);
     const PLON=new Float32Array(N), PF=new Float32Array(N), PZ=new Float32Array(N), PSP=new Float32Array(N), PDL=new Float32Array(N), PFALL=new Uint8Array(N);
@@ -1037,7 +1037,7 @@ function initSAL(){
 }
 
 /* =====================================================================
-   3. EL VIATGE A TRAVÉS DE L'ATLÀNTIC (IB-28 atlàntic + IB-25 deposició)
+   3. EL VIATGE A TRAVÉS DE L'ATLÀNTIC (MAP-19 atlàntic + MAP-03 deposició)
    2.800–3.400 micro-traços direccionals hipnòtics (~28 s) travessant
    l'Atlàntic sobre geografia silenciosa #ECEBE8, deposició d'aquarel·la
    translúcida multiply sobre la conca amazònica i meridians en fils 0,5 px.
@@ -1048,7 +1048,7 @@ function initAtlantic(){
   const lgEl=document.getElementById("mLg");
   if(lgEl&&!lgEl.childElementCount){
     V.legendCat(lgEl,[
-      {c:C.vermell,t:"Pols en trànsit (IB-28)",kind:"line",w:2},
+      {c:C.vermell,t:"Pols en trànsit (MAP-19)",kind:"line",w:2},
       {c:C.vermellFosc,t:"Deposició amazònica",kind:"dot",a:.42},
       {c:C.blau,t:"Conca amazònica (Yu et al.)",kind:"line",w:1.1,dash:"4 3"}
     ]);
@@ -1198,7 +1198,7 @@ function initAtlantic(){
       baseDirty=false;
     }
 
-    /* Motor IB-28 atlàntic en typed arrays: 3.100 micro-traços (1.200 a mòbil) */
+    /* Motor MAP-19 atlàntic en typed arrays: 3.100 micro-traços (1.200 a mòbil) */
     const KT=mob?9:12, NMAX=mob?1200:3100, NEU=mob?140:300, BINS=5;
     const AXS=new Float32Array(NMAX*KT), AYS=new Float32Array(NMAX*KT), AHD=new Uint8Array(NMAX), ANN=new Uint8Array(NMAX), ABIN=new Uint8Array(NMAX);
     const ALON=new Float32Array(NMAX), ALAT=new Float32Array(NMAX), AQ=new Float32Array(NMAX), APH=new Float32Array(NMAX), ADL=new Float32Array(NMAX), ASP=new Float32Array(NMAX), ASRC=new Uint8Array(NMAX), ASH=new Float32Array(NMAX), AON=new Uint8Array(NMAX);
@@ -1349,7 +1349,7 @@ function initAtlantic(){
       ctx.drawImage(baseCv,0,0);
       ctx.setTransform(dpr,0,0,dpr,0,0);
 
-      /* IB-25: Bany d'aquarel·la translúcid multiply sobre la conca amazònica */
+      /* MAP-03: Bany d'aquarel·la translúcid multiply sobre la conca amazònica */
       const amzWash=st.amz*clamp(1.15-summer(st.m)*.9,.22,1);
       if(amzWash>.04){
         ctx.save(); ctx.globalCompositeOperation="multiply";
@@ -1369,7 +1369,7 @@ function initAtlantic(){
         ctx.restore();
       }
 
-      /* IB-28: Micro-traços direccionals atlàntics (batched per color bin i segment) */
+      /* MAP-19: Micro-traços direccionals atlàntics (batched per color bin i segment) */
       ACNT.fill(0);
       for(let i=0;i<NMAX;i++){ if(AON[i]&&ANN[i]>1){ const b=ABIN[i]; AIDX[b][ACNT[b]++]=i; } }
       ctx.lineCap="round";
@@ -1418,7 +1418,7 @@ function initAtlantic(){
       renderSvgLayers(); paint();
     };
 
-    /* Hover IB-28: línia de corrent en tinta + lectura al dock */
+    /* Hover MAP-19: línia de corrent en tinta + lectura al dock */
     V.hover(hit.node(),(ev,[px,py])=>{
       const [lon,lat]=inv(px,py);
       let near=null, best=Infinity;
@@ -1492,9 +1492,9 @@ function initAtlantic(){
 
 /* =====================================================================
    4. QUANT SÓN 28 MILIONS DE TONES? · Doble vista .seg
-   Vista A (principal): IB-40 Flux de massa amb bandes d'aquarel·la multiply
+   Vista A (principal): LINK-03 Flux de massa amb bandes d'aquarel·la multiply
    i ~1.000 micro-traços corbats lents (transposició vertical a mòbil).
-   Vista B: IB-11 Reixa interactiva de 364 cercles translúcids per etapa.
+   Vista B: PART-01 Reixa interactiva de 364 cercles translúcids per etapa.
    ===================================================================== */
 function initTrucks(){
   const wrap=document.getElementById("trucksWrap");
@@ -1572,7 +1572,7 @@ function initTrucks(){
     const H=mob?500:400;
     const nw=mob?3.5:4;
     d3.select(el).selectAll("svg.ibv,canvas.ibv").remove();
-    const svg=V.svg(el,W,H,"Flux anual de la pols africana (IB-40): 182 milions de tones surten d'Àfrica a 15° O. 50 Mt cauen a l'Atlàntic oriental; 132 Mt arriben a mig oceà (35° O), d'on 61,3 Mt cauen a l'Atlàntic central, 43 Mt arriben al Carib (75° O) i 27,7 Mt cauen a l'Amazònia, portant 22.000 tones de fòsfor (0,08 %).");
+    const svg=V.svg(el,W,H,"Flux anual de la pols africana (LINK-03): 182 milions de tones surten d'Àfrica a 15° O. 50 Mt cauen a l'Atlàntic oriental; 132 Mt arriben a mig oceà (35° O), d'on 61,3 Mt cauen a l'Atlàntic central, 43 Mt arriben al Carib (75° O) i 27,7 Mt cauen a l'Amazònia, portant 22.000 tones de fòsfor (0,08 %).");
     const {c:cv,ctx}=V.canvas(el,W,H,"");
     d3.select(cv).attr("class","ibv ibv-flow-cv").attr("role",null).attr("aria-hidden","true");
     const tp=V.tip(el);
@@ -1892,7 +1892,7 @@ function initTrucks(){
 }
 
 /* =====================================================================
-   5. BALANÇ DE FÒSFOR DE L'AMAZÒNIA (IB-38 aquarel·la + IB-10 llindar)
+   5. BALANÇ DE FÒSFOR DE L'AMAZÒNIA (CASE-04 aquarel·la + SCALE-01 llindar)
    Cercles amb radialGradient + multiply d'àrea proporcional per als 7
    estudis publicats i escala interactiva 0–60 g P/ha/any molt polida.
    ===================================================================== */
@@ -1951,7 +1951,7 @@ function initBudget(){
     const defs=svg.append("defs");
     const uid="bg"+Math.random().toString(36).slice(2,6);
 
-    /* Gradients radials d'aquarel·la (IB-38) */
+    /* Gradients radials d'aquarel·la (CASE-04) */
     const mkRad=(id,col,a0)=>{
       const g=defs.append("radialGradient").attr("id",id);
       g.append("stop").attr("offset","0%").attr("stop-color",col).attr("stop-opacity",a0);
@@ -1966,7 +1966,7 @@ function initBudget(){
     gRiv.append("stop").attr("offset","50%").attr("stop-color",C.blau).attr("stop-opacity",.13);
     gRiv.append("stop").attr("offset","100%").attr("stop-color",C.blau).attr("stop-opacity",.06);
 
-    /* Part 1: IB-38 Estimacions publicades amb cercles d'aquarel·la (scaleSqrt) */
+    /* Part 1: CASE-04 Estimacions publicades amb cercles d'aquarel·la (scaleSqrt) */
     const x=d3.scaleLinear([0,55],[lw+10,W-28]);
     const rSc=d3.scaleSqrt([0,55],[5.5,mob?13:16]);
     const gE=svg.append("g");
@@ -2018,7 +2018,7 @@ function initBudget(){
       })
       .on("pointerleave",e=>{ if(e.pointerType!=="mouse")return; clearBudgetFocus(); });
 
-    /* Part 2: IB-10 Escala amb llindar de fòsfor (0–60 g P/ha/any) */
+    /* Part 2: SCALE-01 Escala amb llindar de fòsfor (0–60 g P/ha/any) */
     const xb=d3.scaleLinear([0,60],[mob?10:lw+10,W-(mob?14:88)]);
     const gB=svg.append("g");
     V.t(gB,0,top2,"Balanç de fòsfor (grams per hectàrea i any)",{size:12.5,weight:700,fill:C.ink});
@@ -2088,7 +2088,7 @@ function initBudget(){
 }
 
 /* =====================================================================
-   6. ANY A ANY (2007–2013) · IB-01 Sèries multi-meridià amb aquarel·la
+   6. ANY A ANY (2007–2013) · TIME-02 Sèries multi-meridià amb aquarel·la
    Traços nítids, embolcalls LDF–UDF en degradat multiply, anotacions
    quirúrgiques IBV.note i hover sincronitzat amb .ibv-dock.
    ===================================================================== */

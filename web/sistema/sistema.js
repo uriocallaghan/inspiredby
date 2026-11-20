@@ -74,7 +74,7 @@ function landMask(proj,w,h,feature){ // màscara ràpida de terra: es pinta en u
   const im=x.getImageData(0,0,w,h).data;
   return (px,py)=>{ px=Math.round(px); py=Math.round(py); if(px<0||py<0||px>=w||py>=h)return false; return im[(py*w+px)*4+3]>0; };
 }
-function legendSteps(el,o){ // llegenda per franges (IB-15)
+function legendSteps(el,o){ // llegenda per franges (MAP-08)
   const d=d3.select(el).append("div").attr("class","ibv-lg");
   if(o.title)d.append("div").attr("class","ibv-lg-t").text(o.title);
   const n=o.colors.length, cw=o.cw||24, s=d.append("svg").attr("width",cw*n).attr("height",26).style("overflow","visible");
@@ -171,7 +171,7 @@ function legendRampDemo(){ const el=$('[data-c="2"]'); if(!el)return;
 })();
 
 /* =====================================================================
-   IB-01 · FEIX D'ANYS  (dades reals: ONI)
+   TIME-02 · FEIX D'ANYS  (dades reals: ONI)
    ===================================================================== */
 legend(1,el=>V.legendCat(el,[{c:C.ghost,t:"Cada any, 1950–2025",kind:"line",w:1},{c:C.ink,t:"1997",kind:"line",w:1.4},{c:C.vermell,t:"2026",kind:"line",w:2.2}]));
 piece(1,(el,w)=>{
@@ -207,7 +207,7 @@ piece(1,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-02 · ÍNDEX DE PULSACIONS  (dades reals: ONI)
+   TIME-03 · ÍNDEX DE PULSACIONS  (dades reals: ONI)
    ===================================================================== */
 legend(2,el=>V.legendCat(el,[{c:C.vermell,t:"El Niño (≥ +0,5 °C)"},{c:C.blau,t:"La Niña (≤ −0,5 °C)"},{c:C.ghost,t:"Neutral"}]));
 const EPIS=(function(){ const out=[]; let cur=null;
@@ -245,7 +245,7 @@ piece(2,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-03 · FRANJA DE DISTRIBUCIÓ  (dades reals: ONI)
+   TIME-06 · FRANJA DE DISTRIBUCIÓ  (dades reals: ONI)
    ===================================================================== */
 const B0=-2.75, BW=.25, NB=24;
 const DIST=d3.range(12).map(k=>{ const vals=ONI_YEARS.filter(y=>y<NOW&&D.oni[y][k]!=null).map(y=>({y,v:D.oni[y][k]}));
@@ -288,7 +288,7 @@ piece(3,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-04 · FILES DE BOMBOLLES  (dades d'exemple)
+   TIME-08 · FILES DE BOMBOLLES  (dades d'exemple)
    ===================================================================== */
 const ROWS4=(function(){ const r=V.rng(41), out=[];
   for(let y=2014;y<=2026;y++){ const c=31+V.gauss(r)*2.4, sd=3.4+r()*2.2, amp=360+r()*780+(y===2024?380:0), wk=[];
@@ -332,7 +332,7 @@ piece(4,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-05 · ESPIRAL ANUAL  (dades reals: CO₂ Mauna Loa)
+   TIME-09 · ESPIRAL ANUAL  (dades reals: CO₂ Mauna Loa)
    ===================================================================== */
 const SEQ5=V.seq(C.blau,[1930,2025]);
 legend(5,el=>{ V.legendRamp(el,{scale:SEQ5,min:1958,max:2025,ticks:[1970,1990,2010],f:d=>d,title:"Any",w:150});
@@ -366,7 +366,7 @@ piece(5,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-06 · ROSA HORÀRIA  (dades d'exemple)
+   TIME-11 · ROSA HORÀRIA  (dades d'exemple)
    ===================================================================== */
 const ROSE=(function(){ const r=V.rng(6);
   const a=d3.range(24).map(h=>Math.min(100,8+82*Math.exp(-(((h-20.5)/2.6)**2))+38*Math.exp(-(((h-13.5)/1.4)**2))+r()*8));
@@ -417,7 +417,7 @@ piece(6,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-07 · NÚVOL AMB PROTAGONISTES  (dades d'exemple)
+   SPREAD-02 · NÚVOL AMB PROTAGONISTES  (dades d'exemple)
    ===================================================================== */
 const CLOUD=(function(){ const r=V.rng(7), out=[];
   for(let i=0;i<4200;i++){ let lx; do{ lx=1+(-Math.log(1-r()))/1.15; }while(lx>4.4); const sd=1.25/(.55+.38*lx); const v=Math.max(1,Math.min(9.8,5.6+.38*(lx-1)+V.gauss(r)*sd)); out.push({n:Math.round(10**lx),v}); }
@@ -449,7 +449,7 @@ piece(7,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-08 · POLS DE PUNTS  (dades d'exemple)
+   SPREAD-04 · POLS DE PUNTS  (dades d'exemple)
    ===================================================================== */
 const DUST=(function(){ const r=V.rng(8), out=[], cl=(v,a,b)=>Math.max(a,Math.min(b,v));
   for(let i=0;i<60000;i++){ const u=r(); let x,y;
@@ -484,7 +484,7 @@ piece(8,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-09 · MOSAIC HEXAGONAL  (dades d'exemple)
+   SPREAD-05 · MOSAIC HEXAGONAL  (dades d'exemple)
    ===================================================================== */
 const HEXP=(function(){ const r=V.rng(9), out=[], cl=(v,a,b)=>Math.max(a,Math.min(b,v));
   for(let i=0;i<34000;i++){ const sp=cl(88+V.gauss(r)*13,42,121), an=cl(12+V.gauss(r)*24,-50,60);
@@ -524,7 +524,7 @@ piece(9,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-10 · ESCALA AMB LLINDAR  (esquema amb valors d'El Niño)
+   SCALE-01 · ESCALA AMB LLINDAR  (esquema amb valors d'El Niño)
    ===================================================================== */
 legend(10,el=>V.legendCat(el,[{c:"#B5B5B5",t:"Núvols (esquema)"},{c:C.ink,t:"Lloc, temperatura habitual",kind:"hollow"}]));
 piece(10,(el,w)=>{
@@ -564,7 +564,7 @@ piece(10,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-11 · REIXA D'UNITATS  (dades d'exemple)
+   PART-01 · REIXA D'UNITATS  (dades d'exemple)
    ===================================================================== */
 const UNITS=[{n:41,t:"Grup A"},{n:27,t:"Grup B"},{n:18,t:"Grup C"},{n:9,t:"Grup D"},{n:5,t:"Grup E"}].map((d,i)=>Object.assign(d,{c:V.CAT6[i]}));
 legend(11,el=>V.legendCat(el,UNITS.map(d=>({c:d.c,t:`${d.t} · ${d.n} %`}))));
@@ -604,8 +604,8 @@ document.querySelectorAll('[data-seg="11"] button').forEach(b=>b.addEventListene
 void M11;
 
 /* =====================================================================
-   IB-12 · CAMP CONTINU I ISOLÍNIES SOBRE MAPA  (simulació + mapa real)
-   Franges litogràfiques translúcides (estil IB-26 i IB-34) + isolínies fines en vermell
+   MAP-06 · CAMP CONTINU I ISOLÍNIES SOBRE MAPA  (simulació + mapa real)
+   Franges litogràfiques translúcides (estil MAP-07 i MAP-09) + isolínies fines en vermell
    i blau amb terra silenciosa a sobre, sense talls secs entre regions.
    ===================================================================== */
 let W=null;
@@ -664,7 +664,7 @@ const M12=piece(12,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-13 · TRAJECTÒRIES  (simulació + mapa real)
+   MAP-11 · TRAJECTÒRIES  (simulació + mapa real)
    ===================================================================== */
 const TRACKS=(function(){ const r=V.rng(13), out=[];
   for(let i=0;i<260;i++){ let lon=-180+r()*360, lat=-64-r()*2.4; const tr=[[lon,lat]];
@@ -717,7 +717,7 @@ document.querySelector('[data-play="13"]').addEventListener("click",()=>{ const 
       .on("end.play",clear).on("interrupt.play",clear).on("cancel.play",clear); }); });
 
 /* =====================================================================
-   IB-14 · TAQUES PROPORCIONALS  (dades d'exemple + mapa real)
+   MAP-04 · TAQUES PROPORCIONALS  (dades d'exemple + mapa real)
    Taques translúcides planes (sense degradats radials) sobre rutes fines en tinta negra.
    ===================================================================== */
 const CAT14=[{c:C.vermell,t:"Categoria A"},{c:C.blau,t:"Categoria B"},{c:C.groc,t:"Categoria C"}];
@@ -761,7 +761,7 @@ const M14=piece(14,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-15 · ISOLÍNIES SOBRE TAQUES DE CAMP  (simulació + mapa real)
+   MAP-08 · ISOLÍNIES SOBRE TAQUES DE CAMP  (simulació + mapa real)
    Taques discretes d'aquarel·la (pluja anual, estil «Germany») i isolínies negres
    molt fines (0,75 px, sense vora blanca gruixuda) per a la temperatura mitjana.
    ===================================================================== */
@@ -833,7 +833,7 @@ const M15=piece(15,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-16 · TALL  (esquema · inspirat directament en el tall d'«El Niño i La Niña»)
+   HOW-01 · TALL  (esquema · inspirat directament en el tall d'«El Niño i La Niña»)
    Siluetes reals d'Indonèsia i els Andes (sense blocs rectangulars), circulació de Walker
    en bucle discontinu amb fletxes fines, pluja delicada, termoclina i aflorament.
    ===================================================================== */
@@ -955,7 +955,7 @@ document.querySelectorAll('[data-seg="16"] button').forEach(b=>b.addEventListene
 void M16;
 
 /* =====================================================================
-   IB-17 · ESCLAT RADIAL  (dades d'exemple)
+   PART-05 · ESCLAT RADIAL  (dades d'exemple)
    ===================================================================== */
 const BURST=(function(){ const r=V.rng(17), out=[]; const N=[38,34], gap=.16, span=(2*Math.PI-2*gap);
   let a0=-Math.PI*.5+gap/2; N.forEach((n,k)=>{ const arc=span*n/(N[0]+N[1]); for(let i=0;i<n;i++){ const t=(i+.5)/n, d=.34+.62*(.5+.5*Math.sin(t*Math.PI*3+k))*(.6+.4*r()); out.push({a:a0+t*arc,d:Math.min(1,d+.08*r()),k,s:r(),bend:(r()-.5)*.5}); } a0+=arc+gap; });
@@ -1015,7 +1015,7 @@ piece(17,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-18 · ARCS D'ENLLAÇ  (dades d'exemple)
+   LINK-02 · ARCS D'ENLLAÇ  (dades d'exemple)
    ===================================================================== */
 const L18=["Riba","Bosc","Llac","Prat","Jardí botànic","Verd urbà","Ecologia"], R18=["Cultura","Contemplació","Circuit esportiu","Galeria d'art","Laboratori","Biblioteca","Granja","Pavellons","Centre de recerca","Centre de residus"];
 const LINKS18=(function(){ const r=V.rng(18), out=[]; L18.forEach((l,i)=>{ const n=2+Math.floor(r()*3), used=new Set(); for(let k=0;k<n;k++){ const j=Math.floor(r()*R18.length); if(used.has(j))continue; used.add(j); out.push({i,j}); } }); return out; })();
@@ -1042,7 +1042,7 @@ piece(18,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-19 · TOPOGRAFIA DE DENSITAT  (dades d'exemple)
+   SPREAD-06 · TOPOGRAFIA DE DENSITAT  (dades d'exemple)
    ===================================================================== */
 const CL19=[[.12,.62,.035,160],[.25,.42,.05,260],[.38,.58,.04,200],[.5,.36,.045,240],[.6,.6,.05,280],[.74,.44,.04,180],[.88,.6,.03,120]];
 legend(19,el=>V.legendCat(el,[{c:C.vermell,t:"Corba de densitat",kind:"line",w:1},{c:C.blau,t:"Observació (núvol de punts)",a:.4}]));
@@ -1072,7 +1072,7 @@ piece(19,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-20 · PETITS MÚLTIPLES POLARS  (dades reals: CO₂ Mauna Loa, estil Parcs nacionals dels EUA)
+   CASE-05 · PETITS MÚLTIPLES POLARS  (dades reals: CO₂ Mauna Loa, estil Parcs nacionals dels EUA)
    ===================================================================== */
 const DEC=[1960,1970,1980,1990,2000,2010,2020].map(d0=>{ const yrs=d3.range(d0,d0+10).filter(y=>D.co2[y]&&D.co2[y].every(v=>v!=null));
   const lines=yrs.map(y=>{ const m=d3.mean(D.co2[y]); return D.co2[y].map(v=>v-m); });
@@ -1111,4 +1111,27 @@ piece(20,(el,w)=>{
   });
 });
 
+})();
+
+/* Navegació per famílies: marca la família que és a la vista */
+(function(){
+  const nav = document.querySelector(".famnav"); if(!nav || !("IntersectionObserver" in window)) return;
+  const links = [...nav.querySelectorAll("a")], heads = links.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+  const mark = id => links.forEach(a => { const on = a.getAttribute("href") === "#" + id; a.setAttribute("aria-current", on ? "true" : "false"); if(on && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = a.offsetLeft - 16; });
+  let last = null;
+  addEventListener("scroll", () => { let cur = null; for(const h of heads){ if(h.getBoundingClientRect().top < 120) cur = h.id; } if(cur !== last){ last = cur; mark(cur); } }, {passive:true});
+})();
+
+/* Enllaços interns amb desplaçament animat. Els gràfics es munten mentre passen i canvien l'alçada de la pàgina,
+   així que, quan s'acaba l'animació, es corregeix el destí si s'ha mogut. */
+(function(){
+  const smooth = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="#"]'); if(!a) return;
+    const el = document.getElementById(a.getAttribute("href").slice(1)); if(!el) return;
+    e.preventDefault(); history.pushState(null, "", a.getAttribute("href"));
+    const go = () => el.scrollIntoView({behavior: smooth ? "smooth" : "auto", block:"start"});
+    go();
+    [700, 1500, 2600].forEach(t => setTimeout(() => { const y = el.getBoundingClientRect().top; if(Math.abs(y - 64) > 30) go(); }, t));
+  });
 })();

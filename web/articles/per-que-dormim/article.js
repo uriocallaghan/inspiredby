@@ -8,7 +8,7 @@ const f0=V.fmt(",.0f"), f1=V.fmt(",.1f");
 const $=s=>document.querySelector(s);
 
 /* =====================================================================
-   FIGURA 1 · IB-38 / IB-07 · 83 MAMÍFERS (+ EXTRES SALVATGES)
+   FIGURA 1 · CASE-04 / SPREAD-02 · 83 MAMÍFERS (+ EXTRES SALVATGES)
    ===================================================================== */
 (function animalsFig(){
   const el=$("#animals-viz"), lg=$("#animals-lg");
@@ -495,7 +495,7 @@ const $=s=>document.querySelector(s);
 })();
 
 /* =====================================================================
-   SCROLLY 2 · IB-06 · RELLOTGE DE 24 HORES PREINDUSTRIAL I SENTINELLA
+   SCROLLY 2 · TIME-11 · RELLOTGE DE 24 HORES PREINDUSTRIAL I SENTINELLA
    ===================================================================== */
 (function antroScrolly(){
   const el=$("#antro-viz"), lg=$("#ant-lg"), sc=$("#s-antropologia");
@@ -815,7 +815,7 @@ const $=s=>document.querySelector(s);
 })();
 
 /* =====================================================================
-   FIGURA 4 · IB-42 PENDENTS · DIA VS. FOC ENTRE ELS JU/'HOANSI (Wiessner 2014)
+   FIGURA 4 · CASE-03 PENDENTS · DIA VS. FOC ENTRE ELS JU/'HOANSI (Wiessner 2014)
    ===================================================================== */
 (function focFig(){
   const el=$("#foc-viz"), lg=$("#foc-lg");
@@ -834,7 +834,7 @@ const $=s=>document.querySelector(s);
     const mob=w<640, h=mob?300:340;
     const xL=mob?w*0.38:w*0.30, xR=mob?w*0.64:w*0.70;
     const m={t:34,b:22};
-    const s=V.svg(box,w,h,"Gràfic de pendents (IB-42) amb les 174 converses reals dels ju/'hoansi (Wiessner, 2014): les històries i mites passen del 6 % de dia al 81 % vora el foc de nit, mentre queixes (34 % a 7 %) i economia (31 % a 4 %) s'enfonsen.");
+    const s=V.svg(box,w,h,"Gràfic de pendents (CASE-03) amb les 174 converses reals dels ju/'hoansi (Wiessner, 2014): les històries i mites passen del 6 % de dia al 81 % vora el foc de nit, mentre queixes (34 % a 7 %) i economia (31 % a 4 %) s'enfonsen.");
     const g=s.append("g");
     const tp=V.tip(box);
 
@@ -877,7 +877,7 @@ const $=s=>document.querySelector(s);
 })();
 
 /* =====================================================================
-   FIGURA 5 · IB-25 · ATLES ETNOGRÀFIC DE LES CULTURES DEL SON
+   FIGURA 5 · MAP-03 · ATLES ETNOGRÀFIC DE LES CULTURES DEL SON
    ===================================================================== */
 (function culturesSonFig(){
   const el=$("#cson-viz"), lg=$("#cson-lg");

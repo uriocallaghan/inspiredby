@@ -1,9 +1,9 @@
 /* «L'últim sopar de Leonardo» · 6 visualitzacions del sistema infogràfic (IBV + d3 7.9.0)
-   V1 (#taula-viz):    Scrollytelling 1 · IB-16/planta arquitectònica de l'evolució de la taula (4 passos).
-   V2 (#textos-viz):   IB-56 Matriu textual comparativa (6 textos × 9 variables bíbliques i històriques).
-   V3 (#cenacolo-viz): IB-31 Comparador Leonardo (1498) vs Giampietrino (c. 1515–1520) + 3 capes d'anàlisi.
-   V4 (#cataleg-viz):  IB-38 Filera de cercles translúcids (20 obres reals, c. 500–1594, 3 vistes).
-   V5 (#mur-viz):      Scrollytelling 2 · IB-16 Tall estratigràfic comparat + cronologia 1495–1999.
+   V1 (#taula-viz):    Scrollytelling 1 · HOW-01/planta arquitectònica de l'evolució de la taula (4 passos).
+   V2 (#textos-viz):   CASE-06 Matriu textual comparativa (6 textos × 9 variables bíbliques i històriques).
+   V3 (#cenacolo-viz): MAP-15 Comparador Leonardo (1498) vs Giampietrino (c. 1515–1520) + 3 capes d'anàlisi.
+   V4 (#cataleg-viz):  CASE-04 Filera de cercles translúcids (20 obres reals, c. 500–1594, 3 vistes).
+   V5 (#mur-viz):      Scrollytelling 2 · HOW-01 Tall estratigràfic comparat + cronologia 1495–1999.
    V6 (#mites-viz):    Taula semàntica interactiva filtrable de mites vs proves materials. */
 (function(){
   "use strict";
@@ -216,7 +216,7 @@
   })();
 
   /* =========================================================================
-     V2 · IB-56 ADAPTAT — MATRIU COMPARATIVA TEXTUAL (#textos-viz)
+     V2 · CASE-06 ADAPTAT — MATRIU COMPARATIVA TEXTUAL (#textos-viz)
      ========================================================================= */
   (function initTextos(){
     const fig = $("#f-textos"), el = $("#textos-viz"), rd = $("#textos-r");
@@ -269,7 +269,7 @@
         });
       });
 
-      // Cel·les estil IB-56 (fils blancs fins, text sempre en tinta per a alt contrast WCAG)
+      // Cel·les estil CASE-06 (fils blancs fins, text sempre en tinta per a alt contrast WCAG)
       const cellsData = [];
       rows.forEach((r, ri) => {
         r.c.forEach((cell, ci) => {
@@ -341,7 +341,7 @@
   })();
 
   /* =========================================================================
-     V3 · IB-31 ADAPTAT — COMPARADOR LEONARDO VS GIAMPIETRINO (#cenacolo-viz)
+     V3 · MAP-15 ADAPTAT — COMPARADOR LEONARDO VS GIAMPIETRINO (#cenacolo-viz)
      ========================================================================= */
   (function initCenacolo(){
     const fig = $("#f-cenacolo"), stage = $("#cmp-stage"), svgEl = $("#cmp-svg");
@@ -522,7 +522,7 @@
   })();
 
   /* =========================================================================
-     V4 · IB-38 ADAPTAT — CATÀLEG CRONOLÒGIC DE 20 OBRES REALS (#cataleg-viz)
+     V4 · CASE-04 ADAPTAT — CATÀLEG CRONOLÒGIC DE 20 OBRES REALS (#cataleg-viz)
      ========================================================================= */
   (function initCataleg(){
     const fig = $("#f-cataleg"), el = $("#cataleg-viz"), rd = $("#cataleg-r");
@@ -708,7 +708,7 @@
         g.selectAll("*").remove();
 
         if(idx === 0){
-          // TALL ESTRATIGRÀFIC COMPARAT (IB-16)
+          // TALL ESTRATIGRÀFIC COMPARAT (HOW-01)
           const pad = mob ? 6 : 28, gap = mob ? 10 : 36;
           const cw = (w - pad * 2 - gap) / 2;
           const xSud = pad, xNord = pad + cw + gap;

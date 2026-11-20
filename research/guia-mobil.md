@@ -66,17 +66,17 @@ La regla és senzilla: **per sota de `600–640 px`, canvia l'orientació del gr
 
 | Família de gràfic | Peça del sistema | A mòbil (`w < 600`) | Com es dibuixa |
 |---|---|---|---|
-| **Línia del temps amb fites** | IB-49, cronologies | **Transposar a vertical** | Eix del temps de dalt a baix a l'esquerra (`x ≈ 48 px`); fites i etiquetes horitzontals netes a la dreta. Cada fita té almenys `40–44 px` d'alçada tàctil. |
-| **Escala comparativa / logarítmica amb ítems** | IB-35 | **Transposar a vertical** | Cinta vertical a l'esquerra (`x ≈ 72 px`), cercles translúcids sobre l'eix i etiquetes horitzontals a la dreta sense col·lisions. |
-| **Flux / Sankey** | IB-40 | **Transposar a vertical** | Nodes i corrents de dalt a baix (`top → bottom`), amb amplada completa per als noms. *(Model a seguir: `#shunt-viz` de `virus-i-bacteris`.)* |
-| **Columnes / barres verticals per categoria** | IB-38, IB-42, comparacions | **Transposar a files horitzontals** | Una fila per categoria amb el **nom a sobre de la barra** (`ml = 6 px`, `rowH = 44–52 px`) i l'escala ocupant tot l'ample (`330 px`). Mai reservar una columna esquerra de `120 px` que estrangula el gràfic i talla noms llargs. |
+| **Línia del temps amb fites** | TIME-15, cronologies | **Transposar a vertical** | Eix del temps de dalt a baix a l'esquerra (`x ≈ 48 px`); fites i etiquetes horitzontals netes a la dreta. Cada fita té almenys `40–44 px` d'alçada tàctil. |
+| **Escala comparativa / logarítmica amb ítems** | SCALE-04 | **Transposar a vertical** | Cinta vertical a l'esquerra (`x ≈ 72 px`), cercles translúcids sobre l'eix i etiquetes horitzontals a la dreta sense col·lisions. |
+| **Flux / Sankey** | LINK-03 | **Transposar a vertical** | Nodes i corrents de dalt a baix (`top → bottom`), amb amplada completa per als noms. *(Model a seguir: `#shunt-viz` de `virus-i-bacteris`.)* |
+| **Columnes / barres verticals per categoria** | CASE-04, CASE-03, comparacions | **Transposar a files horitzontals** | Una fila per categoria amb el **nom a sobre de la barra** (`ml = 6 px`, `rowH = 44–52 px`) i l'escala ocupant tot l'ample (`330 px`). Mai reservar una columna esquerra de `120 px` que estrangula el gràfic i talla noms llargs. |
 | **Dos gràfics o panells costat a costat** | Composites, comparadors | **Apilar en 1 columna** | `grid-template-columns: 1fr`. Mai comprimir un gràfic a `114 px` o `220 px` al costat d'un altre. |
 | **Mètriques o KPIs en 3 columnes dins SVG** | Panells resum | **Apilar en files o graella 2+1** | Cada mètrica disposa d'amplada suficient perquè el títol no envaeixi la columna del costat. |
-| **Calendari de calor / reixa d'anys** | IB-37 | **3×4 o setmanes cap avall** | Anys en columnes i setmanes cap avall, o graella reduïda amb llista numerada a sota si cal. |
-| **Petits múltiples / flors / radars** | IB-20, IB-45, IB-57 | **2 per fila (o 1 si tenen etiquetes radials llargues)** | Marge suficient entre cel·les perquè les etiquetes de hover no envaeixin la figura veïna. |
-| **Mapes geogràfics** | IB-12, IB-25..34 | **Mantenir horitzontal, retallar i simplificar** | Retallar la regió d'interès si cal, amagar etiquetes secundàries (màx. 3–5 noms), alçada proporcional (`0.55–0.75 * w`, mínim `210 px`). |
-| **Talls físics / perfils** (oceà, atmosfera, relleu) | IB-16 | **Mantenir horitzontal, simplificar anotacions** | El sentit físic (superfície–fons, oest–est) mana. Màx. 2–3 anotacions curtes per escena. |
-| **Sèries temporals contínues** | IB-01, IB-02, IB-47 | **Mantenir horitzontal, menys tics** | Màxim 4–5 tics a l'eix X (mai 12 mesos ni 8 tics logarítmics junts). Moure anotacions fora del marge dret o a sobre de la corba. |
+| **Calendari de calor / reixa d'anys** | TIME-07 | **3×4 o setmanes cap avall** | Anys en columnes i setmanes cap avall, o graella reduïda amb llista numerada a sota si cal. |
+| **Petits múltiples / flors / radars** | CASE-05, CASE-09, CASE-08 | **2 per fila (o 1 si tenen etiquetes radials llargues)** | Marge suficient entre cel·les perquè les etiquetes de hover no envaeixin la figura veïna. |
+| **Mapes geogràfics** | MAP-06, MAP-03..34 | **Mantenir horitzontal, retallar i simplificar** | Retallar la regió d'interès si cal, amagar etiquetes secundàries (màx. 3–5 noms), alçada proporcional (`0.55–0.75 * w`, mínim `210 px`). |
+| **Talls físics / perfils** (oceà, atmosfera, relleu) | HOW-01 | **Mantenir horitzontal, simplificar anotacions** | El sentit físic (superfície–fons, oest–est) mana. Màx. 2–3 anotacions curtes per escena. |
+| **Sèries temporals contínues** | TIME-02, TIME-03, TIME-04 | **Mantenir horitzontal, menys tics** | Màxim 4–5 tics a l'eix X (mai 12 mesos ni 8 tics logarítmics junts). Moure anotacions fora del marge dret o a sobre de la corba. |
 
 ### Patró recomanat per a barres/intervals amb etiquetes llargues
 

@@ -1,6 +1,6 @@
 # Brief comú: peces noves del sistema infogràfic
 
-Projecte: revista web «Inspired by Magazine» (articles visuals en català per entendre el món), carpeta `/Users/uriocallaghan/Documents/Claude Code/InspiredBy Magazine`. Ja hi ha un sistema infogràfic amb 20 peces (IB-01 a IB-20). L'editor el troba massa minimalista: vol peces **superpolides, elegants, molt creatives, molt visuals, animades i amb estats de hover**, formes de visualitzar dades **que no t'esperaries** però que s'entenen a l'instant. Pensa en el millor del NYT, Reuters Graphics, The Pudding, Bloomberg, FiveThirtyEight, La Lettura, Federica Fragapane: dibuix fi, molts elements petits i translúcids, anotacions elegants, moviment amb sentit.
+Projecte: revista web «Inspired by Magazine» (articles visuals en català per entendre el món), carpeta `/Users/uriocallaghan/Documents/Claude Code/InspiredBy Magazine`. Ja hi ha un sistema infogràfic amb 20 peces (TIME-02 a CASE-05). L'editor el troba massa minimalista: vol peces **superpolides, elegants, molt creatives, molt visuals, animades i amb estats de hover**, formes de visualitzar dades **que no t'esperaries** però que s'entenen a l'instant. Pensa en el millor del NYT, Reuters Graphics, The Pudding, Bloomberg, FiveThirtyEight, La Lettura, Federica Fragapane: dibuix fi, molts elements petits i translúcids, anotacions elegants, moviment amb sentit.
 
 ## Llegeix primer (obligatori)
 

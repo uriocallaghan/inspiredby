@@ -31,7 +31,7 @@
   }
   window.SHA = {segBind, ctext, MODEL, GROUND, clamp};
 
-  /* ---------- IB-59 · Mapa físic en relleu (bloc copiat de web/sistema/mapes-b.js) ---------- */
+  /* ---------- MAP-01 · Mapa físic en relleu (bloc copiat de web/sistema/mapes-b.js) ---------- */
   const IB59_BANDS=[[200,[243,242,239]],[500,[235,233,228]],[800,[226,223,216]],[1500,[216,212,204]],[2200,[206,202,193]],[Infinity,[196,191,182]]];
   const IB59_COAST="#ABA8A1";
   function dem59(D){
@@ -113,7 +113,7 @@
   }
 
   /* =========================================================================
-     V1 · MAQUETA DE LÍNIA (peça nova: IB-16 en 3D)
+     V1 · MAQUETA DE LÍNIA (peça nova: HOW-01 en 3D)
      ========================================================================= */
   (function initMaqueta(){
     const el = document.getElementById("maq-viz"); if(!el) return;
@@ -222,7 +222,7 @@
   })();
 
   /* =========================================================================
-     V2 · PAISATGE DOBLE: FUSTA PER ALS VIUS, PEDRA PER ALS AVANTPASSATS (IB-59 + IB-13)
+     V2 · PAISATGE DOBLE: FUSTA PER ALS VIUS, PEDRA PER ALS AVANTPASSATS (MAP-01 + MAP-11)
      ========================================================================= */
   /* Vegetació d'avui (OpenStreetMap) en verd vegetal: boscos amb capçades, rengleres d'arbres i arbres sols.
      Es dibuixa en una capa a part que s'esvaeix a les vores, igual que el relleu. */
@@ -352,7 +352,7 @@
   })();
 
   /* =========================================================================
-     V3 · SCROLLY: UN MAPA DE PEDRA DE TOTA UNA ILLA (IB-59 + IB-13 + IB-25)
+     V3 · SCROLLY: UN MAPA DE PEDRA DE TOTA UNA ILLA (MAP-01 + MAP-11 + MAP-03)
      ========================================================================= */
   (function initPedres(){
     const el = document.getElementById("pedres-viz"); if(!el) return;

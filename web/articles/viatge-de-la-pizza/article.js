@@ -22,7 +22,7 @@
   }
 
   /* =========================================================================
-     1. SCROLLY 1 — QUATRE CONTINENTS EN UN SOL DISC (IB-24 + IB-25)
+     1. SCROLLY 1 — QUATRE CONTINENTS EN UN SOL DISC (MAP-12 + MAP-03)
      ========================================================================= */
   (function initOrigen(){
     const el = document.getElementById("origen-viz");
@@ -293,7 +293,7 @@
   })();
 
   /* =========================================================================
-     2. FIGURA 2 — 14.400 ANYS DE PA PLA I ELS SEUS PARENTS (IB-49 + IB-25)
+     2. FIGURA 2 — 14.400 ANYS DE PA PLA I ELS SEUS PARENTS (TIME-15 + MAP-03)
      ========================================================================= */
   (function initPans(){
     const el = document.getElementById("pans-viz");
@@ -716,7 +716,7 @@
   })();
 
   /* =========================================================================
-     3. FIGURA 3 — BIOLOGIA INVISIBLE: LACTOSA I SINERGIA UMAMI (IB-38)
+     3. FIGURA 3 — BIOLOGIA INVISIBLE: LACTOSA I SINERGIA UMAMI (CASE-04)
      ========================================================================= */
   (function initBio(){
     const el = document.getElementById("bio-viz");
@@ -953,7 +953,7 @@
   })();
 
   /* =========================================================================
-     4. SCROLLY 2 — TALL DEL FORN I LA MASSA EN COCCIÓ (IB-16)
+     4. SCROLLY 2 — TALL DEL FORN I LA MASSA EN COCCIÓ (HOW-01)
      ========================================================================= */
   (function initFornScrolly(){
     const el = document.getElementById("forn-viz");
@@ -1374,7 +1374,7 @@
   })();
 
   /* =========================================================================
-     6. FIGURA 5 — DIÀSPORA ITALIANA (1876–1915) I GLOCALITZACIÓ (IB-24 + IB-25)
+     6. FIGURA 5 — DIÀSPORA ITALIANA (1876–1915) I GLOCALITZACIÓ (MAP-12 + MAP-03)
      ========================================================================= */
   (function initDiaspora(){
     const el = document.getElementById("diaspora-viz");

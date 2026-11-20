@@ -135,7 +135,7 @@ for (const file of jsFiles) {
 }
 
 // 5. Sistema infogràfic (research/sistema-infografic.md): cada article nou ha de partir d'un pla visual
-//    amb peces IB reals, i els mapes regionals han d'anar sobre la base física en relleu IB-59.
+//    amb peces reals del sistema (TIME, MAP, SCALE, SPREAD, PART, LINK, HOW, CASE), i els mapes regionals han d'anar sobre la base física en relleu MAP-01.
 //    Els articles publicats abans del 19-11-2026 en queden exempts (només avisos).
 const LEGACY = new Set([
   "calendari-cosmic", "cinta-transportadora", "de-que-mor-el-mon", "el-jesus-historic", "el-nino",
@@ -143,8 +143,9 @@ const LEGACY = new Set([
   "pols-del-sahara", "stonehenge", "viatge-de-la-pizza", "virus-i-bacteris"
 ]);
 const GUIDE = fs.readFileSync(path.join(ROOT, "research", "sistema-infografic.md"), "utf8");
-const IB_VALID = new Set([...GUIDE.matchAll(/\| \*\*(IB-\d+)\*\* \|/g)].map(m => m[1]));
-// Colors del sistema: IBV.C i rampes d'ib-viz.js + els tons del mapa físic IB-59
+const CODE_RE = /\b(?:TIME|MAP|SCALE|SPREAD|PART|LINK|HOW|CASE)-\d{2}\b/g;
+const IB_VALID = new Set([...GUIDE.matchAll(/\| \*\*((?:TIME|MAP|SCALE|SPREAD|PART|LINK|HOW|CASE)-\d{2})\*\* \|/g)].map(m => m[1]));
+// Colors del sistema: IBV.C i rampes d'ib-viz.js + els tons del mapa físic MAP-01
 const PALETTE = new Set([
   ...(fs.readFileSync(path.join(WEB_DIR, "assets", "ib-viz.js"), "utf8").match(/#[0-9A-Fa-f]{6}\b/g) || []),
   "#F3F2EF", "#ABA8A1", "#AEC6E6"
@@ -165,16 +166,17 @@ for (const slug of jsonSlugs) {
 
   if (!legacy) {
     if (!plan) {
-      errors.push(`Falta research/${slug}/pla-visual.md: abans de dibuixar, anota quina peça IB fa cada gràfic (vegeu AGENTS.md).`);
+      errors.push(`Falta research/${slug}/pla-visual.md: abans de dibuixar, anota quina peça del sistema fa cada gràfic (vegeu AGENTS.md).`);
     } else {
-      const cited = [...new Set(plan.match(/IB-\d+/g) || [])];
-      if (!cited.length) errors.push(`research/${slug}/pla-visual.md no cita cap peça IB del sistema infogràfic.`);
+      const cited = [...new Set(plan.match(CODE_RE) || [])];
+      if (!cited.length) errors.push(`research/${slug}/pla-visual.md no cita cap peça del sistema infogràfic (TIME-01, MAP-03…).`);
       const bad = cited.filter(n => !IB_VALID.has(n));
       if (bad.length) errors.push(`research/${slug}/pla-visual.md cita peces que no existeixen a la guia: ${bad.join(", ")}.`);
+      if (/\bIB-\d{2}\b/.test(plan)) errors.push(`research/${slug}/pla-visual.md fa servir codis antics IB-xx: passa'ls als nous (taula a research/sistema-codis.json).`);
     }
   }
   if (REGIONAL.test(code) && !RELIEF.test(code) && !(plan && /sense relleu/i.test(plan))) {
-    report(`${slug}: té un mapa regional sense la base física en relleu IB-59 (si és un mapa d'oceà, escriu-ho al pla visual amb «sense relleu: motiu»).`);
+    report(`${slug}: té un mapa regional sense la base física en relleu MAP-01 (si és un mapa d'oceà, escriu-ho al pla visual amb «sense relleu: motiu»).`);
   }
   const off = [...new Set((code.match(/#[0-9A-Fa-f]{6}\b/g) || []).map(h => h.toUpperCase()).filter(h => !PALETTE.has(h)))];
   if (off.length) warnings.push(`${slug}: colors fora del sistema (${off.join(" ")}).`);

@@ -13,17 +13,20 @@
     land:"#ECEBE8", landEdge:"#D3D1CC", neutral:"#ECE9E4",
     // Els tres colors de la revista, en aquest ordre. Validats per a daltonisme (ΔE ≥ 18 entre tots tres).
     // El groc té poc contrast sobre blanc: mai text en groc, només superfícies, punts o línies de 2 px o més.
-    vermell:"#C8442A", blau:"#2C5DA8", groc:"#F5C518",
+    red:"#C8442A", blue:"#2C5DA8", yellow:"#F5C518",
     // tons clars i foscos dels mateixos colors (per a una 4a–6a categoria o per a context de color)
-    vermellClar:"#E9A391", blauClar:"#9DB6DD", grocClar:"#FBE38E",
-    vermellFosc:"#7A2312", blauFosc:"#173A70", grocFosc:"#E0A800",
-    // Verd vegetal (decisió de l'editor, 20-11-2026): NOMÉS per a vegetació (gespa, prats, boscos, arbres, cobertes verdes).
-    // Mai com a categoria de dades ni per a text; sempre amb el contorn en el to fosc, com una maqueta d'arquitectura.
-    vegetacio:"#A6C06A", vegetacioClar:"#DCE8B5", vegetacioFosc:"#6F8A3C"
+    redLight:"#E9A391", blueLight:"#9DB6DD", yellowLight:"#FBE38E",
+    redDark:"#7A2312", blueDark:"#173A70", yellowDark:"#E0A800",
+    // Quart color: el verd de la natura (decisió de l'editor, 20-11-2026). Només per a la natura viva: dibuixar vegetació
+    // (gespa, prats, boscos, arbres, conreus, màquia) i, com a categoria de dades, només si la categoria és natura viva
+    // (bosc, terra agrícola, espais naturals, biomassa). Mai per a text, aigua (blau), animals, roca ni categories que no siguin natura.
+    // Si conviu amb el vermell com a categoria, distingeix-los també per lluminositat o textura (daltonisme).
+    green:"#A6C06A", greenLight:"#DCE8B5", greenDark:"#6F8A3C"
   };
-  C.warm=C.vermell; C.cold=C.blau;
-  // Noms antics (ja no formen part de la paleta): es mantenen perquè el codi vell no es trenqui.
-  C.ocre=C.groc; C.mar=C.blauClar; C.violeta=C.blauFosc; C.verd=C.grocFosc;
+  // Noms catalans antics: àlies dels anglesos perquè els articles publicats no es trenquin. El codi nou fa servir els anglesos.
+  Object.assign(C, {vermell:C.red, blau:C.blue, groc:C.yellow, vermellClar:C.redLight, blauClar:C.blueLight, grocClar:C.yellowLight,
+    vermellFosc:C.redDark, blauFosc:C.blueDark, grocFosc:C.yellowDark, vegetacio:C.green, vegetacioClar:C.greenLight, vegetacioFosc:C.greenDark});
+  C.warm=C.red; C.cold=C.blue;
   const CAT=[C.vermell,C.blau,C.groc];
   // Si calen més de tres categories: primer grisos per al que és secundari; si no, aquests tons.
   const CAT6=[C.vermell,C.blau,C.groc,C.vermellClar,C.blauClar,C.ink2];

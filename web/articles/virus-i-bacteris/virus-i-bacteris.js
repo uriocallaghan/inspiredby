@@ -1,8 +1,8 @@
 /* «La guerra invisible» — gràfics 1 (sistema infogràfic IBV, gravat científic i aquarel·la editorial):
-   1. IB-35 Cinta d'arcs proporcionals + gravat òptic a escala (òvul humà → fag T4)
-   2. IB-16 Gravat biològic d'alta precisió del cicle d'infecció (lític T4 i lisogènic lambda)
-   3. IB-08 Pols de punts + IB-19 Topografia de densitat (d3.contourDensity) de 5.508 mostres marines
-   4. IB-40 Riu d'aquarel·la amb ~1.100 micro-traços lents del curtcircuit viral
+   1. SCALE-04 Cinta d'arcs proporcionals + gravat òptic a escala (òvul humà → fag T4)
+   2. HOW-01 Gravat biològic d'alta precisió del cicle d'infecció (lític T4 i lisogènic lambda)
+   3. SPREAD-04 Pols de punts + SPREAD-06 Topografia de densitat (d3.contourDensity) de 5.508 mostres marines
+   4. LINK-03 Riu d'aquarel·la amb ~1.100 micro-traços lents del curtcircuit viral
    Helpers compartits a window.VIB (els fa servir crispr.js). */
 (function(){
 "use strict";
@@ -17,7 +17,7 @@ const ease=t=>{t=clamp(t,0,1);return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;};
 const sm=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
 const fmtN=(v,d)=>d===1?f1(v):d===0||d==null?f0(v):V.fmt(`,.${d}f`)(v);
 
-/* Gradient d'aquarel·la radial per a SVG (estil IB-41 / el-jesus-historic) */
+/* Gradient d'aquarel·la radial per a SVG (estil PART-06 / el-jesus-historic) */
 function addWashGrad(defs,id,col,a0,a1,a2){
   const rg=defs.append("radialGradient").attr("id",id).attr("cx","42%").attr("cy","38%").attr("r","64%");
   rg.append("stop").attr("offset",0).attr("stop-color",col).attr("stop-opacity",a0==null?.42:a0);
@@ -213,7 +213,7 @@ function drawLambda(c,x,y,s,o){
 window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,addWashGrad,canvasWash,drawT4,miniT4,miniHead,miniTail,drawLambda};
 
 /* =====================================================================
-   1. IB-35 CINTA D'ARCS PROPORCIONALS + GRAVAT ÒPTIC A ESCALA
+   1. SCALE-04 CINTA D'ARCS PROPORCIONALS + GRAVAT ÒPTIC A ESCALA
    ===================================================================== */
 (function(){
   const ribEl=document.getElementById("scale-ribbon"), vizEl=document.getElementById("scale-viz");
@@ -264,7 +264,7 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,addWashGrad,canvasWash,dra
     return big?`×${s} més gran`:`÷${s} més petit`;
   }
 
-  /* ---- 1A. Cinta logarítmica d'arcs proporcionals IB-35 (vertical a mòbil < 600 px) ---- */
+  /* ---- 1A. Cinta logarítmica d'arcs proporcionals SCALE-04 (vertical a mòbil < 600 px) ---- */
   let renderArc=null;
   V.mount(ribEl,(el,w)=>{
     const mob=w<600;
@@ -341,7 +341,7 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,addWashGrad,canvasWash,dra
       return;
     }
 
-    /* Escriptori: cinta horitzontal IB-35 amb esferes d'aquarel·la radialGradient + multiply */
+    /* Escriptori: cinta horitzontal SCALE-04 amb esferes d'aquarel·la radialGradient + multiply */
     const h=202, ml=48, mr=48, axisY=116;
     const s=V.svg(el,w,h,"Escala logarítmica comparativa d'un fag T4 (0,2 micres) fins a un òvul humà (120 micres): 600 vegades més gran. Clica qualsevol cercle per fixar-lo com a referència.");
     const defs=s.append("defs");
@@ -620,7 +620,7 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,addWashGrad,canvasWash,dra
 })();
 
 /* =====================================================================
-   2. IB-16 GRAVAT BIOLÒGIC D'ALTA PRECISIÓ — CICLE D'INFECCIÓ (SCROLLY)
+   2. HOW-01 GRAVAT BIOLÒGIC D'ALTA PRECISIÓ — CICLE D'INFECCIÓ (SCROLLY)
    ===================================================================== */
 (function(){
   const vizEl=document.getElementById("inf-viz"); if(!vizEl)return;
@@ -937,7 +937,7 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,addWashGrad,canvasWash,dra
 })();
 
 /* =====================================================================
-   3. IB-08 POLS DE PUNTS + IB-19 TOPOGRAFIA DE DENSITAT (5.508 MOSTRES)
+   3. SPREAD-04 POLS DE PUNTS + SPREAD-06 TOPOGRAFIA DE DENSITAT (5.508 MOSTRES)
    ===================================================================== */
 (function(){
   const vizEl=document.getElementById("sea-viz"); if(!vizEl||!window.VIB_DATA)return;
@@ -995,7 +995,7 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,addWashGrad,canvasWash,dra
         .call(gg=>V.t(gg,0,0,lbl,{size:11,fill:C.muted,anchor:"end",halo:3}));
     });
 
-    /* Capa IB-19: Corbes topogràfiques de densitat (d3.contourDensity) */
+    /* Capa SPREAD-06: Corbes topogràfiques de densitat (d3.contourDensity) */
     const gCont=gClip.append("g").style("pointer-events","none");
     const geoPath=d3.geoPath();
     const contourCache={};
@@ -1061,7 +1061,7 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,addWashGrad,canvasWash,dra
       }
     }
 
-    /* Capa IB-08: Pols fina de les 5.508 mostres en Canvas multiply */
+    /* Capa SPREAD-04: Pols fina de les 5.508 mostres en Canvas multiply */
     let rev=1;
     function paintCanvas(){
       ctx.clearRect(0,0,W,H);
@@ -1131,7 +1131,7 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,addWashGrad,canvasWash,dra
 })();
 
 /* =====================================================================
-   4. IB-40 CURTCIRCUIT VIRAL — RIU D'AQUAREL·LA AMB ~1.100 MICRO-TRAÇOS
+   4. LINK-03 CURTCIRCUIT VIRAL — RIU D'AQUAREL·LA AMB ~1.100 MICRO-TRAÇOS
    ===================================================================== */
 (function(){
   const vizEl=document.getElementById("shunt-viz"); if(!vizEl)return;

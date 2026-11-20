@@ -1,5 +1,5 @@
 /* Dades reals per a les peces «creatives-b» del sistema infogràfic.
-   IB-49 · Temps profund: edats de research/calendari-events.csv i research/validacio-calendari-cosmic.md
+   TIME-15 · Temps profund: edats de research/calendari-events.csv i research/validacio-calendari-cosmic.md
    (validació del Calendari còsmic, 17-11-2026). «a» = anys abans del 2026; «lo»/«hi» = interval publicat;
    «u» = data aproximada o amb debat (es mostra amb ≈); «p» = prioritat de l'etiqueta (1 = sempre que hi càpiga).
    L'edat de la Terra (4.540 milions d'anys) és la que fa servir la mateixa validació. */

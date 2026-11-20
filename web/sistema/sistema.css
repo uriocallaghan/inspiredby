@@ -74,3 +74,21 @@ h3.fam{font-family:var(--sans);font-weight:700;font-size:15px;margin:72px 0 0;pa
   .vh .ibv-lg-cat{flex-direction:row;flex-wrap:wrap;gap:4px 14px}
   .vh{gap:10px 20px}
 }
+/* famílies de peces (20-11-2026): navegació amb desplaçament animat */
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.pc-h h4 small{font-family:var(--sans);font-weight:400;font-size:15px;letter-spacing:0;color:var(--muted)}
+.pc,.comp .pc,h2.part{scroll-margin-top:64px}
+h3.fam{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px;font-family:var(--serif);font-weight:600;font-size:30px;line-height:1.15;margin:110px 0 0;padding-top:16px;scroll-margin-top:64px}
+.fam-c{font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.06em;color:var(--paper,#fff);background:var(--ink);padding:3px 7px 2px;border-radius:3px;align-self:center}
+.fam-q{flex-basis:100%;font-family:var(--sans);font-weight:400;font-size:16px;color:var(--ink-2)}
+.famnav{position:sticky;top:0;z-index:20;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:10px 16px;background:var(--paper,#fff);border-bottom:1px solid var(--hair)}
+.famnav::-webkit-scrollbar{display:none}
+.famnav a{flex:0 0 auto;font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.04em;text-decoration:none;color:var(--muted);padding:5px 10px;border-radius:999px;transition:color .2s,background .2s}
+.famnav a:hover{color:var(--ink)}
+.famnav a[aria-current="true"]{color:var(--paper,#fff);background:var(--ink)}
+.toc .fam b{min-width:58px;color:var(--ink)}
+.toc b{min-width:76px}
+@media (max-width:700px){h3.fam{font-size:24px;margin-top:80px}}
+.sw.sw4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:700px){.sw.sw4{grid-template-columns:repeat(2,minmax(0,1fr))}}

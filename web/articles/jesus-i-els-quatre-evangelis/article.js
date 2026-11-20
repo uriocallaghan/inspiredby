@@ -5,7 +5,7 @@
    V1 (#temps): Scrollytelling cronològic amb 5 blocs, bombolles translúcides (Major quakes) i boira oral.
    V2 (#biblio): Eixam orgànic de 887 punts que volen en arc (Ordre Bíblia – Escriptura).
    V6 (#setmana): Els 233 episodis de Marc i els 1.162 dels 4 evangelis (Incendios en Perú + Major quakes).
-   V7a (#flux): Corrents trenats fins amb partícules en canvas (Iceberg alley + IB-40).
+   V7a (#flux): Corrents trenats fins amb partícules en canvas (Iceberg alley + LINK-03).
    V7b (#corda): Topografia orgànica de densitat de tots els 1.162 fragments d'Eusebi (Building Strategy).
    V8 (#flors): Quatre roses polars sobre 10 anells concèntrics (Typology demand + Parcs nacionals). */
 (function(){
@@ -736,7 +736,7 @@
   })();
 
   /* =====================================================================
-     V7a · CORRENTS TRENATS DE PARAULES (Iceberg alley + IB-40 en canvas)
+     V7a · CORRENTS TRENATS DE PARAULES (Iceberg alley + LINK-03 en canvas)
      ===================================================================== */
   (function(){
     const fig=$("#f-flux"), el=$("#flux"), rd=$("#flux-r"), tog=$("#flux-toggle"); if(!el)return;

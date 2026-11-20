@@ -1,4 +1,4 @@
-/* Sistema infogràfic d'Inspired by Magazine · Mapes, primera tanda (IB-22 a IB-27).
+/* Sistema infogràfic d'Inspired by Magazine · Mapes, primera tanda (MAP-17 a MAP-18).
    Fa servir assets/ib-viz.js (IBV), d3 7.9.0, topojson-client 3.1.0 i dades-mapes-a.js (IBDATA_MAPES_A). */
 (function(){
 "use strict";
@@ -51,7 +51,7 @@ const ZMEAN=TEMP.map(T=>d3.range(NLAT).map(i=>{ let s=0; for(let j=0;j<NLON;j++)
 const ANOM=TEMP.map((T,m)=>{ const A=new Float32Array(T.length); for(let i=0;i<NLAT;i++)for(let j=0;j<NLON;j++)A[i*NLON+j]=T[i*NLON+j]-ZMEAN[m][i]; return A; });
 const gLat=i=>90-i*STEP, gLon=j=>{ const L=j*STEP; return L>=180?L-360:L; };
 const MES2=["gener","juliol"];
-function placeName(lon,lat){ // noms només per als extrems que comenten les peces IB-26
+function placeName(lon,lat){ // noms només per als extrems que comenten les peces MAP-07
   if(lat>58&&lat<74&&lon>-8&&lon<22)return "Mar de Noruega";
   if(lat>26&&lat<41&&lon>72&&lon<102)return "Tibet";
   if(lat>26&&lat<39&&lon>37&&lon<56)return "Mesopotàmia";
@@ -61,7 +61,7 @@ function placeName(lon,lat){ // noms només per als extrems que comenten les pec
 }
 
 /* =====================================================================
-   IB-22 · CARTOGRAMA DE CERCLES  (dades reals: superfície de Natural Earth)
+   MAP-17 · CARTOGRAMA DE CERCLES  (dades reals: superfície de Natural Earth)
    ===================================================================== */
 const LOG16=Math.log10(16);
 const INFC=v=>V.heatInterp(.1+.9*clamp(v/LOG16,0,1)); // v = log10(inflació)
@@ -188,7 +188,7 @@ const M22=piece(22,(el,w)=>{
 seg(22,m=>{ mode22=m; const el=$('[data-p="22"]'); el._go&&el._go(m); });
 
 /* =====================================================================
-   IB-23 · DENSITAT DE PUNTS  (dades d'exemple + fronteres reals)
+   MAP-05 · DENSITAT DE PUNTS  (dades d'exemple + fronteres reals)
    ===================================================================== */
 const IDS23=["724","620","250","380","756","040","276","056","528","442","826","372","208","203","616","703","348","705","191"];
 const PER23=5000, EU23={};
@@ -276,7 +276,7 @@ const M23=piece(23,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-24 · ARCS DE FLUX  (dades d'exemple: ciutats reals, fluxos inventats)
+   MAP-12 · ARCS DE FLUX  (dades d'exemple: ciutats reals, fluxos inventats)
    ===================================================================== */
 const CITIES=[["Nova York",-74.01,40.71,"r"],["Ciutat de Mèxic",-99.13,19.43,"l"],["São Paulo",-46.63,-23.55,"r"],["Londres",-.13,51.51,"l"],["Barcelona",2.17,41.39,"b"],
   ["Lagos",3.38,6.52,"l"],["El Caire",31.24,30.04,"b"],["Johannesburg",28.05,-26.2,"r"],["Moscou",37.62,55.76,"r"],["Dubai",55.27,25.2,"b"],["Bombai",72.88,19.08,"b"],
@@ -379,7 +379,7 @@ const M24=piece(24,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-25 · MAPA DE CERCLES TRANSLÚCIDS  (dades reals: Wigington et al. 2016, corregit 2017)
+   MAP-03 · MAPA DE CERCLES TRANSLÚCIDS  (dades reals: Wigington et al. 2016, corregit 2017)
    Projecció plana neta (Equal Earth), zero perspectiva 3D i zero agulles: cercles translúcids multiply.
    ===================================================================== */
 const SITES=D.virus.map(([lon,lat,n,v,st])=>({lon,lat,n,v,st}));
@@ -495,7 +495,7 @@ const M25=piece(25,(el,w)=>{
 seg(25,m=>{ mode25=m; const el=$('[data-p="25"]'); el._go&&el._go(m); });
 
 /* =====================================================================
-   IB-26 · MAPA DE FRANGES I ISOLÍNIES  (dades reals: NCEP/NCAR R1, diferència amb la mitjana de la latitud)
+   MAP-07 · MAPA DE FRANGES I ISOLÍNIES  (dades reals: NCEP/NCAR R1, diferència amb la mitjana de la latitud)
    Projecció plana neta Equal Earth amb bandes suaus translúcides, costes recognoscibles
    i isolínies etiquetades (estil «Germany — average rainfall and temperature»).
    ===================================================================== */
@@ -704,7 +704,7 @@ seg(26,m=>{ mode26=m; const el=$('[data-p="26"]'); el._go&&el._go(m); });
 void M26;
 
 /* =====================================================================
-   IB-27 · GLOBUS QUE GIRA  (dades reals: NCEP/NCAR R1; la nit és un esquema)
+   MAP-18 · GLOBUS QUE GIRA  (dades reals: NCEP/NCAR R1; la nit és un esquema)
    ===================================================================== */
 const DIV27=V.div(30);
 legend(27,el=>{ V.legendRamp(el,{scale:DIV27,min:-30,max:30,ticks:[-30,-15,0,15,30],f:v=>sgn(v,0),title:"Temperatura de l'aire (°C)",lo:"Més freda",hi:"Més calenta"});

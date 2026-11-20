@@ -1,4 +1,4 @@
-/* Dades reals per a les peces IB-22 a IB-27 (mapes, primera tanda). Generat amb un script a partir de:
+/* Dades reals per a les peces MAP-17 a MAP-18 (mapes, primera tanda). Generat amb un script a partir de:
    - research/cinta-transportadora/ncep-r1-anomalia-zonal-gener-juliol.csv (NCEP/NCAR Reanalysis 1, NOAA PSL; temperatura de l'aire a sigma 0,995, mitjana 1991–2020, 2,5°)
    - research/virus-i-bacteris/virus-bacteris-wigington2016-corregit2017.csv (Wigington et al. 2016, amb la correcció del 2017) */
 window.IBDATA_MAPES_A={

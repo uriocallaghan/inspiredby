@@ -8,7 +8,7 @@
   const ease = d3.easeCubicInOut;
 
   /* =========================================================================
-     V10 · PLANTES A LA MATEIXA ESCALA (IB-20 + IB-16: plantes de línia fina)
+     V10 · PLANTES A LA MATEIXA ESCALA (CASE-05 + HOW-01: plantes de línia fina)
      Totes les plantes del gràfic gran comparteixen escala; les quatre de 104–110 m
      i el recinte D de Göbekli Tepe es posen dins de Durrington Walls per comparar-les.
      A la lupa, el cor de Stonehenge i Göbekli D a una mateixa escala més gran.

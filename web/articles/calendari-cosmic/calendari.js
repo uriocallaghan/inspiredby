@@ -1,11 +1,11 @@
 /* El calendari còsmic — làmines astronòmiques amb el sistema infogràfic d'Inspired by Magazine (IBV).
    Escala: l'edat de l'univers (Planck 2018/2020: 13.787 milions d'anys) comprimida en un any de 365 dies.
    Peces aplicades:
-   - Scrollytelling: IB-53 (anell astronòmic anual), IB-37 (calendaris mensuals d'alta precisió),
-     IB-48 (rellotges astronòmics 24 h / 60 min / 60 s) i IB-35 (escala final de 5 segons).
-   - L'any repartit: IB-43 (quadrats d'escala amb aquarel·la), IB-49 (temps profund logarítmic, vertical a mòbil)
-     i IB-41 (constel·lació de cercles d'aquarel·la).
-   - La teva vida: IB-35 (escala comparativa de l'últim segon amb arcs de proporció ×N).
+   - Scrollytelling: TIME-10 (anell astronòmic anual), TIME-07 (calendaris mensuals d'alta precisió),
+     TIME-12 (rellotges astronòmics 24 h / 60 min / 60 s) i SCALE-04 (escala final de 5 segons).
+   - L'any repartit: SCALE-02 (quadrats d'escala amb aquarel·la), TIME-15 (temps profund logarítmic, vertical a mòbil)
+     i PART-06 (constel·lació de cercles d'aquarel·la).
+   - La teva vida: SCALE-04 (escala comparativa de l'últim segon amb arcs de proporció ×N).
    Dades i fonts: research/calendari-events.csv i research/validacio-calendari-cosmic.md */
 (function(){
 "use strict";
@@ -132,7 +132,7 @@ function separate(items,gap,lo,hi){
 
 /* =====================================================================
    1. SCROLLYTELLING · L'ANY CÒSMIC PAS A PAS
-      IB-53 (anell astronòmic anual) + IB-37 (mesos) + IB-48 (rellotges) + IB-35 (5 s)
+      TIME-10 (anell astronòmic anual) + TIME-07 (mesos) + TIME-12 (rellotges) + SCALE-04 (5 s)
    ===================================================================== */
 const STEPS=[
  {lv:"year",ev:["bigbang"]},
@@ -212,7 +212,7 @@ function initScrolly(){
     });
   }
 
-  /* ---------- IB-53: Anell astronòmic de l'any còsmic (1 gen a dalt, 12 h) ---------- */
+  /* ---------- TIME-10: Anell astronòmic de l'any còsmic (1 gen a dalt, 12 h) ---------- */
   function buildYear(){
     const g=layers.year;
     const cx=W/2, cy=H/2+(mob?2:2);
@@ -305,7 +305,7 @@ function initScrolly(){
     g.append("g").attr("class","hv").style("pointer-events","none");
   }
 
-  /* ---------- IB-37: Calendari mensual tipogràfic d'alta precisió ---------- */
+  /* ---------- TIME-07: Calendari mensual tipogràfic d'alta precisió ---------- */
   function buildMonth(m){
     const g=layers["m"+m], cols=7, rows=5, gap=mob?3:5, top=4;
     const cs=Math.min((W-gap*(cols-1))/cols,(H-top-gap*(rows-1))/rows);
@@ -333,7 +333,7 @@ function initScrolly(){
     return {x:o.ox+(d%7)*(o.cs+o.gap),y:o.top+Math.floor(d/7)*(o.cs+o.gap),w:o.cs};
   }
 
-  /* ---------- IB-48: Rellotges astronòmics sobre paper (24 h, 60 min, 60 s) ---------- */
+  /* ---------- TIME-12: Rellotges astronòmics sobre paper (24 h, 60 min, 60 s) ---------- */
   function dialGeo(){
     const R=Math.min(W*(mob?.33:.245),H*(mob?.37:.39));
     return {cx:W/2,cy:H/2+(mob?2:4),R};
@@ -365,7 +365,7 @@ function initScrolly(){
   }
   function dialAngle(k,s){ const o=geo[k]; return (1-s/o.span)*2*Math.PI; }
 
-  /* ---------- IB-35: Escala final dels últims 5 segons amb arcs de compressió ---------- */
+  /* ---------- SCALE-04: Escala final dels últims 5 segons amb arcs de compressió ---------- */
   function buildSec(){
     const g=layers.sec, x0=mob?14:36, x1=W-(mob?14:36), y=H*(mob?.62:.72);
     geo.sec={x0,x1,y,span:5,pts:[]};
@@ -401,7 +401,7 @@ function initScrolly(){
     const evs=st.ev.map(id=>BY[id]);
     const list=d3.select("#calList").html("");
 
-    /* Anell astronòmic anual (IB-53) */
+    /* Anell astronòmic anual (TIME-10) */
     if(k==="year"){
       const o=geo.year, fs=mob?11.5:12.5;
       const pts=evs.map(e=>{
@@ -479,7 +479,7 @@ function initScrolly(){
       return;
     }
 
-    /* Calendaris mensuals (IB-37 amb halos d'aquarel·la) */
+    /* Calendaris mensuals (TIME-07 amb halos d'aquarel·la) */
     if(/^m\d+$/.test(k)){
       const m=+k.slice(1), byDay={};
       evs.forEach(e=>{ (byDay[e.doy]=byDay[e.doy]||[]).push(e); });
@@ -512,7 +512,7 @@ function initScrolly(){
       return;
     }
 
-    /* Últims 5 segons (IB-35 amb arcs de compressió temporal) */
+    /* Últims 5 segons (SCALE-04 amb arcs de compressió temporal) */
     if(k==="sec"){
       const o=geo.sec, fs=mob?11.5:12.5;
       const pts=evs.map((e,i)=>{
@@ -545,7 +545,7 @@ function initScrolly(){
       return;
     }
 
-    /* Rellotges astronòmics: day, hour, min (IB-48) */
+    /* Rellotges astronòmics: day, hour, min (TIME-12) */
     const o=geo[k], fs=mob?11.5:12.5;
     g.select(".ctr1").text(k==="day"?"24 h":k==="hour"?"60 min":"60 s");
     g.select(".ctr2").text(k==="day"?"del 31 de desembre":k==="hour"?"de 23:00 a 24:00":"de 23:59 a 24:00");
@@ -628,7 +628,7 @@ function initScrolly(){
       if(!cur||!layers[cur])return;
       const g=layers[cur], hv=g.select(".hv");
 
-      /* Hover sobre l'anell astronòmic anual (IB-53) */
+      /* Hover sobre l'anell astronòmic anual (TIME-10) */
       if(cur==="year"){
         const o=geo.year;
         const dist=Math.hypot(px-o.cx,py-o.cy);
@@ -662,7 +662,7 @@ function initScrolly(){
         return;
       }
 
-      /* Hover sobre calendaris mensuals (IB-37) */
+      /* Hover sobre calendaris mensuals (TIME-07) */
       if(/^m\d+$/.test(cur)){
         const cells=geo[cur].cells||[];
         const hit=cells.find(c=>px>=c.x-1&&px<=c.x+c.w+1&&py>=c.y-1&&py<=c.y+c.w+1);
@@ -698,7 +698,7 @@ function initScrolly(){
         return;
       }
 
-      /* Hover sobre rellotges astronòmics (IB-48) */
+      /* Hover sobre rellotges astronòmics (TIME-12) */
       const o=geo[cur], pts=o.pts||[];
       if(!pts.length){ clearHv(); return; }
       const best=d3.least(pts,p=>Math.hypot(p.x-px,p.y-py));
@@ -796,7 +796,7 @@ function initScrolly(){
 }
 
 /* =====================================================================
-   2. L'ANY REPARTIT · IB-43 (QUADRATS) · IB-49 (TEMPS PROFUND) · IB-41 (CONSTEL·LACIÓ)
+   2. L'ANY REPARTIT · SCALE-02 (QUADRATS) · TIME-15 (TEMPS PROFUND) · PART-06 (CONSTEL·LACIÓ)
    ===================================================================== */
 function initEras(){
   const box=document.getElementById("erasbox"), lg=document.getElementById("erasLg");
@@ -812,7 +812,7 @@ function initEras(){
     {id:"hum",   a:BY.homochimp.ya,b:0,               l:"Llinatge humà",                    slice:"Llinatge humà: 0,05 %",             col:C.vermell,  a0:.92, a1:.75, stroke:C.vermell,  sw:1}
   ];
 
-  /* 5 etapes disjuntes que sumen 100 % de l'any còsmic (per a IB-41 Constel·lació) */
+  /* 5 etapes disjuntes que sumen 100 % de l'any còsmic (per a PART-06 Constel·lació) */
   const SLICES=[
     {id:"univ",  dur:T-BY.sun.ya,              l:"Abans del Sol",       sub:"i de la Terra",   days:"244 dies",    col:C.blau,     a0:.38, a1:.20, stroke:C.blau},
     {id:"micro", dur:BY.life.ya-BY.ediacara.ya,l:"Vida microscòpica",   sub:"cèl·lules simples",days:"77 dies",    col:C.grocClar, a0:.62, a1:.38, stroke:C.grocFosc},
@@ -852,7 +852,7 @@ function initEras(){
     }
   }
 
-  /* ---------- IB-43: Quadrats niats d'àrea proporcional amb banys d'aquarel·la ---------- */
+  /* ---------- SCALE-02: Quadrats niats d'àrea proporcional amb banys d'aquarel·la ---------- */
   function drawArea(el,w){
     const mob=w<640;
     const S=Math.round(mob?Math.min(w-8,360):Math.min(420,w-360));
@@ -956,7 +956,7 @@ function initEras(){
     });
   }
 
-  /* ---------- IB-49: Temps profund logarítmic (vertical a mòbil w < 600) ---------- */
+  /* ---------- TIME-15: Temps profund logarítmic (vertical a mòbil w < 600) ---------- */
   function drawLog(el,w){
     const mob=w<600;
     const fmtTick=v=>{
@@ -1184,7 +1184,7 @@ function initEras(){
     });
   }
 
-  /* ---------- IB-41: Constel·lació de cercles d'aquarel·la (d3.pack) ---------- */
+  /* ---------- PART-06: Constel·lació de cercles d'aquarel·la (d3.pack) ---------- */
   function drawPack(el,w){
     const mob=w<600;
     const H=mob?380:410;
@@ -1312,7 +1312,7 @@ function initEras(){
 }
 
 /* =====================================================================
-   3. LA TEVA VIDA, AL CALENDARI · IB-35 ESCALA COMPARATIVA AMB ARCS ×N
+   3. LA TEVA VIDA, AL CALENDARI · SCALE-04 ESCALA COMPARATIVA AMB ARCS ×N
    ===================================================================== */
 function initLife(){
   const rng=document.getElementById("lifeRange"), out=document.getElementById("lifeOut");

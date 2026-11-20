@@ -1,4 +1,4 @@
-/* Sistema infogràfic d'Inspired by Magazine · Formes inesperades, primera tanda (IB-35 a IB-44).
+/* Sistema infogràfic d'Inspired by Magazine · Formes inesperades, primera tanda (SCALE-04 a TIME-05).
    Fa servir assets/ib-viz.js (IBV), les dades reals de dades.js (ONI i CO₂) i dades-creatives-a.js
    (IHME GBD 2023, Global Carbon Budget 2026, pols del Sàhara de Yu et al. 2015). */
 (function(){
@@ -71,7 +71,7 @@ const DECS=d3.range(1950,2030,10);
 const decLab=(d,mob)=>{ const last=Math.min(d+9,ONI_YEARS[ONI_YEARS.length-1]); return mob?`${d}–${String(last).slice(2)}`:`${d}–${last}`; };
 
 /* =====================================================================
-   IB-35 · ESCALA COMPARATIVA D'ORDRES DE MAGNITUD  (dades reals: SI, IAU, NASA, FIFA)
+   SCALE-04 · ESCALA COMPARATIVA D'ORDRES DE MAGNITUD  (dades reals: SI, IAU, NASA, FIFA)
    Tots els ordres de magnitud visibles alhora (de 10⁻⁹ m a 10⁹ m) amb referències
    concretes en cercles translúcids i arcs interactius per comparar qualssevol dues mides.
    ===================================================================== */
@@ -239,7 +239,7 @@ segs(35,k=>{
 void M35;
 
 /* =====================================================================
-   IB-36 · MÀQUINA DE GALTON  (simulació)
+   HOW-05 · MÀQUINA DE GALTON  (simulació)
    ===================================================================== */
 const G36={hov:null,p:.5,n:12,N:1000,counts:null,moving:[],spawned:0,acc:0,on:false,rnd:V.rng(36)};
 function reset36(){ G36.counts=new Array(G36.n+1).fill(0); G36.moving=[]; G36.spawned=0; G36.acc=0; G36.rnd=V.rng(36+Math.round(G36.p*100)); }
@@ -383,7 +383,7 @@ const M36=piece(36,(el,w)=>{
 })();
 
 /* =====================================================================
-   IB-37 · CALENDARI DE CALOR  (dades d'exemple)
+   TIME-07 · CALENDARI DE CALOR  (dades d'exemple)
    ===================================================================== */
 const DIES=["dilluns","dimarts","dimecres","dijous","divendres","dissabte","diumenge"], DIES2=["dl","dt","dc","dj","dv","ds","dg"];
 const MESOS=["gener","febrer","març","abril","maig","juny","juliol","agost","setembre","octubre","novembre","desembre"];
@@ -499,7 +499,7 @@ piece(37,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-38 · FILERA DE CERCLES TRANSLÚCIDS  (dades reals: ONI, 921 mesos)
+   CASE-04 · FILERA DE CERCLES TRANSLÚCIDS  (dades reals: ONI, 921 mesos)
    Cada mes real és un cercle translúcid `multiply` sobre el fil de la seva dècada
    o estació, amb l'àrea proporcional a la intensitat (estil «Major quakes» i
    «Incendios en Perú»), sense crestes opaques que amaguin les files de darrere.
@@ -635,7 +635,7 @@ const M38=piece(38,(el,w)=>{
 segs(38,k=>{ mode38=k; const el=$('[data-p="38"]'); if(el)el.__again=!V.reduced; M38.redraw(); });
 
 /* =====================================================================
-   IB-39 · EIXAM DE FORCES  (dades reals: ONI, un punt per mes)
+   SPREAD-03 · EIXAM DE FORCES  (dades reals: ONI, un punt per mes)
    ===================================================================== */
 let mode39="tot", sim39=null;
 const N39=ONI_PTS.map(p=>({yr:p.y,k:p.k,v:p.v,ph:p.v>=.5?2:p.v<=-.5?0:1,dec:Math.floor(p.y/10)*10})); // sense «y»: la simulació hi escriu la posició
@@ -747,10 +747,10 @@ const M39=piece(39,(el,w)=>{
 segs(39,k=>{ mode39=k; const el=$('[data-p="39"]'); if(el&&el._go)el._go(k,true); });
 
 /* =====================================================================
-   IB-40 · FLUX AMB FILS DE PARTÍCULES  (dades reals: Global Carbon Budget 2026)
+   LINK-03 · FLUX AMB FILS DE PARTÍCULES  (dades reals: Global Carbon Budget 2026)
    Bandes de seda translúcides sense contorn (`multiply` + degradat horitzontal),
    nodes fins arrodonits i centenars de micro-traços corbats que circulen a poc a poc
-   seguint el flux (estil IB-28 aplicat a un Sankey).
+   seguint el flux (estil MAP-19 aplicat a un Sankey).
    ===================================================================== */
 let run40=true;
 const GCB=DA.gcb||{p:[]};
@@ -848,7 +848,7 @@ const M40=piece(40,(el,w)=>{
       .forEach(([t,xx,a])=>V.t(g,xx,14,t,{size:11.5,fill:C.muted,anchor:a}));
   }
 
-  // Micro-traços corbats de seda (estil IB-28: esteles corbes suaus, moviment lent i hipnòtic)
+  // Micro-traços corbats de seda (estil MAP-19: esteles corbes suaus, moviment lent i hipnòtic)
   const NS=64, dens=(mob?360:720)/N40.T, rnd=V.rng(40);
   const bez=(a,b,c2,d,t)=>{ const u=1-t; return u*u*u*a+3*u*u*t*b+3*u*t*t*c2+t*t*t*d; };
   N40.links.forEach(l=>{
@@ -948,8 +948,8 @@ const M40=piece(40,(el,w)=>{
   b.addEventListener("click",()=>{ run40=!run40; b.textContent=run40?"Atura els fils":"Torna a moure els fils"; b.setAttribute("aria-pressed",!run40); }); void M40; })();
 
 /* =====================================================================
-   IB-41 · CONSTEL·LACIÓ DE CERCLES  (dades reals: IHME GBD, morts per causa)
-   Cercles translúcids de color pla (`fill-opacity` + `multiply`, estil IB-55,
+   PART-06 · CONSTEL·LACIÓ DE CERCLES  (dades reals: IHME GBD, morts per causa)
+   Cercles translúcids de color pla (`fill-opacity` + `multiply`, estil LINK-05,
    sense degradats) agrupats en 4 constel·lacions, sense vores dures ni punts
    que embrutin el text. Clic en un grup per fer-hi zoom suau.
    ===================================================================== */
@@ -985,7 +985,7 @@ const M41=piece(41,(el,w)=>{
   let view=zoom41?[zoom41.x,zoom41.y,zoom41.r*2.18*Math.max(1,Dm/h)]:HOME, grow=1, foc=null;
   const Pt=(x,y)=>{ const kk=Dm/view[2]; return [OX+Dm/2+(x-view[0])*kk,OY+Dm/2+(y-view[1])*kk]; };
 
-  // 1. Cercles suaus dels 4 grups en color pla translúcid (estil IB-55, sense degradats)
+  // 1. Cercles suaus dels 4 grups en color pla translúcid (estil LINK-05, sense degradats)
   const GC=g.append("g").selectAll("circle").data(grps).join("circle")
     .attr("fill",d=>d.data.gp.c)
     .attr("fill-opacity",d=>d.data.gp.id==="inf"?.14:.09)
@@ -1147,7 +1147,7 @@ segs(41,k=>{ const el=$('[data-p="41"]'); const prev=el&&el.__snap?el.__snap():n
 (function(){ const b=$('[data-zoom41]'); if(b){ b.style.visibility="hidden"; b.addEventListener("click",()=>{ const el=$('[data-p="41"]'); if(el&&el._zoom)el._zoom(null); }); } })();
 
 /* =====================================================================
-   IB-42 · PENDENTS  (dades reals: IHME GBD, 2019 → 2023)
+   CASE-03 · PENDENTS  (dades reals: IHME GBD, 2019 → 2023)
    ===================================================================== */
 let mode42="pct";
 const C42=((DA.mort||{c:[]}).c).filter(c=>c[2]!=="oth").map(c=>({t:c[0],ts:c[1],a:c[3],b:c[4]}));
@@ -1242,7 +1242,7 @@ const M42=piece(42,(el,w)=>{
 segs(42,k=>{ mode42=k; const el=$('[data-p="42"]'); if(el)el.__again=!V.reduced; M42.redraw(); });
 
 /* =====================================================================
-   IB-43 · QUADRATS D'ESCALA  (dades reals: pols del Sàhara, Yu et al. 2015)
+   SCALE-02 · QUADRATS D'ESCALA  (dades reals: pols del Sàhara, Yu et al. 2015)
    ===================================================================== */
 const Q43=(DA.pols||[]).map((p,i)=>({i,t:p[0],d:p[1],v:p[2]}));
 legend(43,el=>{ const d=d3.select(el).append("div").attr("class","ibv-lg ibv-lg-cat");
@@ -1322,7 +1322,7 @@ const M43=piece(43,(el,w)=>{
 (function(){ const b=$('[data-play="43"]'); if(b)b.addEventListener("click",()=>{ const el=$('[data-p="43"]'); if(el&&el._grow&&!V.reduced)el._grow(); }); void M43; })();
 
 /* =====================================================================
-   IB-44 · HORITZÓ  (dades reals: ONI, una fila per dècada)
+   TIME-05 · HORITZÓ  (dades reals: ONI, una fila per dècada)
    ===================================================================== */
 let fold44=true;
 const B44=1, NB=3;

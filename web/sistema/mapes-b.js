@@ -1,4 +1,4 @@
-/* Sistema infogràfic d'Inspired by Magazine · Mapes, segona tanda (IB-28 a IB-34) i mapa físic en relleu (IB-59).
+/* Sistema infogràfic d'Inspired by Magazine · Mapes, segona tanda (MAP-19 a MAP-09) i mapa físic en relleu (MAP-01).
    Cada bloc «IB-nn» és una peça completa. Fa servir assets/ib-viz.js (IBV),
    la geografia de world-atlas 2.0.2 i les dades reals de dades-mapes-b.js
    (NCEP/NCAR R1, gener i juliol 1991–2020; World Ocean Atlas 2023, superfície de l'Atlàntic). */
@@ -74,7 +74,7 @@ const textW=(s,size)=>s.length*(size||12.5)*.53;   // amplada aproximada (Source
 
 /* ---------- geografia ---------- */
 let W=null;                  // world-atlas 110m (IBV.world)
-let W50=null, w50P=null;     // world-atlas 50m, només per a la lupa (IB-34)
+let W50=null, w50P=null;     // world-atlas 50m, només per a la lupa (MAP-09)
 function world50(){ if(!w50P)w50P=fetch("https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json").then(r=>r.json()).then(tp=>(W50={
   land:topojson.merge(tp,tp.objects.countries.geometries.filter(g=>g.properties.name!=="Antarctica")), borders:topojson.mesh(tp,tp.objects.countries,(a,b)=>a!==b)})).catch(()=>null); return w50P; }
 const NOMS={"Fiji":"Fiji","Tanzania":"Tanzània","W. Sahara":"Sàhara Occidental","Canada":"Canadà","United States of America":"Estats Units","Kazakhstan":"Kazakhstan","Uzbekistan":"Uzbekistan","Papua New Guinea":"Papua Nova Guinea","Indonesia":"Indonèsia","Argentina":"Argentina","Chile":"Xile","Dem. Rep. Congo":"República Democràtica del Congo","Somalia":"Somàlia","Kenya":"Kenya","Sudan":"Sudan","Chad":"Txad","Haiti":"Haití","Dominican Rep.":"República Dominicana","Russia":"Rússia","Bahamas":"Bahames","Falkland Is.":"Illes Malvines","Norway":"Noruega","Greenland":"Groenlàndia","Fr. S. Antarctic Lands":"Terres Australs i Antàrtiques Franceses","Timor-Leste":"Timor Oriental","South Africa":"Sud-àfrica","Lesotho":"Lesotho","Mexico":"Mèxic","Uruguay":"Uruguai","Brazil":"Brasil","Bolivia":"Bolívia","Peru":"Perú","Colombia":"Colòmbia","Panama":"Panamà","Costa Rica":"Costa Rica","Nicaragua":"Nicaragua","Honduras":"Hondures","El Salvador":"El Salvador","Guatemala":"Guatemala","Belize":"Belize","Venezuela":"Veneçuela","Guyana":"Guyana","Suriname":"Surinam","France":"França","Ecuador":"Equador","Puerto Rico":"Puerto Rico","Jamaica":"Jamaica","Cuba":"Cuba","Zimbabwe":"Zimbàbue","Botswana":"Botswana","Namibia":"Namíbia","Senegal":"Senegal","Mali":"Mali","Mauritania":"Mauritània","Benin":"Benín","Niger":"Níger","Nigeria":"Nigèria","Cameroon":"Camerun","Togo":"Togo","Ghana":"Ghana","Côte d'Ivoire":"Costa d'Ivori","Guinea":"Guinea","Guinea-Bissau":"Guinea Bissau","Liberia":"Libèria","Sierra Leone":"Sierra Leone","Burkina Faso":"Burkina Faso","Central African Rep.":"República Centreafricana","Congo":"Congo","Gabon":"Gabon","Eq. Guinea":"Guinea Equatorial","Zambia":"Zàmbia","Malawi":"Malawi","Mozambique":"Moçambic","eSwatini":"Eswatini","Angola":"Angola","Burundi":"Burundi","Israel":"Israel","Lebanon":"Líban","Madagascar":"Madagascar","Palestine":"Palestina","Gambia":"Gàmbia","Tunisia":"Tunísia","Algeria":"Algèria","Jordan":"Jordània","United Arab Emirates":"Emirats Àrabs Units","Qatar":"Qatar","Kuwait":"Kuwait","Iraq":"Iraq","Oman":"Oman","Vanuatu":"Vanuatu","Cambodia":"Cambodja","Thailand":"Tailàndia","Laos":"Laos","Myanmar":"Myanmar","Vietnam":"Vietnam","North Korea":"Corea del Nord","South Korea":"Corea del Sud","Mongolia":"Mongòlia","India":"Índia","Bangladesh":"Bangladesh","Bhutan":"Bhutan","Nepal":"Nepal","Pakistan":"Pakistan","Afghanistan":"Afganistan","Tajikistan":"Tadjikistan","Kyrgyzstan":"Kirguizistan","Turkmenistan":"Turkmenistan","Iran":"Iran","Syria":"Síria","Armenia":"Armènia","Sweden":"Suècia","Belarus":"Belarús","Ukraine":"Ucraïna","Poland":"Polònia","Austria":"Àustria","Hungary":"Hongria","Moldova":"Moldàvia","Romania":"Romania","Lithuania":"Lituània","Latvia":"Letònia","Estonia":"Estònia","Germany":"Alemanya","Bulgaria":"Bulgària","Greece":"Grècia","Turkey":"Turquia","Albania":"Albània","Croatia":"Croàcia","Switzerland":"Suïssa","Luxembourg":"Luxemburg","Belgium":"Bèlgica","Netherlands":"Països Baixos","Portugal":"Portugal","Spain":"Espanya","Ireland":"Irlanda","New Caledonia":"Nova Caledònia","Solomon Is.":"Illes Salomó","New Zealand":"Nova Zelanda","Australia":"Austràlia","Sri Lanka":"Sri Lanka","China":"Xina","Taiwan":"Taiwan","Italy":"Itàlia","Denmark":"Dinamarca","United Kingdom":"Regne Unit","Iceland":"Islàndia","Azerbaijan":"Azerbaidjan","Georgia":"Geòrgia","Philippines":"Filipines","Malaysia":"Malàisia","Brunei":"Brunei","Slovenia":"Eslovènia","Finland":"Finlàndia","Slovakia":"Eslovàquia","Czechia":"Txèquia","Eritrea":"Eritrea","Japan":"Japó","Paraguay":"Paraguai","Yemen":"Iemen","Saudi Arabia":"Aràbia Saudita","Antarctica":"Antàrtida","N. Cyprus":"Xipre del Nord","Cyprus":"Xipre","Morocco":"Marroc","Egypt":"Egipte","Libya":"Líbia","Ethiopia":"Etiòpia","Djibouti":"Djibouti","Somaliland":"Somalilàndia","Uganda":"Uganda","Rwanda":"Ruanda","Bosnia and Herz.":"Bòsnia i Hercegovina","Macedonia":"Macedònia del Nord","Serbia":"Sèrbia","Montenegro":"Montenegro","Kosovo":"Kosovo","Trinidad and Tobago":"Trinitat i Tobago","S. Sudan":"Sudan del Sud"};
@@ -107,7 +107,7 @@ function ncNear(a,lon,lat){ const i=Math.round((90-lat)/2.5), j=Math.round((((lo
 
 
 /* =====================================================================
-   IB-28 · CAMP DE VENT ANIMAT  (simulació + mapa real)
+   MAP-19 · CAMP DE VENT ANIMAT  (simulació + mapa real)
    ===================================================================== */
 const SPD28=d3.scaleSequential(V.seqInterp(C.blau)).domain([-28,112]).clamp(true);
 legend(28,el=>V.legendRamp(el,{scale:SPD28,min:0,max:110,ticks:[25,50,75,100],f:f0,title:"Velocitat del vent simulat (km/h)",lo:"Més fluix",hi:"Més fort"}));
@@ -231,7 +231,7 @@ const M28=piece(28,(el,w)=>{
 
 
 /* =====================================================================
-   IB-29 · MAPA BIVARIANT  (dades reals: NCEP/NCAR R1 + mapa real)
+   MAP-10 · MAPA BIVARIANT  (dades reals: NCEP/NCAR R1 + mapa real)
    ===================================================================== */
 function mixBiv(i,j){ const n=d3.lab(C.neutral), r=d3.lab(C.vermell), b=d3.lab(C.blau), ti=i/2, tj=j/2, k=1-.33*ti*tj;
   return d3.lab(n.l+((r.l-n.l)*ti+(b.l-n.l)*tj)*k, n.a+(r.a-n.a)*ti+(b.a-n.a)*tj, n.b+(r.b-n.b)*ti+(b.b-n.b)*tj).formatHex(); }
@@ -348,7 +348,7 @@ const M29=piece(29,(el,w)=>{
 
 
 /* =====================================================================
-   IB-30 · DISTÀNCIA DES D'UN PUNT  (geometria real + mapa real)
+   MAP-14 · DISTÀNCIA DES D'UN PUNT  (geometria real + mapa real)
    ===================================================================== */
 const CITIES30=[["Barcelona",2.17,41.39],["Londres",-.13,51.51],["Reykjavík",-21.94,64.15],["Nova York",-74.01,40.71],["Ciutat de Mèxic",-99.13,19.43],["Los Angeles",-118.24,34.05],["Lima",-77.04,-12.05],["São Paulo",-46.63,-23.55],["Buenos Aires",-58.38,-34.6],["Dakar",-17.45,14.69],["Lagos",3.38,6.52],["Ciutat del Cap",18.42,-33.92],["Nairobi",36.82,-1.29],["El Caire",31.24,30.04],["Moscou",37.62,55.76],["Delhi",77.21,28.61],["Pequín",116.41,39.9],["Tòquio",139.69,35.68],["Singapur",103.82,1.35],["Sydney",151.21,-33.87],["Auckland",174.76,-36.85],["Honolulu",-157.86,21.31]];
 const ST30={c:[2.17,41.39],name:"Barcelona"};
@@ -479,7 +479,7 @@ document.querySelectorAll('[data-seg="30"] button').forEach(b=>b.addEventListene
 
 
 /* =====================================================================
-   IB-31 · ABANS I DESPRÉS  (dades reals: NCEP/NCAR R1 + mapa real)
+   MAP-15 · ABANS I DESPRÉS  (dades reals: NCEP/NCAR R1 + mapa real)
    ===================================================================== */
 const ED31=[-20,-16,-12,-8,-4,0,4,8,12,16,20], DIV31=V.div(22);
 const COL31=d3.range(12).map(k=>DIV31(k===0?-22:k===11?22:(ED31[k-1]+ED31[k])/2));
@@ -565,7 +565,7 @@ const M31=piece(31,(el,w)=>{
 
 
 /* =====================================================================
-   IB-32 · MAPA EN FRANJA  (dades reals: NCEP/NCAR R1 + mapa real)
+   MAP-13 · MAPA EN FRANJA  (dades reals: NCEP/NCAR R1 + mapa real)
    ===================================================================== */
 const A32=[2.17,41.39], B32=[139.69,35.68];
 const CITY32=[["Barcelona",2.17,41.39,1],["Lió",4.84,45.76,3],["Frankfurt",8.68,50.11,2],["Berlín",13.4,52.52,1],["Riga",24.11,56.95,3],["Sant Petersburg",30.31,59.94,1],["Arkhànguelsk",40.54,64.54,2],["Siktivkar",50.84,61.67,3],["Surgut",73.4,61.25,1],["Bratsk",101.63,56.15,2],["Kirensk",108.1,57.78,3],["Txità",113.5,52.03,1],["Blagoveixtxensk",127.53,50.26,2],["Vladivostok",131.89,43.12,1],["Tòquio",139.69,35.68,1]];
@@ -697,7 +697,7 @@ const M32=piece(32,(el,w)=>{
 
 
 /* =====================================================================
-   IB-33 · HEXÀGONS EN EL TEMPS  (simulació a partir de dades reals de gener i juliol)
+   MAP-16 · HEXÀGONS EN EL TEMPS  (simulació a partir de dades reals de gener i juliol)
    ===================================================================== */
 const DIV33=V.div(30);
 legend(33,el=>{ V.legendRamp(el,{scale:DIV33,min:-30,max:30,ticks:[-30,-15,0,15,30],f:v=>sgn(v,0),title:"Temperatura de l'aire (°C)",lo:"Més freda",hi:"Més calenta"});
@@ -804,10 +804,10 @@ function setPlay33(on){ const b=$('[data-play="33"]'); if(b){ b.textContent=on?"
 
 
 /* =====================================================================
-   IB-34 · MAPA D'ISOTERMES MARÍ  (dades reals: World Ocean Atlas 2023 + mapa real)
+   MAP-09 · MAPA D'ISOTERMES MARÍ  (dades reals: World Ocean Atlas 2023 + mapa real)
    Camp complet visible d'entrada: franges litogràfiques translúcides (blau a vermell),
    isotermes fines cada 2 °C que esculpeixen els fronts oceànics, isotermes principals cada 5 °C
-   amb etiquetes directes i terra silenciosa a sobre (estil IB-28 / «Germany»).
+   amb etiquetes directes i terra silenciosa a sobre (estil MAP-19 / «Germany»).
    ===================================================================== */
 const WO=DB&&DB.woa;
 let WT=null, ZM34=null;   // temperatures (NaN = terra o sense dada) i mitjana de cada fila
@@ -950,7 +950,7 @@ const M34=piece(34,(el,w)=>{
     }
   });
 
-  // 3 anotacions de mecanisme (estil IB-28)
+  // 3 anotacions de mecanisme (estil MAP-19)
   const ann=fg.append("g").attr("pointer-events","none");
   { let best=null;
     for(let i=0;i<WO.nlat;i++)for(let j=0;j<WO.nlon;j++){
@@ -1012,7 +1012,7 @@ const M34=piece(34,(el,w)=>{
 });
 
 /* =====================================================================
-   IB-59 · MAPA FÍSIC EN RELLEU  (dades reals: relleu Mapzen Terrain Tiles / NASA SRTM)
+   MAP-01 · MAPA FÍSIC EN RELLEU  (dades reals: relleu Mapzen Terrain Tiles / NASA SRTM)
    L'estil dels mapes de «Jesús i els quatre evangelis», fet reutilitzable.
    Base física per a QUALSEVOL mapa regional (un país, una vall, una costa):
    franges hipsomètriques en grisos càlids + ombra suau des del NO + isolínies

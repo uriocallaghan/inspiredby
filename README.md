@@ -39,7 +39,7 @@ Revista d'articles visuals per entendre el món (en català). `site/` es conserv
 - `articles/calendari-cosmic/` i `articles/de-que-mor-el-mon/`: versions noves (2026) dels articles de 2020, traduïdes al català, amb dades validades i infografies fetes amb d3. `assets/article.css` i `assets/scrolly.js` són la base comuna dels articles.
 - `../research/`: validacions de dades, cites i fonts (fetes amb tres agents), i les dades en CSV que fan servir els gràfics.
 
-- `sistema/`: mostrari del sistema infogràfic (principis, colors, components i 54 peces animades, IB-01 a IB-54), amb `assets/ib-viz.js` com a codi comú. Les regles per als agents són a `research/sistema-infografic.md`.
+- `sistema/`: mostrari del sistema infogràfic (principis, colors, components i 54 peces animades, TIME-02 a SPREAD-07), amb `assets/ib-viz.js` com a codi comú. Les regles per als agents són a `research/sistema-infografic.md`.
 
 Per afegir un article: carpeta `articles/<slug>/index.html` amb la mateixa capçalera (`ib-bar`), i una entrada a la portada.
 

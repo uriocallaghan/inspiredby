@@ -1,6 +1,6 @@
-/* Sistema infogràfic d'Inspired by Magazine · Formes inesperades (segona tanda): IB-45 a IB-54.
+/* Sistema infogràfic d'Inspired by Magazine · Formes inesperades (segona tanda): CASE-09 a SPREAD-07.
    Cada bloc «IB-nn» és una peça completa que es pot copiar a un article i adaptar.
-   Fa servir assets/ib-viz.js (IBV), dades.js (ONI real, per a IB-53) i dades-creatives-b.js (IB-49). */
+   Fa servir assets/ib-viz.js (IBV), dades.js (ONI real, per a TIME-10) i dades-creatives-b.js (TIME-15). */
 (function(){
 "use strict";
 const V=IBV, C=V.C, D=window.IBDATA||{}, DB=window.IBDATA_CREATIVESB||{};
@@ -33,7 +33,7 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const unfocus=sel=>sel.interrupt().style("opacity",null);
 
 /* =====================================================================
-   IB-45 · FLORS DE DADES  (dades d'exemple)
+   CASE-09 · FLORS DE DADES  (dades d'exemple)
    Una flor per ciutat, un pètal per indicador: llargada = valor (àrea proporcional), color = tipus.
    ===================================================================== */
 const T45=[{t:"Economia",c:C.vermell},{t:"Serveis",c:C.blau},{t:"Entorn",c:C.groc}];
@@ -131,7 +131,7 @@ seg(45,k=>{ order45=k; const el=$('[data-p="45"]'); el&&el._sort&&el._sort(); })
 void M45;
 
 /* =====================================================================
-   IB-46 · XARXA CIRCULAR AMB ONES  (dades d'exemple · estil «Letter traffic»)
+   LINK-04 · XARXA CIRCULAR AMB ONES  (dades d'exemple · estil «Letter traffic»)
    Anell finíssim amb nodes translúcids, dues ones exteriors suaus (sortides en vermell,
    entrades en blau) i fils Bézier interiors delicats amb tiges de puntets als fluxos clau.
    ===================================================================== */
@@ -255,7 +255,7 @@ const M46=piece(46,(el,w)=>{
 void M46;
 
 /* =====================================================================
-   IB-47 · CORRENT APILAT  (dades d'exemple)
+   TIME-04 · CORRENT APILAT  (dades d'exemple)
    Streamgraph de cinc sèries; tres maneres d'apilar amb morph animat.
    ===================================================================== */
 const K47=["A","B","C","D","E"].map((k,i)=>({k,t:"Tipus "+k,c:V.CAT6[i]}));
@@ -348,7 +348,7 @@ seg(47,k=>{ const el=$('[data-p="47"]'); if(el&&el._mode)el._mode(+k); else mode
 void M47;
 
 /* =====================================================================
-   IB-48 · UN DIA EN UN MINUT  (dades d'exemple)
+   TIME-12 · UN DIA EN UN MINUT  (dades d'exemple)
    Rellotge de 24 h: una agulla fa la volta en 60 s i cada esdeveniment apareix a la seva hora.
    ===================================================================== */
 const G48=[{t:"Grup A",c:C.vermell},{t:"Grup B",c:C.blau},{t:"Grup C",c:C.groc}];
@@ -467,7 +467,7 @@ const M48=piece(48,(el,w)=>{
   btn48(); }); })();
 
 /* =====================================================================
-   IB-49 · TEMPS PROFUND  (dades reals: research/calendari-events.csv)
+   TIME-15 · TEMPS PROFUND  (dades reals: research/calendari-events.csv)
    Línia del temps logarítmica o lineal, amb zoom cap a avui.
    ===================================================================== */
 const EV49=(DB.temps||[]).slice().sort((a,b)=>b.a-a.a);
@@ -602,7 +602,7 @@ seg(49,k=>{ S49.log=k==="log"; const el=$('[data-p="49"]'); el&&el._update&&el._
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>M49.redraw());
 
 /* =====================================================================
-   IB-50 · COORDENADES PARAL·LELES  (dades d'exemple)
+   CASE-07 · COORDENADES PARAL·LELES  (dades d'exemple)
    500 línies translúcides; arrossegant sobre un eix es filtra (brush).
    ===================================================================== */
 const D50=[{k:"m2",t:"Superfície",s:"Mida",u:"m²",dom:[20,220]},{k:"edat",t:"Antiguitat",s:"Edat",u:"anys",dom:[0,100]},{k:"preu",t:"Preu",u:"€/m²",dom:[1000,7000]},
@@ -697,7 +697,7 @@ const M50=piece(50,(el,w)=>{
 void M50;
 
 /* =====================================================================
-   IB-51 · BARRA QUE ES TRENCA  (dades d'exemple)
+   PART-04 · BARRA QUE ES TRENCA  (dades d'exemple)
    Un total sòlid que es trenca en unitats que volen a agrupar-se.
    ===================================================================== */
 const G51=[{t:"Grup A",n:96},{t:"Grup B",n:62},{t:"Grup C",n:41},{t:"Grup D",n:26},{t:"Grup E",n:15}].map((d,i)=>Object.assign(d,{c:V.CAT6[i]}));
@@ -784,7 +784,7 @@ seg(51,k=>{ touched51=true; const el=$('[data-p="51"]'); if(el&&el._go)el._go(+k
 void M51;
 
 /* =====================================================================
-   IB-53 · ANELL DE L'ANY  (dades reals: ONI)
+   TIME-10 · ANELL DE L'ANY  (dades reals: ONI)
    12 sectors (mesos) amb una barra fina per any; creixen des d'un anell que és el zero.
    ===================================================================== */
 const SEASON=["des–feb","gen–març","feb–abr","març–maig","abr–juny","maig–jul","juny–ag","jul–set","ag–oct","set–nov","oct–des","nov–gen"];
@@ -884,7 +884,7 @@ seg(53,k=>{ sort53=+k; const el=$('[data-p="53"]'); el&&el._sort&&el._sort(); })
 void M53;
 
 /* =====================================================================
-   IB-54 · BOMBOLLES EN MOVIMENT  (dades d'exemple)
+   SPREAD-07 · BOMBOLLES EN MOVIMENT  (dades d'exemple)
    Dispersió animada en el temps, amb l'any gran al fons i l'estela del recorregut.
    ===================================================================== */
 const G54=[{t:"Grup A",c:C.vermell},{t:"Grup B",c:C.blau},{t:"Grup C",c:C.groc},{t:"Grup D",c:C.blauClar}];
@@ -1005,7 +1005,7 @@ const M54=piece(54,(el,w)=>{
 void M54;
 
 /* =====================================================================
-   IB-55 · MAPA CONCEPTUAL SOBRE EIX  (esquema · estil «Design Futures»)
+   LINK-05 · MAPA CONCEPTUAL SOBRE EIX  (esquema · estil «Design Futures»)
    Grans cercles monocroms translúcids `multiply` solapats al llarg d'un eix discontinu
    bipolar per cartografiar disciplines, escoles o conceptes propers.
    ===================================================================== */
@@ -1086,7 +1086,7 @@ const M55=piece(55,(el,w)=>{
 void M55;
 
 /* =====================================================================
-   IB-56 · MATRIU MONOCROMA MULTIVARIANT  (dades d'exemple · estil «NBA heatmap»)
+   CASE-06 · MATRIU MONOCROMA MULTIVARIANT  (dades d'exemple · estil «NBA heatmap»)
    18 perfils × 12 indicadors en una sola rampa blava amb fils blancs fins i cercles
    d'accent sobre els tres valors més alts.
    ===================================================================== */
@@ -1163,7 +1163,7 @@ const M56=piece(56,(el,w)=>{
 void M56;
 
 /* =====================================================================
-   IB-57 · RADAR ORGÀNIC SOBRE DISCOS SUAUS  (dades d'exemple · estil «Member Behaviour / Usability»)
+   CASE-08 · RADAR ORGÀNIC SOBRE DISCOS SUAUS  (dades d'exemple · estil «Member Behaviour / Usability»)
    Corba orgànica tancada (`curveCardinalClosed`) sobre 4 discos translúcids sense vora
    (mai anells negres tipus diana). Comparador entre dos perfils.
    ===================================================================== */
@@ -1244,7 +1244,7 @@ seg(57,k=>{ mode57=k; M57.redraw(); });
 void M57;
 
 /* =====================================================================
-   IB-58 · RUSC RADIAL D'HEXÀGONS  (dades d'exemple · estil «Performance hex-cluster»)
+   PART-07 · RUSC RADIAL D'HEXÀGONS  (dades d'exemple · estil «Performance hex-cluster»)
    Composició orgànica en rusc des del centre cap enfora: 127 hexàgons iguals sense vores
    dures, agrupats en 4 anells radials de color (groc nucli → vermell → blau → blau clar).
    ===================================================================== */
