@@ -1,5 +1,5 @@
 /* «L'últim sopar de Leonardo» · 6 visualitzacions del sistema infogràfic (IBV + d3 7.9.0)
-   V1 (#taula-viz):    Scrollytelling 1 · HOW-01 planta + alçat: els 13 comensals es mouen d'una taula a l'altra (4 passos).
+   V1 (#taula-viz):    Scrollytelling 1 · l'obra d'època de cada pas + planta HOW-01 on els 13 comensals es mouen (4 passos).
    V2 (#textos-viz):   CASE-06 Matriu de signes (5 textos + Leonardo) amb fils cap als versicles que Leonardo agafa.
    V3 (#cenacolo-viz): MAP-15 Comparador Leonardo (1498) vs Giampietrino (c. 1515–1520) + 3 capes d'anàlisi.
    V4 (#cataleg-viz):  CASE-04 + TIME: 20 pictogrames de taula en planta sobre l'eix del temps (c. 500–1594, 3 lents).
@@ -37,16 +37,14 @@
 
   /* =========================================================================
      V1 · SCROLLY 1 — DEL TRICLINIUM AL FRIS DE MILÀ (#taula-viz)
-     HOW-02 (alçat) + HOW-01 (planta). A dalt, un fris de persones «Voyager» (el cap
-     de la placa Pioneer/Voyager, vestit amb túnica i mantell, IBVOY): reclinats sobre el
-     colze, asseguts amb aurèola, i els tretze de Leonardo amb el gest de cadascun.
-     A sota, la planta: els mateixos tretze cossos es mouen d'una taula a l'altra.
+     A dalt, l'obra d'època de cada pas (cap persona inventada; decisió de l'editor, 20-11-2026):
+     fresc de banquet de Pompeia, mosaic de Ravenna, Castagno i Leonardo.
+     A sota, la planta (HOW-01): els mateixos tretze cossos es mouen d'una taula a l'altra.
      ========================================================================= */
   (function initTaula(){
     const sec = $("#s-taula"), el = $("#taula-viz"), rd = $("#taula-r");
     const tEl = $("#taula-t"), sEl = $("#taula-s");
-    if(!sec || !el || !window.IBVOY) return;
-    const VY = IBVOY, VW = VY.W;
+    if(!sec || !el) return;
     lg($("#taula-lg"), [
       { c: C.ink, t: "Jesús" },
       { c: C.blue, t: "Deixebles" },
@@ -95,127 +93,24 @@
       { crist: "Jesús: centre del triangle i punt de fuga de la perspectiva", joan: "Joan s'aparta de Jesús i s'inclina cap a Pere", judes: "Judes, dins el grup però reculat a l'ombra, amb la bossa", altre: null }
     ];
 
-    /* ---------------- persones Voyager (IBVOY): el cos original de la placa, vestit; només línia ---------------- */
-    const TABLE_Y = VY.TABLE;          // 485 unitats sota la base del coll
-    const SHORT = { bartomeu: "Bartomeu", jaumemenor: "Jaume el Menor", andreu: "Andreu", judes: "Judes", pere: "Pere", joan: "Joan", crist: "Jesús",
-      tomas: "Tomàs", jaumemajor: "Jaume el Major", felip: "Felip", mateu: "Mateu", tadeu: "Tadeu", simo: "Simó" };
-    // A Milà: només inclinacions suaus i alçades (qui s'aixeca, qui recula), com les tríades del mural
-    const LEO = {
-      bartomeu: { stand: 120, lean: 5 }, jaumemenor: { lean: 4 }, andreu: { lean: -3, flip: true },
-      judes: { dy: 60, lean: 8 }, pere: { stand: 70, lean: 7, flip: true }, joan: { lean: -8, dy: 16 },
-      crist: {}, tomas: { stand: 50, lean: 5 }, jaumemajor: { lean: -3, flip: true }, felip: { stand: 120, lean: -5 },
-      mateu: { lean: -7, flip: true }, tadeu: { lean: -4 }, simo: { lean: -3, flip: true }
-    };
-    function seated(g, id, o){
-      o = o || {};
-      const f = g.append("g").attr("class", "vf").datum(id)
-        .attr("transform", `translate(${o.x || 0},${(o.dy || 0) - (o.stand || 0)}) rotate(${o.lean || 0},0,${TABLE_Y + (o.stand || 0)})`);
-      if(o.halo){
-        f.append("circle").attr("class", "nimbus").attr("cx", 0).attr("cy", -180).attr("r", 205)
-          .attr("fill", mix(C.yellow, .5)).attr("stroke", C.yellowDark).attr("stroke-width", VW * .5);
-        if(id === "crist") f.append("path").attr("d", "M-24,-385H24V-300H-24Z M-205,-204H-118V-156H-205Z M118,-204H205V-156H118Z").attr("fill", C.yellowDark);
-      }
-      VY.use(f, "torso", { flip: o.flip });
-      return f;
-    }
-    // reclinat (convenció dels relleus de banquet): tors dret o poc inclinat, colze al coixí, mantell sobre les cames
-    function reclined(g, id, o){
-      o = o || {};
-      const f = g.append("g").attr("class", "vf").datum(id).attr("transform", `translate(${o.x || 0},${o.y || 0})`);
-      VY.shape(f, "M-470,610C-470,555 -150,555 -140,610C-140,665 -470,665 -470,610Z");                       // coixí
-      const up = f.append("g").attr("transform", `rotate(${o.lean == null ? -20 : o.lean},0,${VY.HIP})`);
-      VY.use(up, "torso", { flip: o.flip });
-      // mantell sobre el maluc i les cames estirades: maluc, genoll lleugerament doblegat i peus a l'extrem
-      VY.shape(f, "M-300,760C-336,720 -330,640 -250,606C-120,556 120,548 300,590C470,630 600,600 760,596C930,592 1120,632 1300,652C1380,660 1420,628 1470,640C1520,652 1528,712 1500,760Z");
-      VY.line(f, "M300,640C470,676 620,650 780,648C960,646 1140,676 1320,694", VW * .6);
-      VY.line(f, "M160,716C420,724 760,712 1040,722C1200,728 1340,736 1440,742", VW * .6);
-      VY.line(f, "M-250,640C-200,660 -150,700 -140,744", VW * .6);
-      VY.line(f, "M1420,676C1440,690 1444,712 1436,732", VW * .6);
-      return f;
-    }
-    // Judes d'esquena en un tamboret, davant la taula (taula medieval)
-    function backSeated(g, id, o){
-      const f = g.append("g").attr("class", "vf").datum(id).attr("transform", `translate(${o.x},${o.y})`);
-      VY.use(f, "back", {});
-      VY.shape(f, "M-260,470H260V512H-260Z"); VY.line(f, "M-220,512V700M220,512V700", VW);
-      return f;
-    }
-
-    // taula en alçat
-    function tableElev(g, x0, x1, items){
-      VY.shape(g, `M${x0},${TABLE_Y - 16}H${x1}V${TABLE_Y + 10}H${x0}Z`);
-      VY.shape(g, `M${x0 + 6},${TABLE_Y + 10}H${x1 - 6}V${TABLE_Y + 280}H${x0 + 6}Z`);
-      for(let x = x0 + 300; x < x1 - 150; x += 600) VY.line(g, `M${x},${TABLE_Y + 30}C${x + 14},${TABLE_Y + 110} ${x - 8},${TABLE_Y + 190} ${x + 4},${TABLE_Y + 262}`, VW * .6);
-      (items || []).forEach(it => drawItem(g, it));
-    }
-    function drawItem(g, it){
-      const y = it.y == null ? TABLE_Y - 16 : it.y, x = it.x;
-      if(it.k === "bread") VY.shape(g, `M${x - 60},${y}C${x - 58},${y - 66} ${x + 58},${y - 66} ${x + 60},${y}Z`);
-      else if(it.k === "glass") VY.shape(g, `M${x - 26},${y - 96}L${x + 26},${y - 96}L${x + 16},${y}L${x - 16},${y}Z`);
-      else if(it.k === "cup") VY.shape(g, `M${x - 40},${y - 84}L${x + 40},${y - 84}L${x + 30},${y}L${x - 30},${y}Z`);
-      else if(it.k === "plate") VY.shape(g, `M${x - 100},${y - 4}Q${x},${y - 30} ${x + 100},${y - 4}Q${x},${y + 6} ${x - 100},${y - 4}Z`);
-      else if(it.k === "bowl") VY.shape(g, `M${x - 130},${y - 74}H${x + 130}C${x + 120},${y - 10} ${x + 60},${y} ${x},${y}C${x - 60},${y} ${x - 120},${y - 10} ${x - 130},${y - 74}Z`);
-      else if(it.k === "fish"){
-        const L = it.L || 170;
-        VY.shape(g, `M${x - L / 2},${y - 28}Q${x},${y - 74} ${x + L / 2},${y - 28}Q${x},${y + 14} ${x - L / 2},${y - 28}Z M${x + L / 2},${y - 28}L${x + L / 2 + 46},${y - 58}L${x + L / 2 + 46},${y + 2}Z`);
-      }
-      else if(it.k === "salt") VY.shape(g, `M${x - 30},${y}L${x + 34},${y - 34}L${x + 46},${y - 14}L${x - 18},${y + 6}Z`);
-    }
-
-    // escena de cada pas en alçat. Torna {ext:[x0,x1,y0,y1], labels:[{id,x}]}
-    function scene(g, idx, mob){
-      if(idx === 0){
-        const order = [["judes", 0, 0, -8], ["crist", 900, 24, -8], ["joan", 1660, 48, -12]];
-        VY.shape(g, "M-520,760H2900V812H-520Z"); VY.line(g, "M-470,812V960M2850,812V960", VW);
-        order.forEach(([id, x, y, lean]) => reclined(g, id, { x, y, lean, flip: id === "joan" }));
-        const tg = g.append("g");
-        VY.shape(tg, "M300,900H2300V926H300Z"); VY.line(tg, "M370,926V1060M2230,926V1060", VW);
-        [{ k: "bowl", x: 1300, y: 900 }, { k: "cup", x: 700, y: 900 }, { k: "cup", x: 1900, y: 900 }, { k: "bread", x: 950, y: 900 }, { k: "bread", x: 1650, y: 900 }].forEach(it => drawItem(tg, it));
-        return { ext: [-540, 2920, -360, 1070], labels: order.map(([id, x]) => ({ id, x })) };
-      }
-      if(idx === 1){
-        const ids = ["crist", "joan", "judes", "andreu", "tomas"];
-        const xs = [0, 780, 1560, 2340, 3120], lift = [40, -10, -40, -10, 40];
-        VY.shape(g, "M-520,800Q1560,660 4740,800L4740,852Q1560,712 -520,852Z");
-        ids.forEach((id, i) => reclined(g, id, { x: xs[i], y: lift[i], lean: -8, flip: i > 2 }));
-        const tg = g.append("g"), cxT = 1900;
-        VY.shape(tg, `M${cxT - 640},940Q${cxT},912 ${cxT + 640},940L${cxT + 640},966Q${cxT},938 ${cxT - 640},966Z`); VY.line(tg, `M${cxT},966V1080`, VW * 1.6);
-        VY.shape(tg, `M${cxT - 260},940Q${cxT},880 ${cxT + 260},940Z`);
-        [{ k: "fish", x: cxT - 90, y: 930 }, { k: "fish", x: cxT + 90, y: 936 }, { k: "bread", x: cxT - 460, y: 942 }, { k: "bread", x: cxT + 460, y: 942 }].forEach(it => drawItem(tg, it));
-        return { ext: [-540, 4760, -420, 1090], labels: ids.map((id, i) => ({ id, x: xs[i] })) };
-      }
-      if(idx === 2){
-        const back = ["bartomeu", "jaumemenor", "andreu", "pere", "tomas", "joan", "crist", "jaumemajor", "felip", "mateu", "tadeu", "simo"];
-        const n = mob ? 7 : 12, off = mob ? 3 : 0;
-        const list = back.slice(off, off + n);
-        const sp = 600, x0 = -(n - 1) * sp / 2;
-        list.forEach((id, i) => seated(g, id, { x: x0 + i * sp, halo: true, lean: id === "joan" ? 9 : 0, flip: i % 2 === 1 }));
-        const xc = x0 + list.indexOf("crist") * sp;
-        tableElev(g, x0 - 380, -x0 + 380, list.flatMap((id, i) => id === "crist" ? [] : i % 2 ? [{ k: "cup", x: x0 + i * sp + 210 }] : [{ k: "bread", x: x0 + i * sp + 220 }])
-          .concat([{ k: "plate", x: xc + 40 }, { k: "fish", x: xc + 40, y: TABLE_Y - 22, L: 140 }]));
-        backSeated(g, "judes", { x: xc - 40, y: TABLE_Y + 150 });
-        return { ext: [x0 - 400, -x0 + 400, -420, TABLE_Y + 150 + 720], labels: [{ id: "joan", x: x0 + list.indexOf("joan") * sp }, { id: "crist", x: xc }, { id: "judes", x: xc + 560 }] };
-      }
-      const pos = Object.fromEntries(IDS.map((id, i) => [id, xs13[i] * 17]));
-      IDS.forEach(id => seated(g, id, Object.assign({ x: pos[id] }, LEO[id])));
-      const items = [];
-      IDS.forEach((id, i) => {
-        if(id === "crist"){ items.push({ k: "plate", x: pos[id] }, { k: "bread", x: pos[id] + 190 }, { k: "glass", x: pos[id] - 190 }); return; }
-        items.push({ k: "glass", x: pos[id] + (i % 2 ? 150 : -140) });
-        if(i % 3 === 1) items.push({ k: "bread", x: pos[id] - 20 });
-      });
-      items.push({ k: "plate", x: pos.andreu + 60 }, { k: "fish", x: pos.andreu + 60, y: TABLE_Y - 22, L: 130 },
-                 { k: "plate", x: pos.mateu - 80 }, { k: "fish", x: pos.mateu - 80, y: TABLE_Y - 22, L: 130 },
-                 { k: "salt", x: pos.judes - 170 });
-      tableElev(g, pos.bartomeu - 420, pos.simo + 420, items);
-      return { ext: [pos.bartomeu - 440, pos.simo + 440, -500, TABLE_Y + 290], labels: IDS.map(id => ({ id, x: pos[id] })) };
-    }
+    /* ---------------- a dalt: l'obra d'època de cada pas (cap persona inventada) ---------------- */
+    const ART = [
+      { src: "img/pompeia-banquet.jpg", alt: "Fresc de Pompeia amb comensals reclinats en llits al voltant d'una tauleta rodona, servits per un noi",
+        cap: "Banquet reclinat, fresc de Pompeia, c. 50 dC (Nàpols, MANN 120031) · foto ArchaiOptix, CC BY-SA 4.0",
+        capM: "Pompeia, c. 50 dC · ArchaiOptix, CC BY-SA 4.0" },
+      { src: "img/ravenna-cena.jpg", alt: "Mosaic de Sant'Apollinare Nuovo amb Jesús i els apòstols reclinats en semicercle",
+        cap: "Sant'Apollinare Nuovo, Ravenna, c. 500–526", capM: "Sant'Apollinare Nuovo, c. 500–526" },
+      { src: "img/castagno-1447.jpg", alt: "Fresc de Castagno amb els apòstols darrere la taula i Judes sol al davant",
+        cap: "Andrea del Castagno, Cenacolo di Sant'Apollonia, Florència, 1447", capM: "Castagno, Florència, 1447" },
+      { src: "img/leonardo-cmp.jpg", alt: "Mural de Leonardo amb els tretze comensals al mateix costat de la taula",
+        cap: "Leonardo da Vinci, Il Cenacolo, Milà, 1495–1498", capM: "Leonardo, Milà, 1495–1498" }
+    ];
 
     let curStep = 0, updFn = null;
 
     V.mount(el, (node, w) => {
       const mob = w < 560;
-      const hFr = mob ? 132 : 232, hPlan = mob ? 146 : 240, gap = mob ? 18 : 24;
+      const hFr = mob ? 150 : 290, hPlan = mob ? 140 : 236, gap = mob ? 16 : 22;
       const h = hFr + gap + hPlan;
       const s = V.svg(node, w, h, "Fris de persones en alçat i planta esquemàtica de com seien els tretze comensals: del triclinium reclinat de Jerusalem al fris de Leonardo.");
       const yPlan0 = hFr + gap;
@@ -223,7 +118,8 @@
       const cx = w / 2, cy = yPlan0 + hPlan * 0.54;
       const sx = x => cx + x * k, sy = y => cy + y * k;
 
-      const gEl = s.append("g");
+      const gEl = s.append("g").attr("clip-path", `url(#taula-art-${Math.round(w)})`);
+      s.append("defs").append("clipPath").attr("id", `taula-art-${Math.round(w)}`).append("rect").attr("width", w).attr("height", hFr);
       s.append("line").attr("x1", 0).attr("x2", w).attr("y1", hFr + gap * .45).attr("y2", hFr + gap * .45).attr("stroke", C.grid);
       V.t(s, 0, hFr + gap * .45 + 14, "Planta", { size: 11.5, italic: true, fill: C.ink2 });
       const gFurn = s.append("g"), gLight = s.append("g"), gFood = s.append("g");
@@ -309,30 +205,13 @@
       let friezeFigs = d3.select(null);
       function frieze(idx, animate){
         const old = gEl.selectAll("g.fz");
-        if(animate) old.transition().duration(dur(350)).style("opacity", 0).remove(); else old.remove();
+        if(animate) old.transition().duration(dur(450)).style("opacity", 0).remove(); else old.remove();
+        const art = ART[idx], capH = 20, ih = hFr - capH;
         const outer = gEl.append("g").attr("class", "fz");
-        const inner = outer.append("g");
-        const res = scene(inner, idx, mob), [x0, x1, y0, y1] = res.ext;
-        const many = res.labels.length > 5;
-        const labs = mob && many ? res.labels.filter(l => ["crist", "joan", "judes"].includes(l.id)) : res.labels;
-        const labH = many && !mob ? 30 : 16;
-        const sc = Math.min((w - 4) / (x1 - x0), (hFr - labH - 4) / (y1 - y0));
-        const ox = (w - sc * (x1 - x0)) / 2 - sc * x0, oy = (hFr - labH - sc * (y1 - y0)) / 2 - sc * y0;
-        inner.attr("transform", `translate(${ox},${oy}) scale(${sc})`);
-        // noms sota el fris (en dues files quan són tretze)
-        const gl = outer.append("g").style("pointer-events", "none");
-        const yl = oy + sc * y1 + 13;
-        labs.forEach((l, i) => {
-          const key = ["crist", "joan", "judes"].includes(l.id);
-          const t = V.t(gl, ox + sc * l.x, yl + (many && !mob && i % 2 ? 14 : 0), SHORT[l.id].replace("Jaume el ", "Jaume "), {
-            anchor: "middle", size: 11, weight: key ? 700 : 400, fill: l.id === "judes" ? C.red : key ? C.ink : C.muted });
-          if(l.id === "joan" || l.id === "crist") gl.append("circle").attr("cx", ox + sc * l.x - t.node().getComputedTextLength() / 2 - 6)
-            .attr("cy", +t.attr("y") - 4).attr("r", 3.2).attr("fill", l.id === "joan" ? C.yellow : C.ink);
-        });
-        friezeFigs = inner.selectAll("g.vf").attr("tabindex", "0").attr("role", "button").attr("aria-label", id => NOM[id]).style("cursor", "pointer");
-        friezeFigs.on("pointerenter pointerdown", show).on("focus", show).on("blur", hide)
-          .on("pointerleave", ev => { if(ev.pointerType === "mouse") hide(); });
-        if(animate) outer.style("opacity", 0).transition().delay(dur(250)).duration(dur(650)).style("opacity", 1);
+        outer.append("image").attr("href", art.src).attr("x", 0).attr("y", 0).attr("width", w).attr("height", ih)
+          .attr("preserveAspectRatio", "xMidYMid slice").attr("role", "img").attr("aria-label", art.alt);
+        V.t(outer, 0, ih + 14, mob ? art.capM : art.cap, { size: 11, fill: C.muted });
+        if(animate) outer.style("opacity", 0).transition().delay(dur(200)).duration(dur(700)).style("opacity", 1);
       }
 
       function notes(idx){
@@ -382,7 +261,6 @@
       V.onView(node, inst => {
         if(inst) return;
         figs.style("opacity", 0).transition("in").delay((d, i) => 120 + i * 45).duration(500).style("opacity", 1);
-        friezeFigs.style("opacity", 0).transition("in").delay((d, i) => 80 + i * 70).duration(600).style("opacity", 1);
       });
     });
 
