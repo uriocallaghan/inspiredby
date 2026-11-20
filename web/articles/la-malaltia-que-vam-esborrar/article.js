@@ -4,8 +4,6 @@
    V4 #s-setge   MAP-03           Països amb verola endèmica (scrolly, dades reals)
    V5 #f-anell   MAP-16           Vacunació massiva o en anell (simulació)
    V6 #s-merca   MAP-01 + MAP-03  Somàlia, 1977 (scrolly, relleu)
-   V7 #f-mans    SCALE-02         Dosis i persones (dades reals)
-   V8 #f-agulla  HOW-01 + PART-01 L'agulla bifurcada
    Colors: vermell = la malaltia; blau = la protecció; groc només en superfícies. */
 (function(){
 "use strict";
@@ -136,7 +134,7 @@ function dot(g,p,o){ o=o||{};
   const PL={
     omei:{ll:[103.33,29.54],t:"Muntanya Emei",s:"pel nas, segons la tradició"},
     bengala:{ll:[88.36,22.57],t:"Bengala",s:"la tika, a la pell"},
-    garamant:{ll:[13.0,25.5],t:"Àfrica",s:"origen d'Onesimus, discutit"},
+    garamant:{ll:[13.0,25.5],t:"Àfrica",s:"Onesimus"},
     boston:{ll:[-71.06,42.36],t:"Boston, 1721",s:""},
     istanbul:{ll:[28.98,41.01],t:"Constantinoble",s:""},
     londres:{ll:[-0.13,51.51],t:"Londres, 1721",s:""},
@@ -146,11 +144,7 @@ function dot(g,p,o){ o=o||{};
     caracas:{ll:[-66.91,10.51],t:"Caracas",s:""},
     mexic:{ll:[-99.15,19.32],t:"Mèxic",s:""},
     manila:{ll:[120.98,14.59],t:"Manila",s:""},
-    macau:{ll:[113.55,22.18],t:"Macau i Canton",s:"1805"},
-    bogota:{ll:[-74.08,4.65],t:"Bogotà",s:""},
-    quito:{ll:[-78.51,-0.22],t:"Quito",s:""},
-    lima:{ll:[-77.03,-12.05],t:"Lima",s:""},
-    cocha:{ll:[-66.16,-17.39],t:"Cochabamba",s:"mort de Salvany, 1810"}
+    macau:{ll:[113.55,22.18],t:"Macau i Canton",s:"1805"}
   };
   const STEP=[
     {pts:["omei"],arcs:[]},
@@ -158,15 +152,15 @@ function dot(g,p,o){ o=o||{};
     {pts:["garamant","boston"],arcs:[["garamant","boston","red"]]},
     {pts:["istanbul","londres","boston"],arcs:[["istanbul","londres","red"]]},
     {pts:["berkeley"],arcs:[]},
-    {pts:["coruna","tenerife","caracas","mexic","manila","macau","bogota","quito","lima","cocha"],
-     arcs:[["coruna","tenerife","blue"],["tenerife","caracas","blue"],["caracas","mexic","blue"],["mexic","manila","blue"],["manila","macau","blue"],["caracas","bogota","blue"],["bogota","quito","blue"],["quito","lima","blue"],["lima","cocha","blue"]]}
+    {pts:["coruna","tenerife","caracas","mexic","manila","macau"],
+     arcs:[["coruna","tenerife","blue"],["tenerife","caracas","blue"],["caracas","mexic","blue"],["mexic","manila","blue"],["manila","macau","blue"]]}
   ];
   V.mount(box,(el,w)=>{
     if(el.__loop){ el.__loop.stop(); el.__loop=null; }
     const mob=w<640, vh=window.innerHeight||800;
     const {p,h}=worldProj(w,mob?Math.min(w*.62,vh*.4):Math.min(w*.56,vh*.7));
     const st=stage(el,h), path=d3.geoPath(p); st.style.overflow="hidden";
-    const s=overlay(st,w,h); s.attr("role","img").attr("aria-hidden",null).attr("aria-label","Mapa del món amb els llocs on es va practicar la variolació (Xina, Índia, Àfrica, Imperi otomà), la seva arribada a Londres i Boston el 1721, el descobriment de la vacuna a Berkeley el 1796 i la ruta de l'expedició Balmis-Salvany entre el 1803 i el 1810.");
+    const s=overlay(st,w,h); s.attr("role","img").attr("aria-hidden",null).attr("aria-label","Mapa del món amb els llocs on es va practicar la variolació (Xina, Índia, Àfrica, Imperi otomà), la seva arribada a Londres i Boston el 1721, el descobriment de la vacuna a Berkeley el 1796 i la ruta de l'expedició Balmis entre el 1803 i el 1806.");
     const gl=s.append("g"), ga=s.append("g"), gp=s.append("g");
     const {ctx}=mkCanvas(st,w,h,null); ctx.canvas.style.pointerEvents="none";
     V.world().then(W=>{ drawLand(gl,path,W); el.__set&&el.__set(cur,true); });
@@ -184,7 +178,7 @@ function dot(g,p,o){ o=o||{};
       all.forEach(key=>{ const q=P(key), on=now.has(key);
         const d=dot(gp,q,{r:on?(mob?10:15):6,c:key==="berkeley"?C.blue:(k===5&&on?C.blue:C.red),a:on?.3:.16});
         d.style("opacity",on?1:.55);
-        if(on&&(!mob||["omei","bengala","boston","londres","istanbul","berkeley","coruna","manila","cocha","garamant"].includes(key))){
+        if(on&&(!mob||["omei","bengala","boston","londres","istanbul","berkeley","coruna","manila","garamant"].includes(key))){
           const L=PL[key], left=q[0]>w*.72, dx=left?-12:12;
           V.t(gp,q[0]+dx,q[1]-3,L.t,{anchor:left?"end":"start",size:mob?11.5:12.5,weight:700,halo:3});
           if(L.s&&!mob)V.t(gp,q[0]+dx,q[1]+12,L.s,{anchor:left?"end":"start",size:11.5,fill:C.ink2,halo:3});
@@ -399,79 +393,6 @@ function dot(g,p,o){ o=o||{};
     el.__set(cur,true);
   });
   IB.scrolly(stepsEl,$("#s-merca .graphic"),i=>{ cur=i; if(box.__set)box.__set(i,false); });
-})();
-
-/* =====================================================================
-   V7 · SCALE-02 · LES MANS I LES DOSIS (quadrats niats, dades reals)
-   ===================================================================== */
-(function mans(){
-  const box=$("#mans-viz"); if(!box)return;
-  const M={
-    dosis:[{v:1400e6,t:"URSS",s:"més de 1.400 milions de dosis, en acords bilaterals (1958–1979)",c:C.red},{v:407e6,t:"Fons de l'OMS",s:"407 milions de 27 països (més del 60 % soviètiques)",c:C.yellow},{v:190e6,t:"Estats Units",s:"més de 190 milions, sobretot a l'Àfrica occidental i central",c:C.blue}],
-    persones:[{v:130000,t:"Índia",s:"més de 130.000 treballadors en les cerques casa per casa",c:C.red},{v:12000,t:"Bangladesh",s:"12.000 persones dedicades a l'eradicació el 1975",c:C.yellow},{v:687,t:"OMS",s:"687 persones de 73 països, en tot el programa",c:C.blue}]
-  };
-  let mode="dosis", api=null;
-  document.querySelectorAll('#f-mans .seg button').forEach(b=>b.addEventListener("click",()=>{ document.querySelectorAll('#f-mans .seg button').forEach(o=>o.setAttribute("aria-pressed",o===b)); mode=b.dataset.k; api&&api.redraw(); }));
-  api=V.mount(box,(el,w)=>{
-    d3.select(el).selectAll("svg").remove();
-    const mob=w<640, side=mob?Math.min(w-20,300):Math.min(380,w*.45), h=side+(mob?150:40);
-    const s=V.svg(el,w,h,mode==="dosis"?"Quadrats niats d'àrea proporcional a les dosis de vacuna donades: més de 1.400 milions de la URSS, 407 milions del fons de l'OMS i més de 190 milions dels Estats Units.":"Quadrats niats d'àrea proporcional a les persones: més de 130.000 treballadors a l'Índia, 12.000 a Bangladesh i 687 persones de l'OMS de 73 països."), g=s.append("g");
-    const it=M[mode], sc=d3.scaleSqrt([0,it[0].v],[0,side]), x0=mob?10:Math.max(10,w*.08), y0=h-(mob?140:20);
-    // cada quadrat té el paper a sota perquè els colors no es barregin
-    const gq=g.selectAll("g.q").data(it).join("g").attr("class","q");
-    const under=gq.append("rect").attr("x",x0).attr("y",y0).attr("width",0).attr("height",0).attr("fill",C.paper);
-    const sq=gq.append("rect").attr("x",x0).attr("y",y0).attr("width",0).attr("height",0).attr("fill",d=>d.c).attr("fill-opacity",d=>d.c===C.yellow?.5:.3).attr("stroke",d=>d.c===C.yellow?C.yellowDark:d.c).attr("stroke-width",.9);
-    const grow=instant=>[under,sq].forEach(sel=>sel.transition().duration(instant?0:900).delay((d,i)=>instant?0:i*250).attr("y",d=>y0-sc(d.v)).attr("width",d=>sc(d.v)).attr("height",d=>sc(d.v)));
-    V.onView(el,grow); if(el.__seen)grow(true);
-    const lx=mob?x0:x0+side+30;
-    it.forEach((d,i)=>{ const yy=mob?y0+24+i*40:y0-side+20+i*64;
-      V.t(g,lx,yy,d.t,{size:mob?13:15,weight:700,fill:d.c===C.yellow?C.ink:d.c,serif:true,halo:3});
-      V.t(g,lx,yy+(mob?15:19),d.s,{size:mob?11.5:12.5,fill:C.ink2,halo:3});
-      if(!mob){ const sx=x0+sc(d.v), sy=y0-sc(d.v); g.append("path").attr("d",`M${sx},${sy}L${lx-8},${yy-4}`).attr("stroke",C.hair).attr("stroke-width",.8).attr("fill","none"); } });
-  });
-})();
-
-/* =====================================================================
-   V8 · HOW-01 + PART-01 · UNA AGULLA DE DUES PUNTES
-   ===================================================================== */
-(function agulla(){
-  const box=$("#agulla-viz"); if(!box)return;
-  let mode="antic", api=null;
-  document.querySelectorAll('#f-agulla .seg button').forEach(b=>b.addEventListener("click",()=>{ document.querySelectorAll('#f-agulla .seg button').forEach(o=>o.setAttribute("aria-pressed",o===b)); mode=b.dataset.k; box.__set&&box.__set(); }));
-  api=V.mount(box,(el,w)=>{
-    d3.select(el).selectAll("svg").remove();
-    const mob=w<640, LW=mob?w-16:Math.min(460,w*.44), kmm=LW/52;
-    const cols=mob?20:25, gx=mob?8:LW+70, gw=mob?w-16:w-gx-10, gap=gw/cols, rows=400/cols, gh=rows*gap;
-    const topH=mob?250:0, h=mob?topH+gh+60:Math.max(370,gh+70);
-    const s=V.svg(el,w,h,"Dibuix d'una agulla bifurcada de 5 cm, amb un detall ampliat de les dues puntes i la gota de vacuna entre elles, i una reixa de 400 punts: amb la mateixa quantitat de vacuna, el mètode antic en vacunava 100 i l'agulla bifurcada, 400."), g=s.append("g");
-    // 1. l'agulla sencera, a escala (50 mm)
-    const ny=mob?26:44, ng=g.append("g").attr("transform",`translate(8,${ny})`), L=50*kmm, tl=4*kmm;
-    ng.append("rect").attr("x",0).attr("y",-1.5).attr("width",L-tl).attr("height",3).attr("rx",1.5).attr("fill",C.ink2);
-    ng.append("path").attr("d",`M${L-tl},-1.5L${L},-${kmm*.9}L${L},-${kmm*.45}L${L-tl*.55},0L${L},${kmm*.45}L${L},${kmm*.9}L${L-tl},1.5Z`).attr("fill",C.ink2);
-    ng.append("path").attr("d",`M0,14V18H${L}V14`).attr("fill","none").attr("stroke",C.muted).attr("stroke-width",.8);
-    V.t(ng,L/2,32,"50 mm, a escala",{anchor:"middle",size:11.5,fill:C.muted});
-    // marc del detall
-    ng.append("circle").attr("cx",L-tl*.5).attr("cy",0).attr("r",tl*.9).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.7).attr("stroke-dasharray","2 2");
-    // 2. detall ampliat de les puntes (×8)
-    const Z=mob?6:8, T=tl*Z/2.2, dg=g.append("g").attr("transform",`translate(${mob?8+T*1.1:LW*.5-60},${mob?140:205})`);
-    dg.append("rect").attr("x",-T*1.1).attr("y",-7).attr("width",T*1.1).attr("height",14).attr("fill",C.ink2);
-    dg.append("path").attr("d",`M0,-7L${T},-${T*.42}L${T},-${T*.22}L${T*.42},0L${T},${T*.22}L${T},${T*.42}L0,7Z`).attr("fill",C.ink2);
-    // la gota entre les puntes
-    dg.append("path").attr("d",`M${T*.46},0C${T*.6},-${T*.24} ${T*1.02},-${T*.26} ${T*1.04},0C${T*1.02},${T*.26} ${T*.6},${T*.24} ${T*.46},0Z`).attr("fill",C.blue).attr("fill-opacity",.55);
-    dg.append("ellipse").attr("cx",T*.8).attr("cy",-T*.08).attr("rx",T*.08).attr("ry",T*.04).attr("fill",C.paper).attr("fill-opacity",.8);
-    V.t(dg,-T*1.1,T*.62,"Detall ampliat",{size:11.5,fill:C.muted,italic:true});
-    V.note(dg,{x:T*.9,y:T*.16,tx:T*1.25,ty:T*.62,anchor:"start",lines:[["0,0025 ml de vacuna",true],["retinguda entre les puntes"]],size:mob?11.5:12});
-    V.note(dg,{x:T*.98,y:-T*.4,tx:T*1.25,ty:-T*.62,anchor:"start",lines:[["15 punxades",true],["a la part alta del braç"]],size:mob?11.5:12});
-    // 3. la reixa
-    const gy=mob?topH+24:44, r=Math.max(2.2,gap*.33);
-    V.t(g,gx,gy-14,"Vacunacions amb la mateixa quantitat de vacuna",{size:12,weight:600,fill:C.ink2});
-    const dots=g.append("g").selectAll("circle").data(d3.range(400)).join("circle").attr("cx",i=>gx+(i%cols)*gap+gap/2).attr("cy",i=>gy+Math.floor(i/cols)*gap+gap/2).attr("r",r);
-    const lab=g.append("g");
-    el.__set=()=>{ const n=mode==="antic"?100:400;
-      dots.transition().duration(V.reduced?0:500).delay(i=>V.reduced?0:(i<100?0:(i-100)*2)).attr("fill",i=>i<n?C.blue:"none").attr("fill-opacity",.6).attr("stroke",i=>i<n?C.blue:C.ghost).attr("stroke-width",.7);
-      lab.selectAll("*").remove(); V.t(lab,gx,gy+gh+20,mode==="antic"?"100 vacunacions, a 0,01 ml cadascuna":"400 vacunacions, a 0,0025 ml cadascuna: quatre vegades més",{size:mob?12:13,weight:700,halo:3}); };
-    el.__set();
-  });
 })();
 
 })();

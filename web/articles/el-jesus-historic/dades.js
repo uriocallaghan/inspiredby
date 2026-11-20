@@ -1,15 +1,5 @@
 /* «Qui era realment Jesús?»: dades verificades (fonts completes a research/el-jesus-historic/fonts.md) */
 window.JH = {
-  // 3. Bioarqueologia: alçades puntuals publicades d'esquelets de Judea del segle I (cm)
-  // Sense barres d'error inventades: només valors publicats i la franja verificada de mitjanes masculines (165–169 cm).
-  estatura: [
-    {id:"dones", nom:"Dones adultes de Judea (mitjana)", v:147, cat:"ref", tipus:"Mitjana poblacional", font:"Nagar & Torge (2003, IEJ 53 · IAA)", det:"Mitjana d'esquelets de dones jueves dels períodes hel·lenístic i romà primerenc a la base de l'Autoritat d'Antiguitats d'Israel."},
-    {id:"homes", nom:"Homes adults de Judea (mitjana IAA)", v:166, cat:"prota", tipus:"Mitjana poblacional", font:"Nagar & Torge (2003, IEJ 53); Taylor (2018)", det:"Alçada típica d'un home jueu del segle I segons la síntesi osteològica de l'Autoritat d'Antiguitats d'Israel."},
-    {id:"yehohanan", nom:"Yehohanan (crucificat a Jerusalem)", v:167, cat:"prota", tipus:"Esquelet individual", font:"Haas (1970, IEJ 20); Zias & Sekeles (1985, IEJ 35)", det:"L'únic esquelet jueu del segle I amb un clau romà de crucifixió (11,5 cm) encara travessant el taló."},
-    {id:"jerico", nom:"Homes de la necròpolis de Jericó", v:169, cat:"prota", tipus:"Mitjana poblacional", font:"Hachlili (1979); Hachlili & Smith (1979, BASOR 235)", det:"Mitjana masculina en tombes monumentals jueves del segle I a Jericó."},
-    {id:"goliat", nom:"Yeho'ezer «Goliat» (excepció a Jericó)", v:188.5, cat:"extrem", tipus:"Esquelet individual", font:"Hachlili & Smith (1979, BASOR 235, Ossari XXI)", det:"Feia 1,885 m, molt per sobre de la mitjana de la Judea del segle I. A l'ossari duia inscrit el sobrenom «Goliat», probablement per la seva alçada."}
-  ],
-
   // 4. Catàleg verificat de 29 fites iconogràfiques (200 dC – 2001)
   iconografia: [
     {id:"alexamenos", any:200, data:"c. 200", nom:"Grafit d'Alexàmenos", lloc:"Roma", lat:41.89, lon:12.49, ox:-8, oy:-7, tipus:"altre", fase:0, font:"Museu Palatí, Roma (Solin & Itkonen-Kaila 1966, núm. 246)", det:"Sàtira romana: un crucificat amb cap d'ase i la frase «Alexàmenos venera [el seu] déu». És, amb una gemma màgica del British Museum, una de les representacions més antigues de la crucifixió."},
@@ -41,14 +31,6 @@ window.JH = {
     {id:"kim", any:1953, data:"1952–1953", nom:"Jesús en hanbok (Kim Ki-chang)", lloc:"Corea del Sud", lat:37.57, lon:126.98, tipus:"global", fase:5, font:"Unbo Museum / MMCA Corea", det:"Durant la guerra de Corea, Kim pinta la vida de Jesús vestit amb roba tradicional Joseon."},
     {id:"powell", any:1977, data:"1977", nom:"Jesus of Nazareth (R. Powell)", lloc:"Londres / Roma", lat:51.51, lon:-0.13, tipus:"barbut", fase:5, font:"ITC / RAI (F. Zeffirelli)", det:"Sèrie de televisió de Franco Zeffirelli: segons es conta, va demanar a Powell que no parpellegés. Consolida el cànon Sallman a la televisió mundial."},
     {id:"neave", any:2001, data:"2001", nom:"Reconstrucció forense (R. Neave)", lloc:"Judea / Manchester", lat:32.70, lon:35.30, tipus:"global", fase:5, font:"BBC (2001) / crítica Taylor (2018)", det:"Tipus mitjà d'un home jueu del segle I basat en cranis antics (no un retrat personal): cabell curt, pell bruna, barba curta."}
-  ],
-
-  // 9. Vegades que s'escriu cada nom (recompte sobre el text àrab complet de l'Alcorà, Quran.com; Nou Testament: mare de Jesús pel nom)
-  alcora: [
-    {nom:"Maria a l'Alcorà", n:34, src:"alcora", det:"Maryam és l'única dona que l'Alcorà anomena pel nom, i la sura 19 porta el seu nom.", font:"Alcorà; Smith & Haddad 1989"},
-    {nom:"Maria al Nou Testament", n:19, src:"nt", det:"La mare de Jesús, pel seu nom: 5 vegades a Mateu, 1 a Marc, 12 a Lluc i 1 als Fets. Joan no la nomena mai.", font:"Recompte del Nou Testament"},
-    {nom:"Jesús (ʿĪsā) a l'Alcorà", n:25, src:"alcora", det:"A més, l'anomena «fill de Maria» 23 vegades i al-Masīḥ, «el Messies», 11.", font:"Alcorà, text àrab complet"},
-    {nom:"Mahoma a l'Alcorà", n:4, src:"alcora", det:"El profeta de l'islam surt pel nom només 4 vegades (i un cop més com a Aḥmad, 61,6).", font:"Alcorà, text àrab complet"}
   ],
 
   // 7. El viatge del nom (recerca: research/el-jesus-historic/recerca-nom-calendari.md)

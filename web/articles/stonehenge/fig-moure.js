@@ -19,7 +19,7 @@
     // Altar 4,9 × 1,0 × 0,5 m); la llargada i el gruix vénen de dades.js
     const WID = {blava: 1.2, altar: 1.0, sarsen: 2.1, p56: 2.1};
     const TONE = {blava: "blue", altar: "stone", sarsen: "fresh", p56: "fresh"};
-    let cur = STONES.find(s => s.def) || STONES[0], rate = RATES[0];
+    let cur = STONES.find(s => s.def) || STONES[0], rate = RATES.find(r => r.id === "bbc") || RATES[0];
     let W = 0, H = 0, ctx = null, t0 = performance.now(), mob = false, ppm = 10, hov = null, lastT = 0, svgApi = null;
     const now = () => performance.now();
 

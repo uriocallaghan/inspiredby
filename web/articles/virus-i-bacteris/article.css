@@ -60,8 +60,6 @@
 .stats .v b{color:var(--warm)}
 .stats .b{border-top-color:var(--cold)}
 .stats .b b{color:var(--cold)}
-.shfacts{margin:16px 0 0;max-width:none}
-.shfacts b{font-size:24px}
 
 /* Escala comparativa (SCALE-04 + gravat) */
 .scale-stack{display:grid;gap:8px}
@@ -111,7 +109,6 @@
   .graphic .vh span,.graphic .vh .lgs{display:none}
   .stats{grid-template-columns:minmax(0,1fr);gap:8px}
   .stats b{font-size:24px}
-  .shfacts b{font-size:21px}
   .ctlrow{margin-top:8px;padding-top:8px;gap:6px 12px}
   .ctlrow .lbl{display:none}
   .btn{font-size:12.5px;padding:5px 9px}

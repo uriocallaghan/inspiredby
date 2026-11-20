@@ -44,8 +44,6 @@
 .ctlrow .rng-val{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;min-width:68px;text-align:right}
 
 #lifeOut{font-family:var(--serif);font-size:19px;line-height:1.45;margin:10px 0 0;min-height:2.8em}
-.words{font-family:var(--sans);font-size:17px;line-height:1.7;color:var(--ink-2)}
-.words b{color:var(--ink);font-weight:600}
 
 @media (pointer:coarse){
   .fig .seg button,.graphic .seg button{min-height:44px}

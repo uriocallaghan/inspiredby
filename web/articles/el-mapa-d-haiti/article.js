@@ -356,20 +356,18 @@ function scaleBar(g,proj,lon,lat,km,x,y){
 
 /* =====================================================================
    V4 · LINK-03 · 4636: UN SMS QUE TRAVESSA EL MÓN (scrolly)
-   Xifres reals (Munro 2013); repartiment de la feina segons el mateix article.
+   Xifres reals (Munro 2013): 80.000 missatges i 45.000 informes.
    ===================================================================== */
 (function sms(){
   const box=$("#sms-viz"), stepsEl=$("#s-4636 .steps"); if(!box)return;
   let cur=0;
   const NODES=[
     {id:"ht",col:0,v:80,t:"Missatges des d'Haití",s:"80.000 SMS al 4636",c:C.ink},
-    {id:"on",col:1,v:48,t:"Voluntaris en línia",s:"~60 % de la feina",c:C.red},
-    {id:"pg",col:1,v:20,t:"Treballadors pagats a Haití",s:"~25 %",c:C.redLight},
-    {id:"al",col:1,v:12,t:"Altres grups voluntaris",s:"~15 %",c:C.ink2},
+    {id:"mh",col:1,v:80,t:"Traduïts i situats al mapa",s:"per voluntaris i treballadors pagats",c:C.red},
     {id:"rp",col:2,v:45,t:"Informes únics i útils",s:"45.000, amb lloc i categoria",c:C.blue},
     {id:"dp",col:2,v:35,t:"Repetits o sense acció",s:"≈35.000",c:C.ghost}
   ];
-  const LINKS=[["ht","on",48],["ht","pg",20],["ht","al",12],["on","rp",27],["on","dp",21],["pg","rp",11.25],["pg","dp",8.75],["al","rp",6.75],["al","dp",5.25]]
+  const LINKS=[["ht","mh",80],["mh","rp",45],["mh","dp",35]]
     .map(([a,b,v])=>({s:NODES.find(n=>n.id===a),t:NODES.find(n=>n.id===b),v}));
   V.mount(box,(el,w)=>{
     if(el.__loop){ el.__loop.stop(); el.__loop=null; }
@@ -384,7 +382,7 @@ function scaleBar(g,proj,lon,lat,km,x,y){
     LINKS.forEach(l=>{ l.x0=l.s.x+nw+1; l.x1=l.t.x-1; l.xm=(l.x0+l.x1)/2; });
     const band=l=>`M${l.x0},${l.sy}C${l.xm},${l.sy} ${l.xm},${l.ty} ${l.x1},${l.ty}L${l.x1},${l.ty+l.w}C${l.xm},${l.ty+l.w} ${l.xm},${l.sy+l.w} ${l.x0},${l.sy+l.w}Z`;
     const {ctx}=mkCanvas(st,w,h,null);
-    const s=overlay(st,w,h); s.attr("role","img").attr("aria-hidden",null).attr("aria-label","Diagrama de flux de la Missió 4636: 80.000 missatges enviats des d'Haití passen per voluntaris en línia (60 %), treballadors pagats a Haití (25 %) i altres grups (15 %), i en surten 45.000 informes únics amb lloc i categoria.");
+    const s=overlay(st,w,h); s.attr("role","img").attr("aria-hidden",null).attr("aria-label","Diagrama de flux de la Missió 4636: 80.000 missatges enviats des d'Haití són traduïts i situats al mapa per persones, i en surten 45.000 informes únics amb lloc i categoria.");
     const g=s.append("g");
     const LB=g.append("g").selectAll("path").data(LINKS).join("path").attr("d",band)
       .attr("fill",l=>l.t.col===2?l.t.c:l.t.c).attr("fill-opacity",l=>l.t.id==="dp"?.18:.13).style("mix-blend-mode",BLEND);
@@ -394,7 +392,7 @@ function scaleBar(g,proj,lon,lat,km,x,y){
       let xx=side==="l"?n.x-10:side==="r"?n.x+nw+10:n.x+nw+8, a=side==="l"?"end":"start", yy=n.y0+n.h/2;
       if(mob){ if(side==="l"){ xx=n.x+nw+6; a="start"; yy=n.y0+10; } else if(side==="r"){ xx=n.x-6; a="end"; } else { xx=n.x+nw/2; a="middle"; } }
       const q=LG.append("g").datum(n);
-      if(mob&&side==="m"){ V.t(q,xx,n.y0-4,n.t.replace("Treballadors pagats a Haití","Pagats a Haití").replace("Altres grups voluntaris","Altres grups"),{anchor:a,size:11,weight:700,halo:3}); return; }
+      if(mob&&side==="m"){ V.t(q,xx,n.y0-4,n.t,{anchor:a,size:11,weight:700,halo:3}); return; }
       V.t(q,xx,yy-3,n.t,{anchor:a,size:mob?11.5:12.5,weight:700,fill:n.id==="rp"?C.blue:n.id==="ht"?C.ink:C.ink,halo:3});
       V.t(q,xx,yy+12,n.s,{anchor:a,size:mob?10.5:11.5,fill:C.ink2,halo:3});
     });
@@ -480,132 +478,6 @@ function scaleBar(g,proj,lon,lat,km,x,y){
   play.addEventListener("click",()=>{ if(running){ running=false; play.textContent="Continua →"; return; }
     if(play.textContent.startsWith("Torna")&&box.__reset)box.__reset(); running=true; play.textContent="Pausa"; });
   V.onView(box,instant=>{ if(!instant){ running=true; play.textContent="Pausa"; } },{threshold:.5});
-})();
-
-/* =====================================================================
-   V6 · CASE-01 + SCALE-04 · QUANTES MANS (escala logarítmica, dades reals)
-   ===================================================================== */
-(function mans(){
-  const box=$("#mans-viz"); if(!box)return;
-  const K={map:C.red,sci:C.blue,alt:C.ink2};
-  const IT=[
-    {v:58,t:"Haití a OpenStreetMap, l'any abans del sisme",s:"persones que hi van editar (2009)",k:"map"},
-    {v:621,t:"Haití a OpenStreetMap, el primer mes",s:"persones que hi van editar",k:"map",hl:true},
-    {v:1522,t:"Filipines (tifó Haiyan, 2013), primer mes",s:"persones que hi van editar",k:"map"},
-    {v:2000,t:"Missió 4636, Haití 2010",s:"voluntaris que traduïen SMS (aprox.)",k:"map"},
-    {v:6960,t:"Nepal (terratrèmol, 2015), primer mes",s:"persones que hi van editar",k:"map"},
-    {v:8284,t:"Turquia i Síria (terratrèmols, 2023), primer mes",s:"persones que hi van editar",k:"map"},
-    {v:85000,t:"Recompte d'ocells de Nadal (des del 1900)",s:"participants el 2025",k:"sci"},
-    {v:100000,t:"Galaxy Zoo, primeres dades (2007)",s:"participants (ordre de magnitud)",k:"sci"},
-    {v:263142,t:"Viquipèdia en anglès",s:"comptes actius en els darrers 30 dies",k:"alt"},
-    {v:1000000,t:"Folding@home contra la covid (2020)",s:"més d'un milió d'ordinadors particulars",k:"sci"},
-    {v:3000000,t:"Zooniverse (2009–2026)",s:"voluntaris registrats",k:"sci"},
-    {v:8000000,t:"Tomnod, cerca del vol MH370 (2014)",s:"participants segons l'empresa",k:"alt"},
-    {v:11055295,t:"OpenStreetMap (2004–2026)",s:"comptes registrats",k:"map"}
-  ];
-  const lg=$("#mans-lg"); if(lg){ lg.innerHTML=""; V.legendCat(lg,[{c:K.map,t:"Mapes i crisis"},{c:K.sci,t:"Ciència ciutadana"},{c:K.alt,t:"Altres"}]); }
-  V.mount(box,(el,w)=>{
-    const mob=w<640, rh=mob?40:30, m={t:22,l:mob?6:300,r:mob?46:60,b:26}, h=m.t+IT.length*rh+m.b;
-    const s=V.svg(el,w,h,"Rànquing en escala logarítmica de quantes persones han participat en xarxes de col·laboració: de 58 persones que editaven Haití a OpenStreetMap l'any 2009 a més d'11 milions de comptes registrats a OpenStreetMap el 2026."), g=s.append("g");
-    const x=d3.scaleLog([10,2e7],[mob?m.l:m.l,w-m.r]);
-    [10,100,1e3,1e4,1e5,1e6,1e7].forEach(v=>{ g.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",m.t-6).attr("y2",h-m.b).attr("stroke",C.grid).attr("stroke-width",.6);
-      V.t(g,x(v),h-8,v>=1e6?`${f0(v/1e6)} M`:f0(v),{anchor:"middle",size:V.FS.small,fill:C.muted}); });
-    V.t(g,x(10),m.t-10,"Escala logarítmica: cada línia, deu vegades més persones →",{size:V.FS.small,fill:C.muted});
-    const rows=g.selectAll("g.r").data(IT).join("g").attr("class","r").attr("transform",(d,i)=>`translate(0,${m.t+rh*(i+.5)+(mob?6:0)})`);
-    rows.append("line").attr("class","stem").attr("x1",x(10)).attr("x2",x(10)).attr("stroke",d=>K[d.k]).attr("stroke-width",d=>d.hl?2.2:.9).attr("stroke-opacity",.7);
-    rows.append("circle").attr("class","dot").attr("cx",x(10)).attr("r",d=>d.hl?6:4.6).attr("fill",d=>K[d.k]).attr("fill-opacity",.55).attr("stroke",d=>K[d.k]).attr("stroke-width",1);
-    rows.each(function(d){ const r=d3.select(this);
-      if(mob){ V.t(r,m.l,-rh*.34,d.t,{size:11.5,weight:d.hl?700:600,halo:3}); }
-      else V.t(r,m.l-14,4,d.t,{anchor:"end",size:12.5,weight:d.hl?700:500,fill:d.hl?C.red:C.ink}); });
-    const val=rows.append("text").attr("font-size",mob?11:11.5).attr("fill",C.ink2).attr("font-family",V.SANS).attr("x",d=>x(d.v)+9).attr("y",mob?4:4).text(d=>d.v>=1e6?`${f1(d.v/1e6)} M`:f0(d.v)).style("opacity",0).style("font-variant-numeric","tabular-nums");
-    if(!mob){ const a=IT[0], b=IT[1], ya=m.t+rh*.5, yb=m.t+rh*1.5;
-      g.append("path").attr("d",`M${x(a.v)+8},${ya}C${x(b.v)+40},${ya} ${x(b.v)+40},${yb} ${x(b.v)+10},${yb}`).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.8).attr("class","arc").style("opacity",0);
-      V.t(g,x(b.v)+46,(ya+yb)/2+4,"×10 en un mes",{size:12,weight:700,halo:3}).attr("class","arc").style("opacity",0); }
-    const go=instant=>{ const T=instant?0:900;
-      rows.select(".stem").transition().duration(T).delay((d,i)=>instant?0:i*70).attr("x2",d=>x(d.v));
-      rows.select(".dot").transition().duration(T).delay((d,i)=>instant?0:i*70).attr("cx",d=>x(d.v));
-      val.transition().delay((d,i)=>instant?0:i*70+T).duration(300).style("opacity",1);
-      g.selectAll(".arc").transition().delay(instant?0:T+600).duration(400).style("opacity",1); };
-    V.onView(el,go);
-    const tp=V.tip(el), hit=s.append("rect").attr("width",w).attr("height",h).attr("fill","transparent");
-    V.hover(hit.node(),(ev,[px,py])=>{ const i=clamp(Math.floor((py-m.t-(mob?6:0))/rh),0,IT.length-1), d=IT[i];
-      V.focus(rows,o=>o===d); tp.show(`<b>${d.t}</b> · ${f0(d.v)} ${d.s}`); },()=>{ tp.hide(); V.focus(rows,null); });
-  });
-})();
-
-/* =====================================================================
-   V7 · LINK-05 sobre eix de temps · COM EN DIU LA CIÈNCIA (mapa conceptual)
-   Anys i autors reals; la posició vertical dins de cada franja és esquemàtica.
-   ===================================================================== */
-(function noms(){
-  const box=$("#noms-viz"); if(!box)return;
-  const F={tr:{c:C.yellow,t:"Tradicions de treball col·lectiu"},so:{c:C.blue,t:"Ciències socials i naturals"},dg:{c:C.red,t:"Cultura digital"}};
-  const IT=[
-    {f:"tr",y:null,t:"Konbit",a:"Haití",d:"treball col·lectiu entre veïns, per conrear o per obrir un camí"},
-    {f:"tr",y:null,t:"Minga",a:"Andes",d:"treball comunal recíproc; després de desastres, base de la reconstrucció"},
-    {f:"tr",y:null,t:"Gotong royong",a:"Indonèsia",d:"ajuda mútua de poble, que l'estat també va convertir en eslògan"},
-    {f:"tr",y:null,t:"Bayanihan",a:"Filipines",d:"els veïns es giren els uns cap als altres quan hi ha problemes"},
-    {f:"so",y:1902,t:"Ajuda mútua",a:"Kropotkin",d:"la cooperació com a factor de l'evolució"},
-    {f:"so",y:1924,t:"El do",a:"Mauss",d:"donar, rebre i tornar: l'obligació que teixeix la societat"},
-    {f:"so",y:1954,t:"El mite del pànic",a:"Quarantelli",d:"en els desastres, el pànic col·lectiu és rar"},
-    {f:"so",y:1957,t:"Convergència",a:"Fritz i Mathewson",d:"després d'un desastre, la gent, l'ajuda i la informació hi conflueixen"},
-    {f:"so",y:1959,t:"Estigmèrgia",a:"Grassé",d:"els tèrmits es coordinen pel rastre que deixa la feina dels altres"},
-    {f:"so",y:1977,t:"Grups emergents",a:"Quarantelli i Dynes",d:"grups que no existien abans del desastre i s'organitzen sols"},
-    {f:"dg",y:2002,t:"Producció entre iguals",a:"Benkler",d:"béns comuns fets per milers de persones sense mercat ni jerarquia"},
-    {f:"dg",y:2006,t:"Crowdsourcing",a:"Howe",d:"una tasca oberta a una multitud indefinida en lloc d'un encàrrec"},
-    {f:"dg",y:2007,t:"Geografia voluntària",a:"Goodchild",d:"ciutadans que fan de sensors i de cartògrafs"},
-    {f:"dg",y:2015,t:"Humanitaris digitals",a:"Meier",d:"voluntaris que ajuden en crisis des de qualsevol lloc del món"},
-    {f:"dg",y:2016,t:"Informàtica de crisi",a:"Palen i Anderson",d:"l'estudi de com la gent fa servir la informació en una crisi"},
-    {f:"dg",y:2016,t:"Estigmèrgia universal",a:"Heylighen",d:"el rastre com a mecanisme de coordinació de Viquipèdia o el programari lliure"}
-  ];
-  const lg=$("#noms-lg"); if(lg){ lg.innerHTML=""; V.legendCat(lg,Object.values(F).map(o=>({c:o.c,t:o.t,a:.55}))); }
-  V.mount(box,(el,w)=>{
-    const mob=w<640;
-    const s0=d3.select(el); s0.selectAll("svg").remove();
-    let h, pos;
-    const r=mob?17:30;
-    const LANE={"Ajuda mútua":0,"El do":1,"El mite del pànic":0,"Convergència":1,"Estigmèrgia":2,"Grups emergents":3,
-      "Producció entre iguals":0,"Crowdsourcing":1,"Geografia voluntària":2,"Humanitaris digitals":0,"Informàtica de crisi":1,"Estigmèrgia universal":2};
-    const trs=IT.filter(q=>q.f==="tr");
-    if(!mob){
-      h=540;
-      // eix trencat: el segle XX comprimit, el XXI ampliat (es diu a l'eix)
-      const x=d3.scaleLinear([1895,1980,1998,2018],[250,w*.6,w*.64,w-90]);
-      const y0={so:110,dg:340}, ls=52;
-      pos=IT.map(d=>{ if(d.f==="tr"){ const k=trs.indexOf(d); return {d,x:80+(k%2)*78,y:150+k*74}; }
-        return {d,x:x(d.y),y:y0[d.f]+LANE[d.t]*ls}; });
-      el.__axis=g=>{ const yA=h-34;
-        [1900,1925,1950,1975,2000,2005,2010,2015].forEach(v=>{ g.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",yA).attr("y2",yA+6).attr("stroke",C.muted).attr("stroke-width",.8); V.t(g,x(v),yA+20,v,{anchor:"middle",size:V.FS.small,fill:C.muted}); });
-        g.append("line").attr("x1",x(1895)).attr("x2",x(1980)).attr("y1",yA).attr("y2",yA).attr("stroke",C.ink).attr("stroke-width",.6);
-        g.append("line").attr("x1",x(1998)).attr("x2",x(2018)).attr("y1",yA).attr("y2",yA).attr("stroke",C.ink).attr("stroke-width",.6);
-        V.t(g,(x(1980)+x(1998))/2,yA+4,"//",{anchor:"middle",size:11,fill:C.muted});
-        V.t(g,118,yA+20,"Sense data",{anchor:"middle",size:V.FS.small,fill:C.muted});
-        V.t(g,x(1998),yA-8,"A partir del 2000, l'eix s'eixampla",{size:V.FS.small,fill:C.muted,italic:true}); };
-    } else {
-      // mòbil: les tradicions a dalt i els conceptes en una cronologia vertical, un per fila
-      const conc=IT.filter(q=>q.f!=="tr").sort((a,b)=>a.y-b.y), top=200, rowH=50;
-      h=top+conc.length*rowH+10;
-      pos=IT.map(d=>{ if(d.f==="tr"){ const k=trs.indexOf(d); return {d,x:w*.25+(k%2)*w*.5,y:44+Math.floor(k/2)*86}; }
-        const i=conc.indexOf(d); return {d,x:78,y:top+i*rowH+18,row:true}; });
-      el.__axis=g=>{ g.append("line").attr("x1",78).attr("x2",78).attr("y1",top).attr("y2",h-12).attr("stroke",C.ink).attr("stroke-width",.6).attr("stroke-dasharray","2 3");
-        conc.forEach((d,i)=>V.t(g,4,top+i*rowH+22,d.y,{size:V.FS.small,fill:C.muted})); };
-    }
-    const s=V.svg(el,w,h,"Mapa conceptual: quatre tradicions de treball col·lectiu (konbit, minga, gotong royong, bayanihan) i els conceptes de les ciències socials (de l'ajuda mútua de Kropotkin, 1902, als grups emergents, 1977) i de la cultura digital (de la producció entre iguals de Benkler, 2002, a l'estigmèrgia universal de Heylighen, 2016)."), g=s.append("g");
-    el.__axis(g.append("g"));
-    const nodes=g.append("g").selectAll("g").data(pos).join("g").attr("transform",p=>`translate(${p.x},${p.y})`).style("opacity",0);
-    nodes.append("circle").attr("r",p=>p.d.f==="tr"?r*1.35:r).attr("fill",p=>F[p.d.f].c).attr("fill-opacity",p=>p.d.f==="tr"?.4:.2).style("mix-blend-mode",BLEND);
-    nodes.append("circle").attr("r",2.2).attr("fill",C.ink);
-    nodes.each(function(p){ const n=d3.select(this), d=p.d;
-      if(p.row){ V.t(n,r+8,-2,d.t,{size:12,weight:700,halo:3}); V.t(n,r+8,13,d.a,{size:11,fill:C.ink2,halo:3}); return; }
-      V.t(n,0,-8,d.t,{anchor:"middle",size:mob?11.5:12.5,weight:700,halo:3});
-      V.t(n,0,16,d.y?`${d.a}, ${d.y}`:d.a,{anchor:"middle",size:mob?10.5:11.5,fill:C.ink2,halo:3,italic:!d.y}); });
-    if(!mob){ const h0=pos.find(p=>p.d.t==="Konbit");
-      V.note(g,{x:h0.x+r*.6,y:h0.y-r*1.25,tx:h0.x+r*1.3+40,ty:h0.y-r*2.6,kind:"curve",anchor:"start",lines:[["La paraula d'Haití",true],["per a «treballar junts»"]],size:12}); }
-    V.onView(el,instant=>nodes.transition().duration(instant?0:600).delay((p,i)=>instant?0:i*60).style("opacity",1));
-    const tp=V.tip(el), hit=s.append("rect").attr("width",w).attr("height",h).attr("fill","transparent");
-    V.hover(hit.node(),(ev,[px,py])=>{ const b=d3.least(pos,p=>(p.x-px)**2+(p.y-py)**2); if((b.x-px)**2+(b.y-py)**2>(r*2.2)**2){ tp.hide(); V.focus(nodes,null); return; }
-      V.focus(nodes,p=>p===b); tp.show(`<b>${b.d.t}</b> (${b.d.a}${b.d.y?", "+b.d.y:""}) · ${b.d.d}`); },()=>{ tp.hide(); V.focus(nodes,null); });
-  });
 })();
 
 })();

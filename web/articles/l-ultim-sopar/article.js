@@ -564,7 +564,7 @@
 
         const reset = () => {
           nodes.style("opacity", 1);
-          if(rd) rd.innerHTML = "<b>7 pistes forenses sobre la taula:</b> passa o toca qualsevol número per comparar l'original degradat amb la còpia de Giampietrino.";
+          if(rd) rd.innerHTML = "<b>6 pistes forenses sobre la taula:</b> passa o toca qualsevol número per comparar l'original degradat amb la còpia de Giampietrino.";
         };
         const show = (d, i) => {
           nodes.style("opacity", o => o === d ? 1 : .48);
@@ -637,8 +637,8 @@
         col: d => d.judes === "integrat" ? C.blue : d.judes === "al_davant" ? C.yellow : C.red },
       taula: { lg: [{ c: C.blue, t: "Reclinats" }, { c: C.yellow, t: "Asseguts" }, { c: C.red, t: "Fris o diagonal" }],
         col: d => d.postura === "reclinats" ? C.blue : d.postura === "asseguts" ? C.yellow : C.red },
-      menu: { lg: [{ c: C.blue, t: "Peix o anguila" }, { c: C.red, t: "Anyell, garrí o banquet" }, { c: C.yellow, t: "Només pa i vi" }],
-        col: d => /peix|anguila/.test(d.menu) ? C.blue : /anyell|garri|banquet/.test(d.menu) ? C.red : C.yellow }
+      menu: { lg: [{ c: C.blue, t: "Peix" }, { c: C.red, t: "Anyell, garrí o banquet" }, { c: C.yellow, t: "Només pa i vi" }],
+        col: d => /peix/.test(d.menu) ? C.blue : /anyell|garri|banquet/.test(d.menu) ? C.red : C.yellow }
     };
     let mode = "judes";
     const updateLg = () => lg($("#cataleg-lg"), VIEWS[mode].lg.concat([{ c: C.ink, t: "Jesús" }]));

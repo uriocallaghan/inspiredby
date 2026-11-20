@@ -4,6 +4,32 @@ Quatre lectors independents han llegit els 23 articles (tots menys «La malaltia
 
 **Comprovació feta (21-11-2026):** les 50 citacions de les troballes més greus s'han buscat als textos i hi són totes. Dues troballes s'han rebaixat en llegir el context: Kashasha (a `per-que-riem`) ja diu que és un episodi psicogènic lligat a l'estrès social, i «sense vedella» (a `viatge-de-la-pizza`) és dubtós (només «vegetarianisme majoritari» és clarament problemàtic). Les propostes que tracten de memòria dels lectors (noms de Whitehead, anys, filiacions) estan marcades per verificar.
 
+## Estat (21-11-2026)
+
+**Aplicat als 11 articles de la portada** (decisió de l'editor: altes i mitjanes a la portada), publicat el mateix dia. Cap canvi va afegir fets: les propostes que en necessitaven s'han deixat com a pendents.
+
+- **Haití:** entradeta («sobretot de fora d'Haití», equips haitians), «internacionals», 605 i 621 explicats, «moltes societats», nota sobre les fonts i descripció nova.
+- **L'últim sopar:** sense «caricaturesc», «als tretze jueus de la taula, Jesús inclòs», «sordes», «nans» separats dels animals.
+- **Virus i bacteris:** «Fags contra bacteris resistents», «en molts països», «persones amb cremades».
+- **El Jesús històric:** «cada lloc el fa seu», «Jesús en altres tradicions», «trets locals», Japó dels Tokugawa, cautela amb el model jueu, «els seus el van anar a buscar», Taiping.
+- **Jesús no va escriure res:** només el terme grec presentat com a tal (vegeu pendents).
+- **Stonehenge:** ascendència genètica («va canviar», sense «substituir»), «nouvinguts d'una altra ascendència», «encara avui es pot veure…», «Els druides no el van construir» (i descripció de portada).
+- **De què mor el món:** obertura sense «animals africans» (retocs de la sessió «text lleuger i ferm»), «mitjanes del món sencer» i entradeta.
+- **Cinta transportadora, El Niño, Calendari còsmic:** retocs de nom i de blocs; l'altra sessió també va treure fites del calendari.
+
+**Pendent de font o de decisió de l'editor** (no s'ha pogut resoldre sense afegir fets nous):
+
+- «els jueus» de Joan (71 vegades): només s'ha deixat el terme grec; cal una font que digui que designa sobretot els dirigents de Jerusalem o Judea.
+- Iconografia de Judes i antisemitisme; neteja del Temple i els canviadors de moneda; qui deté Jesús; Herodes Antipes; Nostra aetate (1965); cap veu jueva moderna a les fonts de «Jesús no va escriure res».
+- El Jesús històric: fonts molt occidentals per al Congo, Etiòpia, Mèxic i el Japó.
+- Virus: el nom del pacient i el paper de Steffanie Strathdee (consentiment).
+- De què mor el món: «països sense aigua potable» sense nom; que molts països no registren part de les morts.
+- Stonehenge: Ramilisonina (de quin poble és la tradició), els khasi en passat, Sumba («amo», «poble en festa»), «sense escriptura, sense palaus».
+- El Niño: cap font peruana. Cinta: què suposen els monsons per als països afectats.
+- Calendari: fites d'altres tradicions i religions a l'últim tram.
+
+**Encara no revisats ni aplicats** (articles de «per penjar»): navegar-sense-mapa, la-llengua-que-van-inventar-uns-nens, viatge-de-la-pizza, per-que-riem, per-que-dormim, pols-del-sahara, el-mapa-del-colera, ciencia-entre-enemics, les-llavors-de-leningrad, xifrat-extrem-a-extrem, el-forat-de-l-ozo i on-va-el-co2. Les altes d'aquest grup (la pizza a l'Índia, Managua, dormir, riure, navegar) s'han d'aplicar abans de publicar-los.
+
 ## Resum
 
 | Article | Estat | Veredicte | Pesa més |

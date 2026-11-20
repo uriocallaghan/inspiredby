@@ -22,9 +22,9 @@ window.STONEHENGE_DADES = {
       origen: "Carn Goedog i Craig Rhos-y-felin (Gal·les)",
       lon: -4.74, lat: 51.96,
       dist: 230, pes: "2–4 t cada bloc",
-      epoca: "Pedreres ~3400–3000 cal BC · Waun Mawn c. 3000 aC",
+      epoca: "Pedreres ~3400–3000 cal BC",
       pas: 1, cat: "blau", r: 14,
-      detall: "Dolerita tacada i riolita gal·leses; possible cercle previ a Waun Mawn en debat (Parker Pearson et al., 2019, 2021)"
+      detall: "Dolerita tacada i riolita gal·leses, de dues pedreres explotades c. 3400–3000 aC (Parker Pearson et al., 2019)"
     },
     {
       id: "altar",
@@ -93,7 +93,7 @@ window.STONEHENGE_DADES = {
       titol: "Fase 3 · L'Avinguda cap al riu i l'onada Campaniforme",
       dates: "2405–2225 a 2300–2100", ini:[-2405,-2225], fiR:[-2300,-2100], dIni:"2405–2225", dFi:"2300–2100",
       inici: -2315, fi: -2200,
-      desc: "Avinguda de 2,8 km cap a l'Avon (Bluestonehenge), entrada NE modificada i enterrament de l'Arquer d'Amesbury."
+      desc: "Avinguda de 2,8 km cap a l'Avon (Bluestonehenge) i entrada NE modificada."
     },
     {
       id: "f4", num: 4,
@@ -151,7 +151,7 @@ window.STONEHENGE_DADES = {
     {
       id: "neolitic",
       nom: "Neolític (4000–2500 aC · Fases 1–2)",
-      titol: "Qui va alçar els sarsens: substitució quasi completa per agricultors neolítics",
+      titol: "Qui va alçar els sarsens: una ascendència sobretot d'agricultors neolítics",
       desc: "Migració des de l'Egeu/Anatòlia per via mediterrània; pell bruna/olivàcia i cabells foscos (Brace et al., 2019).",
       grups: [
         { nom: "Agricultors neolítics (EEF)", pct: 78, cat: "groc" },
@@ -162,8 +162,8 @@ window.STONEHENGE_DADES = {
     {
       id: "campaniforme",
       nom: "Vas Campaniforme (c. 2450–1800 aC)",
-      titol: "El gir radical: ~90 % del pool genètic substituït en pocs segles",
-      desc: "Arribada des del Baix Rin (com l'Arquer d'Amesbury); enllaça amb les fases finals de Stonehenge (Olalde et al., 2018).",
+      titol: "El gir radical: ~90 % de l'ascendència de l'illa ja era nova en pocs segles",
+      desc: "Arribada des del Baix Rin; enllaça amb les fases finals de Stonehenge (Olalde et al., 2018).",
       grups: [
         { nom: "Nou patrimoni continental / estepari", pct: 90, cat: "vermell" },
         { nom: "Continuïtat neolítica britànica", pct: 10, cat: "groc" }
@@ -207,7 +207,6 @@ window.STONEHENGE_DADES = {
     { id: "durrington", nom: "Durrington Walls", curt: "Durrington", d: 480, data: "c. 2500 aC", det: "Henge de ~490 × 468 m vora l'Avon, amb cercles de pals i cases (Historic England)" },
     { id: "stonehenge", nom: "Stonehenge (fossat)", curt: "Stonehenge", d: 110, data: "c. 3000 aC", det: "Fossat circular d'uns 110 m (English Heritage)" },
     { id: "woodhenge", nom: "Woodhenge", curt: "Woodhenge", d: 110, data: "c. 2500 aC", det: "Sis anells de pals dins un fossat d'uns 110 m en total (Historic England)" },
-    { id: "waunmawn", nom: "Waun Mawn (Gal·les)", curt: "Waun Mawn", d: 110, data: "c. 3000 aC", dash: true, det: "Cercle desmantellat de diàmetre «idèntic» al fossat de Stonehenge, segons Parker Pearson et al. (2021); en debat" },
     { id: "brodgar", nom: "Anell de Brodgar (Òrcades)", curt: "Brodgar", d: 104, data: "c. 2500 aC", det: "Cercle de 104 m, 60 pedres originals (Historic Environment Scotland)" },
     { id: "sarsens", nom: "Cercle de sarsens", curt: "Sarsens", d: 30, data: "c. 2500 aC", det: "Els 30 pilars amb llindes fan un anell d'uns 30 m" },
     { id: "gobekli", nom: "Göbekli Tepe, recinte D", curt: "Göbekli D", d: 14, data: "c. 9500 aC", det: "Recinte de ~14 m de diàmetre interior amb pilars en T de 5,5 m (Haklay i Gopher, 2020)" }

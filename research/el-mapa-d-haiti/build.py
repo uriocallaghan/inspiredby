@@ -8,7 +8,7 @@ OUT = os.path.join(HERE, "../../web/articles/el-mapa-d-haiti/index.html")
 body = open(os.path.join(HERE, "cos.html")).read()
 
 GRAFICS = [
- ("Una illa, una falla i un mapa gairebé en blanc", "<b>Dades reals.</b> Relleu: Mapzen Terrain Tiles (NASA SRTM, GMTED2010, ETOPO1), mitjana per cel·les d'uns 1,3 km; frontera: Natural Earth 1:110 m. Epicentre, hora i fondària de l'USGS.[[usgs]] La traça de la falla d'Enriquillo–Plantain Garden és aproximada i només orientativa; la ruptura real va ser en una falla secundària.[[calais]] Persones: comptatge propi de persones diferents que van editar nodes o vies d'OSM dins la caixa −74,5…−71,6° E, 17,9…20,1° N (inclou una franja de la República Dominicana), entre el 12-01-2009 i el 12-01-2010 (58) i en els 31 dies posteriors al sisme (621).[[ohsome#1]] Chapman en compta 605 entre el 12 de gener i l'11 de febrer, amb alguns robots i importacions.[[chapman#2]]"),
+ ("Una illa, una falla i pocs carrers als mapes d'internet", "<b>Dades reals.</b> Relleu: Mapzen Terrain Tiles (NASA SRTM, GMTED2010, ETOPO1), mitjana per cel·les d'uns 1,3 km; frontera: Natural Earth 1:110 m. Epicentre, hora i fondària de l'USGS.[[usgs]] La traça de la falla d'Enriquillo–Plantain Garden és aproximada i només orientativa; la ruptura real va ser en una falla secundària.[[calais]] Persones: comptatge propi de persones diferents que van editar nodes o vies d'OSM dins la caixa −74,5…−71,6° E, 17,9…20,1° N (inclou una franja de la República Dominicana), entre el 12-01-2009 i el 12-01-2010 (58) i en els 31 dies posteriors al sisme (621).[[ohsome#1]] Chapman en compta 605 entre el 12 de gener i l'11 de febrer, amb alguns robots i importacions.[[chapman#2]]"),
  ("Un mes dibuixant Port-au-Prince", "<b>Dades reals.</b> Totes les versions de les vies (<code>highway=*</code>) dins la caixa −72,42…−72,22° E, 18,48…18,62° N entre el 31-12-2009 i el 13-02-2010, extretes de l'historial complet d'OSM. Per a cada via, el moment de la primera aparició i la geometria de l'última versió; simplificades a uns 4 m i arrodonides a 0,0001° (uns 11 m). Les 295 vies anteriors al sisme van en blau; 15.167 en total. Una via partida en dues compta com a nova. La sèrie de dalt són els km de vies a les 00 h UTC de cada dia; la de baix, les persones diferents que editen Haití cada dia (mateixa caixa que el gràfic anterior).[[ohsome#2]] Relleu: Mapzen Terrain Tiles, cel·les d'uns 130 m. Hora local = UTC − 5."),
  ("4636: d'un SMS a un equip de rescat", "<b>Esquema de flux amb xifres reals</b>: 80.000 missatges processats, 45.000 informes únics i útils, i el repartiment de la feina (voluntaris en línia ~60 %, treballadors pagats a Haití ~25 %, altres grups la resta).[[munro#3,munro#4]] Els ≈35.000 restants són la diferència (repetits o sense acció). L'article no dona quants informes va fer cada grup: aquí es reparteixen en proporció a la feina (esquema). Les partícules són il·lustratives."),
  ("Cada desastre, més mans", "<b>Dades reals.</b> Persones diferents que van editar nodes o vies d'OSM cada dia UTC dins de quatre caixes: Haití (−74,5…−71,6° E, 17,9…20,1° N), Visayas orientals per al tifó Haiyan (122,0…126,2° E, 9,5…12,8° N), Nepal (80,0…88,2° E, 26,3…30,5° N) i sud-est de Turquia i nord de Síria (35,5…40,5° E, 36,0…38,5° N). Dia 0: 12-01-2010, 08-11-2013, 25-04-2015 i 06-02-2023. A la dreta, persones diferents en els 31 dies posteriors. Les caixes inclouen zones no afectades i no són de la mateixa mida.[[ohsome#3]]"),
@@ -19,7 +19,7 @@ GRAFICS = [
 METODE = ("Aquest article combina <b>dades reals calculades per a l'article</b> a partir de l'historial complet d'OpenStreetMap (consultat amb l'API ohsome de HeiGIT el 20-11-2026) amb xifres publicades en articles revisats per experts, informes i pàgines oficials. "
           "Els comptatges propis de persones són persones diferents amb almenys una edició dins d'una caixa geogràfica; no distingeixen robots ni importacions, i les caixes inclouen zones veïnes. "
           "El flux de la Missió 4636 és un esquema amb xifres reals; el gràfic del Tasking Manager és una simulació; el mapa conceptual és un esquema amb anys reals. "
-          "El nombre de morts del terratrèmol es desconeix: es donen les dues estimacions més citades. La premissa popular que «Google no tenia Haití al mapa» no és exacta i l'article la matisa.")
+          "Les fonts són sobretot d'autors i institucions de fora d'Haití; la veu haitiana hi és a la novel·la de Roumain i a la xifra oficial de morts del govern d'Haití (citada a través de The Irish Times). El nombre de morts del terratrèmol es desconeix: es donen les dues estimacions més citades. La premissa popular que «Google no tenia Haití al mapa» no és exacta i l'article la matisa.")
 
 order, uses, cnt = [], {}, [0]
 def cite(m):
@@ -48,7 +48,7 @@ for key in order:
 unused = [k for k in S if k not in order]
 if unused: print("Fonts sense cap cita:", unused)
 
-desc = "El 2010, sis-centes persones de tot el món van dibuixar des de casa el mapa de Port-au-Prince després del terratrèmol. Què són les xarxes globals de col·laboració ciutadana i per què són tan antigues com el konbit."
+desc = "El 2010, Port-au-Prince gairebé no sortia als mapes d'internet. En un mes, sis-centes persones, sobretot de fora d'Haití, el van dibuixar. De la Missió 4636 al konbit: com treballen milers de desconeguts."
 head = f'''<!doctype html>
 <html lang="ca">
 <head>
@@ -102,7 +102,8 @@ fonts = f'''
 </main>
 
 <footer class="ib-foot">
-  <a href="../../"><img src="../../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+  <p class="ib-foot-id"><a href="../../">Inspired by Magazine</a><span>© 2026</span></p>
+  <a class="ib-foot-link" href="../../per-penjar/">Articles per penjar</a>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>

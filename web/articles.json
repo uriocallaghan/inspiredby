@@ -64,7 +64,7 @@
   {
     "slug": "el-mapa-d-haiti",
     "title": "Qui va dibuixar el mapa d'Haití?",
-    "desc": "El 2010, Port-au-Prince gairebé no tenia mapa. En un mes, sis-centes persones de tot el món el van dibuixar des de casa. De la Missió 4636 a Galaxy Zoo i el konbit: com treballen junts milers de desconeguts.",
+    "desc": "El 2010, Port-au-Prince gairebé no sortia als mapes d'internet. En un mes, sis-centes persones, sobretot de fora d'Haití, el van dibuixar. De la Missió 4636 al konbit: com treballen milers de desconeguts.",
     "category": "Antropologia i societat",
     "minutes": 22,
     "thumbAlt": "Xarxa de carrers de Port-au-Prince dibuixada en línies vermelles i grises sobre fons clar."
@@ -89,7 +89,7 @@
   {
     "slug": "stonehenge",
     "title": "Per què van aixecar Stonehenge?",
-    "desc": "Cap druida no hi va posar un peu, la festa gran era a l'hivern i les pedres van viatjar fins a 750 km. L'arqueologia recent revela un cementiri neolític, un pacte d'illa i un mirall de cada època.",
+    "desc": "Els druides no el van construir, la festa gran era a l'hivern i les pedres van viatjar fins a 750 km. L'arqueologia recent revela un cementiri neolític, un pacte d'illa i un mirall de cada època.",
     "category": "Antropologia i arqueologia",
     "minutes": 20,
     "thumbAlt": "Forma orgànica difuminada en taronja, rosa i verd sobre degradat verd i crema."
@@ -166,7 +166,7 @@
     "title": "La migració més gran de la Terra passa cada nit",
     "desc": "El 1942, un sonar de l'armada nord-americana va trobar un fons marí on no n'hi havia cap. Era una capa d'animals que puja i baixa amb la llum del sol.",
     "category": "Oceà",
-    "minutes": 15,
+    "minutes": 11,
     "thumbAlt": "Grup d'esferes translúcides flotants en corall, violeta i rosa."
   },
   {
@@ -174,7 +174,7 @@
     "title": "La guerra entre virus i bacteris",
     "desc": "En cada gota de mar, centenars de milers de virus ataquen bacteris que es defensen sense treva. D'aquesta guerra invisible, la ciència en va treure el CRISPR.",
     "category": "Biologia",
-    "minutes": 18,
+    "minutes": 17,
     "thumbAlt": "Forma orgànica abstracta de tons rosa, taronja i verd oliva."
   },
   {
@@ -191,7 +191,7 @@
     "title": "La cinta transportadora de l'Atlàntic",
     "desc": "Benjamin Franklin ja en va veure la meitat visible, el corrent del Golf. L'altra meitat torna pel fons del mar, i l'aigua pot trigar segles a tornar a la superfície.",
     "category": "Clima",
-    "minutes": 18,
+    "minutes": 15,
     "thumbAlt": "Corrent abstracte de blau profund i taronja càlid entrellaçats."
   },
   {

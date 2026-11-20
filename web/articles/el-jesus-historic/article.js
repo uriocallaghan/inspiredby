@@ -1,8 +1,7 @@
 /* «Qui era realment Jesús?» · visualitzacions orgàniques (sistema infogràfic IBV)
-   V3 (#viz-cos):     CASE-04/SCALE-01 Bioarqueologia d'alçada real (Judea s. I) + comparador de trets.
    V4 (#s-cares):     Scrollytelling 1 · MAP-03 Mapa Equal Earth + cinta cronològica (29 fites, 200–2001).
    V5 (#viz-enquesta):CASE-03/SCALE-01 Dades empíriques YouGov (2020–2021) i estudi PLOS ONE (2018).
-   V8–V10 (nom, cronologia, Alcorà): vegeu nom-i-temps.js. */
+   V8–V9 (nom, cronologia): vegeu nom-i-temps.js. */
 (function(){
   if(!window.d3||!window.IBV||!window.JH)return;
   const V=IBV, C=V.C, D=window.JH;
@@ -38,143 +37,6 @@
   }
 
   /* =====================================================================
-     V3 · CASE-04 / SCALE-01 ALÇADA BIOARQUEOLÒGICA + COMPARADOR (#viz-cos)
-     Només mesures puntuals publicades (zero barres d'error sintètiques, zero fons pintat P1).
-     ===================================================================== */
-  (function(){
-    const fig=$("#f-cos"), el=$("#viz-cos"), rd=$("#cos-r"), lgEl=$("#cos-lg");
-    if(!el)return;
-    let tab="ossos";
-
-    const TRETS=[
-      {t:"Alçada i constitució", w:"Sovint imaginat alt (~1,80 m) i estilitzat, seguint l'estàndard europeu i cinematogràfic.", h:"Mitjana masculina a la Judea del s. I: ~1,66 m (Nagar & Torge 2003; Taylor 2018), cos fibrós pel treball manual i les caminades."},
-      {t:"Cabells i barba", w:"Cabells llargs fins a les espatlles, castany clar o ros, ratlla al mig i barba llarga cuidada.", h:"Cabells curts i foscos —Pau escriu que els cabells llargs en un home són «un deshonor» (1Co 11,14)— i barba curta natural."},
-      {t:"Pell i ulls", w:"Pell molt blanca i ulls blaus o clars (fixats per Heinrich Hofmann, Warner Sallman i Robert Powell).", h:"Pell marró olivàcia pròpia de l'Orient Mitjà (encara més enfosquida per la vida a l'aire lliure) i ulls marrons foscos (Taylor 2018)."},
-      {t:"Roba i calçat", w:"Túnica blanca impecable fins als turmells amb faixa o mantell net i teatral.", h:"Túnica curta de llana sense tenyir (chiton), mantell rectangular (himation) amb borles rituals (tzitzit, Mc 6,56) i sandàlies de cuir."}
-    ];
-
-    const M=V.mount(el,(node,w)=>{
-      if(tab==="trets"){
-        lg(lgEl,[
-          {c:C.blau,t:"Imatge occidental habitual"},
-          {c:C.vermell,t:"Evidència històrica del segle I"}
-        ]);
-        d3.select(node).selectAll("*").remove();
-        const wrap=d3.select(node).append("div").attr("class","tr-grid");
-        const cards=[];
-        TRETS.forEach(tr=>{
-          const card=wrap.append("div").attr("class","tr-card").attr("tabindex","0");
-          card.append("div").attr("class","tr-h").text(tr.t);
-          const p=card.append("div").attr("class","tr-pair");
-          const a=p.append("div"); a.append("span").attr("class","tl w").text("Imatge occidental habitual"); a.append("p").text(tr.w);
-          const b=p.append("div"); b.append("span").attr("class","tl h").text("Evidència del segle I"); b.append("p").text(tr.h);
-          cards.push({node:card.node(), tr});
-        });
-        const defT="<b>Cap dels quatre evangelis no descriu la cara ni l'alçada de Jesús:</b> les reconstruccions es basen en ossaris de Judea, tèxtils de Masada i Qumran, i normes socials del segle I (Joan E. Taylor, 2018).";
-        if(rd)rd.innerHTML=defT;
-        const resetT=()=>{ wrap.classed("dimmed",false); cards.forEach(c=>c.node.classList.remove("is-hi")); if(rd)rd.innerHTML=defT; };
-        outside(node,resetT);
-        cards.forEach(c=>{
-          const hi=()=>{ wrap.classed("dimmed",true); cards.forEach(o=>o.node.classList.toggle("is-hi",o===c)); if(rd)rd.innerHTML=`<b>${c.tr.t}:</b> ${c.tr.h}`; };
-          c.node.addEventListener("pointerenter",hi);
-          c.node.addEventListener("pointerdown",hi);
-          c.node.addEventListener("focus",hi);
-          c.node.addEventListener("blur",resetT);
-          c.node.addEventListener("pointerleave",ev=>{ if(ev.pointerType==="mouse")resetT(); });
-        });
-        return;
-      }
-
-      lg(lgEl,[
-        {c:C.vermell,t:"Homes jueus del segle I (valors publicats)"},
-        {c:C.blau,t:"Dones adultes / excepció «Goliat»"},
-        {c:C.vermell,t:"Mitjanes masculines (165–169 cm)",k:"da"}
-      ]);
-      d3.select(node).selectAll(".tr-grid").remove();
-      const mob=w<640, h=mob?295:270, m={t:42, r:mob?16:36, b:38, l:mob?14:242};
-      const s=V.svg(node,w,h,"Alçada publicada d'esquelets jueus de la Judea del segle I en centímetres: dones 147 cm, homes mitjana 166 cm, Yehohanan crucificat 167 cm, Jericó 169 cm i l'excepció Yeho'ezer «Goliat» amb 188,5 cm.");
-      const defs=s.append("defs");
-      const uid="cs"+Math.random().toString(36).slice(2,6);
-      const gR=addWashGrad(defs,uid+"r",C.vermell,.46,.22);
-      const gB=addWashGrad(defs,uid+"b",C.blau,.40,.18);
-
-      const x=d3.scaleLinear().domain([138, mob?206:198]).range([m.l,w-m.r]);
-      const y=d3.scalePoint().domain(D.estatura.map(d=>d.id)).range([m.t+22,h-m.b-16]).padding(.35);
-
-      // P1: sense fons pintat — dues línies verticals discontínues fines per al rang verificat de mitjanes masculines (165–169 cm)
-      [165,169].forEach(v=>{
-        s.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",m.t).attr("y2",h-m.b)
-          .attr("stroke",C.vermell).attr("stroke-width",.9).attr("stroke-dasharray","2 3").attr("stroke-opacity",.65);
-      });
-      s.append("line").attr("x1",x(165)).attr("x2",x(169)).attr("y1",m.t).attr("y2",m.t)
-        .attr("stroke",C.vermell).attr("stroke-width",1.4);
-      V.t(s,(x(165)+x(169))/2,m.t-9,"Mitjanes masculines (165–169 cm)",{anchor:"middle",size:11.5,fill:C.vermell,weight:600,halo:3});
-
-      V.axisX(s,x,h-m.b,[140,150,160,170,180,190],v=>v+" cm",{grid:m.t});
-
-      const rows=s.selectAll("g.st").data(D.estatura).join("g").attr("class","st")
-        .attr("tabindex","0").attr("role","button")
-        .attr("aria-label",d=>`${d.nom}: ${d.v%1?f1(d.v):f0(d.v)} centímetres`)
-        .style("cursor","pointer");
-      rows.append("line").attr("x1",m.l).attr("x2",w-m.r).attr("y1",d=>y(d.id)).attr("y2",d=>y(d.id))
-        .attr("stroke",C.grid).attr("stroke-width",.6);
-
-      rows.append("circle").attr("class","w").attr("cx",d=>x(d.v)).attr("cy",d=>y(d.id)).attr("r",mob?11:14)
-        .attr("fill",d=>d.cat==="prota"?gR:gB).style("mix-blend-mode","multiply");
-      rows.append("circle").attr("class","rim").attr("cx",d=>x(d.v)).attr("cy",d=>y(d.id)).attr("r",mob?11:14)
-        .attr("fill","none").attr("stroke","transparent").attr("stroke-width",1.5);
-      rows.append("circle").attr("cx",d=>x(d.v)).attr("cy",d=>y(d.id)).attr("r",3.6)
-        .attr("fill",d=>d.cat==="prota"?C.vermell:C.blau).attr("stroke",C.paper).attr("stroke-width",1.2);
-
-      rows.each(function(d){
-        const q=d3.select(this), yy=y(d.id);
-        if(!mob){
-          V.t(q,m.l-12,yy+4,d.nom,{anchor:"end",weight:d.cat==="extrem"||d.id==="homes"?700:400,size:12.5,fill:C.ink});
-        } else {
-          V.t(q,m.l,yy-14,d.nom,{anchor:"start",weight:600,size:11,fill:C.ink,halo:3});
-        }
-        const valTxt=d.v%1?f1(d.v)+" cm":f0(d.v)+" cm";
-        const leftLbl=mob&&d.v>180;
-        V.t(q,leftLbl?x(d.v)-14:x(d.v)+14,yy+4,valTxt,{anchor:leftLbl?"end":"start",weight:700,size:11.5,fill:d.cat==="prota"?C.vermell:C.ink,halo:3});
-      });
-
-      if(!mob){
-        const gol=D.estatura.find(d=>d.id==="goliat");
-        V.note(s,{
-          x:x(gol.v), y:y(gol.id)-14, tx:x(gol.v)-28, ty:m.t+28,
-          kind:"curve", bend:-12, anchor:"end", dot:false,
-          lines:[["188,5 cm a la Judea del s. I:",true],["tan inusual que la família es deia «Goliat»"]]
-        });
-      }
-
-      const def="<b>Dades osteològiques reals:</b> un home adult mitjà de la Judea del segle I feia uns <b>166 cm</b>. Passa el cursor o toca qualsevol fila per veure l'estudi.";
-      if(rd)rd.innerHTML=def;
-      const reset=()=>{
-        rows.interrupt().transition().duration(dur(140)).style("opacity",1);
-        rows.select(".rim").attr("stroke","transparent");
-        if(rd)rd.innerHTML=def;
-      };
-      const show=(target,d)=>{
-        rows.interrupt().transition().duration(dur(140)).style("opacity",o=>o===d?1:.48);
-        d3.select(target).raise().select(".rim").attr("stroke",C.ink);
-        if(rd)rd.innerHTML=`<b>${d.nom} (${d.v%1?f1(d.v):f0(d.v)} cm · ${d.tipus})</b> · ${d.det} <i>(${d.font})</i>`;
-      };
-      outside(node,reset);
-      rows.on("pointerenter pointerdown",(ev,d)=>show(ev.currentTarget,d))
-          .on("focus",(ev,d)=>show(ev.currentTarget,d))
-          .on("blur",reset)
-          .on("pointerleave",ev=>{ if(ev.pointerType==="mouse")reset(); });
-
-      V.onView(node,instant=>{
-        if(instant)return;
-        rows.style("opacity",0).transition().delay((d,i)=>i*80).duration(650).ease(ease).style("opacity",1);
-      });
-    });
-
-    seg(fig,k=>{ tab=k; el.__seen=true; M.redraw(); });
-  })();
-
-  /* =====================================================================
      V4 · SCROLLYTELLING 1 · MAPA + CINTA ICONOGRÀFICA (#s-cares)
      MAP-03 (mapa net Equal Earth amb clipPath estricte) + cinta temporal no lineal per trams (29 fites)
      ===================================================================== */
@@ -194,7 +56,7 @@
       {t:"c. 200 – 359 dC · Un jove sense barba", s:"Dura-Europos, les catacumbes de Roma i Britània"},
       {t:"c. 375 – 711 dC · L'emperador del cel", s:"De la catacumba de Commodil·la a Ravenna i el Sinaí"},
       {t:"s. IX – XV · De Taüll a la Xina", s:"Dunhuang, Taüll, Etiòpia i la falsa Carta de Lèntul"},
-      {t:"1495 – 1753 · Europa el fa europeu, i el món el fa seu", s:"Leonardo i Dürer; Mèxic, el Congo, l'Índia mogol, el Japó i Cusco"},
+      {t:"1495 – 1753 · Europa el fa europeu, i cada lloc el fa seu", s:"Leonardo i Dürer; Mèxic, el Congo, l'Índia mogol, el Japó i Cusco"},
       {t:"1863 – 1940 · El Jesús «ari» i el Jesús de Chicago", s:"De l'Institut d'Eisenach (1939) a Warner Sallman (1940)"},
       {t:"1952 – avui · Cinema, Corea i el retorn a Judea", s:"Robert Powell, Kim Ki-chang i la reconstrucció forense del 2001"}
     ];

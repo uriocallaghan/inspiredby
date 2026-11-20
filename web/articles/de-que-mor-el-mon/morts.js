@@ -1,6 +1,6 @@
 /* De què mor el món? — gràfics fets amb codi (d3).
-   Dades: research/causes-mort.csv (IHME GBD 2023), poblacio-historica.csv (HYDE 3.3, Gapminder, ONU WPP 2024),
-   natalitat-mortalitat.csv (ONU WPP 2024). Validació: research/validacio-de-que-mor-el-mon.md */
+   Dades: research/causes-mort.csv (IHME GBD 2023), poblacio-historica.csv (HYDE 3.3, Gapminder, ONU WPP 2024).
+   Validació: research/validacio-de-que-mor-el-mon.md */
 (function(){
 "use strict";
 var SANS="'Source Sans 3', sans-serif",SERIF="'STIXGeneral', 'STIX Two Text', Georgia, serif";
@@ -33,7 +33,7 @@ var G=[ // id, nom, persones (de 100), morts reals, categoria
 ].map(function(g){return {id:g[0],n:g[1],p:g[2],d:g[3],cat:g[4]}});
 G[G.length-1].d=TOTAL-G.slice(0,-1).reduce(function(a,g){return a+g.d},0);
 var people=[];G.forEach(function(g,gi){for(var i=0;i<g.p;i++)people.push({g:g,gi:gi,k:i})});
-var STEPS=[[],["cardio"],["cancer"],["resp","lri"],["digest","dement"],["diab","neo","kidney","road","diarr","tb","covid","hiv","suic","malaria","viol","nature","other"],["ALL"]];
+var STEPS=[[],["cardio"],["cancer"],["resp","lri"],["digest","dement"],["ALL"]];
 
 var svg=d3.select("#pp"),box=document.getElementById("ppbox"),W=0,H=0,mob=false,step=0;
 var PERSON="M-13,0a13,13 0 1,0 26,0a13,13 0 1,0 -26,0Z"; // punt rodó, com a l'article original
@@ -234,54 +234,6 @@ function popFig(){
   addEventListener("resize",function(){if(popFig.done)draw()});
 }
 
-/* ---------- 3. Natalitat i mortalitat ---------- */
-var BD=[[1950,36.8,19.4],[1951,36.5,19.0],[1952,37.7,18.3],[1953,36.9,17.9],[1954,37.3,17.4],[1955,37.1,17.0],[1956,36.4,16.6],[1957,37.2,16.4],[1958,35.9,16.0],[1959,34.4,17.1],[1960,34.0,18.1],[1961,32.9,16.3],[1962,35.9,14.7],[1963,37.5,14.7],[1964,35.9,14.3],[1965,35.3,14.5],[1966,34.4,14.1],[1967,33.7,13.7],[1968,34.4,13.4],[1969,33.8,13.2],[1970,33.6,13.0],[1971,32.8,13.1],[1972,32.1,12.4],[1973,31.5,12.1],[1974,30.7,11.9],[1975,29.7,11.7],[1976,29.3,11.5],[1977,28.6,11.2],[1978,28.5,11.0],[1979,28.6,10.8],[1980,28.7,10.6],[1981,28.6,10.5],[1982,28.9,10.3],[1983,28.1,10.3],[1984,28.1,10.1],[1985,28.0,10.0],[1986,28.1,9.8],[1987,28.0,9.6],[1988,27.4,9.6],[1989,27.2,9.4],[1990,26.9,9.3],[1991,25.5,9.2],[1992,24.8,9.1],[1993,24.3,9.1],[1994,23.8,9.2],[1995,23.4,8.9],[1996,23.0,8.8],[1997,22.6,8.7],[1998,22.3,8.6],[1999,22.0,8.6],[2000,22.0,8.5],[2001,21.6,8.4],[2002,21.4,8.3],[2003,21.1,8.3],[2004,21.0,8.2],[2005,20.8,8.1],[2006,20.8,8.0],[2007,20.7,7.9],[2008,20.7,7.9],[2009,20.6,7.8],[2010,20.4,7.7],[2011,20.2,7.7],[2012,20.3,7.6],[2013,19.9,7.6],[2014,19.7,7.5],[2015,19.3,7.5],[2016,19.2,7.5],[2017,18.8,7.5],[2018,18.2,7.5],[2019,17.7,7.5],[2020,17.1,8.1],[2021,16.8,8.8],[2022,16.5,7.8],[2023,16.3,7.6],[2025,16.1,7.7],[2030,15.6,7.9],[2035,15.2,8.3],[2040,14.8,8.7],[2045,14.3,9.1],[2050,13.7,9.5],[2055,13.2,9.9],[2060,12.8,10.2],[2065,12.5,10.5],[2070,12.3,10.8],[2075,12.0,11.1],[2080,11.7,11.4],[2085,11.4,11.6],[2090,11.2,11.7],[2095,11.0,11.9],[2100,10.8,12.1]];
-function bdFig(){
-  var sv=d3.select("#bd"),bx=document.getElementById("bdbox"),tip=document.getElementById("bdTip");if(sv.empty())return;
-  var curHl=null;
-  function hideTip(){if(curHl)curHl.attr("opacity",0);tip.style.opacity=0}
-  document.addEventListener("pointerdown",function(ev){if(!bx.contains(ev.target))hideTip()});
-  function draw(){
-    var w=bx.clientWidth,mobile=w<600,h=mobile?280:360,m={l:mobile?36:40,r:mobile?14:24,t:18,b:30};
-    sv.attr("viewBox","0 0 "+w+" "+h).attr("height",h);sv.selectAll("*").remove();
-    var x=d3.scaleLinear().domain([1950,2100]).range([m.l,w-m.r]),y=d3.scaleLinear().domain([0,40]).range([h-m.b,m.t]);
-    [0,10,20,30,40].forEach(function(v){sv.append("line").attr("x1",m.l).attr("x2",w-m.r).attr("y1",y(v)).attr("y2",y(v)).attr("stroke",v?K.hair:K.ink).attr("stroke-width",v?.6:1);
-      sv.append("text").attr("x",m.l-6).attr("y",y(v)+4).attr("text-anchor","end").attr("font-family",SANS).attr("font-size",11.5).attr("fill",K.muted).text(v+(v===40?" ‰":""))});
-    (mobile?[1950,2000,2050,2100]:[1950,1975,2000,2025,2050,2075,2100]).forEach(function(v){
-      var anc=v===2100?"end":v===1950?"start":"middle";
-      sv.append("text").attr("x",x(v)).attr("y",h-m.b+18).attr("text-anchor",anc).attr("font-family",SANS).attr("font-size",11.5).attr("fill",K.ink2).text(v)});
-    sv.append("rect").attr("x",x(2023)).attr("y",m.t).attr("width",x(2100)-x(2023)).attr("height",h-m.b-m.t).attr("fill","#F6F5F2");
-    sv.append("text").attr("x",mobile?w-m.r:x(2062)).attr("y",m.t+14).attr("text-anchor",mobile?"end":"middle").attr("font-family",SANS).attr("font-size",11).attr("fill",K.muted).text("Projecció ONU");
-    var gap=d3.area().x(function(d){return x(d[0])}).y0(function(d){return y(Math.min(d[1],d[2]))}).y1(function(d){return y(Math.max(d[1],d[2]))}).curve(d3.curveMonotoneX);
-    sv.append("path").attr("d",gap(BD.filter(function(d){return d[0]<=2084}))).attr("fill",K.blue).attr("opacity",.14);
-    var lb=d3.line().x(function(d){return x(d[0])}).y(function(d){return y(d[1])}).curve(d3.curveMonotoneX),ld=d3.line().x(function(d){return x(d[0])}).y(function(d){return y(d[2])}).curve(d3.curveMonotoneX);
-    var e=BD.filter(function(d){return d[0]<=2023}),p=BD.filter(function(d){return d[0]>=2023});
-    sv.append("path").attr("d",lb(e)).attr("fill","none").attr("stroke",K.blue).attr("stroke-width",2.2);
-    sv.append("path").attr("d",lb(p)).attr("fill","none").attr("stroke",K.blue).attr("stroke-width",2).attr("stroke-dasharray","4 4");
-    sv.append("path").attr("d",ld(e)).attr("fill","none").attr("stroke",K.red).attr("stroke-width",2.2);
-    sv.append("path").attr("d",ld(p)).attr("fill","none").attr("stroke",K.red).attr("stroke-width",2).attr("stroke-dasharray","4 4");
-    sv.append("text").attr("x",x(1958)).attr("y",y(38.6)).attr("font-family",SANS).attr("font-weight",600).attr("font-size",mobile?11.5:12.5).attr("fill",K.blue).text("Naixements per 1.000 habitants");
-    sv.append("text").attr("x",x(1958)).attr("y",y(19.5)).attr("font-family",SANS).attr("font-weight",600).attr("font-size",mobile?11.5:12.5).attr("fill",K.red).text("Morts per 1.000 habitants");
-    sv.append("text").attr("x",x(1990)).attr("y",y(17.6)).attr("text-anchor","middle").attr("font-family",SANS).attr("font-size",mobile?11.5:12).attr("fill",K.ink2).text("Creixement");
-    sv.append("text").attr("x",mobile?w-m.r:x(2084)).attr("y",y(11.5)-12).attr("text-anchor",mobile?"end":"middle").attr("font-family",SANS).attr("font-size",11.5).attr("fill",K.ink2).text("Es creuen cap al 2084");
-    sv.append("circle").attr("cx",x(2084)).attr("cy",y(11.5)).attr("r",3.5).attr("fill","#fff").attr("stroke",K.ink);
-    sv.append("text").attr("x",x(2021)).attr("y",y(8.8)-8).attr("text-anchor","middle").attr("font-family",SANS).attr("font-size",11).attr("fill",K.ink2).text("COVID-19");
-    var hl=sv.append("line").attr("y1",m.t).attr("y2",h-m.b).attr("stroke",K.ink).attr("stroke-width",.6).attr("opacity",0);
-    curHl=hl;
-    function showTip(ev){
-      var yr=x.invert(d3.pointer(ev)[0]),d=BD.reduce(function(a,b){return Math.abs(b[0]-yr)<Math.abs(a[0]-yr)?b:a});
-      hl.attr("x1",x(d[0])).attr("x2",x(d[0])).attr("opacity",1);tip.style.opacity=1;
-      tip.style.left=Math.min(w-190,Math.max(4,x(d[0])+10))+"px";
-      tip.style.top=Math.max(4,y(d[1])-10)+"px";
-      tip.innerHTML="<b>"+d[0]+(d[0]>2023?" (projecció)":"")+"</b><br>Naixements: "+IB.fmt(d[1],1)+" ‰<br>Morts: "+IB.fmt(d[2],1)+" ‰";
-    }
-    sv.append("rect").attr("x",m.l).attr("y",m.t).attr("width",w-m.l-m.r).attr("height",h-m.b-m.t).attr("fill","transparent").style("touch-action","pan-y")
-      .on("pointermove pointerdown",showTip)
-      .on("pointerleave",hideTip);
-  }
-  draw();addEventListener("resize",draw);
-}
-
 /* ---------- 4. El que temem i el que ens mata ---------- */
 var FEAR={2023:[["Infeccions respiratòries",2501138],["Suïcidi",767616],["Homicidis",435674],["Ofegaments",291140],["Meningitis",258798],["Drogues",172508],["Alcohol",171565],["Guerres i terrorisme",159052],["Desastres naturals",88594]],
   2019:[["Infeccions respiratòries",2549792],["Suïcidi",736949],["Homicidis",427605],["Ofegaments",297131],["Meningitis",280430],["Alcohol",156913],["Drogues",131278],["Guerres i terrorisme",96643],["Desastres naturals",9662]]};
@@ -327,7 +279,7 @@ function ticker(){
 function init(){
   layoutPP();
   IB.scrolly(document.getElementById("ppsteps"),document.getElementById("ppgraphic"),function(i){step=i;render(true)});
-  smallCauses();warFig();updList();popFig();bdFig();fearFig();ticker();
+  smallCauses();warFig();updList();popFig();fearFig();ticker();
   var lw=innerWidth,rt;addEventListener("resize",function(){if(innerWidth===lw&&mob)return;lw=innerWidth;clearTimeout(rt);rt=setTimeout(layoutPP,80)});
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();

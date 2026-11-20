@@ -369,12 +369,11 @@
       {c:C.ghost, t:"Pas anterior", kind:"line"}
     ]);
     const SH = [D.stonehenge.lon, D.stonehenge.lat];
-    const O = D.orígens;
+    const O = D.orígens.filter(o => o.id !== "cremats" && o.id !== "porcs");
     const STEPS = [
       {k:"sarsen", ids:["sarsen"], t:"Els gegants de West Woods", s:"50 dels 52 sarsens, d'un bosc a 25 km (Nash et al., 2020)"},
       {k:"gales", ids:["bluestones"], t:"Vuitanta pedres de Gal·les", s:"Turons Preseli, uns 230 km en línia recta"},
       {k:"altar", ids:["altar"], t:"L'Altar ve de l'altra punta de l'illa", s:"Conca Orcadiana, com a mínim 750 km (Clarke et al., 2024)"},
-      {k:"feast", ids:["cremats","porcs"], t:"També viatjaven els morts i els porcs", s:"10 de 25 cremats i quasi tots els porcs dels banquets eren de fora"},
       {k:"illa", ids:O.map(o=>o.id), t:"Tota una illa en un sol cercle", s:"L'únic dels ~900 cercles britànics fet amb pedres portades de lluny"}
     ];
     let cur = 0, st = null;
@@ -401,7 +400,7 @@
       const proj = d3.geoTransverseMercator().rotate([2.5,-54.5])
         .fitExtent([[mob?6:16, 8],[w-(mob?6:16), H-8]], {type:"MultiPoint", coordinates:[[-5.6,50.3],[0.6,50.8],[-3.2,59.2],[-6.2,57.5]]});
       const {ctx} = IBV.canvas(container, w, H, "");
-      const svg = IBV.svg(container, w, H, "Mapa físic de Gran Bretanya amb els camins de les pedres de Stonehenge: sarsens de West Woods (25 km), pedres blaves dels turons Preseli a Gal·les (230 km), la Pedra de l'Altar del nord-est d'Escòcia (750 km o més), i l'origen de morts cremats i porcs dels banquets.");
+      const svg = IBV.svg(container, w, H, "Mapa físic de Gran Bretanya amb els camins de les pedres de Stonehenge: sarsens de West Woods (25 km), pedres blaves dels turons Preseli a Gal·les (230 km), la Pedra de l'Altar del nord-est d'Escòcia (750 km o més).");
       svg.style("position","absolute").style("left",0).style("top",0);
       const pc = d3.select(container).append("canvas").attr("width",w*2).attr("height",H*2).style("width",w+"px").style("height",H+"px")
         .style("position","absolute").style("left",0).style("top",0).style("pointer-events","none").node();

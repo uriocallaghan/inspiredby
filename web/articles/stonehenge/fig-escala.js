@@ -33,7 +33,7 @@
       const lsc = mob ? Math.min((w - 24)/(35 + 18 + 3), 6.6) : Math.min((lupaW - 30)/34, (D0 - 60)/(34 + 16 + 14), 8.5);
       const lupaH = mob ? 36*lsc + 104 : 0;
       const H = Math.round(mob ? cy + D0/2 + 30 + lupaH : cy + D0/2 + 34);
-      const svg = IBV.svg(container, w, H, "Plantes a la mateixa escala: dins de Durrington Walls hi caben Stonehenge, Woodhenge, l'Anell de Brodgar, Waun Mawn i el recinte D de Göbekli Tepe. A la lupa, el cercle de sarsens al costat del recinte de Göbekli Tepe.");
+      const svg = IBV.svg(container, w, H, "Plantes a la mateixa escala: dins de Durrington Walls hi caben Stonehenge, Woodhenge, l'Anell de Brodgar i el recinte D de Göbekli Tepe. A la lupa, el cercle de sarsens al costat del recinte de Göbekli Tepe.");
       container.appendChild(container.querySelector(".tip.ibv-dock"));
       const root = svg.append("g");
       const P = (ox, oy, s) => (x, y) => [ox + x*s, oy - y*s];   // metres (x E, y N) → px
@@ -91,11 +91,11 @@
       gD.append("text").attr("x", cx).attr("y", cy - D0/2 - 30).attr("text-anchor","middle").attr("font-size", 12.5).attr("font-weight",700).attr("fill",ink).text("Durrington Walls").call(IBV.halo);
       IBV.t(gD, cx, cy - D0/2 - 15, `${F0(490)} × ${F0(468)} m · c. 2500 aC`, {size:11.5, anchor:"middle", fill:ink2, halo:true}).attr("dy", -1);
 
-      // ---------- quatre plantes de ~110 m i Göbekli D dins de Durrington ----------
+      // ---------- tres plantes de ~110 m i Göbekli D dins de Durrington ----------
       const o = 66;
       // al mòbil, la fila de dalt baixa una mica i la de baix s'aparta perquè hi càpiguen els noms sense tocar cap anell
-      const cells = mob ? { stonehenge:[-o, 64], woodhenge:[o, 64], brodgar:[-o, -74], waunmawn:[o, -74], gobekli:[0, -5] }
-                        : { stonehenge:[-o, o], woodhenge:[o, o], brodgar:[-o, -o], waunmawn:[o, -o], gobekli:[0, 0] };
+      const cells = mob ? { stonehenge:[-o, 64], woodhenge:[o, 64], brodgar:[-o, -74], gobekli:[0, -5] }
+                        : { stonehenge:[-o, o], woodhenge:[o, o], brodgar:[-o, -o], gobekli:[0, 0] };
       const lab = [];
 
       // Stonehenge: fossat, talús, forats Aubrey, Station Stones i pedres de la fase 4
@@ -130,11 +130,6 @@
         ring(g, f, 65, 65, [[352, 8], [172, 188]], {sw:.7}); ring(g, f, 71, 71, [[352, 8], [172, 188]], {sw:.7});
         for(let k=0;k<60;k++){ const b = k*6; const [x,y] = polm(52, b); slab(g, f, x, y, b + 90, 1.6, .5, {fill:"#fff", stroke:ink, sw:.5}); }
       }
-      // Waun Mawn: cercle desmantellat i discutit, de diàmetre «idèntic» al fossat de Stonehenge
-      function drawWaun(g, f, s){
-        ring(g, f, 55, 55, [], {sw:.8, dash:"3 3", stroke:ink2});
-        IBV.t(g, ...f(0, 0), "en debat", {size:11, italic:true, anchor:"middle", fill:C.muted, halo:true}).attr("dy", mob ? 12 : 4);
-      }
       // Göbekli Tepe, recinte D: ~14 m d'interior; dos pilars en T centrals (fins a 5,5 m d'alt); mur i pilars perimetrals esquemàtics
       function drawGobekli(g, f, s){
         const wall = d3.range(0, 361, 6).map(b => f(7.6*Math.sin(b*D2R)*(1 + .05*Math.sin(3*b*D2R)), 7.0*Math.cos(b*D2R)*(1 + .04*Math.cos(2*b*D2R))));
@@ -144,18 +139,18 @@
         // pilars centrals en T (vistos des de dalt: el cap és més ample que el fust)
         [[-1.4, .2], [1.4, -.2]].forEach(([x, y]) => { slab(g, f, x, y, 160, 3.0, .9, {fill:IBV.alpha(C.ink,.12), stroke:ink, sw: s > 3 ? .9 : .5}); });
       }
-      const DRAW = { stonehenge:drawStonehenge, woodhenge:drawWoodhenge, brodgar:drawBrodgar, waunmawn:drawWaun, gobekli:drawGobekli };
+      const DRAW = { stonehenge:drawStonehenge, woodhenge:drawWoodhenge, brodgar:drawBrodgar, gobekli:drawGobekli };
       Object.entries(cells).forEach(([id, [mx, my]]) => {
         const [ox, oy] = fD(mx, my), g = mk(id, ox, oy, (id==="brodgar"?71:id==="gobekli"?9:56)*sc, sc);
         DRAW[id](g, P(ox, oy, sc), sc);
         const d = E[id], top = my > 0;
         if(id === "gobekli"){
-          // al mòbil, el nom va a la dreta del cercle petit, al buit entre Woodhenge i Waun Mawn
+          // al mòbil, el nom va a la dreta del cercle petit, al buit entre Woodhenge i Brodgar
           if(mob) lab.push({g, x:ox + 11, y:oy + 4, anchor:"start", lines:[[`${d.curt} · 14 m`, true, ink]]});
           else lab.push({g, x:ox, y:oy + 20, anchor:"middle", lines:[[`${d.curt} · 14 m`, true, ink]]});
         } else if(mob && !top){
-          // fila de baix al mòbil: el nom dins del cercle (Brodgar i Waun Mawn tenen el centre buit)
-          lab.push({g, x:ox, y:oy + (id === "waunmawn" ? -4 : 4), anchor:"middle", lines:[[d.curt, true, ink]]});
+          // fila de baix al mòbil: el nom dins del cercle (Brodgar té el centre buit)
+          lab.push({g, x:ox, y:oy + 4, anchor:"middle", lines:[[d.curt, true, ink]]});
         } else {
           const rr = (id==="brodgar" ? 71 : 56)*sc, ty = top ? oy - rr - (mob ? 8 : 22) : oy + rr + 16;
           lab.push({g, x:ox, y:ty, anchor:"middle", lines: mob ? [[d.curt, true, id==="stonehenge"?C.vermell:ink]] : [[d.curt, true, id==="stonehenge"?C.vermell:ink], [`${F0(d.d)} m · ${d.data}`]]});
@@ -171,7 +166,7 @@
       // nota lateral a l'escriptori: què hi cap
       if(!mob){
         const g = root.append("g");
-        IBV.lines(g, 0, cy - 40, [["Hi caben tots", true], ["Quatre recintes de"], ["104–110 m i el de"], ["Göbekli Tepe, dins"], ["del fossat d'un sol"], ["henge de fusta."]], {size:12, fill:ink2});
+        IBV.lines(g, 0, cy - 40, [["Hi caben tots", true], ["Tres recintes de"], ["104–110 m i el de"], ["Göbekli Tepe, dins"], ["del fossat d'un sol"], ["henge de fusta."]], {size:12, fill:ink2});
       }
 
       // ---------- lupa: el cor de Stonehenge i Göbekli D a la mateixa escala gran ----------

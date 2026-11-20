@@ -5,7 +5,7 @@ window.SOPAR_DADES = {
     {
       id: "jerusalem",
       titol: "1 · Jerusalem, c. 30 dC (Triclinium)",
-      sub: "Reclinats sobre el colze esquerre en divans en forma d'U; mà dreta lliure, peus cap enfora i vasos de pedra calcària.",
+      sub: "Reclinats sobre el colze esquerre en divans en forma d'U; mà dreta lliure i peus cap enfora.",
       detall: "Postura del banquet grecoromà adaptada al judaisme (Mixnà Pessahim 10:1; Jn 13,23–25). Explica com Joan reposa sobre el pit de Jesús i com Jesús pot rentar els peus per darrere."
     },
     {
@@ -47,7 +47,7 @@ window.SOPAR_DADES = {
         { s: "si",  v: "15 nissan",    d: "Mt 26,17–20 segueix el marc cronològic pasqual de Marc." },
         { s: "si",  v: "15 nissan",    d: "Lc 22,7–15 presenta explícitament l'àpat com a sopar de Pasqua." },
         { s: "no",  v: "14 nissan",    d: "Contradicció clau: Jn 13,1 («abans de la festa»), 18,28 i 19,14 situen la mort abans del sopar pasqual, mentre s'immolen els anyells." },
-        { s: "no",  v: "Sense anyell", d: "No hi ha anyell pasqual ni pa àzim; John Varriano (2008) hi identifica anguila a la brasa amb taronja (no kosher segons Lv 11,9–12)." }
+        { s: "no",  v: "Sense anyell", d: "No hi ha anyell pasqual ni pa àzim." }
       ]
     },
     {
@@ -134,8 +134,8 @@ window.SOPAR_DADES = {
         { s: "si",  v: "«Els Dotze»",  d: "Mc 14,17: meta tōn dōdeka." },
         { s: "si",  v: "«Els Dotze»",  d: "Mt 26,20: meta tōn dōdeka." },
         { s: "si",  v: "«Els apòstols»", d: "Lc 22,14: hoi apostoloi." },
-        { s: "deb", v: "«Els deixebles»", d: "Jn 13 no usa mai «els Dotze» (només hoi mathētai); historiadores com Taylor & Bond recorden el marc domèstic i Levine demana cautela textual." },
-        { s: "si",  v: "12 homes", d: "Quatre tríades masculines confirmades per Venècia Inv. 254 i Giampietrino (Joan jove, no Maria Magdalena)." }
+        { s: "deb", v: "«Els deixebles»", d: "Jn 13 no usa mai «els Dotze» (només hoi mathētai)." },
+        { s: "si",  v: "12 homes", d: "Quatre tríades masculines confirmades per la còpia de Giampietrino (Joan jove, no Maria Magdalena)." }
       ]
     }
   ],
@@ -164,7 +164,6 @@ window.SOPAR_DADES = {
       { id: "saler",    nom: "El saler bolcat de Judes",        x: 0.288, y: 0.578, col: "vermell", det: "Gairebé esborrat a l'original degradat de Milà, però nítid a Giampietrino: simbolitza la ruptura del pacte de la sal i del comensal." },
       { id: "plat",     nom: "Mans al plat (Mateu 26,23)",      x: 0.388, y: 0.545, col: "vermell", det: "La mà esquerra de Judes i la dreta de Crist convergeixen cap al mateix plat — cita visual directa de Mt 26,23." },
       { id: "peus",     nom: "Els peus amputats el 1652",       x: 0.508, y: 0.915, col: "vermell", det: "Arrossega la cortina cap a l'esquerra: la porta oberta pels frares el 1652 va destruir els peus de Crist, visibles gràcies a Giampietrino." },
-      { id: "anguila",  nom: "Anguila a la brasa amb taronja",  x: 0.208, y: 0.550, col: "groc",    det: "Identificació gastronòmica de John Varriano (2008) sobre receptes de Platina (1474–1475): plat d'alta cuina milanesa, no kosher segons Lv 11,9–12." },
       { id: "vidre",    nom: "Gots de vidre sense calze d'or",  x: 0.594, y: 0.578, col: "blau",    det: "No hi falta cap Sant Greal: cada comensal té un got de vidre transparent amb vi negre, en clau domèstica del segle XV." },
       { id: "estovalles", nom: "Estovalles de Perusa nuades",   x: 0.985, y: 0.780, col: "ink",     det: "Lli blanc amb franges blaves (tovaglia perugina) recollit amb un nus domèstic als extrems perquè no fregués el terra." }
     ]
@@ -193,8 +192,8 @@ window.SOPAR_DADES = {
       k: "Identitat a la dreta de Crist",
       cat: "esoteric",
       mite: "És Maria Magdalena disfressada d'apòstol, formant una «V» de feminitat sagrada (Picknett & Prince 1997; Dan Brown 2003).",
-      real: "És Sant Joan Evangelista. La tradició renaixentista el representa sistemàticament jove, imberbe i de trets suaus. El dibuix preparatori Venècia Inv. 254 (d'autoria debatuda —Leonardo o taller—, amb noms especulars del mestre) i la còpia de Giampietrino confirmen els dotze apòstols masculins.",
-      src: "Gallerie dell'Accademia Inv. 254; Giampietrino (Royal Academy); Marani & Brambilla Barcilon (2001)."
+      real: "És Sant Joan Evangelista. La tradició renaixentista el representa sistemàticament jove, imberbe i de trets suaus. La còpia de Giampietrino confirma els dotze apòstols masculins.",
+      src: "Giampietrino (Royal Academy); Marani & Brambilla Barcilon (2001)."
     },
     {
       k: "La «mà sense cos» i el ganivet",
@@ -372,7 +371,7 @@ window.SOPAR_DADES = {
     "judes": "aillat",
     "menu": "pa_vi",
     "moment": "Traïció (anunci)",
-    "detall": "Cambra il·lusionista de marbres policroms: Judes aïllat en un tamboret davant Crist com un perfil fosc i satíric."
+    "detall": "Cambra il·lusionista de marbres policroms: Judes aïllat en un tamboret davant Crist com un perfil fosc."
   },
   {
     "id": 11,
@@ -468,9 +467,9 @@ window.SOPAR_DADES = {
     "taula": "recta",
     "postura": "fris",
     "judes": "integrat",
-    "menu": "anguila",
+    "menu": "pa_vi",
     "moment": "Traïció + Eucaristia",
-    "detall": "Ruptura total: els 13 al mateix costat sense aurèoles; Judes integrat dins la 2a tríada però en penombra i amb saler bolcat; anguila amb taronja (Varriano)."
+    "detall": "Ruptura total: els 13 al mateix costat sense aurèoles; Judes integrat dins la 2a tríada però en penombra i amb saler bolcat."
   },
   {
     "id": 18,
@@ -498,7 +497,7 @@ window.SOPAR_DADES = {
     "judes": "integrat",
     "menu": "banquet",
     "moment": "Banquet censurat",
-    "detall": "560 × 1309 cm: concebut com a Últim Sopar per a SS. Giovanni e Paolo amb nans, soldats alemanys i gossos; rebatejat per ordre de la Inquisició (18-07-1573)."
+    "detall": "560 × 1309 cm: concebut com a Últim Sopar per a SS. Giovanni e Paolo amb nans i soldats alemanys, i també gossos; rebatejat per ordre de la Inquisició (18-07-1573)."
   },
   {
     "id": 20,

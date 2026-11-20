@@ -585,7 +585,6 @@ const GLOBE=(function(){
   const GC={warm:C.vermell,north:C.vermell,trop:C.vermell,gyre:C.vermellClar,deep:C.blauFosc};
   const SINK=[["nord",-2,74.5],["irm",-37,61],["isl",-24,59.5],["lab",-53,57.5]];
   const ST=[
-    {v:[-30,14,1.0],lay:"t",cur:{},ann:[[-38,24,"tropic",0,0,"c"],[-35,63,"north",0,0,"c"],[-25,0,`<span style='color:${C.muted};font-style:italic'>Equador</span>`,0,0,"c"]]},
     {v:[-52,33,1.55],lay:"t",cur:{warm:1,gyre:.5,trop:.6},ann:[[-79.8,26.5,"<b>Corrent del Golf</b>32 milions de m³/s",30,30,"l"],[-38,49.5,"<b>Corrent de l'Atlàntic Nord</b>",10,-46,"c"]]},
     {v:[-38,26,1.25],lay:"s",cur:{warm:1,gyre:.5,trop:.6},ann:[[-45,24.5,"smax",0,48,"c"],[-28,62,"snorth",30,-10,"l"]]},
     {v:[-36,47,1.45],lay:"t",cur:{warm:1,north:.8},heat:1,ann:[[-79.5,25.5,"tflor",-6,-26,"r"],[5.5,66.5,"tnor",14,6,"l"],[-29,55,"<b>La calor passa a l'aire</b>",0,-62,"c"]]},
@@ -611,7 +610,7 @@ const GLOBE=(function(){
   function buildAnn(i){
     anns.forEach(a=>{a.el.style.opacity=0;setTimeout(()=>a.el.remove(),450)});anns=[];
     let list=ST[i].ann||[];
-    if(mob()&&i===5){
+    if(mob()&&i===4){
       list=[
         [-2,74.5,"<b>Mars nòrdics</b>",-10,-45,"r"],
         [-53,57.5,"<b>Mar del Labrador</b>",-6,-40,"l"],
@@ -888,8 +887,7 @@ const SEC=(function(){
   ];
   const ANNS=[
     [[10,60,"<b>Capa calenta</b>només uns centenars de metres","c"],[0,3600,"<b>Aigua freda</b>de −1 a 4 °C","c"]],
-    [[12,2700,"<b>Aigua profunda de l'Atlàntic nord</b>uns 3 °C · salinitat 34,9–35,0","c"],[57,2000,"<span>Surt del nord</span>","c"],[35.5,600,"<b>Aigua mediterrània</b>surt per Gibraltar","r"]],
-    [[-24,820,"<b>Aigua intermèdia antàrtica</b>menys salada, uns 34,3","c"],[-28,4700,"<b>Aigua de fons antàrtica</b>per sota de 0,5 °C","c"],[12,2450,"<span>Aigua profunda de l'Atlàntic nord</span>","c"]],
+    [[12,2700,"<b>Aigua profunda de l'Atlàntic nord</b>uns 3 °C · salinitat 34,9–35,0","c"],[57,2000,"<span>Surt del nord</span>","c"],[-24,820,"<b>Aigua intermèdia antàrtica</b>menys salada, uns 34,3","c"],[-28,4700,"<b>Aigua de fons antàrtica</b>per sota de 0,5 °C","c"]],
     [[18,40,"<b>Aigua calenta cap al nord</b>","c"],[54,1250,"<b>S'enfonsa</b>","r"],[15,2950,"<b>Torna cap al sud</b>","c"],[-60,900,"<b>Torna a pujar</b>","l"]]
   ];
   let anns=[];
@@ -938,7 +936,7 @@ const SEC=(function(){
     if(!W||!img.t)return;
     const t=tMs/1000, dt=dtMs/1000;
     lf=Math.min(1,lf+dt*1.5);
-    arrows=lerp(arrows,step===3?1:0,RM?1:Math.min(1,dt*2.5));
+    arrows=lerp(arrows,step===2?1:0,RM?1:Math.min(1,dt*2.5));
     const dp=DPR();ctx.setTransform(dp,0,0,dp,0,0);ctx.clearRect(0,0,W,H);
     ctx.drawImage(img[prev],0,0,W,H);
     if(lf<1)ctx.globalAlpha=lf;
@@ -1481,7 +1479,7 @@ const SEC=(function(){
     else if(v<=55)t="És el rang que projecten la majoria de models per al 2100. L'IPCC considera molt probable que la cinta s'afebleixi en tots els escenaris, però té poca confiança en la xifra exacta. Es notaria sobretot al nord de l'Atlàntic, que rebria menys calor de l'oceà.";
     else if(v<=59)t="Més enllà de les projeccions de l'IPCC i de la majoria d'estudis, però dins de l'estimació més alta d'aquesta llista, la de Portmann i col·legues (2026), que corregeix un biaix de la salinitat dels models.";
     else if(v<COL)t="Més enllà de totes aquestes estimacions per al 2100, però encara per sobre del llindar que diversos estudis fan servir per parlar de col·lapse.";
-    else t="Zona de col·lapse: la cinta per sota d'uns 6 Sv. L'IPCC té confiança mitjana que no passarà abans del 2100. Si passés, molt probablement desplaçaria cap al sud el cinturó de pluges tropicals, afebliria els monsons de l'Àfrica i de l'Àsia, reforçaria els de l'hemisferi sud i assecaria Europa.";
+    else t="Zona de col·lapse: la cinta per sota d'uns 6 Sv. L'IPCC té confiança mitjana que no passarà abans del 2100. Si passés, molt probablement desplaçaria cap al sud el cinturó de pluges tropicals, afebliria els monsons africà i asiàtic, reforçaria els de l'hemisferi sud i assecaria Europa.";
     txt.textContent=t;
     const inc=ROWS.filter(r=>v>=r.a&&v<=r.b);
     list.innerHTML=inc.length?inc.map(r=>`<li>Dins del rang de: ${r.n} (${r.s}, ${r.a}–${r.b} %)</li>`).join(""):"<li>Fora del rang de totes aquestes estimacions</li>";

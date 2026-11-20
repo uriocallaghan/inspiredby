@@ -165,18 +165,11 @@
       const sub = IBV.t(g, gx, 38, "", {size:12.5, fill:C.ink2});
       const rr = IBV.rng(21), order = d3.shuffler(rr)(d3.range(100));
       const keep = new Set(order.slice(0, 10));
-      const archer = order.slice(10).find(i => i % cols >= cols - 3 && i < cols*2);
-      const P = d3.range(100).map(i => ({i, x:gx + (i%cols + .5)*cw, y:gy + Math.floor(i/cols)*rh + ph, rank:order.indexOf(i), keep:keep.has(i), archer:i===archer}));
+      const P = d3.range(100).map(i => ({i, x:gx + (i%cols + .5)*cw, y:gy + Math.floor(i/cols)*rh + ph, rank:order.indexOf(i), keep:keep.has(i)}));
       const pg = g.append("g");
-      const ppl = P.map(d => person(pg, d.x, d.y, ph*(.86 + rr()*.16), {pel:PEL[d.i%3], capa:(d.i*7)%5===0 || d.archer, dir:(d.i*13)%4===0?-1:1, pose:(d.i*11)%9===0?"mira":"dret"}).datum(d));
+      const ppl = P.map(d => person(pg, d.x, d.y, ph*(.86 + rr()*.16), {pel:PEL[d.i%3], capa:(d.i*7)%5===0, dir:(d.i*13)%4===0?-1:1, pose:(d.i*11)%9===0?"mira":"dret"}).datum(d));
       const sel = pg.selectAll(":scope > g");
       const gridB = gy + rows*rh + 6;
-      // l'Arquer d'Amesbury
-      const A = P[archer];
-      const arch = g.append("g").attr("opacity",0);
-      arch.append("circle").attr("cx",A.x).attr("cy",A.y - ph*.5).attr("r",ph*.62).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.9);
-      IBV.note(arch, {x:A.x + ph*.5, y:A.y - ph*.9, tx: mob ? W - 14 : W*.66 + 64, ty: mob ? gy - 8 : gy + 40, kind:"curve", bend:-16, anchor: mob ? "end" : "start", size:12,
-        lines: mob ? [["L'Arquer d'Amesbury",true],["infància als Alps"]] : [["L'Arquer d'Amesbury",true],["va créixer als Alps i el van enterrar","",C.ink2],["a 5 km de les pedres, amb l'or més","",C.ink2],["antic datat de Gran Bretanya","",C.ink2]]});
       // línia de temps
       const ty = gridB + (mob ? 64 : 72), tx0 = gx, tx1 = mob ? W - 14 : W*.66 + gx;
       const x = d3.scaleLinear().domain([-4200, -1800]).range([tx0, tx1]);
@@ -219,7 +212,6 @@
         sub.text(s ? (mob ? "ja no són els besnéts dels qui van cavar el fossat" : "els que reordenen les pedres blaves ja no són els besnéts dels qui van cavar el fossat") : (mob ? "cent figures = l'ascendència de l'illa" : "cent figures = l'ascendència de la gent de Gran Bretanya"));
         sel.interrupt().transition().duration(inst ? 0 : 500).delay(d => inst ? 0 : (s ? d.rank : 99-d.rank)*14)
           .attr("fill", d => s && !d.keep ? C.vermell : C.groc);
-        arch.transition().duration(inst?0:400).delay(inst?0:s?1500:0).attr("opacity", s ? 1 : 0);
         const cx = x(s ? -2000 : -2500);
         cur.interrupt().transition().duration(inst?0:1400).ease(d3.easeCubicInOut).attr("d", `M${cx-5},${ty-24}L${cx+5},${ty-24}L${cx},${ty-17}Z`);
         if(inst) cur.attr("d", `M${cx-5},${ty-24}L${cx+5},${ty-24}L${cx},${ty-17}Z`);
@@ -233,11 +225,11 @@
       if(IBV.onView === undefined) set(1, true);
       svg.on("click.g", () => set(st ? 0 : 1));
       IBV.hover(svg.node(), (ev,[px,py]) => {
-        if(py > gridB){ const a = Math.round(x.invert(px)/50)*50; tp.show(a < -2450 ? `<b>${IBV.fmt(",.0f")(-a)} aC</b> · ascendència dels pagesos neolítics` : a < -2050 ? `<b>${IBV.fmt(",.0f")(-a)} aC</b> · arriben els grups del Vas Campaniforme: la substitució es fa en pocs segles` : `<b>${IBV.fmt(",.0f")(-a)} aC</b> · ~90 % de l'ascendència ja és nova`); return; }
+        if(py > gridB){ const a = Math.round(x.invert(px)/50)*50; tp.show(a < -2450 ? `<b>${IBV.fmt(",.0f")(-a)} aC</b> · ascendència dels pagesos neolítics` : a < -2050 ? `<b>${IBV.fmt(",.0f")(-a)} aC</b> · arriben els grups del Vas Campaniforme: l'ascendència de l'illa canvia en pocs segles` : `<b>${IBV.fmt(",.0f")(-a)} aC</b> · ~90 % de l'ascendència ja és nova`); return; }
         let best = null, bd = 1e9; P.forEach(d => { const dd = Math.hypot(d.x-px, d.y-ph*.5-py); if(dd < bd){ bd = dd; best = d; } });
         if(bd > cw){ tp.hide(); IBV.focus(sel, null); return; }
         IBV.focus(sel, d => d === best);
-        tp.show(best.archer && st ? "<b>L'Arquer d'Amesbury</b> · c. 2470–2300 aC, infància als Alps (Fitzpatrick, 2011)" : st ? (best.keep ? "<b>Ascendència neolítica</b> · la que sobreviu, ~10 %" : "<b>Ascendència nova</b> · dels grups del Vas Campaniforme, ~90 %") : "<b>Ascendència neolítica</b> · la gent que va aixecar els sarsens");
+        tp.show(st ? (best.keep ? "<b>Ascendència neolítica</b> · la que sobreviu, ~10 %" : "<b>Ascendència nova</b> · dels grups del Vas Campaniforme, ~90 %") : "<b>Ascendència neolítica</b> · la gent que va aixecar els sarsens");
       }, () => { tp.hide(); IBV.focus(sel, null); });
     }
 

@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-525290005591";
+const CACHE_NAME = "ib-offline-4c5d2415d34d";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -51,14 +51,10 @@ const LOCAL_ASSETS = [
   "/articles/el-jesus-historic/cover.jpg",
   "/articles/el-jesus-historic/dades.js",
   "/articles/el-jesus-historic/img/alexamenos-dibuix.jpg",
-  "/articles/el-jesus-historic/img/barca-galilea.jpg",
   "/articles/el-jesus-historic/img/bon-pastor.jpg",
-  "/articles/el-jesus-historic/img/caifas-ossari.jpg",
   "/articles/el-jesus-historic/img/commodilla.jpg",
-  "/articles/el-jesus-historic/img/dunhuang-seda.jpg",
   "/articles/el-jesus-historic/img/dura-europos.jpg",
   "/articles/el-jesus-historic/img/durer-1500.jpg",
-  "/articles/el-jesus-historic/img/etiopia-walters.jpg",
   "/articles/el-jesus-historic/img/fumie.jpg",
   "/articles/el-jesus-historic/img/hofmann-1889.jpg",
   "/articles/el-jesus-historic/img/kongo-crucifix.jpg",
@@ -70,7 +66,6 @@ const LOCAL_ASSETS = [
   "/articles/el-jesus-historic/img/ravenna-sud.jpg",
   "/articles/el-jesus-historic/img/rembrandt-crist.jpg",
   "/articles/el-jesus-historic/img/sinai-pantocrator.jpg",
-  "/articles/el-jesus-historic/img/taull-pantocrator.jpg",
   "/articles/el-jesus-historic/img/yehohanan-talo.jpg",
   "/articles/el-jesus-historic/img/zapata-cuy.jpg",
   "/articles/el-jesus-historic/index.html",

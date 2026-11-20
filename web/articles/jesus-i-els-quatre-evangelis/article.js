@@ -1375,7 +1375,7 @@
       "πιστεύω":"<b>El verb de Joan:</b> «creure» hi esclata <b>98 vegades</b>, davant de només 9 a 11 vegades als altres tres llibres.",
       "κόσμος":"<b>Una mirada còsmica:</b> Joan repeteix «món» <b>78 vegades</b>; Marc només 2 i Lluc 3.",
       "ἀγαπάω":"<b>Estimar al comiat:</b> Joan concentra la majoria de les seves <b>37 aparicions</b> als discursos de l'últim sopar.",
-      "Ἰουδαῖος":"<b>Distància històrica:</b> Joan escriu més tard i diu «els jueus» <b>71 vegades</b>, en contrast amb 5 o 6 als sinòptics."
+      "Ἰουδαῖος":"<b>Distància històrica:</b> Joan escriu més tard i fa servir el terme grec <i>Ioudaîos</i> («jueu») <b>71 vegades</b>, en contrast amb 5 o 6 als sinòptics."
     };
     const BOOKS=["Mc","Mt","Lc","Jn"];
     const BCOL={Mc:C.vermell,Mt:C.blau,Lc:C.blauClar,Jn:C.groc};

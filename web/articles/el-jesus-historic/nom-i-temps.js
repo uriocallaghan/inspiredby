@@ -1,7 +1,6 @@
-/* «Qui era realment Jesús?» · gràfics del nom, del calendari i de l'Alcorà (sistema IBV)
+/* «Qui era realment Jesús?» · gràfics del nom i del calendari (sistema IBV)
    V8  (#viz-nom):    cadena animada Yehōšūaʿ → Jesús + com es diu avui en 12 llengües.
-   V9  (#viz-crono):  cronologia real 13 aC – 40 dC amb l'«any 1» de Dionís l'Exigu i commutador de calendari.
-   V10 (#viz-alcora): punts unitaris de les vegades que s'anomena Jesús, Maria i Mahoma a l'Alcorà i al Nou Testament. */
+   V9  (#viz-crono):  cronologia real 13 aC – 40 dC amb l'«any 1» de Dionís l'Exigu i commutador de calendari. */
 (function(){
   if(!window.d3||!window.IBV||!window.JH)return;
   const V=IBV, C=V.C, D=window.JH;
@@ -199,45 +198,5 @@
       V.onView(node,instant=>grow(instant));
     });
     seg(fig,k=>{ mode=k; M.redraw(); });
-  })();
-
-  /* =====================================================================
-     V10 · QUANTES VEGADES SURT EL NOM (#viz-alcora)
-     ===================================================================== */
-  (function(){
-    const el=$("#viz-alcora"), rd=$("#alcora-r");
-    if(!el||!D.alcora)return;
-    const A=D.alcora;
-    lg($("#alcora-lg"),[{c:C.vermell,t:"Alcorà"},{c:C.blau,t:"Nou Testament"}]);
-    V.mount(el,(node,w)=>{
-      const mob=w<640;
-      const lw=mob?0:220, r=mob?4.6:5.4, gap=mob?11:13.5;
-      const perRow=Math.max(10,Math.floor((w-lw-10)/gap));
-      const rowsOf=d=>Math.ceil(d.n/perRow);
-      let yy=10; const lay=A.map(d=>{ const top=yy+(mob?20:6); const hh=rowsOf(d)*gap; yy=top+hh+(mob?14:18); return {d,top}; });
-      const h=yy+4;
-      const s=V.svg(node,w,h,A.map(d=>`${d.nom}: ${d.n} vegades`).join("; "));
-      const g=s.selectAll("g.al").data(lay).join("g").attr("class","al").attr("aria-label",o=>`${o.d.nom}: ${o.d.n}`);
-      g.append("rect").attr("class","hit").attr("x",0).attr("width",w).attr("y",o=>o.top-(mob?20:8)).attr("height",o=>rowsOf(o.d)*gap+(mob?24:12)).attr("fill","transparent");
-      g.each(function(o){
-        const q=d3.select(this), d=o.d, col=d.src==="alcora"?C.vermell:C.blau;
-        if(mob) V.t(q,0,o.top-8,`${d.nom} · ${d.n}`,{size:11.5,weight:700,fill:C.ink,halo:3});
-        else { V.t(q,lw-14,o.top+gap/2+3,d.nom,{anchor:"end",size:12.5,weight:600,fill:C.ink}); }
-        const dots=q.selectAll("circle.u").data(d3.range(d.n)).join("circle").attr("class","u")
-          .attr("cx",i=>lw+r+(i%perRow)*gap).attr("cy",i=>o.top+r+Math.floor(i/perRow)*gap).attr("r",r)
-          .attr("fill",V.alpha(col,.62)).attr("stroke",col).attr("stroke-width",.8);
-        if(!mob) V.t(q,lw+r+((d.n-1)%perRow)*gap+r+8,o.top+r+Math.floor((d.n-1)/perRow)*gap+4,String(d.n),{size:12,weight:700,fill:C.ink,halo:3});
-        q.node().__dots=dots;
-      });
-      g.append("rect").attr("class","rim").attr("x",mob?-2:lw-6).attr("width",o=>Math.min(w-(mob?0:lw-6),(Math.min(o.d.n,perRow))*gap+12+(mob?0:24))).attr("y",o=>o.top-(mob?20:6)).attr("height",o=>rowsOf(o.d)*gap+(mob?24:10)).attr("fill","none").attr("stroke","transparent").attr("stroke-width",1.2);
-      const def="<b>Cada punt és una vegada que el nom apareix escrit.</b> Passa el cursor per sobre de cada fila.";
-      bindHover(g,node,rd,def,o=>`<b>${o.d.nom}: ${o.d.n}</b> · ${o.d.det} <i>(${o.d.font})</i>`,
-        t=>{ g.select(".rim").attr("stroke","transparent"); d3.select(t).select(".rim").attr("stroke",C.ink); },
-        ()=>g.select(".rim").attr("stroke","transparent"));
-      V.onView(node,instant=>{
-        if(instant)return;
-        g.each(function(){ this.__dots.attr("r",0).transition().delay(i=>200+i*28).duration(320).ease(ease).attr("r",r); });
-      });
-    });
   })();
 })();

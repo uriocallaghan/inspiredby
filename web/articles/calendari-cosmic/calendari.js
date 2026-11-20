@@ -44,7 +44,6 @@ const EV=[
  ["homo",2.8e6,"Gènere Homo","hum",3],["fire_use",1e6,"Ús del foc","hum",2],["fire_make",4e5,"Encendre foc","hum",3],
  ["sapiens",3.15e5,"Homo sapiens","hum",1],["neander",4e4,"Últims neandertals","hum",2],
  ["americas",2.2e4,"Humans a Amèrica","hum",2],["agri",1.15e4,"Agricultura","hum",1],["writing",5250,"Escriptura","hum",1],
- ["christ",1995,"Cristianisme","hum",2],["columbus",534,"Colom al Carib","hum",2],["frrev",237,"Revolució Francesa","hum",2],
  ["moonlanding",57,"Arribada a la Lluna","hum",1]
 ].map(e=>{
   const s=sec(e[1]), t=YEAR-s, d=Math.floor(t/86400);
@@ -144,7 +143,7 @@ const STEPS=[
  {lv:"day",ev:["homochimp","tools","homo","fire_use"]},
  {lv:"hour",ev:["fire_make","sapiens","neander"]},
  {lv:"min",ev:["americas","agri","writing"]},
- {lv:"sec",ev:["christ","columbus","frrev","moonlanding"]}
+ {lv:"sec",ev:["moonlanding"]}
 ];
 const HEAD={
   year:["Tot l'any","1 dia = 37,8 milions d'anys"],
@@ -276,7 +275,7 @@ function initScrolly(){
       V.t(g,lx,ly,mob?V.MES1[m]:V.MES[m],{anchor:"middle",size:mob?11:11.5,weight:m===0||m===8||m===11?600:400,fill:m===11?C.ink:C.muted});
     }
 
-    // Tots els 39 fets reals com a perles translúcides sobre l'anell
+    // Tots els 36 fets reals com a perles translúcides sobre l'anell
     const doyCount={}, doySeen={};
     EV.forEach(e=>{ doyCount[e.doy]=(doyCount[e.doy]||0)+1; });
     const pearls=EV.map(e=>{
@@ -833,7 +832,7 @@ function initEras(){
         {c:C.vermell,t:"Humans"}
       ]);
     } else if(mode==="log"){
-      if(titleEl)titleEl.textContent="Temps profund: els 39 fets en escala logarítmica";
+      if(titleEl)titleEl.textContent="Temps profund: els 36 fets en escala logarítmica";
       if(subEl)subEl.textContent="Cada salt de l'eix és 10 vegades més a prop d'avui, del Big Bang fins a l'arribada a la Lluna";
       if(lg)V.legendCat(lg,[
         {c:C.blau,t:"Univers"},
@@ -973,7 +972,7 @@ function initEras(){
 
     if(mob){
       const m={t:22,b:34,l:64,r:8}, axisX=m.l, H=520;
-      const s=V.svg(el,w,H,"Línia del temps logarítmica vertical amb els 39 esdeveniments reals del calendari còsmic, des del Big Bang fa 13.787 milions d'anys fins a l'arribada a la Lluna fa 57 anys.");
+      const s=V.svg(el,w,H,"Línia del temps logarítmica vertical amb els 36 esdeveniments reals del calendari còsmic, des del Big Bang fa 13.787 milions d'anys fins a l'arribada a la Lluna fa 57 anys.");
       const defs=s.append("defs");
       const wG={cos:addWashGrad(defs,C.blau,.45,.22,.03), life:addWashGrad(defs,C.groc,.58,.30,.04), hum:addWashGrad(defs,C.vermell,.52,.26,.03)};
       const g=s.append("g");
@@ -1079,7 +1078,7 @@ function initEras(){
     /* Desktop: eix logarítmic horitzontal amb franges d'era en aquarel·la */
     const lanes=5, laneH=36;
     const m={t:34,l:14,r:14}, axisY=m.t+lanes*laneH+22, H=axisY+52;
-    const s=V.svg(el,w,H,"Línia del temps logarítmica amb els 39 esdeveniments reals del calendari còsmic, des del Big Bang fa 13.787 milions d'anys fins a l'arribada a la Lluna fa 57 anys.");
+    const s=V.svg(el,w,H,"Línia del temps logarítmica amb els 36 esdeveniments reals del calendari còsmic, des del Big Bang fa 13.787 milions d'anys fins a l'arribada a la Lluna fa 57 anys.");
     const defs=s.append("defs");
     const wG={cos:addWashGrad(defs,C.blau,.45,.22,.03), life:addWashGrad(defs,C.groc,.58,.30,.04), hum:addWashGrad(defs,C.vermell,.52,.26,.03)};
     const g=s.append("g");
@@ -1325,14 +1324,14 @@ function initLife(){
       {c:C.ink2,t:"Arcs de proporció (×N)",kind:"line",dash:"3 3"}
     ]);
   }
-  const HIST=[BY.frrev,BY.moonlanding];
+  const HIST=[BY.moonlanding];
   let W=0, H=214, mob=false, x=null, axisY=136, svg=null, dynG=null, hvG=null, tp=null, wash={};
 
   function draw(el,w){
     W=w; mob=w<540;
     H=mob?236:218; axisY=mob?134:140;
     const ml=mob?8:14, mr=mob?8:14;
-    svg=V.svg(el,w,H,"Escala comparativa de l'últim segon de l'any còsmic (437 anys), amb la durada d'una vida humana en vermell i arcs de proporció exacta respecte a la Lluna, la Revolució Francesa i el segon sencer.");
+    svg=V.svg(el,w,H,"Escala comparativa de l'últim segon de l'any còsmic (437 anys), amb la durada d'una vida humana en vermell i arcs de proporció exacta respecte a la Lluna i el segon sencer.");
     const defs=svg.append("defs");
     wash={
       red:addWashGrad(defs,C.vermell,.52,.26,.04),
@@ -1361,15 +1360,15 @@ function initLife(){
 
     // Fites històriques reals dins de l'últim segon amb halos d'aquarel·la
     const histG=g.append("g");
-    HIST.forEach((e,i)=>{
+    HIST.forEach(e=>{
       const ex=x(e.s), yr=2026-Math.round(e.ya);
       const q=histG.append("g").datum(e).attr("class","h-mk");
       q.append("circle").attr("cx",ex).attr("cy",axisY).attr("r",11)
         .attr("fill",wash.blue).style("mix-blend-mode","multiply");
       q.append("circle").attr("cx",ex).attr("cy",axisY).attr("r",3.3)
         .attr("fill",C.blau).attr("stroke","#fff").attr("stroke-width",1.1);
-      const ly=axisY+(mob?(i===0?42:74):42);
-      const anc=i===0?"middle":"end", tx=i===0?ex:Math.min(w-mr-4,ex-4);
+      const ly=axisY+42;
+      const anc="end", tx=Math.min(w-mr-4,ex-4);
       q.append("line").attr("x1",ex).attr("x2",ex).attr("y1",axisY+5).attr("y2",ly-11)
         .attr("stroke",C.blau).attr("stroke-width",.7).attr("stroke-opacity",.7);
       V.t(q,tx,ly,`${e.lab} (${yr})`,{anchor:anc,size:11.5,weight:600,fill:C.ink,halo:3});
@@ -1405,12 +1404,12 @@ function initLife(){
     const sStr=sVal<.1?f3(sVal):f2(sVal);
     if(valEl)valEl.textContent=`${yrs} ${yrs===1?"any":"anys"}`;
     rng.setAttribute("aria-valuetext",`${yrs} ${yrs===1?"any":"anys"}, ${sStr} segons de l'any còsmic`);
-    const nSec=SPY/yrs, nRev=BY.frrev.ya/yrs, nMoon=yrs/BY.moonlanding.ya;
+    const nSec=SPY/yrs, nMoon=yrs/BY.moonlanding.ya;
     const moonTxt=yrs>=BY.moonlanding.ya?`<b>${f1(nMoon)}×</b> el temps des de la Lluna`:`<b>${f1(1/nMoon)}</b> vegades menys que el temps des de la Lluna`;
     if(out)out.innerHTML=`<b>${yrs} ${yrs===1?"any":"anys"}</b> ocupen <b>${sStr} segons</b>: caben <b>${f1(nSec)}</b> vegades en l'últim segon i són ${moonTxt}.`;
     if(!dynG||!x)return;
 
-    const xA=x(sVal), xB=x(0), xStart=x(1), xRev=x(BY.frrev.s), xMoon=x(BY.moonlanding.s);
+    const xA=x(sVal), xB=x(0), xStart=x(1), xMoon=x(BY.moonlanding.s);
     const span=Math.max(2.5,xB-xA), mx=(xA+xB)/2;
     dynG.selectAll("*").remove();
 
@@ -1421,22 +1420,14 @@ function initLife(){
       .attr("fill","none").attr("stroke",C.ink2).attr("stroke-width",.8).attr("stroke-opacity",.45).attr("stroke-dasharray","3 3");
     V.t(dynG,mx3,axisY-h3*.88-6,`1 segon (437 a) = ${fmtRatio(SPY,yrs)} la teva vida`,{anchor:"middle",size:11.5,fill:C.ink2,halo:3.5});
 
-    // 2. Arc intermedi (nivell 2): comparació amb la Revolució Francesa (237 a)
-    if(!mob&&Math.abs(xA-xRev)>26){
-      const h2=64, mx2=(xRev+xA)/2;
-      dynG.append("path").attr("d",`M${xRev},${axisY-2} Q${mx2},${axisY-2-h2*1.7} ${xA},${axisY-2}`)
-        .attr("fill","none").attr("stroke",C.blau).attr("stroke-width",1.05).attr("stroke-opacity",.65);
-      V.t(dynG,clamp(mx2,90,W-90),axisY-h2*.86-5,`Rev. Francesa · ${fmtRatio(BY.frrev.ya,yrs)}`,{anchor:"middle",size:11,weight:600,fill:C.blau,halo:3.5});
-    }
-
-    // 3. Arc subtil cap a la Lluna (57 a) quan hi ha separació suficient a escriptori
+    // 2. Arc subtil cap a la Lluna (57 a) quan hi ha separació suficient a escriptori
     if(!mob&&Math.abs(xA-xMoon)>34){
       const hM=22, mxM=(xMoon+xA)/2;
       dynG.append("path").attr("d",`M${xMoon},${axisY-2} Q${mxM},${axisY-2-hM*1.7} ${xA},${axisY-2}`)
         .attr("fill","none").attr("stroke",C.blau).attr("stroke-width",.9).attr("stroke-opacity",.55).attr("stroke-dasharray","2 2");
     }
 
-    // 4. Cinta translúcida i arc protagonista de la teva vida (vermell)
+    // 3. Cinta translúcida i arc protagonista de la teva vida (vermell)
     const h1=Math.min(mob?50:54,Math.max(24,span*.38));
     dynG.append("rect").attr("x",xA).attr("y",axisY-11).attr("width",span).attr("height",11)
       .attr("fill",C.vermell).attr("fill-opacity",.26).style("mix-blend-mode","multiply");
