@@ -177,7 +177,13 @@
       p(P){ const d0=P[0]-eye[0], d1=P[1]-eye[1], d2=P[2]-eye[2];
         const zc = d0*f[0]+d1*f[1]+d2*f[2]; if(zc<near) return null;
         return [cx + foc*(d0*r[0]+d1*r[1]+d2*r[2])/zc, cy - foc*(d0*u[0]+d1*u[1]+d2*u[2])/zc, zc]; },
-      dist(P){ return Math.hypot(P[0]-eye[0], P[1]-eye[1], P[2]-eye[2]); }
+      dist(P){ return Math.hypot(P[0]-eye[0], P[1]-eye[1], P[2]-eye[2]); },
+      // retalla un polígon 3D contra el pla proper (Sutherland–Hodgman) i el projecta
+      clip(pts){ const NZ = 1.2, cz = P => (P[0]-eye[0])*f[0]+(P[1]-eye[1])*f[1]+(P[2]-eye[2])*f[2], out = [];
+        for(let i=0;i<pts.length;i++){ const A = pts[i], B = pts[(i+1)%pts.length], za = cz(A), zb = cz(B);
+          if(za >= NZ) out.push(A);
+          if((za >= NZ) !== (zb >= NZ)){ const t = (NZ-za)/(zb-za); out.push([A[0]+(B[0]-A[0])*t, A[1]+(B[1]-A[1])*t, A[2]+(B[2]-A[2])*t]); } }
+        return out.map(P => this.p(P)).filter(Boolean); }
     };
   }
   // òrbita: azimut des d'on mirem (graus), elevació (graus), distància (m)
@@ -232,6 +238,14 @@
     ctx.fillStyle = col || C.ink; ctx.fill(); return r;
   }
 
+  const VEG = {c:null};
+  // mates d'herba repartides pel prat (deterministes), [x, y, alçada en m]
+  const TUFTS = (() => { const r = IBV.rng(77), out = [];
+    for(let i=0;i<900;i++){ const rr = Math.sqrt(r())*88, b = r()*360, [x,y] = pol(rr, b);
+      if(rr > 46 && rr < 58 && !(b > AX-9 && b < AX+9)) continue;     // ni al talús ni al fossat (creta remoguda)
+      out.push([x, y, .22 + r()*.25]); }
+    return out; })();
+
   /* ---------- 5. Dibuix ---------- */
   const LIGHT = (()=>{ const v=[-.45,.5,.95]; const l=Math.hypot(...v); return v.map(x=>x/l); })(); // llum del NO, uns 55° d'alçada
   const TONES = d3.range(17).map(i => d3.interpolateLab(PAPER, C.ink)(i/16*.27));        // aiguada de grisos càlids
@@ -263,6 +277,41 @@
       ctx.beginPath(); ctx.arc(q[0],q[1],R,0,7); ctx.fillStyle = o.c; ctx.globalAlpha = .9; ctx.fill(); ctx.globalAlpha = 1;
       o.screen = q;
     });
+
+    // prat de la plana de Salisbury (verd vegetal), en una capa a part que s'esvaeix cap a les vores com una maqueta
+    if(st.grass !== false){
+      const cv = ctx.canvas; if(!VEG.c) VEG.c = document.createElement("canvas");
+      if(VEG.c.width !== cv.width || VEG.c.height !== cv.height){ VEG.c.width = cv.width; VEG.c.height = cv.height; }
+      const g = VEG.c.getContext("2d"); g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,cv.width,cv.height); g.setTransform(ctx.getTransform());
+      g.lineJoin = "round"; g.lineCap = "round";
+      const lawn = []; for(let i=0;i<120;i++){ const b = i/120*360; lawn.push([...pol(47, b), 0]); }
+      const q = cam.clip(lawn);
+      if(q.length > 2){ g.beginPath(); poly(g, q); g.fillStyle = d3.interpolateLab(C.vegetacioClar, C.vegetacio)(.22); g.fill();
+        g.strokeStyle = IBV.alpha(C.vegetacioFosc, .55); g.lineWidth = .7; g.stroke(); }
+      g.beginPath();
+      for(const t of TUFTS){
+        const a = cam.p([t[0], t[1], 0]); if(!a || a[2] < 4) continue;
+        const b = cam.p([t[0], t[1], t[2]]); if(!b) continue;
+        const hh = a[1] - b[1]; if(hh < 1.2) continue;
+        const sx = hh*.45;
+        g.moveTo(a[0]-sx, a[1]); g.lineTo(a[0]-sx*1.5, a[1]-hh*.8);
+        g.moveTo(a[0], a[1]); g.lineTo(a[0]+sx*.2, a[1]-hh);
+        g.moveTo(a[0]+sx, a[1]); g.lineTo(a[0]+sx*1.6, a[1]-hh*.75);
+      }
+      g.strokeStyle = IBV.alpha(C.vegetacioFosc, .6); g.lineWidth = .65; g.stroke();
+      // vora esvaïda: màscara radial centrada al monument
+      const o = cam.p([0,0,0]) || [w/2, h/2], R = Math.max(w, h)*.55;
+      const gr = g.createRadialGradient(o[0], o[1], R*.3, o[0], o[1], R);
+      gr.addColorStop(0, "rgba(0,0,0,1)"); gr.addColorStop(1, "rgba(0,0,0,0)");
+      g.globalCompositeOperation = "destination-in"; g.fillStyle = gr; g.fillRect(-10, -10, w+20, h+20);
+      // i cap a les vores del quadre: sense cap tall recte
+      g.globalCompositeOperation = "destination-out";
+      const edge = (x0,y0,x1,y1,rx,ry,rw,rh) => { const lg = g.createLinearGradient(x0,y0,x1,y1); lg.addColorStop(0,"rgba(0,0,0,0)"); lg.addColorStop(1,"rgba(0,0,0,1)"); g.fillStyle = lg; g.fillRect(rx,ry,rw,rh); };
+      const fb = Math.min(140, h*.3), fs = Math.min(120, w*.12);
+      edge(0,h-fb,0,h, -5,h-fb,w+10,fb+5); edge(0,fb*.7,0,0, -5,-5,w+10,fb*.7+5); edge(fs,0,0,0, -5,-5,fs+5,h+10); edge(w-fs,0,w,0, w-fs,-5,fs+5,h+10);
+      g.globalCompositeOperation = "source-over";
+      ctx.save(); ctx.setTransform(1,0,0,1,0,0); ctx.drawImage(VEG.c, 0, 0); ctx.restore();
+    }
 
     // passadís de llum sobre el terra
     if(st.beam){

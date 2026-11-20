@@ -93,9 +93,16 @@ Tinta i estructura:
 | 3 | `groc` | `#F5C518` | Llum, sol, sec, tercera categoria |
 
 - **El groc té poc contrast sobre blanc (1,7:1): mai text en groc**, ni línies de menys de 2 px. Només superfícies, punts i línies gruixudes, i sempre amb etiqueta en tinta.
-- **Prohibits:** ocre, verds, verd mar, violeta, qualsevol altre to. També les rampes en aquests colors.
+- **Verd vegetal (decisió de l'editor, 20-11-2026), només per a la vegetació:** un verd groguenc clar com el de les maquetes d'arquitectura, per honrar i destacar la vegetació quan és part del que s'explica: gespa i prats, boscos, arbres, horts, cobertes verdes.
+  | Nom | Hex | Ús |
+  |---|---|---|
+  | `vegetacioClar` | `#DCE8B5` | Superfícies: gespa, prats, cobertes (aiguada translúcida, 0,4–0,8) |
+  | `vegetacio` | `#A6C06A` | Capçades d'arbres, matolls, mates d'herba |
+  | `vegetacioFosc` | `#6F8A3C` | Contorn fi (0,5–0,8 px) de capçades i taques verdes |
+  Regles: mai com a categoria de dades (els tres colors continuen sent vermell, blau i groc), mai per a text, mai en rampes ni en el relleu IB-59 (que es queda gris); sempre amb el contorn fosc, com a la referència de l'editor (illa de cases amb arbres i cobertes verdes en axonometria). Si la vegetació és d'una època passada, ha de ser coherent amb les dades (p. ex. la plana de Salisbury del Neolític era prat obert, no bosc).
+- **Prohibits:** ocre, verd mar, violeta, qualsevol altre to, i qualsevol verd que no sigui el vegetal de dalt o que no representi vegetació. També les rampes en aquests colors.
 - Més de tres categories: el secundari va en gris (`ink2`, `ghost`). Si encara en calen, els tons del mateix color: `vermellClar #E9A391`, `blauClar #9DB6DD`, `grocClar #FBE38E`, `vermellFosc #7A2312`, `blauFosc #173A70`, `grocFosc #E0A800` (`IBV.CAT6`), sempre amb etiqueta directa.
-- Els noms antics `ocre`, `mar`, `violeta` i `verd` d'`IBV.C` són àlies d'aquests colors perquè el codi vell no es trenqui. No els facis servir.
+- Els noms antics `ocre`, `mar`, `violeta` i `verd` d'`IBV.C` són àlies d'aquests colors perquè el codi vell no es trenqui. No els facis servir (`IBV.C.verd` **no** és el verd vegetal: fes servir `vegetacio`, `vegetacioClar` i `vegetacioFosc`).
 
 Els articles anteriors fan servir `--dry #9A6326`, `--wet #16786C` i `--bio #4C8A2E`. Es queden en aquells articles; en els nous, no.
 

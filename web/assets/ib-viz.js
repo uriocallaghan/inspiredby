@@ -16,7 +16,10 @@
     vermell:"#C8442A", blau:"#2C5DA8", groc:"#F5C518",
     // tons clars i foscos dels mateixos colors (per a una 4a–6a categoria o per a context de color)
     vermellClar:"#E9A391", blauClar:"#9DB6DD", grocClar:"#FBE38E",
-    vermellFosc:"#7A2312", blauFosc:"#173A70", grocFosc:"#E0A800"
+    vermellFosc:"#7A2312", blauFosc:"#173A70", grocFosc:"#E0A800",
+    // Verd vegetal (decisió de l'editor, 20-11-2026): NOMÉS per a vegetació (gespa, prats, boscos, arbres, cobertes verdes).
+    // Mai com a categoria de dades ni per a text; sempre amb el contorn en el to fosc, com una maqueta d'arquitectura.
+    vegetacio:"#A6C06A", vegetacioClar:"#DCE8B5", vegetacioFosc:"#6F8A3C"
   };
   C.warm=C.vermell; C.cold=C.blau;
   // Noms antics (ja no formen part de la paleta): es mantenen perquè el codi vell no es trenqui.

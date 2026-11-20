@@ -423,8 +423,13 @@
       const gy = H - 24, x0 = 14;
       // terra i travesses que llisquen a poc a poc (el moviment de l'arrossegament)
       const off = IBV.reduced ? 0 : (t/1000*.35*ppm) % (1.2*ppm);
-      ctx.strokeStyle = IBV.alpha(C.ink,.45); ctx.lineWidth = .7;
-      ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
+      // prat (verd vegetal): franja de gespa i mates d'herba al llarg del terra
+      ctx.fillStyle = C.vegetacioClar; ctx.fillRect(0, gy, W, 5);
+      ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.strokeStyle = C.vegetacio; ctx.lineWidth = 1.6; ctx.stroke();
+      ctx.beginPath();
+      for(let x = 3, i = 0; x < W; x += 6 + (i*37 % 8), i++){ const hh = 2.5 + (i*13 % 4);
+        ctx.moveTo(x-1.8, gy); ctx.lineTo(x-3, gy-hh*.8); ctx.moveTo(x, gy); ctx.lineTo(x+.4, gy-hh); ctx.moveTo(x+1.8, gy); ctx.lineTo(x+3.2, gy-hh*.75); }
+      ctx.strokeStyle = IBV.alpha(C.vegetacioFosc, .8); ctx.lineWidth = .6; ctx.stroke();
       ctx.strokeStyle = IBV.alpha(C.ink,.25); ctx.beginPath();
       for(let x = -off; x < x0 + (cur.l+1)*ppm; x += 1.2*ppm){ ctx.moveTo(x, gy+1); ctx.lineTo(x+.5*ppm, gy+6); }
       ctx.stroke();
@@ -508,6 +513,14 @@
       g.append("path").attr("d", `M0,${Y(0)}H${X(X1-3.3)}L${X(X1-.9)},${Y(-DEPTH)}H${X(X1+1.1)}V${Y(0)}H${X(X2-1.1)}V${Y(-DEPTH)}H${X(X2+1.1)}V${Y(0)}H${W}`)
         .attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.9);
       const tk = d3.path(); for(let x = 0; x < W; x += 9){ tk.moveTo(x, Y(0)+3); tk.lineTo(x-5, Y(0)+8); }
+      // gespa sobre la creta (verd vegetal): franja fina i mates d'herba, excepte on s'ha cavat
+      const turf = d3.path(), tuft = d3.path(), cut = [[X(X1-3.3), X(X1+1.1)], [X(X2-1.1), X(X2+1.1)]];
+      const open = x => !cut.some(([a,b]) => x > a-2 && x < b+2);
+      for(let x = 0; x < W; x += 2){ if(!open(x)) continue; turf.moveTo(x, Y(0)); turf.lineTo(x+2, Y(0)); }
+      for(let x = 4, i = 0; x < W; x += 7 + (i*37 % 9), i++){ if(!open(x)) continue; const hh = 3 + (i*13 % 4);
+        tuft.moveTo(x-2, Y(0)); tuft.lineTo(x-3.5, Y(0)-hh*.8); tuft.moveTo(x, Y(0)); tuft.lineTo(x+.5, Y(0)-hh); tuft.moveTo(x+2, Y(0)); tuft.lineTo(x+3.6, Y(0)-hh*.75); }
+      g.append("path").attr("d", turf.toString()).attr("stroke", C.vegetacio).attr("stroke-width", 3).attr("stroke-opacity", .9);
+      g.append("path").attr("d", tuft.toString()).attr("stroke", C.vegetacioFosc).attr("stroke-width", .7).attr("fill","none");
       g.append("path").attr("d", tk.toString()).attr("stroke",C.ink).attr("stroke-opacity",.22).attr("stroke-width",.5);
       // estaques contra la paret de la fossa
       if(S.a1 < 80) [0,1,2].forEach(i => g.append("line").attr("x1",X(X1+1.2+i*.13)).attr("x2",X(X1+1.2+i*.13)).attr("y1",Y(-DEPTH)).attr("y2",Y(2.4)).attr("stroke",C.ink).attr("stroke-width",.8));
