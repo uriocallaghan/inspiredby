@@ -2,12 +2,14 @@ import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { loadArticles, renderHomeHtml } from "./sync-home.mjs";
+import { loadArticles, renderHomeHtml, renderServiceWorker } from "./sync-home.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const WEB_DIR = path.join(ROOT, "web");
 const ARTICLES_DIR = path.join(WEB_DIR, "articles");
 const HOME_PATH = path.join(WEB_DIR, "index.html");
+const SW_PATH = path.join(WEB_DIR, "sw.js");
+const MANIFEST_PATH = path.join(WEB_DIR, "manifest.webmanifest");
 
 const FORBIDDEN_EMOJIS = ["◀", "▶", "↔"];
 
@@ -43,6 +45,16 @@ try {
   const actualHome = fs.existsSync(HOME_PATH) ? fs.readFileSync(HOME_PATH, "utf8") : "";
   if (expectedHome !== actualHome) {
     errors.push("web/index.html no coincideix amb web/articles.json. Executa: node scripts/sync-home.mjs");
+  }
+  const expectedSw = renderServiceWorker(articles);
+  const actualSw = fs.existsSync(SW_PATH) ? fs.readFileSync(SW_PATH, "utf8") : "";
+  if (expectedSw !== actualSw) {
+    errors.push("web/sw.js no està sincronitzat. Executa: node scripts/sync-home.mjs");
+  }
+  if (!fs.existsSync(MANIFEST_PATH)) {
+    errors.push("Falta web/manifest.webmanifest.");
+  } else {
+    JSON.parse(fs.readFileSync(MANIFEST_PATH, "utf8"));
   }
 } catch (err) {
   errors.push(err.message);
@@ -105,11 +117,12 @@ for (const slug of jsonSlugs) {
   }
 }
 
-// 4. Comprovació de sintaxi JS a web/assets/, web/articles/ i scripts/
+// 4. Comprovació de sintaxi JS a web/assets/, web/articles/, web/sw.js i scripts/
 const jsFiles = [
   ...collectJsFiles(path.join(WEB_DIR, "assets")),
   ...collectJsFiles(ARTICLES_DIR),
-  ...collectJsFiles(path.join(ROOT, "scripts"))
+  ...collectJsFiles(path.join(ROOT, "scripts")),
+  ...(fs.existsSync(SW_PATH) ? [SW_PATH] : [])
 ];
 
 for (const file of jsFiles) {

@@ -35,3 +35,10 @@
   addEventListener('load',req);
   upd();
 })();
+
+/* Register Service Worker for offline-first PWA support. */
+if('serviceWorker' in navigator){
+  addEventListener('load',function(){
+    navigator.serviceWorker.register('/sw.js',{scope:'/'}).catch(function(){});
+  });
+}
