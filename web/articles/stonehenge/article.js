@@ -125,6 +125,13 @@
       terra:    {el:2.5, dist:31, tz:3.4, fov:58}
     };
     let view = Object.assign({}, VIEWS.avinguda), az = S3.AX + 22, auto = !IBV.reduced, hoverId = null;
+    // gent per donar escala i vida: una petita processó que puja per l'Avinguda, un grup davant l'Altar i algú que mira
+    const PEOPLE = [];
+    { const A = S3.AX*Math.PI/180, ex = Math.sin(A), ey = Math.cos(A), nx = Math.cos(A), ny = -Math.sin(A), rr = IBV.rng(9);
+      for(let i=0;i<7;i++){ const d = 9 + i*2.4 + rr()*.8, o = (i%2 ? .7 : -.7) + (rr()-.5)*.4;
+        PEOPLE.push({x:d*ex + o*nx, y:d*ey + o*ny, pose:"camina", az:S3.AX+180, k:i*1.7, h:1.6 + rr()*.2, walk:{d0:d, o, ex, ey, nx, ny}}); }
+      [[2.6,S3.AX+150],[2.9,S3.AX+200],[3.4,S3.AX+172]].forEach(([r,b],i) => { const [x,y] = S3.pol(r,b); PEOPLE.push({x, y, pose:"mira", az:S3.AX+180, h:1.62 + i*.06}); });
+      const [px,py] = S3.pol(20.5, S3.AX+28); PEOPLE.push({x:px, y:py, pose:"dret", az:S3.AX+250, h:1.7}); }
     let W = 0, H = 0, ctx = null, hits = [], drag = false, tween = null, lastT = 0;
     segBind(fig.querySelector(".seg"), "k", k => {
       const from = Object.assign({}, view), to = VIEWS[k];
@@ -161,11 +168,13 @@
 
     function draw(){
       if(!ctx) return;
-      const v = view;
-      const camO = Object.assign(S3.orbit(az, v.el, v.dist, v.tz), {fov:v.fov, cy: v.el>60 ? .5 : v.el<5 ? .62 : .58});
+      const v = view, now = IBV.reduced ? 0 : performance.now();
+      PEOPLE.forEach(pp => { if(!pp.walk) return; const w = pp.walk, d = 8 + ((w.d0 - 8 + 17 - now/1000*.5) % 17 + 17) % 17;
+        pp.x = d*w.ex + w.o*w.nx; pp.y = d*w.ey + w.o*w.ny; });
+      const camO = Object.assign(S3.orbit(az, v.el, v.dist, v.tz), {fov:v.fov, cy: v.el>60 ? .5 : v.el<5 ? .56 : .5});
       const cam = S3.camera(camO, W, H);
       hits = S3.render(ctx, W, H, cam, MODEL, GROUND, {
-        phase: 4, person: S3.pol(20.5, S3.AX+28), horizon: v.el < 8,
+        phase: 4, people: PEOPLE, t: performance.now(), horizon: v.el < 8,
         highlight: hoverId ? (s => s.id === hoverId) : null
       });
       labels(cam);
@@ -197,7 +206,7 @@
         if(k >= 1) tween = null;
         draw(); return;
       }
-      if(auto && !drag){ az += dt*.003; draw(); }
+      if(!drag){ if(auto) az += dt*.003; draw(); }
     });
   })();
 
@@ -399,14 +408,8 @@
       tp.show(`<b>${cur.nom}</b> · ${F0(n)} persones si cada tona en demana ${F1(K)} (${rate.font})`);
     }
     function figure(x, y, s, ph, col){
-      // figura estirant: cos inclinat endavant, braços enrere cap a la corda
-      const sw = Math.sin(ph)*.22;
-      ctx.beginPath();
-      ctx.moveTo(x - .25*s + sw*s, y); ctx.lineTo(x, y - .9*s); ctx.lineTo(x + .25*s - sw*s, y);   // cames
-      ctx.moveTo(x, y - .9*s); ctx.lineTo(x + .38*s, y - 1.45*s);                                // tronc inclinat
-      ctx.moveTo(x + .3*s, y - 1.33*s); ctx.lineTo(x - .12*s, y - 1.12*s);                      // braços cap a la corda
-      ctx.strokeStyle = col; ctx.lineWidth = .8; ctx.stroke();
-      ctx.beginPath(); ctx.arc(x + .44*s, y - 1.58*s, .13*s, 0, 7); ctx.fillStyle = S3.PAPER; ctx.fill(); ctx.stroke();
+      // silueta estirant la corda, inclinada endavant i d'esquena a la pedra
+      S3.drawSil(ctx, x, y, 1.7*s, "estira", ph, 1, col);
     }
     function draw(t){
       if(!ctx) return;
@@ -443,7 +446,7 @@
         const count = Math.min(perRope, n - r*perRope); if(count <= 0) continue;
         const ry = gy - r*rowGap, rx = fx0 + r*rowGap*shear;
         const xEnd = rx + (count-1)*gap;
-        ctx.beginPath(); ctx.moveTo(x0 + sl, y0 - sh*.5); ctx.lineTo(rx - gap*.4, ry - 1.15*s); ctx.lineTo(xEnd + gap*.3, ry - 1.15*s);
+        ctx.beginPath(); ctx.moveTo(x0 + sl, y0 - sh*.5); ctx.lineTo(rx - gap*.4, ry - 1.3*s); ctx.lineTo(xEnd + gap*.3, ry - 1.3*s);
         ctx.strokeStyle = IBV.alpha(C.ink,.3); ctx.lineWidth = .6; ctx.stroke();
         for(let i = 0; i < count; i++){
           const idx = r*perRope + i; if(idx >= appear) continue;
@@ -558,13 +561,11 @@
       tEl.textContent = ST[cur].t;
     }
     function personSvg(g, x, y, s, pulling, still){
-      const lean = pulling ? -.35 : still ? 0 : .18;
       const p = d3.path();
-      p.moveTo(x-.22*s, y); p.lineTo(x, y-.9*s); p.lineTo(x+.22*s, y);
-      p.moveTo(x, y-.9*s); p.lineTo(x+lean*s, y-1.45*s);
-      p.moveTo(x+lean*s*.85, y-1.3*s); p.lineTo(x+(pulling?.35:-.3)*s, y-1.12*s);
-      g.append("path").attr("d", p.toString()).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.8);
-      g.append("circle").attr("cx", x+lean*s*1.05).attr("cy", y-1.6*s).attr("r", .12*s).attr("fill",S3.PAPER).attr("stroke",C.ink).attr("stroke-width",.8);
+      const pose = pulling ? "estira" : still ? "dret" : "palanca", r = S3.silhouette(p, x, y, 1.75*s, pose, pulling ? .8 : 0, pulling ? -1 : 1);
+      g.append("path").attr("d", p.toString()).attr("fill", C.ink).attr("fill-opacity", .88);
+      if(pose === "palanca") g.append("line").attr("x1", r.hand[0] - .35*s).attr("y1", r.hand[1] - .5*s).attr("x2", x + 1.15*s).attr("y2", y + .12*s)
+        .attr("stroke", C.ink2).attr("stroke-width", Math.max(1.2, .07*s)).attr("stroke-linecap","round");
     }
     function go(i){
       const from = Object.assign({}, S), to = ST[i]; cur = i;

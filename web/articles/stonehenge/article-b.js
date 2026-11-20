@@ -46,7 +46,7 @@
         all:true,
         appear: s => { const a = appearAt(s, now); if(a>0 && a<1) any = true; return a; },
         groundAppear: g => { const a = appearAt(g, now); if(a>0 && a<1) any = true; return a; },
-        person: cur===1||cur===3 ? S3.pol(21, AX+30) : null
+        person: cur===1||cur===3 ? S3.pol(21, AX+30) : null, t: now
       });
       return any;
     }
