@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-05030860c298";
+const CACHE_NAME = "ib-offline-feabd3ff2614";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -78,6 +78,17 @@ const LOCAL_ASSETS = [
   "/articles/el-mapa-d-haiti/relleu-haiti.js",
   "/articles/el-mapa-d-haiti/relleu-pap.js",
   "/articles/el-mapa-d-haiti/thumb.webp",
+  "/articles/el-mapa-del-colera/",
+  "/articles/el-mapa-del-colera/article.css",
+  "/articles/el-mapa-del-colera/article.js",
+  "/articles/el-mapa-del-colera/cites.js",
+  "/articles/el-mapa-del-colera/cover.html",
+  "/articles/el-mapa-del-colera/cover.jpg",
+  "/articles/el-mapa-del-colera/dades.js",
+  "/articles/el-mapa-del-colera/index.html",
+  "/articles/el-mapa-del-colera/relleu-londres.js",
+  "/articles/el-mapa-del-colera/tamesi.js",
+  "/articles/el-mapa-del-colera/thumb.webp",
   "/articles/el-nino/",
   "/articles/el-nino/cover.jpg",
   "/articles/el-nino/index.html",
