@@ -2,7 +2,7 @@
 
 Com han de ser els gràfics de tots els articles nous. Llegeix-ho sencer abans de dibuixar res, juntament amb `research/guia-estil-articles.md` (text, dades i estructura de l'article).
 
-- **Mostrari viu:** `web/sistema/index.html`, publicat a https://inspiredby.uriocallaghan.com/sistema/. Cada peça hi és dibuixada i funciona.
+- **Mostrari viu:** `web/sistema/index.html`, publicat a https://inspiredbymagazine.com/sistema/. Cada peça hi és dibuixada i funciona.
 - **Codi comú:** `web/assets/ib-viz.js` (objecte global `IBV`): colors, escales, text amb halo, anotacions, llegendes, tooltip tàctil, mapes. Es carrega després de d3 7.9.0 (i de `topojson-client@3.1.0` si hi ha mapes).
 - **Codi de cada peça:** un bloc per peça, marcat amb el número: TIME-02 a CASE-05 a `web/sistema/sistema.js`, MAP-17 a MAP-18 a `mapes-a.js`, MAP-19 a MAP-09 i MAP-01 a `mapes-b.js`, SCALE-04 a TIME-05 a `creatives-a.js` i CASE-09 a PART-07 a `creatives-b.js` (cadascun amb el seu `.css` i el seu fitxer de dades). Copia el bloc que necessitis al JS de l'article i canvia-hi les dades.
 - **Model de qualitat:** «El Niño i La Niña» (`web/articles/el-nino/`). **Model per als mapes regionals:** «Jesús i els quatre evangelis» (`web/articles/jesus-i-els-quatre-evangelis/`), que ha donat lloc a MAP-01.

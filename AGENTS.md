@@ -5,7 +5,7 @@ Revista web d'articles visuals per entendre el món, en català. Llegeix aquest 
 ## Com es publica
 
 - **GitHub és la versió de referència.** La branca `main` de `uriocallaghan/inspiredby` és el que es veu a la web.
-- **Tot el que entra a `main` es publica sol** a Netlify, al domini https://inspiredby.uriocallaghan.com (Netlify està connectat al repositori). No publiquis a mà (res de `netlify deploy`).
+- **Tot el que entra a `main` es publica sol** a Netlify, al domini https://inspiredbymagazine.com (Netlify està connectat al repositori). No publiquis a mà (res de `netlify deploy`).
 - **Treballa directament a `main`.** Fes `git pull origin main` abans de començar, verifica en local, fes commit i `git push origin main` perquè es publiqui de seguida sense deixar branques obertes. Només crea una branca i una PR si l'editor t'ho demana explícitament.
 - No reescriguis l'historial de `main` ni facis `push --force` a `main`.
 
@@ -19,10 +19,10 @@ Revista web d'articles visuals per entendre el món, en català. Llegeix aquest 
 ## Guies obligatòries
 
 1. `research/guia-estil-articles.md`: com s'escriu un article, rigor de dades, cites, estructura i proves.
-2. `research/sistema-infografic.md`: com han de ser els gràfics (principis, paleta, hover, lleugeresa) i les 73 peces, ordenades en vuit famílies per l'ús: `TIME` (quan), `MAP` (on), `SCALE` (com de gran), `SPREAD` (com es distribueix), `PART` (de què està fet), `LINK` (què connecta amb què), `HOW` (com funciona) i `CASE` (comparar casos). Codis en anglès amb número (`MAP-01`); els antics `IB-xx` ja no valen (equivalències a `research/sistema-codis.json`). Mostrari viu: `web/sistema/` (https://inspiredby.uriocallaghan.com/sistema/).
+2. `research/sistema-infografic.md`: com han de ser els gràfics (principis, paleta, hover, lleugeresa) i les 73 peces, ordenades en vuit famílies per l'ús: `TIME` (quan), `MAP` (on), `SCALE` (com de gran), `SPREAD` (com es distribueix), `PART` (de què està fet), `LINK` (què connecta amb què), `HOW` (com funciona) i `CASE` (comparar casos). Codis en anglès amb número (`MAP-01`); els antics `IB-xx` ja no valen (equivalències a `research/sistema-codis.json`). Mostrari viu: `web/sistema/` (https://inspiredbymagazine.com/sistema/).
 3. `research/guia-mobil.md`: adaptació a mòbil (alçada dels gràfics enganxats, gràfics verticals, etiquetes, tacte).
 
-**Aquest fitxer i les guies de `research/` són la teva font.** `web/guidelines/` (https://inspiredby.uriocallaghan.com/guidelines/) és la pàgina visual de l'editor: hi veu les normes amb exemples, la llista de decisions preses i els punts pendents de decidir. No cal que la llegeixis per fer un article, però **quan l'editor fixa o canvia una norma**:
+**Aquest fitxer i les guies de `research/` són la teva font.** `web/guidelines/` (https://inspiredbymagazine.com/guidelines/) és la pàgina visual de l'editor: hi veu les normes amb exemples, la llista de decisions preses i els punts pendents de decidir. No cal que la llegeixis per fer un article, però **quan l'editor fixa o canvia una norma**:
 
 1. Escriu-la aquí (si és bàsica) i a la guia detallada que toqui, amb la data («decisió de l'editor, DD-MM-AAAA»).
 2. Actualitza `web/guidelines/`: afegeix-la a «Decisions que ja has pres» (`TL` a `guidelines.js`), treu de «Per decidir» (`DEC`) el punt que hagi resolt i, si cal, l'exemple visual.

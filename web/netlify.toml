@@ -16,3 +16,10 @@
   [headers.values]
     Cache-Control = "no-cache"
     Content-Type = "application/manifest+json; charset=utf-8"
+
+# Domini oficial: inspiredbymagazine.com. L'antic subdomini hi redirigeix.
+[[redirects]]
+  from = "https://inspiredby.uriocallaghan.com/*"
+  to = "https://inspiredbymagazine.com/:splat"
+  status = 301
+  force = true

@@ -49,4 +49,4 @@ python3 -m http.server 8000 --directory web
 
 ## Publicació
 
-GitHub (`main`) és la versió de referència: tot el que s'hi fusiona es publica sol a Netlify, al domini https://inspiredby.uriocallaghan.com. Els canvis es fan en una branca amb pull request. Instruccions per a agents: `AGENTS.md`.
+GitHub (`main`) és la versió de referència: tot el que s'hi fusiona es publica sol a Netlify, al domini https://inspiredbymagazine.com. Els canvis es fan en una branca amb pull request. Instruccions per a agents: `AGENTS.md`.
