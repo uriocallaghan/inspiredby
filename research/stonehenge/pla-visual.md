@@ -42,3 +42,15 @@ Si agrada a l'editor, s'afegeix al sistema com a peça nova.
 - **V11 · Dotze mil anys movent pedres (IB-49 lineal + IB-25):** línia de temps de megalitismes del món, amb Stonehenge en vermell; vista alternativa en mapa del món (terra plana, sense relleu: mapa del món sencer).
 
 - **V12 · Cada segle s'inventa el seu Stonehenge (IB-38):** filera cronològica 1136–2026 d'interpretacions (Merlí, temple romà, druides, ordinador, avantpassats) i d'intervencions (restauracions, Beanfield, UNESCO), amb hover. *Dades reals* (English Heritage, fonts històriques).
+
+## Segona passada (20-11-2026): gràfics 2D més rics
+
+L'editor va trobar massa simples els gràfics plans. Cada un viu ara en un fitxer propi (`fig-*.js`):
+
+- **V4 (`fig-moure.js`):** escena en perspectiva amb el trineu, el camí de cada experiment (troncs fixos a UCL, carril greixat a la BBC), cordes en ventall i colles a escala; a sota, comparació de les quatre pedres amb els dos ritmes.
+- **V5 (`fig-trilit.js`):** gravat en canvas amb el tall de la creta (terra vegetal, bandes de sílex il·lustratives), pedres picades com a la maqueta, fusta amb veta i anells, cordes de fibra i una colla fent la feina de cada pas (cavar amb pics de banya, contrapès, estirar, picar el rebliment, palanques a la torre). Al pas 5, dues lupes amb la metxa i caixa i l'encadellat.
+- **V8 (`fig-so.js`):** planta de pedres amb volum, raigs blaus (directes) i vermells (retornats), i al costat les corbes de caiguda dibuixades amb els temps de reverberació mesurats i les barres de +4,3 dB.
+- **V9 (`fig-gent.js`):** planta de la fase 1 amb els 56 forats Aubrey i els dipòsits, el forat 7 amb 27 figures, 25 analitzades amb 10 de lluny, el canvi d'ascendència en 100 figures i una espiral de dos anys per als porcs.
+- **V10 (`fig-escala.js`):** plantes reals en línia fina a la mateixa escala, posades dins de Durrington Walls, amb una lupa ×7 del cercle de sarsens i de Göbekli D.
+- **V11 (`fig-mon.js`):** cronologia amb una icona de línia per a cada tradició, la pedra més gran de cada lloc i els dos intervals (Göbekli → Stonehenge, Stonehenge → avui).
+- **V12 (`fig-mirall.js`):** sis vinyetes d'interpretació sobre l'eix trencat i, a sota, set carrils amb l'estat físic de les pedres (caigudes i redreçaments); en vertical al mòbil.

@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-a1a1470e0de8";
+const CACHE_NAME = "ib-offline-36fd9b4779e8";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -146,6 +146,13 @@ const LOCAL_ASSETS = [
   "/articles/stonehenge/dades-local.js",
   "/articles/stonehenge/dades-veg.js",
   "/articles/stonehenge/dades.js",
+  "/articles/stonehenge/fig-escala.js",
+  "/articles/stonehenge/fig-gent.js",
+  "/articles/stonehenge/fig-mirall.js",
+  "/articles/stonehenge/fig-mon.js",
+  "/articles/stonehenge/fig-moure.js",
+  "/articles/stonehenge/fig-so.js",
+  "/articles/stonehenge/fig-trilit.js",
   "/articles/stonehenge/index.html",
   "/articles/stonehenge/relleu-local.js",
   "/articles/stonehenge/relleu.js",
