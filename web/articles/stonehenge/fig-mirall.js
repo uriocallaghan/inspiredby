@@ -18,6 +18,8 @@
     const INK = C.ink, MUT = C.muted, BL = C.blau, VR = C.vermell;
 
     // vinyetes de línia per a cada lectura (coordenades locals, ~64 × 50, origen a baix al centre)
+    // els rètols de dins les vinyetes es dibuixen a escala: la mida es compensa perquè surtin a 11,5 px reals
+    let vk = 1; const IK = () => 11.5/vk;
     const VIG = {
       1136(g){ // Merlí: les pedres volen per sobre del mar des d'Irlanda
         for(let k=0;k<2;k++) g.append("path").attr("d", `M-34,${-4-k*5}` + d3.range(8).map(i=>`q4,-3 8,0`).join("")).attr("fill","none").attr("stroke",BL).attr("stroke-width",.8).attr("stroke-opacity",k?.45:.85);
@@ -52,15 +54,18 @@
         d3.range(14).forEach(i => { const a = i/14*Math.PI*2; g.append("circle").attr("cx",w[0]+Math.cos(a)*12).attr("cy",w[1]+Math.sin(a)*12).attr("r",1.5).attr("fill",C.ink2); });
         d3.range(10).forEach(i => { const a = i/10*Math.PI*2; g.append("rect").attr("x",-2.2).attr("y",-1.3).attr("width",4.4).attr("height",2.6).attr("transform",`translate(${s[0]+Math.cos(a)*11},${s[1]+Math.sin(a)*11}) rotate(${a*180/Math.PI+90})`).attr("fill",PAPER).attr("stroke",INK).attr("stroke-width",.7); });
         g.append("path").attr("d","M-6,-6C0,2 4,-12 8,-2").attr("fill","none").attr("stroke",BL).attr("stroke-width",1);
-        IBV.t(g, w[0], -40, "fusta", {size:9.5, anchor:"middle", fill:MUT});
-        IBV.t(g, s[0], -40, "pedra", {size:9.5, anchor:"middle", fill:MUT});
+        IBV.t(g, w[0], -40, "fusta", {size:IK(), anchor:"middle", fill:MUT});
+        // a la vinyeta petita del mòbil, «pedra» va a sota perquè no toqui «fusta»
+        IBV.t(g, s[0], vk < 1 ? 8 : -40, "pedra", {size:IK(), anchor:"middle", fill:MUT});
       },
       2024(g){ // Clarke et al.: l'Altar ve del nord d'Escòcia, a 750 km o més
         g.append("circle").attr("cx",-14).attr("cy",-52).attr("r",2.2).attr("fill",VR);
-        IBV.t(g, -10, -49, "nord d'Escòcia", {size:9, fill:MUT});
+        IBV.t(g, -10, -49, "Escòcia", {size:IK(), fill:MUT});
         g.append("path").attr("d","M-14,-49C-16,-34 -8,-22 -2,-11").attr("fill","none").attr("stroke",VR).attr("stroke-width",1.1).attr("stroke-dasharray","3 2");
         g.append("path").attr("d","M-6,-14l4,4l1,-6").attr("fill","none").attr("stroke",VR).attr("stroke-width",1.1);
-        IBV.t(g, -4, -28, "≥ 750 km", {size:9, fill:VR});
+        // al mòbil, a sota del trílit: al costat toparia amb el text de la fila
+        if(vk < 1) IBV.t(g, 4, 14, "≥ 750 km", {size:IK(), anchor:"middle", fill:VR});
+        else IBV.t(g, -4, -28, "≥ 750 km", {size:IK(), fill:VR});
         g.append("path").attr("d","M-16,-1l1,-5h30l2,5z").attr("fill",PAPER).attr("stroke",INK).attr("stroke-width",.8);
         tril(g, 22, -1, .8, {});
       }
@@ -158,11 +163,12 @@
         s.append("path").attr("d", `M${cx},${yb}V${yk}H${px}V${yI-5}`).attr("fill","none").attr("stroke",INK).attr("stroke-opacity",.35).attr("stroke-width",.6);
         s.append("circle").attr("cx",px).attr("cy",yI).attr("r",key?5:3.8).attr("fill",key?VR:INK);
         const vg = s.append("g").attr("transform",`translate(${cx},${yVig-4}) scale(1.35)`);
+        vk = 1.35;
         vg.append("line").attr("x1",-36).attr("x2",36).attr("y1",0).attr("y2",0).attr("stroke",INK).attr("stroke-opacity",.25).attr("stroke-width",.5);
         VIG[d.any](vg);
         IBV.t(s, cx, yTxt, d.curt, {size:12.5, weight:700, anchor:"middle", fill:key?VR:INK, halo:true});
         IBV.t(s, cx, yTxt+15, String(d.anyTxt||d.any), {size:11.5, anchor:"middle", fill:MUT, halo:true});
-        wrap(d.det, Math.max(18, Math.floor((sw-14)/5.6))).slice(0,4).forEach((l,k) => IBV.t(s, cx, yTxt+30+k*13, l, {size:10.5, anchor:"middle", fill:MUT, halo:true}));
+        wrap(d.det, Math.max(18, Math.floor((sw-14)/5.9))).slice(0,4).forEach((l,k) => IBV.t(s, cx, yTxt+30+k*13.5, l, {size:11, anchor:"middle", fill:MUT, halo:true}));
         hit.push({x:cx, y:yVig-24, d, sel:this}); hit.push({x:px, y:yI-4, d, sel:this});
       });
 
@@ -180,9 +186,9 @@
           else if(k==="nacio") ln.attr("stroke",BL).attr("stroke-width",2.2);
           ln.attr("x2", x(b));
         });
-        if(L.own){ IBV.t(s, (x(1100)+x(1790))/2, yL-6, "terres privades", {size:10, anchor:"middle", fill:MUT, italic:true, halo:true}); }
+        if(L.own){ IBV.t(s, (x(1100)+x(1790))/2, yL-6, "terres privades", {size:11, anchor:"middle", fill:MUT, italic:true, halo:true}); }
         if(L.pre) tril(s, x(L.pre.y)-26, yL+10, 1.3, {state:L.pre.g, col:MUT});
-        if(L.pre) IBV.t(s, x(L.pre.y)-36, yL+4, "inclinada", {size:10, anchor:"end", fill:MUT, italic:true, halo:true});
+        if(L.pre) IBV.t(s, x(L.pre.y)-36, yL+4, "inclinada", {size:11, anchor:"end", fill:MUT, italic:true, halo:true});
         L.ev.forEach((e, k) => {
           const px = x(e.y), d = e.d;
           if(e.g === "punt") s.append("circle").attr("cx",px).attr("cy",yL).attr("r",4.2).attr("fill",PAPER).attr("stroke",e.red?VR:BL).attr("stroke-width",1.7);
@@ -203,7 +209,7 @@
 
       // xifres d'avui al final del darrer carril
       const yLast = y0L + (LANES.length-1)*laneH + laneH/2;
-      IBV.t(g, w-14, yLast+20, "2025: unes 25.000 persones al solstici d'estiu · 1.253.397 visites en tot l'any", {size:10.5, anchor:"end", fill:MUT, halo:true});
+      IBV.t(g, w-14, yLast+20, "2025: unes 25.000 persones al solstici d'estiu · 1.253.397 visites en tot l'any", {size:11, anchor:"end", fill:MUT, halo:true});
 
       const all = g.selectAll("g.lect, g.lane");
       IBV.onView(container, inst => {
@@ -241,7 +247,7 @@
       rows.filter(r => r.gap).forEach(r => {
         g.append("line").attr("x1",ax).attr("x2",ax).attr("y1",yS).attr("y2",r.y+6).attr("stroke",INK).attr("stroke-width",.9);
         g.append("path").attr("d",`M${ax-6},${r.y+12}L${ax+6},${r.y+8}M${ax-6},${r.y+18}L${ax+6},${r.y+14}`).attr("stroke",INK).attr("stroke-width",.9);
-        IBV.t(g, ax+12, r.y+17, `${r.gap} anys després`, {size:10.5, fill:MUT, italic:true});
+        IBV.t(g, ax+12, r.y+17, `${r.gap} anys després`, {size:11, fill:MUT, italic:true});
         yS = r.y + 22;
       });
       g.append("line").attr("x1",ax).attr("x2",ax).attr("y1",yS).attr("y2",H-20).attr("stroke",INK).attr("stroke-width",.9);
@@ -252,6 +258,7 @@
         if(r.up){
           s.append("circle").attr("cx",ax).attr("cy",y0).attr("r",key?5:3.8).attr("fill",key?VR:INK);
           const vg = s.append("g").attr("transform",`translate(${cx+34},${r.y+64}) scale(.86)`);
+          vk = .86;
           VIG[d.any](vg);
         } else {
           const gg = r.g;
@@ -266,7 +273,7 @@
         r.lines.forEach((l,k) => IBV.t(s, tx, y0+19+sub+k*13, l, {size:11, fill:MUT}));
         hit.push({x:w/2, y:y0+10, d, sel:this});
       });
-      IBV.t(g, 0, H-4, "2025: unes 25.000 persones al solstici · 1.253.397 visites", {size:10.5, fill:MUT});
+      IBV.t(g, 0, H-4, "2025: unes 25.000 persones al solstici · 1.253.397 visites", {size:11, fill:MUT});
       IBV.onView(container, inst => { if(inst) return; fr.attr("opacity",0).transition().delay((d,i)=>i*60).duration(450).attr("opacity",1); });
       bindHover(svg, fr, hit);
     }

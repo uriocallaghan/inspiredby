@@ -145,7 +145,11 @@ ol.fts li{scroll-margin-top:30vh;transition:background-color .4s;padding:2px 4px
   .fig{margin:42px auto 32px}
   .fig .seg button,.graphic .seg button,.playb{min-height:44px;padding-block:8px}
   #s-pedres .plot,#s-fases .plot{min-height:0}
-  .graphic{max-height:44dvh}
+  /* El gràfic enganxat comença a dalt i no té topall de CSS: el JS en dibuixa el contingut dins el
+     pressupost de guia-mobil §2 (≤ 42 % del viewport). Abans, un max-height de 44dvh amb el contingut
+     centrat feia sortir el títol per dalt i el mapa per sota, a sobre del text. */
+  .graphic{max-height:none;justify-content:flex-start}
+  .graphic .vh strong{font-size:17px}
   .graphic .src{display:none}
   .graphic .vh{margin-bottom:4px}
   .graphic .vh span,.graphic .vh .lgs{display:none}
@@ -155,6 +159,8 @@ ol.fts li{scroll-margin-top:30vh;transition:background-color .4s;padding:2px 4px
   .tri-grid{grid-template-columns:1fr;gap:18px}
   .cel-readout{grid-template-columns:1fr;gap:8px}
   .ctlrow .rng-wrap{flex-basis:100%;min-width:0}
+  /* «cicle de 18,6 anys» (preset de la Lluna) no hi cabia en una línia i quedava tallat */
+  .ctlrow .rng-val{min-width:0;max-width:104px;white-space:normal;line-height:1.2}
 }
 
 /* Refeta del 19-11-2026: maqueta de línia i controls nous */

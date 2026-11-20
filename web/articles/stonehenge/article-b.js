@@ -3,7 +3,7 @@
 (function(){
   "use strict";
   const D = window.STONEHENGE_DADES, S3 = window.SH3D, C = IBV.C;
-  const {segBind, ctext, MODEL, GROUND, clamp} = window.SHA;
+  const {segBind, ctext, MODEL, GROUND, clamp, scrollyH} = window.SHA;
   const F0 = IBV.fmt(",.0f"), F1 = IBV.fmt(",.1f");
   const D2R = Math.PI/180, R2D = 180/Math.PI, AX = S3.AX;
   const ease = d3.easeCubicInOut;
@@ -17,6 +17,10 @@
     const sec = document.getElementById("s-fases"), tp = IBV.tip(el);
     const tEl = document.getElementById("fases-t"), sEl = document.getElementById("fases-s");
     const FASES = D.fases;
+    // en mòbil, títols d'una sola línia perquè el gràfic enganxat no canviï d'alçada a cada pas
+    const TCURT = ["Fase 1 · Fossat i cementiri", "Fase 2 · Sarsens i trílits", "Fase 3 · L'Avinguda cap al riu", "Fase 4 · Les pedres blaves es reordenen", "Fase 5 · Els forats Y i Z"];
+    const titol = i => innerWidth < 600 ? TCURT[i] : FASES[i].titol;
+    tEl.textContent = titol(0);
     const CAMS = [
       {az:AX+150, el:40, dist:150, tz:0, tg:[0,0]},
       {az:AX+168, el:24, dist:64,  tz:1.5, tg:[0,0]},
@@ -52,23 +56,23 @@
     }
     function timeline(){
       d3.select(el).select("svg.tl").remove();
-      const mob = W < 520, h = mob ? 92 : 100, m = {l:52, r:10};
+      const mob = W < 520, rh = mob ? 12 : 13, h = 14 + 4*rh + (mob ? 30 : 34), m = {l:mob ? 46 : 52, r:10};
       const svg = d3.select(el).append("svg").attr("class","tl ibv").attr("width",W).attr("height",h).style("display","block")
         .attr("role","img").attr("aria-label","Línia de temps de les cinc fases de construcció entre el 3100 i el 1450 aC, amb intervals de probabilitat del 95 %.");
       const x = d3.scaleLinear().domain([-3200,-1400]).range([m.l, W-m.r]);
       [-3000,-2500,-2000,-1500].forEach(v => { svg.append("line").attr("x1",x(v)).attr("x2",x(v)).attr("y1",14).attr("y2",h-18).attr("stroke",C.grid).attr("stroke-width",.6);
         IBV.t(svg, x(v), h-4, yr(v), {size:11.5, anchor:"middle", fill:C.muted}); });
       const rows = svg.selectAll("g.f").data(FASES).join("g").attr("class","f").style("cursor","pointer");
-      const yy = i => 14 + i*13;
+      const yy = i => 14 + i*rh;
       rows.append("line").attr("x1",d=>x(d.ini[0])).attr("x2",d=>x(d.fiR[1])).attr("y1",(d,i)=>yy(i)).attr("y2",(d,i)=>yy(i)).attr("stroke",C.ghost).attr("stroke-width",1);
       rows.append("line").attr("class","a").attr("x1",d=>x(d.ini[0])).attr("x2",d=>x(d.ini[1])).attr("y1",(d,i)=>yy(i)).attr("y2",(d,i)=>yy(i)).attr("stroke-width",5).attr("stroke-linecap","round");
       rows.append("line").attr("class","a").attr("x1",d=>x(d.fiR[0])).attr("x2",d=>x(d.fiR[1])).attr("y1",(d,i)=>yy(i)).attr("y2",(d,i)=>yy(i)).attr("stroke-width",5).attr("stroke-linecap","round");
-      rows.append("text").attr("x",0).attr("y",(d,i)=>yy(i)+4).attr("font-size",11.5).attr("fill",C.ink2).text(d=>`Fase ${d.num}`);
+      rows.append("text").attr("x",0).attr("y",(d,i)=>yy(i)+4).attr("font-size",11).attr("fill",C.ink2).text(d=>`Fase ${d.num}`);
       tl = rows;
       el.appendChild(el.querySelector(".tip.ibv-dock"));
       paintTl();
       IBV.hover(svg.node(), (ev,[px,py]) => {
-        const i = clamp(Math.round((py-14)/13), 0, 4), d = FASES[i];
+        const i = clamp(Math.round((py-14)/rh), 0, 4), d = FASES[i];
         IBV.focus(rows, q => q===d);
         tp.show(`<b>Fase ${d.num}</b> · comença ${d.dIni} · acaba ${d.dFi} cal BC (95 %)`);
       }, () => { IBV.focus(rows, null); tp.hide(); });
@@ -77,12 +81,12 @@
     function go(i){
       if(i === cur) return;
       prev = cur; cur = i; t0 = performance.now(); camFrom = Object.assign({}, cam);
-      tEl.textContent = FASES[i].titol; sEl.textContent = FASES[i].dates + " cal BC · " + FASES[i].desc;
+      tEl.textContent = titol(i); sEl.textContent = FASES[i].dates + " cal BC · " + FASES[i].desc;
       paintTl(); busy = true;
       if(IBV.reduced){ cam = Object.assign({}, CAMS[i]); prev = cur; draw(); busy = false; }
     }
     IBV.mount(el, (container, w) => {
-      W = w; H = Math.round(clamp(Math.min(innerHeight*(innerWidth<900?.36:.58), w*.7), 230, 540));
+      W = w; H = innerWidth < 900 ? Math.min(scrollyH(w < 520 ? 144 : 150, 140, 300), Math.round(w*.7)) : Math.round(clamp(Math.min(innerHeight*.58, w*.7), 230, 540));
       ({ctx} = IBV.canvas(container, W, H, "Maqueta de línia de Stonehenge que es construeix fase a fase: el fossat i els forats Aubrey, el cercle de sarsens i els trílits, l'Avinguda, la reordenació de les pedres blaves i els forats Y i Z."));
       timeline(); draw();
     });

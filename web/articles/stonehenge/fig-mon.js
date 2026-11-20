@@ -54,7 +54,7 @@
     function draw(container, w){
       W = w; if(anim){ anim.stop(); anim = null; }
       d3.select(container).selectAll("svg").remove();
-      const mob = w < 640;
+      const mob = w < 800; // a tauleta vertical, les cotes llargues s'encavalquen
       (view === "cronologia" ? cronologia : mapa)(container, w, mob);
     }
 
@@ -84,7 +84,7 @@
         glyph(r, d.id, gx, mob ? -12 : -2, mob ? 22 : 26, col);
         if(mob){
           IBV.t(r, 32, -12, d.nom, {size:12.5, weight: sh ? 700 : 600, fill: sh ? C.vermell : C.ink, base:"middle"});
-          IBV.t(r, w - 4, -12, `${span(d)} · ${d.pes < 1 ? "<1" : F0(d.pes)} t`, {size:11, anchor:"end", fill:C.muted, base:"middle"});
+          IBV.t(r, w - 4, -12, `${span(d)} · ${d.pes < 1 ? "<1" : F0(d.pes)} t`, {size:11, anchor:"end", fill:C.muted, base:"middle", halo:true});
         } else {
           IBV.t(r, 38, -5, d.nom, {size:12.5, weight: sh ? 700 : 600, fill: sh ? C.vermell : C.ink});
           IBV.t(r, 38, 10, d.lloc, {size:11.5, fill:C.muted});

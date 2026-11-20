@@ -277,7 +277,7 @@
       ctext(ctx, q0[0], q0[1] - 10, mob ? `${F1(s.l)} m · ${F0(s.t)} t` : `${s.nom} · ${F1(s.l)} m · ${F0(s.t)} t`, {size: mob ? 10.5 : 11.5, weight: 600, fill: hov === "pedra" ? C.vermell : C.ink});
       // persona dreta a escala, al costat de la pedra (1,7 m)
       { const [px, py] = P(-1.1 + slideIn, 0, -.6); S3.drawSil(ctx, px, py, 1.7*ppm, "mira", 0, 1, IBV.alpha(C.ink, .9), {pel: "monyo", capa: true});
-        ctext(ctx, px, py + 9, "1,7 m", {anchor: "middle", size: 10, fill: IBV.alpha(C.ink, .6)}); }
+        ctext(ctx, px, py + 9, "1,7 m", {anchor: "middle", size: 11, fill: IBV.alpha(C.ink, .6)}); }
       // clau de lectura sobre les cordes
       if(appear > 0){
         const top = Lay.crews[Lay.crews.length-1], xm = top.x0 + (top.cnt - 1)*Lay.gapX;
@@ -316,18 +316,18 @@
       g.append("text").attr("x", 0).attr("y", 10).attr("font-size", 11.5).attr("font-weight", 600).attr("fill", C.ink).text("Totes les pedres, amb els dos experiments");
       x.ticks(mob ? 3 : 6).forEach(v => {
         g.append("line").attr("x1", x(v)).attr("x2", x(v)).attr("y1", m.t + 4).attr("y2", hh - m.b + 2).attr("stroke", IBV.alpha(C.ink, .08));
-        g.append("text").attr("x", x(v)).attr("y", hh - 6).attr("text-anchor", "middle").attr("font-size", 10).attr("fill", IBV.alpha(C.ink, .55)).text(F0(v));
+        g.append("text").attr("x", x(v)).attr("y", hh - 6).attr("text-anchor", "middle").attr("font-size", 11).attr("fill", IBV.alpha(C.ink, .55)).text(F0(v));
       });
       const rows = g.selectAll("g.r").data(STONES).join("g").attr("class", "r").attr("transform", (d,i) => `translate(0,${m.t + i*rowH + rowH/2 + 4})`).style("cursor", "pointer");
       rows.append("rect").attr("x", 0).attr("y", -rowH/2).attr("width", ww).attr("height", rowH).attr("fill", "transparent");
-      rows.append("text").attr("class", "nm").attr("x", 0).attr("y", 4).attr("font-size", mob ? 10.5 : 11.5).text(d => mob ? `${d.nom.replace("Rèplica de la p", "P").replace("Pedra de l'", "")} · ${F0(d.t)} t` : `${d.nom} · ${F0(d.t)} t`);
+      rows.append("text").attr("class", "nm").attr("x", 0).attr("y", 4).attr("font-size", mob ? 11 : 11.5).text(d => mob ? `${d.nom.replace("Rèplica de la p", "P").replace("Pedra de l'", "")} · ${F0(d.t)} t` : `${d.nom} · ${F0(d.t)} t`);
       rows.append("line").attr("class", "rg").attr("y1", 0).attr("y2", 0).attr("stroke-width", 1.2);
       RATES.forEach(r => rows.append("circle").attr("class", `d-${r.id}`).attr("cy", 0).attr("r", 4.2).attr("stroke-width", 1.2));
-      rows.append("text").attr("class", "vl").attr("y", 4).attr("font-size", 10.5);
+      rows.append("text").attr("class", "vl").attr("y", 4).attr("font-size", 11);
       const lg = g.append("g").attr("transform", mob ? "translate(4,28)" : `translate(${ww - m.r - 250},10)`);
       RATES.forEach((r, i) => { const gx = i*(mob ? 78 : 128);
         lg.append("circle").attr("cx", gx).attr("cy", -3.5).attr("r", 4).attr("fill", i ? S3.PAPER : C.vermell).attr("stroke", i ? C.ink : C.vermell).attr("stroke-width", 1.2);
-        lg.append("text").attr("x", gx + 8).attr("y", 0).attr("font-size", 10.5).attr("fill", IBV.alpha(C.ink, .75)).text(mob ? r.font : `${r.font} · ${F1(r.k)}/t`); });
+        lg.append("text").attr("x", gx + 8).attr("y", 0).attr("font-size", 11).attr("fill", IBV.alpha(C.ink, .75)).text(mob ? r.font : `${r.font} · ${F1(r.k)}/t`); });
       rows.on("pointerenter", (ev, d) => { rows.style("opacity", q => q===d || q===cur ? 1 : .5); tp.show(`<b>${d.nom}</b> · ${RATES.map(r => `${F0(nOf(d, r))} persones (${r.font})`).join(" · ")}`); })
           .on("pointerleave", () => { rows.style("opacity", 1); upd(); })
           .on("click", (ev, d) => setStone(d.id));

@@ -57,7 +57,7 @@
 
     /* ------------------------------------------------------------------ ELS MORTS */
     function morts(h){
-      const R = mob ? (W-24)/2/1.0 : Math.min(h*.45, W*.25);   // R = radi exterior del fossat (57 m)
+      const R = mob ? Math.min((W-24)/2, 220) : Math.min(h*.45, W*.25);   // a tauleta, topall perquè no faci 750 px   // R = radi exterior del fossat (57 m)
       const cx = mob ? W/2 : R + 26, cy = mob ? R + 34 : h/2 + 6, k = R/57.5;
       const P = (r,b) => [cx + r*k*Math.sin(b*D2R), cy - r*k*Math.cos(b*D2R)];
       const g = svg.append("g");
@@ -109,12 +109,14 @@
       const B = svg.append("g");
       // 1. quants
       IBV.t(B, bx, by+26, "150–240", {serif:true, size:mob?34:40});
-      IBV.lines(B, bx + (mob?136:160), by+8, [["persones cremades",true],["c. 3000–2500 aC: el cementiri més gran"],["del Neolític britànic; homes i dones","",C.ink2],["en proporcions semblants","",C.ink2]], {size:12});
-      { const lg = B.append("g").attr("transform",`translate(${bx},${by+76})`);
+      // en pantalles molt estretes (< 380 px) el text va a sota de la xifra: al costat no hi cap
+      const nar = mob && W < 380, dy = nar ? 62 : 0;
+      IBV.lines(B, nar ? bx : bx + (mob?136:160), nar ? by+50 : by+8, [["persones cremades",true],["c. 3000–2500 aC: el cementiri més gran"],["del Neolític britànic; homes i dones","",C.ink2],["en proporcions semblants","",C.ink2]], {size:12});
+      { const lg = B.append("g").attr("transform",`translate(${bx},${by+76+dy})`);
         [[C.ink2,"un dipòsit (150, estimació mínima)"],[null,"fins a 240"]].forEach(([f,t],i) => { const xx = i*(mob?200:210);
           lg.append("circle").attr("cx",xx+3).attr("cy",0).attr("r",1.8).attr("fill",f||"none").attr("stroke",f?"none":IBV.alpha(C.ink,.5)).attr("stroke-width",.6);
           IBV.t(lg, xx+10, 0, t, {size:11.5, fill:C.ink2, base:"middle"}); }); }
-      by += mob ? 112 : 124;
+      by += (mob ? 112 : 124) + dy;
       // 2. el forat Aubrey 7: 27 persones, 22 adults i 5 infants o joves
       const b2 = B.append("g").attr("class","b7");
       IBV.lines(b2, bx, by, [["El forat Aubrey 7 · 27 persones",true,C.vermell],["com a mínim 22 adults i 5 infants o joves (Willis et al., 2016)","",C.ink2]], {size:12});
@@ -241,7 +243,7 @@
 
     /* ------------------------------------------------------------------ L'ANY DEL PORC */
     function porc(h){
-      const R = mob ? (W-96)/2 : Math.min(h*.4, W*.22), cx = mob ? W/2 : R + 70, cy = mob ? R + 64 : h/2 + 6;
+      const R = mob ? Math.min((W-96)/2, 200) : Math.min(h*.4, W*.22), cx = mob ? W/2 : R + 70, cy = mob ? R + 64 : h/2 + 6;
       const g = svg.append("g").attr("transform",`translate(${cx},${cy})`);
       // espiral de dos anys: comença l'1 de març del primer any (any 1 a dins, any 2 a fora)
       const r0 = R*.42, r1 = R*.95, T = 24;
@@ -328,7 +330,7 @@
     }
 
     IBV.mount(el, (container, w) => {
-      W = w; mob = w < 640;
+      W = w; mob = w < 800; // fins a tauleta vertical, el panell va a sota: al costat no hi cap el text
       svg = IBV.svg(container, W, 400, "Tres vistes de la gent de Stonehenge: les persones cremades als forats Aubrey, el canvi d'ascendència del Vas Campaniforme i l'any dels porcs dels banquets.");
       container.appendChild(container.querySelector(".tip.ibv-dock"));
       render();

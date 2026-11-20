@@ -299,10 +299,13 @@
       if(S.det > .5){
         ctx.save(); ctx.globalAlpha = (S.det-.5)*2;
         // cota: uns 7 m sobre terra
-        const xd = X2 + WD/2 + .55; ctx.beginPath(); ctx.moveTo(X(xd), Y(0)); ctx.lineTo(X(xd), Y(7.1+LH));
-        [0, 7.1+LH].forEach(z => { ctx.moveTo(X(xd)-4, Y(z)); ctx.lineTo(X(xd)+4, Y(z)); });
-        ctx.strokeStyle = IBV.alpha(INK, .6); ctx.lineWidth = .7; ctx.stroke();
-        ctext(ctx, X(xd)+7, Y(4.2), "~7 m", {size:11.5, fill:C.ink2});
+        const xd = X2 + WD/2 + .55;
+        if(!mob){ // en mòbil la lupa de l'encadellat tapa la cota
+          ctx.beginPath(); ctx.moveTo(X(xd), Y(0)); ctx.lineTo(X(xd), Y(7.1+LH));
+          [0, 7.1+LH].forEach(z => { ctx.moveTo(X(xd)-4, Y(z)); ctx.lineTo(X(xd)+4, Y(z)); });
+          ctx.strokeStyle = IBV.alpha(INK, .6); ctx.lineWidth = .7; ctx.stroke();
+          ctext(ctx, X(xd)+7, Y(4.2), "~7 m", {size:11.5, fill:C.ink2});
+        }
         ctext(ctx, X(xd)+7, Y(-1), "peu enterrat", {size:11.5, fill:C.ink2});
         insets(X, Y, m, mob);
         ctx.restore();
@@ -361,7 +364,7 @@
         ctx.strokeStyle = INK; ctx.lineWidth = .9; ctx.stroke(); });
       ctx.beginPath(); ctx.moveTo(cx-gap/2-8*s, y0); ctx.lineTo(cx-gap/2, y0+h/2); ctx.lineTo(cx-gap/2-8*s, y0+h); ctx.moveTo(cx+gap/2, y0); ctx.lineTo(cx+gap/2-8*s, y0+h/2); ctx.lineTo(cx+gap/2, y0+h);
       ctx.strokeStyle = C.vermell; ctx.lineWidth = 1.3; ctx.stroke();
-      ctext(ctx, cx, y0 + h + 14*s, "vist des de dalt", {size:10.5, anchor:"middle", fill:C.muted});
+      ctext(ctx, cx, y0 + h + 14*s, "vist des de dalt", {size:11, anchor:"middle", fill:C.muted});
     }
 
     function go(i){
@@ -375,7 +378,7 @@
     function loop(){ if(live) return; const t0 = performance.now() - T; live = d3.timer(() => { T = performance.now() - t0; render(); if(!inView){ live.stop(); live = null; } }); }
     IBV.mount(el, (container, w) => {
       const mm = (w-16)/(w < 520 ? 14.8 : 18.5);
-      W = w; H = Math.round(clamp(Math.min(mm*11.4 + 30, innerHeight*(innerWidth<900?.62:.8)), 300, 660));
+      W = w; H = innerWidth < 900 ? Math.min(window.SHA.scrollyH(62, 210, 300), Math.round(mm*11.4 + 30)) : Math.round(clamp(Math.min(mm*11.4 + 30, innerHeight*.8), 300, 660));
       ({ctx} = IBV.canvas(container, W, H, "Alçat lateral a escala de com s'alçava un trílit: la fossa amb rampa cavada a la creta, el pilar que bascula des del trineu, les cordes i el bastidor en A que el redrecen, la torre de troncs per pujar la llinda i els encaixos de metxa i caixa i d'encadellat."));
       render();
     });

@@ -126,7 +126,7 @@
       const fsT = mob ? 13 : 13.5, fs = mob ? 11.5 : 12.5;
       const g = panel.append("g");
       IBV.t(g, x0, top+4, "Com s'apaga la veu", {weight:700, size:fsT});
-      IBV.t(g, x0, top+22, "caiguda del so després d'una paraula, segons la reverberació mesurada", {size:fs, fill:C.ink2});
+      IBV.t(g, x0, top+22, W < 380 ? "caiguda del so, segons la reverberació mesurada" : "caiguda del so després d'una paraula, segons la reverberació mesurada", {size:fs, fill:C.ink2});
       const cy0 = top + 46, cy1 = cy0 + (mob ? 150 : Math.max(170, PH - 330));
       const x = d3.scaleLinear().domain([0, 1]).range([x0+30, x1-6]), y = d3.scaleLinear().domain([-60, 0]).range([cy1, cy0]);
       [0,-20,-40,-60].forEach(v => { g.append("line").attr("x1",x(0)).attr("x2",x(1)).attr("y1",y(v)).attr("y2",y(v)).attr("stroke",C.grid).attr("stroke-width",v===-60?.9:.6).attr("stroke",v===-60?C.ink:C.grid);
@@ -160,14 +160,14 @@
         IBV.t(bars, x0, yy+4, t, {size:fs, fill:C.ink2});
         bars.append("line").attr("x1",bx(0)).attr("x2",bx(0)).attr("y1",yy-8).attr("y2",yy+8).attr("stroke",C.ink).attr("stroke-width",.8);
         const r = bars.append("rect").datum({id}).attr("x",bx(0)).attr("y",yy-5).attr("height",10).attr("width",inst?Math.max(1, bx(a)-bx(0)):0).attr("fill",col);
-        if(!inst) r.transition().delay(500+i*150).duration(900).ease(d3.easeCubicOut).attr("width", Math.max(1, bx(a)-bx(0)));
+        if(!inst) r.transition("in").delay(500+i*150).duration(900).ease(d3.easeCubicOut).attr("width", Math.max(1, bx(a)-bx(0)));
         if(id === "int"){ bars.append("line").attr("x1",bx(a-.9)).attr("x2",bx(a+.9)).attr("y1",yy).attr("y2",yy).attr("stroke",C.ink).attr("stroke-width",.8);
           [a-.9,a+.9].forEach(q => bars.append("line").attr("x1",bx(q)).attr("x2",bx(q)).attr("y1",yy-3).attr("y2",yy+3).attr("stroke",C.ink).attr("stroke-width",.8)); }
         IBV.t(bars, (id==="int"?bx(a+.9):bx(a)) + 6, yy+4, a ? `+${F1(a)} dB` : "0 dB", {size:fs, weight:id==="int"?700:400, fill:C.ink});
       });
       // entrada: les línies es dibuixen d'esquerra a dreta
       if(!inst) paths.forEach((p,i) => { const Ln = p.node().getTotalLength(); p.attr("stroke-dasharray", p.datum().dash || `${Ln} ${Ln}`).attr("stroke-dashoffset", p.datum().dash ? 0 : Ln)
-        .transition().delay(i*180).duration(1100).ease(d3.easeCubicOut).attr("stroke-dashoffset", 0); });
+        .transition("in").delay(i*180).duration(1100).ease(d3.easeCubicOut).attr("stroke-dashoffset", 0); });
       const hi = () => { const on = d => !d || (mode === "camp" ? d.id === "camp" : d.id !== "camp");
         IBV.focus(lg.selectAll("path,text"), on, {dim:.46}); IBV.focus(bars.selectAll("rect"), d => on(d)); };
       hi(); panel.__hi = hi;
@@ -182,7 +182,7 @@
     }
     let svg = null;
     IBV.mount(el, (container, w) => {
-      W = w; mob = w < 640;
+      W = w; mob = w < 800; // fins a tauleta vertical, el panell va a sota: al costat no hi cap el text
       PW = mob ? W : Math.round(W*.52);
       PH = Math.round(mob ? clamp(W*1.12, 340, 560) : clamp(W*.5, 380, 560));
       H = mob ? PH + 385 : PH;

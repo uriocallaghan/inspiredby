@@ -29,7 +29,10 @@
     ctx.fillStyle = o.fill||C.ink; ctx.fillText(str, x, y);
     ctx.restore();
   }
-  window.SHA = {segBind, ctext, MODEL, GROUND, clamp};
+  // Alçada del dibuix d'un gràfic enganxat (.scrolly) en mòbil: tot el .graphic ha de cabre en ~42 % del
+  // viewport (research/guia-mobil.md §2); «fixed» és el que hi ocupen títol, marges, dock i altres peces.
+  const scrollyH = (fixed, lo, hi) => Math.round(clamp(innerHeight*.42 - fixed, lo, hi));
+  window.SHA = {segBind, ctext, MODEL, GROUND, clamp, scrollyH};
 
   /* ---------- MAP-01 · Mapa físic en relleu (bloc copiat de web/sistema/mapes-b.js) ---------- */
   const IB59_BANDS=[[200,[243,242,239]],[500,[235,233,228]],[800,[226,223,216]],[1500,[216,212,204]],[2200,[206,202,193]],[Infinity,[196,191,182]]];
@@ -166,7 +169,9 @@
         if(txt[1]) ctext(ctx, tx + (right?4:-4), ty+8, txt[1], {anchor:right?"left":"right", fill:C.ink2});
       };
       const gt = S3.pol(6.0, S3.AX+180);
-      L3([gt[0], gt[1], 8.4], ["Gran Trílit", "uns 7 m sobre terra"], mob?36:-70, -34);
+      // vista des de dalt en mòbil: l'etiqueta puja fins a dalt del canvas perquè no caigui sobre les pedres
+      const top = view.el > 60, qg = mob && top ? cam.p([gt[0], gt[1], 8.4]) : null;
+      L3([gt[0], gt[1], 8.4], ["Gran Trílit", "uns 7 m sobre terra"], mob?36:-70, qg ? 22 - qg[1] : -34);
       if(!mob){
         const ab = S3.pol(44, S3.AX+3.2+20*360/56);
         L3([ab[0], ab[1], 0], ["56 forats Aubrey", "el primer cementiri"], 40, 26);
@@ -310,7 +315,7 @@
       sg.append("circle").attr("r", 2.4).attr("fill", d => d.k==="meso" ? "none" : C.ink).attr("stroke", C.ink).attr("stroke-width",.9);
       // anotacions
       const pSH = P([-1.8262,51.1789]), pDW = P([-1.7875,51.1920]), pBH = P([-1.7978,51.1715]), pMP = P([-1.8287,51.18045]);
-      if(mob) IBV.note(g, {x:pSH[0], y:pSH[1]-5, tx:pSH[0]+6, ty:pSH[1]-46, kind:"elbow", anchor:"start", lines:[["Stonehenge",true],["pedra, avantpassats"]]});
+      if(mob) IBV.note(g, {x:pSH[0]-3, y:pSH[1]+4, tx:pSH[0]-10, ty:pSH[1]+34, kind:"elbow", anchor:"end", lines:[["Stonehenge",true],["pedra, avantpassats"]]});
       else IBV.note(g, {x:pSH[0]-6, y:pSH[1]+4, tx:pSH[0]-30, ty:pSH[1]+56, kind:"elbow", anchor:"start", lines:[["Stonehenge",true],["pedra per als avantpassats"]]});
       IBV.note(g, {x:pDW[0]+4, y:pDW[1]-8, tx:pDW[0]+(mob?-8:-40), ty:pDW[1]-(mob?28:46), kind:"elbow", anchor:"end", lines:[["Durrington Walls i Woodhenge",true],["fusta per als vius"]]});
       IBV.note(g, {x:pBH[0], y:pBH[1]+4, tx:pBH[0]-(mob?4:26), ty:pBH[1]+(mob?30:40), kind:"elbow", anchor:"end", lines:[["Bluestonehenge",true],["l'Avinguda neix al riu"]]});
@@ -318,7 +323,8 @@
       const pAv = P(AV[4]);
       IBV.t(g, pAv[0], pAv[1]-12, "L'Avinguda", {italic:true, size:12.5, anchor:"middle", fill:C.ink2, halo:true});
       const pRv = P(L.avon[near(L.avon,[-1.7748,51.1830])]);
-      IBV.t(g, pRv[0]+(mob?-8:8), pRv[1], "riu Avon", {italic:true, size:12.5, fill:C.blau, halo:true, anchor:mob?"end":"start"});
+      const rvL = mob || pRv[0] > w - 70;
+      IBV.t(g, pRv[0]+(rvL?-8:8), pRv[1], "riu Avon", {italic:true, size:12.5, fill:C.blau, halo:true, anchor:rvL?"end":"start"});
       // escala d'1 km
       const sx = w-22-1000*mPx, sy = H-16;
       g.append("path").attr("d",`M${sx},${sy-4}V${sy}H${sx+1000*mPx}V${sy-4}`).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.8);
@@ -383,12 +389,14 @@
         .attr("stroke-opacity", d => on.has(d.id) ? .9 : seen.has(d.id) ? .9 : 0);
       st.dots.transition().duration(IBV.reduced?0:700)
         .attr("opacity", d => on.has(d.id) ? 1 : seen.has(d.id) ? .55 : 0);
-      st.labels.transition().duration(IBV.reduced?0:500).style("opacity", d => on.has(d.id) ? 1 : 0);
+      const fin = S.k === "illa";
+      st.labels.transition().duration(IBV.reduced?0:500).style("opacity", d => !fin && on.has(d.id) ? 1 : 0);
+      st.labelsS.transition().duration(IBV.reduced?0:500).style("opacity", fin ? 1 : 0);
       st.on = on;
     }
     IBV.mount(el, (container, w) => {
       const mob = w < 520;
-      const H = Math.round(clamp(Math.min(innerHeight*(innerWidth<900?.46:.74), w*1.25), 300, 760));
+      const H = innerWidth < 900 ? Math.min(scrollyH(62, 200, 300), Math.round(w*1.25)) : Math.round(clamp(Math.min(innerHeight*.74, w*1.25), 300, 760));
       d3.select(container).selectAll("svg,canvas").remove();
       const proj = d3.geoTransverseMercator().rotate([2.5,-54.5])
         .fitExtent([[mob?6:16, 8],[w-(mob?6:16), H-8]], {type:"MultiPoint", coordinates:[[-5.6,50.3],[0.6,50.8],[-3.2,59.2],[-6.2,57.5]]});
@@ -413,12 +421,27 @@
       const sh = P(SH);
       g.append("circle").attr("cx",sh[0]).attr("cy",sh[1]).attr("r",4.5).attr("fill",C.vermell).attr("stroke",S3.PAPER).attr("stroke-width",1.5);
       IBV.t(g, sh[0]+8, sh[1]+16, "Stonehenge", {weight:700, halo:true});
-      const labels = g.selectAll("g.lb").data(R).join("g").attr("class","lb").style("opacity",0);
-      labels.each(function(d){
-        const p = P([d.lon,d.lat]), left = p[0] > w*.55;
-        IBV.note(d3.select(this), {x:p[0], y:p[1], tx:p[0]+(left?-16:16), ty:p[1]-(d.id==="porcs"?26:18), kind:"elbow", anchor:left?"end":"start", lines:[[d.curt,true],[d.pes]]});
+      // Etiquetes: s'obren cap al costat on caben (si surten del mapa, es giren). Al pas final, amb tots els
+      // camins alhora, només el nom curt dels quatre orígens principals perquè no s'encavalquin.
+      const place = (node, d, lines, left, dx) => {
+        const s = d3.select(node).html(""), p = P([d.lon,d.lat]);
+        IBV.note(s, {x:p[0], y:p[1], tx:p[0]+(left?-16:16)+(dx||0), ty:p[1]-(d.id==="porcs"?26:18), kind:"elbow", anchor:left?"end":"start", lines});
+        const bb = node.getBBox(); return Math.max(0, 2 - bb.x) || -Math.max(0, bb.x + bb.width - (w - 2));
+      };
+      // si no cap a cap costat, es queda al costat on sobresurt menys i s'hi desplaça el text
+      const label = (sel, linesOf, sideOf) => sel.each(function(d){
+        const lines = linesOf(d), left = sideOf(d), a = place(this, d, lines, left);
+        if(!a) return;
+        const b = place(this, d, lines, !left);
+        if(!b) return;
+        if(Math.abs(a) <= Math.abs(b)) place(this, d, lines, left, a); else place(this, d, lines, !left, b);
       });
-      st = {routes, dots, labels, on:new Set()};
+      const labels = g.selectAll("g.lb").data(R).join("g").attr("class","lb").style("opacity",0);
+      label(labels, d => [[d.curt,true],[d.pes]], d => P([d.lon,d.lat])[0] > w*.55);
+      const SHORT = {sarsen:"West Woods", bluestones:"Turons Preseli", altar:"Conca Orcadiana", porcs:"Ramats d'arreu"};
+      const labelsS = g.selectAll("g.lbs").data(R.filter(d => SHORT[d.id])).join("g").attr("class","lbs").style("opacity",0);
+      label(labelsS, d => [[SHORT[d.id],true]], d => d.id === "bluestones");
+      st = {routes, dots, labels, labelsS, on:new Set()};
       apply(cur);
       // hover sobre els orígens
       const dl = d3.Delaunay.from(R, d => P([d.lon,d.lat])[0], d => P([d.lon,d.lat])[1]);
