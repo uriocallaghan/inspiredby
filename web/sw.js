@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-feabd3ff2614";
+const CACHE_NAME = "ib-offline-bd255fa781c5";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -146,6 +146,17 @@ const LOCAL_ASSETS = [
   "/articles/la-llengua-que-van-inventar-uns-nens/llacs.js",
   "/articles/la-llengua-que-van-inventar-uns-nens/relleu-nicaragua.js",
   "/articles/la-llengua-que-van-inventar-uns-nens/thumb.webp",
+  "/articles/la-malaltia-que-vam-esborrar/",
+  "/articles/la-malaltia-que-vam-esborrar/article.css",
+  "/articles/la-malaltia-que-vam-esborrar/article.js",
+  "/articles/la-malaltia-que-vam-esborrar/cites.js",
+  "/articles/la-malaltia-que-vam-esborrar/cover.html",
+  "/articles/la-malaltia-que-vam-esborrar/cover.jpg",
+  "/articles/la-malaltia-que-vam-esborrar/dades.js",
+  "/articles/la-malaltia-que-vam-esborrar/index.html",
+  "/articles/la-malaltia-que-vam-esborrar/relleu-somalia.js",
+  "/articles/la-malaltia-que-vam-esborrar/rius-somalia.js",
+  "/articles/la-malaltia-que-vam-esborrar/thumb.webp",
   "/articles/les-llavors-de-leningrad/",
   "/articles/les-llavors-de-leningrad/article.css",
   "/articles/les-llavors-de-leningrad/article.js",

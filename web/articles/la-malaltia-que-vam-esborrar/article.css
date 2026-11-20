@@ -1,0 +1,93 @@
+/* «La malaltia que vam esborrar»: estils propis de l'article (la base és ../../assets/article.css) */
+.page{overflow-x:clip}
+.step b{font-weight:600}
+.vh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px 28px;flex-wrap:wrap;margin:0 0 12px;font-family:var(--sans)}
+.vh strong{display:block;font-family:var(--serif-display);font-weight:400;font-size:22px;line-height:1.2;letter-spacing:-.048em}
+.vh span{display:block;font-size:13.5px;color:var(--ink-2);margin-top:3px;font-variant-numeric:tabular-nums;max-width:640px}
+.vh .lgs{display:flex;gap:6px 18px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--ink-2)}
+.ibv-lg{font-family:var(--sans);font-size:12px;line-height:1.3;color:var(--ink-2)}
+.ibv-lg-t{font-size:11.5px;color:var(--ink-2);margin-bottom:6px;line-height:1.25}
+.ibv-lg-cat{display:flex;flex-wrap:wrap;gap:4px 16px}
+.ibv-lg-cat>span{display:flex;align-items:center;white-space:nowrap}
+.plot{position:relative;width:100%;min-height:120px}
+.plot svg,.plot canvas{display:block}
+.plot svg{overflow:visible}
+.plot .hit{cursor:pointer}
+.fig{margin:56px auto 44px}
+.fig .seg,.graphic .seg{display:flex;flex-wrap:wrap;gap:4px 18px;margin:2px 0 10px}
+.fig .seg button,.graphic .seg button{min-height:36px;min-width:44px;padding:4px 0}
+.src{font-family:var(--sans);font-size:12.5px;line-height:1.45;color:var(--muted);margin:10px 0 0;max-width:760px;text-align:left}
+.src b{font-weight:600;color:var(--ink-2)}
+.fig figcaption.src{max-width:760px;margin:10px 0 0;text-align:left}
+.graphic .gbox{padding:0 4px}
+.graphic .src{margin-top:6px}
+#s-mil .plot,#s-setge .plot,#s-merca .plot{min-height:300px}
+.ctlrow{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid var(--hair);font-family:var(--sans);font-size:13px;color:var(--ink-2)}
+.ctlrow .rng-wrap{display:flex;align-items:center;gap:12px;flex:1;min-width:200px}
+.ctlrow .rng-wrap label{white-space:nowrap;font-size:12.5px;color:var(--ink-2)}
+.ctlrow .rng{flex:1;touch-action:pan-y}
+.playb{padding:6px 0;min-height:36px;display:inline-flex;align-items:center}
+
+/* cites: número en el text, notes al final */
+sup.nr{font-family:var(--sans);font-size:.62em;line-height:0;vertical-align:.62em;margin-left:1px;font-weight:600;font-variant-numeric:tabular-nums}
+sup.nr a{text-decoration:none;color:var(--warm);padding:2px 2px;border-radius:2px;transition:background-color .2s}
+sup.nr a:hover,sup.nr a:focus-visible{background:#FBE38E;color:var(--ink)}
+.step sup.nr a{color:var(--warm)}
+.fn h2{font-family:var(--sans);font-size:15px;font-weight:700;color:var(--ink);margin:30px 0 10px}
+.fn .nt-i{font-size:13.5px;color:var(--ink-2)}
+ol.fts li{scroll-margin-top:30vh;transition:background-color .4s;padding:2px 4px}
+.npop{position:absolute;z-index:20;max-width:340px;background:var(--paper);border:1px solid var(--hair);padding:9px 12px 10px;font-family:var(--sans);font-size:13px;line-height:1.45;color:var(--ink-2);pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s}
+.npop.on{opacity:1;transform:none}
+.npop b{color:var(--ink)}
+.npop .k{display:block;font-size:11.5px;color:var(--muted);margin-top:4px}
+
+@media (prefers-reduced-motion: no-preference){
+  sup.nr a.flash{animation:nrflash 1.6s ease-out}
+  ol.fts li.on{animation:liflash 2.4s ease-out}
+}
+@keyframes nrflash{0%,35%{background:#F5C518;color:var(--ink)}100%{background:transparent}}
+@keyframes liflash{0%,30%{background:rgba(251,227,142,.5)}100%{background:transparent}}
+
+@media (pointer:coarse){
+  .fig .seg button,.graphic .seg button,.playb{min-height:44px}
+}
+@media (max-width:899px){
+  .vh strong{font-size:18.5px}
+  .vh span{font-size:12.5px}
+  .fig{margin:42px auto 32px}
+  #s-mil .plot,#s-setge .plot,#s-merca .plot{min-height:0}
+  .graphic .src{display:none}
+  .graphic .vh{margin-bottom:4px}
+  .graphic .vh span,.graphic .vh .lgs{display:none}
+  .npop{display:none}
+}
+
+/* Dades i fonts: una sola llista. Cada número del text porta a la font; la fletxa torna al text. */
+.fn h2{font-size:18px;margin:0 0 4px}
+.fn h3{font-family:var(--sans);font-size:15px;font-weight:700;color:var(--ink);margin:28px 0 10px}
+ol.fts{padding-left:2.1em;margin:0}
+ul.gfs{list-style:none;padding-left:0;margin:0}
+ol.fts li,ul.gfs li{margin:0 0 .35em;padding:5px 8px 5px 4px;border-left:2px solid transparent;scroll-margin-top:30vh;transition:border-color .4s;color:var(--ink-2)}
+ol.fts li::marker{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+ol.fts li.on,ul.gfs li.on{border-left-color:var(--warm)}
+.fn a.bk{text-decoration:none;font-weight:700;color:var(--warm);display:inline-block;min-width:24px;min-height:24px;text-align:center}
+.fn a.bk:hover{color:var(--ink)}
+.fn .us{display:block;font-size:12.5px;line-height:1.45;color:var(--muted);margin-top:3px}
+.fn .us span{transition:background-color .4s}
+.fn .us span.on{background:rgba(251,227,142,.5);color:var(--ink)}
+.src a.gs{color:var(--ink);font-weight:600;text-decoration:none;white-space:nowrap;border-radius:2px;padding:1px 2px}
+.src a.gs:hover,.src a.gs:focus-visible{background:#FBE38E}
+.meta a.dl-f{color:inherit;text-decoration:underline;text-decoration-color:var(--hair);text-underline-offset:3px}
+.meta a.dl-f:hover{color:var(--ink)}
+.npop .q{display:block;color:var(--ink);margin-bottom:5px}
+@media (prefers-reduced-motion:no-preference){
+  ul.gfs li.on{animation:liflash 2.4s ease-out}
+  .src a.gs.flash{animation:nrflash 1.6s ease-out}
+}
+.fn .gt{display:block;color:var(--ink);margin-bottom:2px}
+
+/* controls dels gràfics interactius */
+.ctlrow .out{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--ink-2)}
+.ctlrow .out b{color:var(--ink);font-weight:600}
+#carrers-ser{margin-top:14px}
+.stage{width:100%}
