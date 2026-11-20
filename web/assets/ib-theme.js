@@ -140,9 +140,12 @@
     if (f) return f;
     var lab = toLab(r, g, b), L = lab[0], C = Math.hypot(lab[1], lab[2]), h = Math.atan2(lab[2], lab[1]);
     if (C < 0.012) { var n = inv(L); var nn = lchToRgb(n, C, h); return nn; }
-    var cr = Math.min(1, C / Math.max(0.02, maxChroma(L, h)));
+    // croma relativa (respecte del màxim possible) però també absoluta: un crema gairebé blanc s'ha d'invertir
+    var cr = Math.min(1, C / Math.max(0.02, maxChroma(L, h))) * Math.min(1, C / 0.1);
     var s = 1 - 0.85 * Math.pow(cr, 2.2);
-    if (L < 0.45) s = Math.max(s, 0.8);
+    // foscos: si són gairebé neutres s'inverteixen; si són saturats (vermell fosc, blau fosc) es queden profunds,
+    // perquè l'extrem d'una rampa continuï sent el més intens (la «brasa fosca»)
+    if (L < 0.45) s = cr < 0.5 ? Math.max(s, 0.8) : 0.12;
     var L2 = L * (1 - s) + inv(L) * s + 0.035 * cr;
     var C2 = C * (L > 0.7 ? 1 - 0.55 * s : 1);
     return lchToRgb(Math.min(0.97, L2), C2, h);
@@ -209,6 +212,14 @@
       var o = rev.get(key(p[0], p[1], p[2], p[3]));
       return o !== undefined ? o : t;
     });
+  }
+  // tradueix només els colors que encara no ho estan (els que ja són una sortida de la traducció es respecten)
+  function mapFresh(v){
+    if (typeof v !== "string" || !HAS.test(v)) return v;
+    return splitUrl(v, function(part){ return part.replace(TOKEN, function(t){
+      var p = parse(t); if (!p) return t;
+      return rev.has(key(p[0], p[1], p[2], p[3])) ? t : mapColor(t);
+    }); });
   }
   window.IBTheme.map = mapColor;
   window.IBTheme.mapValue = mapValue;
@@ -329,7 +340,7 @@
       var v = getA.call(el, a);
       if (v === null) continue;
       if (r && r[a] && r[a][1] === v) continue;   // ja traduït
-      var m = mapValue(v);
+      var m = a === "style" ? mapFresh(v) : mapValue(v);
       if (m !== v) { remember(el, a, v, m); setA.call(el, a, m); }
     }
   }
@@ -350,13 +361,15 @@
   CSD.getPropertyValue = function(p){ return unmapValue(getP.call(this, p)); };
   ["color","fill","stroke","background","backgroundColor","background-color","borderColor","border-color","borderTopColor","borderBottomColor",
    "borderLeftColor","borderRightColor","outlineColor","stopColor","stop-color","boxShadow","textShadow","caretColor","textDecorationColor",
-   "border","borderTop","borderBottom","borderLeft","borderRight","outline","cssText","backgroundImage","background-image","accentColor"]
+   "border","borderTop","borderBottom","borderLeft","borderRight","outline","cssText","backgroundImage","background-image","accentColor","mixBlendMode"]
   .forEach(function(p){
-    var d = Object.getOwnPropertyDescriptor(CSD, p);
+    // a cada navegador els accessors viuen en un prototip diferent (CSSStyleDeclaration, CSS2Properties, CSSStyleProperties…)
+    var owner = Object.getPrototypeOf(root.style), d = null;
+    while (owner && !(d = Object.getOwnPropertyDescriptor(owner, p))) owner = Object.getPrototypeOf(owner);
     if (!d || !d.set) return;
-    Object.defineProperty(CSD, p, { configurable: true, enumerable: d.enumerable,
+    Object.defineProperty(owner, p, { configurable: true, enumerable: d.enumerable,
       get: function(){ return unmapValue(d.get.call(this)); },
-      set: function(v){ d.set.call(this, typeof v === "string" ? mapValue(v) : v); } });
+      set: function(v){ if (p === "mixBlendMode" && typeof v === "string" && BLEND[v.trim()]) v = BLEND[v.trim()]; d.set.call(this, typeof v === "string" ? mapValue(v) : v); } });
   });
 
   /* ---------- fulls d'estil ---------- */
@@ -368,7 +381,12 @@
       var st = r.style; if (!st) continue;
       for (var j = 0; j < st.length; j++) {
         var p = st[j], v = getP.call(st, p);
-        if (p === "mix-blend-mode" && BLEND[v.trim()]) { setP.call(st, p, BLEND[v.trim()], st.getPropertyPriority(p)); continue; }
+        if (p === "mix-blend-mode" && BLEND[v.trim()]) {
+          setP.call(st, p, BLEND[v.trim()], st.getPropertyPriority(p));
+          // una imatge «multiply» és un dibuix sobre blanc: en fosc s'inverteix (traç clar, fons que desapareix)
+          if (v.trim() === "multiply" && /\bimg\b/.test(r.selectorText || "") && !getP.call(st, "filter")) setP.call(st, "filter", "invert(1) hue-rotate(180deg) brightness(.88)", "important");
+          continue;
+        }
         if (!v || !HAS.test(v)) continue;
         var m = mapValue(v);
         if (m !== v) setP.call(st, p, m, st.getPropertyPriority(p));
@@ -385,6 +403,75 @@
   }
   function fixSheets(){ for (var i = 0; i < document.styleSheets.length; i++) fixSheet(document.styleSheets[i]); }
 
+  /* ---------- text sobre farcits clars ----------
+     El groc (i qualsevol farcit que es quedi clar) continua sent clar en fosc, però la tinta que hi anava a sobre
+     s'ha tornat clara. Cada cert temps, per als textos SVG visibles, es mira què hi ha pintat a sota (isPointInFill):
+     si és un farcit clar, el text torna a ser fosc i el halo pren el color del farcit. També per a etiquetes HTML amb
+     fons clar propi (insígnies). */
+  var DARK_TEXT = "#161514", onFill = new WeakSet(), passDirty = true, passLast = 0, passTimer = 0;
+  function relLum(c){ return 0.2126 * s2l(c[0]) + 0.7152 * s2l(c[1]) + 0.0722 * s2l(c[2]); }
+  function paintOf(cs, prop){ var p = parse(getP.call(cs, prop)); return p; }
+  function opac(cs){ var a = parseFloat(getP.call(cs, "opacity")); return isNaN(a) ? 1 : a; }
+  var removeP = CSD.removeProperty;
+  function clearFix(el){ removeP.call(el.style, "fill"); removeP.call(el.style, "stroke"); removeP.call(el.style, "color"); onFill.delete(el); }
+  function contrastPass(){
+    passTimer = 0; passDirty = false; passLast = Date.now();
+    var vh = innerHeight, vw = innerWidth, svgs = document.getElementsByTagName("svg");
+    for (var i = 0; i < svgs.length; i++) {
+      var svgEl = svgs[i], r = svgEl.getBoundingClientRect();
+      if (!r.width || r.bottom < -40 || r.top > vh + 40 || r.right < 0 || r.left > vw) continue;
+      var texts = svgEl.getElementsByTagName("text"); if (!texts.length) continue;
+      var shapes = null;
+      for (var j = 0; j < texts.length; j++) {
+        var t = texts[j], tr = t.getBoundingClientRect();
+        if (!tr.width || tr.bottom < 0 || tr.top > vh) continue;
+        var was = onFill.has(t);
+        if (!was) { var tf = paintOf(getComputedStyle(t), "fill"); if (!tf || relLum(tf) < 0.35) continue; }
+        if (!shapes) {
+          shapes = [];
+          var all = svgEl.querySelectorAll("circle,rect,path,ellipse,polygon");
+          for (var k = 0; k < all.length; k++) {
+            var sh = all[k], b = sh.getBoundingClientRect();
+            if (!b.width || b.bottom < 0 || b.top > vh) continue;
+            var cs = getComputedStyle(sh), fl = paintOf(cs, "fill");
+            if (!fl || fl[3] * opac(cs) * (parseFloat(getP.call(cs, "fill-opacity")) || 1) < 0.55 || relLum(fl) < 0.3) continue;
+            shapes.push([sh, b, fl]);
+          }
+        }
+        var cx = tr.left + tr.width / 2, cy = tr.top + tr.height / 2, hit = null;
+        for (var q = shapes.length - 1; q >= 0; q--) {
+          var e = shapes[q], bb = e[1];
+          if (cx < bb.left || cx > bb.right || cy < bb.top || cy > bb.bottom) continue;
+          if (!(e[0].compareDocumentPosition(t) & 4)) continue;          // la forma ha d'anar abans (a sota)
+          var m = e[0].getScreenCTM(); if (!m) continue;
+          try { if (e[0].isPointInFill(new DOMPoint(cx, cy).matrixTransform(m.inverse()))) { hit = e; break; } } catch (err) {}
+        }
+        if (hit) {
+          setP.call(t.style, "fill", DARK_TEXT, "important");
+          var st = getP.call(getComputedStyle(t), "stroke");
+          if (st && st !== "none") setP.call(t.style, "stroke", fmt(hit[2][0], hit[2][1], hit[2][2], 1), "important");
+          onFill.add(t);
+        } else if (was) clearFix(t);
+      }
+    }
+    // insígnies HTML amb fons clar propi
+    var tagged = document.querySelectorAll("[style*='background']");
+    for (var h = 0; h < tagged.length; h++) {
+      var el = tagged[h], rr = el.getBoundingClientRect();
+      if (!rr.width || rr.bottom < 0 || rr.top > vh || el.children.length > 2) continue;
+      var c2 = getComputedStyle(el), bg = paintOf(c2, "background-color"), fg = paintOf(c2, "color");
+      if (bg && fg && bg[3] > 0.6 && relLum(bg) > 0.3 && relLum(fg) > 0.35) { setP.call(el.style, "color", DARK_TEXT, "important"); onFill.add(el); }
+      else if (onFill.has(el) && !(bg && bg[3] > 0.6 && relLum(bg) > 0.3)) clearFix(el);
+    }
+  }
+  function schedulePass(){
+    passDirty = true;
+    if (passTimer) return;
+    var wait = Math.max(120, 450 - (Date.now() - passLast));
+    passTimer = setTimeout(function(){ (window.requestIdleCallback || function(f){ f(); })(contrastPass, { timeout: 400 }); }, wait);
+  }
+  window.IBTheme._contrastPass = contrastPass;
+
   /* ---------- arrencada ---------- */
   function swapLogos(scope){
     var imgs = (scope || document).querySelectorAll('img[src$="logo.png"]');
@@ -396,7 +483,14 @@
     swapLogos();
     root.classList.add("ib-dark-ready");
     new MutationObserver(function(list){
+      schedulePass();
       for (var i = 0; i < list.length; i++) {
+        if (list[i].type === "attributes") {
+          // el.style.color = … no passa per cap funció interceptable a Chrome: es tradueix aquí, abans de pintar
+          var tg = list[i].target, sv = getA.call(tg, "style");
+          if (sv && HAS.test(sv)) { var sm = mapFresh(sv); if (sm !== sv) setA.call(tg, "style", sm); }
+          continue;
+        }
         var add = list[i].addedNodes;
         for (var j = 0; j < add.length; j++) {
           var n = add[j];
@@ -409,8 +503,13 @@
           swapLogos(n);
         }
       }
-    }).observe(root, { childList: true, subtree: true });
-    addEventListener("load", fixSheets);
+    }).observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ["style"] });
+    addEventListener("load", function(){ fixSheets(); schedulePass(); });
+    addEventListener("scroll", schedulePass, { passive: true });
+    addEventListener("resize", schedulePass);
+    addEventListener("pointerup", schedulePass, { passive: true });
+    addEventListener("pointermove", function(){ if (!passTimer) schedulePass(); }, { passive: true });
+    setInterval(function(){ if (!document.hidden) schedulePass(); }, 1000);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ready); else ready();
   setTimeout(function(){ root.classList.add("ib-dark-ready"); }, 2500);

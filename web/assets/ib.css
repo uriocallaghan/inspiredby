@@ -122,3 +122,5 @@ body.ib-article{margin:0;background:var(--ib-paper)}
 html[data-theme="dark"] img:not([src$="logo-dark.png"]),
 html[data-theme="dark"] .ib-card-media{filter:brightness(.88) contrast(1.03)}
 html[data-theme="dark"] .ib-card-media img{filter:none}
+/* dibuixos de línia sobre blanc (classe ib-ink): en fosc s'inverteixen, el traç queda clar i el blanc desapareix */
+html[data-theme="dark"] img.ib-ink{filter:invert(1) hue-rotate(180deg) brightness(.88)!important;mix-blend-mode:screen}
