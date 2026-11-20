@@ -135,6 +135,14 @@
     for (var i = 1; i < INV.length; i++) if (L <= INV[i][0]) { var a = INV[i-1], b = INV[i]; return a[1] + (b[1]-a[1]) * (L-a[0]) / (b[0]-a[0]); }
     return INV[INV.length-1][1];
   }
+  // corba per als colors amb to (OKLab L): pàl·lid → a prop del fons · mitjà → gairebé igual · fosc → clar.
+  // Així una rampa va sempre «del fons cap al color intens», i els tons foscos (redDark, blueDark) no s'enfonsen
+  // en el fons: es tornen clars i llegibles, com diu la guia (sistema-infografic.md, §2 «Mode fosc»).
+  var INVC = [[0,.9],[.25,.86],[.35,.82],[.45,.77],[.55,.71],[.62,.665],[.7,.6],[.8,.5],[.9,.4],[.97,.3],[1,.26]];
+  function interp(T, L){
+    for (var i = 1; i < T.length; i++) if (L <= T[i][0]) { var a = T[i-1], b = T[i]; return a[1] + (b[1]-a[1]) * (L-a[0]) / (b[0]-a[0]); }
+    return T[T.length-1][1];
+  }
   function mapRGB(r, g, b){
     var f = FIXED[r + "," + g + "," + b];
     if (f) return f;
@@ -142,13 +150,27 @@
     if (C < 0.012) { var n = inv(L); var nn = lchToRgb(n, C, h); return nn; }
     // croma relativa (respecte del màxim possible) però també absoluta: un crema gairebé blanc s'ha d'invertir
     var cr = Math.min(1, C / Math.max(0.02, maxChroma(L, h))) * Math.min(1, C / 0.1);
+    // els colors intensos (vermell, blau, groc) es queden; els pàl·lids i els foscos s'inverteixen
     var s = 1 - 0.85 * Math.pow(cr, 2.2);
-    // foscos: si són gairebé neutres s'inverteixen; si són saturats (vermell fosc, blau fosc) es queden profunds,
-    // perquè l'extrem d'una rampa continuï sent el més intens (la «brasa fosca»)
-    if (L < 0.45) s = cr < 0.5 ? Math.max(s, 0.8) : 0.12;
-    var L2 = L * (1 - s) + inv(L) * s + 0.035 * cr;
-    var C2 = C * (L > 0.7 ? 1 - 0.55 * s : 1);
+    if (L < 0.56) s = Math.max(s, Math.min(1, (0.56 - L) / 0.14));
+    var T = C < 0.04 ? inv(L) * (1 - C / 0.04) + interp(INVC, L) * (C / 0.04) : interp(INVC, L);
+    // els colors intensos de grau mitjà pugen una mica, perquè fins i tot el text vermell passi de 5:1
+    var lift = 0.06 * cr * (1 - s) * (L > 0.45 && L < 0.75 ? 1 : 0);
+    var L2 = L * (1 - s) + T * s + lift;
+    var C2 = C * (L > 0.7 ? 1 - 0.38 * s : 1);
     return lchToRgb(Math.min(0.97, L2), C2, h);
+  }
+  // text: una tinta mai pot quedar per sota de ~4,6:1 sobre el paper fosc. Els textos que eren blancs (paper)
+  // van a sobre d'un farcit i no es toquen.
+  var TEXT_MIN = 0.585;
+  function textRGB(r, g, b){
+    var m = mapRGB(r, g, b), o = toLab(r, g, b);
+    if (o[0] > 0.9) return m;
+    var lab = toLab(m[0], m[1], m[2]);
+    if (lab[0] >= TEXT_MIN + 0.08) return m;
+    // compressió suau: es manté l'ordre (un gris fluix continua sent més fluix que la tinta), però tot es llegeix
+    var L2 = Math.max(lab[0], TEXT_MIN + Math.max(0, lab[0] - 0.2) * 0.17);
+    return lchToRgb(L2, Math.hypot(lab[1], lab[2]), Math.atan2(lab[2], lab[1]));
   }
 
   // --- lectura de colors: el canvas natiu ho normalitza tot (#hex, rgb, hsl, noms) ---
@@ -187,6 +209,19 @@
     cache.set(str, out);
     return out;
   }
+  var tcache = new Map();
+  function mapText(str){
+    var hit = tcache.get(str);
+    if (hit !== undefined) return hit;
+    var out = str, p = parse(str);
+    if (p) {
+      var m = textRGB(p[0], p[1], p[2]);
+      out = fmt(m[0], m[1], m[2], p[3]);
+      if (!rev.has(key(m[0], m[1], m[2], p[3]))) rev.set(key(m[0], m[1], m[2], p[3]), str);
+    }
+    tcache.set(str, out);
+    return out;
+  }
   var NAMED = "white|black|gray|grey|silver|whitesmoke|gainsboro|lightgray|lightgrey|darkgray|darkgrey|dimgray|dimgrey|snow|ivory|linen|beige|red|blue|yellow|orange|green|navy|maroon|teal|tan|wheat";
   var TOKEN = new RegExp("#[0-9a-fA-F]{3,8}\\b|rgba?\\([^)]*\\)|hsla?\\([^)]*\\)|(?<![\\w-])(?:" + NAMED + ")(?![\\w-])", "g");
   var HAS = new RegExp("#[0-9a-fA-F]{3}|rgb|hsl|(?<![\\w-])(?:" + NAMED + ")(?![\\w-])");
@@ -203,6 +238,33 @@
     if (v.indexOf("url(") < 0) return fn(v);
     return v.split(/(url\([^)]*\))/).map(function(s){ return s.indexOf("url(") === 0 ? s : fn(s); }).join("");
   }
+  function mapTextValue(v){
+    if (typeof v !== "string" || !HAS.test(v)) return v;
+    var c = cache.get("t:" + v); if (c !== undefined) return c;
+    var out = splitUrl(v, function(part){ return part.replace(TOKEN, function(t){ return mapText(t); }); });
+    cache.set("t:" + v, out);
+    if (out !== v) revVal.set(out, v);
+    return out;
+  }
+  // un atribut style: el color del text (color, o fill d'un text SVG) passa pel mínim de contrast
+  function mapStyleAttr(v, isText, fresh){
+    if (typeof v !== "string" || !HAS.test(v)) return v;
+    return v.split(";").map(function(d){
+      var i = d.indexOf(":"); if (i < 0) return d;
+      var prop = d.slice(0, i).trim().toLowerCase(), val = d.slice(i + 1);
+      var txt = prop === "color" || prop === "-webkit-text-fill-color" || (isText && prop === "fill");
+      if (fresh) {
+        if (!HAS.test(val)) return d;
+        return d.slice(0, i + 1) + splitUrl(val, function(part){ return part.replace(TOKEN, function(t){
+          var p = parse(t); if (!p) return t;
+          return rev.has(key(p[0], p[1], p[2], p[3])) ? t : (txt ? mapText(t) : mapColor(t));
+        }); });
+      }
+      return d.slice(0, i + 1) + (txt ? mapTextValue(val) : mapValue(val));
+    }).join(";");
+  }
+  var TEXT_TAGS = { text: 1, tspan: 1, textPath: 1, textpath: 1 };
+  function isTextEl(el){ return !!el && TEXT_TAGS[el.localName] === 1; }
   function unmapValue(v){
     if (typeof v !== "string" || !v) return v;
     var r = revVal.get(v); if (r !== undefined) return r;
@@ -269,7 +331,20 @@
   });
   if (CTX.reset) { var rst = CTX.reset; CTX.reset = function(){ rst.call(this); defaults(this); }; }
   // marcar els canvas ocults que s'hi dibuixa (per traduir-los si després es fan visibles)
-  ["fill", "stroke", "fillRect", "strokeRect", "fillText", "strokeText"].forEach(function(m){
+  // text de canvas visible: mateix mínim de contrast que el text HTML i SVG
+  ["fillText", "strokeText"].forEach(function(m){
+    var f = CTX[m], d = m === "fillText" ? fsDesc : ssDesc;
+    CTX[m] = function(){
+      if (!live(this)) { touch(this); return f.apply(this, arguments); }
+      var cur = d.get.call(this);
+      if (typeof cur !== "string") return f.apply(this, arguments);
+      var o = unmapValue(cur), t = o !== cur ? mapText(o) : cur;
+      if (t === cur) return f.apply(this, arguments);
+      d.set.call(this, t);
+      try { return f.apply(this, arguments); } finally { d.set.call(this, cur); }
+    };
+  });
+  ["fill", "stroke", "fillRect", "strokeRect"].forEach(function(m){
     var f = CTX[m]; CTX[m] = function(){ if (!live(this)) touch(this); return f.apply(this, arguments); };
   });
   // traducció de píxels, amb memòria per color
@@ -319,7 +394,7 @@
     var n = typeof name === "string" ? name.toLowerCase() : name;
     if (ATTR[n] === 1 && typeof value === "string" || ATTR[n] === 1 && typeof value === "number") {
       value = String(value);
-      var m = mapValue(value);
+      var m = n === "style" ? mapStyleAttr(value, isTextEl(this)) : (n === "fill" || n === "color") && isTextEl(this) ? mapTextValue(value) : mapValue(value);
       if (m !== value) { remember(this, n, value, m); return setA.call(this, name, m); }
       var r = orig.get(this); if (r) delete r[n];
     }
@@ -340,7 +415,7 @@
       var v = getA.call(el, a);
       if (v === null) continue;
       if (r && r[a] && r[a][1] === v) continue;   // ja traduït
-      var m = a === "style" ? mapFresh(v) : mapValue(v);
+      var m = a === "style" ? mapStyleAttr(v, isTextEl(el), true) : (a === "fill" || a === "color") && isTextEl(el) ? mapTextValue(v) : mapValue(v);
       if (m !== v) { remember(el, a, v, m); setA.call(el, a, m); }
     }
   }
@@ -356,7 +431,7 @@
   var setP = CSD.setProperty, getP = CSD.getPropertyValue;
   CSD.setProperty = function(p, v, prio){
     if (p === "mix-blend-mode" && typeof v === "string" && BLEND[v.trim()]) v = BLEND[v.trim()];
-    return setP.call(this, p, typeof v === "string" ? mapValue(v) : v, prio);
+    return setP.call(this, p, typeof v === "string" ? (p === "color" || p === "-webkit-text-fill-color" ? mapTextValue(v) : mapValue(v)) : v, prio);
   };
   CSD.getPropertyValue = function(p){ return unmapValue(getP.call(this, p)); };
   ["color","fill","stroke","background","backgroundColor","background-color","borderColor","border-color","borderTopColor","borderBottomColor",
@@ -369,7 +444,7 @@
     if (!d || !d.set) return;
     Object.defineProperty(owner, p, { configurable: true, enumerable: d.enumerable,
       get: function(){ return unmapValue(d.get.call(this)); },
-      set: function(v){ if (p === "mixBlendMode" && typeof v === "string" && BLEND[v.trim()]) v = BLEND[v.trim()]; d.set.call(this, typeof v === "string" ? mapValue(v) : v); } });
+      set: function(v){ if (p === "mixBlendMode" && typeof v === "string" && BLEND[v.trim()]) v = BLEND[v.trim()]; d.set.call(this, typeof v === "string" ? (p === "color" ? mapTextValue(v) : p === "cssText" ? mapStyleAttr(v, false) : mapValue(v)) : v); } });
   });
 
   /* ---------- fulls d'estil ---------- */
@@ -388,7 +463,8 @@
           continue;
         }
         if (!v || !HAS.test(v)) continue;
-        var m = mapValue(v);
+        var txt = p === "color" || p === "-webkit-text-fill-color" || (p === "fill" && /\b(text|tspan)\b/.test(r.selectorText || ""));
+        var m = txt ? mapTextValue(v) : mapValue(v);
         if (m !== v) setP.call(st, p, m, st.getPropertyPriority(p));
       }
     }
@@ -414,44 +490,76 @@
   function opac(cs){ var a = parseFloat(getP.call(cs, "opacity")); return isNaN(a) ? 1 : a; }
   var removeP = CSD.removeProperty;
   function clearFix(el){ removeP.call(el.style, "fill"); removeP.call(el.style, "stroke"); removeP.call(el.style, "color"); onFill.delete(el); }
+  function crRatio(a, b){ var x = relLum(a), y = relLum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+  var PAPER_D = [19, 19, 18], LIGHT_TEXT = [234, 232, 227], DARK_RGB = [22, 21, 20];
+  var applied = new WeakMap(); // text → {sig, val}
+  function boostRGB(c){ // aclareix (mateix to) fins que es llegeix sobre el paper fosc
+    var lab = toLab(c[0], c[1], c[2]), C = Math.hypot(lab[1], lab[2]), h = Math.atan2(lab[2], lab[1]);
+    for (var L = Math.max(lab[0], TEXT_MIN); L < 0.97; L += 0.02) { var o = lchToRgb(L, C, h); if (crRatio(o, PAPER_D) >= 4.6) return o; }
+    return LIGHT_TEXT;
+  }
+  function blendOver(f, a, b){ return [f[0]*a + b[0]*(1-a), f[1]*a + b[1]*(1-a), f[2]*a + b[2]*(1-a)]; }
   function contrastPass(){
     passTimer = 0; passDirty = false; passLast = Date.now();
-    var vh = innerHeight, vw = innerWidth, svgs = document.getElementsByTagName("svg");
+    var vh = innerHeight, vw = innerWidth, lo = -0.6 * vh, hi = 1.6 * vh, svgs = document.getElementsByTagName("svg");
     for (var i = 0; i < svgs.length; i++) {
       var svgEl = svgs[i], r = svgEl.getBoundingClientRect();
-      if (!r.width || r.bottom < -40 || r.top > vh + 40 || r.right < 0 || r.left > vw) continue;
+      if (!r.width || r.bottom < lo || r.top > hi || r.right < 0 || r.left > vw) continue;
       var texts = svgEl.getElementsByTagName("text"); if (!texts.length) continue;
       var shapes = null;
       for (var j = 0; j < texts.length; j++) {
         var t = texts[j], tr = t.getBoundingClientRect();
-        if (!tr.width || tr.bottom < 0 || tr.top > vh) continue;
-        var was = onFill.has(t);
-        if (!was) { var tf = paintOf(getComputedStyle(t), "fill"); if (!tf || relLum(tf) < 0.35) continue; }
+        if (!tr.width || tr.bottom < lo || tr.top > hi) continue;
+        // si el text ha canviat des de l'última correcció (atribut, classe), es torna a mirar de zero
+        var sig = getA.call(t, "fill") + "|" + getA.call(t, "class") + "|" + (t.parentNode && t.parentNode.getAttribute ? getA.call(t.parentNode, "fill") : "");
+        var ap = applied.get(t);
+        if (ap && (ap.sig !== sig || getP.call(t.style, "fill") !== ap.val)) { if (getP.call(t.style, "fill") === ap.val) clearFix(t); applied.delete(t); ap = null; }
+        var cs = getComputedStyle(t);
+        var tf = ap ? ap.base : paintOf(cs, "fill");
+        if (!tf || tf[3] === 0) continue;
         if (!shapes) {
           shapes = [];
           var all = svgEl.querySelectorAll("circle,rect,path,ellipse,polygon");
           for (var k = 0; k < all.length; k++) {
             var sh = all[k], b = sh.getBoundingClientRect();
-            if (!b.width || b.bottom < 0 || b.top > vh) continue;
-            var cs = getComputedStyle(sh), fl = paintOf(cs, "fill");
-            if (!fl || fl[3] * opac(cs) * (parseFloat(getP.call(cs, "fill-opacity")) || 1) < 0.55 || relLum(fl) < 0.3) continue;
-            shapes.push([sh, b, fl]);
+            if (!b.width || b.bottom < lo || b.top > hi) continue;
+            var scs = getComputedStyle(sh), fl = paintOf(scs, "fill");
+            if (!fl) continue;
+            var al = fl[3] * opac(scs) * (parseFloat(getP.call(scs, "fill-opacity")) || 1);
+            if (al < 0.45) continue;
+            shapes.push([sh, b, blendOver(fl, Math.min(1, al), PAPER_D)]);
           }
         }
         var cx = tr.left + tr.width / 2, cy = tr.top + tr.height / 2, hit = null;
         for (var q = shapes.length - 1; q >= 0; q--) {
           var e = shapes[q], bb = e[1];
           if (cx < bb.left || cx > bb.right || cy < bb.top || cy > bb.bottom) continue;
+          // la forma ha de cobrir la major part de l'etiqueta (un punt petit sota un text amb halo no compta)
+          var ix = Math.max(0, Math.min(bb.right, tr.right) - Math.max(bb.left, tr.left)), iy = Math.max(0, Math.min(bb.bottom, tr.bottom) - Math.max(bb.top, tr.top));
+          if (ix * iy < 0.55 * tr.width * tr.height) continue;
           if (!(e[0].compareDocumentPosition(t) & 4)) continue;          // la forma ha d'anar abans (a sota)
           var m = e[0].getScreenCTM(); if (!m) continue;
           try { if (e[0].isPointInFill(new DOMPoint(cx, cy).matrixTransform(m.inverse()))) { hit = e; break; } } catch (err) {}
         }
-        if (hit) {
-          setP.call(t.style, "fill", DARK_TEXT, "important");
-          var st = getP.call(getComputedStyle(t), "stroke");
-          if (st && st !== "none") setP.call(t.style, "stroke", fmt(hit[2][0], hit[2][1], hit[2][2], 1), "important");
-          onFill.add(t);
-        } else if (was) clearFix(t);
+        var under = hit ? hit[2] : PAPER_D, want = null, cur = crRatio(tf, under);
+        if (cur < 4.5) {
+          if (hit) {
+            var cd = crRatio(DARK_RGB, under), cl = crRatio(LIGHT_TEXT, under);
+            if (Math.max(cd, cl) > cur + 0.3) want = cd >= cl ? DARK_TEXT : fmt(LIGHT_TEXT[0], LIGHT_TEXT[1], LIGHT_TEXT[2], 1);
+          } else if (relLum(tf) < relLum(PAPER_D) + 0.2 && !(function(){ var of = parse(t.getAttribute("fill") || ""); return of && relLum(of) > 0.8; })()) {
+            // (un text que era blanc va a sobre d'alguna cosa, potser un canvas: no s'aclareix)
+            var bo = boostRGB(tf); want = fmt(bo[0], bo[1], bo[2], 1);
+          }
+        }
+        if (want) {
+          if (!ap || ap.val !== want) {
+            setP.call(t.style, "fill", want, "important");
+            var st = getP.call(cs, "stroke");
+            if (hit && st && st !== "none") setP.call(t.style, "stroke", fmt(Math.round(under[0]), Math.round(under[1]), Math.round(under[2]), 1), "important");
+            applied.set(t, { sig: sig, val: getP.call(t.style, "fill"), base: tf });
+            onFill.add(t);
+          }
+        } else if (ap) { clearFix(t); applied.delete(t); }
       }
     }
     // insígnies HTML amb fons clar propi
@@ -467,7 +575,7 @@
   function schedulePass(){
     passDirty = true;
     if (passTimer) return;
-    var wait = Math.max(120, 450 - (Date.now() - passLast));
+    var wait = Math.max(80, 300 - (Date.now() - passLast));
     passTimer = setTimeout(function(){ (window.requestIdleCallback || function(f){ f(); })(contrastPass, { timeout: 400 }); }, wait);
   }
   window.IBTheme._contrastPass = contrastPass;
@@ -488,7 +596,7 @@
         if (list[i].type === "attributes") {
           // el.style.color = … no passa per cap funció interceptable a Chrome: es tradueix aquí, abans de pintar
           var tg = list[i].target, sv = getA.call(tg, "style");
-          if (sv && HAS.test(sv)) { var sm = mapFresh(sv); if (sm !== sv) setA.call(tg, "style", sm); }
+          if (sv && HAS.test(sv)) { var sm = mapStyleAttr(sv, isTextEl(tg), true); if (sm !== sv) setA.call(tg, "style", sm); }
           continue;
         }
         var add = list[i].addedNodes;

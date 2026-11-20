@@ -185,7 +185,7 @@ piece("scale-03",(el,w)=>{
     anim=d3.timer(e=>{ const k=Math.min(1,e/1100); t=from+(to-from)*d3.easeCubicInOut(k); draw(); if(k>=1)anim.stop(); }); }
   el._mode=k=>{ mode03=k; go(k==="grup"?0:1); };
   V.onView(el,now=>{ if(now){ rise=1; draw(); return; }
-    d3.timer(function(e){ rise=Math.min(1,e/1800); draw(); if(rise>=1)this.stop(); }); });
+    const tm=d3.timer(e=>{ rise=Math.min(1,e/1800); draw(); if(rise>=1)tm.stop(); }); });
   draw(); if(document.fonts)document.fonts.ready.then(draw);
   V.hover(el.querySelector("canvas"),(ev,[mx,my])=>{
     // la persona més propera
@@ -419,7 +419,7 @@ piece("scale-06",(el,w)=>{
     ctext(ctx,14,46,how06==="pols"?`${b.t}, ${b.tn} t · ${R} cordes · una persona per cada ${B06.kgPer} kg`:`${b.t}, ${b.tn} t · quatre persones fan girar l'argue`,{size:12,fill:C.ink2});
   }
   function setView(){ const to=view(), from={m:VW.m,ox:VW.ox}; if(V.reduced){ VW=to; draw(); return; }
-    d3.timer(function(e){ const k=Math.min(1,e/900), q=d3.easeCubicInOut(k); VW={m:from.m+(to.m-from.m)*q, ox:from.ox+(to.ox-from.ox)*q}; draw(); if(k>=1)this.stop(); }); }
+    const tm=d3.timer(e=>{ const k=Math.min(1,e/900), q=d3.easeCubicInOut(k); VW={m:from.m+(to.m-from.m)*q, ox:from.ox+(to.ox-from.ox)*q}; draw(); if(k>=1)tm.stop(); }); }
   el._update=setView;
   VW=view(); draw(); if(document.fonts)document.fonts.ready.then(draw);
   if(el.__lp)el.__lp.stop(); el.__lp=V.loop(el,t=>{ T=t; draw(); });
