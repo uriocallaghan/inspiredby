@@ -1,0 +1,184 @@
+# Fonts i verificació · Qui va dibuixar el mapa d'Haití?
+
+Generat a partir de `fonts.py` (la font única de les referències). Tots els DOI comprovats a Crossref i totes les URL comprovades (HTTP 200) el 20-11-2026.
+
+## Premissa de l'editor
+
+«Google no tenia mapejada l'illa»: **no és exacte**. Google havia obert Haití a Map Maker més d'un any abans i va cedir aquelles dades a l'ONU el 13-01-2010 (font `google`). El que és cert és que tots els mapes eren molt incomplets i que OpenStreetMap, gràcies als voluntaris, va passar a ser el més detallat de les zones urbanes afectades en poques setmanes (`soden`). L'article ho explica així.
+
+## Discrepàncies conegudes
+
+- Voluntaris d'OSM a Haití el primer mes: 605 (Chapman, 12-01 a 11-02), «més de 600» (OSM), 450 de 29 països (Soden, blog del Banc Mundial, 2014) i 621 (comptatge propi amb ohsome, 31 dies, caixa que inclou una franja de la R. Dominicana). L'article fa servir 605 al text (font primària) i 621 als gràfics (mètode propi, explicat).
+- Morts: 158.679 (Kolbe et al., Port-au-Prince, enquesta) i 316.000 (govern d'Haití, 2011). Es donen totes dues.
+- La traça de la falla al mapa és orientativa.
+
+## Fonts
+
+- **usgs** · U.S. Geological Survey. «M 7.0 – 10 km SE of Léogâne, Haiti» (esdeveniment usp000h60h, 12-01-2010 21:53 UTC). earthquake.usgs.gov
+  - Hi recolza: Magnitud 7,0, epicentre a 18,443° N 72,571° O (10 km al SE de Léogâne), 13 km de fondària, 21.53 UTC (16.53 hora local)
+  - URL: https://earthquake.usgs.gov/earthquakes/eventpage/usp000h60h
+  - Nota: Consultat amb l'API FDSN de l'USGS (coordenades −72,571, 18,443, 13 km).
+- **kolbe** · Kolbe, A. R., et al. (2010). «Mortality, crime and access to basic needs before and after the Haiti earthquake: a random survey of Port-au-Prince households». Medicine, Conflict and Survival, 26(4), 281–297. DOI: 10.1080/13623699.2010.535279
+  - Hi recolza: Estimació de 158.679 morts a Port-au-Prince (IC 95 %: 136.813–180.545) en el sisme i les sis setmanes següents
+  - URL: https://doi.org/10.1080/13623699.2010.535279
+- **govt** · The Irish Times (12-01-2011). «Haiti revises quake death toll». irishtimes.com
+  - Hi recolza: Xifra oficial de més de 316.000 morts anunciada pel primer ministre Jean-Max Bellerive un any després
+  - URL: https://www.irishtimes.com/news/haiti-revises-quake-death-toll-total-1.870049
+  - Nota: Notícia de premsa d'una declaració oficial; no s'ha trobat el document del govern.
+- **soden** · Soden, R., & Palen, L. (2014). «From Crowdsourced Mapping to Community Mapping: The Post-earthquake Work of OpenStreetMap Haiti». A COOP 2014: Proceedings of the 11th International Conference on the Design of Cooperative Systems (Springer), 311–326. DOI: 10.1007/978-3-319-06498-7_19 (còpia de l'autora)
+  - Hi recolza: Abans del sisme, OSM només tenia una part de la xarxa de carrers i els altres grans mapes web encara menys
+  - Hi recolza: Al cap de poques setmanes, a les zones urbanes afectades OSM tenia més detall que les dades de carreteres de l'ONU i que Google Maps (anàlisi de M. Haklay, gener del 2010)
+  - Hi recolza: Ús del mapa per OCHA, UNICEF i l'equip de rescat urbà del comtat de Fairfax (en GPS Garmin)
+  - Hi recolza: Fundació de HOT: llista de correu el març del 2010 i entitat sense ànim de lucre l'agost del 2010
+  - Hi recolza: Pas del mapatge a distància al mapatge comunitari: l'OIM va pagar equips haitians per afegir noms de carrers i va contractar mapadors haitians
+  - URL: https://doi.org/10.1007/978-3-319-06498-7_19 · https://cmci.colorado.edu/~palen/palen_papers/HaitiCOOP_Final.pdf
+  - Nota: Llegit a la còpia de l'autora. L'afirmació sobre Haklay (gener 2010) és de segona mà: l'entrada original de Haklay dona 404.
+- **google** · Lorimer, R., & Pfund, J. (13-01-2010). «Imagery & maps in the wake of the Haiti Earthquake». Google Lat Long Blog. maps.googleblog.com
+  - Hi recolza: Google havia obert Haití a Map Maker més d'un any abans, arran d'uns huracans, i va cedir aquelles dades a l'ONU; imatges de GeoEye del 13 de gener
+  - URL: https://maps.googleblog.com/2010/01/imagery-maps-in-wake-of-haiti.html
+- **chapman** · Chapman, K. (2010). «OpenStreetMap in the First Month After the Haiti Quake». maploser.com. còpia de l'Internet Archive
+  - Hi recolza: Primeres edicions a les 9.00 GMT del 13 de gener, dotze hores després del sisme, per dos usuaris del Japó i d'Alemanya
+  - Hi recolza: 605 editors i 1.422.205 nodes editats entre el 12 de gener i l'11 de febrer de 2010 (amb alguns robots i importacions)
+  - Hi recolza: 230 dels editors es van donar d'alta després del sisme; el 85 % dels nodes els van fer persones que ja tenien compte
+  - URL: https://web.archive.org/web/2010/http://maploser.com/?p=279
+  - Nota: Llegit a l'Internet Archive. Les mitjanes de nodes per usuari de l'autora no quadren entre elles: només es fan servir els totals.
+- **maron** · Maron, M. (14-01-2010). «Haiti OpenStreetMap Response». OpenStreetMap Blog. blog.openstreetmap.org
+  - Hi recolza: Almenys 400 sessions d'edició en els primers dies, traçant imatges de Yahoo i vells mapes de la CIA
+  - URL: https://blog.openstreetmap.org/2010/01/14/haiti-openstreetmap-response/
+- **geoeyeok** · Maron, M. (14-01-2010). «GeoEye Haiti imagery Ok'd». Llista de correu talk d'OpenStreetMap. lists.openstreetmap.org
+  - Hi recolza: Permís per fer servir les imatges de GeoEye a OSM, amb reconeixement
+  - URL: https://lists.openstreetmap.org/pipermail/talk/2010-January/046862.html
+- **kawasaki** · Kawasaki, A., Berman, M. L., & Guan, W. (2013). «The growing role of web-based geospatial technology in disaster response and support». Disasters, 37(2), 201–221. DOI: 10.1111/j.1467-7717.2012.01302.x
+  - Hi recolza: Faltaven fins i tot mapes de carreteres detallats i la ubicació d'infraestructures crítiques
+  - Hi recolza: Proveïdors i dates de les primeres imatges posteriors al sisme (GeoEye 13 de gener; DigitalGlobe, SPOT 14–15 de gener; NOAA 18 de gener)
+  - URL: https://doi.org/10.1111/j.1467-7717.2012.01302.x
+- **calais** · Calais, E., et al. (2010). «Transpressional rupture of an unmapped fault during the 2010 Haiti earthquake». Nature Geoscience, 3, 794–799. DOI: 10.1038/ngeo992
+  - Hi recolza: El sisme va trencar una falla que no era als mapes, no la falla principal d'Enriquillo–Plantain Garden
+  - URL: https://doi.org/10.1038/ngeo992
+- **hayes** · Hayes, G. P., et al. (2010). «Complex rupture during the 12 January 2010 Haiti earthquake». Nature Geoscience, 3, 800–805. DOI: 10.1038/ngeo977
+  - Hi recolza: Ruptura complexa, en bona part fora de la traça principal de la falla d'Enriquillo–Plantain Garden
+  - URL: https://doi.org/10.1038/ngeo977
+- **ohsome** · HeiGIT. API ohsome v1.10.4 (consultes del 20-11-2026 sobre l'historial complet d'OpenStreetMap, © OpenStreetMap contributors, ODbL). docs.ohsome.org · Mètode: Raifer, M., et al. (2019). «OSHDB: a framework for spatio-temporal analysis of OpenStreetMap history data». Open Geospatial Data, Software and Standards, 4, 3. DOI: 10.1186/s40965-019-0061-3
+  - Hi recolza: Càlcul propi: persones diferents que van editar Haití a OSM (58 entre el 12-01-2009 i el 12-01-2010; 621 en els 31 dies després del sisme; 323 l'any 2025)
+  - Hi recolza: Càlcul propi: vies i quilòmetres de carrers de l'àrea de Port-au-Prince, hora a hora i dia a dia (de 364 km a més de 2.800 km en un mes; 3.444 km i 133.597 edificis l'any 2025)
+  - Hi recolza: Càlcul propi: persones que editen la zona cada dia després de Haiyan (2013), Nepal (2015) i Turquia i Síria (2023)
+  - URL: https://docs.ohsome.org/ohsome-api/v1/ · https://doi.org/10.1186/s40965-019-0061-3
+  - Nota: Consultes fetes per a l'article el 20-11-2026; fitxers a raw/ i dades-ohsome.json.
+- **munro** · Munro, R. (2013). «Crowdsourcing and the crisis-affected community: Lessons learned and looking forward from Mission 4636». Information Retrieval, 16(2), 210–266. DOI: 10.1007/s10791-012-9203-2
+  - Hi recolza: Número curt gratuït 4636 per enviar SMS des de qualsevol lloc d'Haití
+  - Hi recolza: Uns 2.000 voluntaris que parlaven crioll i francès; en les dues primeres setmanes, de 49 països
+  - Hi recolza: 80.000 missatges processats, 45.000 informes únics i útils (45.467), amb una mediana de menys de cinc minuts
+  - Hi recolza: Repartiment de la feina: voluntaris en línia ~60 %, treballadors pagats a Haití ~25 %, altres grups voluntaris la resta
+  - Hi recolza: Més de 1.000 missatges al dia després de la primera setmana; l'exèrcit dels EUA, principal destinatari
+  - URL: https://doi.org/10.1007/s10791-012-9203-2
+  - Nota: Llegit a la còpia de l'autor (Internet Archive). 45.467 informes únics.
+- **herfort** · Herfort, B., Lautenbach, S., Porto de Albuquerque, J., Anderson, J., & Zipf, A. (2021). «The evolution of humanitarian mapping within the OpenStreetMap community». Scientific Reports, 11, 3037. DOI: 10.1038/s41598-021-82404-z
+  - Hi recolza: HOT es va fundar el 2010 arran del terratrèmol d'Haití
+  - Hi recolza: El mapatge humanitari va afegir 60,5 milions d'edificis (un 14 % dels d'OSM) i 4,5 milions de vies entre el 2008 i el 2020
+  - Hi recolza: Nepal 2015: fins a 1.900 mapadors al Tasking Manager i més d'un milió d'edificis en un mes
+  - URL: https://doi.org/10.1038/s41598-021-82404-z
+- **missingmaps** · Chapman, K. (07-11-2014). «Missing Maps». Llista de correu talk d'OpenStreetMap. lists.openstreetmap.org
+  - Hi recolza: Llançament de Missing Maps per HOT, la Creu Roja Americana, la Creu Roja Britànica i Metges Sense Fronteres per mapar els llocs més vulnerables abans dels desastres
+  - URL: https://lists.openstreetmap.org/pipermail/talk/2014-November/071408.html
+- **heigit** · HeiGIT (19-05-2023). «How to become ohsome part 15». heigit.org
+  - Hi recolza: Turquia i Síria 2023: fins al 21 de febrer, 1.416.862 edificis i 66.947 km de carreteres mapats per 6.948 persones
+  - URL: https://heigit.org/?p=6351
+  - Nota: Bloc d'un institut de recerca, no revisat per experts.
+- **tm** · Humanitarian OpenStreetMap Team. Tasking Manager (programari lliure). github.com/hotosm/tasking-manager
+  - Hi recolza: L'àrea es divideix en tasques petites; l'eina mostra què falta mapar i què cal revisar
+  - URL: https://github.com/hotosm/tasking-manager
+- **grasse** · Grassé, P.-P. (1959). «La reconstruction du nid et les coordinations interindividuelles chez Bellicositermes natalensis et Cubitermes sp.». Insectes Sociaux, 6(1), 41–80. DOI: 10.1007/BF02223791
+  - Hi recolza: Origen del concepte d'estigmèrgia en l'estudi de la construcció dels nius dels tèrmits
+  - URL: https://doi.org/10.1007/BF02223791
+- **heylighen** · Heylighen, F. (2016). «Stigmergy as a universal coordination mechanism I: Definition and components». Cognitive Systems Research, 38, 4–13. DOI: 10.1016/j.cogsys.2015.12.002
+  - Hi recolza: L'estigmèrgia com a mecanisme general de coordinació, també en la col·laboració humana en línia
+  - URL: https://doi.org/10.1016/j.cogsys.2015.12.002
+- **lintott08** · Lintott, C. J., et al. (2008). «Galaxy Zoo: morphologies derived from visual inspection of galaxies from the Sloan Digital Sky Survey». Monthly Notices of the Royal Astronomical Society, 389(3), 1179–1189. DOI: 10.1111/j.1365-2966.2008.13689.x
+  - Hi recolza: Més de 40 milions de classificacions de gairebé un milió de galàxies fetes per unes 100.000 persones
+  - URL: https://doi.org/10.1111/j.1365-2966.2008.13689.x
+- **lintott09** · Lintott, C. J., et al. (2009). «Galaxy Zoo: “Hanny's Voorwerp”, a quasar light echo?». Monthly Notices of the Royal Astronomical Society, 399(1), 129–140. DOI: 10.1111/j.1365-2966.2009.15299.x
+  - Hi recolza: Objecte descobert per la voluntària Hanny van Arkel a prop de la galàxia IC 2497; ella signa l'article
+  - URL: https://doi.org/10.1111/j.1365-2966.2009.15299.x
+- **khatib** · Khatib, F., et al. (2011). «Crystal structure of a monomeric retroviral protease solved by protein folding game players». Nature Structural & Molecular Biology, 18(10), 1175–1177. DOI: 10.1038/nsmb.2119
+  - Hi recolza: Jugadors de Foldit van resoldre en una competició de tres setmanes una estructura que els científics no havien pogut resoldre en més d'una dècada
+  - URL: https://doi.org/10.1038/nsmb.2119
+- **zimmerman** · Zimmerman, M. I., et al. (2021). «SARS-CoV-2 simulations go exascale to predict dramatic spike opening and cryptic pockets across the proteome». Nature Chemistry, 13(7), 651–659. DOI: 10.1038/s41557-021-00707-0
+  - Hi recolza: Més d'un milió de científics ciutadans van crear el primer ordinador d'exaescala: pic d'1,01 exaFLOPS, més que els cent superordinadors més grans junts
+  - URL: https://doi.org/10.1038/s41557-021-00707-0
+- **audubon** · National Audubon Society. «Christmas Bird Count». audubon.org (consultat el 20-11-2026)
+  - Hi recolza: El recompte d'ocells de Nadal funciona des del 1900; més de 85.000 participants el 2025
+  - URL: https://www.audubon.org/community-science/christmas-bird-count
+- **zooniverse** · Zooniverse (21-04-2026). «3 million volunteers». blog.zooniverse.org
+  - Hi recolza: 3 milions de voluntaris registrats a la plataforma de ciència ciutadana Zooniverse
+  - URL: https://blog.zooniverse.org/2026/04/21/3-million-volunteers/
+- **wmstats** · Wikimedia Foundation. Estadístiques de la Viquipèdia en anglès (API de MediaWiki, siteinfo&siprop=statistics, consultada el 20-11-2026). en.wikipedia.org/wiki/Special:Statistics
+  - Hi recolza: 7.266.946 articles i 263.142 comptes actius en els darrers 30 dies
+  - URL: https://en.wikipedia.org/wiki/Special:Statistics
+- **tomnod** · DigitalGlobe (05-05-2014). «Crowdsourcing the search for Malaysia flight 370: thank you». Blog de DigitalGlobe (còpia de l'Internet Archive)
+  - Hi recolza: Més de 8 milions de persones van revisar imatges de 1.007.750 km² a Tomnod; l'avió no es va trobar (xifra de l'empresa)
+  - URL: https://web.archive.org/web/2014/http://blog.digitalglobe.com/2014/05/05/crowdsourcingmalaysianflightthankyou/
+  - Nota: Xifra de l'empresa.
+- **osmstats** · OpenStreetMap. «Database statistics» (20-11-2026). planet.openstreetmap.org
+  - Hi recolza: 11.055.295 comptes registrats i més d'11.000 milions de nodes
+  - URL: https://planet.openstreetmap.org/statistics/data_stats.html
+- **goodchild** · Goodchild, M. F. (2007). «Citizens as sensors: the world of volunteered geography». GeoJournal, 69(4), 211–221. DOI: 10.1007/s10708-007-9111-y
+  - Hi recolza: Definició d'informació geogràfica voluntària (VGI): ciutadans que fan de sensors
+  - URL: https://doi.org/10.1007/s10708-007-9111-y
+- **howe** · Howe, J. (01-06-2006). «The Rise of Crowdsourcing». Wired. wired.com
+  - Hi recolza: Encunyació del terme crowdsourcing
+  - URL: https://www.wired.com/2006/06/crowds/
+- **benkler** · Benkler, Y. (2002). «Coase's Penguin, or, Linux and The Nature of the Firm». Yale Law Journal, 112(3), 369–446. DOI: 10.2307/1562247
+  - Hi recolza: Producció entre iguals basada en béns comuns (commons-based peer production)
+  - URL: https://doi.org/10.2307/1562247
+  - Nota: Llegit el resum.
+- **meier** · Meier, P. (2015). Digital Humanitarians: How Big Data Is Changing the Face of Humanitarian Response. Boca Raton: CRC Press.
+  - Hi recolza: El concepte d'humanitaris digitals
+  - Nota: Verificat al catàleg (WorldCat i editorial); no s'ha llegit el llibre.
+- **palen** · Palen, L., & Anderson, K. M. (2016). «Crisis informatics—New data for extraordinary times». Science, 353(6296), 224–225. DOI: 10.1126/science.aag2579
+  - Hi recolza: La informàtica de crisi: estudiar el comportament de la gent, no les eines
+  - URL: https://doi.org/10.1126/science.aag2579
+- **fritz57** · Fritz, C. E., & Mathewson, J. H. (1957). Convergence Behavior in Disasters: A Problem in Social Control. Washington: National Academy of Sciences – National Research Council (Disaster Study 9).
+  - Hi recolza: La convergència de gent, ajuda i informació cap al lloc d'un desastre
+  - Nota: Títol, autors i any confirmats per una ressenya contemporània; editorial habitual (NAS-NRC), no consultada directament.
+- **quarantelli77** · Quarantelli, E. L., & Dynes, R. R. (1977). «Response to Social Crisis and Disaster». Annual Review of Sociology, 3, 23–49. DOI: 10.1146/annurev.so.03.080177.000323 · Drabek, T. E., & McEntire, D. A. (2003). «Emergent phenomena and the sociology of disaster». Disaster Prevention and Management, 12(2), 97–112. DOI: 10.1108/09653560310474214
+  - Hi recolza: Els grups emergents com a tema central de la sociologia dels desastres
+  - URL: https://doi.org/10.1146/annurev.so.03.080177.000323 · https://doi.org/10.1108/09653560310474214
+- **panic** · Quarantelli, E. L. (1954). «The Nature and Conditions of Panic». American Journal of Sociology, 60(3), 267–275. DOI: 10.1086/221536 · Clarke, L. (2002). «Panic: Myth or Reality?». Contexts, 1(3), 21–26. DOI: 10.1525/ctx.2002.1.3.21
+  - Hi recolza: El pànic col·lectiu és rar; en els desastres la gent sol ser cívica i cooperativa
+  - URL: https://doi.org/10.1086/221536 · https://doi.org/10.1525/ctx.2002.1.3.21
+- **solnit** · Solnit, R. (2009). A Paradise Built in Hell: The Extraordinary Communities That Arise in Disaster. Nova York: Viking.
+  - Hi recolza: Les comunitats d'ajuda mútua que sorgeixen en els desastres
+  - Nota: Verificat al catàleg.
+- **dubuisson** · Dubuisson, D. E. (2020). «“We Know How to Work Together”: Konbit, Protest, and the Rejection of INGO Bureaucratic Dominance». Journal of Haitian Studies, 26(2), 53–80. DOI: 10.1353/jhs.2020.0012
+  - Hi recolza: El konbit com a sistema haitià de treball col·laboratiu; etnografia d'una carretera feta en konbit a la Grand'Anse, al marge de la burocràcia de les ONG
+  - URL: https://doi.org/10.1353/jhs.2020.0012
+- **roumain** · Roumain, J. (1944). Gouverneurs de la rosée. Port-au-Prince: Imprimerie de l'État.
+  - Hi recolza: El konbit com a imatge central de la novel·la haitiana
+  - Nota: Verificat al catàleg.
+- **faas** · Faas, A. J. (2017). «Reciprocity and Vernacular Statecraft: Andean Cooperation in Post-disaster Highland Ecuador». The Journal of Latin American and Caribbean Anthropology, 22(3), 495–513. DOI: 10.1111/jlca.12272
+  - Hi recolza: La minga andina en la reconstrucció després d'un desastre a l'Equador
+  - URL: https://doi.org/10.1111/jlca.12272
+- **bowen** · Bowen, J. R. (1986). «On the Political Construction of Tradition: Gotong Royong in Indonesia». The Journal of Asian Studies, 45(3), 545–561. DOI: 10.2307/2056530
+  - Hi recolza: El gotong royong com a tradició en part construïda i aprofitada per l'estat indonesi
+  - URL: https://doi.org/10.2307/2056530
+- **bankoff** · Bankoff, G. (2020). «Old Ways and New Fears: Bayanihan and Covid-19». Philippine Studies: Historical and Ethnographic Viewpoints, 68(3). DOI: 10.13185/2244-1638.1059
+  - Hi recolza: En temps difícils, els filipins es giren tradicionalment els uns cap als altres; l'estat va redefinir el terme durant la covid
+  - URL: https://doi.org/10.13185/2244-1638.1059
+- **mauss** · Mauss, M. (1923–1924). «Essai sur le don. Forme et raison de l'échange dans les sociétés archaïques». L'Année sociologique, nova sèrie, 1, 30–186.
+  - Hi recolza: L'obligació de donar, rebre i tornar
+  - Nota: Data del volum 1923–1924; no s'ha consultat l'escaneig.
+- **kropotkin** · Kropotkin, P. (1902). Mutual Aid: A Factor of Evolution. Londres: William Heinemann.
+  - Hi recolza: La cooperació com a factor de l'evolució
+  - Nota: Edició no consultada.
+- **burns** · Burns, R. (2015). «Rethinking big data in digital humanitarianism: practices, epistemologies, and social relations». GeoJournal, 80(4), 477–490. DOI: 10.1007/s10708-014-9599-x
+  - Hi recolza: Crítica de les relacions de poder i del coneixement que reprodueix l'humanitarisme digital
+  - URL: https://doi.org/10.1007/s10708-014-9599-x
+  - Nota: Només metadades i resum.
+- **crawford** · Crawford, K., & Finn, M. (2015). «The limits of crisis data: analytical and ethical challenges of using social and mobile data to understand disasters». GeoJournal, 80(4), 491–502. DOI: 10.1007/s10708-014-9597-z
+  - Hi recolza: Els límits analítics i ètics de les dades de crisi
+  - URL: https://doi.org/10.1007/s10708-014-9597-z
+  - Nota: Només metadades i resum.
+- **gardner** · Gardner, Z., Mooney, P., De Sabbata, S., & Dowthwaite, L. (2020). «Quantifying gendered participation in OpenStreetMap: responding to theories of female (under) representation in crowdsourced mapping». GeoJournal, 85(6), 1603–1620. DOI: 10.1007/s10708-019-10035-z · Das, M., Hecht, B., & Gergle, D. (2019). «The Gendered Geography of Contributions to OpenStreetMap». CHI 2019. DOI: 10.1145/3290605.3300793
+  - Hi recolza: Segons les enquestes que recullen, entre el 95 i el 98 % de les contribucions a OSM les fan homes
+  - URL: https://doi.org/10.1007/s10708-019-10035-z · https://doi.org/10.1145/3290605.3300793
+  - Nota: Xifra (95–98 %) de la literatura que recull l'article, no de dades pròpies.

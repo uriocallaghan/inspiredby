@@ -1,0 +1,24 @@
+<!doctype html><html lang="ca"><meta charset="utf-8"><title>Qui va dibuixar el mapa d'Haití?</title>
+<!-- Portada i miniatura de l'article: les vies reals de Port-au-Prince a OpenStreetMap (blau: abans del sisme;
+     vermell: afegides els tres primers dies; gris: la resta del primer mes). Sense text.
+     cover.jpg: ?w=1680&h=720 · thumb.webp: ?w=800&h=1000 -->
+<style>html,body{margin:0;background:#fff}canvas{display:block}</style>
+<canvas id="c"></canvas>
+<script src="pap-carrers.js"></script>
+<script>
+const q=new URLSearchParams(location.search), W=+q.get("w")||1680, H=+q.get("h")||720;
+const c=document.getElementById("c"); c.width=W; c.height=H; const x=c.getContext("2d");
+x.fillStyle="#fff"; x.fillRect(0,0,W,H);
+const RD=window.PAP_RD, S=RD.s;
+// centre: Port-au-Prince; escala perquè la ciutat ompli el marc
+const cx=-72.315, cy=18.545, k=Math.max(W/0.15, H/0.11)*(W<H?1.15:1), kc=Math.cos(cy*Math.PI/180);
+const P=(lon,lat)=>[W/2+(lon-cx)*k*kc, H/2-(lat-cy)*k];
+const ways=RD.w.map(r=>{ const pts=[]; let a=r[1], b=r[2]; pts.push(P(RD.x0+a*S,RD.y0+b*S)); for(let i=3;i<r.length;i+=2){ a+=r[i]; b+=r[i+1]; pts.push(P(RD.x0+a*S,RD.y0+b*S)); } return {h:r[0],pts}; });
+const lw=Math.max(W,H)/1000;
+function draw(f,col,w){ x.strokeStyle=col; x.lineWidth=w; x.lineJoin="round"; x.lineCap="round"; x.beginPath();
+  ways.filter(f).forEach(d=>d.pts.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]))); x.stroke(); }
+draw(d=>d.h>=72,"rgba(18,18,18,.42)",.7*lw);
+draw(d=>d.h>=0&&d.h<72,"rgba(200,68,42,.85)",1.1*lw);
+draw(d=>d.h<0,"rgba(44,93,168,.95)",1.8*lw);
+</script>
+</html>

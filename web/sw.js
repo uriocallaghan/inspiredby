@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-199d378d724b";
+const CACHE_NAME = "ib-offline-cbc65f87ef59";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -56,6 +56,18 @@ const LOCAL_ASSETS = [
   "/articles/el-jesus-historic/index.html",
   "/articles/el-jesus-historic/nom-i-temps.js",
   "/articles/el-jesus-historic/thumb.webp",
+  "/articles/el-mapa-d-haiti/",
+  "/articles/el-mapa-d-haiti/article.css",
+  "/articles/el-mapa-d-haiti/article.js",
+  "/articles/el-mapa-d-haiti/cites.js",
+  "/articles/el-mapa-d-haiti/cover.html",
+  "/articles/el-mapa-d-haiti/cover.jpg",
+  "/articles/el-mapa-d-haiti/dades.js",
+  "/articles/el-mapa-d-haiti/index.html",
+  "/articles/el-mapa-d-haiti/pap-carrers.js",
+  "/articles/el-mapa-d-haiti/relleu-haiti.js",
+  "/articles/el-mapa-d-haiti/relleu-pap.js",
+  "/articles/el-mapa-d-haiti/thumb.webp",
   "/articles/el-nino/",
   "/articles/el-nino/cover.jpg",
   "/articles/el-nino/index.html",

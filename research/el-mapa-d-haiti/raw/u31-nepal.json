@@ -1,0 +1,12 @@
+{
+  "attribution" : {
+    "url" : "https://ohsome.org/copyrights",
+    "text" : "© OpenStreetMap contributors"
+  },
+  "apiVersion" : "1.10.4",
+  "result" : [ {
+    "fromTimestamp" : "2015-04-25T00:00:00Z",
+    "toTimestamp" : "2015-05-26T00:00:00Z",
+    "value" : 6960.0
+  } ]
+}
