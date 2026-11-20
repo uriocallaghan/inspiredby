@@ -84,3 +84,5 @@ Correccions aplicades i verificades a la font:
 - Apartat «Déus per a una malaltia» (Sitala, Sopona, T'ou-Shen Niang-Niang, Tametomo, Omolu, sant Nicasi) i el gràfic dels déus: retirats per decisió de l'editor (20-11-2026). Se n'han tret també les fonts i afirmacions que només els recolzaven (Fenner p. 219, 223, 225, 715, 793 i 798 i el museu dels CDC sobre Shapona).
 
 - Apartat «La cara fosca» (coerció i abusos en la vacunació, Greenough 1995, Bhattacharya 2004): retirat per decisió de l'editor (20-11-2026), amb les fonts i afirmacions que només hi servien (Fenner p. 493 i 783) i la frase de la metodologia sobre les històries oficials celebratòries.
+
+- Retirats per decisió de l'editor (20-11-2026), perquè canvien de tema: la frase que deia que les autoritats de Somàlia van amagar els casos el 1976 (Fenner p. 536) i el paràgraf sobre la mpox (nota descriptiva i comitès d'emergències de l'OMS), amb les fonts i afirmacions que només hi servien.

@@ -47,7 +47,6 @@ S = {
     "El 1973, el 90 % dels casos es concentraven en el 10 % del territori de Bangladesh, Etiòpia, l'Índia i el Pakistan (p. 530)",
     "A l'Índia, les cerques poble per poble van començar l'octubre–desembre del 1973 i van trobar més de 30.000 casos en tres mesos (p. 530)",
     "El 1975, 12.000 persones dedicades a l'eradicació a Bangladesh (p. 534)",
-    "Somàlia va amagar els casos de verola durant mesos el 1976 (p. 536)",
     "El 1977 l'Assemblea va demanar destruir els estocs de virus; el maig del 1980 només en quedaven a 6 laboratoris (p. 536–538)",
     "El programa regional de l'Àfrica occidental i central, finançat pels Estats Units (p. 518)"]),
  "fen-sud": (FEN + ", cap. 15 i 16 (p. 722, 755, 818 i 844–845).",
@@ -97,8 +96,6 @@ S = {
    ["El juliol del 2014 es van trobar vials etiquetats «variola», aparentment dels anys cinquanta, en un magatzem d'un laboratori de la FDA al campus dels NIH a Bethesda"]),
  "noyce": ("Noyce, R. S., Lederman, S., &amp; Evans, D. H. (2018). «Construction of an infectious horsepox virus vaccine from chemically synthesized DNA fragments». <i>PLOS ONE</i>, 13(1), e0188453. DOI: <a href=\"https://doi.org/10.1371/journal.pone.0188453\">10.1371/journal.pone.0188453</a>",
    ["Primera síntesi completa d'un poxvirus (el de la verola equina) a partir d'ADN fabricat químicament"]),
- "whompox": ("Organització Mundial de la Salut. «Mpox» (nota descriptiva) i pàgines del Comitè d'Emergències del RSI (2022–2025). <a href=\"https://www.who.int/news-room/fact-sheets/detail/mpox\">who.int</a> · <a href=\"https://www.who.int/groups/monkeypox-ihr-emergency-committee\">who.int</a> · <a href=\"https://www.who.int/news/item/30-10-2025-fifth-meeting-of-the-international-health-regulations-(2005)-emergency-committee-regarding-the-upsurge-of-mpox-2024\">who.int</a>",
-   ["Després de l'eradicació i de la fi de la vacunació contra la verola, la mpox va anar sorgint a l'Àfrica; emergència sanitària internacional del 23-07-2022 a l'11-05-2023 i de l'agost del 2024 al 05-09-2025"]),
  "un2011": ("Nacions Unides (28-06-2011). «UN declares deadly cattle plague eradicated after global campaign». <a href=\"https://news.un.org/en/story/2011/06/379902\">news.un.org</a>",
    ["La pesta bovina, primera malaltia animal eradicada i segona malaltia de la història, després de la verola"]),
 }
