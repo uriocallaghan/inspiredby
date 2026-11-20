@@ -118,6 +118,18 @@ Rampes:
 
 El text (valors, etiquetes, llegendes) va en tinta, no amb el color de la sèrie. Excepcions: el nom del protagonista (p. ex. «2026» en vermell) i les etiquetes d'isolínies.
 
+### Mode fosc (decisió de l'editor, 20-11-2026)
+
+Tota la web té mode fosc i **cada gràfic nou l'ha de suportar**. No es dissenya dues vegades: `web/assets/ib-theme.js` tradueix els colors en el moment de pintar-los.
+
+- **Escriu els gràfics només en clar**, amb `IBV.C` i les rampes d'aquesta secció. Mai colors foscos propis, `prefers-color-scheme` ni `data-theme` als articles (`check.mjs` ho atura).
+- **Com tradueix:** els neutres s'inverteixen (paper → `#131312`, tinta → `#EAE8E3`, filets i terra → grisos foscos); el vermell, el blau, el groc i el verd conserven el to i gairebé la lluminositat; els tons clars (`redLight`, `blueLight`, `yellowLight`, l'inici de `seq` i `heat`) passen a tons foscos apagats, i els foscos (`redDark`, `blueDark`) a clars. Així una rampa continua anant «del fons cap al color intens».
+- **Què es tradueix:** fulls d'estil, atributs SVG (`fill`, `stroke`, `stop-color`…), estils en línia, i al canvas `fillStyle`, `strokeStyle`, `shadowColor`, degradats i `putImageData` (mapes de relleu). Les lectures (`getAttribute`, `getPropertyValue`, `getComputedStyle`, `ctx.fillStyle`) tornen el color clar original, de manera que les transicions de d3 i el codi que llegeix `--paper` funcionen igual.
+- **Canvas ocults:** un canvas que no és a la pàgina es queda en clar fins que es copia amb `drawImage` a un de visible; aleshores es tradueix. Per això **les màscares** (pintar terra o països amb colors codificats i llegir-los amb `getImageData`) **funcionen igual en fosc**: no les copiïs mai a la pàgina.
+- **Modes de fusió:** `multiply`, `darken` i `color-burn` es tornen `screen`, `lighten` i `color-dodge` (al canvas i a `mix-blend-mode`).
+- **Què no es tradueix:** fotos i imatges (`<img>`, `cover.jpg`, `drawImage` d'una imatge), que només s'apaguen una mica; colors dins de `url()`; i WebGL. Si un gràfic depèn d'una imatge amb fons blanc, fes-la amb fons transparent.
+- **El groc** continua sent per a superfícies, punts i línies gruixudes; en fosc queda una mica més daurat. Mai text en groc tampoc en fosc.
+
 ---
 
 ## 3. Tipografia
@@ -349,6 +361,7 @@ Les peces funcionen dins d'una secció `.scrolly` (el gràfic enganxat i els pas
 - [ ] Tooltip amb ratolí i amb un toc (`IBV.hover`); lliscants amb `aria-valuetext`.
 - [ ] `IBV.reduced`: sense animacions contínues, estat final directe.
 - [ ] Zero errors a la consola i cap scroll horitzontal.
+- [ ] **En mode fosc** (1440 i 390 px): el gràfic es llegeix igual de bé, cap text desapareix, cap fons clar, i les categories i rampes es continuen distingint. Escrit només amb colors clars (§2, «Mode fosc»).
 
 ## 7. Referències
 

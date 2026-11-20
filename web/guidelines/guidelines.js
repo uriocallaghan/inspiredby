@@ -166,8 +166,9 @@
     ["20-11-2026", "<b>Cites d'un sol clic</b>: el número porta directament a la font; l'entradeta i els peus de gràfic només enllacen a «Dades i fonts»."],
     ["20-11-2026", "<b>Les persones, amb la referència Voyager</b>: el cap de l'home de la placa Pioneer/Voyager, vestit i posat segons el context amb la mateixa línia (<code>IBVOY</code>, <code>assets/ib-voyager.js</code>). Les siluetes petites d'<code>IBGENT</code> queden per donar escala dins de maquetes i paisatges."],
     ["20-11-2026", "<b>Títols dels articles menys apretats</b>: el h1 en STIXGeneral passa d'un espaiat de −0,068 em a −0,04 em; tancat, però amb les lletres separades."],
+    ["20-11-2026", "<b>Mode fosc a tota la web</b>: segueix el tema del sistema o el botó de sol/lluna de la barra. Els articles s'escriuen només en clar; <code>assets/ib-theme.js</code> tradueix tots els colors, i cada article nou l'ha de carregar el primer al <code>&lt;head&gt;</code> (<code>check.mjs</code> ho exigeix)."],
     ["Sense data", "<b>Mirada antropològica i transcultural</b> en tot tema humà. <b>Res inventat</b>: cada xifra amb font primària verificada. <b>Es publica des de <code>main</code></b>, a Netlify, sense publicar a mà."]
-  ];
+];
   document.getElementById("tl").innerHTML = TL.map(t => `<li><span class="d">${t[0]}</span><span class="x">${t[1]}</span></li>`).join("");
 
   /* ---------- Per decidir ---------- */

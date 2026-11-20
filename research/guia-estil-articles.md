@@ -33,7 +33,7 @@ La revista: *articles visuals per entendre el món*. Cada article explica una q�
 
 - Tipografia dels articles: **Source Serif 4** (text) i **Source Sans 3** (etiquetes, gràfics), via Google Fonts (mateix `<link>` que El Niño). La portada de la revista fa servir Helvetica; **no la toquis**.
 - **Títol (h1) en STIXGeneral amb l'espaiat tancat però llegible:** `letter-spacing: -0.04em` (definit a `assets/article.css`). Abans era -0,068 em i les lletres quedaven massa juntes (decisió de l'editor, 20-11-2026). No el tornis a tancar a cada article.
-- Fons blanc, un sol tema clar, com una làmina impresa. Columna de lectura de 640 px (`.col`).
+- Fons blanc, com una làmina impresa. Columna de lectura de 640 px (`.col`). **L'article s'escriu només en clar**: el mode fosc el fa sol `assets/ib-theme.js`, que tradueix tots els colors en pintar-los (vegeu `AGENTS.md`, «Mode fosc», i `research/sistema-infografic.md`, §2). No hi afegeixis `prefers-color-scheme`, `data-theme` ni colors foscos propis (decisió de l'editor, 20-11-2026).
 - Paleta (de `assets/article.css`): `--ink #121212`, `--ink-2 #4A4A4A`, `--muted #7A7A7A`, `--hair #DADADA`, `--land #ECEBE8`, `--warm #C8442A` (calent / destacat), `--cold #2C5DA8` (fred / aigua), i a El Niño també `--dry #9A6326`, `--wet #16786C`, `--bio #4C8A2E`. Rampes divergents blau–gris–vermell com la d'El Niño. Pocs colors, amb significat constant dins l'article.
 - Base comuna: `assets/ib-viz.js` (helpers dels gràfics, `IBV`), `assets/ib.css` (barra i peu de la revista), `assets/article.css` (tipografia, `.scrolly`, `.step`, `.fig`, `.cap`, `.tip`, `.rng`, `.playb`, `.ctl`, `.legend`, `.gh`, `.ann`, `dl.gl`, `.fn`), `assets/scrolly.js` (`IB.scrolly(stepsEl, graphicEl, onStep)`, `IB.reduced`, `IB.fmt`). **No modifiquis aquests fitxers compartits**: si necessites estils propis, posa'ls en un `<style>` a la pàgina.
 - Llibreries: **d3 7.9.0** de `https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js`; si cal un mapa, `topojson-client@3.1.0` de jsdelivr i un mapa del món (p. ex. `world-atlas@2.0.2` de jsdelivr). Res més sense una raó molt bona. Canvas per a animacions amb moltes partícules; SVG per a gràfics de dades.
@@ -56,7 +56,7 @@ La revista: *articles visuals per entendre el món*. Cada article explica una q�
 
 ## 4. Fitxers i estructura
 
-- Article: `web/articles/<slug>/index.html` i `web/articles/<slug>/<slug>.js` (pots tenir-ne més d'un). Copia l'esquelet de capçalera, barra (`ib-bar` amb el logo), barra de progrés, peu i scripts de `web/articles/calendari-cosmic/index.html` (rutes relatives `../../assets/…`).
+- Article: `web/articles/<slug>/index.html` i `web/articles/<slug>/<slug>.js` (pots tenir-ne més d'un). Copia l'esquelet de capçalera, barra (`ib-bar` amb el logo), barra de progrés, peu i scripts de `web/articles/calendari-cosmic/index.html` (rutes relatives `../../assets/…`). La primera línia després de `<meta charset="utf-8">` ha de ser `<script src="../../assets/ib-theme.js"></script>` (mode fosc, sense `defer`); `check.mjs` ho exigeix.
 - Portada per a la revista: crea `web/articles/<slug>/cover.html` (SVG de 1680×720 fet amb codi, sense text, amb la paleta de l'article) i genera'n `cover.jpg`:
   `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu --hide-scrollbars --window-size=1680,720 --screenshot=cover.png file://…/cover.html` i converteix-lo amb `sips -s format jpeg cover.png --out cover.jpg`.
 - Miniatura 4:5 de portada: afegeix `web/articles/<slug>/thumb.webp` (800×1000; temporalment es pot copiar una miniatura existent si encara no se n'ha generat una de nova), registra l'article a `web/articles.json` i regenera `web/index.html` executant `node scripts/sync-home.mjs`.
@@ -68,6 +68,7 @@ La revista: *articles visuals per entendre el món*. Cada article explica una q�
 - Serveix la carpeta `web/` amb el teu propi port (`python3 -m http.server <port> --directory "<ruta>/web"`) i atura'l en acabar.
 - Pots fer servir el navegador integrat (eines `mcp__Claude_Browser__*`) **només en una pestanya pròpia** (`tabs_create` i passa sempre el teu `tabId`); no toquis les altres pestanyes. Si no està disponible, fes servir Chrome headless (`--screenshot`, `--dump-dom`, `--enable-logging=stderr`).
 - Recorre tots els passos del scroll i totes les interaccions; zero errors a la consola; zero desbordaments horitzontals.
+- **Repeteix-ho en mode fosc** (Playwright amb `colorScheme: 'dark'`, o el botó de sol/lluna de la barra) a 1440×900 i a 390×844: cap text fosc sobre fons fosc, cap fons o panell clar que enlluerni, tooltips llegibles, i les categories i rampes de cada gràfic encara es distingeixen.
 
 ## 6. Informe final
 

@@ -213,20 +213,38 @@
   window.IBTheme.map = mapColor;
   window.IBTheme.mapValue = mapValue;
 
-  /* ---------- canvas 2D ---------- */
+  /* ---------- canvas 2D ----------
+     Només es tradueix el que es veu: els canvas que són a la pàgina i els «sprites» (canvas fora de la pàgina que
+     es copien amb drawImage a un de visible). Els canvas ocults que es llegeixen amb getImageData (màscares de
+     terra, màscares d'identitat per al hover) es queden en clar, perquè la seva lectura continuï sent correcta. */
+  var sprite = new WeakSet(), dirtyOff = new WeakSet(), ver = new WeakMap(), ctxOf = new WeakMap();
+  function live(ctx){ var c = ctx && ctx.canvas; return !!c && (c.isConnected || sprite.has(c)); }
+  function touch(ctx){ var c = ctx.canvas; if (c && !c.isConnected && !sprite.has(c)) { dirtyOff.add(c); ver.set(c, (ver.get(c) || 0) + 1); } }
   function hookStyle(desc, name){
     Object.defineProperty(CTX, name, {
       configurable: true, enumerable: true,
-      get: function(){ var v = desc.get.call(this); return typeof v === "string" ? unmapValue(v) : v; },
-      set: function(v){ desc.set.call(this, typeof v === "string" ? mapColor(v) : v); }
+      get: function(){ var v = desc.get.call(this); return typeof v === "string" && live(this) ? unmapValue(v) : v; },
+      set: function(v){ desc.set.call(this, typeof v === "string" && live(this) ? mapColor(v) : v); }
     });
   }
   hookStyle(fsDesc, "fillStyle"); hookStyle(ssDesc, "strokeStyle"); hookStyle(shDesc, "shadowColor");
+  // degradats: es tradueixen si el canvas que els crea es veu
+  var gradLive = new WeakMap();
+  ["createLinearGradient", "createRadialGradient", "createConicGradient"].forEach(function(m){
+    var f = CTX[m]; if (!f) return;
+    CTX[m] = function(){ var g = f.apply(this, arguments); gradLive.set(g, this); return g; };
+  });
   var addStop = CanvasGradient.prototype.addColorStop;
-  CanvasGradient.prototype.addColorStop = function(o, c){ return addStop.call(this, o, typeof c === "string" ? mapColor(c) : c); };
-  // el negre per defecte del canvas també ha de ser tinta clara
-  function defaults(ctx){ try { fsDesc.set.call(ctx, mapColor("#000000")); ssDesc.set.call(ctx, mapColor("#000000")); } catch (e) {} }
-  var ctxOf = new WeakMap();
+  CanvasGradient.prototype.addColorStop = function(o, c){ return addStop.call(this, o, typeof c === "string" && live(gradLive.get(this)) ? mapColor(c) : c); };
+  // modes de fusió: el que enfosqueix sobre paper blanc ha d'aclarir sobre paper negre
+  var BLEND = { multiply: "screen", screen: "multiply", darken: "lighten", lighten: "darken", "color-burn": "color-dodge", "color-dodge": "color-burn" };
+  var BLEND_BACK = {}; for (var bk in BLEND) BLEND_BACK[BLEND[bk]] = bk;
+  var gcoDesc = Object.getOwnPropertyDescriptor(CTX, "globalCompositeOperation");
+  Object.defineProperty(CTX, "globalCompositeOperation", { configurable: true, enumerable: true,
+    get: function(){ var v = gcoDesc.get.call(this); return live(this) && BLEND_BACK[v] ? BLEND_BACK[v] : v; },
+    set: function(v){ gcoDesc.set.call(this, live(this) && BLEND[v] ? BLEND[v] : v); } });
+  // el negre per defecte del canvas també ha de ser tinta clara (només als canvas visibles)
+  function defaults(ctx){ try { var k = live(ctx) ? mapColor("#000000") : "#000000"; fsDesc.set.call(ctx, k); ssDesc.set.call(ctx, k); } catch (e) {} }
   var getCtx = HTMLCanvasElement.prototype.getContext;
   HTMLCanvasElement.prototype.getContext = function(type){
     var c = getCtx.apply(this, arguments);
@@ -236,24 +254,50 @@
   ["width", "height"].forEach(function(p){
     var d = Object.getOwnPropertyDescriptor(HTMLCanvasElement.prototype, p);
     Object.defineProperty(HTMLCanvasElement.prototype, p, { configurable: true, enumerable: true,
-      get: d.get, set: function(v){ d.set.call(this, v); var c = ctxOf.get(this); if (c) defaults(c); } });
+      get: d.get, set: function(v){ d.set.call(this, v); var c = ctxOf.get(this); if (c) { defaults(c); dirtyOff.delete(this); } } });
   });
   if (CTX.reset) { var rst = CTX.reset; CTX.reset = function(){ rst.call(this); defaults(this); }; }
-  // píxels escrits a mà (mapes de relleu): es tradueixen en una còpia
-  var put = CTX.putImageData, pixCache = new Map();
-  CTX.putImageData = function(img){
-    var src = img.data, n = src.length, out = new Uint8ClampedArray(n);
-    for (var i = 0; i < n; i += 4) {
+  // marcar els canvas ocults que s'hi dibuixa (per traduir-los si després es fan visibles)
+  ["fill", "stroke", "fillRect", "strokeRect", "fillText", "strokeText"].forEach(function(m){
+    var f = CTX[m]; CTX[m] = function(){ if (!live(this)) touch(this); return f.apply(this, arguments); };
+  });
+  // traducció de píxels, amb memòria per color
+  var pixCache = new Map();
+  function mapPixels(src, out){
+    for (var i = 0, n = src.length; i < n; i += 4) {
       var a = src[i+3];
-      if (a === 0) { continue; }
+      out[i+3] = a;
+      if (a === 0) continue;
       var k = (src[i] << 16) | (src[i+1] << 8) | src[i+2], m = pixCache.get(k);
       if (m === undefined) { m = mapRGB(src[i], src[i+1], src[i+2]); m = (m[0] << 16) | (m[1] << 8) | m[2]; pixCache.set(k, m); }
-      out[i] = m >> 16; out[i+1] = (m >> 8) & 255; out[i+2] = m & 255; out[i+3] = a;
+      out[i] = m >> 16; out[i+1] = (m >> 8) & 255; out[i+2] = m & 255;
     }
+    return out;
+  }
+  var put = CTX.putImageData, getID = CTX.getImageData, drawImg = CTX.drawImage;
+  CTX.putImageData = function(img){
+    if (!live(this)) { touch(this); return put.apply(this, arguments); }
     var args = Array.prototype.slice.call(arguments);
-    args[0] = new ImageData(out, img.width, img.height);
+    args[0] = new ImageData(mapPixels(img.data, new Uint8ClampedArray(img.data.length)), img.width, img.height);
     return put.apply(this, args);
   };
+  function convertInPlace(cv){ // un canvas dibuixat en clar que ara es veu: es tradueix un cop
+    var c = ctxOf.get(cv); if (!c || !cv.width || !cv.height) return;
+    try { var im = getID.call(c, 0, 0, cv.width, cv.height); mapPixels(im.data, im.data); put.call(c, im, 0, 0); } catch (e) {}
+    dirtyOff.delete(cv);
+  }
+  // un canvas ocult que es copia a un de visible passa a ser «sprite»: el que ja té es tradueix un cop
+  // i, d'aquí endavant, el que s'hi dibuixi es tradueix en pintar-lo
+  CTX.drawImage = function(src){
+    if (src instanceof HTMLCanvasElement && !src.isConnected && !sprite.has(src) && live(this)) {
+      sprite.add(src);
+      if (dirtyOff.has(src)) convertInPlace(src);
+      var sc = ctxOf.get(src); if (sc) defaults(sc);
+    }
+    if (!live(this)) touch(this);
+    return drawImg.apply(this, arguments);
+  };
+  window.IBTheme._canvasAttached = function(cv){ if (dirtyOff.has(cv) && !sprite.has(cv)) convertInPlace(cv); var c = ctxOf.get(cv); if (c) defaults(c); };
 
   /* ---------- atributs SVG i estils en línia ---------- */
   var ATTR = { fill: 1, stroke: 1, "stop-color": 1, "flood-color": 1, "lighting-color": 1, color: 1, style: 1, bgcolor: 1 };
@@ -299,7 +343,10 @@
   /* ---------- CSSStyleDeclaration (d3 .style(), el.style.x, getComputedStyle) ---------- */
   var CSD = CSSStyleDeclaration.prototype;
   var setP = CSD.setProperty, getP = CSD.getPropertyValue;
-  CSD.setProperty = function(p, v, prio){ return setP.call(this, p, typeof v === "string" ? mapValue(v) : v, prio); };
+  CSD.setProperty = function(p, v, prio){
+    if (p === "mix-blend-mode" && typeof v === "string" && BLEND[v.trim()]) v = BLEND[v.trim()];
+    return setP.call(this, p, typeof v === "string" ? mapValue(v) : v, prio);
+  };
   CSD.getPropertyValue = function(p){ return unmapValue(getP.call(this, p)); };
   ["color","fill","stroke","background","backgroundColor","background-color","borderColor","border-color","borderTopColor","borderBottomColor",
    "borderLeftColor","borderRightColor","outlineColor","stopColor","stop-color","boxShadow","textShadow","caretColor","textDecorationColor",
@@ -321,6 +368,7 @@
       var st = r.style; if (!st) continue;
       for (var j = 0; j < st.length; j++) {
         var p = st[j], v = getP.call(st, p);
+        if (p === "mix-blend-mode" && BLEND[v.trim()]) { setP.call(st, p, BLEND[v.trim()], st.getPropertyPriority(p)); continue; }
         if (!v || !HAS.test(v)) continue;
         var m = mapValue(v);
         if (m !== v) setP.call(st, p, m, st.getPropertyPriority(p));
@@ -355,6 +403,8 @@
           if (n.nodeType !== 1) continue;
           if (n.tagName === "STYLE" || n.tagName === "LINK") { if (n.sheet) fixSheet(n.sheet); n.addEventListener("load", function(){ fixSheet(this.sheet); }); continue; }
           fixTree(n);
+          if (n.tagName === "CANVAS") window.IBTheme._canvasAttached(n);
+          else if (n.querySelectorAll) { var cvs = n.querySelectorAll("canvas"); for (var q = 0; q < cvs.length; q++) window.IBTheme._canvasAttached(cvs[q]); }
           if (n.querySelector && n.querySelector("style")) fixSheets();
           swapLogos(n);
         }

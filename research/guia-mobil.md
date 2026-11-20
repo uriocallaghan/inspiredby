@@ -182,3 +182,4 @@ Comprova cada article a **1440×900**, **390×844** (mòbil estàndard) i **390�
 - [ ] **Controls tàctils ≥ 44 px** (botons, segments, sliders amb amplada útil ≥ 160 px).
 - [ ] **Scroll vertical sempre fluid** en tocar qualsevol gràfic; cap tooltip/focus encallat en tocar fora.
 - [ ] **Zero errors a la consola.**
+- [ ] **Mode fosc a 390 px:** el gràfic enganxat (`.graphic`) i els passos tenen fons fosc, cap text fosc sobre fosc i cap panell clar (el mode fosc el fa `assets/ib-theme.js`; no l'implementis a l'article).

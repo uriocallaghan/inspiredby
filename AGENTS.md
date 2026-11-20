@@ -46,6 +46,8 @@ El sistema infogràfic existeix perquè es faci servir. Per a cada article nou:
 - `web/assets/ib-theme.js` ha d'anar **el primer de tot al `<head>`** de cada pàgina (just després de `<meta charset>`, sense `defer`). Segueix el tema del sistema o el que tria el lector amb el botó de la barra (sol/lluna), desat a `localStorage`.
 - En fosc, tradueix sol tots els colors en el moment de pintar-los: fulls d'estil, atributs SVG, estils en línia, canvas (`fillStyle`, `strokeStyle`, degradats i `putImageData`). **Els articles es continuen escrivint amb els colors clars de sempre**; no hi posis colors foscos ni `prefers-color-scheme` a mà. Les lectures (`getAttribute`, `getPropertyValue`, `getComputedStyle`) tornen el color clar original.
 - Comprova cada article nou també en fosc (Playwright amb `colorScheme:'dark'`): text llegible, gràfics amb contrast i cap fons clar que enlluerni.
+- Els canvas ocults que es llegeixen amb `getImageData` (màscares de terra o d'identitat per al hover) es queden en clar; un canvas ocult que es copia amb `drawImage` a un de visible es tradueix. Els modes de fusió `multiply`/`darken` passen a `screen`/`lighten`. Detalls i límits: `research/sistema-infografic.md`, §2 «Mode fosc».
+- `node scripts/check.mjs` falla si una pàgina no carrega `ib-theme.js` el primer al `<head>` o si un article fa el seu propi mode fosc (decisió de l'editor, 20-11-2026: tota la web té mode fosc i cada article nou l'ha de tenir).
 
 ## Regles que l'editor no negocia
 
@@ -61,5 +63,5 @@ El sistema infogràfic existeix perquè es faci servir. Per a cada article nou:
 ## Abans de fer push a `main`
 
 - `node scripts/sync-home.mjs` i `node scripts/check.mjs` (ha de passar amb 0 errors i 0 articles orfes; llegeix-ne també els avisos).
-- Serveix `web/` en local (`python3 -m http.server 8000 --directory web`) i comprova 1440×900 i 390×844: zero errors a la consola, cap scroll horitzontal, cap etiqueta tallada.
+- Serveix `web/` en local (`python3 -m http.server 8000 --directory web`) i comprova 1440×900 i 390×844, **en clar i en fosc**: zero errors a la consola, cap scroll horitzontal, cap etiqueta tallada, i en fosc cap text il·legible ni fons clar.
 - Al missatge de commit i a la resposta a l'editor: què canvia, quines dades són reals (amb fonts) i què no has pogut verificar.

@@ -182,6 +182,29 @@ for (const slug of jsonSlugs) {
   if (off.length) warnings.push(`${slug}: colors fora del sistema (${off.join(" ")}).`);
 }
 
+// ---------- Mode fosc: assets/ib-theme.js el primer al <head> de cada pàgina ----------
+const THEME_PAGES = [
+  "index.html", "404.html", "sistema/index.html", "guidelines/index.html",
+  ...fs.readdirSync(ARTICLES_DIR, { withFileTypes: true }).filter(d => d.isDirectory()).map(d => `articles/${d.name}/index.html`)
+];
+for (const rel of THEME_PAGES) {
+  const file = path.join(WEB_DIR, rel);
+  if (!fs.existsSync(file)) continue;
+  const html = fs.readFileSync(file, "utf8");
+  const head = (html.match(/<head[^>]*>([\s\S]*?)<\/head>/i) || [, ""])[1];
+  const first = (head.match(/<script\b[^>]*>|<link\b[^>]*rel=["']?stylesheet[^>]*>|<style\b/i) || [""])[0];
+  if (!/<script\b[^>]*src=["'][^"']*assets\/ib-theme\.js["'][^>]*>/i.test(first) || /\b(defer|async)\b/i.test(first)) {
+    errors.push(`web/${rel}: falta el mode fosc. La primera etiqueta <script> o d'estil del <head> ha de ser <script src="…/assets/ib-theme.js"></script>, sense defer (vegeu AGENTS.md, «Mode fosc»).`);
+  }
+  if (rel.startsWith("articles/")) {
+    const dir = path.dirname(file);
+    const code = html + fs.readdirSync(dir).filter(f => /\.(js|css)$/.test(f)).map(f => fs.readFileSync(path.join(dir, f), "utf8")).join("\n");
+    if (/prefers-color-scheme|data-theme|ib-theme/.test(code.replace(/<script[^>]*ib-theme\.js[^>]*><\/script>/g, ""))) {
+      errors.push(`web/${rel}: l'article fa el seu propi mode fosc (prefers-color-scheme, data-theme o ib-theme). No cal: assets/ib-theme.js ja tradueix tots els colors; escriu l'article només en clar.`);
+    }
+  }
+}
+
 if (warnings.length) {
   console.warn("\nAVISOS DEL SISTEMA INFOGRÀFIC (no bloquegen; articles anteriors al 19-11-2026 o colors):");
   for (const w of warnings) console.warn(" - " + w);
@@ -194,3 +217,4 @@ console.log(`OK · Sistema verificat:`);
 console.log(`  - Portada sincronitzada: web/index.html <-> web/articles.json (${articles.length} articles, 0 orfes)`);
 console.log(`  - Actius per article verificats: ${articles.length}/${articles.length} amb index.html, thumb.webp vàlid i cover.jpg`);
 console.log(`  - Sintaxi JS correcta: ${jsFiles.length} fitxers comprovats`);
+console.log(`  - Mode fosc: ib-theme.js el primer al <head> de ${THEME_PAGES.length} pàgines`);
