@@ -110,15 +110,23 @@
 
 <figure class="fig wide" id="f-claus">
   <div class="vh">
-    <div><strong>Quantes claus cal provar?</strong><span>Combinacions possibles, de 1 a 10<sup>80</sup>. Passa per cada punt per veure quant es trigaria a provar-les totes</span></div>
+    <div><strong>Quantes claus cal provar?</strong><span>Combinacions possibles, de 1 a 10<sup>80</sup>. L'escala logarítmica ho fa caber tot; l'escala real mostra la mida de debò</span></div>
     <div class="lgs" id="claus-lg"></div>
   </div>
+  <div class="seg" id="claus-seg" role="group" aria-label="Tipus d'escala">
+    <button type="button" aria-pressed="true" data-k="log">Escala logarítmica</button>
+    <button type="button" aria-pressed="false" data-k="real">Escala real</button>
+  </div>
   <div class="plot" id="claus-viz"></div>
+  <div class="ctlrow" id="claus-ctl" hidden>
+    <button type="button" class="playb" id="claus-play">Allunya't</button>
+    <div class="rng-wrap"><label for="claus-k">Amplada del regle</label><input class="rng" type="range" id="claus-k" min="4" max="80" step="0.01" value="4"></div>
+  </div>
   <figcaption class="src" id="gc-4"><b>Càlcul exacte</b> de combinacions; el temps suposa un trilió (10<sup>18</sup>) de proves per segon. <a class="gs" href="#g-4">Fonts i dades del gràfic&nbsp;→</a></figcaption>
 </figure>
 
 <section class="col">
-  <p>Si un ordinador pogués provar un trilió de claus per segon —molt més del que fa cap màquina real—, recórrer totes les de 128 bits li costaria uns deu bilions d'anys, unes 780 vegades l'edat de l'univers.[[planck.1]] Per a 256 bits, el número ja no té cap sentit humà. Per això els criptògrafs diuen que els bons xifrats no es trenquen: <b>se'ls esquiva</b>. S'ataca el mòbil, la persona, la còpia de seguretat, el programari mal escrit. Mai la matemàtica de cara.</p>
+  <p>Si un ordinador pogués provar un trilió de claus per segon —molt més del que fa cap màquina real—, recórrer totes les de 128 bits li costaria uns deu bilions d'anys, unes 780 vegades l'edat de l'univers.[[planck.1]] Per a 256 bits, el número ja no té cap sentit humà. Prova l'<b>escala real</b> del gràfic: si el regle és prou llarg per a una clau de 256 bits, totes les altres, també la de 128 bits, queden esclafades en el primer píxel. Per això els criptògrafs diuen que els bons xifrats no es trenquen: <b>se'ls esquiva</b>. S'ataca el mòbil, la persona, la còpia de seguretat, el programari mal escrit. Mai la matemàtica de cara.</p>
 </section>
 
 <!-- ==================== 4. UNA CLAU PER A CADA MISSATGE ==================== -->

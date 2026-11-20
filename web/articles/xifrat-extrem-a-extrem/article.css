@@ -97,3 +97,4 @@ ol.fts li.on,ul.gfs li.on{border-left-color:var(--warm)}
 @media (max-width:640px){
   .ctlrow .rng-wrap{flex-basis:100%}
 }
+.ctlrow[hidden]{display:none}

@@ -133,92 +133,142 @@ function stickyH(w,desk){ return w<600?Math.round(Math.max(200,Math.min(window.i
 
 /* =====================================================================
    V2 · LINK-01 · LA PINTURA QUE NO ES POT DESBARREJAR  (esquema de Diffie-Hellman)
-   Cada pot és un grup de cercles translúcids que es barregen per multiplicació.
+   Cada color és una taca d'aquarel·la (capes translúcides irregulars en «multiply», amb la vora
+   lleugerament esqueixada). Les barreges no són dibuixos nous: són les mateixes taques que viatgen
+   fins a trobar-se. A cada pas del scroll, les taques volen en arc d'un lloc a l'altre.
    ===================================================================== */
 (function colors(){
   const el=$("#colors-viz"); if(!el)return;
   const Y=C.yellow, Rd=C.red, B=C.blue;
-  const STEPS={
-    public:[
-      {id:"pA",c:0,r:0,k:[Y],t:"Color públic"},{id:"pE",c:1,r:0,k:[Y],t:"Color públic"},{id:"pB",c:2,r:0,k:[Y],t:"Color públic"}],
-    secret:[
-      {id:"pA",c:0,r:0,k:[Y],t:"Color públic"},{id:"pE",c:1,r:0,k:[Y],t:"Color públic"},{id:"pB",c:2,r:0,k:[Y],t:"Color públic"},
-      {id:"sA",c:0,r:1,k:[Rd],t:"Secret de l'Anna",sec:1},{id:"sB",c:2,r:1,k:[B],t:"Secret del Bernat",sec:1}],
-    send:[
-      {id:"pA",c:0,r:0,k:[Y],t:"Color públic"},{id:"pE",c:1,r:0,k:[Y],t:"Color públic"},{id:"pB",c:2,r:0,k:[Y],t:"Color públic"},
-      {id:"sA",c:0,r:1,k:[Rd],t:"Secret de l'Anna",sec:1},{id:"sB",c:2,r:1,k:[B],t:"Secret del Bernat",sec:1},
-      {id:"mA",c:0,r:2,k:[Y,Rd],t:"Barreja de l'Anna"},{id:"mB",c:2,r:2,k:[Y,B],t:"Barreja del Bernat"},
-      {id:"eA",c:1,r:1,k:[Y,Rd],t:"Còpia de l'Eva"},{id:"eB",c:1,r:2,k:[Y,B],t:"Còpia de l'Eva"}],
-    final:[
-      {id:"pA",c:0,r:0,k:[Y],t:"Color públic"},{id:"pE",c:1,r:0,k:[Y],t:"Color públic"},{id:"pB",c:2,r:0,k:[Y],t:"Color públic"},
-      {id:"sA",c:0,r:1,k:[Rd],t:"Secret de l'Anna",sec:1},{id:"sB",c:2,r:1,k:[B],t:"Secret del Bernat",sec:1},
-      {id:"mA",c:0,r:2,k:[Y,B],t:"Rep la del Bernat"},{id:"mB",c:2,r:2,k:[Y,Rd],t:"Rep la de l'Anna"},
-      {id:"eA",c:1,r:1,k:[Y,Rd],t:"Còpia de l'Eva"},{id:"eB",c:1,r:2,k:[Y,B],t:"Còpia de l'Eva"},
-      {id:"fA",c:0,r:3,k:[Y,B,Rd],t:"Clau comuna",hl:1},{id:"fB",c:2,r:3,k:[Y,Rd,B],t:"Clau comuna",hl:1}],
-    eva:[
-      {id:"pA",c:0,r:0,k:[Y],t:"Color públic"},{id:"pE",c:1,r:0,k:[Y],t:"Color públic"},{id:"pB",c:2,r:0,k:[Y],t:"Color públic"},
-      {id:"sA",c:0,r:1,k:[Rd],t:"Secret de l'Anna",sec:1},{id:"sB",c:2,r:1,k:[B],t:"Secret del Bernat",sec:1},
-      {id:"mA",c:0,r:2,k:[Y,B],t:"Rep la del Bernat"},{id:"mB",c:2,r:2,k:[Y,Rd],t:"Rep la de l'Anna"},
-      {id:"eA",c:1,r:1,k:[Y,Rd],t:"Còpia de l'Eva"},{id:"eB",c:1,r:2,k:[Y,B],t:"Còpia de l'Eva"},
-      {id:"fA",c:0,r:3,k:[Y,B,Rd],t:"Clau comuna",hl:1},{id:"fB",c:2,r:3,k:[Y,Rd,B],t:"Clau comuna",hl:1},
-      {id:"fE",c:1,r:3,k:[Y,Rd,Y,B],t:"L'Eva: massa groc",bad:1}]
+  const NAME={[Y]:"groc",[Rd]:"vermell",[B]:"blau"};
+  // llocs: columna (0 Anna, 1 canal públic, 2 Bernat) i fila
+  const SLOT={
+    pubA:[0,0], pubE:[1,0], pubB:[2,0],
+    secA:[0,1], secB:[2,1],
+    eA:[1,1], eB:[1,2],
+    inA:[0,2], inB:[2,2],
+    keyA:[0,2], keyB:[2,2], keyE:[1,3]
   };
-  const NAMES={0:"Anna",1:"Eva escolta",2:"Bernat"};
+  // cada capa de pintura: id, color, on és a cada pas i d'on surt quan apareix
+  const L=[
+    {id:"yA",c:Y,at:{public:"pubA"}},
+    {id:"yE",c:Y,at:{public:"pubE"}},
+    {id:"yB",c:Y,at:{public:"pubB"}},
+    {id:"rA",c:Rd,at:{secret:"secA"},from:"secA",drop:1},
+    {id:"bB",c:B,at:{secret:"secB"},from:"secB",drop:1},
+    // l'Anna barreja groc + vermell i l'envia al Bernat; l'Eva en copia una mostra pel camí
+    {id:"mAy",c:Y,at:{send:"inB",final:"keyB"},from:"pubA"},
+    {id:"mAr",c:Rd,at:{send:"inB",final:"keyB"},from:"secA"},
+    {id:"eAy",c:Y,at:{send:"eA",eva:"keyE"},from:"pubA"},
+    {id:"eAr",c:Rd,at:{send:"eA",eva:"keyE"},from:"secA"},
+    // el Bernat barreja groc + blau i l'envia a l'Anna
+    {id:"mBy",c:Y,at:{send:"inA",final:"keyA"},from:"pubB"},
+    {id:"mBb",c:B,at:{send:"inA",final:"keyA"},from:"secB"},
+    {id:"eBy",c:Y,at:{send:"eB",eva:"keyE"},from:"pubB"},
+    {id:"eBb",c:B,at:{send:"eB",eva:"keyE"},from:"secB"},
+    // cadascun hi afegeix el seu secret
+    {id:"fA",c:Rd,at:{final:"keyA"},from:"secA"},
+    {id:"fB",c:B,at:{final:"keyB"},from:"secB"}
+  ];
+  const ORDER=["public","secret","send","final","eva"];
+  // la posició d'una capa en un pas: la de l'últim pas anterior on està definida (si ja ha aparegut)
+  function slotOf(l,step){
+    const k=ORDER.indexOf(step); let s=null, born=-1;
+    for(let i=0;i<=k;i++){ if(l.at[ORDER[i]]){ s=l.at[ORDER[i]]; if(born<0)born=i; } }
+    return s;
+  }
+  const LABELS={
+    public:{pubA:"color públic",pubE:"color públic",pubB:"color públic"},
+    secret:{pubA:"color públic",pubE:"color públic",pubB:"color públic",secA:"secret",secB:"secret"},
+    send:{pubA:"",pubE:"",pubB:"",secA:"secret",secB:"secret",inA:"rep groc + blau",inB:"rep groc + vermell",eA:"còpia",eB:"còpia"},
+    final:{secA:"secret",secB:"secret",eA:"còpia",eB:"còpia",keyA:"clau comuna",keyB:"clau comuna"},
+    eva:{secA:"secret",secB:"secret",keyA:"clau comuna",keyB:"clau comuna",keyE:"la barreja de l'Eva"}
+  };
   let step="public", api=null;
+  // forma irregular i repetible per a cada capa (aquarel·la)
+  function blobPath(seed,r){
+    const rnd=V.rng(seed), n=9, pts=[];
+    for(let i=0;i<n;i++){ const a=i/n*2*Math.PI, rr=r*(.9+rnd()*.34); pts.push([Math.cos(a)*rr,Math.sin(a)*rr]); }
+    return d3.line().curve(d3.curveBasisClosed)(pts);
+  }
+  const hash=s=>{ let h=7; for(const ch of s)h=(h*31+ch.charCodeAt(0))>>>0; return h; };
   V.mount(el,(box,w)=>{
-    const mob=w<600, h=stickyH(w,430);
-    const s=V.svg(box,w,h,"Esquema de l'intercanvi de claus de Diffie i Hellman amb pintures: l'Anna i el Bernat comparteixen un color públic, hi barregen cadascun un color secret, s'intercanvien les barreges i, afegint-hi el seu secret, obtenen el mateix color. L'Eva, que ho veu tot, no el pot reproduir.");
+    const mob=w<600, h=stickyH(w,440);
+    const s=V.svg(box,w,h,"Esquema de l'intercanvi de claus de Diffie i Hellman amb aquarel·les: l'Anna i el Bernat comparteixen un groc públic, hi barregen cadascun un color secret, s'envien les barreges i, afegint-hi el seu secret, obtenen exactament el mateix color. L'Eva copia les dues barreges, però la seva mescla té massa groc.");
+    const fid="wc"+Math.random().toString(36).slice(2,7);
+    const f=s.append("defs").append("filter").attr("id",fid).attr("x","-30%").attr("y","-30%").attr("width","160%").attr("height","160%");
+    f.append("feTurbulence").attr("type","fractalNoise").attr("baseFrequency",mob?.09:.055).attr("numOctaves",2).attr("seed",4).attr("result","n");
+    f.append("feDisplacementMap").attr("in","SourceGraphic").attr("in2","n").attr("scale",mob?4:7).attr("xChannelSelector","R").attr("yChannelSelector","G");
     const g=s.append("g");
-    const top=mob?20:34, rowH=(h-top-(mob?6:14))/4;
-    const cx=c=>w*(c===0?.18:c===1?.5:.82);
-    const cy=r=>top+rowH*(r+.42);
-    const pr=Math.min(mob?12:24,rowH*.3);
-    // zona del canal públic
-    g.append("rect").attr("x",cx(1)-w*.13).attr("y",top-4).attr("width",w*.26).attr("height",h-top-2).attr("fill","none")
-      .attr("stroke",C.ghost).attr("stroke-dasharray","3 3");
-    [0,1,2].forEach(c=>V.t(g,cx(c),top-(mob?6:14),NAMES[c],{size:mob?12:13,weight:700,anchor:"middle",fill:c===1?C.ink2:C.ink}));
-    const gArr=g.append("g"), gPots=g.append("g"), gLab=g.append("g");
+    const top=mob?20:34, rowH=(h-top-(mob?4:10))/4;
+    const cx=c=>w*(c===0?.17:c===1?.5:.83);
+    const cy=r=>top+rowH*(r+.4);
+    const R=Math.min(mob?13:27,rowH*.3);
+    const P=k=>{ const [c,r]=SLOT[k]; return [cx(c),cy(r)]; };
+    // el canal públic: dues línies fines i el nom en cursiva
+    [cx(1)-w*.12,cx(1)+w*.12].forEach(x=>g.append("line").attr("x1",x).attr("x2",x).attr("y1",top-2).attr("y2",h-4).attr("stroke",C.hair).attr("stroke-dasharray","2 4"));
+    V.t(g,cx(0),top-(mob?6:14),"Anna",{size:mob?12:13.5,weight:700,anchor:"middle"});
+    V.t(g,cx(2),top-(mob?6:14),"Bernat",{size:mob?12:13.5,weight:700,anchor:"middle"});
+    V.t(g,cx(1),top-(mob?6:14),mob?"canal públic":"canal públic · l'Eva escolta",{size:mob?11.5:12.5,italic:true,anchor:"middle",fill:C.ink2});
+    const gAnn=g.append("g"), gPaint=g.append("g").attr("filter",`url(#${fid})`), gLab=g.append("g");
+    // capes de pintura
+    const layers=gPaint.selectAll("g.ly").data(L,d=>d.id).join("g").attr("class","ly").style("mix-blend-mode","multiply").attr("opacity",0);
+    layers.each(function(d){
+      const q=d3.select(this), sd=hash(d.id);
+      d.jx=(V.rng(sd)()-.5)*R*.28; d.jy=(V.rng(sd+1)()-.5)*R*.28;
+      [0,1,2].forEach(i=>q.append("path").attr("d",blobPath(sd+i*13,R*(1-i*.13))).attr("fill",d.c)
+        .attr("fill-opacity",d.c===Y?.27:.19).attr("stroke",d.c).attr("stroke-opacity",i===0?.35:0).attr("stroke-width",.8));
+    });
     const tp=V.tip(box);
-    function potCircles(k){ const n=k.length, d=n===1?0:pr*.5; return k.map((c,i)=>({c,dx:n===1?0:d*Math.cos(-Math.PI/2+i*2*Math.PI/n),dy:n===1?0:d*Math.sin(-Math.PI/2+i*2*Math.PI/n)})); }
+    // vol en arc entre dos punts
+    function arcTween(a,b,lift){ return t=>{ const x=a[0]+(b[0]-a[0])*t, y=a[1]+(b[1]-a[1])*t-Math.sin(Math.PI*t)*lift; return `translate(${x},${y})`; }; }
+    let cur={};   // on és cada capa ara
     function apply(instant){
-      const L=STEPS[step], dur=instant||V.reduced?0:700;
-      const pots=gPots.selectAll("g.pot").data(L,d=>d.id);
-      pots.exit().transition().duration(dur/2).style("opacity",0).remove();
-      const en=pots.enter().append("g").attr("class","pot").style("opacity",0)
-        .attr("transform",d=>`translate(${cx(d.c)},${cy(d.r)})`);
-      const all=en.merge(pots);
-      all.each(function(d){
-        const q=d3.select(this);
-        const cs=q.selectAll("circle.ink").data(potCircles(d.k));
-        cs.exit().remove();
-        cs.enter().append("circle").attr("class","ink").attr("r",0).style("mix-blend-mode","multiply")
-          .merge(cs).transition().duration(dur).attr("cx",c=>c.dx).attr("cy",c=>c.dy).attr("r",pr*(d.k.length>1?.78:.9))
-          .attr("fill",c=>c.c).attr("fill-opacity",c=>c.c===Y?.62:.5);
-        q.selectAll("circle.ring").remove();
-        if(d.hl) q.insert("circle",":first-child").attr("class","ring").attr("r",pr*1.55).attr("fill",C.ink).attr("fill-opacity",.08);
+      const dur=instant||V.reduced?0:1100;
+      const k=ORDER.indexOf(step);
+      layers.each(function(d,i){
+        const q=d3.select(this), sl=slotOf(d,step);
+        if(!sl){ q.interrupt().transition().duration(dur/3).attr("opacity",0); cur[d.id]=null; return; }
+        const to=P(sl); to[0]+=d.jx; to[1]+=d.jy;
+        if(sl==="keyE"&&d.c===Y){ to[0]+=(d.id==="eAy"?-1:1)*R*.42; to[1]-=R*.12; }   // a la barreja de l'Eva li sobra groc: es veu a les vores
+        const was=cur[d.id];
+        if(!was){ // apareix: des del seu origen (barreja que surt de casa) o caient de dalt (secret nou)
+          const fr=d.from?P(d.from):to.slice(); if(d.drop)fr[1]-=rowH*.6;
+          q.interrupt().attr("transform",`translate(${fr[0]},${fr[1]})`).attr("opacity",0)
+            .transition().duration(dur).delay(instant?0:(d.from&&!d.drop?250:0)+i*35).ease(d3.easeCubicInOut)
+            .attr("opacity",1).attrTween("transform",()=>arcTween(fr,to,Math.hypot(to[0]-fr[0],to[1]-fr[1])*.22));
+        } else if(was[0]!==to[0]||was[1]!==to[1]){
+          q.interrupt().attr("opacity",1).transition().duration(dur).delay(instant?0:i*30).ease(d3.easeCubicInOut)
+            .attrTween("transform",()=>arcTween(was,to,Math.hypot(to[0]-was[0],to[1]-was[1])*.18));
+        } else q.interrupt().attr("opacity",1).attr("transform",`translate(${to[0]},${to[1]})`);
+        cur[d.id]=to;
       });
-      all.transition().duration(dur).style("opacity",1).attr("transform",d=>`translate(${cx(d.c)},${cy(d.r)})`);
+      // etiquetes
       gLab.selectAll("*").remove();
-      L.forEach(d=>{ const lbl=mob?d.t.replace("Secret de l'Anna","Secret").replace("Secret del Bernat","Secret").replace("Barreja de l'Anna","Barreja").replace("Barreja del Bernat","Barreja").replace("Rep la del Bernat","Rebuda").replace("Rep la de l'Anna","Rebuda").replace("Còpia de l'Eva","Còpia").replace("Color públic","Públic").replace("L'Eva: massa groc","Massa groc"):d.t;
-        V.t(gLab,cx(d.c),cy(d.r)+pr*(d.hl||d.bad?1.5:1.05)+12,lbl,{size:11.5,weight:d.hl?700:400,anchor:"middle",fill:d.sec?C.ink:C.ink2,italic:!!d.sec,halo:3}); });
-      // fletxes de l'intercanvi
-      gArr.selectAll("*").remove();
-      if(step!=="public"&&step!=="secret"){
-        const y=cy(2), a=cx(0)+pr*1.4, b=cx(2)-pr*1.4;
-        const arr=(x1,x2,yy,bend)=>{ gArr.append("path").attr("d",`M${x1},${yy}Q${(x1+x2)/2},${yy+bend} ${x2},${yy}`).attr("fill","none").attr("stroke",C.ink2).attr("stroke-width",.9).attr("stroke-dasharray","4 3");
-          const dir=Math.sign(x2-x1); gArr.append("path").attr("d",`M${x2-dir*6},${yy-4}L${x2},${yy}L${x2-dir*6},${yy+4}`).attr("fill","none").attr("stroke",C.ink2).attr("stroke-width",.9); };
-        arr(a,b,y-pr*.2,-rowH*.55); arr(b,a,y+pr*.2,rowH*.5);
+      const LB=LABELS[step];
+      Object.keys(LB).forEach(k2=>{ if(!LB[k2])return; const [x,y]=P(k2), key=k2.startsWith("key");
+        V.t(gLab,x,y+R+(mob?12:16),LB[k2],{size:mob?11:12,weight:key&&k2!=="keyE"?700:400,italic:k2.startsWith("sec"),anchor:"middle",fill:key?C.ink:C.ink2,halo:3}); });
+      // anotacions: el mateix color als dos costats; la de l'Eva no hi és
+      gAnn.selectAll("*").remove();
+      if(k===3||(k===4&&!mob)){
+        const [xa,y]=P("keyA"), [xb]=P("keyB"), yy=y+R+(mob?22:28);
+        gAnn.append("line").attr("x1",xa).attr("x2",xb).attr("y1",yy).attr("y2",yy).attr("stroke",C.ink).attr("stroke-width",.8);
+        [xa,xb].forEach(x=>gAnn.append("line").attr("x1",x).attr("x2",x).attr("y1",yy-5).attr("y2",yy).attr("stroke",C.ink).attr("stroke-width",.8));
+        V.t(gAnn,(xa+xb)/2,yy+4,"= el mateix color",{size:12.5,weight:700,anchor:"middle",halo:5});
       }
+      if(k===4){ const [x,y]=P("keyE"); V.t(gAnn,x,y+R+(mob?26:32),"≠ li sobra groc",{size:12.5,weight:700,anchor:"middle",fill:C.red,halo:3}); }
     }
-    api=apply; apply(true);
+    api=apply; cur={}; apply(true);
     V.hover(s.node(),(ev,[mx,my])=>{
-      const L=STEPS[step], d=d3.least(L,q=>Math.hypot(cx(q.c)-mx,cy(q.r)-my));
-      if(!d||Math.hypot(cx(d.c)-mx,cy(d.r)-my)>pr*2.2){ V.focus(gPots.selectAll("g.pot"),null); tp.hide(); return; }
-      V.focus(gPots.selectAll("g.pot"),q=>q===d);
-      const who={0:"L'Anna",1:"L'Eva",2:"El Bernat"}[d.c];
-      const what=d.k.map(c=>c===Y?"groc":c===Rd?"vermell":"blau").join(" + ");
-      tp.show(`<b>${d.t}</b> · ${who} té: ${what}${d.sec?" (no surt mai de casa)":""}`);
-    },()=>{ V.focus(gPots.selectAll("g.pot"),null); tp.hide(); });
+      const LB=LABELS[step], ks=Object.keys(LB).filter(k2=>LB[k2]!==undefined);
+      const k2=d3.least(ks,q=>{ const [x,y]=P(q); return Math.hypot(x-mx,y-my); });
+      if(!k2||Math.hypot(P(k2)[0]-mx,P(k2)[1]-my)>R*2.2){ V.focus(layers,null); tp.hide(); return; }
+      const here=L.filter(l=>slotOf(l,step)===k2);
+      if(!here.length){ tp.hide(); return; }
+      V.focus(layers,l=>here.includes(l));
+      const who=SLOT[k2][0]===0?"l'Anna":SLOT[k2][0]===2?"el Bernat":"l'Eva";
+      tp.show(`<b>${LB[k2]||"color públic"}</b> · ${who}: ${here.map(l=>NAME[l.c]).join(" + ")}${k2.startsWith("sec")?" (no surt mai de casa)":""}`);
+    },()=>{ V.focus(layers,null); tp.hide(); });
   });
   const sc=$("#s-colors");
   if(sc) IB.scrolly(sc.querySelector(".steps"),sc.querySelector(".graphic"),(i,st)=>{ step=st.dataset.s; if(api)api(false); });
@@ -325,7 +375,78 @@ function stickyH(w,desk){ return w<600?Math.round(Math.max(200,Math.min(window.i
     if(ages<.01)return f0(y)+" anys";
     return `${sciTxt(y)} anys (${ages<1e4?f0(ages):sciTxt(ages)} vegades l'edat de l'univers)`;
   }
-  V.mount(el,(box,w)=>{
+  let mode="log", K=4, playing=null;
+  const M=V.mount(el,(box,w)=>{ d3.select(box).selectAll("svg.ibv").remove(); (mode==="log"?drawLog:drawReal)(box,w); });
+  /* ---- Escala real: un regle lineal que s'allunya (com «Powers of Ten»). L'amplada del regle és 10^K combinacions;
+     cada referència entra per la dreta, llisca cap a l'esquerra i s'esclafa contra el zero. ---- */
+  let upd=null;
+  function drawReal(box,w){
+    const mob=w<600, h=mob?310:300, x0=mob?14:24, x1=w-(mob?14:24), base=mob?200:190;
+    const s=V.svg(box,w,h,"Regle lineal que s'allunya: a cada moment l'amplada representa 10 elevat a K combinacions. Quan el regle és prou gran per a una clau de 256 bits, el PIN, la contrasenya, la clau DES i fins i tot la clau de 128 bits queden esclafats en el primer píxel.");
+    const g=s.append("g"), tp=V.tip(box);
+    if(mob) V.t(g,x0,14,"Amplada del regle",{size:12,fill:C.ink2});
+    const big=V.t(g,x0,mob?42:38,"",{size:mob?24:30,serif:true});
+    const sub=V.t(g,x0,mob?64:62,"",{size:mob?12:13,fill:C.ink2});
+    const sub2=V.t(g,x0,mob?80:80,"",{size:mob?12:13,fill:C.ink2});
+    g.append("line").attr("x1",x0).attr("x2",x1).attr("y1",base).attr("y2",base).attr("stroke",C.ink).attr("stroke-width",.8);
+    [0,.25,.5,.75,1].forEach(f=>g.append("line").attr("x1",x0+f*(x1-x0)).attr("x2",x0+f*(x1-x0)).attr("y1",base-(f%.5?3:6)).attr("y2",base+(f%.5?3:6)).attr("stroke",C.ink).attr("stroke-width",.8));
+    V.t(g,x0,base+22,"0",{size:11.5,fill:C.muted,anchor:"start"});
+    const endLab=V.t(g,x1,base+22,"",{size:11.5,fill:C.muted,anchor:"end"});
+    const zero=g.append("g");
+    const pile=V.t(zero,x0,base+(mob?44:46),"",{size:12,fill:C.ink2});
+    const pile2=V.t(zero,x0,base+(mob?60:62),"",{size:11.5,fill:C.muted});
+    const pts=g.selectAll("g.rp").data(ITEMS).join("g").attr("class","rp");
+    pts.append("circle").attr("r",mob?9:12).attr("fill",d=>d.ctx?C.ink2:d.broken?C.red:C.blue).attr("fill-opacity",d=>d.ctx?.16:.28).style("mix-blend-mode","multiply");
+    pts.append("circle").attr("r",2.6).attr("fill",d=>d.ctx?C.ink2:d.broken?C.red:C.blue);
+    pts.append("line").attr("class","st").attr("y1",-14).attr("y2",-40).attr("stroke",C.hair).attr("stroke-width",.7);
+    pts.each(function(d){ const q=d3.select(this); V.t(q,0,-58,d.t,{size:12.5,weight:700,halo:3}).attr("class","t1"); V.t(q,0,-44,d.m,{size:11.5,fill:C.ink2,halo:3}).attr("class","t2"); });
+    upd=()=>{
+      const D=Math.pow(10,K), W=x1-x0, kk=Math.floor(K+1e-9), mant=D/Math.pow(10,kk);
+      big.text(`${mob?"":"Amplada del regle: "}${mant>=1.05?f1(mant)+" × ":""}${p10(kk)} combinacions`);
+      const perPx=D/W, pk=Math.floor(Math.log10(perPx));
+      sub.text(K<6?`Cada píxel del regle són ${f0(perPx)} combinacions`:`Cada píxel del regle són ${p10(pk)} combinacions o més`);
+      sub2.text(K>=5?`El regle és ${K-4<4?f0(Math.pow(10,K-4)):p10(Math.floor(K-4))} vegades més llarg que al començament`:"");
+      endLab.text((mant>=1.05?f1(mant)+" × ":"")+p10(kk));
+      const crushed=[];
+      pts.each(function(d){
+        const q=d3.select(this), xr=x0+d.v/D*W;
+        if(xr>x1+30){ q.attr("opacity",0); return; }
+        const tiny=xr-x0<3;
+        if(tiny){ crushed.push(d.t); q.attr("opacity",.9).attr("transform",`translate(${x0},${base})`); q.selectAll(".t1,.t2,.st").attr("opacity",0); return; }
+        q.attr("opacity",1).attr("transform",`translate(${Math.min(xr,x1+30)},${base})`);
+        const anc=xr>x1-90?"end":xr<x0+90?"start":"middle";
+        q.selectAll(".t1,.t2").attr("text-anchor",anc).attr("opacity",1); q.select(".st").attr("opacity",1);
+      });
+      pile.text(crushed.length?`Esclafats contra el zero, en menys d'un píxel:`:"");
+      const cr=crushed.slice().reverse(); pile2.text(cr.length?(cr.length>3?cr.slice(0,3).join(", ")+` i ${cr.length-3} més`:cr.join(", ")):"");
+      const rng=$("#claus-k"); if(rng){ rng.value=K; rng.setAttribute("aria-valuetext",`Amplada del regle: 10 elevat a ${f1(K)} combinacions`); }
+    };
+    upd();
+    V.hover(s.node(),(ev,[mx])=>{
+      const D=Math.pow(10,K), vis=ITEMS.filter(d=>x0+d.v/D*(x1-x0)<=x1+30);
+      if(!vis.length){ tp.hide(); return; }
+      const d=d3.least(vis,q=>Math.abs(x0+q.v/D*(x1-x0)-mx)), fr=d.v/D;
+      tp.show(`<b>${d.t}</b> · ${sciTxt(d.v)} combinacions · ocupa ${fr>=.01?f0(fr*100)+" %":"10<sup>"+Math.floor(Math.log10(fr*100))+"</sup> %"} del regle`);
+    },()=>tp.hide());
+  }
+  function play(){
+    if(playing){ playing.stop(); playing=null; }
+    if(V.reduced){ K=80; if(upd)upd(); return; }
+    if(K>=79.9)K=4;
+    const k0=K, dur=(80-k0)/76*20000;   // tot el viatge, uns 20 segons: zoom lent i constant
+    const t0=performance.now(); let raf=0;
+    const tick=now=>{ const p=Math.min(1,(now-t0)/dur); K=k0+(80-k0)*p; if(upd)upd(); if(p<1&&playing)raf=requestAnimationFrame(tick); else playing=null; };
+    playing={stop(){ cancelAnimationFrame(raf); }}; raf=requestAnimationFrame(tick);
+  }
+  document.querySelectorAll("#claus-seg button").forEach(b=>b.addEventListener("click",()=>{
+    mode=b.dataset.k; document.querySelectorAll("#claus-seg button").forEach(q=>q.setAttribute("aria-pressed",q===b?"true":"false"));
+    const ctl=$("#claus-ctl"); if(ctl)ctl.hidden=mode!=="real";
+    if(playing){ playing.stop(); playing=null; }
+    M.redraw(); if(mode==="real"){ K=4; if(upd)upd(); play(); }
+  }));
+  const rngK=$("#claus-k"); if(rngK)rngK.addEventListener("input",()=>{ if(playing){ playing.stop(); playing=null; } K=+rngK.value; if(upd)upd(); });
+  const pb=$("#claus-play"); if(pb)pb.addEventListener("click",play);
+  function drawLog(box,w){
     const mob=w<600;
     const h=mob?600:380;
     const s=V.svg(box,w,h,"Escala logarítmica del nombre de claus possibles: un PIN de quatre xifres té deu mil combinacions; una clau de 128 bits, 3,4 × 10³⁸; una de 256 bits, 1,2 × 10⁷⁷, a prop del nombre d'àtoms de l'univers observable.");
@@ -379,7 +500,7 @@ function stickyH(w,desk){ return w<600?Math.round(Math.max(200,Math.min(window.i
       V.focus(pts,q=>q===d);
       tp.show(d.ctx?`<b>${d.t}</b> · ${d.m}`:`<b>${d.t}</b> · ${sciTxt(d.v)} combinacions · provar-les totes a un trilió per segon: ${timeTxt(d.v)}`);
     },()=>{ V.focus(pts,null); tp.hide(); });
-  });
+  }
 })();
 
 /* =====================================================================
