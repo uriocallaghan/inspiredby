@@ -125,13 +125,24 @@
       terra:    {el:2.5, dist:31, tz:3.4, fov:58}
     };
     let view = Object.assign({}, VIEWS.avinguda), az = S3.AX + 22, auto = !IBV.reduced, hoverId = null;
-    // gent per donar escala i vida: una petita processó que puja per l'Avinguda, un grup davant l'Altar i algú que mira
+    // Escena de la fase 4 (c. 2200–2000 aC), quan es van tornar a plantar les pedres blaves (reconstrucció):
+    // una colla arrossega una pedra blava sobre un trineu cap al cercle, algú la pica amb un percussor de pedra,
+    // un altre cava el forat on anirà amb un pic de banya de cérvol, i un grup mira cap al Gran Trílit.
     const PEOPLE = [];
-    { const A = S3.AX*Math.PI/180, ex = Math.sin(A), ey = Math.cos(A), nx = Math.cos(A), ny = -Math.sin(A), rr = IBV.rng(9);
-      for(let i=0;i<7;i++){ const d = 9 + i*2.4 + rr()*.8, o = (i%2 ? .7 : -.7) + (rr()-.5)*.4;
-        PEOPLE.push({x:d*ex + o*nx, y:d*ey + o*ny, pose:i===2 ? "porta" : "camina", az:S3.AX+180, k:i*1.7, h:i===4 ? 1.15 : 1.55 + rr()*.18, pel:["llarg","monyo","curt"][i%3], capa:i%2===0, walk:{d0:d, o, ex, ey, nx, ny}}); }
-      [[2.6,S3.AX+150],[2.9,S3.AX+200],[3.4,S3.AX+172]].forEach(([r,b],i) => { const [x,y] = S3.pol(r,b); PEOPLE.push({x, y, pose:"mira", az:S3.AX+180, h:1.58 + i*.06, pel:["llarg","curt","monyo"][i], capa:i!==1}); });
-      const [px,py] = S3.pol(20.5, S3.AX+28); PEOPLE.push({x:px, y:py, pose:"dret", az:S3.AX+250, h:1.7, pel:"monyo", capa:true}); }
+    { const D = S3.D2R, P2 = S3.pol, rr = IBV.rng(9), PEL = ["llarg","curt","monyo"];
+      const [sx,sy] = P2(23, S3.AX+20), [tx,ty] = P2(16.5, S3.AX+2), L = Math.hypot(tx-sx, ty-sy), ux = (tx-sx)/L, uy = (ty-sy)/L, nx = uy, ny = -ux;
+      const az = Math.atan2(ux, uy)/D, front = [sx + ux*1.25, sy + uy*1.25, .55];
+      for(let i=0;i<6;i++){ const row = Math.floor(i/2), side = i%2 ? 1 : -1, d = 3.2 + row*1.5, o = side*.75;
+        PEOPLE.push({x:sx + ux*d + nx*o, y:sy + uy*d + ny*o, pose:"estira", az, k:i*1.3, h:1.55 + rr()*.18, pel:PEL[i%3], capa:i===5, rope:front}); }
+      // qui pica la pedra, agenollat al costat del trineu
+      PEOPLE.push({x:sx - nx*1.4 - ux*.6, y:sy - ny*1.4 - uy*.6, pose:"picar", az:Math.atan2(nx, ny)/D, k:.4, h:1.62, pel:"curt"});
+      // qui cava el forat del cercle de pedres blaves
+      { const [hx,hy] = P2(12.9, S3.AX+27); PEOPLE.push({x:hx, y:hy, pose:"cavar", az:S3.AX+207, k:1.1, h:1.66, pel:"llarg"}); }
+      // gent que mira cap al Gran Trílit, davant de l'Altar
+      [[2.6,S3.AX+150],[2.9,S3.AX+200],[3.4,S3.AX+172]].forEach(([r,b],i) => { const [x,y] = P2(r,b); PEOPLE.push({x, y, pose:"mira", az:S3.AX+180, h:1.56 + i*.06, pel:["llarg","curt","monyo"][i], capa:i!==1}); });
+      // algú que arriba per l'entrada amb un pic a l'espatlla
+      { const [wx,wy] = P2(19, S3.AX-6); PEOPLE.push({x:wx, y:wy, pose:"porta", az:S3.AX+180, k:.7, h:1.68, pel:"curt", capa:true}); }
+      }
     let W = 0, H = 0, ctx = null, hits = [], drag = false, tween = null, lastT = 0;
     segBind(fig.querySelector(".seg"), "k", k => {
       const from = Object.assign({}, view), to = VIEWS[k];
@@ -162,8 +173,8 @@
       }
       const ht = S3.pol(79, S3.AX+1.6);
       L3([ht[0], ht[1], 5.0], ["Pedra del Taló", "on surt el sol a l'estiu"], mob?-30:46, -30);
-      const pp = S3.pol(20.5, S3.AX+28);
-      L3([pp[0], pp[1], 1.75], ["Una persona", "1,7 m"], 70, 18);
+      const pp = S3.pol(23, S3.AX+20);
+      L3([pp[0], pp[1], 1.1], ["Arrossegant una pedra blava", "fase 4, reconstrucció"], mob?-20:-150, 40);
     }
 
     function draw(){

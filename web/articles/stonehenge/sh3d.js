@@ -65,6 +65,7 @@
         add({id:"q"+i+j, g:"blava", nom:"Pedra blava del doble arc Q/R", ph:[2,3], x, y, rot:b+90, w:.9, t:.6, h:1.8+J(.4), z0:0, taper:.8}); });
     }
     for(let i=0;i<60;i++){
+      if(i === 4) continue;                       // el forat on anirà la pedra que arriben arrossegant (escena de la fase 4)
       const b = AX + 3 + i*6, [x,y] = pol(12.2,b);
       add({id:"bc"+i, g:"blava", nom:"Pedra blava del cercle (de Gal·les)", ph:[4,9], x, y, rot:b+90, w:.95, t:.6, h:1.9+J(.5), z0:0, taper:.78});
     }
@@ -73,6 +74,10 @@
       const [x,y] = pol(r,b);
       add({id:"bh"+i, g:"blava", nom:"Pedra blava de la ferradura", ph:[4,9], x, y, rot:b+90, w:.75, t:.55, h:1.9 + .5*Math.cos(a*D2R) + J(.3), z0:0, taper:.82});
     }
+    // escena de la fase 4: una pedra blava jacent sobre un trineu de fusta, que arriben arrossegant cap al cercle
+    { const [x,y] = pol(23, AX+20), [tx,ty] = pol(16.5, AX+2), rot = Math.atan2(tx-x, ty-y)*R2D;
+      add({id:"trineu", g:"trineu", nom:"Trineu de fusta", ph:[4,4], x, y, rot, w:3.4, t:1.5, h:.28, z0:0, taper:1});
+      add({id:"bmov", g:"blava", nom:"Pedra blava que arriben arrossegant (fase 4, reconstrucció)", ph:[4,4], x, y, rot, w:2.5, t:.85, h:.75, z0:.28, taper:.85, lean:[0,0]}); }
     return S;
   }
 
@@ -96,7 +101,8 @@
     });
     // forats Aubrey (56)
     for(let i=0;i<56;i++){ const b = AX+3.2+i*360/56, [x,y]=pol(44,b); G.push({k:"hole", ph:[1,9], c:[x,y,0], r:.55}); }
-    // forats Y (30) i Z (29), fase 5
+    { const [x,y] = pol(12.2, AX+27); G.push({k:"hole", ph:[4,4], c:[x,y,0], r:.6}); }
+        // forats Y (30) i Z (29), fase 5
     for(let i=0;i<30;i++){ const b=AX+6+i*12, [x,y]=pol(27,b); G.push({k:"yz", ph:[5,9], c:[x,y,0], r:.9}); }
     for(let i=0;i<29;i++){ const b=AX+12+i*12, [x,y]=pol(19.6,b); G.push({k:"yz", ph:[5,9], c:[x,y,0], r:.8}); }
     // Avinguda: dos talussos paral·lels cap al NE (fase 3); el primer tram recte d'uns 530 m
@@ -113,7 +119,7 @@
   // Acabat de cada pedra segons English Heritage («Building Stonehenge», «Discover more about the Stones»):
   // sarsens i llindes desbastats a cops de percussor i allisats (més fi al costat NE i a les cares interiors dels trílits),
   // Pedra del Taló «bloc sense treballar», moltes pedres blaves naturals. Recent picats, els sarsens eren «molt més clars i blancs».
-  const FINISH = {sarsen:"dressed", llinda:"dressed", trilit:"dressed", altar:"slab", station:"natural", blava:"blue", blava1:"blue"};
+  const FINISH = {sarsen:"dressed", llinda:"dressed", trilit:"dressed", altar:"slab", station:"natural", blava:"blue", blava1:"blue", trineu:"slab"};
   const finishOf = s => s.id === "talo" ? "boulder" : s.id === "mat" ? "slab" : (FINISH[s.g] || "natural");
   const hash = (a, b, c) => { const x = Math.sin(a*127.1 + b*311.7 + c*74.7)*43758.5453; return (x - Math.floor(x))*2 - 1; };
   // secció: superel·lipse (p alt = rectangle de cantells arrodonits; p baix = còdol) amb ondulació de baixa freqüència
@@ -233,69 +239,85 @@
   /* ---------- 4. Figures humanes (silueta plena, de perfil) ---------- */
   // Escriu la silueta com a formes tancades sobre qualsevol «context de camí» (canvas o d3.path), per omplir-la d'un sol cop.
   // x, y: peus; h: alçada en px; pose: "dret" | "camina" | "estira" | "palanca" | "mira"; ph: fase del pas; dir: 1 cap a la dreta, -1 cap a l'esquerra
-  // Gent del Neolític de perfil: túnica fins al genoll, capa, cabell llarg o recollit, i a vegades un pic de banya de cérvol
-  // (les eines amb què es va cavar el fossat). o = {pel:"llarg"|"monyo"|"curt", capa:bool, eina:"banya"|null, cos:0..1}
+  // Gent del Neolític de perfil, dibuixada com les figures d'una maqueta d'arquitectura: esquelet amb proporcions humanes
+  // (cap = 1/8 de l'alçada), membres que s'afuen amb corbes suaus, túnica, capa i cabell. Cada pose és una feina de l'època.
+  // o = {pel:"llarg"|"monyo"|"curt", capa:bool}
+  const POSES = {
+    //        inclinació, cama davant [angle, genoll], cama darrere, braç 1 [espatlla, colze], braç 2, cap, eina
+    dret:    ph => ({lean:.03, L1:[.06,.03], L2:[-.07,.04], A1:[.08,.12], A2:[-.05,.1], head:.05}),
+    mira:    ph => ({lean:-.02, L1:[.07,.02], L2:[-.06,.03], A1:[.04,.08], A2:[-.02,.1], head:-.25}),
+    camina:  ph => { const sw = Math.sin(ph); return {lean:.07, L1:[.36*sw, Math.max(0,-sw)*.7 + .06], L2:[-.36*sw, Math.max(0,sw)*.7 + .06], A1:[-.38*sw, .3], A2:[.38*sw, .3], head:.08}; },
+    porta:   ph => { const sw = Math.sin(ph); return {lean:.1, L1:[.3*sw, Math.max(0,-sw)*.6 + .06], L2:[-.3*sw, Math.max(0,sw)*.6 + .06], A1:[.05, 2.5], A2:[.3*sw, .3], head:.08, eina:"banya-espatlla"}; },
+    estira:  ph => { const sw = Math.sin(ph)*.08; return {lean:.62, L1:[.55+sw, .55], L2:[-.42+sw, .08], A1:[.55, 2.0], A2:[.35, 2.2], head:.35}; },
+    palanca: ph => ({lean:.75, L1:[.35, .4], L2:[-.38, .06], A1:[1.15, .12], A2:[1.0, .18], head:.3}),
+    picar:   ph => { const u = (Math.sin(ph)+1)/2; return {lean:.38, L1:[1.35, 1.35], L2:[.05, 1.6], A1:[1.2 + 1.5*u, .35], A2:[1.1 + 1.5*u, .45], head:.25, eina:"maça"}; },
+    cavar:   ph => { const u = (Math.sin(ph)+1)/2; return {lean:.5 + .2*(1-u), L1:[.4, .35], L2:[-.32, .05], A1:[.9 + 1.7*u, .35], A2:[.8 + 1.7*u, .45], head:.25, eina:"banya"}; }
+  };
   function silhouette(p, x, y, h, pose, ph, dir, o){
     dir = dir||1; ph = ph||0; o = o||{};
-    const flush = () => { if(p.__flush) p.__flush(); };   // cada peça s'omple sola: sense forats on se sobreposen
-    const lean = pose==="estira" ? .5 : pose==="palanca" ? .8 : pose==="porta" ? .1 : pose==="camina" ? .07 : pose==="mira" ? -.03 : 0;
-    const hipL = [0, .5], cl = Math.cos(lean), sl = Math.sin(lean);
-    // punt del cos (x endavant, y amunt, en unitats d'alçada) girat al voltant del maluc segons la inclinació
-    const B = (fx, fy) => { const dx = fx - hipL[0], dy = fy - hipL[1]; return [hipL[0] + dx*cl + dy*sl, hipL[1] - dx*sl + dy*cl]; };
-    const S = q => [x + dir*q[0]*h, y - q[1]*h];
-    const cap = (a, b, w0, w1) => {           // membre afuat amb puntes rodones
-      const A = S(a), Bp = S(b), dx = Bp[0]-A[0], dy = Bp[1]-A[1], L = Math.hypot(dx,dy)||1e-6, nx = -dy/L, ny = dx/L, ang = Math.atan2(dy,dx);
-      const r0 = w0*h/2, r1 = (w1==null?w0:w1)*h/2;
-      p.moveTo(A[0]+nx*r0, A[1]+ny*r0); p.lineTo(Bp[0]+nx*r1, Bp[1]+ny*r1);
-      p.arc(Bp[0], Bp[1], r1, ang+Math.PI/2, ang-Math.PI/2, true);
-      p.lineTo(A[0]-nx*r0, A[1]-ny*r0); p.arc(A[0], A[1], r0, ang-Math.PI/2, ang+Math.PI/2, true); p.closePath(); flush();
+    const flush = () => { if(p.__flush) p.__flush(); };
+    const P = (POSES[pose] || POSES.dret)(ph);
+    const dn = a => [Math.sin(a), -Math.cos(a)], up = a => [Math.sin(a), Math.cos(a)];
+    const add = (q, v, k) => [q[0] + v[0]*k, q[1] + v[1]*k];
+    // esquelet en coordenades locals (x endavant, y amunt, unitats d'alçada), amb el maluc a l'origen
+    const hip = [0, 0];
+    const leg = ([th, kb]) => { const knee = add(hip, dn(th), .245), ank = add(knee, dn(th - kb), .245);
+      const toe = kb > 1.2 ? add(ank, dn(th - kb), .05) : [ank[0] + .075, ank[1] - .005]; return [hip, knee, ank, toe]; };
+    const Lf = leg(P.L1), Lb = leg(P.L2);
+    const lean = P.lean;
+    const waist = add(hip, up(lean*.8), .1), chest = add(waist, up(lean), .13), sh = add(chest, up(lean*1.05), .06);
+    const neckTop = add(sh, up(lean*.7 + .12 + P.head*.4), .065), head = add(neckTop, up(lean*.6 + P.head*.5 + .15), .052);
+    const arm = ([th, el]) => { const elb = add(sh, dn(th), .165), wr = add(elb, dn(th + el), .15), hand = add(wr, dn(th + el), .035); return [sh, elb, wr, hand]; };
+    const Af = arm(P.A1), Ab = arm(P.A2);
+    // terra: el punt més baix (peu, genoll de qui està agenollat) toca y = 0
+    const low = Math.min(...[Lf, Lb].flatMap(L => [L[2][1], L[3][1], L[1][1] + .03]));
+    const S = q => [x + dir*q[0]*h, y - (q[1] - low)*h];
+    // tub de gruix variable amb corbes suaves i puntes rodones (en coordenades de pantalla)
+    const tube = (pts, ws) => {
+      const Q = pts.map(S), n = Q.length, W = ws.map(w => w*h/2);
+      const nrm = Q.map((q,i) => { const a = Q[Math.max(0,i-1)], b = Q[Math.min(n-1,i+1)], dx = b[0]-a[0], dy = b[1]-a[1], L = Math.hypot(dx,dy)||1; return [-dy/L, dx/L]; });
+      const Lp = Q.map((q,i) => [q[0] + nrm[i][0]*W[i], q[1] + nrm[i][1]*W[i]]), Rp = Q.map((q,i) => [q[0] - nrm[i][0]*W[i], q[1] - nrm[i][1]*W[i]]);
+      const curve = (pts2) => { for(let i=1;i<pts2.length-1;i++){ const a = pts2[i], b = pts2[i+1]; p.quadraticCurveTo(a[0], a[1], (a[0]+b[0])/2, (a[1]+b[1])/2); } p.lineTo(pts2[pts2.length-1][0], pts2[pts2.length-1][1]); };
+      const capArc = (c, r, nv, tipv) => { const aN = Math.atan2(nv[1], nv[0]), tip = Math.atan2(tipv[1], tipv[0]);
+        p.arc(c[0], c[1], Math.max(.3, r), aN, aN + Math.PI, Math.cos(aN + Math.PI/2 - tip) < 0); };
+      p.moveTo(Lp[0][0], Lp[0][1]); curve(Lp);
+      const dE = [Q[n-1][0]-Q[n-2][0], Q[n-1][1]-Q[n-2][1]]; capArc(Q[n-1], W[n-1], nrm[n-1], dE);
+      curve(Rp.slice().reverse());
+      const dS = [Q[0][0]-Q[1][0], Q[0][1]-Q[1][1]]; capArc(Q[0], W[0], [-nrm[0][0], -nrm[0][1]], dS);
+      p.closePath(); flush();
     };
-    const shape = pts => { const q = pts.map(S); p.moveTo(q[0][0], q[0][1]);
-      for(let i=1;i<q.length;i++){ const a = q[i-1], b = q[i]; p.quadraticCurveTo(a[0], a[1], (a[0]+b[0])/2, (a[1]+b[1])/2); }
-      p.lineTo(q[q.length-1][0], q[q.length-1][1]); p.closePath(); flush(); };
-    const at = (o2, ang, len) => [o2[0] + Math.sin(ang)*len, o2[1] - Math.cos(ang)*len];   // angle des de la vertical cap avall, + endavant
-    // cames (sota la túnica)
-    let LA, LB;
-    if(pose==="camina"){ const sw = Math.sin(ph)*.38; LA = [sw, Math.max(0, -sw)*.9 + .05]; LB = [-sw, Math.max(0, sw)*.9 + .05]; }
-    else if(pose==="estira"){ const sw = Math.sin(ph)*.1; LA = [.45 + sw, .35]; LB = [-.35 + sw, .02]; }
-    else if(pose==="palanca"){ LA = [.3, .15]; LB = [-.25, .02]; }
-    else { LA = [.04, .02]; LB = [-.04, .02]; }
-    const hipW = [0, .49];
-    const leg = (th, kn) => { const knee = at(hipW, th, .25), foot = at(knee, th - kn, .245);
-      cap(hipW, knee, .085, .065); cap(knee, foot, .062, .045); cap(foot, [foot[0] + .075, foot[1] + .005], .04, .03); };
-    leg(LB[0], LB[1]); leg(LA[0], LA[1]);
-    // túnica: espatlles, cintura i vora acampanada fins al genoll
-    const kick = pose==="camina" ? Math.sin(ph)*.03 : 0;
-    shape([B(.055,.815), B(.07,.7), B(.065,.58), B(.1+kick,.4), B(.04,.375), B(-.06,.37), B(-.11-kick,.39), B(-.075,.58), B(-.075,.72), B(-.05,.82)]);
-    // capa sobre les espatlles
-    if(o.capa) shape([B(-.02,.84), B(-.09,.8), B(-.13,.62), B(-.16-kick*1.5,.34), B(-.1,.33), B(-.07,.6), B(-.05,.76)]);
-    // coll i cap
-    cap(B(0,.78), B(.016,.9), .068, .058);
-    cap(B(-.05,.8), B(.05,.8), .07, .07);      // espatlles: sense escletxes entre el coll i la túnica
-    const hd = B(.018, .915);
-    { const c = S(hd), rr = .066*h; p.moveTo(c[0]+rr, c[1]); p.arc(c[0], c[1], rr, 0, Math.PI*2); p.closePath(); flush();
-      const nz = S(B(.08, .9)); p.moveTo(c[0] + dir*rr*.5, c[1]-rr*.35); p.lineTo(nz[0], nz[1]); p.lineTo(c[0] + dir*rr*.6, c[1]+rr*.35); p.closePath(); flush(); }
-    // cabells
-    if(o.pel === "llarg") shape([B(.02,.985), B(-.05,.975), B(-.085,.9), B(-.09,.78), B(-.05,.76), B(-.04,.86), B(0,.95)]);
-    else if(o.pel === "monyo"){ const c = S(B(-.06, .95)); p.moveTo(c[0] + .035*h, c[1]); p.arc(c[0], c[1], .035*h, 0, Math.PI*2); p.closePath(); flush(); }
-    // braços
-    const sh = B(.005, .79);
-    let A1, A2;
-    if(pose==="camina"){ const sw = Math.sin(ph)*.45; A1 = [-sw, .2]; A2 = [sw, .2]; }
-    else if(pose==="estira"){ A1 = [-.35, 2.3]; A2 = [-.2, 2.2]; }                    // braços plegats agafant la corda sobre l'espatlla
-    else if(pose==="palanca"){ A1 = [.9 - lean*.2, .2]; A2 = [.75 - lean*.2, .25]; }
-    else if(pose==="porta"){ A1 = [-.1, 2.5]; A2 = [.15, .1]; }                         // una mà aguanta l'eina sobre l'espatlla
-    else if(pose==="mira"){ A1 = [.05, .1]; A2 = [-.12, .15]; }
-    else { A1 = [.06, .08]; A2 = [-.05, .08]; }
-    let hand1;
-    [A2, A1].forEach(([th, el], k) => { const elb = at(sh, th + lean, .165), hand = at(elb, th + lean + el, .155);
-      cap(sh, elb, .055, .045); cap(elb, hand, .044, .036); if(k===1) hand1 = hand; });
-    // pic de banya de cérvol sobre l'espatlla
-    if(o.eina === "banya" || pose === "porta"){
-      const a0 = B(-.12, .88), a1 = B(.2, .97), b1 = B(.21, 1.04), b2 = B(.27, .99);
-      cap(a0, a1, .022, .018); cap(a1, b1, .016, .01); cap(B(.12, .95), b2, .014, .009);
-    }
-    return {hand: S(hand1), shoulder: S(sh)};
+    const circle = (c, r) => { const q = S(c); p.moveTo(q[0] + r*h, q[1]); p.arc(q[0], q[1], r*h, 0, Math.PI*2); p.closePath(); flush(); };
+    // cames: la del darrere primer
+    tube(Lb, [.088, .058, .04, .026]); tube(Lf, [.088, .058, .04, .026]);
+    // túnica fins al genoll, que segueix la direcció mitjana de les cuixes
+    const thighDir = [(Lf[1][0] + Lb[1][0])/2, (Lf[1][1] + Lb[1][1])/2], tl = Math.hypot(...thighDir)||1;
+    const hem = add(hip, [thighDir[0]/tl, thighDir[1]/tl], .17);
+    // forma tancada i suau (punts de control amb corbes pel mig)
+    const blob = pts => { const Q = pts.map(S), n = Q.length, mid = (a,b) => [(a[0]+b[0])/2, (a[1]+b[1])/2];
+      const m0 = mid(Q[n-1], Q[0]); p.moveTo(m0[0], m0[1]);
+      for(let i=0;i<n;i++){ const a = Q[i], b = Q[(i+1)%n], m = mid(a,b); p.quadraticCurveTo(a[0], a[1], m[0], m[1]); }
+      p.closePath(); flush(); };
+    const fw = [Math.cos(lean), -Math.sin(lean)];                          // endavant, perpendicular al tors
+    const tdir = [thighDir[0]/tl, thighDir[1]/tl], fh = [-tdir[1], tdir[0]];  // perpendicular a la cuixa (vora de la túnica)
+    const fhf = fh[0] < 0 ? [-fh[0], -fh[1]] : fh;
+    if(o.capa) blob([add(sh, fw, -.02), add(chest, fw, -.085), add(waist, fw, -.09), add(add(hem, fhf, -.13), [0,-.04], 1), add(add(hem, fhf, -.04), [0,-.03], 1), add(waist, fw, -.03), add(chest, fw, -.02)]);
+    blob([add(sh, fw, .045), add(chest, fw, .068), add(waist, fw, .058), add(hem, fhf, .1), add(hem, fhf, -.115), add(waist, fw, -.062), add(chest, fw, -.07), add(sh, fw, -.05), add(add(sh, up(lean), .015), fw, 0)]);
+    // braç del darrere, coll, cap i cabells, braç del davant
+    tube(Ab, [.056, .044, .034, .04]);
+    tube([sh, neckTop], [.06, .05]);
+    circle(head, .062);
+    if(o.pel === "llarg") tube([add(head, [-.03, .045], 1), add(head, [-.07, -.02], 1), add(head, [-.075, -.11], 1)], [.075, .06, .035]);
+    else if(o.pel === "monyo") circle(add(head, [-.066, .035], 1), .03);
+    else circle(add(head, [-.012, .012], 1), .063);
+    tube(Af, [.056, .044, .034, .04]);
+    // eines de l'època
+    const hand = Af[3], fd = (() => { const dx = Af[3][0]-Af[2][0], dy = Af[3][1]-Af[2][1], L = Math.hypot(dx,dy)||1; return [dx/L, dy/L]; })();
+    if(P.eina === "maça") circle(add(hand, fd, .03), .05);                               // percussor de pedra
+    if(P.eina === "banya"){ const t0 = add(hand, fd, -.1), t1 = add(hand, fd, .16), t2 = add(t1, [fd[1], -fd[0]], -.09);
+      tube([t0, hand, t1], [.022, .02, .016]); tube([add(hand, fd, .1), t2], [.016, .008]); }  // pic de banya de cérvol
+    if(P.eina === "banya-espatlla"){ const t0 = add(hand, [-.2, -.02], 1), t1 = add(hand, [.12, .04], 1);
+      tube([t0, hand, t1], [.022, .02, .016]); tube([add(t1, [-.03, 0], 1), add(t1, [.03, .08], 1)], [.014, .008]); }
+    return {hand: S(Af[3]), shoulder: S(sh), head: S(head)};
   }
   function drawSil(ctx, x, y, h, pose, ph, dir, col, o){
     ctx.fillStyle = col || C.ink; ctx.beginPath();
@@ -558,8 +580,9 @@
     // cap a on mira, a la pantalla
     const ahead = cam.p([pp.x + Math.sin((pp.az||0)*D2R), pp.y + Math.cos((pp.az||0)*D2R), 0]);
     const dir = ahead && ahead[0] < f[0] ? -1 : 1;
-    const ph = pp.pose === "camina" ? (t/420 + (pp.k||0)) : 0;
-    drawSil(ctx, f[0], f[1], h, pp.pose||"dret", ph, dir, IBV.alpha(C.ink, pp.a||.88), pp);
+    const ph = (pp.pose === "camina" || pp.pose === "porta") ? (t/420 + (pp.k||0)) : (pp.pose === "picar" || pp.pose === "cavar") ? (t/260 + (pp.k||0)) : (pp.pose === "estira" ? t/600 + (pp.k||0) : 0);
+    const r = drawSil(ctx, f[0], f[1], h, pp.pose||"dret", ph, dir, IBV.alpha(C.ink, pp.a||.88), pp);
+    if(pp.rope){ const an = cam.p(pp.rope); if(an){ ctx.beginPath(); ctx.moveTo(an[0], an[1]); ctx.lineTo(r.hand[0], r.hand[1]); ctx.strokeStyle = IBV.alpha(C.ink2, .9); ctx.lineWidth = Math.max(.6, h*.012); ctx.stroke(); } }
   }
   function drawPerson(ctx, cam, at){ drawPerson3(ctx, cam, {x:at[0], y:at[1], pose:"dret", az:AX+200}, 0); }
 
@@ -581,7 +604,8 @@
     talo:"Pedra exterior de l'entrada",
     station:"Station Stone · rectangle solar i lunar",
     blava:"Pedra blava · 2–4 t, dels turons Preseli (Gal·les, ~230 km)",
-    blava1:"Pedra blava en un forat Aubrey (fase 1, hipòtesi)"
+    blava1:"Pedra blava en un forat Aubrey (fase 1, hipòtesi)",
+    trineu:"Reconstrucció: no se'n coneix cap resta"
   };
 
   window.SH3D = {TINT, AX, pol, buildModel, buildGround, camera, orbit, render, dragOrbit, drawPerson, silhouette, silPaths, drawSil, GROUPS, PAPER, D2R, R2D};
