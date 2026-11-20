@@ -95,212 +95,127 @@
       { crist: "Jesús: centre del triangle i punt de fuga de la perspectiva", joan: "Joan s'aparta de Jesús i s'inclina cap a Pere", judes: "Judes, dins el grup però reculat a l'ombra, amb la bossa", altre: null }
     ];
 
-    /* ---------------- figures Voyager (unitats del dibuix original; origen = base del coll) ---------------- */
-    const SH = 160; // espatlla
-    const TABLE_Y = 330;
-    // braços per gest: a = el del costat esquerre del lector, b = el del dret. Últim punt = mà.
-    const ARM = {
-      rest:   { a: [[-SH, 70], [-215, 230], [-135, 312]], ha: { kind: "flat" }, b: [[SH, 70], [215, 230], [135, 312]], hb: { kind: "flat", flip: true } },
-      spread: { a: [[-SH, 70], [-262, 230], [-330, 312]], ha: { kind: "flat", flip: true }, b: [[SH, 70], [262, 230], [330, 312]], hb: { kind: "flat" } },
-      open:   { a: [[-SH, 70], [-250, 170], [-215, 30]], ha: { kind: "palm", rot: -12 }, b: [[SH, 70], [250, 170], [215, 30]], hb: { kind: "palm", rot: 12 } },
-      wide:   { a: [[-SH, 70], [-268, 160], [-318, 70]], ha: { kind: "palm", rot: -30 }, b: [[SH, 70], [268, 160], [318, 70]], hb: { kind: "palm", rot: 30 } },
-      point:  { a: [[-SH, 70], [-215, 230], [-135, 312]], ha: { kind: "flat" }, b: [[SH, 70], [215, -40], [175, -175]], hb: { kind: "point" } },
-      chest:  { a: [[-SH, 70], [-190, 230], [-40, 160]], ha: { kind: "flat", rot: -25 }, b: [[SH, 70], [190, 230], [40, 160]], hb: { kind: "flat", rot: 25, flip: true } },
-      toLeft: { a: [[-SH, 70], [-290, 180], [-400, 170]], ha: { kind: "palm", rot: -80 }, b: [[SH, 70], [150, 250], [-30, 252]], hb: { kind: "palm", rot: -80 } },
-      clasp:  { a: [[-SH, 70], [-175, 250], [-30, 296]], ha: { kind: "fist" }, b: [[SH, 70], [175, 250], [30, 296]], hb: { kind: "fist" } },
-      judas:  { a: [[-SH, 70], [-245, 220], [-310, 305]], ha: { kind: "flat", flip: true }, b: [[SH, 70], [205, 240], [120, 300]], hb: { kind: "fist" }, bag: true },
-      peter:  { a: [[-SH, 70], [-250, 220], [-250, 312]], ha: { kind: "fist" }, knife: true, b: [[SH, 70], [270, 110], [350, 150]], hb: { kind: "flat", rot: 20 } },
-      reach:  { a: [[-SH, 70], [-215, 230], [-135, 312]], ha: { kind: "flat" }, b: [[SH, 70], [330, 60], [500, 70]], hb: { kind: "flat", rot: 0 } },
-      palmUp: { a: [[-SH, 70], [-215, 230], [-135, 312]], ha: { kind: "flat" }, b: [[SH, 70], [240, 220], [110, 175]], hb: { kind: "palm", rot: 60 } },
-      offer:  { a: [[-SH, 70], [-200, 240], [-95, 245]], ha: { kind: "palm", rot: -60 }, b: [[SH, 70], [200, 240], [95, 245]], hb: { kind: "palm", rot: 60 } },
-      sleep:  { a: [[-SH, 70], [-110, 250], [60, 300]], ha: { kind: "flat" }, b: [[SH, 70], [210, 250], [120, 305]], hb: { kind: "flat", flip: true } }
-    };
-    // els tretze del mural, en ordre (gest, cap i peu)
+    /* ---------------- persones Voyager (IBVOY): el cos original de la placa, vestit; només línia ---------------- */
+    const TABLE_Y = VY.TABLE;          // 485 unitats sota la base del coll
+    const SHORT = { bartomeu: "Bartomeu", jaumemenor: "Jaume el Menor", andreu: "Andreu", judes: "Judes", pere: "Pere", joan: "Joan", crist: "Jesús",
+      tomas: "Tomàs", jaumemajor: "Jaume el Major", felip: "Felip", mateu: "Mateu", tadeu: "Tadeu", simo: "Simó" };
+    // A Milà: només inclinacions suaus i alçades (qui s'aixeca, qui recula), com les tríades del mural
     const LEO = {
-      bartomeu:   { arm: "rest", stand: 80, head: { rot: 8 } },
-      jaumemenor: { arm: "reach", head: { rot: 6 } },
-      andreu:     { arm: "open", head: { rot: -4 } },
-      judes:      { arm: "judas", lean: 10, head: { rot: 4, dx: 10, dy: 40 }, z: 3 },
-      pere:       { arm: "peter", lean: 6, stand: 96, head: { rot: 16, dx: -50, flip: true }, z: 1 },
-      joan:       { arm: "clasp", lean: -10, head: { rot: -20, dx: 6, dy: 18 }, z: 2 },
-      crist:      { arm: "spread", head: { rot: -4 } },
-      tomas:      { arm: "point", head: { flip: true, rot: -6, dx: -10 }, z: 1 },
-      jaumemajor: { arm: "wide", head: { flip: true, rot: 4 }, z: 2 },
-      felip:      { arm: "chest", stand: 60, head: { flip: true, rot: -8 }, z: 0 },
-      mateu:      { arm: "toLeft", head: { flip: true, rot: 10 } },
-      tadeu:      { arm: "palmUp", head: { flip: true, rot: -6 } },
-      simo:       { arm: "offer", head: { flip: true, rot: -10 } }
+      bartomeu: { stand: 120, lean: 5 }, jaumemenor: { lean: 4 }, andreu: { lean: -3, flip: true },
+      judes: { dy: 60, lean: 8 }, pere: { stand: 70, lean: 7, flip: true }, joan: { lean: -8, dy: 16 },
+      crist: {}, tomas: { stand: 50, lean: 5 }, jaumemajor: { lean: -3, flip: true }, felip: { stand: 120, lean: -5 },
+      mateu: { lean: -7, flip: true }, tadeu: { lean: -4 }, simo: { lean: -3, flip: true }
     };
-
-    function tunicSeated(g, fill){
-      VY.shape(g, "M-60,0L0,72L60,0Z", C.paper).attr("stroke", "none");
-      return fill;
-    }
-    // figura asseguda darrere la taula (fins a la línia de la taula)
     function seated(g, id, o){
       o = o || {};
-      const fill = TINT(id), arm = ARM[o.arm || "rest"];
-      const f = g.append("g").attr("class", "vf").attr("transform", `translate(${o.x || 0},${-(o.stand || 0)}) rotate(${o.lean || 0},0,${TABLE_Y + (o.stand || 0)})`).datum(id);
+      const f = g.append("g").attr("class", "vf").datum(id)
+        .attr("transform", `translate(${o.x || 0},${(o.dy || 0) - (o.stand || 0)}) rotate(${o.lean || 0},0,${TABLE_Y + (o.stand || 0)})`);
       if(o.halo){
-        const hd = o.head || {}, ra = (hd.rot || 0) * Math.PI / 180;
-        f.append("circle").attr("class", "nimbus").attr("cx", (hd.dx || 0) + 175 * Math.sin(ra)).attr("cy", (hd.dy || 0) - 175 * Math.cos(ra)).attr("r", o.haloR || 205)
-          .attr("fill", mix(C.yellow, .55)).attr("stroke", C.yellowDark).attr("stroke-width", VW * .6);
-        if(id === "crist"){ // nimbe crucífer, el de Jesús a la iconografia medieval
-          const hx = (hd.dx || 0), hy = (hd.dy || 0) - 175;
-          f.append("path").attr("d", `M${hx - 30},${hy - 205}H${hx + 30}V${hy - 120}H${hx - 30}Z M${hx - 205},${hy - 28}H${hx - 112}V${hy + 28}H${hx - 205}Z M${hx + 112},${hy - 28}H${hx + 205}V${hy + 28}H${hx + 112}Z`)
-            .attr("fill", C.red).attr("fill-opacity", .7);
-        }
+        f.append("circle").attr("class", "nimbus").attr("cx", 0).attr("cy", -180).attr("r", 205)
+          .attr("fill", mix(C.yellow, .5)).attr("stroke", C.yellowDark).attr("stroke-width", VW * .5);
+        if(id === "crist") f.append("path").attr("d", "M-24,-385H24V-300H-24Z M-205,-204H-118V-156H-205Z M118,-204H205V-156H118Z").attr("fill", C.yellowDark);
       }
-      tunicSeated(f, fill);
-      headOf(f, o.head);
-      const bodyBottom = TABLE_Y + (o.stand || 0) + 20;
-      VY.shape(f, `M-75,5Q-150,14 -182,62Q-208,112 -204,210L-200,${bodyBottom}L200,${bodyBottom}L204,210Q208,112 182,62Q150,14 75,5Q40,44 0,74Q-40,44 -75,5Z`, fill);
-      VY.line(f, "M-150,40Q-60,170 140,300", VW * .7);
-      VY.line(f, "M-30,90Q-26,170 -40,250", VW * .55);
-      const handOf = (pts, h) => {
-        VY.tube(f, pts.slice(0, -1).concat([pts[pts.length - 1].map((v, i) => v - (pts[pts.length - 1][i] - pts[pts.length - 2][i]) * .18)]), 34, fill);
-        const [hx, hy] = pts[pts.length - 1];
-        const hg = VY.hand(f, hx, hy, { kind: h.kind, rot: h.rot || 0 });
-        if(h.flip) hg.attr("transform", hg.attr("transform") + " scale(-1,1)");
-      };
-      handOf(arm.a, arm.ha); handOf(arm.b, arm.hb);
-      if(arm.bag){
-        VY.shape(f, "M96,312C70,312 66,360 92,372C112,380 140,374 146,352C150,330 134,312 112,312Z", mix(C.ink, .25));
-        VY.line(f, "M104,312L112,296", VW * .6);
-      }
-      if(arm.knife){
-        VY.shape(f, "M-276,300L-420,280L-420,296L-276,322Z", C.paper);
-      }
+      VY.use(f, "torso", { flip: o.flip });
       return f;
     }
-    // figura reclinada sobre el colze esquerre (convenció dels relleus de banquet): cap a l'esquerra, cames cap a la dreta
+    // reclinat (convenció dels relleus de banquet): tors dret o poc inclinat, colze al coixí, mantell sobre les cames
     function reclined(g, id, o){
       o = o || {};
-      const fill = TINT(id);
-      const f = g.append("g").attr("class", "vf").attr("transform", `translate(${o.x || 0},${o.y || 0})`).datum(id);
-      VY.shape(f, "M-340,372C-340,318 -80,318 -70,372C-70,426 -340,426 -340,372Z", mix(C.ink, .08));            // coixí
-      VY.shape(f, "M-250,190Q-40,170 160,230Q520,300 900,330Q1060,342 1100,392L1100,420L-260,420Z", mix(fill, .75)); // mantell sobre les cames
-      VY.line(f, "M120,300Q420,330 760,360", VW * .6); VY.line(f, "M300,362Q600,382 980,394", VW * .6);
-      VY.shape(f, "M1090,392Q1130,360 1168,384Q1182,410 1150,420L1090,420Z", C.paper);                         // peus
-      const up = f.append("g").attr("transform", `rotate(${o.lean == null ? -24 : o.lean},40,300)`);
-      VY.shape(up, "M-60,0L0,72L60,0Z", C.paper).attr("stroke", "none");
-      headOf(up, o.head);
-      VY.shape(up, "M-75,5Q-150,16 -178,66Q-200,130 -196,240L-186,310Q0,330 176,300L190,200Q206,110 182,64Q150,16 75,5Q40,44 0,74Q-40,44 -75,5Z", fill);
-      VY.line(up, "M-140,48Q-40,170 150,250", VW * .7);
-      // braç esquerre (de la figura): el colze al coixí, l'avantbraç endavant
-      VY.tube(up, [[-SH, 80], [-232, 270], [-150, 236]], 34, fill);
-      VY.hand(up, -128, 234, { kind: "fist" });
-      // braç dret lliure cap a la taula baixa
-      const rb = o.arm === "toChest" ? [[SH, 80], [190, 250], [60, 230]] : [[SH, 80], [262, 250], [384, 322]];
-      VY.tube(up, rb, 34, fill);
-      const hg = VY.hand(up, rb[2][0] + (o.arm === "toChest" ? -14 : 18), rb[2][1] + 6, { kind: "flat", rot: o.arm === "toChest" ? -10 : 34 });
-      if(o.arm === "toChest") hg.attr("transform", hg.attr("transform") + " scale(-1,1)");
+      const f = g.append("g").attr("class", "vf").datum(id).attr("transform", `translate(${o.x || 0},${o.y || 0})`);
+      VY.shape(f, "M-470,610C-470,555 -150,555 -140,610C-140,665 -470,665 -470,610Z");                       // coixí
+      const up = f.append("g").attr("transform", `rotate(${o.lean == null ? -20 : o.lean},0,${VY.HIP})`);
+      VY.use(up, "torso", { flip: o.flip });
+      // mantell sobre el maluc i les cames estirades: maluc, genoll lleugerament doblegat i peus a l'extrem
+      VY.shape(f, "M-300,760C-336,720 -330,640 -250,606C-120,556 120,548 300,590C470,630 600,600 760,596C930,592 1120,632 1300,652C1380,660 1420,628 1470,640C1520,652 1528,712 1500,760Z");
+      VY.line(f, "M300,640C470,676 620,650 780,648C960,646 1140,676 1320,694", VW * .6);
+      VY.line(f, "M160,716C420,724 760,712 1040,722C1200,728 1340,736 1440,742", VW * .6);
+      VY.line(f, "M-250,640C-200,660 -150,700 -140,744", VW * .6);
+      VY.line(f, "M1420,676C1440,690 1444,712 1436,732", VW * .6);
       return f;
     }
-    function headOf(g, h){
-      h = h || {};
-      const u = VY.head(g, h);
-      if(h.flip) u.attr("transform", u.attr("transform") + " scale(-1,1)");
-      return u;
-    }
-    // Judes d'esquena, assegut en un tamboret davant la taula (taula medieval)
+    // Judes d'esquena en un tamboret, davant la taula (taula medieval)
     function backSeated(g, id, o){
-      const fill = TINT(id);
-      const f = g.append("g").attr("class", "vf").attr("transform", `translate(${o.x},${o.y})`).datum(id);
-      VY.shape(f, "M-170,470H170V500H-170Z", mix(C.ink, .1)); VY.line(f, "M-150,500V660M150,500V660", VW);   // tamboret
-      VY.shape(f, "M-70,0Q-150,12 -185,60Q-210,120 -205,260L-190,470L190,470L205,260Q210,120 185,60Q150,12 70,0Z", fill);
-      VY.line(f, "M0,40Q-10,220 0,460", VW * .6); VY.line(f, "M-120,80Q-110,250 -140,430", VW * .5);
-      VY.tube(f, [[-SH, 70], [-250, 260], [-210, 330]], 34, fill);
-      VY.tube(f, [[SH, 70], [250, 260], [210, 330]], 34, fill);
-      VY.head(f, { back: true });
+      const f = g.append("g").attr("class", "vf").datum(id).attr("transform", `translate(${o.x},${o.y})`);
+      VY.use(f, "back", {});
+      VY.shape(f, "M-260,470H260V512H-260Z"); VY.line(f, "M-220,512V700M220,512V700", VW);
       return f;
     }
 
-    // taula en alçat (fris)
+    // taula en alçat
     function tableElev(g, x0, x1, items){
-      VY.shape(g, `M${x0},${TABLE_Y - 18}H${x1}V${TABLE_Y + 8}H${x0}Z`, C.paper);
-      VY.shape(g, `M${x0},${TABLE_Y + 8}H${x1}V${TABLE_Y + 170}H${x0}Z`, C.paper);
-      VY.line(g, `M${x0 + 10},${TABLE_Y + 146}H${x1 - 10}`, VW * .4);
-      for(let x = x0 + 220; x < x1 - 100; x += 420) VY.line(g, `M${x},${TABLE_Y + 26}Q${x + 10},${TABLE_Y + 90} ${x - 4},${TABLE_Y + 140}`, VW * .4);
+      VY.shape(g, `M${x0},${TABLE_Y - 16}H${x1}V${TABLE_Y + 10}H${x0}Z`);
+      VY.shape(g, `M${x0 + 6},${TABLE_Y + 10}H${x1 - 6}V${TABLE_Y + 280}H${x0 + 6}Z`);
+      for(let x = x0 + 300; x < x1 - 150; x += 600) VY.line(g, `M${x},${TABLE_Y + 30}C${x + 14},${TABLE_Y + 110} ${x - 8},${TABLE_Y + 190} ${x + 4},${TABLE_Y + 262}`, VW * .6);
       (items || []).forEach(it => drawItem(g, it));
     }
     function drawItem(g, it){
-      const y = it.y == null ? TABLE_Y - 18 : it.y;
-      if(it.k === "bread") VY.shape(g, `M${it.x - 50},${y}Q${it.x - 46},${y - 54} ${it.x},${y - 56}Q${it.x + 46},${y - 54} ${it.x + 50},${y}Z`, mix(C.yellow, .45));
-      else if(it.k === "glass"){ VY.shape(g, `M${it.x - 22},${y - 78}L${it.x + 22},${y - 78}L${it.x + 14},${y}L${it.x - 14},${y}Z`, mix(C.blue, .12)); }
-      else if(it.k === "cup") VY.shape(g, `M${it.x - 34},${y - 70}L${it.x + 34},${y - 70}L${it.x + 26},${y}L${it.x - 26},${y}Z`, mix(C.ink, .14));
-      else if(it.k === "plate") VY.shape(g, `M${it.x - 80},${y - 4}Q${it.x},${y - 26} ${it.x + 80},${y - 4}Q${it.x},${y + 6} ${it.x - 80},${y - 4}Z`, C.paper);
-      else if(it.k === "bowl") VY.shape(g, `M${it.x - 110},${y - 60}H${it.x + 110}Q${it.x + 100},${y} ${it.x},${y}Q${it.x - 100},${y} ${it.x - 110},${y - 60}Z`, mix(C.red, .25));
+      const y = it.y == null ? TABLE_Y - 16 : it.y, x = it.x;
+      if(it.k === "bread") VY.shape(g, `M${x - 60},${y}C${x - 58},${y - 66} ${x + 58},${y - 66} ${x + 60},${y}Z`);
+      else if(it.k === "glass") VY.shape(g, `M${x - 26},${y - 96}L${x + 26},${y - 96}L${x + 16},${y}L${x - 16},${y}Z`);
+      else if(it.k === "cup") VY.shape(g, `M${x - 40},${y - 84}L${x + 40},${y - 84}L${x + 30},${y}L${x - 30},${y}Z`);
+      else if(it.k === "plate") VY.shape(g, `M${x - 100},${y - 4}Q${x},${y - 30} ${x + 100},${y - 4}Q${x},${y + 6} ${x - 100},${y - 4}Z`);
+      else if(it.k === "bowl") VY.shape(g, `M${x - 130},${y - 74}H${x + 130}C${x + 120},${y - 10} ${x + 60},${y} ${x},${y}C${x - 60},${y} ${x - 120},${y - 10} ${x - 130},${y - 74}Z`);
       else if(it.k === "fish"){
-        const L = it.L || 150;
-        VY.shape(g, `M${it.x - L / 2},${y - 24}Q${it.x},${y - 64} ${it.x + L / 2},${y - 24}Q${it.x},${y + 12} ${it.x - L / 2},${y - 24}Z M${it.x + L / 2},${y - 24}L${it.x + L / 2 + 40},${y - 50}L${it.x + L / 2 + 40},${y + 2}Z`, mix(C.blue, .3));
+        const L = it.L || 170;
+        VY.shape(g, `M${x - L / 2},${y - 28}Q${x},${y - 74} ${x + L / 2},${y - 28}Q${x},${y + 14} ${x - L / 2},${y - 28}Z M${x + L / 2},${y - 28}L${x + L / 2 + 46},${y - 58}L${x + L / 2 + 46},${y + 2}Z`);
       }
-      else if(it.k === "orange") VY.shape(g, `M${it.x - 22},${y - 10}A22,12 0 0 1 ${it.x + 22},${y - 10}Z`, C.yellow);
-      else if(it.k === "salt") VY.shape(g, `M${it.x - 26},${y}L${it.x + 30},${y - 30}L${it.x + 40},${y - 12}L${it.x - 16},${y + 6}Z`, mix(C.ink, .2));
+      else if(it.k === "salt") VY.shape(g, `M${x - 30},${y}L${x + 34},${y - 34}L${x + 46},${y - 14}L${x - 18},${y + 6}Z`);
     }
 
-    // escena de cada pas en alçat. Torna l'extensió [x0,x1,y0,y1] en unitats
+    // escena de cada pas en alçat. Torna {ext:[x0,x1,y0,y1], labels:[{id,x}]}
     function scene(g, idx, mob){
       if(idx === 0){
-        // un divan del triclinium: Judes, Jesús i Joan (al pit de Jesús)
-        const order = [["judes", 0, 0], ["crist", 720, 18], ["joan", 1240, 36]];
-        VY.shape(g, "M-380,440H2400V490H-380Z", mix(C.ink, .06));
-        VY.line(g, "M-340,490V630M2360,490V630", VW);
-        order.forEach(([id, x, y]) => reclined(g, id, { x, y, lean: id === "joan" ? -40 : -24, head: id === "joan" ? { rot: -14, flip: true } : id === "judes" ? { rot: 6 } : {}, arm: id === "joan" ? "toChest" : null }));
-        // taula baixa al davant
+        const order = [["judes", 0, 0, -8], ["crist", 900, 24, -8], ["joan", 1660, 48, -12]];
+        VY.shape(g, "M-520,760H2900V812H-520Z"); VY.line(g, "M-470,812V960M2850,812V960", VW);
+        order.forEach(([id, x, y, lean]) => reclined(g, id, { x, y, lean, flip: id === "joan" }));
         const tg = g.append("g");
-        VY.shape(tg, "M380,580H1900V605H380Z", C.paper); VY.line(tg, "M440,605V720M1840,605V720", VW);
-        [{ k: "bowl", x: 1140, y: 580 }, { k: "cup", x: 700, y: 580 }, { k: "cup", x: 1560, y: 580 }, { k: "bread", x: 880, y: 580 }, { k: "bread", x: 1380, y: 580 }].forEach(it => drawItem(tg, it));
-        return [-390, 2420, -380, 730];
+        VY.shape(tg, "M300,900H2300V926H300Z"); VY.line(tg, "M370,926V1060M2230,926V1060", VW);
+        [{ k: "bowl", x: 1300, y: 900 }, { k: "cup", x: 700, y: 900 }, { k: "cup", x: 1900, y: 900 }, { k: "bread", x: 950, y: 900 }, { k: "bread", x: 1650, y: 900 }].forEach(it => drawItem(tg, it));
+        return { ext: [-540, 2920, -360, 1070], labels: order.map(([id, x]) => ({ id, x })) };
       }
       if(idx === 1){
-        // stibadium: cinc comensals en semicercle, el centre més lluny (més amunt)
         const ids = ["crist", "joan", "judes", "andreu", "tomas"];
-        const xs = [0, 640, 1280, 1920, 2560], lift = [40, -10, -40, -10, 40];
-        VY.shape(g, "M-380,460Q1400,330 3720,460L3720,510Q1400,380 -380,510Z", mix(C.ink, .06));
-        ids.forEach((id, i) => reclined(g, id, { x: xs[i], y: lift[i], head: i > 2 ? { flip: true } : {} }));
-        const tg = g.append("g"), cxT = 1640;
-        VY.shape(tg, `M${cxT - 520},600Q${cxT},575 ${cxT + 520},600L${cxT + 520},625Q${cxT},600 ${cxT - 520},625Z`, C.paper); VY.line(tg, `M${cxT},625V740`, VW * 1.6);
-        VY.shape(tg, `M${cxT - 200},600Q${cxT},556 ${cxT + 200},600Z`, C.paper);
-        [{ k: "fish", x: cxT - 70, y: 592, L: 130 }, { k: "fish", x: cxT + 70, y: 596, L: 130 }, { k: "bread", x: cxT - 360, y: 602 }, { k: "bread", x: cxT + 360, y: 602 }].forEach(it => drawItem(tg, it));
-        return [-390, 3740, -400, 750];
+        const xs = [0, 780, 1560, 2340, 3120], lift = [40, -10, -40, -10, 40];
+        VY.shape(g, "M-520,800Q1560,660 4740,800L4740,852Q1560,712 -520,852Z");
+        ids.forEach((id, i) => reclined(g, id, { x: xs[i], y: lift[i], lean: -8, flip: i > 2 }));
+        const tg = g.append("g"), cxT = 1900;
+        VY.shape(tg, `M${cxT - 640},940Q${cxT},912 ${cxT + 640},940L${cxT + 640},966Q${cxT},938 ${cxT - 640},966Z`); VY.line(tg, `M${cxT},966V1080`, VW * 1.6);
+        VY.shape(tg, `M${cxT - 260},940Q${cxT},880 ${cxT + 260},940Z`);
+        [{ k: "fish", x: cxT - 90, y: 930 }, { k: "fish", x: cxT + 90, y: 936 }, { k: "bread", x: cxT - 460, y: 942 }, { k: "bread", x: cxT + 460, y: 942 }].forEach(it => drawItem(tg, it));
+        return { ext: [-540, 4760, -420, 1090], labels: ids.map((id, i) => ({ id, x: xs[i] })) };
       }
       if(idx === 2){
-        // taula medieval: dotze amb aurèola darrere, Joan adormit, Judes d'esquena al davant
         const back = ["bartomeu", "jaumemenor", "andreu", "pere", "tomas", "joan", "crist", "jaumemajor", "felip", "mateu", "tadeu", "simo"];
         const n = mob ? 7 : 12, off = mob ? 3 : 0;
         const list = back.slice(off, off + n);
-        const sp = 420, x0 = -(n - 1) * sp / 2;
-        list.forEach((id, i) => { if(id !== "joan") seated(g, id, { x: x0 + i * sp, halo: true, arm: "rest" }); });
-        if(list.includes("joan")) seated(g, "joan", { x: x0 + list.indexOf("joan") * sp - 10, arm: "sleep", halo: true, haloR: 150, lean: 30, head: { rot: 42, dx: 0, dy: 0 } });
-        tableElev(g, x0 - 280, -x0 + 280, list.flatMap((id, i) => i % 2 ? [{ k: "cup", x: x0 + i * sp + 150 }] : [{ k: "bread", x: x0 + i * sp + 170 }]).concat([{ k: "plate", x: x0 + list.indexOf("crist") * sp + 30 }, { k: "fish", x: x0 + list.indexOf("crist") * sp + 30, y: TABLE_Y - 24, L: 120 }]));
-        backSeated(g, "judes", { x: x0 + list.indexOf("crist") * sp - 60, y: TABLE_Y + 140 });
-        return [x0 - 300, -x0 + 300, -440, TABLE_Y + 140 + 670];
+        const sp = 600, x0 = -(n - 1) * sp / 2;
+        list.forEach((id, i) => seated(g, id, { x: x0 + i * sp, halo: true, lean: id === "joan" ? 9 : 0, flip: i % 2 === 1 }));
+        const xc = x0 + list.indexOf("crist") * sp;
+        tableElev(g, x0 - 380, -x0 + 380, list.flatMap((id, i) => id === "crist" ? [] : i % 2 ? [{ k: "cup", x: x0 + i * sp + 210 }] : [{ k: "bread", x: x0 + i * sp + 220 }])
+          .concat([{ k: "plate", x: xc + 40 }, { k: "fish", x: xc + 40, y: TABLE_Y - 22, L: 140 }]));
+        backSeated(g, "judes", { x: xc - 40, y: TABLE_Y + 150 });
+        return { ext: [x0 - 400, -x0 + 400, -420, TABLE_Y + 150 + 720], labels: [{ id: "joan", x: x0 + list.indexOf("joan") * sp }, { id: "crist", x: xc }, { id: "judes", x: xc + 560 }] };
       }
-      // Leonardo: els tretze en quatre tríades
-      const sx = 13.4;
-      const ids = IDS;
-      const pos = Object.fromEntries(ids.map((id, i) => [id, xs13[i] * sx]));
-      const order = ids.slice().sort((a, b) => ((LEO[a].z || 0) - (LEO[b].z || 0)) || (ids.indexOf(a) - ids.indexOf(b)));
-      order.forEach(id => seated(g, id, Object.assign({ x: pos[id] }, LEO[id])));
+      const pos = Object.fromEntries(IDS.map((id, i) => [id, xs13[i] * 17]));
+      IDS.forEach(id => seated(g, id, Object.assign({ x: pos[id] }, LEO[id])));
       const items = [];
-      ids.forEach((id, i) => {
-        if(id === "crist"){ items.push({ k: "plate", x: pos[id] }, { k: "bread", x: pos[id] + 150 }, { k: "glass", x: pos[id] - 150 }); return; }
-        items.push({ k: "glass", x: pos[id] + (i % 2 ? 100 : -90) });
-        if(i % 3 === 1) items.push({ k: "bread", x: pos[id] - 30 });
+      IDS.forEach((id, i) => {
+        if(id === "crist"){ items.push({ k: "plate", x: pos[id] }, { k: "bread", x: pos[id] + 190 }, { k: "glass", x: pos[id] - 190 }); return; }
+        items.push({ k: "glass", x: pos[id] + (i % 2 ? 150 : -140) });
+        if(i % 3 === 1) items.push({ k: "bread", x: pos[id] - 20 });
       });
-      items.push({ k: "plate", x: pos.andreu + 40 }, { k: "fish", x: pos.andreu + 40, y: TABLE_Y - 24, L: 110 }, { k: "orange", x: pos.andreu + 140 }, { k: "orange", x: pos.andreu - 60 },
-                 { k: "plate", x: pos.mateu - 60 }, { k: "fish", x: pos.mateu - 60, y: TABLE_Y - 24, L: 110 }, { k: "orange", x: pos.mateu + 40 },
-                 { k: "salt", x: pos.judes - 120 });
-      tableElev(g, pos.bartomeu - 300, pos.simo + 300, items);
-      return [pos.bartomeu - 320, pos.simo + 320, -500, TABLE_Y + 180];
+      items.push({ k: "plate", x: pos.andreu + 60 }, { k: "fish", x: pos.andreu + 60, y: TABLE_Y - 22, L: 130 },
+                 { k: "plate", x: pos.mateu - 80 }, { k: "fish", x: pos.mateu - 80, y: TABLE_Y - 22, L: 130 },
+                 { k: "salt", x: pos.judes - 170 });
+      tableElev(g, pos.bartomeu - 420, pos.simo + 420, items);
+      return { ext: [pos.bartomeu - 440, pos.simo + 440, -500, TABLE_Y + 290], labels: IDS.map(id => ({ id, x: pos[id] })) };
     }
 
     let curStep = 0, updFn = null;
 
     V.mount(el, (node, w) => {
       const mob = w < 560;
-      const hFr = mob ? 124 : 210, hPlan = mob ? 150 : 250, gap = mob ? 20 : 26;
+      const hFr = mob ? 132 : 232, hPlan = mob ? 146 : 240, gap = mob ? 18 : 24;
       const h = hFr + gap + hPlan;
       const s = V.svg(node, w, h, "Fris de persones en alçat i planta esquemàtica de com seien els tretze comensals: del triclinium reclinat de Jerusalem al fris de Leonardo.");
       const yPlan0 = hFr + gap;
@@ -321,8 +236,6 @@
         .attr("fill", mix(C.yellow, .55)).attr("stroke", C.yellowDark).attr("stroke-width", .6);
       figs.append("ellipse").attr("class", "body").attr("fill", id => TINT(id)).attr("stroke", C.ink).attr("stroke-width", .9);
       figs.append("circle").attr("class", "head").attr("r", 6.4 * k).attr("fill", C.paper).attr("stroke", C.ink).attr("stroke-width", .9);
-      figs.append("path").attr("class", "hair").attr("fill", C.ink2)
-        .attr("d", `M${-6.4 * k},0A${6.4 * k},${6.4 * k} 0 0 1 ${6.4 * k},0Q0,${2.2 * k} ${-6.4 * k},0Z`);
       const bodyAttrs = st => st.kind === "rec" ? { cx: 26 * k, rx: 26 * k, ry: 8.5 * k } : { cx: 4 * k, rx: 6.5 * k, ry: 12.5 * k };
       function placeFigs(idx, animate){
         const L = LAY[idx];
@@ -332,7 +245,6 @@
         (animate ? b.transition("pos").duration(dur(1100)).ease(ease) : b)
           .attr("cx", id => bodyAttrs(L[id]).cx).attr("rx", id => bodyAttrs(L[id]).rx).attr("ry", id => bodyAttrs(L[id]).ry);
         // el cabell mira cap enrere (cap als peus)
-        figs.select("path.hair").attr("transform", "rotate(90)");
         const nb = figs.select("circle.nimbus");
         (animate ? nb.transition("nim").duration(dur(800)) : nb).attr("opacity", id => HALO[idx] && id !== "judes" ? 1 : 0);
       }
@@ -400,10 +312,23 @@
         if(animate) old.transition().duration(dur(350)).style("opacity", 0).remove(); else old.remove();
         const outer = gEl.append("g").attr("class", "fz");
         const inner = outer.append("g");
-        const [x0, x1, y0, y1] = scene(inner, idx, mob);
-        const sc = Math.min((w - 4) / (x1 - x0), (hFr - 4) / (y1 - y0));
-        const ox = (w - sc * (x1 - x0)) / 2 - sc * x0, oy = (hFr - sc * (y1 - y0)) / 2 - sc * y0;
+        const res = scene(inner, idx, mob), [x0, x1, y0, y1] = res.ext;
+        const many = res.labels.length > 5;
+        const labs = mob && many ? res.labels.filter(l => ["crist", "joan", "judes"].includes(l.id)) : res.labels;
+        const labH = many && !mob ? 30 : 16;
+        const sc = Math.min((w - 4) / (x1 - x0), (hFr - labH - 4) / (y1 - y0));
+        const ox = (w - sc * (x1 - x0)) / 2 - sc * x0, oy = (hFr - labH - sc * (y1 - y0)) / 2 - sc * y0;
         inner.attr("transform", `translate(${ox},${oy}) scale(${sc})`);
+        // noms sota el fris (en dues files quan són tretze)
+        const gl = outer.append("g").style("pointer-events", "none");
+        const yl = oy + sc * y1 + 13;
+        labs.forEach((l, i) => {
+          const key = ["crist", "joan", "judes"].includes(l.id);
+          const t = V.t(gl, ox + sc * l.x, yl + (many && !mob && i % 2 ? 14 : 0), SHORT[l.id].replace("Jaume el ", "Jaume "), {
+            anchor: "middle", size: 11, weight: key ? 700 : 400, fill: l.id === "judes" ? C.red : key ? C.ink : C.muted });
+          if(l.id === "joan" || l.id === "crist") gl.append("circle").attr("cx", ox + sc * l.x - t.node().getComputedTextLength() / 2 - 6)
+            .attr("cy", +t.attr("y") - 4).attr("r", 3.2).attr("fill", l.id === "joan" ? C.yellow : C.ink);
+        });
         friezeFigs = inner.selectAll("g.vf").attr("tabindex", "0").attr("role", "button").attr("aria-label", id => NOM[id]).style("cursor", "pointer");
         friezeFigs.on("pointerenter pointerdown", show).on("focus", show).on("blur", hide)
           .on("pointerleave", ev => { if(ev.pointerType === "mouse") hide(); });
