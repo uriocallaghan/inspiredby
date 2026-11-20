@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-4ab8578cffd9";
+const CACHE_NAME = "ib-offline-a08685c86ca4";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -184,6 +184,15 @@ const LOCAL_ASSETS = [
   "/articles/migracio-vertical/index.html",
   "/articles/migracio-vertical/migracio.js",
   "/articles/migracio-vertical/thumb.webp",
+  "/articles/navegar-sense-mapa/",
+  "/articles/navegar-sense-mapa/article.css",
+  "/articles/navegar-sense-mapa/article.js",
+  "/articles/navegar-sense-mapa/cites.js",
+  "/articles/navegar-sense-mapa/cover.html",
+  "/articles/navegar-sense-mapa/cover.jpg",
+  "/articles/navegar-sense-mapa/dades.js",
+  "/articles/navegar-sense-mapa/index.html",
+  "/articles/navegar-sense-mapa/thumb.webp",
   "/articles/on-va-el-co2/",
   "/articles/on-va-el-co2/article.css",
   "/articles/on-va-el-co2/cover.html",

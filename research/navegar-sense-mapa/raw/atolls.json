@@ -1,0 +1,4739 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-20T15:07:21Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 4075714883,
+  "lat": -23.3720739,
+  "lon": -149.4661309,
+  "tags": {
+    "alt_name": "Toubouaï",
+    "alt_name:fr": "Toubouaï",
+    "name": "Tubuai",
+    "name:en": "Tubuai",
+    "name:fr": "Tubuai",
+    "name:ru": "Тубуаи",
+    "name:ty": "Tupua'i",
+    "place": "island"
+  }
+},
+{
+  "type": "way",
+  "id": 22382333,
+  "center": {
+    "lat": -15.9453869,
+    "lon": -145.8743620
+  },
+  "tags": {
+    "name": "Teahuroa",
+    "natural": "coastline",
+    "place": "island"
+  }
+},
+{
+  "type": "way",
+  "id": 22383868,
+  "center": {
+    "lat": -11.4299353,
+    "lon": -151.8186575
+  },
+  "tags": {
+    "name": "Flint Island",
+    "name:de": "Flint",
+    "name:en": "Flint Island",
+    "name:zh": "弗林特岛",
+    "natural": "coastline",
+    "place": "island",
+    "wikidata": "Q741650"
+  }
+},
+{
+  "type": "way",
+  "id": 22384818,
+  "center": {
+    "lat": -17.8755906,
+    "lon": -148.0676308
+  },
+  "tags": {
+    "admin_level": "9",
+    "alt_name": "Mehetia",
+    "boundary": "administrative",
+    "name": "Meheti'a",
+    "name:en": "Mehetia",
+    "name:fr": "Meheti'a",
+    "name:lt": "Mehetia",
+    "natural": "coastline",
+    "official_name": "Tairapu-Est",
+    "official_name:description": "Nom de la commune",
+    "old_name": "Meketu",
+    "place": "island",
+    "source": "SAU",
+    "source:geometry": "Theodolite",
+    "source:geometry:date": "2001",
+    "wikidata": "Q1340711",
+    "wikipedia": "en:Mehetia"
+  }
+},
+{
+  "type": "way",
+  "id": 22384857,
+  "center": {
+    "lat": -9.4364341,
+    "lon": -138.9278660
+  },
+  "tags": {
+    "name": "Fatu Huku",
+    "natural": "coastline",
+    "place": "island",
+    "wikidata": "Q239964",
+    "wikipedia": "fr:Fatu Huku"
+  }
+},
+{
+  "type": "way",
+  "id": 22384959,
+  "center": {
+    "lat": -17.3339982,
+    "lon": -145.5719992
+  },
+  "tags": {
+    "name": "Anaa",
+    "natural": "coastline",
+    "place": "island"
+  }
+},
+{
+  "type": "way",
+  "id": 22386181,
+  "center": {
+    "lat": -23.0840923,
+    "lon": -134.8857780
+  },
+  "tags": {
+    "name": "Totegegie",
+    "name:fr": "Totegegie",
+    "name:ru": "Тотегегие",
+    "natural": "coastline",
+    "place": "island",
+    "wikidata": "Q31932292",
+    "wikipedia": "ty:Totegegie"
+  }
+},
+{
+  "type": "way",
+  "id": 22386199,
+  "center": {
+    "lat": -14.9509575,
+    "lon": -144.5476913
+  },
+  "tags": {
+    "name": "Tikei",
+    "name:en": "Tikei",
+    "name:fr": "Tikei",
+    "name:ru": "Тикеи",
+    "natural": "coastline",
+    "old_name": "Manu;Tikai;Tiku;Île Belrekieglijk;Île Carlshoff;Île Romanzov",
+    "old_name:de": "Carlshoff Insel",
+    "old_name:fr": "Manu;Tikai;Tiku;Île Belrekieglijk;Île Carlshoff;Île Romanzov",
+    "old_name:nl": "Belrekieglijk Eiland",
+    "old_name:ru": "остров Румянцева",
+    "old_name:ty": "Manu;Tikai;Tiku",
+    "place": "island",
+    "wikidata": "Q1814565",
+    "wikipedia": "fr:Tikei"
+  }
+},
+{
+  "type": "way",
+  "id": 22386883,
+  "center": {
+    "lat": -16.5591537,
+    "lon": -151.5273816
+  },
+  "tags": {
+    "name": "Motu Tehotu",
+    "natural": "coastline",
+    "place": "island",
+    "source": "SAU",
+    "source:geometry": "Satellite photogrammetry",
+    "source:geometry:date": "2013"
+  }
+},
+{
+  "type": "way",
+  "id": 22386975,
+  "center": {
+    "lat": -17.0187506,
+    "lon": -149.5910512
+  },
+  "tags": {
+    "name": "Onetahi",
+    "natural": "coastline",
+    "place": "island",
+    "source:geometry": "Theodolite",
+    "wikidata": "Q31930236"
+  }
+},
+{
+  "type": "way",
+  "id": 22386993,
+  "center": {
+    "lat": -16.7651426,
+    "lon": -150.9569258
+  },
+  "tags": {
+    "name": "Motu Murimahora",
+    "natural": "coastline",
+    "place": "island",
+    "source": "SAU",
+    "source:geometry": "Satellite photogrammetry",
+    "source:geometry:date": "2014"
+  }
+},
+{
+  "type": "way",
+  "id": 22387724,
+  "center": {
+    "lat": -16.9937542,
+    "lon": -149.5761584
+  },
+  "tags": {
+    "name": "Tiaruanu",
+    "natural": "coastline",
+    "place": "island",
+    "source:geometry": "Theodolite"
+  }
+},
+{
+  "type": "way",
+  "id": 22389506,
+  "center": {
+    "lat": -15.8388968,
+    "lon": -148.2508292
+  },
+  "tags": {
+    "admin_level": "9",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Makatea",
+    "name:en": "Makatea",
+    "name:fr": "Makatea",
+    "name:ru": "Макатеа",
+    "natural": "coastline",
+    "old_name": "Mangaia-Te-Vai-Tamae;Île du Rafraîchissement;San Diego;Maka Tableland;Aurora;Papa Tea",
+    "old_name:en": "Maka Tableland;Aurora",
+    "old_name:es": "San Diego",
+    "old_name:fr": "Mangaia-Te-Vai-Tamae;Île du Rafraîchissement;San Diego;Maka Tableland;Aurora;Papa Tea",
+    "old_name:nl": "Eiland von Verkwikking",
+    "old_name:ty": "Mangaia-Te-Vai-Tamae;Papa Tea",
+    "place": "island",
+    "source:geometry": "Theodolite",
+    "wikidata": "Q118904",
+    "wikipedia": "fr:Makatea (île)"
+  }
+},
+{
+  "type": "way",
+  "id": 22389556,
+  "center": {
+    "lat": -18.5574062,
+    "lon": -139.2119268
+  },
+  "tags": {
+    "name": "Akiaki",
+    "name:en": "Akiaki",
+    "name:fr": "Akiaki",
+    "name:ru": "Акиаки",
+    "natural": "coastline",
+    "old_name": "Île des Lanciers;Thrum Cup",
+    "old_name:en": "Thrum Cup",
+    "old_name:fr": "Île des Lanciers",
+    "place": "island",
+    "wikipedia": "fr:Akiaki"
+  }
+},
+{
+  "type": "way",
+  "id": 22389662,
+  "center": {
+    "lat": -23.1661857,
+    "lon": -135.0360692
+  },
+  "tags": {
+    "name": "Agakauitai",
+    "name:en": "Agakauitai",
+    "name:fr": "Agakauitai",
+    "name:ru": "Агакауитаи",
+    "name:ty": "Agakauitai",
+    "natural": "coastline",
+    "place": "island",
+    "source:geometry": "Satellite photogrammetry",
+    "source:geometry:date": "2005",
+    "wikipedia": "fr:Agakauitai"
+  }
+},
+{
+  "type": "way",
+  "id": 22390084,
+  "center": {
+    "lat": -21.8018420,
+    "lon": -154.6984338
+  },
+  "tags": {
+    "name": "Île du Nordêt",
+    "natural": "coastline",
+    "place": "island",
+    "wikidata": "Q31933087"
+  }
+},
+{
+  "type": "way",
+  "id": 22391205,
+  "center": {
+    "lat": -19.2795724,
+    "lon": -138.7856530
+  },
+  "tags": {
+    "name": "Nukutavake",
+    "name:en": "Nukutavake",
+    "name:fr": "Nukutavake",
+    "name:ru": "Нукутаваке",
+    "natural": "coastline",
+    "old_name": "Maragai;Île de la Reine Charlotte",
+    "old_name:en": "Queen Charlotte Island",
+    "old_name:fr": "Maragai;Île de la Reine Charlotte",
+    "old_name:ty": "Maragai",
+    "place": "island",
+    "source": "Bing",
+    "wikidata": "Q968883",
+    "wikipedia": "fr:Nukutavake"
+  }
+},
+{
+  "type": "way",
+  "id": 22391379,
+  "center": {
+    "lat": -14.1011018,
+    "lon": -141.4283840
+  },
+  "tags": {
+    "name": "Tepoto Nord",
+    "name:en": "North Tepoto",
+    "name:fr": "Tepoto Nord",
+    "name:ru": "Северный Тепото",
+    "natural": "coastline",
+    "old_name": "Toho;Pukapoto;Île de la Désolation",
+    "old_name:en": "Wytoohee Island;Wutoohee Island",
+    "old_name:fr": "Toho;Pukapoto;Île de la Désolation",
+    "old_name:ty": "Toho;Pukapoto",
+    "place": "island",
+    "wikidata": "Q661756",
+    "wikipedia": "fr:Tepoto Nord"
+  }
+},
+{
+  "type": "way",
+  "id": 22391920,
+  "center": {
+    "lat": -19.1477679,
+    "lon": -140.7033275
+  },
+  "tags": {
+    "name": "Paraoa",
+    "natural": "coastline",
+    "place": "island"
+  }
+},
+{
+  "type": "way",
+  "id": 22392046,
+  "center": {
+    "lat": -15.7421160,
+    "lon": -144.6309087
+  },
+  "tags": {
+    "name": "Taiaro",
+    "name:en": "Taiaro",
+    "name:fr": "Taiaro",
+    "name:ru": "Таиаро",
+    "natural": "coastline",
+    "old_name": "Maro-Taua;King's Island",
+    "old_name:en": "King's Island",
+    "old_name:fr": "Maro-Taua",
+    "old_name:ty": "Maro-Taua",
+    "place": "island"
+  }
+},
+{
+  "type": "way",
+  "id": 23481289,
+  "center": {
+    "lat": -16.5178692,
+    "lon": -151.7674390
+  },
+  "tags": {
+    "alt_name": "Toopua",
+    "name": "To’opua",
+    "natural": "coastline",
+    "place": "island",
+    "source": "SAU",
+    "source:geometry": "Satellite photogrammetry",
+    "source:geometry:date": "2010",
+    "wikidata": "Q31932279",
+    "wikipedia": "en:Toopua"
+  }
+},
+{
+  "type": "way",
+  "id": 114215637,
+  "center": {
+    "lat": -16.9928377,
+    "lon": -149.5443573
+  },
+  "tags": {
+    "name": "Horoatera",
+    "natural": "coastline",
+    "place": "island",
+    "source:geometry": "Theodolite"
+  }
+},
+{
+  "type": "way",
+  "id": 137443040,
+  "center": {
+    "lat": -17.3801429,
+    "lon": -141.5065576
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Tauere",
+    "name:en": "Tauere",
+    "name:fr": "Tauere",
+    "name:ru": "Тауэре",
+    "natural": "atoll",
+    "old_name": "Te Putua;San Simon y Judas",
+    "old_name:es": "San Simon y Judas",
+    "old_name:fr": "Te Putua;San Simon y Judas",
+    "old_name:ty": "Te Putua",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q671261",
+    "wikipedia": "fr:Tauere"
+  }
+},
+{
+  "type": "way",
+  "id": 137535952,
+  "center": {
+    "lat": -19.6355206,
+    "lon": -140.4083786
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Ahunui",
+    "name:en": "Ahunui",
+    "name:fr": "Ahunui",
+    "name:ru": "Ахунуи",
+    "natural": "atoll",
+    "old_name": "Fanga-Taufa;Nga-Taumanga",
+    "old_name:fr": "Fanga-Taufa;Nga-Taumanga",
+    "old_name:ty": "Fanga-Taufa;Nga-Taumanga",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q403039",
+    "wikipedia": "fr:Ahunui"
+  }
+},
+{
+  "type": "way",
+  "id": 137538729,
+  "center": {
+    "lat": -17.4119569,
+    "lon": -145.4982133
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Anaa",
+    "name:ar": "أنا",
+    "name:en": "Anaa",
+    "name:fr": "Anaa",
+    "name:ru": "Анаа",
+    "natural": "atoll",
+    "place": "atoll",
+    "postal_code": "98760",
+    "source": "Bing",
+    "wikidata": "Q483126",
+    "wikipedia": "fr:Anaa (atoll)"
+  }
+},
+{
+  "type": "way",
+  "id": 137538732,
+  "center": {
+    "lat": -17.3736519,
+    "lon": -145.5570034
+  },
+  "tags": {
+    "name": "Anaa",
+    "natural": "coastline",
+    "place": "island",
+    "source": "Bing"
+  }
+},
+{
+  "type": "way",
+  "id": 137635667,
+  "center": {
+    "lat": -20.7017637,
+    "lon": -143.0550242
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Nukutepipi",
+    "name:en": "Nukutepipi",
+    "name:fr": "Nukutepipi",
+    "name:ru": "Нукутепипи",
+    "natural": "atoll",
+    "old_name": "Nuku-Te-Pipi;Île Carteret;Île Margaret",
+    "old_name:en": "Carteret Island;Margaret Island",
+    "old_name:fr": "Nuku-Te-Pipi;Île Carteret;Île Margaret",
+    "old_name:ty": "Nuku-Te-Pipi",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1814571",
+    "wikipedia": "fr:Nukutepipi"
+  }
+},
+{
+  "type": "way",
+  "id": 137635671,
+  "center": {
+    "lat": -20.6155587,
+    "lon": -143.2869364
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Anuanurunga",
+    "name:en": "Anuanurunga",
+    "name:fr": "Anuanurunga",
+    "name:ru": "Ануанурунга",
+    "natural": "atoll",
+    "old_name": "Anua-Nurunga;Teku",
+    "old_name:en": "Teku",
+    "old_name:fr": "Anua-Nurunga",
+    "old_name:ty": "Anua-Nurunga",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q612235",
+    "wikipedia": "fr:Anuanurunga"
+  }
+},
+{
+  "type": "way",
+  "id": 137635676,
+  "center": {
+    "lat": -20.4345088,
+    "lon": -143.5398285
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Anuanuraro",
+    "name:en": "Anuanuraro",
+    "name:fr": "Anuanuraro",
+    "name:ru": "Ануанураро",
+    "natural": "atoll",
+    "old_name": "Archange",
+    "old_name:en": "Archangel",
+    "old_name:fr": "Archange",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1814524",
+    "wikipedia": "fr:Anuanuraro"
+  }
+},
+{
+  "type": "way",
+  "id": 137878290,
+  "center": {
+    "lat": -17.5878165,
+    "lon": -142.6084631
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Hikueru",
+    "name:en": "Hikueru",
+    "name:fr": "Hikueru",
+    "name:ru": "Хикуэру",
+    "natural": "atoll",
+    "old_name": "Tiveru;Te Karena;San Juan;Île Melville",
+    "old_name:en": "Melville Island",
+    "old_name:fr": "Tiveru;Te Karena;San Juan;Île Melville",
+    "old_name:pt": "San Juan",
+    "old_name:ty": "Tiveru;Te Karena",
+    "wikipedia": "fr:Hikueru"
+  }
+},
+{
+  "type": "way",
+  "id": 137878580,
+  "center": {
+    "lat": -16.7303767,
+    "lon": -144.0988826
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Hiti",
+    "name:en": "Hiti",
+    "name:fr": "Hiti",
+    "name:ru": "Хити",
+    "natural": "atoll",
+    "old_name": "Hiti-Rau-Mea;Île Raeffsky;Île Raievski",
+    "old_name:en": "Raeffsky Island;Raievski Island",
+    "old_name:fr": "Hiti-Rau-Mea;Île Raeffsky;Île Raievski",
+    "old_name:ru": "Остров Раевского",
+    "old_name:ty": "Hiti-Rau-Mea",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q980013",
+    "wikipedia": "fr:Hiti"
+  }
+},
+{
+  "type": "way",
+  "id": 138003423,
+  "center": {
+    "lat": -19.2009137,
+    "lon": -141.2439107
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "name": "Manuhangi",
+    "natural": "atoll",
+    "source": "Bing"
+  }
+},
+{
+  "type": "way",
+  "id": 138003853,
+  "center": {
+    "lat": -22.0137364,
+    "lon": -136.1906583
+  },
+  "tags": {
+    "alt_name": "Maria Est",
+    "alt_name:en": "East Maria",
+    "alt_name:fr": "Maria Est",
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Maria",
+    "name:en": "Maria",
+    "name:fr": "Maria",
+    "name:ru": "Мария",
+    "natural": "atoll",
+    "old_name": "Île Moerenhout",
+    "old_name:en": "Moerenhout Island",
+    "old_name:fr": "Île Moerenhout",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1895885",
+    "wikipedia": "fr:Maria (Tuamotu)"
+  }
+},
+{
+  "type": "way",
+  "id": 138004327,
+  "center": {
+    "lat": -18.0541767,
+    "lon": -142.2905914
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Marokau",
+    "name:en": "Marokau",
+    "name:fr": "Marokau",
+    "name:ru": "Марокау",
+    "natural": "atoll",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1902359",
+    "wikipedia": "fr:Marokau"
+  }
+},
+{
+  "type": "way",
+  "id": 138006821,
+  "center": {
+    "lat": -17.0655290,
+    "lon": -143.1807699
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Marutea Nord",
+    "name:en": "Marutea Nord",
+    "name:fr": "Marutea Nord",
+    "name:ru": "Марутео",
+    "natural": "atoll",
+    "old_name": "Taunga Tauranga-e-Havana;Île Furneaux",
+    "old_name:en": "Taunga Tauranga-e-Havana;Furneaux Island",
+    "old_name:fr": "Taunga Tauranga-e-Havana;Île Furneaux",
+    "old_name:ty": "Taunga Tauranga-e-Havana",
+    "place": "atoll",
+    "source": "Bing;Landsat",
+    "wikidata": "Q1906015",
+    "wikipedia": "fr:Marutea Nord"
+  }
+},
+{
+  "type": "way",
+  "id": 138010012,
+  "center": {
+    "lat": -21.5240829,
+    "lon": -135.5491155
+  },
+  "tags": {
+    "alt_name": "Marutea Sud",
+    "alt_name:en": "South Marutea",
+    "alt_name:fr": "Marutea Sud",
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Marutea",
+    "name:en": "Marutea",
+    "name:fr": "Marutea",
+    "name:ru": "Марутеа",
+    "natural": "atoll",
+    "old_name:en": "Lord Hood Island;Land's Hood Island",
+    "old_name:es": "San Telmo;San Blas;Corral de Agua",
+    "old_name:fr": "Marutea-i-Runga;Nuku-Nui",
+    "old_name:ty": "Marutea-i-Runga;Nuku-Nui",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q525380",
+    "wikipedia": "fr:Marutea Sud"
+  }
+},
+{
+  "type": "way",
+  "id": 138104113,
+  "center": {
+    "lat": -21.4731328,
+    "lon": -136.3954981
+  },
+  "tags": {
+    "alt_name": "Île Melbourne",
+    "alt_name:en": "Melbourne Island",
+    "alt_name:fr": "Île Melbourne",
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Matureivavao",
+    "name:en": "Matureivavao",
+    "name:fr": "Matureivavao",
+    "name:ru": "Матуреивавао",
+    "natural": "atoll",
+    "old_name": "Maturei-Vavao",
+    "old_name:en": "Maturei-Vavao",
+    "old_name:fr": "Maturei-Vavao",
+    "old_name:ty": "Maturei-Vavao",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1811491",
+    "wikipedia": "fr:Matureivavao"
+  }
+},
+{
+  "type": "way",
+  "id": 138104156,
+  "center": {
+    "lat": -23.1573175,
+    "lon": -137.1311942
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Morane",
+    "name:en": "Morane",
+    "name:fr": "Morane",
+    "name:ru": "Моране",
+    "natural": "atoll",
+    "old_name": "Île de Barstow;Cadmus",
+    "old_name:en": "Barstow's Island;Cadmus",
+    "old_name:fr": "Île de Barstow;Cadmus",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1767201",
+    "wikipedia": "fr:Morane"
+  }
+},
+{
+  "type": "way",
+  "id": 138104337,
+  "center": {
+    "lat": -14.1731564,
+    "lon": -141.2252487
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Napuka",
+    "name:en": "Napuka",
+    "name:fr": "Napuka",
+    "name:ru": "Напука",
+    "natural": "atoll",
+    "old_name": "Pukaroa;Île de la Désolation",
+    "old_name:en": "Wytoohee Island;Wutoohee Island",
+    "old_name:fr": "Pukaroa;Île de la Désolation",
+    "old_name:ty": "Pukaroa",
+    "place": "atoll",
+    "wikidata": "Q1811479",
+    "wikipedia": "fr:Napuka"
+  }
+},
+{
+  "type": "way",
+  "id": 138105133,
+  "center": {
+    "lat": -18.7567432,
+    "lon": -141.8115231
+  },
+  "tags": {
+    "alt_name": "Nengonengo",
+    "alt_name:en": "Nengonengo",
+    "alt_name:fr": "Nengonengo",
+    "alt_name:ru": "Ненгоненго",
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Nengo Nengo",
+    "name:en": "Nengo Nengo",
+    "name:fr": "Nengo Nengo",
+    "name:ru": "Ненго Ненго",
+    "natural": "atoll",
+    "old_name": "Île du Prince William Henry;Île Lostange",
+    "old_name:en": "Prince William Henry Island;Lostange Island",
+    "old_name:fr": "Île du Prince William Henry;Île Lostange",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1977396",
+    "wikipedia": "fr:Nengo Nengo"
+  }
+},
+{
+  "type": "way",
+  "id": 138105378,
+  "center": {
+    "lat": -16.1531889,
+    "lon": -146.3554267
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Niau",
+    "name:en": "Niau",
+    "name:fr": "Niau",
+    "name:ru": "Ниау",
+    "natural": "atoll",
+    "old_name": "Fakaau;La Decena;Île Grieg",
+    "old_name:es": "La Decena",
+    "old_name:fr": "Fakaau;La Decena;Île Grieg",
+    "old_name:ty": "Fakaau",
+    "source": "Bing",
+    "wikidata": "Q1984650",
+    "wikipedia": "fr:Niau"
+  }
+},
+{
+  "type": "way",
+  "id": 138155664,
+  "center": {
+    "lat": -19.1363244,
+    "lon": -140.6900591
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Paraoa",
+    "name:en": "Paraoa",
+    "name:fr": "Paraoa",
+    "name:ru": "Параоа",
+    "natural": "atoll",
+    "old_name": "Tohora;Hariri;Gloucester",
+    "old_name:en": "Gloucester",
+    "old_name:fr": "Tohora;Hariri;Gloucester",
+    "old_name:ty": "Tohora;Hariri",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q257734",
+    "wikipedia": "fr:Paraoa"
+  }
+},
+{
+  "type": "way",
+  "id": 138156095,
+  "center": {
+    "lat": -19.3955535,
+    "lon": -138.6761479
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Pinaki",
+    "name:fr": "Pinaki",
+    "name:ru": "Пинаки",
+    "natural": "atoll",
+    "old_name": "Te Kiekie;Île Whitsunday",
+    "old_name:en": "Whitsunday Island",
+    "old_name:fr": "Te Kiekie;Île Whitsunday",
+    "old_name:ty": "Te Kiekie",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q761944",
+    "wikipedia": "fr:Pinaki"
+  }
+},
+{
+  "type": "way",
+  "id": 138156184,
+  "center": {
+    "lat": -14.8198528,
+    "lon": -138.8188275
+  },
+  "tags": {
+    "alt_name": "Puka Puka",
+    "alt_name:en": "Puka Puka",
+    "alt_name:fr": "Puka Puka",
+    "alt_name:ru": "Пука-Пука",
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Pukapuka",
+    "name:en": "Pukapuka",
+    "name:fr": "Pukapuka",
+    "name:ru": "Пукапука",
+    "natural": "atoll",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1471237",
+    "wikipedia": "fr:Puka Puka"
+  }
+},
+{
+  "type": "way",
+  "id": 138157152,
+  "center": {
+    "lat": -18.3129735,
+    "lon": -137.0174779
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Pukarua",
+    "natural": "atoll"
+  }
+},
+{
+  "type": "way",
+  "id": 138157971,
+  "center": {
+    "lat": -16.1830643,
+    "lon": -144.8928753
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Raraka",
+    "name:en": "Raraka",
+    "name:fr": "Raraka",
+    "name:ru": "Рарака",
+    "natural": "atoll",
+    "old_name": "Te Marie",
+    "old_name:fr": "Te Marie",
+    "old_name:ty": "Te Marie",
+    "source": "Bing",
+    "wikidata": "Q2035608",
+    "wikipedia": "fr:Raraka"
+  }
+},
+{
+  "type": "way",
+  "id": 138220318,
+  "center": {
+    "lat": -18.2385808,
+    "lon": -142.1591826
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Ravahere",
+    "name:en": "Ravahere",
+    "name:fr": "Ravahere",
+    "name:ru": "Равахере",
+    "natural": "atoll",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q659328",
+    "wikipedia": "fr:Ravahere"
+  }
+},
+{
+  "type": "way",
+  "id": 138259747,
+  "center": {
+    "lat": -16.3460805,
+    "lon": -143.1202631
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Taenga",
+    "name:en": "Taenga",
+    "name:fr": "Taenga",
+    "name:ru": "Таэнга",
+    "natural": "atoll",
+    "old_name": "Taunga-Hara;Île de Holt;Yermolov",
+    "old_name:en": "Holt's Island",
+    "old_name:fr": "Taunga-Hara;Île de Holt;Yermolov",
+    "old_name:ru": "Yermolov",
+    "old_name:ty": "Taunga-Hara",
+    "source": "Bing",
+    "wikidata": "Q2300550",
+    "wikipedia": "fr:Taenga"
+  }
+},
+{
+  "type": "way",
+  "id": 138261749,
+  "center": {
+    "lat": -14.6322975,
+    "lon": -145.2011804
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Takapoto",
+    "natural": "atoll"
+  }
+},
+{
+  "type": "way",
+  "id": 138261990,
+  "center": {
+    "lat": -15.8001673,
+    "lon": -142.1970804
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Takume",
+    "name:en": "Takume",
+    "name:fr": "Takume",
+    "name:ru": "Такуме",
+    "natural": "atoll",
+    "old_name": "Pukamaru;Wolkonsky;Takurea",
+    "old_name:en": "Takurea",
+    "old_name:fr": "Pukamaru;Wolkonsky;Takurea",
+    "old_name:ru": "Wolkonsky",
+    "old_name:ty": "Pukamaru",
+    "wikidata": "Q1256953",
+    "wikipedia": "fr:Takume"
+  }
+},
+{
+  "type": "way",
+  "id": 138325487,
+  "center": {
+    "lat": -21.6756079,
+    "lon": -140.6282701
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Tematangi",
+    "name:en": "Tematangi",
+    "name:fr": "Tematangi",
+    "name:ru": "Тематанги",
+    "natural": "atoll",
+    "old_name": "Tematagi;Île du Lagon de Bligh;Île Bligh",
+    "old_name:en": "Tematagi;Bligh's Lagoon Island;Bligh Island",
+    "old_name:fr": "Tematagi;Île du Lagon de Bligh;Île Bligh",
+    "old_name:ty": "Tematagi",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1531438",
+    "wikipedia": "fr:Tematagi"
+  }
+},
+{
+  "type": "way",
+  "id": 138325907,
+  "center": {
+    "lat": -21.3448431,
+    "lon": -136.5402293
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Tenarunga",
+    "name:en": "Tenarunga",
+    "name:fr": "Tenarunga",
+    "name:ru": "Тенарунга",
+    "natural": "atoll",
+    "old_name:en": "Tenania;Narunga",
+    "old_name:fr": "Tenania;Narunga",
+    "old_name:ty": "Tenania;Narunga",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q682903",
+    "wikipedia": "fr:Tenarunga"
+  }
+},
+{
+  "type": "way",
+  "id": 138328164,
+  "center": {
+    "lat": -16.8213050,
+    "lon": -144.2813185
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Tepoto Sud",
+    "name:en": "South Tepoto",
+    "name:fr": "Tepoto Sud",
+    "name:ru": "Южный Тепото",
+    "natural": "atoll",
+    "old_name": "Ti-Poto",
+    "old_name:fr": "Ti-Poto",
+    "old_name:ty": "Ti-Poto",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q2031599",
+    "wikipedia": "fr:Tepoto Sud"
+  }
+},
+{
+  "type": "way",
+  "id": 138408093,
+  "center": {
+    "lat": -16.6540305,
+    "lon": -144.2168511
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Tuanake",
+    "name:en": "Tuanake",
+    "name:fr": "Tuanake",
+    "name:ru": "Туанаке",
+    "natural": "atoll",
+    "old_name": "Mata-Rua-Puna;Tunaki;Île Reid",
+    "old_name:en": "Tunaki;Reid Island",
+    "old_name:fr": "Mata-Rua-Puna;Tunaki;Île Reid",
+    "old_name:ty": "Mata-Rua-Puna",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q577784",
+    "wikipedia": "fr:Tuanake"
+  }
+},
+{
+  "type": "way",
+  "id": 138408500,
+  "center": {
+    "lat": -20.8280756,
+    "lon": -138.5405502
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Tureia",
+    "name:ru": "Туреиа",
+    "natural": "atoll"
+  }
+},
+{
+  "type": "way",
+  "id": 138408513,
+  "center": {
+    "lat": -21.3317689,
+    "lon": -136.6519181
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Vahanga",
+    "name:en": "Vahanga",
+    "name:fr": "Vahanga",
+    "name:ru": "Ваханга",
+    "natural": "atoll",
+    "old_name": "Vaega;Île Carysfort",
+    "old_name:en": "Carysfort Island",
+    "old_name:fr": "Vaega;Île Carysfort",
+    "old_name:ty": "Vaega",
+    "source": "Bing",
+    "wikidata": "Q1660101",
+    "wikipedia": "fr:Vahanga"
+  }
+},
+{
+  "type": "way",
+  "id": 138408623,
+  "center": {
+    "lat": -18.7743137,
+    "lon": -138.8240075
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Vahitahi",
+    "name:en": "Vahitahi",
+    "name:fr": "Vahitahi",
+    "name:ru": "Вахитахи",
+    "natural": "atoll",
+    "old_name": "Vaitake;Les Quatre Facardins;Île du Lagon;Lagon de Cook",
+    "old_name:en": "Lagoon Island;Cook's Lagoon",
+    "old_name:fr": "Vaitake;Les Quatre Facardins;Île du Lagon;Lagon de Cook",
+    "old_name:ty": "Vaitake",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1811472",
+    "wikipedia": "fr:Vahitahi"
+  }
+},
+{
+  "type": "way",
+  "id": 138408893,
+  "center": {
+    "lat": -19.3484298,
+    "lon": -139.2282483
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Vairaatea",
+    "name:en": "Vairaatea",
+    "name:fr": "Vairaatea",
+    "name:ru": "Ваираатеа",
+    "natural": "atoll",
+    "old_name": "San Miguel Arcángel;Île Egmont;Île Osnaberg",
+    "old_name:en": "Egmont Island;Osnaberg Island",
+    "old_name:fr": "San Miguel Arcángel;Île Egmont;Île Osnaberg",
+    "old_name:pt": "San Miguel Arcángel",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1811458",
+    "wikipedia": "fr:Vairaatea"
+  }
+},
+{
+  "type": "way",
+  "id": 138408982,
+  "center": {
+    "lat": -20.7823120,
+    "lon": -139.1402470
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Vanavana",
+    "name:en": "Vanavana",
+    "name:fr": "Vanavana",
+    "name:ru": "Ванавана",
+    "natural": "atoll",
+    "old_name": "Kurataki;Huataki;Île Barrow",
+    "old_name:en": "Kurataki;Huataki;Barrow Island",
+    "old_name:fr": "Kurataki;Huataki;Île Barrow",
+    "old_name:ty": "Kurataki;Huataki",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q2035579",
+    "wikipedia": "fr:Vanavana"
+  }
+},
+{
+  "type": "way",
+  "id": 138411228,
+  "center": {
+    "lat": -14.4963836,
+    "lon": -146.3103910
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Ahe",
+    "name:en": "Ahe",
+    "name:fr": "Ahe",
+    "name:ru": "Ахе",
+    "natural": "atoll",
+    "old_name": "Ahemaru;Omaru;Île du Paon",
+    "old_name:en": "Peacock Island",
+    "old_name:fr": "Ahemaru;Omaru;Île du Paon",
+    "old_name:ty": "Ahemaru;Omaru",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q400184",
+    "wikipedia": "fr:Ahe"
+  }
+},
+{
+  "type": "way",
+  "id": 138466214,
+  "center": {
+    "lat": -17.8110571,
+    "lon": -140.7610857
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Amanu",
+    "name:en": "Amanu",
+    "name:fr": "Amanu",
+    "name:ru": "Аману",
+    "natural": "atoll",
+    "old_name": "Timanu;Karere;Las Animas;Moller;Freycinet",
+    "old_name:es": "Las Animas",
+    "old_name:fr": "Timanu;Karere;Las Animas;Moller;Freycinet",
+    "old_name:ru": "Моллера",
+    "old_name:ty": "Timanu;Karere",
+    "source": "Bing",
+    "wikidata": "Q454545",
+    "wikipedia": "fr:Amanu"
+  }
+},
+{
+  "type": "way",
+  "id": 138478803,
+  "center": {
+    "lat": -15.5425639,
+    "lon": -145.5139403
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Aratika",
+    "name:en": "Aratika",
+    "name:fr": "Aratika",
+    "name:ru": "Аратика",
+    "natural": "atoll",
+    "old_name": "Île Carlshoff",
+    "old_name:fr": "île Carlshoff",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q626477",
+    "wikipedia": "fr:Aratika"
+  }
+},
+{
+  "type": "way",
+  "id": 138479903,
+  "center": {
+    "lat": -15.3133699,
+    "lon": -146.7480149
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Arutua",
+    "natural": "atoll"
+  }
+},
+{
+  "type": "way",
+  "id": 138620031,
+  "center": {
+    "lat": -16.2987741,
+    "lon": -145.5922361
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Fakarava",
+    "name:en": "Fakarava",
+    "name:fr": "Fakarava",
+    "name:ru": "Факарава",
+    "natural": "atoll",
+    "old_name": "Havaiki-Te-Araro",
+    "old_name:fr": "Havaiki-Te-Araro",
+    "old_name:ty": "Havaiki-Te-Araro",
+    "place": "atoll",
+    "source": "Bing"
+  }
+},
+{
+  "type": "way",
+  "id": 138626521,
+  "center": {
+    "lat": -22.2391127,
+    "lon": -138.7471206
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "landuse": "military",
+    "maritime": "yes",
+    "name": "Fangataufa",
+    "name:en": "Fangataufa",
+    "name:fr": "Fangataufa",
+    "name:ru": "Фангатауфа",
+    "natural": "atoll",
+    "old_name": "Île Cockburn",
+    "old_name:en": "Cockburn Island",
+    "old_name:fr": "Île Cockburn",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q506815",
+    "wikipedia": "fr:Fangataufa"
+  }
+},
+{
+  "type": "way",
+  "id": 138627457,
+  "center": {
+    "lat": -16.4240568,
+    "lon": -144.3548954
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Katiu",
+    "name:en": "Katiu",
+    "name:fr": "Katiu",
+    "name:ru": "Катиу",
+    "natural": "atoll",
+    "old_name": "Atina",
+    "old_name:fr": "Atina;Île Saken",
+    "old_name:ru": "Saken",
+    "old_name:ty": "Atina",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1629997",
+    "wikipedia": "fr:Katiu"
+  }
+},
+{
+  "type": "way",
+  "id": 138627831,
+  "center": {
+    "lat": -15.8755530,
+    "lon": -145.1552570
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Kauehi",
+    "name:en": "Kauehi",
+    "name:fr": "Kauehi",
+    "name:ru": "Кауэхи",
+    "natural": "atoll",
+    "old_name": "Putake",
+    "old_name:fr": "Putake",
+    "old_name:ty": "Putake",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1736995",
+    "wikipedia": "fr:Kauehi"
+  }
+},
+{
+  "type": "way",
+  "id": 138635312,
+  "center": {
+    "lat": -16.5936925,
+    "lon": -143.6883901
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Makemo",
+    "name:en": "Makemo",
+    "name:fr": "Makemo",
+    "name:frp": "Makemo",
+    "name:ru": "Макемо",
+    "natural": "atoll",
+    "old_name": "Te-Paritua;Rangi-Kemo",
+    "old_name:fr": "Te-Paritua;Rangi-Kemo",
+    "old_name:ty": "Te-Paritua;Rangi-Kemo",
+    "place": "atoll",
+    "source": "Bing"
+  }
+},
+{
+  "type": "way",
+  "id": 139081089,
+  "center": {
+    "lat": -17.1115104,
+    "lon": -144.3679161
+  },
+  "tags": {
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Motutunga",
+    "name:en": "Motutunga",
+    "name:fr": "Motutunga",
+    "name:ru": "Мотутунга",
+    "natural": "atoll",
+    "old_name": "Adventure Island;San Julian",
+    "old_name:en": "Adventure Island",
+    "old_name:es": "San Julian",
+    "place": "atoll",
+    "source": "Image courtesy of the Image Science & Analysis Laboratory, NASA Johnson Space Center - ISS004-E-6707",
+    "wikidata": "Q1950151",
+    "wikipedia": "fr:Motutunga"
+  }
+},
+{
+  "type": "way",
+  "id": 139095882,
+  "center": {
+    "lat": -21.8351222,
+    "lon": -138.9103423
+  },
+  "tags": {
+    "FIXME": "partially covered by clouds;partially reef edge invisible",
+    "alt_name": "Mururoa",
+    "alt_name:en": "Mururoa",
+    "alt_name:fr": "Mururoa",
+    "alt_name:ru": "Муруроа",
+    "alt_name:uk": "Муруроа",
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "landuse": "military",
+    "maritime": "yes",
+    "name": "Moruroa",
+    "name:en": "Moruroa",
+    "name:fr": "Moruroa",
+    "name:ru": "Моруроа",
+    "name:uk": "Моруроа",
+    "natural": "atoll",
+    "old_name": "Aopuni;Île de l'Évêque d'Osnaburgh",
+    "old_name:en": "Bishop of Osnaburgh Island",
+    "old_name:fr": "Aopuni;Île de l'Évêque d'Osnaburgh",
+    "old_name:ty": "Aopuni",
+    "place": "atoll",
+    "source": "Bing;Landsat",
+    "wikidata": "Q318446",
+    "wikipedia": "fr:Moruroa"
+  }
+},
+{
+  "type": "way",
+  "id": 139157465,
+  "center": {
+    "lat": -15.1207744,
+    "lon": -147.5773355
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Rangiroa",
+    "name:en": "Rangiroa",
+    "name:fr": "Rangiroa",
+    "name:mi": "Te Kokōta",
+    "name:ru": "Рангироа",
+    "natural": "atoll",
+    "old_name": "Île Vlieghen;Île Deans;Hyades",
+    "old_name:en": "Vlieghen Eiland;Deans Island;Hyades",
+    "old_name:fr": "Île Vlieghen;Île Deans;Hyades",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q757399",
+    "wikipedia": "fr:Rangiroa"
+  }
+},
+{
+  "type": "way",
+  "id": 139159791,
+  "center": {
+    "lat": -16.0867244,
+    "lon": -142.4199616
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Raroia",
+    "name:en": "Raroia",
+    "name:fr": "Raroia",
+    "name:ru": "Рароиа",
+    "natural": "atoll",
+    "old_name": "Raro-Nuku",
+    "old_name:fr": "Raro-Nuku",
+    "old_name:ty": "Raro-Nuku",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q666634",
+    "wikipedia": "fr:Raroia"
+  }
+},
+{
+  "type": "way",
+  "id": 139160763,
+  "center": {
+    "lat": -16.8858994,
+    "lon": -144.7764840
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Tahanea",
+    "natural": "atoll"
+  }
+},
+{
+  "type": "way",
+  "id": 139161521,
+  "center": {
+    "lat": -14.4519818,
+    "lon": -144.9635081
+  },
+  "tags": {
+    "alt_name": "Taka-Roa",
+    "alt_name:en": "Taka-Roa",
+    "alt_name:fr": "Taka-Roa",
+    "alt_name:ty": "Taka-Roa",
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Takaroa",
+    "name:en": "Takaroa",
+    "name:fr": "Takaroa",
+    "name:ru": "Такароа",
+    "natural": "atoll",
+    "old_name": "Takapua;Île Zonderground;Tioka",
+    "old_name:en": "Tioka",
+    "old_name:fr": "Takapua;Île Zonderground;Tioka",
+    "old_name:nl": "Zonderground Eiland",
+    "old_name:ty": "Takapua",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1670474",
+    "wikipedia": "fr:Takaroa"
+  }
+},
+{
+  "type": "way",
+  "id": 139162465,
+  "center": {
+    "lat": -15.0151579,
+    "lon": -148.1678154
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Tikehau",
+    "name:en": "Tikehau",
+    "name:fr": "Tikehau",
+    "name:ru": "Тикехау",
+    "natural": "atoll",
+    "old_name": "Tikahau;Porutu-Kai;Île Krusenstern",
+    "old_name:de": "Krusenstern Insel",
+    "old_name:en": "Krusenstern Island",
+    "old_name:fr": "Tikahau;Porutu-Kai;Île Krusenstern",
+    "old_name:ty": "Tikahau;Porutu-Kai",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q669590",
+    "wikipedia": "fr:Tikehau"
+  }
+},
+{
+  "type": "way",
+  "id": 139162897,
+  "center": {
+    "lat": -15.9150321,
+    "lon": -146.0363818
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Toau",
+    "name:en": "Toau",
+    "name:fr": "Toau",
+    "name:ru": "Тоау",
+    "natural": "atoll",
+    "old_name": "Pakuria;Taha-a-titi;Île Elizabeth",
+    "old_name:en": "Elizabeth Island",
+    "old_name:fr": "Pakuria;Taha-a-titi;Île Elizabeth",
+    "old_name:ru": "Остров Элизабет",
+    "old_name:ty": "Pakuria;Taha-a-titi",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1631412",
+    "wikipedia": "fr:Toau"
+  }
+},
+{
+  "type": "way",
+  "id": 139521326,
+  "center": {
+    "lat": -17.4679022,
+    "lon": -143.4487070
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Haraiki",
+    "name:en": "Haraiki",
+    "name:fr": "Haraiki",
+    "name:ru": "Хараики",
+    "natural": "atoll",
+    "old_name": "San Quintín;Île Crocker",
+    "old_name:en": "Crocker Island",
+    "old_name:es": "San Quintín",
+    "old_name:fr": "San Quintín;Île Crocker",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1284345",
+    "wikipedia": "fr:Haraiki"
+  }
+},
+{
+  "type": "way",
+  "id": 139522178,
+  "center": {
+    "lat": -15.8217036,
+    "lon": -140.8669711
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Fangatau",
+    "name:en": "Fangatau",
+    "name:fr": "Fangatau",
+    "name:ru": "Фангатау",
+    "natural": "atoll",
+    "old_name": "Nakai-Erua;Arakcheev",
+    "old_name:fr": "Nakai-Erua",
+    "old_name:ru": "Arakcheev",
+    "old_name:ty": "Nakai-Erua",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1255016",
+    "wikipedia": "fr:Fangatau"
+  }
+},
+{
+  "type": "way",
+  "id": 139522349,
+  "center": {
+    "lat": -15.9868115,
+    "lon": -140.1308059
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Fakahina",
+    "name:en": "Fakahina",
+    "name:fr": "Fakahina",
+    "name:ru": "Факахина",
+    "natural": "atoll",
+    "old_name": "Kaina;Predpriatic;Niuhi",
+    "old_name:et": "Predpriatic",
+    "old_name:fr": "Kaina;Predpriatic;Niuhi",
+    "old_name:ty": "Kaīna;Niuhi",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q969412",
+    "wikipedia": "fr:Fakahina"
+  }
+},
+{
+  "type": "way",
+  "id": 139523347,
+  "center": {
+    "lat": -19.8741529,
+    "lon": -144.9686473
+  },
+  "tags": {
+    "alt_name": "Héréhérétué",
+    "alt_name:fr": "Héréhérétué",
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Hereheretue",
+    "name:en": "Hereheretue",
+    "name:fr": "Hereheretue",
+    "name:ru": "Херехеретуэ",
+    "natural": "atoll",
+    "old_name": "Hiri-Oro;Britomart Island;San Pablo",
+    "old_name:en": "Britomart Island;San Pablo",
+    "old_name:fr": "Hiri-Oro;Britomart Island;San Pablo",
+    "old_name:pt": "San Pablo",
+    "old_name:ty": "Hiri-Oro",
+    "place": "atoll",
+    "source": "Bing",
+    "wikidata": "Q1636470",
+    "wikipedia": "fr:Hereheretue"
+  }
+},
+{
+  "type": "way",
+  "id": 139524053,
+  "center": {
+    "lat": -23.3460400,
+    "lon": -134.4777317
+  },
+  "tags": {
+    "alt_name": "Te Moe",
+    "alt_name:en": "Te Moe",
+    "alt_name:fr": "Te Moe",
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Temoe",
+    "name:en": "Temoe",
+    "name:fr": "Temoe",
+    "name:ru": "Темоэ",
+    "natural": "atoll",
+    "old_name": "Timoe;Île du Croissant",
+    "old_name:en": "Crescent Island",
+    "old_name:fr": "Timoe;Île du Croissant",
+    "old_name:ty": "Timoe",
+    "place": "atoll",
+    "source": "Bing"
+  }
+},
+{
+  "type": "way",
+  "id": 139535629,
+  "center": {
+    "lat": -21.8090465,
+    "lon": -154.7088944
+  },
+  "tags": {
+    "alt_name": "Hull Island",
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "is_in:archipelago": "Îles Australes",
+    "is_in:country": "French Polynesia",
+    "is_in:municipality": "Rimatara",
+    "name": "Îles Maria",
+    "name:en": "Maria Islands",
+    "name:fr": "Îles Maria",
+    "natural": "atoll",
+    "place": "island",
+    "source": "Bing",
+    "wikidata": "Q1632713",
+    "wikipedia": "en:Îles Maria"
+  }
+},
+{
+  "type": "way",
+  "id": 139554493,
+  "center": {
+    "lat": -22.6514258,
+    "lon": -152.8066975
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "name": "Rimatara",
+    "name:en": "Rimatara",
+    "name:fr": "Rimatara",
+    "name:ru": "Риматара",
+    "natural": "atoll",
+    "source": "Bing",
+    "wikipedia": "fr:Rimatara"
+  }
+},
+{
+  "type": "way",
+  "id": 210166641,
+  "center": {
+    "lat": -16.5364835,
+    "lon": -154.6754151
+  },
+  "tags": {
+    "name": "Manuae",
+    "natural": "atoll",
+    "place": "atoll",
+    "wikidata": "Q1340719",
+    "wikipedia": "en:Manuae (Society Islands)"
+  }
+},
+{
+  "type": "way",
+  "id": 210167166,
+  "center": {
+    "lat": -16.2678513,
+    "lon": -151.8114120
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Tupai",
+    "natural": "atoll"
+  }
+},
+{
+  "type": "way",
+  "id": 378926989,
+  "center": {
+    "lat": -9.9587676,
+    "lon": -150.2153493
+  },
+  "tags": {
+    "alt_name:de": "Millennium Island",
+    "alt_name:en": "Millennium Island",
+    "alt_name:es": "Isla del Milenio",
+    "alt_name:fr": "Île Caroline",
+    "alt_name:gsw": "Caroline-Ìnsel",
+    "description": "Punto más al este de la Tierra en tierra firme de acuerdo con la línea internacional de cambio de fecha.",
+    "loc_name:es": "San Bernardo o Isla del Pescado",
+    "name:de": "Caroline-Atoll",
+    "name:en": "Caroline Island",
+    "name:en2": "Caroline Atoll",
+    "name:es": "Isla o Atolón Caroline",
+    "name:fr": "Île du Millenium",
+    "name:gsw": "Millenniùmsìnsel",
+    "name:zh": "加罗林岛",
+    "natural": "atoll",
+    "wikidata": "Q822151",
+    "wikipedia": "es:Isla Caroline",
+    "wikipedia:en": "Caroline Island"
+  }
+},
+{
+  "type": "way",
+  "id": 405833465,
+  "center": {
+    "lat": -16.8114082,
+    "lon": -153.9563971
+  },
+  "tags": {
+    "alt_name": "Mopelia",
+    "name": "Maupiha'a",
+    "natural": "atoll",
+    "wikidata": "Q1166015",
+    "wikipedia": "fr:Maupihaa"
+  }
+},
+{
+  "type": "way",
+  "id": 545496192,
+  "center": {
+    "lat": -10.0620842,
+    "lon": -152.3127458
+  },
+  "tags": {
+    "is_in:country": "Kiribati",
+    "is_in:country_code": "KI",
+    "name": "Vostok Island",
+    "name:be": "Васток",
+    "name:el": "Βοστόκ Νήσος",
+    "name:en": "Vostok Island",
+    "name:ru": "Восток",
+    "natural": "coastline",
+    "place": "island",
+    "source": "maxar satellite",
+    "wikidata": "Q976570",
+    "wikipedia": "en:Vostok Island"
+  }
+},
+{
+  "type": "way",
+  "id": 724463252,
+  "center": {
+    "lat": -17.0253910,
+    "lon": -149.5576856
+  },
+  "tags": {
+    "name": "Rimatu’u",
+    "natural": "coastline",
+    "place": "island",
+    "source:geometry": "Theodolite",
+    "wikidata": "Q49674705"
+  }
+},
+{
+  "type": "way",
+  "id": 725221012,
+  "center": {
+    "lat": -16.7326442,
+    "lon": -150.9739246
+  },
+  "tags": {
+    "name": "Motu Vavaratea",
+    "natural": "coastline",
+    "place": "island",
+    "source": "SAU",
+    "source:geometry": "Satellite photogrammetry",
+    "source:geometry:date": "2014"
+  }
+},
+{
+  "type": "way",
+  "id": 725239732,
+  "center": {
+    "lat": -16.4518919,
+    "lon": -151.7388704
+  },
+  "tags": {
+    "name": "Motu Mute",
+    "natural": "coastline",
+    "place": "island",
+    "source": "SAU",
+    "source:geometry": "Satellite photogrammetry",
+    "source:geometry:date": "2010"
+  }
+},
+{
+  "type": "way",
+  "id": 725693834,
+  "center": {
+    "lat": -16.8066817,
+    "lon": -153.9373284
+  },
+  "tags": {
+    "name": "Maupiha’a",
+    "natural": "coastline",
+    "place": "island",
+    "source": "SAU",
+    "source:geometry": "Theodolite"
+  }
+},
+{
+  "type": "way",
+  "id": 729221409,
+  "center": {
+    "lat": -23.1449243,
+    "lon": -135.0429095
+  },
+  "tags": {
+    "name": "Taravai",
+    "name:en": "Taravai",
+    "name:fr": "Taravai",
+    "name:ru": "Тараваи",
+    "name:ty": "Taravai",
+    "natural": "coastline",
+    "place": "island",
+    "source:geometry": "Satellite photogrammetry",
+    "source:geometry:date": "2005",
+    "wikipedia": "fr:Taravai"
+  }
+},
+{
+  "type": "way",
+  "id": 729221455,
+  "center": {
+    "lat": -23.2089622,
+    "lon": -134.8582505
+  },
+  "tags": {
+    "name": "Kouaku",
+    "name:en": "Kouaku",
+    "name:fr": "Kouaku",
+    "name:ru": "Куаку",
+    "name:ty": "Kouaku",
+    "natural": "coastline",
+    "place": "island"
+  }
+},
+{
+  "type": "way",
+  "id": 729221456,
+  "center": {
+    "lat": -23.1134883,
+    "lon": -134.8472460
+  },
+  "tags": {
+    "name": "Gaioio",
+    "name:fr": "Gaioio",
+    "natural": "coastline",
+    "place": "island",
+    "source:geometry": "Satellite photogrammetry",
+    "source:geometry:date": "2005"
+  }
+},
+{
+  "type": "way",
+  "id": 734361219,
+  "center": {
+    "lat": -19.1479459,
+    "lon": -140.7014729
+  },
+  "tags": {
+    "name": "Paraoa",
+    "natural": "coastline",
+    "place": "island"
+  }
+},
+{
+  "type": "way",
+  "id": 871569568,
+  "center": {
+    "lat": -16.4700616,
+    "lon": -151.7769411
+  },
+  "tags": {
+    "alt_name": "Motu Te Vairoa",
+    "name": "Motu Tevairoa",
+    "natural": "coastline",
+    "place": "island",
+    "source": "SAU",
+    "source:geometry": "Satellite photogrammetry",
+    "source:geometry:date": "2010",
+    "wikidata": "Q38251304",
+    "wikipedia": "en:Tevairoa"
+  }
+},
+{
+  "type": "way",
+  "id": 1207639954,
+  "center": {
+    "lat": -15.8152198,
+    "lon": -154.5176563
+  },
+  "tags": {
+    "alt_name": "Bellinghausen",
+    "name": "Motu One",
+    "natural": "coastline",
+    "place": "island",
+    "wikidata": "Q584092",
+    "wikipedia": "fr:Motu One (Îles de la Société)"
+  }
+},
+{
+  "type": "way",
+  "id": 1213203509,
+  "center": {
+    "lat": -19.2174902,
+    "lon": -141.2310772
+  },
+  "tags": {
+    "name": "Manuhangi",
+    "name:en": "Manuhangi",
+    "name:fr": "Manuhangi",
+    "name:ru": "Мануханги",
+    "natural": "coastline",
+    "old_name": "Te Fara",
+    "old_name:fr": "Te Fara",
+    "old_name:ty": "Te Fara",
+    "place": "island",
+    "source": "Bing",
+    "wikidata": "Q1811103",
+    "wikipedia": "fr:Manuhangi"
+  }
+},
+{
+  "type": "way",
+  "id": 1213203510,
+  "center": {
+    "lat": -19.2003693,
+    "lon": -141.2439000
+  },
+  "tags": {
+    "name": "Manuhangi",
+    "name:en": "Manuhangi",
+    "name:fr": "Manuhangi",
+    "name:ru": "Мануханги",
+    "natural": "coastline",
+    "old_name": "Te Fara",
+    "old_name:fr": "Te Fara",
+    "old_name:ty": "Te Fara",
+    "place": "island",
+    "source": "Bing",
+    "wikidata": "Q1811103",
+    "wikipedia": "fr:Manuhangi"
+  }
+},
+{
+  "type": "way",
+  "id": 1213478528,
+  "center": {
+    "lat": -16.5434084,
+    "lon": -154.6348417
+  },
+  "tags": {
+    "name": "Manuae",
+    "natural": "coastline",
+    "place": "island"
+  }
+},
+{
+  "type": "way",
+  "id": 1214949819,
+  "center": {
+    "lat": -16.4977961,
+    "lon": -154.6663468
+  },
+  "tags": {
+    "name": "Manuae",
+    "natural": "coastline",
+    "place": "island"
+  }
+},
+{
+  "type": "way",
+  "id": 1214968540,
+  "center": {
+    "lat": -19.1439993,
+    "lon": -140.7052729
+  },
+  "tags": {
+    "name": "Paraoa",
+    "natural": "coastline",
+    "place": "island"
+  }
+},
+{
+  "type": "way",
+  "id": 1218884785,
+  "center": {
+    "lat": -16.6943830,
+    "lon": -142.8278388
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Nihiru",
+    "natural": "atoll"
+  }
+},
+{
+  "type": "way",
+  "id": 1278327707,
+  "center": {
+    "lat": -15.8154618,
+    "lon": -154.5255254
+  },
+  "tags": {
+    "name": "Motu One",
+    "natural": "atoll"
+  }
+},
+{
+  "type": "way",
+  "id": 1389931522,
+  "center": {
+    "lat": -14.8834903,
+    "lon": -148.6707758
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Mataiva",
+    "natural": "atoll"
+  }
+},
+{
+  "type": "way",
+  "id": 1389938577,
+  "center": {
+    "lat": -15.4591719,
+    "lon": -146.3191031
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Apataki",
+    "natural": "atoll"
+  }
+},
+{
+  "type": "way",
+  "id": 1389939039,
+  "center": {
+    "lat": -15.7446425,
+    "lon": -146.6841200
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Kaukura",
+    "natural": "atoll"
+  }
+},
+{
+  "type": "way",
+  "id": 1389960217,
+  "center": {
+    "lat": -16.7511930,
+    "lon": -145.2382611
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Faaite",
+    "natural": "atoll"
+  }
+},
+{
+  "type": "relation",
+  "id": 1846318,
+  "center": {
+    "lat": -23.3454290,
+    "lon": -134.4774198
+  },
+  "tags": {
+    "admin_level": "10",
+    "alt_name": "Te Moe",
+    "alt_name:en": "Te Moe",
+    "alt_name:fr": "Te Moe",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Temoe",
+    "name:en": "Temoe",
+    "name:fr": "Temoe",
+    "name:ru": "Темоэ",
+    "natural": "atoll",
+    "old_name": "Timoe;Île du Croissant",
+    "old_name:en": "Crescent Island",
+    "old_name:fr": "Timoe;Île du Croissant",
+    "old_name:ty": "Timoe",
+    "type": "boundary",
+    "wikidata": "Q771977",
+    "wikipedia": "fr:Temoe"
+  }
+},
+{
+  "type": "relation",
+  "id": 1847364,
+  "center": {
+    "lat": -22.0135729,
+    "lon": -136.1901310
+  },
+  "tags": {
+    "admin_level": "10",
+    "alt_name": "Maria Est",
+    "alt_name:en": "East Maria",
+    "alt_name:fr": "Maria Est",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Maria",
+    "name:en": "Maria",
+    "name:fr": "Maria",
+    "name:ru": "Мария",
+    "natural": "atoll",
+    "old_name": "Île Moerenhout",
+    "old_name:en": "Moerenhout Island",
+    "old_name:fr": "Île Moerenhout",
+    "type": "boundary",
+    "wikidata": "Q1895885",
+    "wikipedia": "fr:Maria (Tuamotu)"
+  }
+},
+{
+  "type": "relation",
+  "id": 1847365,
+  "center": {
+    "lat": -21.5231145,
+    "lon": -135.5528328
+  },
+  "tags": {
+    "admin_level": "10",
+    "alt_name": "Marutea Sud",
+    "alt_name:en": "South Marutea",
+    "alt_name:fr": "Marutea Sud",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Marutea",
+    "name:en": "Marutea",
+    "name:fr": "Marutea",
+    "name:ru": "Марутеа",
+    "natural": "atoll",
+    "old_name:en": "Lord Hood Island;Land's Hood Island",
+    "old_name:es": "San Telmo;San Blas;Corral de Agua",
+    "old_name:fr": "Marutea-i-Runga;Nuku-Nui",
+    "old_name:ty": "Marutea-i-Runga;Nuku-Nui",
+    "type": "boundary",
+    "wikidata": "Q525380",
+    "wikipedia": "fr:Marutea Sud"
+  }
+},
+{
+  "type": "relation",
+  "id": 1847366,
+  "center": {
+    "lat": -21.4726437,
+    "lon": -136.3960737
+  },
+  "tags": {
+    "admin_level": "11",
+    "alt_name": "Île Melbourne",
+    "alt_name:en": "Melbourne Island",
+    "alt_name:fr": "Île Melbourne",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Matureivavao",
+    "name:en": "Matureivavao",
+    "name:fr": "Matureivavao",
+    "name:ru": "Матуреивавао",
+    "natural": "atoll",
+    "old_name": "Maturei-Vavao",
+    "old_name:en": "Maturei-Vavao",
+    "old_name:fr": "Maturei-Vavao",
+    "old_name:ty": "Maturei-Vavao",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 1847367,
+  "center": {
+    "lat": -21.3048762,
+    "lon": -136.7461988
+  },
+  "tags": {
+    "admin_level": "11",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Tenararo",
+    "name:en": "Tenararo",
+    "name:fr": "Tenararo",
+    "name:ru": "Тенараро",
+    "natural": "atoll",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 1847368,
+  "center": {
+    "lat": -21.3445121,
+    "lon": -136.5406907
+  },
+  "tags": {
+    "admin_level": "11",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Tenarunga",
+    "name:en": "Tenarunga",
+    "name:fr": "Tenarunga",
+    "name:ru": "Тенарунга",
+    "natural": "atoll",
+    "old_name:en": "Tenania;Narunga",
+    "old_name:fr": "Tenania;Narunga",
+    "old_name:ty": "Tenania;Narunga",
+    "place": "island",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 1847369,
+  "center": {
+    "lat": -21.3311674,
+    "lon": -136.6523937
+  },
+  "tags": {
+    "admin_level": "11",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Vahanga",
+    "name:en": "Vahanga",
+    "name:fr": "Vahanga",
+    "name:ru": "Ваханга",
+    "old_name": "Vaega;Île Carysfort",
+    "old_name:en": "Carysfort Island",
+    "old_name:fr": "Vaega;Île Carysfort",
+    "old_name:ty": "Vaega",
+    "place": "island",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 1847983,
+  "center": {
+    "lat": -23.1568383,
+    "lon": -137.1318473
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Morane",
+    "name:en": "Morane",
+    "name:fr": "Morane",
+    "name:ru": "Моране",
+    "natural": "atoll",
+    "old_name": "Île de Barstow;Cadmus",
+    "old_name:en": "Barstow's Island;Cadmus",
+    "old_name:fr": "Île de Barstow;Cadmus",
+    "type": "boundary",
+    "wikidata": "Q1767201",
+    "wikipedia": "fr:Morane"
+  }
+},
+{
+  "type": "relation",
+  "id": 1848009,
+  "center": {
+    "lat": -16.1529573,
+    "lon": -146.3552391
+  },
+  "tags": {
+    "admin_level": "9",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Niau",
+    "name:en": "Niau",
+    "name:fr": "Niau",
+    "name:ru": "Ниау",
+    "natural": "atoll",
+    "old_name": "Fakaau;La Decena;Île Grieg",
+    "old_name:es": "La Decena",
+    "old_name:fr": "Fakaau;La Decena;Île Grieg",
+    "old_name:ty": "Fakaau",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 1848044,
+  "center": {
+    "lat": -14.4966516,
+    "lon": -146.3100640
+  },
+  "tags": {
+    "admin_level": "9",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Ahe",
+    "name:en": "Ahe",
+    "name:fr": "Ahe",
+    "name:ru": "Ахе",
+    "natural": "atoll",
+    "old_name": "Ahemaru;Omaru;Île du Paon",
+    "old_name:en": "Peacock Island",
+    "old_name:fr": "Ahemaru;Omaru;Île du Paon",
+    "old_name:ty": "Ahemaru;Omaru",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1848045,
+  "center": {
+    "lat": -14.6319819,
+    "lon": -145.2016168
+  },
+  "tags": {
+    "admin_level": "9",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Takapoto",
+    "name:en": "Takapoto",
+    "name:fr": "Takapoto",
+    "name:ru": "Такапото",
+    "natural": "atoll",
+    "old_name": "Tua-Poto;Oura;Île Zondenground Eiland;Île Schadelijk;Uia;Île du Roi Georges",
+    "old_name:en": "Uia;King George Island",
+    "old_name:fr": "Tua-Poto;Oura;Île Zondenground Eiland;Île Schadelijk;Uia;Île du Roi Georges",
+    "old_name:nl": "Zondenground Eiland;Schadelijk Eiland",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1848046,
+  "center": {
+    "lat": -14.3982934,
+    "lon": -145.9571060
+  },
+  "tags": {
+    "admin_level": "9",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Manihi",
+    "name:en": "Manihi",
+    "name:fr": "Manihi",
+    "name:ru": "Манихи",
+    "natural": "atoll",
+    "old_name": "Paeua;Waterland;Île du Prince de Galles;Mangee",
+    "old_name:en": "Waterland;Prince of Wales Island;Mangee",
+    "old_name:fr": "Paeua;Waterland;Île du Prince de Galles;Mangee",
+    "old_name:ty": "Paeua",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1848047,
+  "center": {
+    "lat": -14.4512685,
+    "lon": -144.9638862
+  },
+  "tags": {
+    "admin_level": "10",
+    "alt_name": "Taka-Roa",
+    "alt_name:en": "Taka-Roa",
+    "alt_name:fr": "Taka-Roa",
+    "alt_name:ty": "Taka-Roa",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Takaroa",
+    "name:en": "Takaroa",
+    "name:fr": "Takaroa",
+    "name:ru": "Такароа",
+    "natural": "atoll",
+    "old_name": "Takapua;Île Zonderground;Tioka",
+    "old_name:en": "Tioka",
+    "old_name:fr": "Takapua;Île Zonderground;Tioka",
+    "old_name:nl": "Zonderground Eiland",
+    "old_name:ty": "Takapua",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1848814,
+  "center": {
+    "lat": -14.1722621,
+    "lon": -141.2256056
+  },
+  "tags": {
+    "Schalansky_ref": "70",
+    "admin_level": "10",
+    "alt_name": "Pukaroa",
+    "alt_name:fr": "Pukaroa",
+    "alt_name:ty": "Pukaroa",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Napuka",
+    "name:en": "Napuka",
+    "name:fr": "Napuka",
+    "name:ru": "Напука",
+    "natural": "atoll",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 1849655,
+  "center": {
+    "lat": -27.8874401,
+    "lon": -143.4981027
+  },
+  "tags": {
+    "name": "Marotiri",
+    "name:en": "Marotiri",
+    "name:fr": "Marotiri",
+    "name:ru": "Маротири",
+    "natural": "atoll",
+    "old_name": "Îlots de Bass;Cuatro-Coronados",
+    "old_name:en": "Bass Islets",
+    "old_name:es": "Cuatro Coronados",
+    "old_name:fr": "Îlots de Bass;Cuatro-Coronados",
+    "place": "islet",
+    "type": "multipolygon",
+    "wikidata": "Q1632721",
+    "wikipedia": "fr:Marotiri"
+  }
+},
+{
+  "type": "relation",
+  "id": 1850330,
+  "center": {
+    "lat": -17.3413841,
+    "lon": -138.3930949
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Tatakoto",
+    "name:en": "Tatakoto",
+    "name:fr": "Tatakoto",
+    "name:ru": "Татакото",
+    "natural": "atoll",
+    "old_name": "San Narciso;Île d'Augier;Île Clerkes",
+    "old_name:en": "Clerkes Island",
+    "old_name:es": "San Narciso",
+    "old_name:fr": "San Narciso;Île d'Augier;Île Clerkes",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1851864,
+  "center": {
+    "lat": -17.3793613,
+    "lon": -141.5060889
+  },
+  "tags": {
+    "admin_level": "10",
+    "land_area": "administrative",
+    "name": "Tauere",
+    "name:en": "Tauere",
+    "name:fr": "Tauere",
+    "name:ru": "Тауэре",
+    "natural": "atoll",
+    "old_name": "Te Putua;San Simon y Judas",
+    "old_name:es": "San Simon y Judas",
+    "old_name:fr": "Te Putua;San Simon y Judas",
+    "old_name:ty": "Te Putua",
+    "type": "land_area",
+    "wikidata": "Q671261",
+    "wikipedia": "fr:Tauere"
+  }
+},
+{
+  "type": "relation",
+  "id": 1853339,
+  "center": {
+    "lat": -17.4675117,
+    "lon": -143.4486745
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Haraiki",
+    "name:en": "Haraiki",
+    "name:fr": "Haraiki",
+    "name:ru": "Хараики",
+    "natural": "atoll",
+    "old_name": "San Quintín;Île Crocker",
+    "old_name:en": "Crocker Island",
+    "old_name:es": "San Quintín",
+    "old_name:fr": "San Quintín;Île Crocker",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1853345,
+  "center": {
+    "lat": -19.8740865,
+    "lon": -144.9674877
+  },
+  "tags": {
+    "admin_level": "10",
+    "alt_name": "Héréhérétué",
+    "alt_name:fr": "Héréhérétué",
+    "land_area": "administrative",
+    "name": "Hereheretue",
+    "name:en": "Hereheretue",
+    "name:fr": "Hereheretue",
+    "name:ru": "Херехеретуэ",
+    "natural": "atoll",
+    "old_name": "Hiri-Oro;Britomart Island;San Pablo",
+    "old_name:en": "Britomart Island;San Pablo",
+    "old_name:fr": "Hiri-Oro;Britomart Island;San Pablo",
+    "old_name:pt": "San Pablo",
+    "old_name:ty": "Hiri-Oro",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1854458,
+  "center": {
+    "lat": -20.4340250,
+    "lon": -143.5400428
+  },
+  "tags": {
+    "admin_level": "10",
+    "land_area": "administrative",
+    "name": "Anuanuraro",
+    "name:en": "Anuanuraro",
+    "name:fr": "Anuanuraro",
+    "name:ru": "Ануанураро",
+    "natural": "atoll",
+    "old_name": "Archange",
+    "old_name:en": "Archangel",
+    "old_name:fr": "Archange",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1854459,
+  "center": {
+    "lat": -20.6152538,
+    "lon": -143.2804680
+  },
+  "tags": {
+    "admin_level": "10",
+    "land_area": "administrative",
+    "name": "Anuanurunga",
+    "name:en": "Anuanurunga",
+    "name:fr": "Anuanurunga",
+    "name:ru": "Ануанурунга",
+    "natural": "atoll",
+    "old_name": "Anua-Nurunga;Teku",
+    "old_name:en": "Teku",
+    "old_name:fr": "Anua-Nurunga",
+    "old_name:ty": "Anua-Nurunga",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1854460,
+  "center": {
+    "lat": -20.7001481,
+    "lon": -143.0539326
+  },
+  "tags": {
+    "admin_level": "10",
+    "land_area": "administrative",
+    "name": "Nukutepipi",
+    "name:en": "Nukutepipi",
+    "name:fr": "Nukutepipi",
+    "name:ru": "Нукутепипи",
+    "natural": "atoll",
+    "old_name": "Nuku-Te-Pipi;Île Carteret;Île Margaret",
+    "old_name:en": "Carteret Island;Margaret Island",
+    "old_name:fr": "Nuku-Te-Pipi;Île Carteret;Île Margaret",
+    "old_name:ty": "Nuku-Te-Pipi",
+    "source": "Bing",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1857434,
+  "center": {
+    "lat": -17.5767882,
+    "lon": -142.6079762
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Hikueru",
+    "name:en": "Hikueru",
+    "name:fr": "Hikueru",
+    "name:ru": "Хикуэру",
+    "natural": "atoll",
+    "old_name": "Tiveru;Te Karena;San Juan;Île Melville",
+    "old_name:en": "Melville Island",
+    "old_name:fr": "Tiveru;Te Karena;San Juan;Île Melville",
+    "old_name:pt": "San Juan",
+    "old_name:ty": "Tiveru;Te Karena",
+    "source": "Bing",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1859179,
+  "center": {
+    "lat": -19.2013750,
+    "lon": -141.2439281
+  },
+  "tags": {
+    "admin_level": "10",
+    "land_area": "administrative",
+    "name": "Manuhangi",
+    "name:en": "Manuhangi",
+    "name:fr": "Manuhangi",
+    "name:ru": "Мануханги",
+    "natural": "atoll",
+    "old_name": "Te Fara",
+    "old_name:fr": "Te Fara",
+    "old_name:ty": "Te Fara",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1859215,
+  "center": {
+    "lat": -18.0516675,
+    "lon": -142.2911077
+  },
+  "tags": {
+    "admin_level": "10",
+    "land_area": "administrative",
+    "name": "Marokau",
+    "name:en": "Marokau",
+    "name:fr": "Marokau",
+    "name:ru": "Марокау",
+    "natural": "atoll",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1859250,
+  "center": {
+    "lat": -17.0570399,
+    "lon": -143.1791470
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Marutea Nord",
+    "name:en": "Marutea Nord",
+    "name:fr": "Marutea Nord",
+    "name:ru": "Марутео",
+    "natural": "atoll",
+    "old_name": "Taunga Tauranga-e-Havana;Île Furneaux",
+    "old_name:en": "Taunga Tauranga-e-Havana;Furneaux Island",
+    "old_name:fr": "Taunga Tauranga-e-Havana;Île Furneaux",
+    "old_name:ty": "Taunga Tauranga-e-Havana",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1859363,
+  "center": {
+    "lat": -14.8821995,
+    "lon": -148.6705816
+  },
+  "tags": {
+    "admin_level": "9",
+    "boundary": "land_area",
+    "name": "Mataiva",
+    "name:en": "Mataiva",
+    "name:fr": "Mataiva",
+    "name:ru": "Матаива",
+    "natural": "atoll",
+    "old_name": "Matahiva",
+    "old_name:fr": "Matahiva",
+    "old_name:ty": "Matahiva",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 1860199,
+  "center": {
+    "lat": -18.7564555,
+    "lon": -141.8115006
+  },
+  "tags": {
+    "admin_level": "10",
+    "alt_name": "Nengonengo",
+    "alt_name:en": "Nengonengo",
+    "alt_name:fr": "Nengonengo",
+    "alt_name:ru": "Ненгоненго",
+    "land_area": "administrative",
+    "name": "Nengo Nengo",
+    "name:en": "Nengo Nengo",
+    "name:fr": "Nengo Nengo",
+    "name:ru": "Ненго Ненго",
+    "natural": "atoll",
+    "old_name": "Île du Prince William Henry;Île Lostange",
+    "old_name:en": "Prince William Henry Island;Lostange Island",
+    "old_name:fr": "Île du Prince William Henry;Île Lostange",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1860578,
+  "center": {
+    "lat": -16.6936340,
+    "lon": -142.8277868
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Nihiru",
+    "name:en": "Nihiru",
+    "name:fr": "Nihiru",
+    "name:ru": "Нихиру",
+    "natural": "atoll",
+    "old_name": "Nikia;Nigeri",
+    "old_name:fr": "Nikia;Nigeri",
+    "old_name:ru": "Nigeri",
+    "old_name:ty": "Nikia",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1860630,
+  "center": {
+    "lat": -19.1362545,
+    "lon": -140.6903832
+  },
+  "tags": {
+    "admin_level": "10",
+    "land_area": "administrative",
+    "name": "Paraoa",
+    "name:en": "Paraoa",
+    "name:fr": "Paraoa",
+    "name:ru": "Параоа",
+    "natural": "atoll",
+    "old_name": "Tohora;Hariri;Gloucester",
+    "old_name:en": "Gloucester",
+    "old_name:fr": "Tohora;Hariri;Gloucester",
+    "old_name:ty": "Tohora;Hariri",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1860658,
+  "center": {
+    "lat": -16.1835089,
+    "lon": -144.8934929
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Raraka",
+    "name:en": "Raraka",
+    "name:fr": "Raraka",
+    "name:ru": "Рарака",
+    "natural": "atoll",
+    "old_name": "Te Marie",
+    "old_name:fr": "Te Marie",
+    "old_name:ty": "Te Marie",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 1861293,
+  "center": {
+    "lat": -18.2380068,
+    "lon": -142.1591350
+  },
+  "tags": {
+    "admin_level": "10",
+    "land_area": "administrative",
+    "name": "Ravahere",
+    "name:en": "Ravahere",
+    "name:fr": "Ravahere",
+    "name:ru": "Равахере",
+    "natural": "atoll",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1861647,
+  "center": {
+    "lat": -18.5200204,
+    "lon": -136.3782377
+  },
+  "tags": {
+    "admin_level": "9",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Reao",
+    "name:en": "Reao",
+    "name:fr": "Reao",
+    "name:ru": "Реао",
+    "natural": "atoll",
+    "old_name": "Natupe;Minerva;Clermont-Tonnerre",
+    "old_name:en": "Natupe;Minerva;Clermont Tonnerre",
+    "old_name:fr": "Natupe;Minerva;Clermont-Tonnerre",
+    "old_name:ty": "Natūpe",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1861652,
+  "center": {
+    "lat": -17.8521490,
+    "lon": -143.0761711
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Reitoru",
+    "name:en": "Reitoru",
+    "name:fr": "Reitoru",
+    "name:ru": "Реитору",
+    "natural": "atoll",
+    "old_name": "Te Pirehi",
+    "old_name:fr": "Te Pirehi",
+    "old_name:ty": "Te Pirehi",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1861656,
+  "center": {
+    "lat": -16.3439735,
+    "lon": -143.1201545
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Taenga",
+    "name:en": "Taenga",
+    "name:fr": "Taenga",
+    "name:ru": "Таэнга",
+    "natural": "atoll",
+    "old_name": "Taunga-Hara;Île de Holt;Yermolov",
+    "old_name:en": "Holt's Island",
+    "old_name:fr": "Taunga-Hara;Île de Holt;Yermolov",
+    "old_name:ru": "Yermolov",
+    "old_name:ty": "Taunga-Hara",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1861673,
+  "center": {
+    "lat": -15.7421160,
+    "lon": -144.6309087
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "name": "Taiaro",
+    "name:en": "Taiaro",
+    "name:fr": "Taiaro",
+    "name:ru": "Таиаро",
+    "natural": "atoll",
+    "old_name": "Maro-Taua;King's Island",
+    "old_name:en": "Maro-Taua;King's Island",
+    "old_name:fr": "Maro-Taua;Île du Roi",
+    "old_name:ty": "Maro-Taua",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 1861686,
+  "center": {
+    "lat": -15.7987867,
+    "lon": -142.1905370
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Takume",
+    "name:en": "Takume",
+    "name:fr": "Takume",
+    "name:ru": "Такуме",
+    "natural": "atoll",
+    "old_name": "Pukamaru;Wolkonsky;Takurea",
+    "old_name:en": "Takurea",
+    "old_name:fr": "Pukamaru;Wolkonsky;Takurea",
+    "old_name:ru": "Wolkonsky",
+    "old_name:ty": "Pukamaru",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1862499,
+  "center": {
+    "lat": -17.3094408,
+    "lon": -142.5735601
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Tekokota",
+    "name:en": "Tekokota",
+    "name:fr": "Tekokota",
+    "name:ru": "Текокота",
+    "natural": "atoll",
+    "old_name": "Doubtful Island;La Del Peligro;San Narciso;Los Mártires",
+    "old_name:en": "Doubtful Island",
+    "old_name:es": "La Del Peligro;San Narciso; Los Mártires",
+    "old_name:fr": "Île Douteuse;La Périlleuse;San Narciso;Les Martyrs",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1862528,
+  "center": {
+    "lat": -21.6752593,
+    "lon": -140.6283193
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Tematangi",
+    "name:en": "Tematangi",
+    "name:fr": "Tematangi",
+    "name:ru": "Тематанги",
+    "natural": "atoll",
+    "old_name": "Tematagi;Île du Lagon de Bligh;Île Bligh",
+    "old_name:en": "Tematagi;Bligh's Lagoon Island;Bligh Island",
+    "old_name:fr": "Tematagi;Île du Lagon de Bligh;Île Bligh",
+    "old_name:ty": "Tematagi",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1863523,
+  "center": {
+    "lat": -16.6537800,
+    "lon": -144.2163478
+  },
+  "tags": {
+    "admin_level": "11",
+    "land_area": "administrative",
+    "name": "Tuanake",
+    "name:en": "Tuanake",
+    "name:fr": "Tuanake",
+    "name:ru": "Туанаке",
+    "natural": "atoll",
+    "old_name": "Mata-Rua-Puna;Tunaki;Île Reid",
+    "old_name:en": "Tunaki;Reid Island",
+    "old_name:fr": "Mata-Rua-Puna;Tunaki;Île Reid",
+    "old_name:ty": "Mata-Rua-Puna",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1863545,
+  "center": {
+    "lat": -20.8645205,
+    "lon": -138.5476984
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Tureia",
+    "name:en": "Tureia",
+    "name:fr": "Tureia",
+    "name:ru": "Туреиа",
+    "natural": "atoll",
+    "old_name": "Papa-Kena;Île Carysford",
+    "old_name:en": "Carysford Island",
+    "old_name:fr": "Papa-Kena;Île Carysford",
+    "old_name:ty": "Papa-Kena",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1863550,
+  "center": {
+    "lat": -18.7729714,
+    "lon": -138.8231148
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Vahitahi",
+    "name:en": "Vahitahi",
+    "name:fr": "Vahitahi",
+    "name:ru": "Вахитахи",
+    "natural": "atoll",
+    "old_name": "Vaitake;Les Quatre Facardins;Île du Lagon;Lagon de Cook",
+    "old_name:en": "Lagoon Island;Cook's Lagoon",
+    "old_name:fr": "Vaitake;Les Quatre Facardins;Île du Lagon;Lagon de Cook",
+    "old_name:ty": "Vaitake",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1863562,
+  "center": {
+    "lat": -19.3479797,
+    "lon": -139.2279057
+  },
+  "tags": {
+    "admin_level": "9",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Vairaatea",
+    "name:en": "Vairaatea",
+    "name:fr": "Vairaatea",
+    "name:ru": "Ваираатеа",
+    "natural": "atoll",
+    "old_name": "San Miguel Arcángel;Île Egmont;Île Osnaberg",
+    "old_name:en": "Egmont Island;Osnaberg Island",
+    "old_name:fr": "San Miguel Arcángel;Île Egmont;Île Osnaberg",
+    "old_name:pt": "San Miguel Arcángel",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1864213,
+  "center": {
+    "lat": -17.8112878,
+    "lon": -140.7549664
+  },
+  "tags": {
+    "admin_level": "10",
+    "land_area": "administrative",
+    "name": "Amanu",
+    "name:en": "Amanu",
+    "name:fr": "Amanu",
+    "name:ru": "Аману",
+    "natural": "atoll",
+    "old_name": "Timanu;Karere;Las Animas;Moller;Freycinet",
+    "old_name:es": "Las Animas",
+    "old_name:fr": "Timanu;Karere;Las Animas;Moller;Freycinet",
+    "old_name:ru": "Моллера",
+    "old_name:ty": "Timanu;Karere",
+    "type": "land_area",
+    "wikidata": "Q454545",
+    "wikipedia": "fr:Amanu"
+  }
+},
+{
+  "type": "relation",
+  "id": 1864440,
+  "center": {
+    "lat": -15.5431507,
+    "lon": -145.5140745
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "name": "Aratika",
+    "name:en": "Aratika",
+    "name:fr": "Aratika",
+    "name:ru": "Аратика",
+    "natural": "atoll",
+    "old_name": "Île Carlshoff",
+    "old_name:fr": "Île Carlshoff",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 1866449,
+  "center": {
+    "lat": -16.2917749,
+    "lon": -145.5921320
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Fakarava",
+    "name:en": "Fakarava",
+    "name:fr": "Fakarava",
+    "name:ru": "Факарава",
+    "natural": "atoll",
+    "old_name": "Havaiki-Te-Araro",
+    "old_name:fr": "Havaiki-Te-Araro",
+    "old_name:ty": "Havaiki-Te-Araro",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 1866571,
+  "center": {
+    "lat": -22.2382682,
+    "lon": -138.7469047
+  },
+  "tags": {
+    "Schalansky_ref": "80",
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Fangataufa",
+    "name:en": "Fangataufa",
+    "name:fr": "Fangataufa",
+    "name:ru": "Фангатауфа",
+    "natural": "atoll",
+    "old_name": "Île Cockburn",
+    "old_name:en": "Cockburn Island",
+    "old_name:fr": "Île Cockburn",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1866585,
+  "center": {
+    "lat": -18.2454103,
+    "lon": -140.8675919
+  },
+  "tags": {
+    "admin_level": "10",
+    "alt_name": "Île de l’Arc;Île de la Harpe",
+    "alt_name:fr": "Île de l’Arc;Île de la Harpe",
+    "land_area": "administrative",
+    "name": "Hao",
+    "name:en": "Hao",
+    "name:fr": "Hao",
+    "name:ru": "Хао",
+    "natural": "atoll",
+    "old_name": "Haorangi",
+    "old_name:fr": "Haorangi",
+    "old_name:ty": "Haorangi",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1866589,
+  "center": {
+    "lat": -16.4194776,
+    "lon": -144.3551742
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Katiu",
+    "name:en": "Katiu",
+    "name:fr": "Katiu",
+    "name:ru": "Катиу",
+    "natural": "atoll",
+    "old_name": "Atina",
+    "old_name:fr": "Atina;Île Saken",
+    "old_name:ru": "Saken",
+    "old_name:ty": "Atina",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1866593,
+  "center": {
+    "lat": -15.8744288,
+    "lon": -145.1556977
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Kauehi",
+    "name:en": "Kauehi",
+    "name:fr": "Kauehi",
+    "name:ru": "Кауэхи",
+    "natural": "atoll",
+    "old_name": "Putake",
+    "old_name:fr": "Putake",
+    "old_name:ty": "Putake",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 1866690,
+  "center": {
+    "lat": -16.5773310,
+    "lon": -143.6882350
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Makemo",
+    "name:en": "Makemo",
+    "name:fr": "Makemo",
+    "name:frp": "Makemo",
+    "name:ru": "Макемо",
+    "natural": "atoll",
+    "old_name": "Te-Paritua;Rangi-Kemo",
+    "old_name:fr": "Te-Paritua;Rangi-Kemo",
+    "old_name:ty": "Te-Paritua;Rangi-Kemo",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1871292,
+  "center": {
+    "lat": -21.8345826,
+    "lon": -138.9107459
+  },
+  "tags": {
+    "admin_level": "10",
+    "alt_name": "Mururoa",
+    "alt_name:en": "Mururoa",
+    "alt_name:fr": "Mururoa",
+    "alt_name:ru": "Муруроа",
+    "alt_name:uk": "Муруроа",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Moruroa",
+    "name:en": "Moruroa",
+    "name:fr": "Moruroa",
+    "name:ru": "Моруроа",
+    "name:uk": "Моруроа",
+    "natural": "atoll",
+    "old_name": "Aopuni;Île de l'Évêque d'Osnaburgh",
+    "old_name:en": "Bishop of Osnaburgh Island",
+    "old_name:fr": "Aopuni;Île de l'Évêque d'Osnaburgh",
+    "old_name:ty": "Aopuni",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1871993,
+  "center": {
+    "lat": -15.1207589,
+    "lon": -147.5773590
+  },
+  "tags": {
+    "admin_level": "9",
+    "boundary": "administrative",
+    "name": "Rangiroa",
+    "name:en": "Rangiroa",
+    "name:fr": "Rangiroa",
+    "name:mi": "Te Kokōta",
+    "name:ru": "Рангироа",
+    "natural": "atoll",
+    "old_name": "Île Vlieghen;Île Deans;Hyades",
+    "old_name:en": "Vlieghen Eiland;Deans Island;Hyades",
+    "old_name:fr": "Île Vlieghen;Île Deans;Hyades",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 1872031,
+  "center": {
+    "lat": -16.0838807,
+    "lon": -142.4206625
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Raroia",
+    "name:en": "Raroia",
+    "name:fr": "Raroia",
+    "name:ru": "Рароиа",
+    "natural": "atoll",
+    "old_name": "Raro-Nuku",
+    "old_name:fr": "Raro-Nuku",
+    "old_name:ty": "Raro-Nuku",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 1872079,
+  "center": {
+    "lat": -15.9086323,
+    "lon": -146.0355076
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Toau",
+    "name:en": "Toau",
+    "name:fr": "Toau",
+    "name:ru": "Тоау",
+    "natural": "atoll",
+    "old_name": "Pakuria;Taha-a-titi;Île Elizabeth",
+    "old_name:en": "Elizabeth Island",
+    "old_name:fr": "Pakuria;Taha-a-titi;Île Elizabeth",
+    "old_name:ru": "Остров Элизабет",
+    "old_name:ty": "Pakuria;Taha-a-titi",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 2903810,
+  "center": {
+    "lat": -16.8193939,
+    "lon": -151.4227196
+  },
+  "tags": {
+    "name": "Ra’iātea",
+    "official_name": "Raiatea",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q847008",
+    "wikipedia": "en:Raʻiātea"
+  }
+},
+{
+  "type": "relation",
+  "id": 3992237,
+  "center": {
+    "lat": -17.6872664,
+    "lon": -149.3727956
+  },
+  "tags": {
+    "name": "Tahiti",
+    "name:af": "Tahiti",
+    "name:ar": "تاهيتي",
+    "name:az": "Taiti",
+    "name:be": "Таіці",
+    "name:ca": "Tahití",
+    "name:cs": "Tahiti",
+    "name:de": "Tahiti",
+    "name:en": "Tahiti",
+    "name:eo": "Tahitio",
+    "name:es": "Tahiti",
+    "name:et": "Tahiti",
+    "name:eu": "Tahiti",
+    "name:fa": "تاهیتی",
+    "name:fi": "Tahiti",
+    "name:fr": "Tahiti",
+    "name:gl": "Tahiti",
+    "name:hu": "Tahiti",
+    "name:it": "Tahiti",
+    "name:ja": "タヒチ島",
+    "name:ko": "타히티섬",
+    "name:lt": "Taitis",
+    "name:nl": "Tahiti",
+    "name:no": "Tahiti",
+    "name:pl": "Tahiti",
+    "name:pt": "Taiti",
+    "name:ro": "Tahiti",
+    "name:ru": "Таити",
+    "name:sk": "Tahiti",
+    "name:sl": "Tahiti",
+    "name:sq": "Tahiti",
+    "name:sr": "Тахити",
+    "name:sv": "Tahiti",
+    "name:sw": "Tahiti",
+    "name:tr": "Tahiti",
+    "name:zh": "大溪地",
+    "old_name": "Nouvelle Cythère",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q42000",
+    "wikipedia": "en:Tahiti"
+  }
+},
+{
+  "type": "relation",
+  "id": 6063001,
+  "center": {
+    "lat": -19.6344990,
+    "lon": -140.4090614
+  },
+  "tags": {
+    "admin_level": "10",
+    "land_area": "administrative",
+    "name": "Ahunui",
+    "name:en": "Ahunui",
+    "name:fr": "Ahunui",
+    "name:ru": "Ахунуи",
+    "natural": "atoll",
+    "old_name": "Fanga-Taufa;Nga-Taumanga",
+    "old_name:fr": "Fanga-Taufa;Nga-Taumanga",
+    "old_name:ty": "Fanga-Taufa;Nga-Taumanga",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 6063004,
+  "center": {
+    "lat": -16.8346520,
+    "lon": -141.9214940
+  },
+  "tags": {
+    "admin_level": "10",
+    "land_area": "administrative",
+    "name": "Rekareka",
+    "name:en": "Rekareka",
+    "name:fr": "Rekareka",
+    "name:ru": "Рекарека",
+    "natural": "atoll",
+    "old_name": "Tehuata;Tu-Henua;La Sagitaria;Île de Bonne Espérance",
+    "old_name:en": "Tehuata;Tu-Henua;Good Hope Island",
+    "old_name:es": "La Sagitaria",
+    "old_name:fr": "Tehuata;Tu-Henua;La Sagitaria;Île de Bonne Espérance",
+    "old_name:ty": "Tehuata;Tu-Henua",
+    "type": "land_area",
+    "wikidata": "Q2031608",
+    "wikipedia": "fr:Rekareka"
+  }
+},
+{
+  "type": "relation",
+  "id": 6063005,
+  "center": {
+    "lat": -14.1011018,
+    "lon": -141.4283840
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Tepoto Nord",
+    "name:en": "North Tepoto",
+    "name:fr": "Tepoto Nord",
+    "name:ru": "Северный Тепото",
+    "natural": "atoll",
+    "old_name": "Toho;Pukapoto;Île de la Désolation",
+    "old_name:en": "Wytoohee Island;Wutoohee Island",
+    "old_name:fr": "Toho;Pukapoto;Île de la Désolation",
+    "old_name:ty": "Toho;Pukapoto",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 6063006,
+  "center": {
+    "lat": -14.9509575,
+    "lon": -144.5476913
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Tikei",
+    "name:en": "Tikei",
+    "name:fr": "Tikei",
+    "name:ru": "Тикеи",
+    "old_name": "Manu;Tikai;Tiku;Île Belrekieglijk;Île Carlshoff;Île Romanzov",
+    "old_name:de": "Carlshoff Insel",
+    "old_name:fr": "Manu;Tikai;Tiku;Île Belrekieglijk;Île Carlshoff;Île Romanzov",
+    "old_name:nl": "Belrekieglijk Eiland",
+    "old_name:ru": "Romanzov",
+    "old_name:ty": "Manu;Tikai;Tiku",
+    "place": "island",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 6063017,
+  "center": {
+    "lat": -15.9860287,
+    "lon": -140.1318337
+  },
+  "tags": {
+    "admin_level": "9",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Fakahina",
+    "name:en": "Fakahina",
+    "name:fr": "Fakahina",
+    "name:ru": "Факахина",
+    "old_name": "Kaina;Predpriatic;Niuhi",
+    "old_name:et": "Predpriatic",
+    "old_name:fr": "Kaina;Predpriatic;Niuhi",
+    "old_name:ty": "Kaīna;Niuhi",
+    "place": "island",
+    "type": "land_area",
+    "wikidata": "Q969412",
+    "wikipedia": "fr:Fakahina"
+  }
+},
+{
+  "type": "relation",
+  "id": 6063019,
+  "center": {
+    "lat": -15.8212534,
+    "lon": -140.8667464
+  },
+  "tags": {
+    "admin_level": "9",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Fangatau",
+    "name:en": "Fangatau",
+    "name:fr": "Fangatau",
+    "name:ru": "Фангатау",
+    "natural": "atoll",
+    "old_name": "Nakai-Erua;Arakcheev",
+    "old_name:fr": "Nakai-Erua;Arakcheev",
+    "old_name:ru": "Arakcheev",
+    "old_name:ty": "Nakai-Erua",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 6063037,
+  "center": {
+    "lat": -16.7224998,
+    "lon": -144.0988818
+  },
+  "tags": {
+    "admin_level": "11",
+    "land_area": "administrative",
+    "name": "Hiti",
+    "name:en": "Hiti",
+    "name:fr": "Hiti",
+    "name:ru": "Хити",
+    "natural": "atoll",
+    "old_name": "Hiti-Rau-Mea;Île Raeffsky;Île Raievski",
+    "old_name:en": "Raeffsky Island;Raievski Island",
+    "old_name:fr": "Hiti-Rau-Mea;Île Raeffsky;Île Raievski",
+    "old_name:ru": "Остров Раевского",
+    "old_name:ty": "Hiti-Rau-Mea",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 6065890,
+  "center": {
+    "lat": -18.5574062,
+    "lon": -139.2119268
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Akiaki",
+    "name:en": "Akiaki",
+    "name:fr": "Akiaki",
+    "name:ru": "Акиаки",
+    "natural": "atoll",
+    "old_name": "Île des Lanciers;Thrum Cup",
+    "old_name:en": "Thrum Cup",
+    "old_name:fr": "Île des Lanciers",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 6065891,
+  "center": {
+    "lat": -19.2795724,
+    "lon": -138.7856530
+  },
+  "tags": {
+    "admin_level": "10",
+    "land_area": "administrative",
+    "name": "Nukutavake",
+    "name:en": "Nukutavake",
+    "name:fr": "Nukutavake",
+    "name:ru": "Нукутаваке",
+    "natural": "atoll",
+    "old_name": "Maragai;Île de la Reine Charlotte",
+    "old_name:en": "Queen Charlotte Island",
+    "old_name:fr": "Maragai;Île de la Reine Charlotte",
+    "old_name:ty": "Maragai",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 6065892,
+  "center": {
+    "lat": -19.3948330,
+    "lon": -138.6760600
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Pinaki",
+    "name:fr": "Pinaki",
+    "name:ru": "Пинаки",
+    "natural": "atoll",
+    "old_name": "Te Kiekie;Île Whitsunday",
+    "old_name:en": "Whitsunday Island",
+    "old_name:fr": "Te Kiekie;Île Whitsunday",
+    "old_name:ty": "Te Kiekie",
+    "place": "island",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 6065893,
+  "center": {
+    "lat": -20.7816964,
+    "lon": -139.1409794
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Vanavana",
+    "name:en": "Vanavana",
+    "name:fr": "Vanavana",
+    "name:ru": "Ванавана",
+    "natural": "atoll",
+    "old_name": "Kurataki;Huataki;Île Barrow",
+    "old_name:en": "Kurataki;Huataki;Barrow Island",
+    "old_name:fr": "Kurataki;Huataki;Île Barrow",
+    "old_name:ty": "Kurataki;Huataki",
+    "type": "land_area",
+    "wikidata": "Q2035579",
+    "wikipedia": "fr:Vanavana"
+  }
+},
+{
+  "type": "relation",
+  "id": 6066083,
+  "center": {
+    "lat": -23.1297077,
+    "lon": -134.9043213
+  },
+  "tags": {
+    "admin_level": "11",
+    "boundary": "administrative",
+    "name": "Aukena",
+    "name:en": "Aukena",
+    "name:fr": "Aukena",
+    "name:ru": "Аукена",
+    "name:ty": "Aukena",
+    "place": "island",
+    "type": "boundary",
+    "wikidata": "Q771198",
+    "wikipedia": "fr:Aukena"
+  }
+},
+{
+  "type": "relation",
+  "id": 6066084,
+  "center": {
+    "lat": -23.1045393,
+    "lon": -134.9712449
+  },
+  "tags": {
+    "FIXME": "découper les 6 districts/quartiers de Mangareva : Rikitea, Kirimiro, Gatavake, Atituiti, Akaputu et Taku",
+    "admin_level": "10",
+    "boundary": "administrative",
+    "name": "Mangareva",
+    "name:en": "Mangareva",
+    "name:fr": "Mangareva",
+    "name:ru": "Мангарева",
+    "name:ty": "Ma’areva",
+    "place": "island",
+    "type": "boundary",
+    "wikidata": "Q616662",
+    "wikipedia": "fr:Mangareva"
+  }
+},
+{
+  "type": "relation",
+  "id": 6066086,
+  "center": {
+    "lat": -23.1889871,
+    "lon": -134.9110338
+  },
+  "tags": {
+    "admin_level": "12",
+    "boundary": "administrative",
+    "name": "Akamaru",
+    "name:en": "Akamaru",
+    "name:fr": "Akamaru",
+    "name:ru": "Акамару",
+    "name:ty": "Akamaru",
+    "place": "island",
+    "type": "boundary",
+    "wikidata": "Q415599",
+    "wikipedia": "fr:Akamaru"
+  }
+},
+{
+  "type": "relation",
+  "id": 6066087,
+  "center": {
+    "lat": -23.2430161,
+    "lon": -134.9585562
+  },
+  "tags": {
+    "admin_level": "12",
+    "boundary": "administrative",
+    "name": "Kamaka",
+    "name:en": "Kamaka",
+    "name:fr": "Kamaka",
+    "name:ru": "Камака",
+    "name:ty": "Kamaka",
+    "place": "island",
+    "type": "boundary",
+    "wikidata": "Q1299457",
+    "wikipedia": "fr:Kamaka (îlot)"
+  }
+},
+{
+  "type": "relation",
+  "id": 6066215,
+  "center": {
+    "lat": -15.9860595,
+    "lon": -142.3282430
+  },
+  "tags": {
+    "admin_level": "9",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Raroia",
+    "name:en": "Raroia",
+    "name:fr": "Raroia",
+    "name:ru": "Рароиа",
+    "natural": "atoll",
+    "old_name": "Raro-Nuku",
+    "old_name:fr": "Raro-Nuku",
+    "old_name:ty": "Raro-Nuku",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 6066288,
+  "center": {
+    "lat": -14.8183730,
+    "lon": -138.8198182
+  },
+  "tags": {
+    "admin_level": "8",
+    "alt_name": "Puka Puka",
+    "alt_name:en": "Puka Puka",
+    "alt_name:fr": "Puka Puka",
+    "alt_name:ru": "Пука-Пука",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Pukapuka",
+    "name:en": "Pukapuka",
+    "name:fr": "Pukapuka",
+    "name:ru": "Пукапука",
+    "natural": "atoll",
+    "type": "boundary",
+    "wikidata": "Q1471237",
+    "wikipedia": "fr:Puka Puka"
+  }
+},
+{
+  "type": "relation",
+  "id": 6066729,
+  "center": {
+    "lat": -14.6732516,
+    "lon": -144.8016145
+  },
+  "tags": {
+    "admin_level": "9",
+    "alt_name": "Taka-Roa",
+    "alt_name:en": "Taka-Roa",
+    "alt_name:fr": "Taka-Roa",
+    "alt_name:ty": "Taka-Roa",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Takaroa",
+    "name:en": "Takaroa",
+    "name:fr": "Takaroa",
+    "name:ru": "Такароа",
+    "natural": "atoll",
+    "old_name": "Takapua;Île Zonderground;Tioka",
+    "old_name:en": "Tioka",
+    "old_name:fr": "Takapua;Île Zonderground;Tioka",
+    "old_name:nl": "Zonderground Eiland",
+    "old_name:ty": "Takapua",
+    "type": "land_area"
+  }
+},
+{
+  "type": "relation",
+  "id": 6075623,
+  "center": {
+    "lat": -21.8091020,
+    "lon": -154.7077549
+  },
+  "tags": {
+    "admin_level": "10",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Îles Maria",
+    "name:en": "Maria Islands",
+    "name:fr": "Îles Maria",
+    "natural": "atoll",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 6075624,
+  "center": {
+    "lat": -23.8696422,
+    "lon": -147.6503983
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Raivavae",
+    "name:en": "Raivavae",
+    "name:fr": "Raivavae",
+    "name:ru": "Раиваваэ",
+    "natural": "atoll",
+    "old_name": "Vivatu;Oraibaba;Santa Rosa",
+    "old_name:es": "Santa Rosa",
+    "old_name:fr": "Vivatu;Oraibaba;Santa Rosa",
+    "old_name:ty": "Oraibaba",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 6075625,
+  "center": {
+    "lat": -22.4778884,
+    "lon": -151.3491649
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "land_area",
+    "land_area": "administrative",
+    "name": "Rurutu",
+    "name:fr": "Rurutu",
+    "name:he": "רורוטו",
+    "name:ty": "Rurutū",
+    "place": "island",
+    "population": "2466",
+    "ref:INSEE": "98744",
+    "type": "boundary",
+    "wikidata": "Q1585966",
+    "wikipedia": "fr:Rurutu (Polynésie française)"
+  }
+},
+{
+  "type": "relation",
+  "id": 6081655,
+  "center": {
+    "lat": -8.6764575,
+    "lon": -140.6133832
+  },
+  "tags": {
+    "name": "Motu Iti",
+    "place": "island",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 6081656,
+  "center": {
+    "lat": -8.8733150,
+    "lon": -140.1290174
+  },
+  "tags": {
+    "name": "Nuku Hiva",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q21064",
+    "wikipedia": "en:Nuku Hiva"
+  }
+},
+{
+  "type": "relation",
+  "id": 6081657,
+  "center": {
+    "lat": -9.4010673,
+    "lon": -140.0777705
+  },
+  "tags": {
+    "name": "Ua Pou",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q614645",
+    "wikipedia": "en:Ua Pou"
+  }
+},
+{
+  "type": "relation",
+  "id": 6082166,
+  "center": {
+    "lat": -23.1045393,
+    "lon": -134.9712449
+  },
+  "tags": {
+    "description": "Area 13.970 km2 (5.019 sq mi)",
+    "name": "Mangareva",
+    "name:en": "Mangareva",
+    "name:fr": "Mangareva",
+    "name:ru": "Мангарева",
+    "name:ty": "Ma’areva",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q616662",
+    "wikipedia": "fr:Mangareva"
+  }
+},
+{
+  "type": "relation",
+  "id": 6082212,
+  "center": {
+    "lat": -15.8152198,
+    "lon": -154.5252900
+  },
+  "tags": {
+    "alt_name": "Bellinghausen",
+    "name": "Motu One",
+    "natural": "atoll",
+    "place": "atoll",
+    "type": "multipolygon",
+    "wikidata": "Q584092",
+    "wikipedia": "fr:Motu One (Îles de la Société)"
+  }
+},
+{
+  "type": "relation",
+  "id": 6082561,
+  "center": {
+    "lat": -16.7523040,
+    "lon": -150.9964936
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "administrative",
+    "name": "Huahine",
+    "place": "island",
+    "place:wikidata": "Q521020",
+    "postal_code": "98731;98732",
+    "ref:INSEE": "98724",
+    "type": "boundary",
+    "wikidata": "Q968977",
+    "wikipedia": "fr:Huahine (Polynésie française)"
+  }
+},
+{
+  "type": "relation",
+  "id": 6082563,
+  "center": {
+    "lat": -16.6197409,
+    "lon": -151.4906151
+  },
+  "tags": {
+    "admin_level": "8",
+    "alt_name": "Tahaa",
+    "boundary": "administrative",
+    "name": "Taha’a",
+    "old_name": "’Upōrū",
+    "place": "island",
+    "postal_code": "98733;98734",
+    "ref:INSEE": "98745",
+    "type": "boundary",
+    "wikidata": "Q926768",
+    "wikipedia": "fr:Taha'a"
+  }
+},
+{
+  "type": "relation",
+  "id": 8053227,
+  "center": {
+    "lat": -17.0169712,
+    "lon": -149.5663761
+  },
+  "tags": {
+    "name": "Teti’aroa",
+    "natural": "atoll",
+    "place": "atoll",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 9364394,
+  "center": {
+    "lat": -18.2460247,
+    "lon": -140.8678872
+  },
+  "tags": {
+    "border_type": "baseline",
+    "boundary": "maritime",
+    "maritime": "yes",
+    "name": "Hao",
+    "name:fr": "Hao",
+    "name:ru": "Хао",
+    "natural": "atoll",
+    "old_name": "Haorangi",
+    "old_name:fr": "Haorangi",
+    "old_name:ty": "Haorangi",
+    "place": "atoll",
+    "source": "Bing",
+    "type": "multipolygon",
+    "wikidata": "Q1584116",
+    "wikipedia": "fr:Hao"
+  }
+},
+{
+  "type": "relation",
+  "id": 10045248,
+  "center": {
+    "lat": -17.5333075,
+    "lon": -149.8342578
+  },
+  "tags": {
+    "name": "Mo’orea",
+    "name:af": "Moorea",
+    "name:ar": "موريا",
+    "name:arz": "موريا",
+    "name:be": "Мурэа",
+    "name:ca": "Moorea",
+    "name:ceb": "Moorea",
+    "name:cs": "Moorea",
+    "name:cy": "Moorea",
+    "name:da": "Moorea",
+    "name:de": "Moorea",
+    "name:eo": "Moorea",
+    "name:es": "Moorea",
+    "name:et": "Moorea",
+    "name:fa": "موئورئا",
+    "name:fi": "Moorea",
+    "name:fr": "Moorea",
+    "name:frr": "Moorea",
+    "name:gl": "Moorea",
+    "name:hu": "Moorea",
+    "name:id": "Moorea",
+    "name:it": "Moorea",
+    "name:ja": "モーレア島",
+    "name:lt": "Moorėja",
+    "name:mk": "Моореја",
+    "name:ms": "Moorea",
+    "name:nl": "Moorea",
+    "name:no": "Moorea",
+    "name:pl": "Moorea",
+    "name:pt": "Moorea",
+    "name:ru": "Муреа",
+    "name:sv": "Moorea",
+    "name:th": "โมโอเรอา",
+    "name:ty": "Mo’orea",
+    "name:ur": "مووریا",
+    "name:vi": "Moorea",
+    "name:zh": "莫雷阿岛",
+    "official_name": "Moorea",
+    "old_name": "’aimeho",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q673400",
+    "wikipedia": "fr:Moorea"
+  }
+},
+{
+  "type": "relation",
+  "id": 10045719,
+  "center": {
+    "lat": -16.7285792,
+    "lon": -151.0115367
+  },
+  "tags": {
+    "name": "Huahine Nui",
+    "place": "island",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 10045720,
+  "center": {
+    "lat": -16.7865551,
+    "lon": -150.9922500
+  },
+  "tags": {
+    "name": "Huahine Iti",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q31929715"
+  }
+},
+{
+  "type": "relation",
+  "id": 10048569,
+  "center": {
+    "lat": -17.6569364,
+    "lon": -150.6309084
+  },
+  "tags": {
+    "admin_level": "9",
+    "alt_name": "Maiao",
+    "boundary": "administrative",
+    "name": "Mai'ao",
+    "old_name": "Tapua’e Manu",
+    "place": "island",
+    "source": "SAU",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 10048671,
+  "center": {
+    "lat": -16.4402764,
+    "lon": -152.2799502
+  },
+  "tags": {
+    "name": "Motu Auira",
+    "place": "island",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 10048672,
+  "center": {
+    "lat": -16.4338818,
+    "lon": -152.2447055
+  },
+  "tags": {
+    "name": "Motu Tuanai",
+    "place": "island",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 10068833,
+  "center": {
+    "lat": -10.4861346,
+    "lon": -138.6504986
+  },
+  "tags": {
+    "name": "Fatu Hiva",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q632061",
+    "wikipedia": "en:Fatu-Hiva"
+  }
+},
+{
+  "type": "relation",
+  "id": 10068942,
+  "center": {
+    "lat": -9.9575033,
+    "lon": -139.0832333
+  },
+  "tags": {
+    "name": "Tahuata",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q572723",
+    "wikipedia": "en:Tahuata"
+  }
+},
+{
+  "type": "relation",
+  "id": 10068943,
+  "center": {
+    "lat": -9.9824375,
+    "lon": -138.8242634
+  },
+  "tags": {
+    "alt_name": "Motane",
+    "name": "Moho Tani",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q944594",
+    "wikipedia": "en:Mohotani"
+  }
+},
+{
+  "type": "relation",
+  "id": 10068944,
+  "center": {
+    "lat": -9.7793274,
+    "lon": -138.9810536
+  },
+  "tags": {
+    "name": "Hiva Oa",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q937908",
+    "wikipedia": "en:Hiva Oa"
+  }
+},
+{
+  "type": "relation",
+  "id": 10069108,
+  "center": {
+    "lat": -8.9096756,
+    "lon": -139.5493182
+  },
+  "tags": {
+    "name": "Ua Huka",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q202299",
+    "wikipedia": "en:Ua Huka"
+  }
+},
+{
+  "type": "relation",
+  "id": 10069181,
+  "center": {
+    "lat": -7.9150170,
+    "lon": -140.5745993
+  },
+  "tags": {
+    "alt_name": "Hatutu",
+    "name": "Hatutaa",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q1420365",
+    "wikipedia": "en:Hatutu"
+  }
+},
+{
+  "type": "relation",
+  "id": 10069182,
+  "center": {
+    "lat": -8.0015433,
+    "lon": -140.6796491
+  },
+  "tags": {
+    "name": "Eiao",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q1301066",
+    "wikipedia": "en:Eiao"
+  }
+},
+{
+  "type": "relation",
+  "id": 10373551,
+  "center": {
+    "lat": -27.6082247,
+    "lon": -144.3430289
+  },
+  "tags": {
+    "Schalansky_ref": "72",
+    "alt_name": "Rapa-Iti",
+    "alt_name:en": "Rapa-Iti",
+    "alt_name:fr": "Rapa-Iti",
+    "alt_name:ru": "Рапа-Ити",
+    "alt_name:ty": "Rapa-Iti",
+    "is_in:archipelago": "Îles Australes",
+    "is_in:country": "French Polynesia",
+    "name": "Rapa",
+    "name:en": "Rapa",
+    "name:fr": "Rapa",
+    "name:nl": "Australeilanden",
+    "name:ru": "Рапа",
+    "name:ty": "Rapa",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q31931259",
+    "wikipedia": "fr:Rapa (île)"
+  }
+},
+{
+  "type": "relation",
+  "id": 10377071,
+  "center": {
+    "lat": -23.8697995,
+    "lon": -147.6597938
+  },
+  "tags": {
+    "name": "Raivavae",
+    "name:en": "Raivavae",
+    "name:fr": "Raivavae",
+    "name:ru": "Раиваваэ",
+    "old_name": "Vivatu;Oraibaba;Santa Rosa",
+    "old_name:es": "Santa Rosa",
+    "old_name:fr": "Vivatu;Oraibaba;Santa Rosa",
+    "old_name:ty": "Oraibaba",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q1309731",
+    "wikipedia": "en:Raivavae"
+  }
+},
+{
+  "type": "relation",
+  "id": 10377289,
+  "center": {
+    "lat": -23.3723743,
+    "lon": -149.4836469
+  },
+  "tags": {
+    "name": "Tubuai",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q514626",
+    "wikipedia": "en:Tubuai"
+  }
+},
+{
+  "type": "relation",
+  "id": 10377382,
+  "center": {
+    "lat": -22.6496528,
+    "lon": -152.8065476
+  },
+  "tags": {
+    "name": "Rimatara",
+    "place": "island",
+    "type": "multipolygon",
+    "wikidata": "Q1539984"
+  }
+},
+{
+  "type": "relation",
+  "id": 16021869,
+  "center": {
+    "lat": -16.5208170,
+    "lon": -151.7011630
+  },
+  "tags": {
+    "alt_name": "Motu Piti Aau",
+    "name": "Motu Piti A’au",
+    "place": "island",
+    "source": "SAU",
+    "source:geometry": "Satellite photogrammetry",
+    "source:geometry:date": "2010",
+    "type": "multipolygon",
+    "wikidata": "Q38251295",
+    "wikipedia": "en:Piti Aau"
+  }
+},
+{
+  "type": "relation",
+  "id": 19251452,
+  "center": {
+    "lat": -16.4957656,
+    "lon": -151.7376719
+  },
+  "tags": {
+    "is_in:country": "Polynésie française",
+    "is_in:ocean": "Pacific Ocean",
+    "loc_name": "Pora Pora",
+    "name": "Bora-Bora",
+    "name:af": "Bora Bora",
+    "name:ar": "بورا بورا",
+    "name:arz": "بورا بورا",
+    "name:az": "Bora-Bora",
+    "name:ban": "Bora Bora",
+    "name:be": "Бора-Бора",
+    "name:bg": "Бора Бора",
+    "name:bn": "বোরা বোরা দ্বীপপুঞ্জ",
+    "name:bs": "Bora Bora",
+    "name:ca": "Bora Bora",
+    "name:ckb": "بۆرا بۆرا",
+    "name:cs": "Bora-Bora",
+    "name:cy": "Bora Bora",
+    "name:da": "Bora Bora",
+    "name:de": "Bora-Bora",
+    "name:el": "Μπόρα Μπόρα",
+    "name:eo": "Bora Bora",
+    "name:es": "Bora-Bora",
+    "name:et": "Bora Bora",
+    "name:eu": "Bora Bora",
+    "name:fa": "بورا بورا",
+    "name:fi": "Bora Bora",
+    "name:fr": "Bora-Bora",
+    "name:gl": "Atol Bora Bora",
+    "name:gsw": "Bora Bora",
+    "name:he": "בורה בורה",
+    "name:hif": "Bora Bora",
+    "name:hr": "Bora Bora",
+    "name:hu": "Bora Bora",
+    "name:hy": "Բորա Բորա",
+    "name:id": "Bora Bora",
+    "name:it": "Bora Bora",
+    "name:ja": "ボラボラ島",
+    "name:ka": "ბორა-ბორა",
+    "name:kk": "Бора-Бора",
+    "name:ko": "보라보라섬",
+    "name:lt": "Bora Bora",
+    "name:mk": "Бора Бора",
+    "name:ml": "ബോറ ബോറ",
+    "name:mr": "बोरा बोरा",
+    "name:nl": "Bora Bora",
+    "name:no": "Bora Bora",
+    "name:oc": "Bora Bora",
+    "name:pl": "Bora-Bora",
+    "name:pt": "Bora Bora",
+    "name:ro": "Bora Bora",
+    "name:ru": "Бора-Бора",
+    "name:sh": "Bora Bora",
+    "name:sk": "Bora Bora",
+    "name:sl": "Bora Bora",
+    "name:sq": "Bora Bora",
+    "name:sr": "Бора Бора",
+    "name:su": "Bora Bora",
+    "name:sv": "Bora-Bora",
+    "name:ta": "போரா போரா",
+    "name:th": "บอราบอรา",
+    "name:tr": "Bora Bora",
+    "name:ty": "Porapora",
+    "name:uk": "Бора-Бора",
+    "name:ur": "بورا بورا",
+    "name:vi": "Bora Bora",
+    "name:war": "Bora Bora",
+    "name:wuu": "波拉波拉岛",
+    "name:zh": "波拉波拉島",
+    "note": "named Bolabolla by Cook.",
+    "old_name": "Vavau",
+    "place": "island",
+    "place:wikidata": "Q183113",
+    "type": "multipolygon",
+    "wikipedia": "fr:Bora-Bora"
+  }
+},
+{
+  "type": "relation",
+  "id": 19251453,
+  "center": {
+    "lat": -16.4494416,
+    "lon": -152.2639487
+  },
+  "tags": {
+    "name": "Maupiti",
+    "place": "island",
+    "type": "multipolygon"
+  }
+}
+
+  ]
+}

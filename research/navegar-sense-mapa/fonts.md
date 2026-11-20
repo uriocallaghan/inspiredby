@@ -1,0 +1,164 @@
+# Fonts i verificació · Navegar sense mapa
+
+Generat a partir de `fonts.py`. DOI comprovats a Crossref i URL obertes el 20-11-2026. Text font desat a `raw/` quan era possible.
+
+## Discrepàncies i incerteses
+
+- **Distància Hawaiʻi–Tahití:** la PVS diu 2.300 milles (Kū Holo Mau) o 2.400–2.500 (relats de Nainoa). L'article dona la distància de cercle màxim calculada (Honolua → Papeʻete, 4.356 km) i la longitud de la traça digitalitzada (~4.800 km).
+- **Durada:** 34 dies de Maui a Tahití (nota de la PVS); Finney parla de «30 days at sea» fins a Mataiva. Coherent: Mataiva el dia 31.
+- **Dates de poblament:** les de Wilmshurst (2011) són rangs; la genòmica (Ioannidis 2021) dona segles. Samoa, Rarotonga, Mangareva i Raivavae no porten data al mapa.
+- **Moniato:** debat obert (Roullier 2013 vs. Muñoz-Rodríguez 2018).
+- **Mapa de Tupaia:** la interpretació *avatea* d'Eckstein i Schwarz és discutida (di Piazza i Pearthree 2019; només n'he vist les metadades).
+- **Etak:** Hutchins mateix diu que no va poder navegar amb els navegants; la descripció de Gladwin (1970) la cito a través de Riesenberg (1975), no he obert Gladwin.
+- **Sharp 1956, Meier, Roumain, Kropotkin:** el llibre de Sharp no l'he consultat; ho recolza Finney (1975).
+- **Ruta de 1976:** digitalitzada del mapa de la PVS (precisió ~0,3°); l'animació no reprodueix les posicions diàries.
+- **Milles:** la PVS no especifica milles nàutiques o terrestres als abasts dels ocells; el gràfic fa servir nàutiques i ho diu.
+
+## Revisió crítica (20-11-2026) i correccions aplicades
+
+- Tonga: 2838 ± 8 BP és «abans del 1950» → cap al 888 aC.
+- Cronologia: la de Wilmshurst és la «cronologia curta»; Sear et al. 2020 (illes Cook, cap al 900) i Athens et al. 2014 (Hawaiʻi) proposen arribades anteriors.
+- Mau 1979: «We will see. I will let you know» i, mesos després a Honolulu, «I will train you…» (pàgina de Mau, «Reflections on Mau», 1997).
+- Brúixola: dissenyada per Nainoa Thompson a finals dels setanta, «loosely based on» la de Mau (PVS); la carolina s'organitza al voltant d'Altair (Holton et al. 2015). Estrelles zenitals: Nainoa va concloure que no funcionaven en una canoa (pàgina del 1980).
+- Mapes de bastons: tres tipus, memoritzats i no portats a bord (Library of Congress, 2021).
+- Tupaia: tres versions (58, 74 illes i final, de la qual Banks va fer la còpia); interpretació discutida (di Piazza i Pearthree 2019; resposta i correccions dels autors).
+- Moniato: Matschiner (2018) qüestiona la dispersió natural; contacte amb Amèrica actualitzat amb Moreno-Mayar et al. 2024 (1250–1430).
+- Heyerdahl: la teoria buscava un poble de «pell clara i cabell roig»; crítics la consideren racista (Museu Kon-Tiki, que ho discuteix).
+- Afegits: David Lewis (ANU; Lewis 1966), Meotai (C. Thompson 2019), materials moderns de Hōkūleʻa (Finney), crítica d'Anderson 2017, Kamalu 2022 (National Geographic), pwo 2026 (Hawaii News Now).
+- No verificat i no inclòs: el detall de l'objecció de di Piazza i Pearthree (només metadades); la convenció constitucional de 1978 (no he trobat la font primària); Melander 2019 (només citat pel Museu Kon-Tiki).
+
+## Fonts
+
+- **finney1992** · Finney, B. (1992). «1976 Hawaiʻi to Tahiti and Back», de Voyaging into Polynesia's Past, a From Sea to Space (Massey University), amb notes de la Polynesian Voyaging Society. archive.hokulea.com
+  - Hi recolza: Sense instruments ni cap altra ajuda; calia guanyar unes 500 milles cap a l'est contra els alisis; es va reclutar Mau Piailug, de Satawal, perquè no es coneixia cap navegant polinesi que pogués fer-ho
+  - Hi recolza: Una setmana encalmats a les calmes equatorials; l'1 de maig de 1976 surten de Honolua (Maui), l'1 de juny albiren Mataiva gràcies a uns xatracs blancs i el 4 de juny arriben a Tahití, 34 dies després
+  - Hi recolza: Mau va tornar a Micronèsia després d'una baralla a bord entre tripulants hawaians i haole, per dues maneres de veure el viatge; la tornada es va fer amb instruments en 22 dies; el viatge «va girar la marea» contra la tesi de Sharp
+  - Hi recolza: A l'arribada a Papeʻete hi havia més de 17.000 persones i tants nens van pujar a la canoa que van enfonsar-ne la popa (record de Nainoa Thompson)
+  - On ho diu: «how to guide a canoe, without any instruments or other aids» · «Despite a week spent becalmed in the doldrums» · «[The crew sighted Matahiva on June 1, 1976 …] arriving on June 4, thirty-four days after departing from Maui» · nota editorial sobre la baralla i el retorn de Mau · Nainoa: «more than 17,000 people … they sank the stern».
+- **finney1977** · Finney, B. R. (1977). «Voyaging Canoes and the Settlement of Polynesia». Science, 196(4296), 1277–1285. DOI: 10.1126/science.196.4296.1277
+  - Hi recolza: Les canoes dobles reconstruïdes poden cenyir fins a uns 75° del vent; sense aquesta capacitat «probablement no hi hauria hagut mai un poble polinesi»
+  - Hi recolza: Els navegants europeus es van sorprendre de trobar que navegants neolítics els havien precedit a cada illa
+  - On ho diu: Resum (Europe PMC): «up to approximately 75 degrees off the wind» · «without this windward sailing capacity there probably never would have been a Polynesian people today» · «they were surprised to find that neolithic seafarers had preceded them».
+- **finney1975** · Finney, B. (1975). «A Voyage into Hawaiʻi's Past». Polynesian Voyaging Society Newsletter, agost de 1975. archive.hokulea.com
+  - Hi recolza: La tesi d'Andrew Sharp (1956): fora d'unes quantes centenars de milles, la colonització de la Polinèsia va ser accidental, per derives i exilis a cegues
+  - Hi recolza: La simulació per ordinador de Levison, Ward i Webb (1973): poca probabilitat de travessar a la deriva de l'oest a l'est de la Polinèsia i cap ni una d'arribar a Hawaiʻi, Rapa Nui o Aotearoa
+  - Hi recolza: El rai Kon-Tiki de Heyerdahl (1947) va anar d'Amèrica del Sud a la Polinèsia fins a estavellar-se contra l'escull de Raroia, sense possibilitat de maniobra ni de tornada
+  - On ho diu: Paràgrafs 50, 56 i 84 del butlletí: tesi de Sharp; «little or no probability that canoes could have drifted to … Hawaii, Easter, and New Zealand»; Kon-Tiki «crashed upon the reef of Raroia».
+- **sharp1956** · Sharp, A. (1956). Ancient Voyagers in the Pacific. Wellington: Polynesian Society (Memoir). Reeditat per Penguin el 1957.
+  - Hi recolza: La tesi de la colonització accidental de la Polinèsia
+  - On ho diu: Verificat a través de Finney (1975): «Sharp first presented his thesis in 1956 in a Memoir of the Polynesian Society … reprinted the following year by Penguin». No s'ha consultat el llibre.
+- **wilmshurst** · Wilmshurst, J. M., Hunt, T. L., Lipo, C. P., & Anderson, A. J. (2011). «High-precision radiocarbon dating shows recent and rapid initial human colonization of East Polynesia». PNAS, 108(5), 1815–1820. DOI: 10.1073/pnas.1015876108
+  - Hi recolza: Els 15 arxipèlags de la Polinèsia Oriental van ser els últims llocs habitables de la Terra colonitzats; metaanàlisi de 1.434 datacions de radiocarboni
+  - Hi recolza: Dues fases: illes de la Societat cap al 1025–1120 i, entre 70 i 265 anys més tard, un sol impuls cap a la resta (1190–1290); Hawaiʻi 1219–1266, Marqueses 1200–1277, Rapa Nui 1200–1253, Aotearoa 1230–1282
+  - Hi recolza: L'expansió coincideix amb un període de molts episodis d'El Niño, amb vents de l'oest que afavorien l'accés a les illes llunyanes
+  - On ho diu: Resum i text complet (PMC3033267): «last habitable places on earth», «1,434 radiocarbon dates», «A.D. ∼1025–1120», «A.D. ∼1190–1290»; rangs: Marqueses 1200–1277, Hawaiʻi 1219–1266, Aotearoa 1230–1282, Rapa Nui 1200–1253; «period of peak El Niño occurrence».
+- **burley** · Burley, D., Weisler, M. I., & Zhao, J. (2012). «High Precision U/Th Dating of First Polynesian Settlement». PLoS ONE, 7(11), e48769. DOI: 10.1371/journal.pone.0048769
+  - Hi recolza: Fundació de Nukuleka (Tonga) per poblacions lapita fa 2838 ± 8 anys
+  - On ho diu: Resum: «identifying the founder event by 2838±8 BP».
+- **ioannidis21** · Ioannidis, A. G., et al. (2021). «Paths and timings of the peopling of Polynesia inferred from genomic networks». Nature, 597, 522–526. DOI: 10.1038/s41586-021-03902-8
+  - Hi recolza: Un oceà que ocupa un terç de la Terra; amb genomes de 430 persones de 21 poblacions, el camí surt de Samoa, passa per Rarotonga, arriba a la Societat (segle XI), a les Australs occidentals i les Tuamotu (segle XII) i acaba a les Marqueses, Raivavae i Rapa Nui (cap al 1200) via Mangareva
+  - On ho diu: Resum: «across an ocean spanning one third of the Earth», «430 modern individuals from 21 key Pacific island populations», seqüència Samoa → Rarotonga → Societat (s. XI) → Australs occ. i Tuamotu (s. XII) → Marqueses, Raivavae, Rapa Nui «settled in approximately AD 1200 via Mangareva».
+- **ioannidis20** · Ioannidis, A. G., et al. (2020). «Native American gene flow into Polynesia predating Easter Island settlement». Nature, 583, 572–577. DOI: 10.1038/s41586-020-2487-2
+  - Hi recolza: Un sol contacte, cap al 1200, entre polinesis i un grup amerindi emparentat amb els pobles indígenes de l'actual Colòmbia, abans del poblament de Rapa Nui (807 persones, 17 illes i 15 grups amerindis)
+  - Hi recolza: Heyerdahl va proposar que poblacions sud-americanes havien tingut un paper important en el poblament de la Polinèsia oriental
+  - On ho diu: Resum: «conclusive evidence for prehistoric contact … (around AD 1200)», «most closely related to the indigenous inhabitants of present-day Colombia»; Heyerdahl «controversially suggested that prehistoric South American populations had an important role».
+- **roullier** · Roullier, C., Benoit, L., McKey, D. B., & Lebot, V. (2013). «Historical collections reveal patterns of diffusion of sweet potato in Oceania obscured by modern plant movements and recombination». PNAS, 110(6), 2205–2210. DOI: 10.1073/pnas.1211049110
+  - Hi recolza: Suport genètic a una transferència prehistòrica del moniato de la regió del Perú i l'Equador a la Polinèsia
+  - On ho diu: Resum: «strong support for prehistoric transfer(s) of sweet potato from South America (Peru-Ecuador region) into Polynesia».
+- **munoz** · Muñoz-Rodríguez, P., et al. (2018). «Reconciling Conflicting Phylogenies in the Origin of Sweet Potato and Dispersal to Polynesia». Current Biology, 28(8), 1246–1256. DOI: 10.1016/j.cub.2018.03.020
+  - Hi recolza: El moniato podria haver arribat a la Polinèsia per dispersió natural, abans dels humans
+  - On ho diu: Resum: «the sweet potato was present in Polynesia in pre-human times … negates the need to invoke ancient human-mediated transport».
+- **pvscourse** · Kawaharada, D. (comp.), a partir de l'ensenyament de Nainoa Thompson. «Holding a Course». Wayfinding: Modern Methods and Techniques of Non-Instrument Navigation. Polynesian Voyaging Society. archive.hokulea.com
+  - Hi recolza: La brúixola estel·lar de Nainoa Thompson: 32 cases d'11,25°, basada en la brúixola micronèsia de Mau; els noms de les cases i dels quadrants; la canoa com a ocell
+  - Hi recolza: Taula d'estrelles brillants amb el nom hawaià, la declinació i la casa de sortida i posta (p. ex. Hōkūleʻa/Arcturus a ʻĀina Koʻolau)
+  - Hi recolza: Les estrelles només són visibles un 20 % del temps per orientar-se
+  - Hi recolza: Les onades de fons (alisis del NE i del SE, temporals del nord i del sud); la canoa capcineja, balanceja o fa un tirabuixó segons l'angle; un navegant expert en pot sentir quatre o cinc alhora
+  - On ho diu: Pàgina «Holding a Course»: «thirty-two equidistant directional points … each point 11.25°»; noms de les cases; taula d'estrelles («Hokule'a / Arcturus + 19° 'Aina Ko'olau»); «The stars are available about 20 percent of the time»; «An experienced navigator can feel as many as four or five swells».
+- **pvsland** · Kawaharada, D. (comp.). «Locating Land». Wayfinding. Polynesian Voyaging Society. archive.hokulea.com
+  - Hi recolza: Apuntar a una «pantalla» d'illes: les Tuamotu fan 550 milles de nord a sud i 500 d'est a oest
+  - Hi recolza: Un atol es veu a 7–10 milles; una illa alta com Hawaiʻi, a 100 milles
+  - Hi recolza: Arribada ampliada: el manu-o-Kū (xatrac blanc) indica terra fins a unes 120 milles i el noio, fins a unes 40
+  - Hi recolza: 1980: Mau va veure un peixet al bec d'un ocell i va saber que criaven i tornaven a l'illa
+  - On ho diu: Pàgina «Locating Land»: «The Tuamotu Archipelago stretches 550 miles north to south and 500 miles east to west»; «within around 7-10 miles»; «can be seen from 100 miles away»; «manu-o-Ku (white tern): approximately 120 miles», «noio (noddy tern): approximately 40 miles»; relat de 1980 («Mau had seen in the beak of the bird a little fish»).
+- **nainoa1980** · Thompson, N. «Recollections of the 1980 Voyage to Tahiti». Polynesian Voyaging Society. archive.hokulea.com
+  - Hi recolza: El 1978 Hōkūleʻa va bolcar al canal de Molokaʻi i Eddie Aikau, que va sortir a buscar ajuda amb una planxa de surf, no va tornar mai
+  - Hi recolza: El 1979 Mau va acceptar ensenyar Nainoa «perquè no vull que moris» i li va fer prendre notes en paper, perquè no podia aprendre com ell
+  - Hi recolza: Satawal fa una milla i mitja per una i té 600 habitants; Mau va començar a aprendre amb un any, assegut als tolls de la marea, i a navegar amb quatre; recordava amb cants
+  - Hi recolza: Mau ensenyava amb un cercle a la sorra, pedres per estrelles i fulles de cocoter per onades; Nainoa va estudiar centenars d'hores al planetari amb Will Kyselka
+  - Hi recolza: La Polar és a 7° sobre l'horitzó a Satawal i a 22° a Hawaiʻi; el 1980 Nainoa va navegar Hōkūleʻa a Tahití i de tornada
+  - On ho diu: Pàgina del viatge de 1980: bolc del 1978 i Eddie Aikau; «I will train you to find Tahiti because I don't want you to die»; «You take paper and pencil!»; Satawal «a mile and a half long and a mile wide. Population 600»; «He started at one … sail with him at age four»; «chants»; planetari i Will Kyselka; «7 degrees» / «22 degrees»; «[In the spring of 1980 … Nainoa navigated the canoe both ways.]».
+- **pvsmau** · Polynesian Voyaging Society. «Pius “Mau” Piailug (1932–2010)», amb el text de Nainoa Thompson «Master Navigator, Master Teacher» (1996) i el record de Tom Raffipiy. archive.hokulea.com
+  - Hi recolza: Mau va trencar els tabús de l'ensenyament de la navegació per preservar la «parla del mar»
+  - Hi recolza: Mau va morir a Satawal el 12 de juliol de 2010
+  - Hi recolza: La darrera lliçó (Lānaʻi Lookout, novembre de 1979): «no puc veure l'illa, però en veig la imatge a la ment»
+  - Hi recolza: Mau assenyala la Creu del Sud darrere un fanal sense girar el cap
+  - On ho diu: «Pius “Mau” Piailug (1932-2010) … He passed away on Satawal on July 12, 2010»; Raffipiy: «break the taboos of the teaching of navigation»; la darrera lliçó a Lānaʻi Lookout; la Creu del Sud darrere el fanal.
+- **pvs2007** · Polynesian Voyaging Society. «Kū Holo Mau: 2007 Voyage for Mau». archive.hokulea.com
+  - Hi recolza: El 1976 Mau va guiar Hōkūleʻa en uns 2.300 milles, el primer viatge sense instruments en aquesta ruta en més de 600 anys
+  - Hi recolza: La canoa Alingano Maisu, regal per a Mau; maisu és el vent que fa caure el fruit de l'arbre del pa, que llavors pot collir qualsevol
+  - Hi recolza: Març del 2007: Mau inicia en el pwo cinc hawaians i onze micronesis
+  - On ho diu: «2,300 mile voyage … the first voyage in over 600 years navigated without instruments»; maisu: «then you can go and collect it, even if it is not your tree»; «initiation of five Hawaiians along with eleven Micronesians into pwo».
+- **modernwf** · Kawaharada, D. (comp.). «Wayfinding: Modern Methods and Techniques of Non-Instrument Navigation, Based on Pacific Traditions». Polynesian Voyaging Society. archive.hokulea.com
+  - Hi recolza: Nainoa Thompson, el primer polinesi modern que va aprendre i usar la navegació sense instruments en viatges oceànics llargs; des del 1992 forma nous navegants
+  - On ho diu: «the first modern-day Polynesian to learn and use wayfinding for long-distance, open-ocean voyaging» · «In 1992, he began training new navigators».
+- **pbs2017** · Gray, J. (17-06-2017). «Voyaging canoe returns to Hawaii after three-year trip across the globe». PBS News Weekend. pbs.org
+  - Hi recolza: Mālama Honua: sortida el 17 de maig de 2014, tornada el 17 de juny de 2017, unes 40.300 milles nàutiques, 23 països i territoris, més de 150 ports i 245 tripulants
+  - Hi recolza: Hōkūleʻa es va avarar el 1975
+  - On ho diu: «about 40,300 nautical miles across 23 countries and territories and more than 150 ports» · «A total of 245 crew members» · «launched in 1975» · foto del 17-05-2014.
+- **genz** · Genz, J., Aucan, J., Merrifield, M., Finney, B., Joel, K., & Kelen, A. (2009). «Wave Navigation in the Marshall Islands: Comparing Indigenous and Western Scientific Knowledge of the Ocean». Oceanography, 22(2), 234–245. DOI: 10.5670/oceanog.2009.52
+  - Hi recolza: Els navegants marshallesos detecten terra per com les illes alteren les onades: ones reflectides fins a 40 km aigües amunt i trens d'onades creuats desenes de quilòmetres a sotavent; els cocoters d'un atol només es veuen a uns 20 km
+  - Hi recolza: Els anomenats «mapes de bastons» no eren cartes nàutiques sinó models per ensenyar les onades
+  - On ho diu: Resum i text (PDF de TOS): «reflected waves 40 km upstream of islands», «Crossing wave trains extend tens of kilometers in the lees of islands», «can only be seen 20 km offshore»; «not nautical charts or instruments, but rather teaching devices» (Winkler, 1898).
+- **riesenberg** · Riesenberg, S. H. (1975). «The Ghost Islands of the Carolines». Micronesica, 11(1), 7–33. micronesica.org · Gladwin, T. (1970). East Is a Big Bird. Cambridge: Harvard University Press, 183–188.
+  - Hi recolza: L'etak: una illa de referència a unes 50 milles del rumb «es desplaça» d'una estrella a la següent; cada pas és un etak, d'unes 10 milles de mitjana
+  - Hi recolza: Des del 1804, els mapes europeus van desplaçar els noms de tres illes de les Carolines, cadascun a l'illa veïna, per malentesos amb els navegants
+  - On ho diu: p. 7 (resum) i nota sobre l'etak: «a third specified island about fifty or so miles to one side … an etak is completed», «an etak averages about 10 miles»; error de 1804 (Torres) i 1905 (Senfft).
+- **hutchins** · Hutchins, E., & Hinton, G. E. (1984). «Why the islands move». Perception, 13(5), 629–632. DOI: 10.1068/p130629 · Hutchins, E. (1995). Cognition in the Wild. MIT Press, cap. 2 · Hutchins, E. «Micronesian Navigation». pages.ucsd.edu
+  - Hi recolza: Fora de la vista de terra, els navegants imaginen la canoa quieta i les illes movent-se; aquesta referència relativa simplifica el problema; Hutchins adverteix que no va poder navegar amb ells
+  - On ho diu: Pàgina d'Edwin Hutchins: «imagine the canoe to be stationary while the islands … move»; «reduces the complexity of the problem»; «because I was not able to sail with these navigators, I cannot be sure».
+- **eckstein** · Eckstein, L., & Schwarz, A. (2019). «The Making of Tupaia's Map». The Journal of Pacific History, 54(1), 1–95. DOI: 10.1080/00223344.2018.1512369 · Resum dels autors: «Tupaia's Map», Universitat de Potsdam. uni-potsdam.de
+  - Hi recolza: Tupaia, sacerdot arioi de Raʻiātea nascut cap al 1725 i format a Taputapuātea, va dibuixar el mapa amb la tripulació de l'Endeavour el 1769–1770; la segona versió tenia 74 illes; la còpia de Banks és a la British Library
+  - Hi recolza: Avatea («migdia») al centre del mapa marca el nord: des de cada illa es llegeix el rumb cap a la següent; de les Marqueses a Oʻahu, 335° (còpia de Forster) i 338° (còpia de Banks), quan el real és de 330°
+  - Hi recolza: De Rurutu a Tonga: «10 o 12 dies» d'anada i «30 o més» de tornada, contra els vents; Forster el 1777 va atribuir el mapa a la «vanitat» de Tupaia; Tupaia va morir a Batàvia
+  - On ho diu: Resum dels autors (Potsdam): «arioi priest … from Ra‘iātea», «born around 1725 and trained at Taputapu-atea marae», «showing altogether 74», «BL Add MS 21593.C», avatea com a nord, «335° on Georg Forster’s copy … 338° on the fair copy … The true bearings … are 330°», Rurutu–Tonga «10 or 12 days … 30 or more», Forster 1777 «vanity», «died in Batavia».
+- **dipiazza** · di Piazza, A., & Pearthree, E. (2019). «Does the Avatea System Offer a New Key for Reading Tupaia's Maps?». The Journal of Pacific History, 54(4), 543–549. DOI: 10.1080/00223344.2019.1651465
+  - Hi recolza: Crítica de la lectura del mapa de Tupaia amb el sistema avatea
+  - On ho diu: Títol de l'article (Crossref): «Does the Avatea System Offer a New Key for Reading Tupaia’s Maps?». Només metadades.
+- **hipparcos** · ESA (1997). The Hipparcos and Tycho Catalogues, ESA SP-1200. Coordenades J2000 via les dades de d3-celestial 0.7.35 (stars.6.json).
+  - Hi recolza: Declinacions de les estrelles: Arcturus +19,2°, Sírius −16,7°, Canopus −52,7°, etc.
+  - On ho diu: Fitxer stars.6.json de d3-celestial 0.7.35: HIP 69673 (Arcturus) dec +19,18°; HIP 32349 (Sírius) −16,72°, etc. (taula a raw/estrelles.json).
+
+## Fonts afegides a la revisió
+
+- **sear** · Sear, D. A., et al. (2020). «Human settlement of East Polynesia earlier, incremental, and coincident with prolonged South Pacific drought». PNAS, 117(16), 8813–8819. DOI: 10.1073/pnas.1920975117
+  - Hi recolza: Indicis de presència humana a Atiu (illes Cook) des de cap al 900, amb colonització un o dos segles després
+- **athens** · Athens, J. S., Rieth, T. M., & Dye, T. S. (2014). «A Paleoenvironmental and Archaeological Model-Based Age Estimate for the Colonization of Hawaiʻi». American Antiquity, 79(1), 144–155. DOI: 10.7183/0002-7316.79.1.144
+  - Hi recolza: Una estimació alternativa de l'arribada a Hawaiʻi
+- **moreno** · Moreno-Mayar, J. V., et al. (2024). «Ancient Rapanui genomes reveal resilience and pre-European contact with the Americas». Nature, 633, 389–397. DOI: 10.1038/s41586-024-07881-4
+  - Hi recolza: 15 rapanui antics (1670–1950) i actuals amb un 10 % d'ascendència amerindia; barreja estimada cap al 1250–1430
+- **matschiner** · Matschiner, M. (2018). «Sweet potato dispersal or human transport?» (reanàlisi de Muñoz-Rodríguez et al. 2018). github.com/mmatschiner/kumara
+  - Hi recolza: Les dades de Muñoz-Rodríguez et al. no sostenen l'arribada del moniato abans dels humans
+- **kontiki** · Solsvik, R. (s. d.). «Racism in Thor Heyerdahl's theories?». Museu Kon-Tiki, Oslo. kon-tiki.no
+  - Hi recolza: La teoria de Heyerdahl buscava un poble perdut de constructors de megàlits de pell clara i cabell roig; crítics (Holton 2004, Melander 2019) la consideren racista; el museu ho discuteix
+- **anulewis** · Australian National University Archives. «David Lewis», exposició Navigating the Sea of Islands. archives.anu.edu.au
+  - Hi recolza: David Lewis va aprendre de Hipour (Puluwat) i Tevake (Taumako) i va navegar en catamarà de Tahití a Nova Zelanda per estudiar la navegació polinèsia per les estrelles
+- **lewis1966** · Lewis, D. (1966). «An Experiment in Polynesian Navigation». Journal of Navigation, 19(2), 154–168. DOI: 10.1017/S0373463300047184
+  - Hi recolza: L'experiment de navegació polinèsia de David Lewis de Tahití a Nova Zelanda (només metadades)
+- **pvsbuild** · Finney, B. «Building Hōkūleʻa». Polynesian Voyaging Society. archive.hokulea.com
+  - Hi recolza: Els bucs de Hōkūleʻa es van fer amb materials moderns, com tires de contraplacat
+- **anderson** · Anderson, A. (2017). «Changing perspectives upon Māori colonisation voyaging». Journal of the Royal Society of New Zealand, 47(3), 222–231. DOI: 10.1080/03036758.2017.1334674
+  - Hi recolza: Les primeres canoes de la Polinèsia oriental i maoris duien una doble vela de tipus espriet que no podia cenyir
+- **thompson2019** · Thompson, C. (2019). Sea People: The Puzzle of Polynesia. Nova York: Harper. Fragment publicat a Popular Science (13-03-2019). popsci.com
+  - Hi recolza: El queig Meotai, de 64 peus, acompanyava la canoa i anotava la posició per comparar-la amb les estimacions diàries de Mau
+- **holton** · Holton, G., Hachibmai, M., & Haleyalur, A. (2015). «East is Not a ‘Big Bird’: The Etymology of the Star Altair in the Carolinian Sidereal Compass». Oceanic Linguistics, 54(2), 579–588. DOI: 10.1353/ol.2015.0021
+  - Hi recolza: La brúixola sideral carolina: Altair marca l'est; el mestre la dibuixa amb pedres i omple les 32 posicions partint els espais per la meitat
+- **kyselka** · Polynesian Voyaging Society. «Will Kyselka». archive.hokulea.com
+  - Hi recolza: Nainoa Thompson va començar a estudiar amb Will Kyselka, del planetari del Museu Bishop, el 1978
+- **loc** · Smith, C. (17-11-2021). «The Unique Seafaring Charts of the Marshall Islands». Worlds Revealed, Library of Congress. blogs.loc.gov
+  - Hi recolza: Tres tipus de mapes de bastons (mattang, rebbelib, meddo); petxines per a les illes; els navegants els memoritzaven i no se'ls enduien a les canoes
+- **ecksteinresp** · Eckstein, L., & Schwarz, A. (2019). «Authors' Response: The Making of Tupaia's Map Revisited». The Journal of Pacific History, 54(4), 549–561. DOI: 10.1080/00223344.2019.1657500 · Eckstein, L., & Schwarz, A. (2023). «Corrections: An Update to ‘The Making of Tupaia's Map’». The Journal of Pacific History, 58(1), 64–80. DOI: 10.1080/00223344.2022.2138291
+  - Hi recolza: Resposta dels autors a la crítica i correccions a la seva proposta
+- **natgeo2022** · Salama, J. (18-05-2022). «This woman navigated a 3,000-mile Pacific voyage without maps or technology». National Geographic. nationalgeographic.com
+  - Hi recolza: Lehua Kamalu, primera dona capitana i navegant de Hōkūleʻa, en el viatge del 2022 cap a Tahití
+- **hnn2026** · HNN Staff (26-08-2026). «First Hawaii women among six pwo navigators inducted by Polynesian Voyaging Society». Hawaii News Now. hawaiinewsnow.com
+  - Hi recolza: Cerimònia del 30 de juliol de 2026, la primera a Hawaiʻi; sis nous pwo, quatre dones (les primeres de Hawaiʻi); oficiada per navegants de Satawal, entre ells Thomas Raffipiy
