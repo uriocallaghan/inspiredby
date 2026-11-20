@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-0b6335905977";
+const CACHE_NAME = "ib-offline-4c658c2bd37b";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -125,6 +125,16 @@ const LOCAL_ASSETS = [
   "/articles/la-llengua-que-van-inventar-uns-nens/llacs.js",
   "/articles/la-llengua-que-van-inventar-uns-nens/relleu-nicaragua.js",
   "/articles/la-llengua-que-van-inventar-uns-nens/thumb.webp",
+  "/articles/les-llavors-de-leningrad/",
+  "/articles/les-llavors-de-leningrad/article.css",
+  "/articles/les-llavors-de-leningrad/article.js",
+  "/articles/les-llavors-de-leningrad/cites.js",
+  "/articles/les-llavors-de-leningrad/cover.html",
+  "/articles/les-llavors-de-leningrad/cover.jpg",
+  "/articles/les-llavors-de-leningrad/dades.js",
+  "/articles/les-llavors-de-leningrad/index.html",
+  "/articles/les-llavors-de-leningrad/relleu-leningrad.js",
+  "/articles/les-llavors-de-leningrad/thumb.webp",
   "/articles/migracio-vertical/",
   "/articles/migracio-vertical/article.css",
   "/articles/migracio-vertical/cover.html",

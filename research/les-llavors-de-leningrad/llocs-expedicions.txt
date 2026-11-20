@@ -1,0 +1,61 @@
+1916|Hamadan, Iran|48.66 34.97
+1916|Khorog, Tajikistan|71.55 37.49
+1921|Ontario, Canada|-86.0 50.0
+1921|New York, USA|-74.01 40.71
+1921|Minnesota, USA|-94.61 45.99
+1921|Colorado, USA|-105.61 38.73
+1921|California, USA|-118.76 36.7
+1924|Herat, Afghanistan|62.22 34.35
+1924|Kabul, Afghanistan|69.19 34.53
+1924|Bamyan, Afghanistan|67.25 34.75
+1924|Kandahar, Afghanistan|65.72 31.62
+1924|Fayzabad, Badakhshan|70.61 37.22
+1925|Khiva, Uzbekistan|60.36 41.38
+1926|France|1.89 46.6
+1926|Damascus|36.29 33.51
+1926|Jerusalem|35.23 31.78
+1926|Algiers|3.06 36.77
+1926|Rabat, Morocco|-6.84 34.02
+1926|Tunis|10.18 36.80
+1926|Athens|23.73 37.98
+1926|Palermo|13.35 38.11
+1926|Cagliari|9.11 39.22
+1926|Nicosia|33.36 35.17
+1926|Heraklion|25.14 35.34
+1926|Rome|12.48 41.89
+1926|Madrid|-3.7 40.42
+1926|Lisbon|-9.14 38.71
+1926|Cairo|31.24 30.04
+1927|Addis Ababa|38.75 9.04
+1927|Lake Tana|37.29 11.95
+1927|Massawa|39.46 15.6
+1927|Hodeidah|42.95 14.8
+1927|Jeddah|39.17 21.55
+1927|Stuttgart|9.18 48.78
+1929|Kashgar|75.99 39.47
+1929|Aksu, Xinjiang|80.26 41.17
+1929|Ürümqi|87.61 43.82
+1929|Hotan|79.92 37.11
+1929|Taipei|121.56 25.04
+1929|Tokyo|139.76 35.68
+1929|Sapporo|141.35 43.06
+1929|Fukuoka|130.62 33.63
+1929|Seoul|126.98 37.57
+1930|Florida, USA|-81.46 27.76
+1930|Texas, USA|-98.55 31.26
+1930|Mexico City|-99.15 19.32
+1930|Guatemala City|-90.51 14.64
+1930|Tegucigalpa|-87.2 14.11
+1932|Saskatchewan, Canada|-106.14 55.53
+1932|Havana|-82.36 23.14
+1932|Mérida, Yucatán|-89.62 20.97
+1932|Quito|-78.51 -0.22
+1932|Puno, Peru|-69.6 -15.8
+1932|La Paz, Bolivia|-68.13 -16.5
+1932|Santiago de Chile|-70.65 -33.44
+1932|Rio de Janeiro|-43.21 -22.91
+1932|Manaus|-59.98 -3.13
+1932|Buenos Aires|-58.39 -34.61
+1932|Montevideo|-56.19 -34.91
+1932|Port of Spain|-61.52 10.66
+1932|San Juan, Puerto Rico|-66.05 18.38

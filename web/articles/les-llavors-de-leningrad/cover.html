@@ -1,0 +1,27 @@
+<!doctype html><html lang="ca"><meta charset="utf-8"><title>Els científics que van morir de gana entre sacs de llavors</title>
+<!-- Portada i miniatura: 250 llavors en espiral de gira-sol (fil·lotaxi), una per cada 1.000 mostres de la col·lecció de Vavílov,
+     acolorides pel grup de conreus (dades de Loskutov 1999). Sense text.
+     cover.jpg: ?w=1680&h=720 · thumb.webp: ?w=800&h=1000 -->
+<style>html,body{margin:0;background:#fff}canvas{display:block}</style>
+<canvas id="c"></canvas>
+<script>
+const q=new URLSearchParams(location.search), W=+q.get("w")||1680, H=+q.get("h")||720;
+const c=document.getElementById("c"); c.width=W; c.height=H; const x=c.getContext("2d");
+x.fillStyle="#fff"; x.fillRect(0,0,W,H);
+const G=[["#F5C518",36],["#C8442A",23],["#E9A391",23],["#2C5DA8",18],["#9DB6DD",12],["#E0A800",10],["#C9C9C9",128]];
+const cols=[]; G.forEach(([c,n])=>{ for(let i=0;i<n;i++)cols.push(c); });
+// barreja determinista perquè els colors s'escampin per l'espiral
+let s=7; const rnd=()=>{ s=(s*16807)%2147483647; return s/2147483647; };
+for(let i=cols.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [cols[i],cols[j]]=[cols[j],cols[i]]; }
+const N=cols.length, R=Math.min(W,H)*.46, cx=W*(W>H?.5:.5), cy=H*.5, GA=Math.PI*(3-Math.sqrt(5));
+x.globalCompositeOperation="multiply";
+for(let i=0;i<N;i++){
+  const r=R*Math.sqrt((i+.5)/N), a=i*GA, px=cx+r*Math.cos(a), py=cy+r*Math.sin(a);
+  const sz=Math.min(W,H)*(.012+.022*Math.sqrt((i+1)/N));
+  x.save(); x.translate(px,py); x.rotate(a);
+  x.beginPath(); x.ellipse(0,0,sz*1.5,sz,0,0,Math.PI*2);
+  x.fillStyle=cols[i]; x.globalAlpha=cols[i]==="#C9C9C9"?.55:.82; x.fill();
+  x.restore();
+}
+</script>
+</html>
