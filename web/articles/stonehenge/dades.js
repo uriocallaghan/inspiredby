@@ -77,35 +77,35 @@ window.STONEHENGE_DADES = {
     {
       id: "f1", num: 1,
       titol: "Fase 1 · El fossat circular i el cementiri",
-      dates: "3100–2920 a 2965–2755", ini:[-3100,-2920], fi:[-2965,-2755], dIni:"3100–2920", dFi:"2965–2755",
+      dates: "3100–2920 a 2965–2755", ini:[-3100,-2920], fiR:[-2965,-2755], dIni:"3100–2920", dFi:"2965–2755",
       inici: -3010, fi: -2860,
       desc: "Talús i fossat de ~110 m, 56 forats Aubrey (amb possibles pedres blaves inicials) i el gran cementiri de cremacions."
     },
     {
       id: "f2", num: 2,
       titol: "Fase 2 · Els gegants de sarsen i la fusteria en pedra",
-      dates: "2760–2510 a 2470–2300", ini:[-2760,-2510], fi:[-2470,-2300], dIni:"2760–2510", dFi:"2470–2300",
+      dates: "2760–2510 a 2470–2300", ini:[-2760,-2510], fiR:[-2470,-2300], dIni:"2760–2510", dFi:"2470–2300",
       inici: -2635, fi: -2385,
       desc: "30 pilars sarsen + 30 llindes encaixades, 5 trílits, Pedra de l'Altar, 4 Station Stones i doble cercle Q/R."
     },
     {
       id: "f3", num: 3,
       titol: "Fase 3 · L'Avinguda cap al riu i l'onada Campaniforme",
-      dates: "2405–2225 a 2300–2100", ini:[-2405,-2225], fi:[-2300,-2100], dIni:"2405–2225", dFi:"2300–2100",
+      dates: "2405–2225 a 2300–2100", ini:[-2405,-2225], fiR:[-2300,-2100], dIni:"2405–2225", dFi:"2300–2100",
       inici: -2315, fi: -2200,
       desc: "Avinguda de 2,8 km cap a l'Avon (Bluestonehenge), entrada NE modificada i enterrament de l'Arquer d'Amesbury."
     },
     {
       id: "f4", num: 4,
       titol: "Fase 4 · La darrera coreografia de pedres blaves",
-      dates: "2210–2030 a 2160–1925", ini:[-2210,-2030], fi:[-2160,-1925], dIni:"2210–2030", dFi:"2160–1925",
+      dates: "2210–2030 a 2160–1925", ini:[-2210,-2030], fiR:[-2160,-1925], dIni:"2210–2030", dFi:"2160–1925",
       inici: -2120, fi: -2040,
       desc: "Es desmunta el doble cercle Q/R i s'erigeixen l'oval interior i el cercle exterior de pedres blaves que veiem avui."
     },
     {
       id: "f5", num: 5,
       titol: "Fase 5 · Els forats Y i Z i els gravats de bronze",
-      dates: "2020–1745 a 1620–1450", ini:[-2020,-1745], fi:[-1620,-1450], dIni:"2020–1745", dFi:"1620–1450",
+      dates: "2020–1745 a 1620–1450", ini:[-2020,-1745], fiR:[-1620,-1450], dIni:"2020–1745", dFi:"1620–1450",
       inici: -1880, fi: -1535,
       desc: "S'excaven 59 forats concèntrics Y i Z (c. 1630–1520 cal BC), es graven destrals i dagues sobre els sarsens i el lloc s'abandona."
     }

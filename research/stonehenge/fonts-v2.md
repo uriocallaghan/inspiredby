@@ -197,3 +197,13 @@ Font: Wright, E., Viner-Daniels, S., Parker Pearson, M. & Albarella, U. (2014). 
 5. Visitants del 2025: **1.253.397**.
 6. «15 mesos» dels porcs: no surt a Wright et al. 2014; cal dir «segon any».
 7. Waun Mawn i l'anell de pous de Durrington: cal presentar-los com a interpretacions discutides.
+
+## F. Acabat i aspecte de les pedres (per a la maqueta) — verificat el 20-11-2026
+
+- **Desbast i acabat dels sarsens:** «larger ones to roughly flake and chip the stone, and the smaller ones to finish and smooth the surfaces»; «some parts of the monument were more carefully finished than others. In particular, the north-east side and the inner faces of the central trilithons were finely dressed». Munts d'esclats i percussors trencats al nord del monument, «where the stones were worked into shape». Font: English Heritage, «Building Stonehenge», https://www.english-heritage.org.uk/visit/places/stonehenge/history-and-stories/building-stonehenge/
+- **Llindes i pilars:** llindes «all carefully shaped»; «the inner and outer faces of the lintels are gently worked to better give the illusion of a continuous ring of stone»; «The tops of the upright stones have been levelled to overcome the effect of the slope». Font: English Heritage, «Discover more about the Stones», https://www.english-heritage.org.uk/visit/places/stonehenge/things-to-do/stone-circle/stones-of-stonehenge/
+- **Pedra del Taló:** «This huge unshaped boulder of hard sarsen stone». Mateixa font.
+- **Pedres blaves:** «Some show no signs of working but some, like Stone 68, are elegantly grooved»; «a bluish tinge when freshly broken or when wet». Mateixa font.
+- **Color:** «When freshly worked, the surface of the sarsens would have appeared much brighter and whiter than the grey stones you see at Stonehenge today». Mateixa font.
+- **Tècnica:** Abbott & Anderson-Whymark (2012), *Stonehenge Laser Scan: Archaeological Analysis*, English Heritage Research Report 32/2012, descriu marques de picat i allisat (dressing) i l'èmfasi en l'eix NE–SW; el PDF no s'ha pogut obrir (403), només resums secundaris.
+- **No verificat:** si els pilars s'estrenyen cap amunt o tenen *entasis*, i si les cares exteriors del costat sud-oest eren més rugoses. A la maqueta, l'estrenyiment és lleuger i la rugositat més gran al SO és una interpretació («els altres costats, menys acabats»).

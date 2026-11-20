@@ -110,58 +110,70 @@
 
   /* ---------- 2. Geometria: cada pedra és una pila d'anells (secció amb cantells arrodonits) ---------- */
   // Secció octogonal: rectangle de hw × ht amb els cantells tallats, com un bloc de sarsen picat.
-  // Secció orgànica: rectangle de cantells molt arrodonits (superel·lipse) amb un contorn ondulat de baixa freqüència,
-  // com una pedra picada a cops de percussor. r: generador aleatori de la pedra; n: punts.
-  function section(hw, ht, n, r, amp){
-    const p = 3.4, ph1 = r()*6.28, ph2 = r()*6.28, a1 = (amp||.07)*(.6+r()*.8), a2 = (amp||.07)*.5*(.5+r());
-    const out = [];
+  // Acabat de cada pedra segons English Heritage («Building Stonehenge», «Discover more about the Stones»):
+  // sarsens i llindes desbastats a cops de percussor i allisats (més fi al costat NE i a les cares interiors dels trílits),
+  // Pedra del Taló «bloc sense treballar», moltes pedres blaves naturals. Recent picats, els sarsens eren «molt més clars i blancs».
+  const FINISH = {sarsen:"dressed", llinda:"dressed", trilit:"dressed", altar:"slab", station:"natural", blava:"blue", blava1:"blue"};
+  const finishOf = s => s.id === "talo" ? "boulder" : s.id === "mat" ? "slab" : (FINISH[s.g] || "natural");
+  const hash = (a, b, c) => { const x = Math.sin(a*127.1 + b*311.7 + c*74.7)*43758.5453; return (x - Math.floor(x))*2 - 1; };
+  // secció: superel·lipse (p alt = rectangle de cantells arrodonits; p baix = còdol) amb ondulació de baixa freqüència
+  function section(hw, ht, n, r, amp, p){
+    const ph1 = r()*6.28, ph2 = r()*6.28, a1 = amp*(.6+r()*.8), a2 = amp*.5*(.5+r()), out = [];
     for(let i=0;i<n;i++){
-      const t = i/n*Math.PI*2, c = Math.cos(t), sn = Math.sin(t);
-      const k = 1 + a1*Math.sin(2*t + ph1) + a2*Math.sin(3*t + ph2) + (r()-.5)*.05;
+      const t = (i+.5)/n*Math.PI*2, c = Math.cos(t), sn = Math.sin(t);
+      const k = 1 + a1*Math.sin(2*t + ph1) + a2*Math.sin(3*t + ph2);
       out.push([Math.sign(c)*Math.pow(Math.abs(c), 2/p)*hw*k, Math.sign(sn)*Math.pow(Math.abs(sn), 2/p)*ht*k]);
     }
     return out;
   }
-  // Retorna {rings:[[punt 3D]], caps:[índexs d'anell amb tapa]}; a = aparició (0..1)
+  // Retorna {rings:[[punt 3D]], caps:[...], fin, rough:[per columna]}; a = aparició (0..1)
   function solid(s, a){
     if(s.__c && s.__c.a === a) return s.__c.v;
-    const r = IBV.rng(s.seed||1), R = [];
-    const big = s.w*s.h > 4, n = s.lintel ? 12 : big ? 14 : 9;
-    // llindes: la secció (gruix × alçada) es passeja al llarg de la peça, amb els extrems arrodonits
-    if(s.lintel){
-      const z0 = s.z0 + (1-a)*6, sec = section(s.t/2, s.h/2, n, r, .06), NS = 6;
-      const ca = Math.sin(s.rot*D2R), sa = Math.cos(s.rot*D2R), na = Math.cos(s.rot*D2R), nb = -Math.sin(s.rot*D2R);
+    const r = IBV.rng(s.seed||1), R = [], fin = finishOf(s);
+    const ca = Math.sin(s.rot*D2R), sa = Math.cos(s.rot*D2R), na = Math.cos(s.rot*D2R), nb = -Math.sin(s.rot*D2R);
+    const radial = (() => { const L = Math.hypot(s.x, s.y)||1; return [s.x/L, s.y/L]; })();
+    const bear = (Math.atan2(s.x, s.y)*R2D + 360) % 360, ne = Math.abs(((bear - AX) + 540) % 360 - 180) < 90;
+    if(s.lintel){                                   // llindes: peces picades, corbes al cercle, cares interior i exterior treballades
+      const n = 14, z0 = s.z0 + (1-a)*6, sec = section(s.t/2, s.h/2, n, r, .01, 4.6), NS = 7;
       for(let k=0;k<=NS;k++){
-        const f = k/NS, end = k===0 || k===NS, sc = end ? .78 : 1 + (r()-.5)*.08, dz = (r()-.5)*.06;
-        const along = (f - .5) + (k===0 ? .03 : k===NS ? -.03 : 0);
-        R.push(sec.map(([v,z]) => {
-          if(s.arc){ const b = s.arc[0] + (s.arc[1]-s.arc[0])*(along+.5), [x,y] = pol(s.arc[2] + v*sc, b); return [x, y, z0 + s.h/2 + z*sc + dz]; }
-          const u = along*s.w; return [s.x + u*ca + v*sc*na, s.y + u*sa + v*sc*nb, z0 + s.h/2 + z*sc + dz];
+        const f = k/NS, end = k===0 || k===NS, sc = end ? .9 : 1;
+        R.push(sec.map(([v,z],j) => {
+          const e = (k%NS ? hash(s.seed, k, j)*.006 : 0);
+          if(s.arc){ const b = s.arc[0] + (s.arc[1]-s.arc[0])*f, [x,y] = pol(s.arc[2] + v*sc + e, b); return [x, y, z0 + s.h/2 + z*sc]; }
+          const u = (f-.5)*s.w; return [s.x + u*ca + (v*sc+e)*na, s.y + u*sa + (v*sc+e)*nb, z0 + s.h/2 + z*sc];
         }));
       }
-      return (s.__c = {a, v:{rings:R, caps:[0, R.length-1]}}).v;
+      return (s.__c = {a, v:{rings:R, caps:[0, R.length-1], fin, rough:sec.map(() => 0)}}).v;
     }
-    // pilars i pedres dretes: anells que s'estrenyen, s'inflen i es desplacen una mica; corona irregular i trencada
-    const ca = Math.sin(s.rot*D2R), sa = Math.cos(s.rot*D2R), na = Math.cos(s.rot*D2R), nb = -Math.sin(s.rot*D2R);
-    const sec = section(s.w/2, s.t/2, n, r, big ? .07 : .1), tp = s.taper||1, H = s.h*a;
-    const lean = s.lean || [(r()-.5)*(big ? .12 : .3), (r()-.5)*(big ? .12 : .3)];
-    const F = big ? [0, .18, .42, .66, .84, .95, 1] : [0, .4, .8, 1];
+    let n, p, amp, F, top, topZ, bulge, drift, lean = s.lean || [0,0];
+    if(fin === "dressed"){ n = 16; p = 4.6; amp = .012; F = [0,.12,.3,.5,.7,.86,.95,.985,1]; top = .9; topZ = 0; bulge = 0; drift = 0; }
+    else if(fin === "slab"){ n = 14; p = 4; amp = .03; F = [0,.55,.9,1]; top = .9; topZ = .03; bulge = .02; drift = .01; }
+    else if(fin === "boulder"){ n = 16; p = 2.3; amp = .13; F = [0,.18,.4,.62,.8,.92,1]; top = .42; topZ = .3; bulge = .1; drift = .05; }
+    else { n = 12; p = 2.9; amp = .07; F = [0,.3,.6,.82,.94,1]; top = .62; topZ = .06; bulge = .06; drift = .04;
+      if(!s.lean) lean = [(r()-.5)*.3, (r()-.5)*.3]; }
+    const sec = section(s.w/2, s.t/2, n, r, amp, p), tp = s.taper||1, H = s.h*a;
+    // rugositat per columna: a les pedres picades, més fina a la cara interior i al costat NE
+    const rough = sec.map(([u,v]) => {
+      if(fin !== "dressed") return fin === "slab" ? .01 : .02;
+      const dx = u*ca + v*na, dy = u*sa + v*nb, out = dx*radial[0] + dy*radial[1] > 0;
+      return out ? (ne ? .012 : .04) : (s.g === "trilit" ? .004 : .012);
+    });
     let dx = 0, dy = 0;
     F.forEach((f,i) => {
-      const last = i === F.length-1, nearTop = i === F.length-2;
-      const sc = (1 - (1-tp)*Math.pow(f, 1.3)) * (last ? .62 : nearTop ? .9 : 1 + (r()-.5)*.08);
-      dx += (r()-.5)*s.w*.03; dy += (r()-.5)*s.t*.04;
+      const last = i === F.length-1;
+      let sc = 1 - (1-tp)*f;
+      if(fin === "dressed"){ if(i === F.length-2) sc *= .97; if(last) sc *= top; }
+      else { sc *= 1 + (r()-.5)*bulge*2; if(last) sc *= top; else if(i === F.length-2) sc *= .88; dx += (r()-.5)*s.w*drift; dy += (r()-.5)*s.t*drift; }
       const zr = s.z0 + H*f;
       R.push(sec.map(([u,v],j) => {
-        const bump = 1 + (r()-.5)*.05;
-        const zz = zr + (last ? (r()-.5)*(s.h > 3 ? .3 : .2)*a + (Math.sin(j/n*6.28*2 + s.seed)*.08)*a : nearTop ? (r()-.5)*.1*a : 0);
-        const uu = u*sc*bump + dx, vv = v*sc*bump + dy;
+        const e = (fin === "dressed" ? (i < F.length-2 ? hash(s.seed, i, j)*rough[j] : 0) : (last ? 0 : hash(s.seed, i, j)*amp*.25*Math.max(s.w, s.t)));
+        const L = Math.hypot(u, v)||1, uu = (u + u/L*e)*sc + dx, vv = (v + v/L*e)*sc + dy;
+        const zz = zr + (last ? (fin === "dressed" ? 0 : hash(s.seed, 99, j)*topZ*a) : 0);
         return [s.x + uu*ca + vv*na + lean[0]*f, s.y + uu*sa + vv*nb + lean[1]*f, zz];
       }));
     });
-    return (s.__c = {a, v:{rings:R, caps:[R.length-1]}}).v;
+    return (s.__c = {a, v:{rings:R, caps:[R.length-1], fin, rough}}).v;
   }
-  // cares: quads entre anells consecutius + tapes; normal de Newell orientada cap enfora
   function faces(sd){
     if(sd.F) return sd.F;
     const R = sd.rings, out = [], cen = [0,0,0]; let n = 0;
@@ -274,8 +286,13 @@
   /* ---------- 5. Dibuix ---------- */
   const LIGHT = (()=>{ const v=[-.45,.5,.95]; const l=Math.hypot(...v); return v.map(x=>x/l); })(); // llum del NO, uns 55° d'alçada
   const TN = 40;
-  const TONES = d3.range(TN+1).map(i => d3.interpolateLab(PAPER, C.ink)(.02 + i/TN*.3));   // aiguada de grisos, sense salts
-  const TONES_ON = d3.range(TN+1).map(i => d3.interpolateLab(TINT, C.vermell)(i/TN*.28));
+  const ramp = (from, to, k0, k1) => d3.range(TN+1).map(i => d3.interpolateLab(from, to)(k0 + i/TN*(k1-k0)));
+  const PAL = {
+    fresh: ramp(PAPER, C.ink, 0, .26),                                         // sarsen picat: «molt més clar i blanc» que avui
+    stone: ramp(PAPER, C.ink, .05, .34),                                      // superfície natural (Taló, Station Stones, lloses)
+    blue:  ramp(PAPER, d3.interpolateLab(C.ink, C.blau)(.4), .06, .38),       // pedres blaves: «tint blavós» quan són fresques
+    on:    ramp(TINT, C.vermell, 0, .3)
+  };
   const poly = (ctx, q) => { ctx.moveTo(q[0][0], q[0][1]); for(let i=1;i<q.length;i++) ctx.lineTo(q[i][0], q[i][1]); ctx.closePath(); };
   function render(ctx, w, h, cam, model, ground, st){
     st = st||{};
@@ -414,50 +431,68 @@
       if(PR.some(r => r.some(v => !v))) continue;
       const on = hl && hl(s), dim = hl && !on && st.dimOthers;
       ctx.globalAlpha = (s.lintel ? Math.min(1, it.a*1.4) : 1) * (dim ? .5 : 1);
-      const ALL = faces(it.sd), m = it.sd.m, nr = it.sd.nr;
+      const ALL = faces(it.sd), m = it.sd.m, nr = it.sd.nr, fin = it.sd.fin;
       const vis = f => f.n[0]*(cam.eye[0]-f.c[0]) + f.n[1]*(cam.eye[1]-f.c[1]) + f.n[2]*(cam.eye[2]-f.c[2]) > 0;
-      const V = new Map(); ALL.forEach(f => V.set(f, vis(f)));
-      const sideAt = (i,j) => ALL[i*m + ((j%m)+m)%m];
-      const capOf = k => ALL.find(f => !f.side && f.cap === k);
-      const F = ALL.filter(f => V.get(f));
-      F.forEach(f => f.d = cam.dist(f.c)); F.sort((p,q) => q.d - p.d);
-      const T = on ? TONES_ON : TONES, rr = IBV.rng((s.seed||1) + 13);
-      const proj = f => f.side ? [PR[f.i][f.j], PR[f.i][(f.j+1)%m], PR[f.i+1][(f.j+1)%m], PR[f.i+1][f.j]] : PR[f.cap];
-      for(const f of F){
-        const q = proj(f);
-        const lit = f.n[0]*LIGHT[0] + f.n[1]*LIGHT[1] + f.n[2]*LIGHT[2];
-        // to continu segons la llum + una mica de taca per cara (pedra amb pàtina, no plàstic)
-        const mott = f.side ? (Math.sin(f.i*.8 + f.j*.55 + (s.seed||0)) + Math.sin(f.j*1.3 - f.i*.4 + (s.seed||0)*.3))*.45 : 0;
-        const tone = Math.max(0, Math.min(TN, Math.round((.8 - lit)*TN*.62 + mott)));
-        ctx.beginPath(); poly(ctx, q); ctx.fillStyle = T[tone]; ctx.fill();
-        ctx.strokeStyle = T[tone]; ctx.lineWidth = .8; ctx.stroke();      // tapa les juntes entre cares (sense línies de malla)
+      const V = ALL.map(vis);
+      const sideAt = (i,j) => i*m + ((j%m)+m)%m;
+      const capIdx = k => { for(let q = (nr-1)*m; q < ALL.length; q++) if(ALL[q].cap === k) return q; return -1; };
+      const pal = on ? PAL.on : fin === "blue" ? PAL.blue : fin === "dressed" ? PAL.fresh : PAL.stone;
+      // to per vèrtex: normal mitjana de les cares veïnes (ombrejat suau, sense cantons)
+      const shade = nrm => { const lit = nrm[0]*LIGHT[0] + nrm[1]*LIGHT[1] + nrm[2]*LIGHT[2]; return Math.max(0, Math.min(TN, Math.round((.86 - lit)*TN*.62))); };
+      const colTone = j => { let x=0,y=0,z=0; for(let i=0;i<nr-1;i++){ const a1 = ALL[sideAt(i,j)].n, a2 = ALL[sideAt(i,j-1)].n; x+=a1[0]+a2[0]; y+=a1[1]+a2[1]; z+=a1[2]+a2[2]; } const l = Math.hypot(x,y,z)||1; return shade([x/l,y/l,z/l]); };
+      const tones = []; for(let j=0;j<m;j++) tones.push(colTone(j));
+      const bodyTop = s.lintel ? nr-1 : Math.max(1, nr-3);     // anells que es pinten com a franges verticals amb degradat
+      // franges (columnes) visibles, de lluny a prop
+      const cols = [];
+      for(let j=0;j<m;j++){ const mid = Math.floor(bodyTop/2); if(!V[sideAt(mid,j)] && !V[sideAt(0,j)] && !V[sideAt(bodyTop-1,j)]) continue;
+        const c = ALL[sideAt(mid,j)].c; cols.push({j, d:cam.dist(c)}); }
+      cols.sort((p,q) => q.d - p.d);
+      const strip = j => { const j1 = (j+1)%m, pts = []; for(let i=0;i<=bodyTop;i++) pts.push(PR[i][j]); for(let i=bodyTop;i>=0;i--) pts.push(PR[i][j1]); return pts; };
+      for(const {j} of cols){
+        const j1 = (j+1)%m, q = strip(j);
+        const A = [(PR[0][j][0] + PR[bodyTop][j][0])/2, (PR[0][j][1] + PR[bodyTop][j][1])/2], B = [(PR[0][j1][0] + PR[bodyTop][j1][0])/2, (PR[0][j1][1] + PR[bodyTop][j1][1])/2];
+        let fill;
+        if(Math.hypot(B[0]-A[0], B[1]-A[1]) < .5) fill = pal[tones[j]];
+        else { fill = ctx.createLinearGradient(A[0], A[1], B[0], B[1]); fill.addColorStop(0, pal[tones[j]]); fill.addColorStop(1, pal[tones[j1]]); }
+        ctx.beginPath(); poly(ctx, q); ctx.fillStyle = fill; ctx.fill(); ctx.strokeStyle = fill; ctx.lineWidth = .9; ctx.stroke();
       }
-      // porus i cops del percussor: punts molt fins només a les cares grans i il·luminades
-      if(!on && it.a > .9 && (s.g === "sarsen" || s.g === "trilit" || s.g === "altar" || s.g === "talo")){
-        ctx.beginPath();
-        for(const f of F){ if(!f.side) continue; const q = proj(f);
-          const area = Math.abs((q[2][0]-q[0][0])*(q[3][1]-q[1][1]) - (q[3][0]-q[1][0])*(q[2][1]-q[0][1]))/2;
-          const k = Math.min(4, Math.floor(area/90));
-          for(let t=0;t<k;t++){ const u = .15 + rr()*.7, v = .15 + rr()*.7;
-            const x = (q[0][0]*(1-u) + q[1][0]*u)*(1-v) + (q[3][0]*(1-u) + q[2][0]*u)*v, y = (q[0][1]*(1-u) + q[1][1]*u)*(1-v) + (q[3][1]*(1-u) + q[2][1]*u)*v;
-            const rad = .45 + rr()*.55; ctx.moveTo(x+rad, y); ctx.arc(x, y, rad, 0, 6.283); } }
-        ctx.fillStyle = IBV.alpha(C.ink, .16); ctx.fill();
+      // corona: el cantell arrodonit i la tapa, cara per cara però amb el mateix tipus de to
+      if(!s.lintel){
+        const TF = [];
+        for(let i=bodyTop;i<nr-1;i++) for(let j=0;j<m;j++){ const k = sideAt(i,j); if(V[k]) TF.push(k); }
+        const cTop = capIdx(nr-1); if(cTop >= 0 && V[cTop]) TF.push(cTop);
+        TF.sort((p,q) => cam.dist(ALL[q].c) - cam.dist(ALL[p].c));
+        for(const k of TF){ const f = ALL[k], q = f.side ? [PR[f.i][f.j], PR[f.i][(f.j+1)%m], PR[f.i+1][(f.j+1)%m], PR[f.i+1][f.j]] : PR[f.cap];
+          const c = pal[shade(f.n)]; ctx.beginPath(); poly(ctx, q); ctx.fillStyle = c; ctx.fill(); ctx.strokeStyle = c; ctx.lineWidth = .9; ctx.stroke(); }
+      } else {
+        [0, nr-1].forEach(k => { const ci = capIdx(k); if(ci < 0 || !V[ci]) return; const c = pal[shade(ALL[ci].n)];
+          ctx.beginPath(); poly(ctx, PR[k]); ctx.fillStyle = c; ctx.fill(); ctx.strokeStyle = c; ctx.lineWidth = .9; ctx.stroke(); });
       }
-      // contorn: només les arestes on una cara visible toca una cara amagada (la silueta real, irregular)
+      // marques del percussor: punts fins, més densos on la pedra és més rugosa
+      if(!on && it.a > .9 && fin !== "blue"){
+        const rr = IBV.rng((s.seed||1) + 13); ctx.beginPath();
+        for(const {j} of cols){ const rough = it.sd.rough[j]; const q0 = PR[0][j], q1 = PR[0][(j+1)%m], q3 = PR[bodyTop][j];
+          const w = Math.hypot(q1[0]-q0[0], q1[1]-q0[1]), h = Math.hypot(q3[0]-q0[0], q3[1]-q0[1]);
+          const k = Math.min(14, Math.floor(w*h/(rough > .03 ? 40 : rough > .01 ? 110 : 260)));
+          for(let t=0;t<k;t++){ const u = .1 + rr()*.8, v = .05 + rr()*.9, i = Math.min(bodyTop-1, Math.floor(v*bodyTop)), fv = v*bodyTop - i;
+            const a0 = PR[i][j], a1 = PR[i][(j+1)%m], b0 = PR[i+1][j], b1 = PR[i+1][(j+1)%m];
+            const x = (a0[0]*(1-u) + a1[0]*u)*(1-fv) + (b0[0]*(1-u) + b1[0]*u)*fv, y = (a0[1]*(1-u) + a1[1]*u)*(1-fv) + (b0[1]*(1-u) + b1[1]*u)*fv;
+            const rad = .35 + rr()*.5; ctx.moveTo(x+rad, y); ctx.arc(x, y, rad, 0, 6.283); } }
+        ctx.fillStyle = IBV.alpha(C.ink, .14); ctx.fill();
+      }
+      // contorn: arestes entre cares visibles i amagades (la silueta real)
       ctx.beginPath();
-      for(const f of F){
-        if(f.side){
-          const {i, j} = f, q = proj(f);
-          const L = sideAt(i, j-1), Rt = sideAt(i, j+1);
-          const B = i > 0 ? sideAt(i-1, j) : null, Tp = i < nr-2 ? sideAt(i+1, j) : capOf(nr-1);
-          const B0 = i === 0 ? capOf(0) : B;
-          if(!V.get(L)){ ctx.moveTo(q[0][0],q[0][1]); ctx.lineTo(q[3][0],q[3][1]); }
-          if(!V.get(Rt)){ ctx.moveTo(q[1][0],q[1][1]); ctx.lineTo(q[2][0],q[2][1]); }
-          if(!Tp || !V.get(Tp)){ ctx.moveTo(q[3][0],q[3][1]); ctx.lineTo(q[2][0],q[2][1]); }
-          if(i === 0 ? (!B0 || !V.get(B0)) : !V.get(B)){ ctx.moveTo(q[0][0],q[0][1]); ctx.lineTo(q[1][0],q[1][1]); }
-        }
+      for(let k=0;k<ALL.length;k++){
+        const f = ALL[k]; if(!f.side || !V[k]) continue;
+        const {i, j} = f, j1 = (j+1)%m, q = [PR[i][j], PR[i][j1], PR[i+1][j1], PR[i+1][j]];
+        if(!V[sideAt(i, j-1)]){ ctx.moveTo(q[0][0],q[0][1]); ctx.lineTo(q[3][0],q[3][1]); }
+        if(!V[sideAt(i, j+1)]){ ctx.moveTo(q[1][0],q[1][1]); ctx.lineTo(q[2][0],q[2][1]); }
+        const up = i < nr-2 ? sideAt(i+1, j) : capIdx(nr-1);
+        if(up < 0 || !V[up]){ ctx.moveTo(q[3][0],q[3][1]); ctx.lineTo(q[2][0],q[2][1]); }
+        const dn = i > 0 ? sideAt(i-1, j) : capIdx(0);
+        if(dn < 0 || !V[dn]){ ctx.moveTo(q[0][0],q[0][1]); ctx.lineTo(q[1][0],q[1][1]); }
       }
-      ctx.strokeStyle = on ? C.vermell : IBV.alpha(C.ink,.82); ctx.lineWidth = on ? 1.3 : .75; ctx.stroke();
+      ctx.strokeStyle = on ? C.vermell : IBV.alpha(C.ink,.8); ctx.lineWidth = on ? 1.3 : .75; ctx.stroke();
       ctx.globalAlpha = 1;
       const top = PR[s.lintel ? Math.floor(PR.length/2) : PR.length-1];
       const tx = d3.mean(top, v=>v[0]), ty = d3.mean(top, v=>v[1]);

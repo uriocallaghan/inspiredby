@@ -60,9 +60,9 @@
         IBV.t(svg, x(v), h-4, yr(v), {size:11.5, anchor:"middle", fill:C.muted}); });
       const rows = svg.selectAll("g.f").data(FASES).join("g").attr("class","f").style("cursor","pointer");
       const yy = i => 14 + i*13;
-      rows.append("line").attr("x1",d=>x(d.ini[0])).attr("x2",d=>x(d.fi[1])).attr("y1",(d,i)=>yy(i)).attr("y2",(d,i)=>yy(i)).attr("stroke",C.ghost).attr("stroke-width",1);
+      rows.append("line").attr("x1",d=>x(d.ini[0])).attr("x2",d=>x(d.fiR[1])).attr("y1",(d,i)=>yy(i)).attr("y2",(d,i)=>yy(i)).attr("stroke",C.ghost).attr("stroke-width",1);
       rows.append("line").attr("class","a").attr("x1",d=>x(d.ini[0])).attr("x2",d=>x(d.ini[1])).attr("y1",(d,i)=>yy(i)).attr("y2",(d,i)=>yy(i)).attr("stroke-width",5).attr("stroke-linecap","round");
-      rows.append("line").attr("class","a").attr("x1",d=>x(d.fi[0])).attr("x2",d=>x(d.fi[1])).attr("y1",(d,i)=>yy(i)).attr("y2",(d,i)=>yy(i)).attr("stroke-width",5).attr("stroke-linecap","round");
+      rows.append("line").attr("class","a").attr("x1",d=>x(d.fiR[0])).attr("x2",d=>x(d.fiR[1])).attr("y1",(d,i)=>yy(i)).attr("y2",(d,i)=>yy(i)).attr("stroke-width",5).attr("stroke-linecap","round");
       rows.append("text").attr("x",0).attr("y",(d,i)=>yy(i)+4).attr("font-size",11.5).attr("fill",C.ink2).text(d=>`Fase ${d.num}`);
       tl = rows;
       el.appendChild(el.querySelector(".tip.ibv-dock"));
