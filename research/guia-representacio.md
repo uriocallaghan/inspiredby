@@ -51,4 +51,4 @@ Consultades només a través de resums (cal llegir-les abans de citar-les amb de
 
 ## 5. Pendent
 
-Els articles publicats abans d'aquesta guia no s'han revisat amb ella. Estan apuntats a «Per decidir» de `web/guidelines/`.
+Els 23 articles publicats abans d'aquesta guia es van revisar el 21-11-2026: les troballes i el que es canviaria són a `research/revisio-representacio-articles.md`. Encara no s'ha aplicat cap canvi; l'editor ha de dir quins i en quin ordre (apuntat a «Per decidir» de `web/guidelines/`).
