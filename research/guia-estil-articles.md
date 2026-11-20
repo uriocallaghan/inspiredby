@@ -14,7 +14,9 @@ La revista: *articles visuals per entendre el món*. Cada article explica una q�
 - **Números concrets** i amb unitats, sempre amb font. Arrodoneix com ho faria un diari (2,3 milions; uns 20 °C).
 - Notes laterals en cursiva amb `<p class="note">` per a curiositats i matisos.
 - Quan una cosa es debat o és incerta, **digues-ho** («encara es debat», «és una estimació»).
-- Al final: **«Paraules clau»** (`<dl class="gl">`), i un bloc `.fn` amb **Metodologia** (què és dada real i què és esquema o simulació) i **Fonts** (llista numerada amb enllaços/DOI).
+- Al final: **«Paraules clau»** (`<dl class="gl">`), i una sola secció **«Dades i fonts»** (`<section class="col fn" id="fonts">`) amb **Metodologia** (què és dada real i què és esquema o simulació), **Els gràfics** (l'explicació completa de cada gràfic: dades, tractament i fonts) i **Fonts** (llista numerada per ordre d'aparició, amb enllaços/DOI).
+- **Cites d'un sol clic.** Cada número del text (`<sup class="nr"><a href="#font-N" id="cX" data-c="uN-k">N</a></sup>`) porta directament a la font, mai a una nota intermèdia. Sota cada font, «Hi recolza:» diu quines afirmacions sustenta, i la fletxa ↑ torna al punt on llegies (`cites.js`). Si un article encara té el format antic (Notes + Fonts), converteix-lo amb `scripts/unifica-cites.mjs`.
+- **Entradeta i peus de gràfic sense llistes de fonts.** A l'entradeta, només l'enllaç «Dades i fonts ↓». Al peu de cada gràfic, només l'etiqueta (dades reals / esquema / simulació), les instruccions d'ús si cal, i l'enllaç «Fonts i dades del gràfic →» cap a la seva entrada a «Els gràfics».
 - Meta de capçalera: «N min de lectura · Dades: … · Actualitzat el 17 de novembre de 2026».
 - Prohibit: rètols petits en majúscules decoratius, «Dins l'article», índexs numerats, seccions «Pròximament», cites inventades o no verificades, emojis.
 
