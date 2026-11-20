@@ -63,9 +63,9 @@ function stickyH(w,desk){ return w<600?Math.round(Math.max(200,Math.min(window.i
     nodes.append("circle").attr("class","bg").attr("r",R).attr("fill",C.ghost).attr("fill-opacity",.25).style("mix-blend-mode","multiply");
     nodes.append("circle").attr("class","ring").attr("r",R).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.8).attr("stroke-opacity",0);
     // icona d'ull: si la parada pot llegir
-    const eye=nodes.append("g").attr("class","eye");
-    eye.append("path").attr("d",`M${-R*.5},0Q0,${-R*.42} ${R*.5},0Q0,${R*.42} ${-R*.5},0Z`).attr("fill",C.paper).attr("stroke",C.ink).attr("stroke-width",.9);
-    eye.append("circle").attr("r",R*.15).attr("fill",C.ink);
+    // dins de cada parada, el que hi veu: el text («hola»), només l'adreça o un garbuix xifrat (a mòbil, només el color)
+    const seen=nodes.append("text").attr("class","seen").attr("text-anchor","middle").attr("dy","0.35em")
+      .attr("font-size",13).style("font-variant-numeric","tabular-nums").style("display",mob?"none":null);
     const lab=nodes.append("g").attr("class","lab");
     if(mob){
       lab.each(function(d){ V.t(d3.select(this),R+12,-2,d.t,{size:12.5,weight:700}); V.t(d3.select(this),R+12,13,"",{size:11.5,fill:C.ink2}).attr("class","st"); });
@@ -83,7 +83,9 @@ function stickyH(w,desk){ return w<600?Math.round(Math.max(200,Math.min(window.i
         n.select("circle.bg").transition().duration(instant?0:500)
           .attr("fill",r==="c"?C.red:r==="m"?C.redLight:C.blue).attr("fill-opacity",r==="c"?.32:r==="m"?.3:.16);
         n.select("circle.ring").transition().duration(instant?0:500).attr("stroke-opacity",M.ends&&(i===0||i===4)?1:0).attr("stroke-width",1.4);
-        n.select("g.eye").transition().duration(instant?0:400).attr("opacity",r==="c"?1:r==="m"?.55:0);
+        n.select("text.seen").text(r==="c"?"hola":r==="m"?"A → B":"k9#vQ")
+          .attr("font-family",r==="c"?V.SERIF:V.SANS).attr("font-style",r==="c"?"italic":null).attr("font-size",r==="c"?15:12)
+          .attr("font-weight",r==="m"?600:400).attr("fill",r==="0"?C.blue:C.ink);
         n.select("text.st").text(READ_TXT[r]);
       });
       gNote.selectAll("*").remove();
@@ -109,11 +111,13 @@ function stickyH(w,desk){ return w<600?Math.round(Math.max(200,Math.min(window.i
       tp.show(`<b>${NODES[i].t}</b> · ${READ_TXT[MODES[mode].read[i]]}`);
     },()=>{ V.focus(nodes,null); tp.hide(); });
     // partícules (canvas): cada missatge és un punt; vermell si es pot llegir en aquell tram, blau si va xifrat
+    const seg=Math.hypot(pos[1].x-pos[0].x,pos[1].y-pos[0].y);
     function frame(t){
       ctx.clearRect(0,0,w,h);
       const M=MODES[mode];
       for(const q of parts){
         const p=(((t/T)+q.o)%1+1)%1*4, xy=at(p), plain=M.plain(p);
+        if(Math.abs(p-Math.round(p))*seg<R*.92)continue;   // dins de la parada, el missatge no es dibuixa: s'hi llegeix el text
         const jit=(q.o*997%1-.5)*(mob?10:30);
         const x=xy.x+(mob?jit:0), y=xy.y+(mob?0:jit);
         ctx.beginPath(); ctx.arc(x,y,mob?2.6:3.6,0,Math.PI*2);
