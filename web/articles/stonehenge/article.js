@@ -4,7 +4,7 @@
    hover suau (IBV.focus ≥ 0,46) i lectura d'una línia sota el gràfic (IBV.tip). */
 (function(){
   "use strict";
-  const D = window.STONEHENGE_DADES, L = window.SH_LOCAL, S3 = window.SH3D, C = IBV.C;
+  const D = window.STONEHENGE_DADES, L = window.SH_LOCAL, S3 = window.SH3D, C = Object.assign({vegetacio:"#A6C06A", vegetacioClar:"#DCE8B5", vegetacioFosc:"#6F8A3C"}, IBV.C);
   const F0 = IBV.fmt(",.0f"), F1 = IBV.fmt(",.1f");
   const D2R = Math.PI/180;
   const MODEL = S3.buildModel(), GROUND = S3.buildGround();
@@ -213,6 +213,48 @@
   /* =========================================================================
      V2 · PAISATGE DOBLE: FUSTA PER ALS VIUS, PEDRA PER ALS AVANTPASSATS (IB-59 + IB-13)
      ========================================================================= */
+  /* Vegetació d'avui (OpenStreetMap) en verd vegetal: boscos amb capçades, rengleres d'arbres i arbres sols.
+     Es dibuixa en una capa a part que s'esvaeix a les vores, igual que el relleu. */
+  function drawVeg(ctx, proj, w, h){
+    const V = window.SH_VEG, oc = document.createElement("canvas"), dpr = ctx.getTransform().a;
+    oc.width = Math.round(w*dpr); oc.height = Math.round(h*dpr);
+    const g = oc.getContext("2d"); g.scale(dpr, dpr);
+    const P = p => proj(p);
+    const mPx = Math.abs(proj([-1.8262,51.1789])[1] - proj([-1.8262,51.1789+1/111.2])[1]) / 1000;
+    const R0 = Math.max(2.8, 11*mPx), rnd = IBV.rng(4);
+    const crowns = [];
+    // boscos: taca clara amb contorn i capçades a dins
+    V.woods.forEach(poly => {
+      const q = poly.map(P);
+      g.beginPath(); q.forEach((v,i) => i ? g.lineTo(v[0],v[1]) : g.moveTo(v[0],v[1])); g.closePath();
+      g.fillStyle = IBV.alpha(C.vegetacioClar, .95); g.fill(); g.strokeStyle = IBV.alpha(C.vegetacioFosc, .5); g.lineWidth = .6; g.stroke();
+      const xs = d3.extent(q, v=>v[0]), ys = d3.extent(q, v=>v[1]), step = Math.max(R0*1.6, 4.5);
+      for(let y = ys[0]; y < ys[1]; y += step*.86) for(let x = xs[0] + ((Math.round(y/step))%2)*step/2; x < xs[1]; x += step){
+        const px = x + (rnd()-.5)*step*.5, py = y + (rnd()-.5)*step*.5;
+        if(d3.polygonContains(q, [px, py])) crowns.push([px, py, R0*(.75 + rnd()*.5)]);
+      }
+    });
+    // rengleres i arbres sols
+    V.rows.forEach(line => { const q = line.map(P);
+      for(let i=0;i<q.length-1;i++){ const L2 = Math.hypot(q[i+1][0]-q[i][0], q[i+1][1]-q[i][1]), n = Math.max(1, Math.floor(L2/(R0*2)));
+        for(let k=0;k<n;k++){ const t = k/n; crowns.push([q[i][0]+(q[i+1][0]-q[i][0])*t, q[i][1]+(q[i+1][1]-q[i][1])*t, R0*(.7+rnd()*.4)]); } } });
+    V.trees.forEach(t => { const p = P(t); crowns.push([p[0], p[1], R0*(.8+rnd()*.5)]); });
+    crowns.sort((a,b) => a[1]-b[1]);
+    // capçades: cercle verd amb vora fosca i ombra suau cap al SE, com en una maqueta
+    g.beginPath(); crowns.forEach(([x,y,r]) => { g.moveTo(x+r*.35+r, y+r*.35); g.arc(x+r*.35, y+r*.35, r, 0, 6.283); });
+    g.fillStyle = IBV.alpha(C.ink, .08); g.fill();
+    crowns.forEach(([x,y,r]) => { g.beginPath(); g.arc(x, y, r, 0, 6.283); g.fillStyle = C.vegetacio; g.fill(); g.strokeStyle = IBV.alpha(C.vegetacioFosc, .9); g.lineWidth = .55; g.stroke(); });
+    // vores esvaïdes
+    g.globalCompositeOperation = "destination-out";
+    const edge = (x0,y0,x1,y1,rx,ry,rw,rh) => { const lg = g.createLinearGradient(x0,y0,x1,y1); lg.addColorStop(0,"rgba(0,0,0,0)"); lg.addColorStop(1,"rgba(0,0,0,1)"); g.fillStyle = lg; g.fillRect(rx,ry,rw,rh); };
+    const f = Math.min(w,h)*.08;
+    edge(0,f,0,0,-2,-2,w+4,f+2); edge(0,h-f,0,h,-2,h-f,w+4,f+2); edge(f,0,0,0,-2,-2,f+2,h+4); edge(w-f,0,w,0,w-f,-2,f+2,h+4);
+    ctx.save(); ctx.setTransform(1,0,0,1,0,0); ctx.drawImage(oc, 0, 0); ctx.restore();
+    // el riu, per sobre dels arbres de ribera
+    ctx.beginPath(); d3.geoPath(proj, ctx)({type:"LineString", coordinates:L.avon});
+    ctx.strokeStyle = IBV.alpha(C.blau,.78); ctx.lineWidth = 1.6; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.stroke();
+  }
+
   (function initPaisatge(){
     const el = document.getElementById("pai-viz"); if(!el || !window.SHL_DEM) return;
     const fig = el.closest("figure"), btn = fig.querySelector(".playb"), tp = IBV.tip(el);
@@ -238,6 +280,7 @@
       const {ctx} = IBV.canvas(container, w, H, "");
       relleu59(ctx, proj, w, H, window.SHL_DEM, {iso:d3.range(60,150,10), slope:30, coast:false, fade:"neso", fadeK:.06,
         rivers:{type:"LineString", coordinates:L.avon}, riverW:1.6});
+      if(window.SH_VEG) drawVeg(ctx, proj, w, H);
       const svg = IBV.svg(container, w, H, "Mapa físic del paisatge de Stonehenge: Durrington Walls (fusta) al nord-est vora el riu Avon, l'Avinguda que puja des del riu fins a Stonehenge (pedra) i els pals mesolítics.");
       svg.style("position","absolute").style("left",0).style("top",0);
       const P = p => proj(p), line = d3.line().x(d=>P(d)[0]).y(d=>P(d)[1]).curve(d3.curveCatmullRom.alpha(.5));
