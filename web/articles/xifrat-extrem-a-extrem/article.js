@@ -375,76 +375,86 @@ function stickyH(w,desk){ return w<600?Math.round(Math.max(200,Math.min(window.i
     if(ages<.01)return f0(y)+" anys";
     return `${sciTxt(y)} anys (${ages<1e4?f0(ages):sciTxt(ages)} vegades l'edat de l'univers)`;
   }
-  let mode="log", K=4, playing=null;
-  const M=V.mount(el,(box,w)=>{ d3.select(box).selectAll("svg.ibv").remove(); (mode==="log"?drawLog:drawReal)(box,w); });
-  /* ---- Escala real: un regle lineal que s'allunya (com «Powers of Ten»). L'amplada del regle és 10^K combinacions;
-     cada referència entra per la dreta, llisca cap a l'esquerra i s'esclafa contra el zero. ---- */
-  let upd=null;
-  function drawReal(box,w){
-    const mob=w<600, h=mob?310:300, x0=mob?14:24, x1=w-(mob?14:24), base=mob?200:190;
-    const s=V.svg(box,w,h,"Regle lineal que s'allunya: a cada moment l'amplada representa 10 elevat a K combinacions. Quan el regle és prou gran per a una clau de 256 bits, el PIN, la contrasenya, la clau DES i fins i tot la clau de 128 bits queden esclafats en el primer píxel.");
+  let mode="log", playing=null;
+  const M=V.mount(el,(box,w)=>{ d3.select(box).selectAll("svg.ibv").remove(); (mode==="log"?drawLog:drawBits)(box,w); });
+  /* ---- Bit a bit: una casella per bit (256). Cada casella duplica les combinacions.
+     Vermell: el que es podria provar en un any a un trilió de claus per segon (fins a la casella 84,7);
+     vermell clar: el que es podria provar des del Big Bang (fins a la 118,4); blau: el que queda fora d'abast. ---- */
+  const LOG2_YEAR=Math.log2(RATE*365.25*86400), LOG2_BB=Math.log2(RATE*AGE_S);
+  const MARKS=[
+    {n:Math.log2(1e4),t:"PIN de 4 xifres"},
+    {n:Math.log2(Math.pow(95,8)),t:"Contrasenya de 8 caràcters"},
+    {n:56,t:"Clau DES (trencada el 1998)"},
+    {n:LOG2_YEAR,t:"Un any provant un trilió per segon"},
+    {n:LOG2_BB,t:"Provant-ho des del Big Bang fins avui"},
+    {n:128,t:"Clau de 128 bits (AES-128)",key:1},
+    {n:256,t:"Clau de 256 bits (AES-256)",key:1}
+  ];
+  let fillTo=256, redrawBits=null;
+  function drawBits(box,w){
+    const mob=w<600, cols=16, rows=16, gap=mob?1.5:2;
+    const cs=mob?Math.floor((w-4)/cols):Math.min(28,Math.floor(w*.5/cols));
+    const gx=mob?(w-cols*cs)/2:8, gy=mob?44:52, gw=cols*cs, gh=rows*cs;
+    const listH=mob?MARKS.length*17+40:0, h=gy+gh+(mob?listH:52);
+    const s=V.svg(box,w,h,"Graella de 256 caselles, una per bit de clau; cada casella duplica les combinacions. Provant un trilió de claus per segon s'arriba a la casella 85 en un any i a la 118 des del Big Bang. Una clau de 128 bits és a la casella 128 i una de 256 bits, a l'última: 138 duplicacions més enllà del que es pot provar en tota la història de l'univers.");
     const g=s.append("g"), tp=V.tip(box);
-    if(mob) V.t(g,x0,14,"Amplada del regle",{size:12,fill:C.ink2});
-    const big=V.t(g,x0,mob?42:38,"",{size:mob?24:30,serif:true});
-    const sub=V.t(g,x0,mob?64:62,"",{size:mob?12:13,fill:C.ink2});
-    const sub2=V.t(g,x0,mob?80:80,"",{size:mob?12:13,fill:C.ink2});
-    g.append("line").attr("x1",x0).attr("x2",x1).attr("y1",base).attr("y2",base).attr("stroke",C.ink).attr("stroke-width",.8);
-    [0,.25,.5,.75,1].forEach(f=>g.append("line").attr("x1",x0+f*(x1-x0)).attr("x2",x0+f*(x1-x0)).attr("y1",base-(f%.5?3:6)).attr("y2",base+(f%.5?3:6)).attr("stroke",C.ink).attr("stroke-width",.8));
-    V.t(g,x0,base+22,"0",{size:11.5,fill:C.muted,anchor:"start"});
-    const endLab=V.t(g,x1,base+22,"",{size:11.5,fill:C.muted,anchor:"end"});
-    const zero=g.append("g");
-    const pile=V.t(zero,x0,base+(mob?44:46),"",{size:12,fill:C.ink2});
-    const pile2=V.t(zero,x0,base+(mob?60:62),"",{size:11.5,fill:C.muted});
-    const pts=g.selectAll("g.rp").data(ITEMS).join("g").attr("class","rp");
-    pts.append("circle").attr("r",mob?9:12).attr("fill",d=>d.ctx?C.ink2:d.broken?C.red:C.blue).attr("fill-opacity",d=>d.ctx?.16:.28).style("mix-blend-mode","multiply");
-    pts.append("circle").attr("r",2.6).attr("fill",d=>d.ctx?C.ink2:d.broken?C.red:C.blue);
-    pts.append("line").attr("class","st").attr("y1",-14).attr("y2",-40).attr("stroke",C.hair).attr("stroke-width",.7);
-    pts.each(function(d){ const q=d3.select(this); V.t(q,0,-58,d.t,{size:12.5,weight:700,halo:3}).attr("class","t1"); V.t(q,0,-44,d.m,{size:11.5,fill:C.ink2,halo:3}).attr("class","t2"); });
-    upd=()=>{
-      const D=Math.pow(10,K), W=x1-x0, kk=Math.floor(K+1e-9), mant=D/Math.pow(10,kk);
-      big.text(`${mob?"":"Amplada del regle: "}${mant>=1.05?f1(mant)+" × ":""}${p10(kk)} combinacions`);
-      const perPx=D/W, pk=Math.floor(Math.log10(perPx));
-      sub.text(K<6?`Cada píxel del regle són ${f0(perPx)} combinacions`:`Cada píxel del regle són ${p10(pk)} combinacions o més`);
-      sub2.text(K>=5?`El regle és ${K-4<4?f0(Math.pow(10,K-4)):p10(Math.floor(K-4))} vegades més llarg que al començament`:"");
-      endLab.text((mant>=1.05?f1(mant)+" × ":"")+p10(kk));
-      const crushed=[];
-      pts.each(function(d){
-        const q=d3.select(this), xr=x0+d.v/D*W;
-        if(xr>x1+30){ q.attr("opacity",0); return; }
-        const tiny=xr-x0<3;
-        if(tiny){ crushed.push(d.t); q.attr("opacity",.9).attr("transform",`translate(${x0},${base})`); q.selectAll(".t1,.t2,.st").attr("opacity",0); return; }
-        q.attr("opacity",1).attr("transform",`translate(${Math.min(xr,x1+30)},${base})`);
-        const anc=xr>x1-90?"end":xr<x0+90?"start":"middle";
-        q.selectAll(".t1,.t2").attr("text-anchor",anc).attr("opacity",1); q.select(".st").attr("opacity",1);
-      });
-      pile.text(crushed.length?`Esclafats contra el zero, en menys d'un píxel:`:"");
-      const cr=crushed.slice().reverse(); pile2.text(cr.length?(cr.length>3?cr.slice(0,3).join(", ")+` i ${cr.length-3} més`:cr.join(", ")):"");
-      const rng=$("#claus-k"); if(rng){ rng.value=K; rng.setAttribute("aria-valuetext",`Amplada del regle: 10 elevat a ${f1(K)} combinacions`); }
-    };
-    upd();
-    V.hover(s.node(),(ev,[mx])=>{
-      const D=Math.pow(10,K), vis=ITEMS.filter(d=>x0+d.v/D*(x1-x0)<=x1+30);
-      if(!vis.length){ tp.hide(); return; }
-      const d=d3.least(vis,q=>Math.abs(x0+q.v/D*(x1-x0)-mx)), fr=d.v/D;
-      tp.show(`<b>${d.t}</b> · ${sciTxt(d.v)} combinacions · ocupa ${fr>=.01?f0(fr*100)+" %":"10<sup>"+Math.floor(Math.log10(fr*100))+"</sup> %"} del regle`);
-    },()=>tp.hide());
+    const big=V.t(g,gx,mob?20:24,"",{size:mob?18:22,serif:true});
+    const sub=V.t(g,gx,mob?36:42,"",{size:12,fill:C.ink2});
+    const pos=n=>{ const i=n-1; return [gx+(i%cols)*cs, gy+Math.floor(i/cols)*cs]; };
+    const colOf=n=>n<=LOG2_YEAR?C.red:n<=LOG2_BB?C.redLight:C.blue;
+    const opOf=n=>n<=LOG2_YEAR?.7:n<=LOG2_BB?.7:.22;
+    const cells=g.append("g").selectAll("rect").data(d3.range(1,257)).join("rect")
+      .attr("x",n=>pos(n)[0]+gap/2).attr("y",n=>pos(n)[1]+gap/2).attr("width",cs-gap).attr("height",cs-gap).attr("rx",mob?1.5:2.5)
+      .attr("fill",n=>colOf(n));
+    // caselles marcades: contorn en tinta
+    const mk=g.append("g");
+    MARKS.forEach((m,i)=>{ const n=Math.max(1,Math.ceil(m.n-1e-9)), [x,y]=pos(n);
+      mk.append("rect").attr("x",x+gap/2).attr("y",y+gap/2).attr("width",cs-gap).attr("height",cs-gap).attr("rx",mob?1.5:2.5).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",m.key?1.6:1);
+      if(mob) V.t(mk,x+cs/2,y+cs/2+4,String(i+1),{size:11,weight:700,anchor:"middle",fill:C.ink}); });
+    // etiquetes: a escriptori a la dreta amb línia guia; a mòbil, llista numerada a sota
+    const gl=g.append("g");
+    if(!mob){
+      const lx=gx+gw+40; let prev=-1e9;
+      MARKS.forEach(m=>{ const n=Math.max(1,Math.ceil(m.n-1e-9)), [x,y]=pos(n), cy=y+cs/2; m._ly=Math.max(cy,prev+34); prev=m._ly; });
+      MARKS.forEach(m=>{ const n=Math.max(1,Math.ceil(m.n-1e-9)), [x,y]=pos(n), cy=y+cs/2;
+        gl.append("path").attr("d",`M${x+cs-gap},${cy}L${gx+gw+14},${cy}L${lx-6},${m._ly-4}`).attr("fill","none").attr("stroke",C.ink).attr("stroke-width",.6).attr("stroke-opacity",.6);
+        V.t(gl,lx,m._ly-4,m.t,{size:12.5,weight:700,halo:3});
+        V.t(gl,lx,m._ly+10,`casella ${f1(m.n).replace(",0","")} · ${sciTxt(Math.pow(2,m.n))} combinacions`,{size:11.5,fill:C.ink2,halo:3}); });
+      V.t(g,gx,gy+gh+24,"Cada casella duplica les combinacions de l'anterior. De la 118 a la 256 hi ha 138 duplicacions que no es poden recórrer.",{size:12,fill:C.ink2});
+      V.t(g,gx,gy+gh+42,"Vermell: un any de proves · vermell clar: des del Big Bang · blau: fora d'abast",{size:11.5,fill:C.muted});
+    } else {
+      MARKS.forEach((m,i)=>V.t(gl,gx,gy+gh+22+i*17,`${i+1} · ${m.t} (casella ${f1(m.n).replace(",0","")})`,{size:11.5,weight:m.key?700:400,fill:C.ink}));
+      V.t(g,gx,gy+gh+22+MARKS.length*17+6,"Cada casella duplica les combinacions.",{size:11.5,fill:C.ink2});
+    }
+    function upto(k){
+      fillTo=k;
+      cells.attr("fill-opacity",n=>n<=k?opOf(n):.05);
+      const n=Math.max(1,Math.round(k));
+      big.text(`Clau de ${n} ${n===1?"bit":"bits"}: 2${String(n).split("").map(c=>SUP[c]).join("")} combinacions`);
+      sub.text(n<=LOG2_YEAR?"es pot provar sencera en menys d'un any":n<=LOG2_BB?"caldria provar des del Big Bang fins avui":`caldrien ${sciTxt(Math.pow(2,n-LOG2_BB))} vegades l'edat de l'univers`);
+    }
+    redrawBits=upto; upto(fillTo);
+    V.hover(s.node(),(ev,[mx,my])=>{
+      const c=Math.floor((mx-gx)/cs), r=Math.floor((my-gy)/cs);
+      if(c<0||c>=cols||r<0||r>=rows){ tp.hide(); cells.attr("stroke",null); return; }
+      const n=r*cols+c+1;
+      cells.attr("stroke",q=>q===n?C.ink:null).attr("stroke-width",1.4);
+      tp.show(`<b>Clau de ${n} bits</b> · ${sciTxt(Math.pow(2,n))} combinacions · provar-les totes a un trilió per segon: ${timeTxt(Math.pow(2,n))}`);
+    },()=>{ tp.hide(); cells.attr("stroke",null); });
   }
   function play(){
     if(playing){ playing.stop(); playing=null; }
-    if(V.reduced){ K=80; if(upd)upd(); return; }
-    if(K>=79.9)K=4;
-    const k0=K, dur=(80-k0)/76*20000;   // tot el viatge, uns 20 segons: zoom lent i constant
-    const t0=performance.now(); let raf=0;
-    const tick=now=>{ const p=Math.min(1,(now-t0)/dur); K=k0+(80-k0)*p; if(upd)upd(); if(p<1&&playing)raf=requestAnimationFrame(tick); else playing=null; };
+    if(V.reduced){ fillTo=256; if(redrawBits)redrawBits(256); return; }
+    const t0=performance.now(), dur=16000; let raf=0;   // una casella cada ~60 ms: lent i contemplatiu
+    const tick=now=>{ const p=Math.min(1,(now-t0)/dur); if(redrawBits)redrawBits(1+255*p); if(p<1&&playing)raf=requestAnimationFrame(tick); else playing=null; };
     playing={stop(){ cancelAnimationFrame(raf); }}; raf=requestAnimationFrame(tick);
   }
   document.querySelectorAll("#claus-seg button").forEach(b=>b.addEventListener("click",()=>{
     mode=b.dataset.k; document.querySelectorAll("#claus-seg button").forEach(q=>q.setAttribute("aria-pressed",q===b?"true":"false"));
-    const ctl=$("#claus-ctl"); if(ctl)ctl.hidden=mode!=="real";
+    const ctl=$("#claus-ctl"); if(ctl)ctl.hidden=mode!=="bits";
     if(playing){ playing.stop(); playing=null; }
-    M.redraw(); if(mode==="real"){ K=4; if(upd)upd(); play(); }
+    fillTo=1; M.redraw(); if(mode==="bits")play();
   }));
-  const rngK=$("#claus-k"); if(rngK)rngK.addEventListener("input",()=>{ if(playing){ playing.stop(); playing=null; } K=+rngK.value; if(upd)upd(); });
   const pb=$("#claus-play"); if(pb)pb.addEventListener("click",play);
   function drawLog(box,w){
     const mob=w<600;
