@@ -22,7 +22,7 @@
     "title": "La malaltia que vam esborrar",
     "desc": "Deu anys van separar 10–15 milions de malalts l'any de l'últim cas natural de verola. Com es fa desaparèixer una malaltia? Un saber de la Xina, l'Índia i l'Àfrica i milers de vacunadors.",
     "category": "Història i salut",
-    "minutes": 24,
+    "minutes": 18,
     "thumbAlt": "Mapa del món en gris clar amb els 31 països on la verola era endèmica el 1967, en vermell."
   },
   {
@@ -66,7 +66,7 @@
     "title": "Qui va dibuixar el mapa d'Haití?",
     "desc": "El 2010, Port-au-Prince gairebé no sortia als mapes d'internet. En un mes, sis-centes persones, sobretot de fora d'Haití, el van dibuixar. De la Missió 4636 al konbit: com treballen milers de desconeguts.",
     "category": "Antropologia i societat",
-    "minutes": 22,
+    "minutes": 18,
     "thumbAlt": "Xarxa de carrers de Port-au-Prince dibuixada en línies vermelles i grises sobre fons clar."
   },
   {
@@ -81,9 +81,9 @@
   {
     "slug": "l-ultim-sopar",
     "title": "L'últim sopar de Leonardo",
-    "desc": "Tretze homes asseguts en filera, estovalles de lli, gots de vidre i anguiles amb taronja. Gairebé res del mural més famós del món no encaixa amb la Jerusalem del segle I — ni amb un sol evangeli.",
+    "desc": "Tretze homes asseguts en filera, estovalles de lli, gots de vidre i cap anyell. Gairebé res del mural més famós del món no encaixa amb la Jerusalem del segle I — ni amb un sol evangeli.",
     "category": "Antropologia i història",
-    "minutes": 21,
+    "minutes": 16,
     "thumbAlt": "Forma orgànica difuminada en rosa, verd oliva i taronja sobre fons crema."
   },
   {
@@ -91,7 +91,7 @@
     "title": "Per què van aixecar Stonehenge?",
     "desc": "Els druides no el van construir, la festa gran era a l'hivern i les pedres van viatjar fins a 750 km. L'arqueologia recent revela un cementiri neolític, un pacte d'illa i un mirall de cada època.",
     "category": "Antropologia i arqueologia",
-    "minutes": 20,
+    "minutes": 18,
     "thumbAlt": "Forma orgànica difuminada en taronja, rosa i verd sobre degradat verd i crema."
   },
   {
@@ -126,7 +126,7 @@
     "title": "Qui era realment Jesús?",
     "desc": "No es deia Jesús, va néixer uns anys «abans de Crist» i cap text antic no descriu la seva cara. Què en sap la història, com l'ha pintat cada cultura i com el veuen les altres religions.",
     "category": "Història i arqueologia",
-    "minutes": 17,
+    "minutes": 13,
     "thumbAlt": "Degradat abstracte d'horitzó amb verd fosc a la base i cel càlid."
   },
   {
@@ -134,7 +134,7 @@
     "title": "Jesús no va escriure res",
     "desc": "Jesús no va deixar cap llibre. Unes cartes, quatre relats i dues frases d'historiadors antics permeten seguir-ne el rastre.",
     "category": "Història",
-    "minutes": 20,
+    "minutes": 12,
     "thumbAlt": "Dues esferes abstractes superposades en taronja, rosa i blau cel."
   },
   {
