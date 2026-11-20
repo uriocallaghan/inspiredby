@@ -1,6 +1,6 @@
 # Guia d'estil dels articles d'Inspired by Magazine
 
-Model de referència: **«El Niño i La Niña»** (`web/articles/el-nino/index.html`). Llegeix-lo sencer abans de començar: text, estructura i codi dels gràfics. Altres exemples fets amb la mateixa base: `web/articles/calendari-cosmic/` i `web/articles/de-que-mor-el-mon/`.
+Resum de totes les normes del projecte: `web/guidelines/index.html` (/guidelines). Model de referència: **«El Niño i La Niña»** (`web/articles/el-nino/index.html`). Llegeix-lo sencer abans de començar: text, estructura i codi dels gràfics. Altres exemples fets amb la mateixa base: `web/articles/calendari-cosmic/` i `web/articles/de-que-mor-el-mon/`.
 
 La revista: *articles visuals per entendre el món*. Cada article explica una qüestió complexa de manera molt visual, maca i fàcil d'entendre. L'autor és molt exigent amb dues coses: **que tot sigui cert** i **que no sembli fet per una IA** (res de farciment, rètols decoratius, frases buides o dades inventades).
 
@@ -17,14 +17,14 @@ La revista: *articles visuals per entendre el món*. Cada article explica una q�
 - Al final: **«Paraules clau»** (`<dl class="gl">`), i una sola secció **«Dades i fonts»** (`<section class="col fn" id="fonts">`) amb **Metodologia** (què és dada real i què és esquema o simulació), **Els gràfics** (l'explicació completa de cada gràfic: dades, tractament i fonts) i **Fonts** (llista numerada per ordre d'aparició, amb enllaços/DOI).
 - **Cites d'un sol clic.** Cada número del text (`<sup class="nr"><a href="#font-N" id="cX" data-c="uN-k">N</a></sup>`) porta directament a la font, mai a una nota intermèdia. Sota cada font, «Hi recolza:» diu quines afirmacions sustenta, i la fletxa ↑ torna al punt on llegies (`cites.js`). Si un article encara té el format antic (Notes + Fonts), converteix-lo amb `scripts/unifica-cites.mjs`.
 - **Entradeta i peus de gràfic sense llistes de fonts.** A l'entradeta, només l'enllaç «Dades i fonts ↓». Al peu de cada gràfic, només l'etiqueta (dades reals / esquema / simulació), les instruccions d'ús si cal, i l'enllaç «Fonts i dades del gràfic →» cap a la seva entrada a «Els gràfics».
-- Meta de capçalera: «N min de lectura · Dades: … · Actualitzat el 17 de novembre de 2026».
+- Meta de capçalera: «N min de lectura · <a class="dl-f" href="#fonts">Dades i fonts&nbsp;↓</a> · Actualitzat el …». Res de llistes d'autors a la capçalera.
 - Prohibit: rètols petits en majúscules decoratius, «Dins l'article», índexs numerats, seccions «Pròximament», cites inventades o no verificades, emojis.
 
 ## 2. Dades i rigor (obligatori)
 
 - Cada xifra, data i afirmació científica ha de venir d'una **font primària o d'alta confiança** que hagis **obert i llegit** (article revisat per experts amb DOI, NASA/NOAA/ESA, IPCC, OMS, Global Carbon Project, etc.). Wikipedia o blogs només com a pista, mai com a font.
 - Comprova cada DOI/URL online (que existeixi i que digui el que li atribueixes). No escriguis DOI de memòria sense verificar-los.
-- Si un gràfic és un **esquema o una simulació**, digues-ho al peu («Esquema, no dades reals»). Si són **dades reals**, cita-les amb any i font al peu.
+- Si un gràfic és un **esquema o una simulació**, digues-ho al peu («Esquema», «Simulació»); si són **dades reals**, «Dades reals». El detall (fonts, anys, tractament) va a «Els gràfics», dins de «Dades i fonts», i el peu hi enllaça.
 - Guarda la recerca a `research/<slug>/`: `fonts.md` (cada afirmació → font, amb URL i nota de verificació) i els CSV/JSON de dades que facin servir els gràfics.
 
 ## 3. Disseny (copia el sistema, no l'inventis)

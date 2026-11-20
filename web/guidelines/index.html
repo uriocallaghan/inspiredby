@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Guidelines · Inspired by Magazine</title>
+<meta name="description" content="Totes les normes de la revista en una sola pàgina: com es publica, la mirada, el to, el rigor, les cites, els gràfics, el mòbil i la portada.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#FCFCFA">
+<link rel="icon" sizes="192x192" href="../assets/icon192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=STIX+Two+Text:ital,wght@0,400;0,500;1,400&display=swap">
+<link rel="stylesheet" href="../assets/ib.css">
+<link rel="stylesheet" href="../assets/article.css">
+<style>
+.gd-nav{font-family:var(--sans);font-size:14px;line-height:1.9;color:var(--muted);margin:0 0 8px}
+.gd-nav a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--hair);white-space:nowrap}
+.gd-nav a:hover{color:var(--ink);border-color:var(--ink)}
+.gd h2.sh{scroll-margin-top:24px}
+.gd h3{font-family:var(--sans);font-size:16px;font-weight:700;color:var(--ink);margin:28px 0 8px}
+.gd ul{padding-left:1.15em;margin:0 0 1em}
+.gd li{margin:0 0 .5em}
+.gd code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.84em;background:#F1F0EC;padding:1px 4px;border-radius:2px;overflow-wrap:anywhere}
+.gd .chk li{list-style:none;position:relative}
+.gd .chk li::before{content:"";position:absolute;left:-1.15em;top:.45em;width:10px;height:10px;border:1.2px solid var(--muted);border-radius:2px}
+.gd .sw{display:inline-block;width:11px;height:11px;border-radius:2px;vertical-align:-1px;margin-right:4px}
+.gd table{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:14px;line-height:1.45;margin:6px 0 18px}
+.gd th,.gd td{text-align:left;vertical-align:top;padding:7px 10px 7px 0;border-bottom:1px solid var(--hair)}
+.gd th{font-weight:700;color:var(--ink);white-space:nowrap}
+.gd td{color:var(--ink-2)}
+.gd .ex{font-family:var(--sans);font-size:14px;color:var(--ink-2);border-left:2px solid var(--hair);padding:2px 0 2px 12px;margin:0 0 1em}
+.gd .ex b{color:var(--ink)}
+@media (max-width:600px){.gd th{white-space:normal}}
+</style>
+</head>
+<body class="ib-article">
+<header class="ib-bar">
+  <a href="../" aria-label="Inspired by Magazine"><img src="../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</header>
+<div class="ib-progress" aria-hidden="true"><span id="ibProgress"></span></div>
+
+<main class="page gd">
+<header class="open col">
+  <h1>Guidelines</h1>
+  <p class="dek">Totes les normes de la revista en un sol lloc: com es publica, quina mirada tenen els articles, com s'escriuen, com es verifiquen i se citen les dades, com són els gràfics i què cal comprovar abans de publicar.</p>
+  <p class="meta">Per a l'editor i per a qualsevol agent que hi treballi. Les guies detallades són al repositori (<code>AGENTS.md</code> i <code>research/</code>); el sistema infogràfic complet és a <a href="../sistema/">/sistema</a> · Actualitzat el 20 de novembre de 2026</p>
+</header>
+
+<section class="col">
+  <p class="gd-nav">
+    <a href="#publicar">Com es publica</a> ·
+    <a href="#mirada">La mirada</a> ·
+    <a href="#to">To i redactat</a> ·
+    <a href="#rigor">Rigor i dades</a> ·
+    <a href="#cites">Cites i fonts</a> ·
+    <a href="#estructura">Estructura d'un article</a> ·
+    <a href="#grafics">Gràfics</a> ·
+    <a href="#mobil">Mòbil</a> ·
+    <a href="#portada">Portada i fitxers</a> ·
+    <a href="#prohibit">El que no es fa mai</a> ·
+    <a href="#abans">Abans de publicar</a> ·
+    <a href="#guies">On és cada guia</a>
+  </p>
+  <p>Quan una norma d'aquesta pàgina i una guia detallada no coincideixen, mana la més recent i cal arreglar l'altra de seguida. Qui canviï una norma l'ha de canviar alhora aquí i a la guia corresponent.</p>
+</section>
+
+<!-- ==================== PUBLICAR ==================== -->
+<section class="col">
+  <h2 class="sh" id="publicar">Com es publica</h2>
+  <ul>
+    <li><b>GitHub és la versió de referència.</b> La branca <code>main</code> del repositori <code>uriocallaghan/inspiredby</code> és el que es veu a la web.</li>
+    <li><b>Tot el que entra a <code>main</code> es publica sol</b> a Netlify, a inspiredby.uriocallaghan.com. Mai es publica a mà (res de <code>netlify deploy</code>).</li>
+    <li><b>Es treballa directament a <code>main</code>:</b> <code>git pull</code> abans de començar, verificació en local, commit i <code>git push</code>. Branques i PR, només si l'editor ho demana.</li>
+    <li>Mai es reescriu l'historial de <code>main</code> ni es fa <code>push --force</code>.</li>
+    <li>Si una altra sessió té canvis sense desar en un article, no es toca aquell article fins que els hagi desat. Cada commit només porta els fitxers propis.</li>
+    <li><code>web/sw.js</code> (la memòria cau per llegir sense connexió) el genera <code>scripts/sync-home.mjs</code> i ha de llistar només fitxers que són a <code>main</code>.</li>
+    <li><code>site/</code> és la còpia de la web del 2020–2021: no es toca.</li>
+  </ul>
+</section>
+
+<!-- ==================== MIRADA ==================== -->
+<section class="col">
+  <h2 class="sh" id="mirada">La mirada</h2>
+  <p>La revista fa <b>articles visuals per entendre el món</b>: cada article explica una qüestió complexa de manera molt visual, bonica i fàcil d'entendre. L'editor és molt exigent amb dues coses: <b>que tot sigui cert</b> i <b>que no sembli fet per una IA</b>.</p>
+  <h3>Mirada antropològica i transcultural</h3>
+  <p>Sempre que el tema toqui l'experiència humana (hàbits, societat, història, clima viscut, economia, cos o ment), l'article no es queda en l'explicació tècnica ni dona per «natural» el costum occidental modern. L'obre i l'entrellaça amb <b>etnografia verificada, història cultural i contrast entre societats</b>: com ho viuen altres cultures, què era diferent abans de la modernitat, quins rituals o solucions socials s'hi han inventat.</p>
+  <p class="ex"><b>Exemples:</b> el dormitori solitari com a raresa històrica (Per què dormim); el riure com a tribunal entre els inuit o com a aliança obligatòria entre clans a Mali (Per què riem).</p>
+</section>
+
+<!-- ==================== TO ==================== -->
+<section class="col">
+  <h2 class="sh" id="to">To i redactat</h2>
+  <ul>
+    <li><b>Català natural i correcte</b>, frases curtes, to de reportatge de diari: ni llibre de text ni nota de premsa.</li>
+    <li><b>Tracte de «tu»</b> al lector quan cal («Baixa per veure…», «Arrossega…»).</li>
+    <li><b>Comença amb una història o una imatge concreta</b> (a El Niño, els pescadors del Perú abans de Nadal). El primer paràgraf porta caplletra (<code>&lt;p class="dl"&gt;</code>).</li>
+    <li><b>Primer les peces, després el fenomen.</b> Cada secció respon una pregunta («Per què…?», «Què vol dir…?»).</li>
+    <li><b>Una analogia quotidiana per idea difícil</b> (la banyera, el plat de sopa, el gronxador), no més.</li>
+    <li><b>Números concrets, amb unitats i amb font</b>, arrodonits com ho faria un diari (2,3 milions; uns 20 °C). Coma decimal, punt de milers i signe menys tipogràfic.</li>
+    <li><b>La incertesa es diu</b>: «encara es debat», «és una estimació», «és una hipòtesi».</li>
+    <li>Curiositats i matisos, en una nota lateral en cursiva (<code>&lt;p class="note"&gt;</code>).</li>
+    <li>Res de frases buides, de farciment ni de fórmules grandiloqüents. Si una frase no diu res de nou, fora.</li>
+  </ul>
+</section>
+
+<!-- ==================== RIGOR ==================== -->
+<section class="col">
+  <h2 class="sh" id="rigor">Rigor i dades</h2>
+  <ul>
+    <li><b>Res inventat.</b> Cada xifra, data i afirmació ve d'una <b>font primària o d'alta confiança</b> que s'ha obert i llegit: article revisat amb DOI, NASA, NOAA, ESA, IPCC, OMS, catàlegs de museus, edicions crítiques. Wikipedia i els blogs només serveixen de pista, mai de font.</li>
+    <li><b>Cada DOI i cada URL es comprova</b>: que existeixi i que digui el que se li atribueix. Mai un DOI escrit de memòria.</li>
+    <li><b>Dada real, simulació o esquema, sempre dit</b>. Les dades d'exemple o les simulacions es diuen sempre al peu del gràfic.</li>
+    <li>La recerca es desa a <code>research/&lt;slug&gt;/</code>: <code>fonts.md</code> (cada afirmació amb la seva font, l'URL i una nota de verificació), les dades dels gràfics i el <code>pla-visual.md</code>.</li>
+    <li>El que no s'ha pogut verificar es diu al commit i a l'editor.</li>
+  </ul>
+</section>
+
+<!-- ==================== CITES ==================== -->
+<section class="col">
+  <h2 class="sh" id="cites">Cites i fonts</h2>
+  <p>Un sol sistema, d'un sol clic, per a tots els articles. El lector ha de poder anar de qualsevol número del text a la font que el sosté i tornar on llegia sense perdre's.</p>
+  <h3>Al text</h3>
+  <ul>
+    <li><b>Cada número porta directament a la seva font</b>, mai a una nota intermèdia. Les fonts es numeren per <b>ordre d'aparició</b> al text.</li>
+    <li>Si una frase es recolza en diverses fonts, els números van junts dins del mateix superíndex: <sup class="nr" style="font-family:var(--sans);font-size:.62em;color:var(--warm);font-weight:600">3,6</sup>.</li>
+    <li>Codi: <code>&lt;sup class="nr"&gt;&lt;a href="#font-3" id="c12" data-c="u3-1"&gt;3&lt;/a&gt;&lt;/sup&gt;</code>. L'<code>id</code> és únic per a cada cita i <code>data-c</code> apunta a l'afirmació concreta dins de la font.</li>
+    <li>En ordinador, passar per sobre d'un número mostra l'afirmació i la referència sense moure la pàgina (<code>cites.js</code>).</li>
+  </ul>
+  <h3>A la llista de fonts</h3>
+  <ul>
+    <li>Cada font porta la referència completa: autors, any, títol entre «», revista o editorial en cursiva, volum, número, pàgines i l'enllaç (DOI sempre que n'hi hagi).</li>
+    <li>Sota cada font, <b>«Hi recolza:»</b> diu quines afirmacions de l'article sustenta.</li>
+    <li>La fletxa <b>↑</b> torna exactament al número des d'on s'hi ha arribat.</li>
+    <li>Si una font agrupa diverses obres, cada obra porta el seu títol i el seu enllaç.</li>
+    <li>Si una font és un text clàssic (la Bíblia, Virgili, la Mixnà), es cita l'edició i el passatge exacte, amb enllaç a una edició en línia fiable.</li>
+  </ul>
+  <h3>A l'entradeta i als gràfics</h3>
+  <ul>
+    <li><b>L'entradeta no explica les fonts</b>: només porta l'enllaç «Dades i fonts&nbsp;↓».</li>
+    <li><b>El peu de cada gràfic no explica les fonts</b>: diu només què és (dades reals, esquema, simulació, reconstrucció), les instruccions d'ús si cal («Passa el cursor…») i l'enllaç «Fonts i dades del gràfic&nbsp;→», que porta a l'explicació completa del gràfic dins de «Dades i fonts». Des d'allà, la fletxa ↑ torna al gràfic.</li>
+  </ul>
+  <h3>Eines</h3>
+  <ul>
+    <li>Un article amb el format antic (Notes + Fonts) es converteix amb <code>scripts/unifica-cites.mjs</code>, que també comprova que no quedi cap enllaç intern trencat ni cap <code>id</code> repetit.</li>
+    <li>Abans de publicar, cada DOI es contrasta amb Crossref (títol, autors, any) i cada enllaç es prova. Un any de diferència pot ser la data en línia davant de l'any del volum: es cita l'any del volum.</li>
+  </ul>
+</section>
+
+<!-- ==================== ESTRUCTURA ==================== -->
+<section class="col">
+  <h2 class="sh" id="estructura">Estructura d'un article</h2>
+  <table>
+    <tr><th>Capçalera</th><td>Títol, entradeta (<code>.dek</code>) i línia meta: «N min de lectura · <i>Dades i fonts&nbsp;↓</i> · Actualitzat el …».</td></tr>
+    <tr><th>Cos</th><td>Seccions que responen preguntes, amb gràfics intercalats. Mínim dues seccions de scroll o figures animades i dues figures interactives, i almenys un gràfic amb dades reals.</td></tr>
+    <tr><th>Paraules clau</th><td>Glossari al final (<code>&lt;dl class="gl"&gt;</code>).</td></tr>
+    <tr><th>Dades i fonts</th><td>Una sola secció (<code>&lt;section class="col fn" id="fonts"&gt;</code>) amb tres parts: <b>Metodologia</b> (què és dada real i què és esquema o simulació), <b>Els gràfics</b> (l'explicació completa de cada gràfic: dades, tractament i fonts) i <b>Fonts</b> (llista numerada).</td></tr>
+  </table>
+  <p>Model de qualitat: <a href="../articles/el-nino/">El Niño i La Niña</a>. Model de cites: qualsevol dels articles del 19–20 de novembre de 2026, per exemple <a href="../articles/per-que-riem/">Per què riem?</a></p>
+</section>
+
+<!-- ==================== GRÀFICS ==================== -->
+<section class="col">
+  <h2 class="sh" id="grafics">Gràfics</h2>
+  <p>Els gràfics surten del <a href="../sistema/">sistema infogràfic</a>, no de zero. Allà hi ha els deu principis, els components i les peces IB-01 a IB-59 dibuixades i funcionant.</p>
+  <h3>Com es fa un gràfic</h3>
+  <ul>
+    <li><b>Abans de dibuixar</b>, s'escriu <code>research/&lt;slug&gt;/pla-visual.md</code>: una línia per gràfic amb la peça IB, per què aquesta forma i d'on surten les dades. Si cap peça hi encaixa, s'explica i es descriu la nova; si agrada a l'editor, s'afegeix al sistema.</li>
+    <li><b>Es copia el bloc de la peça</b> de <code>web/sistema/*.js</code> i s'hi canvien les dades; no es reescriu a mà.</li>
+    <li><b>Tot mapa regional va sobre el mapa físic en relleu IB-59</b> (<code>node scripts/relleu.mjs</code>). Els mapes del món o d'un oceà van en terra plana i el pla visual diu «sense relleu: motiu».</li>
+  </ul>
+  <h3>Paleta</h3>
+  <ul>
+    <li><span class="sw" style="background:#C8442A"></span><b>Vermell</b> <code>#C8442A</code>, <span class="sw" style="background:#2C5DA8"></span><b>blau</b> <code>#2C5DA8</code> i <span class="sw" style="background:#F5C518"></span><b>groc</b> <code>#F5C518</code>, amb els seus tons, més grisos i terra. Res més.</li>
+    <li><b>Mai text en groc</b>, ni línies grogues de menys de 2 px.</li>
+    <li>Única excepció: el <span class="sw" style="background:#A6C06A"></span><b>verd vegetal</b> (<code>IBV.C.vegetacio*</code>), només per dibuixar vegetació, sempre amb contorn fosc i mai com a categoria de dades.</li>
+    <li><b>Cap gràfic pinta fons</b>, panells, targetes ni ombres: el fons és el paper.</li>
+  </ul>
+  <h3>Forma i moviment</h3>
+  <ul>
+    <li>Gris per al context, color per a la història; anotacions dins del gràfic; escales honestes i explicades; la forma segueix el fenomen.</li>
+    <li>Formes orgàniques abans que barres massisses: núvols de punts translúcids, cercles translúcids d'àrea proporcional. <b>Mai anells concèntrics tipus diana</b>, mapes inclinats en pseudo-3D, agulles ni lupes que amaguin dades.</li>
+    <li><b>Animats en entrar</b> (700–1.300 ms) i, si tenen partícules, <b>molt lentes</b> (un recorregut de 20–35 s). Respecten <code>prefers-reduced-motion</code>.</li>
+    <li><b>Hover que mostra clarament què s'apunta</b>: l'element apuntat es destaca, la resta baixa a 0,46–0,55 (mai a 0,15) i la lectura va en una sola línia sota el gràfic, sense tapar res. Funciona amb ratolí, teclat i dit.</li>
+    <li><b>Superlleugers:</b> més de ~600 elements van en canvas; dibuix diferit; animacions que s'aturen fora de pantalla; dades de menys de 100 KB per gràfic; cap llibreria nova (d3 7.9.0 i topojson-client).</li>
+    <li>Cap text per sota d'11 px reals. Sempre fletxes tipogràfiques (<code>← → ↑ ↓</code>), mai caràcters que el navegador pinti com a emoji (<code>◀ ▶ ↔</code>).</li>
+    <li>Cada gràfic té <code>role="img"</code> i un <code>aria-label</code> que diu el que mostra.</li>
+  </ul>
+</section>
+
+<!-- ==================== MÒBIL ==================== -->
+<section class="col">
+  <h2 class="sh" id="mobil">Mòbil</h2>
+  <ul>
+    <li><b>Cap scroll horitzontal a 390 px</b>, i cap etiqueta tallada. No s'amaga el desbordament amb <code>overflow-x: hidden</code>: s'arregla l'element que surt.</li>
+    <li>En una secció de scroll, el gràfic enganxat ocupa com a molt el <b>40–45 % de l'alçada</b>; la resta és per llegir.</li>
+    <li>Un gràfic horitzontal complex no s'encongeix: <b>es gira a vertical</b> o se simplifica de veritat per sota de 640 px.</li>
+    <li><b>Menys etiquetes, no més petites.</b> Es redibuixa a l'amplada real (<code>IBV.mount</code>), mai amb un <code>viewBox</code> que encongeixi el text.</li>
+    <li>Dianes tàctils de 44 × 44 px; cap gràfic pot segrestar l'scroll de la pàgina; un toc fora tanca el hover.</li>
+  </ul>
+</section>
+
+<!-- ==================== PORTADA ==================== -->
+<section class="col">
+  <h2 class="sh" id="portada">Portada i fitxers</h2>
+  <ul>
+    <li><b>La portada no es redissenya</b>: tipografia Helvetica Neue LT Pro i l'aspecte original. Els articles fan servir Source Serif 4 i Source Sans 3.</li>
+    <li><b>Tots els articles de <code>web/articles/</code> surten a la portada.</b> Cada article nou porta el seu <code>thumb.webp</code> (800 × 1000), la seva <code>cover.jpg</code>, s'afegeix a <code>web/articles.json</code> i es regenera la portada amb <code>node scripts/sync-home.mjs</code>.</li>
+    <li>Els fitxers compartits (<code>web/assets/*</code>) no es modifiquen sense explicar-ho clarament al commit i a l'editor.</li>
+  </ul>
+</section>
+
+<!-- ==================== PROHIBIT ==================== -->
+<section class="col">
+  <h2 class="sh" id="prohibit">El que no es fa mai</h2>
+  <ul>
+    <li>Dades, cites o fonts inventades o no verificades.</li>
+    <li>Rètols decoratius en majúscules petites, índexs numerats, seccions «Pròximament», text de farciment.</li>
+    <li>Emojis, ni caràcters Unicode que el navegador pinti com a emoji.</li>
+    <li>Colors fora de la paleta; text en groc; fons pintats als gràfics.</li>
+    <li>Llistes de fonts a l'entradeta o als peus de gràfic; notes intermèdies entre el text i la font.</li>
+    <li>Publicar sense passar les comprovacions, o amb fitxers d'una altra sessió barrejats.</li>
+  </ul>
+</section>
+
+<!-- ==================== ABANS DE PUBLICAR ==================== -->
+<section class="col">
+  <h2 class="sh" id="abans">Abans de publicar</h2>
+  <ul class="chk">
+    <li><code>node scripts/sync-home.mjs</code> i <code>node scripts/check.mjs</code>: 0 errors i 0 articles orfes; es llegeixen també els avisos.</li>
+    <li>Pla visual escrit i cada gràfic repassat amb la llista del §6 del sistema infogràfic.</li>
+    <li>Tots els DOI i enllaços de les fonts comprovats; cap enllaç intern trencat.</li>
+    <li>Web servida en local (<code>python3 -m http.server 8000 --directory web</code>) i revisada a 1440 × 900 i a 390 × 844: zero errors a la consola, cap scroll horitzontal, cap etiqueta tallada.</li>
+    <li>Tots els passos del scroll i totes les interaccions provats.</li>
+    <li>Al commit i a la resposta a l'editor: què canvia, quines dades són reals (amb fonts) i què no s'ha pogut verificar.</li>
+  </ul>
+</section>
+
+<!-- ==================== GUIES ==================== -->
+<section class="col">
+  <h2 class="sh" id="guies">On és cada guia</h2>
+  <table>
+    <tr><th><code>AGENTS.md</code></th><td>Instruccions bàsiques per a qualsevol agent: com es publica i les regles que l'editor no negocia.</td></tr>
+    <tr><th><code>research/guia-estil-articles.md</code></th><td>Com s'escriu un article: redactat, rigor, cites, estructura, fitxers i proves.</td></tr>
+    <tr><th><code>research/sistema-infografic.md</code></th><td>Els gràfics: principis, paleta, tipografia, components, hover, lleugeresa i les peces IB. Mostrari viu a <a href="../sistema/">/sistema</a>.</td></tr>
+    <tr><th><code>research/guia-mobil.md</code></th><td>Adaptació a mòbil: pressupost d'alçada, gràfics verticals, etiquetes i tacte.</td></tr>
+    <tr><th><code>web/guidelines/</code></th><td>Aquesta pàgina: el resum de totes les normes.</td></tr>
+  </table>
+</section>
+</main>
+
+<footer class="ib-foot">
+  <a href="../"><img src="../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</footer>
+<script src="../assets/ib.js"></script>
+</body>
+</html>

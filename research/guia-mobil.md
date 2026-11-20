@@ -43,7 +43,7 @@ Quan el gràfic queda enganxat a dalt (`position: sticky; top: 0`), cada píxel 
    - Mostra només el títol `strong` (`17–18 px`, màx. 1–2 línies breus).
    - **Amaga `.graphic .vh span`** (subtítols descriptius) i **`.graphic .vh .lgs`** (llegendes de 2–3 línies) a `@media (max-width: 899px)` — no esperis a `max-height: 760px`, perquè a 844 px no s'activa i roba 70–110 px.
    - Si una llegenda de colors és imprescindible dins el `.scrolly`, compacta-la en 1 sola fila d'icones curtes o etiqueta directament dins el gràfic.
-3. **Amaga `.graphic .src`** en mòbil (la font i metodologia ja són al peu de l'article o visibles en desktop).
+3. **Amaga `.graphic .src`** en mòbil dins dels `.scrolly` si no hi cap: només porta l'etiqueta del tipus de dada i l'enllaç a «Dades i fonts», on l'explicació del gràfic continua accessible (també des de l'enllaç de la capçalera). Als `.fig` fora de scroll, el peu es manté.
 4. **Compacta `.tip.ibv-dock` dins `.graphic`:** en lloc de reservar sempre `32–38 px` buits sota un gràfic sticky, fes que només ocupi espai (o es superposi com a franja fina inferior) quan l'usuari toca el gràfic, o redueix el seu `margin-top` i `min-height` a `20 px` amb text d'una sola línia.
 5. **No dupliquis `<canvas>` a l'HTML:** si el JS crea el canvas amb `IBV.canvas(el, w, h)`, deixa el contenidor buit a l'HTML (no posis un `<canvas>` previ dins `.plot-stack` que quedarà ocupant `150–175 px` en blanc a sobre del gràfic real).
 

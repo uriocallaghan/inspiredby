@@ -1,6 +1,6 @@
 # Sistema infogràfic d'Inspired by Magazine
 
-Com han de ser els gràfics de tots els articles nous. Llegeix-ho sencer abans de dibuixar res, juntament amb `research/guia-estil-articles.md` (text, dades i estructura de l'article).
+Com han de ser els gràfics de tots els articles nous. Llegeix-ho sencer abans de dibuixar res, juntament amb `research/guia-estil-articles.md` (text, dades i estructura de l'article). Resum de totes les normes del projecte: `web/guidelines/index.html`.
 
 - **Mostrari viu:** `web/sistema/index.html`, publicat a https://inspiredby.uriocallaghan.com/sistema/. Cada peça hi és dibuixada i funciona.
 - **Codi comú:** `web/assets/ib-viz.js` (objecte global `IBV`): colors, escales, text amb halo, anotacions, llegendes, tooltip tàctil, mapes. Es carrega després de d3 7.9.0 (i de `topojson-client@3.1.0` si hi ha mapes).
@@ -25,7 +25,7 @@ Tots són obligatoris.
 | P6 | **Una sola jerarquia de text** | Vegeu §3. Res per sota d'11 px reals a la pantalla. |
 | P7 | **La forma segueix el fenomen** | El temps cíclic (any, dia) va en cercle; el temps lineal, en línia. Un lloc va en mapa quan explica alguna cosa. Un mecanisme va en tall o esquema. |
 | P8 | **Petits múltiples abans que espaguetis de colors** | Si hi ha més de tres sèries, es fan gràfics petits amb la mateixa escala. Només vermell, blau i groc (i els seus tons). |
-| P9 | **Dada, simulació o esquema, sempre dit** | El peu diu què és: dades reals (font i any), simulació (quin model) o esquema. Mai una forma inventada que sembli una dada. |
+| P9 | **Dada, simulació o esquema, sempre dit** | El peu diu què és: dades reals, simulació o esquema, i enllaça («Fonts i dades del gràfic →») a l'explicació completa dins de «Dades i fonts» (fonts amb any, model, tractament). Mai una forma inventada que sembli una dada. |
 | P10 | **Es toca, es mou i cap a 390 px** | Tooltip amb ratolí, teclat i dit (`IBV.hover`). Moviment suau i amb sentit, que respecta `prefers-reduced-motion` (`IBV.reduced`). Cap scroll horitzontal. A mòbil, menys etiquetes, no més petites. |
 
 ### Estètica orgànica: què diferencia una làmina d'un gràfic estàndard
@@ -128,7 +128,7 @@ Source Serif 4 i Source Sans 3 (el mateix `<link>` que El Niño). Les mides són
 | Anotació | Sans 700 (títol) + 400 | 12,5 px, halo blanc de 3 px | ink |
 | Zona o nom secundari (oceà, «Llindar») | Sans cursiva | 12–14 px | ink2 |
 | Eixos, llegendes | Sans 400, xifres tabulars | 11,5 px (mínim 11) | muted |
-| Peu: font i metodologia | Sans 400 | 12,5–13 px | muted |
+| Peu: tipus de dada i enllaç a les fonts | Sans 400 | 12,5–13 px | muted |
 
 Números en català: coma decimal, punt de milers, signe menys tipogràfic. `IBV.fmt(",.1f")`, `IBV.signed(v, decimals)` per a anomalies (+2,5 / −0,8), `IBV.MES` i `IBV.MES1` per als mesos. Sense majúscules decoratives ni rètols petits en majúscules.
 
@@ -282,7 +282,7 @@ Les peces funcionen dins d'una secció `.scrolly` (el gràfic enganxat i els pas
 - [ ] Les idees clau estan anotades dins del gràfic (P4).
 - [ ] Unitat al valor de dalt, zero marcat, escales no truncades sense avís (P5).
 - [ ] Cap text per sota d'11 px; cap etiqueta tallada o solapada a 1440 i a 390 px.
-- [ ] Peu amb «Dades reals» + font i any, «Simulació» o «Esquema» (P9).
+- [ ] Peu amb «Dades reals», «Simulació» o «Esquema» i l'enllaç a la seva entrada de «Els gràfics», on hi ha les fonts amb any (P9).
 - [ ] `role="img"` i `aria-label` amb el que diu el gràfic, no només què és.
 - [ ] Tooltip amb ratolí i amb un toc (`IBV.hover`); lliscants amb `aria-valuetext`.
 - [ ] `IBV.reduced`: sense animacions contínues, estat final directe.
