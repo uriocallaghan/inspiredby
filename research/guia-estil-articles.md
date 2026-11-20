@@ -13,12 +13,23 @@ La revista: *articles visuals per entendre el món*. Cada article explica una q�
 - **Analogies quotidianes** (la banyera, el plat de sopa, els cavallets de la fira, el gronxador). Una per idea difícil, no més.
 - **Números concrets** i amb unitats, sempre amb font. Arrodoneix com ho faria un diari (2,3 milions; uns 20 °C).
 - Notes laterals en cursiva amb `<p class="note">` per a curiositats i matisos.
-- Quan una cosa es debat o és incerta, **digues-ho** («encara es debat», «és una estimació»).
+- Quan una cosa es debat o és incerta, **digues-ho una sola vegada i des del principi**, només si la incertesa és part de la història (vegeu §1b, punt 4). Si no, no la posis.
 - Al final: **«Paraules clau»** (`<dl class="gl">`), i una sola secció **«Dades i fonts»** (`<section class="col fn" id="fonts">`) amb **Metodologia** (què és dada real i què és esquema o simulació), **Els gràfics** (l'explicació completa de cada gràfic: dades, tractament i fonts) i **Fonts** (llista numerada per ordre d'aparició, amb enllaços/DOI).
 - **Cites d'un sol clic.** Cada número del text (`<sup class="nr"><a href="#font-N" id="cX" data-c="uN-k">N</a></sup>`) porta directament a la font, mai a una nota intermèdia. Sota cada font, «Hi recolza:» diu quines afirmacions sustenta, i la fletxa ↑ torna al punt on llegies (`cites.js`). Si un article encara té el format antic (Notes + Fonts), converteix-lo amb `scripts/unifica-cites.mjs`.
 - **Entradeta i peus de gràfic sense llistes de fonts.** A l'entradeta, només l'enllaç «Dades i fonts ↓». Al peu de cada gràfic, només l'etiqueta (dades reals / esquema / simulació), les instruccions d'ús si cal, i l'enllaç «Fonts i dades del gràfic →» cap a la seva entrada a «Els gràfics».
 - Meta de capçalera: «N min de lectura · <a class="dl-f" href="#fonts">Dades i fonts&nbsp;↓</a> · Actualitzat el …». Res de llistes d'autors a la capçalera.
 - Prohibit: rètols petits en majúscules decoratius, «Dins l'article», índexs numerats, seccions «Pròximament», cites inventades o no verificades, emojis.
+
+## 1b. Edició: què es talla (decisió de l'editor, 21-11-2026)
+
+L'editor llegeix els articles com un lector, no com un revisor de fonts. Quatre defectes que s'han de buscar i tallar abans de publicar, rellegint l'article sencer un cop escrit:
+
+1. **Un nom propi només es queda si el lector el retrobarà o si porta l'argument.** Si apareix una vegada i no torna (un metge, un editor, un arqueòleg, un capità, un institut), es treu i es diu la funció («un metge», «un equip de Copenhaguen») o res. El nom i l'afiliació ja són a «Dades i fonts». Excepció: les persones que són subjecte de la història sí que porten nom (`guia-representacio.md`). Es treuen els figurants, no els protagonistes. Prova: «recordarà aquest nom el lector al cap de tres paràgrafs? el necessita?».
+2. **El text mana, el gràfic el serveix.** Un paràgraf, un pas de scroll o una xifra han d'existir perquè l'argument els necessita. Si hi són perquè el gràfic tingui alguna cosa a explicar (un recompte, una comparació, una llista de casos), es treu el text o es treu el gràfic. Un gràfic que il·lustra una frase que ja és clara sobra. Prova: «si traiem el gràfic, aquest paràgraf continuaria existint?».
+3. **Dir-ho més ràpid.** Si un paràgraf es pot eliminar o reduir a una frase sense perdre el fil, es fa. Una idea, una vegada: no es repeteix la mateixa explicació amb una altra metàfora, ni la mateixa xifra en dos llocs, ni al cos, al peu del gràfic i al glossari. Un sol exemple per idea, el millor. Les comparacions de mida (marató, Andròmeda, «vuitanta Amazones») són una per xifra, no tres.
+4. **Cap matís de revisor.** Si una afirmació no es pot fer amb fermesa, no es fa. Res de «però no està clar», «segons alguns», «tot i que altres estudiosos…», «si X té raó…», «(22, segons una font; 44, segons una altra)» a l'article: aquestes diferències van a «Dades i fonts». Només es diu una incertesa si és **el tema** (el debat sobre el Jesús històric, el futur de la cinta transportadora), i aleshores es diu **una sola vegada, al principi**, com a part de la història, no com a rectificació unes frases després. Una xifra discutida es dona com a forquilla única («entre 150.000 i 316.000»), no amb dues versions i una advertència. Si una dada només té una font dubtosa, no s'hi recolza cap afirmació del cos.
+
+Quan es talla text, es treuen també les cites `<sup class="nr">` que quedin òrfenes i les entrades de «Dades i fonts» que ja ningú no cita. Revisió feta dels 12 articles penjats, amb les propostes concretes: `research/revisio-farciment-2026-11-21.md`.
 
 ## 2. Dades i rigor (obligatori)
 
