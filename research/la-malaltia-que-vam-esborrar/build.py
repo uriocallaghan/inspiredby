@@ -50,7 +50,7 @@ for key in order:
 unused = [k for k in S if k not in order]
 if unused: print("Fonts sense cap cita:", unused)
 
-desc = "La verola va matar, cegar i desfigurar durant segles. El 1977, un cuiner de Somàlia va ser l'últim a agafar-la de manera natural. Com el món va esborrar per primer cop una malaltia humana, i què en queda."
+desc = "Deu anys van separar 10–15 milions de malalts l'any de l'últim cas natural de verola. Com es fa desaparèixer una malaltia? Un saber de la Xina, l'Índia i l'Àfrica i milers de vacunadors."
 head = f'''<!doctype html>
 <html lang="ca">
 <head>

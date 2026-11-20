@@ -170,6 +170,7 @@
     ["20-11-2026", "<b>Mode fosc a tota la web</b>: segueix el tema del sistema o el botó de sol/lluna de la barra. Els articles s'escriuen només en clar; <code>assets/ib-theme.js</code> tradueix tots els colors, i cada article nou l'ha de carregar el primer al <code>&lt;head&gt;</code> (<code>check.mjs</code> ho exigeix)."],
     ["20-11-2026", "<b>Articles per penjar</b>: els articles a mig fer (<code>\"draft\": true</code> a <code>articles.json</code>) no surten a la portada; es llisten a la pàgina «Articles per penjar», enllaçada des del peu. Només passen a la portada quan l'editor ho diu."],
     ["20-11-2026", "<b>Peu de pàgina brutalment mínim</b>, igual a tota la web: una sola fila en sans serif, a una sola mida (13 px), alineada amb la línia superior. A l'esquerra «Inspired by Magazine» i l'any; a la dreta «Articles per penjar». Sense logo, sense lema i sense llista d'articles."],
+    ["20-11-2026", "<b>Cap missatge que doni peu al racisme o a un neocolonialisme condescendent</b>. Mai «un X de [país]» com a rètol d'una persona; les persones, amb nom i com a subjecte de la frase; país o regió, no «l'Àfrica»; persones, no «casos» ni «propagadors»; cap història de rescat. Es revisa sobretot la descripció de portada, l'entradeta, el títol i els intertítols. Guia: <code>research/guia-representacio.md</code>."],
     ["Sense data", "<b>Mirada antropològica i transcultural</b> en tot tema humà. <b>Res inventat</b>: cada xifra amb font primària verificada. <b>Es publica des de <code>main</code></b>, a Netlify, sense publicar a mà."]
 ];
   document.getElementById("tl").innerHTML = TL.map(t => `<li><span class="d">${t[0]}</span><span class="x">${t[1]}</span></li>`).join("");
@@ -205,6 +206,11 @@
       q:[["Només vermell, blau i groc (i els seus tons), grisos i terra", "AGENTS.md"],
          ["Els articles anteriors fan servir --dry, --wet i --bio. Es queden en aquells articles", "research/sistema-infografic.md, §2"]],
       o:["Passar els colors clarament fora de paleta als tres colors, i ensenyar al control a acceptar grisos i terres", "Deixar els articles antics com estan i només ajustar el control"] },
+    { id:"representacio", t:"Els articles anteriors no s'han revisat amb la guia de representació",
+      why:"La guia nova demana evitar els rètols com «un X de [país]», els verbs de contagi aplicats a persones i el llenguatge de rescat. Hi ha articles que toquen aquests temes (el mapa d'Haití, la llengua de Managua, navegar sense mapa, la pols del Sàhara, el viatge de la pizza) i cap s'ha llegit encara amb aquesta mirada.",
+      q:[["Cap missatge que pugui donar peu al racisme ni a un neocolonialisme condescendent… sobretot a la descripció de portada, l'entradeta, el títol i els intertítols", "AGENTS.md"],
+         ["Els articles publicats abans d'aquesta guia no s'han revisat amb ella", "research/guia-representacio.md, §5"]],
+      o:["Revisar-los tots ara, un a un, i proposar els canvis", "Revisar només els de la portada", "Aplicar la guia només als articles nous"] },
     { id:"peumobil", t:"El peu dels gràfics al mòbil",
       why:"Per guanyar espai, la guia de mòbil diu que s'amagui el peu dins de les seccions de scroll. Però el peu és on es diu si són dades reals, un esquema o una simulació.",
       q:[["Amaga .graphic .src en mòbil dins dels .scrolly si no hi cap", "research/guia-mobil.md, §2"],

@@ -64,6 +64,7 @@ La revista: *articles visuals per entendre el món*. Cada article explica una q�
 
 ## 5. Proves
 
+- **Representació** (decisió de l'editor, 20-11-2026): passa la llista de `research/guia-representacio.md` §3, començant per la descripció de portada, l'entradeta, el títol i els intertítols.
 - `node scripts/check.mjs` (valida la sincronia portada i «per penjar» ↔ `web/articles.json` ↔ `web/articles/`, el peu comú, els fitxers obligatoris i el `node --check` de tots els `.js`).
 - Serveix la carpeta `web/` amb el teu propi port (`python3 -m http.server <port> --directory "<ruta>/web"`) i atura'l en acabar.
 - Pots fer servir el navegador integrat (eines `mcp__Claude_Browser__*`) **només en una pestanya pròpia** (`tabs_create` i passa sempre el teu `tabId`); no toquis les altres pestanyes. Si no està disponible, fes servir Chrome headless (`--screenshot`, `--dump-dom`, `--enable-logging=stderr`).
