@@ -96,6 +96,7 @@ export function renderHomeHtml(articles) {
 <html lang="ca">
 <head>
 <meta charset="utf-8">
+<script src="assets/ib-theme.js"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Inspired by Magazine</title>
 <meta name="description" content="Articles visuals per entendre el món.">

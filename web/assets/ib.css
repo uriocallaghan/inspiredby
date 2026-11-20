@@ -109,3 +109,16 @@ body.ib-article{margin:0;background:var(--ib-paper)}
   .ib-card-desc,.ib-diptych-body .ib-card-desc{font-size:.95rem}
   .ib-foot{padding-block:28px calc(36px + env(safe-area-inset-bottom,0px))}
 }
+
+/* ---------- mode fosc (assets/ib-theme.js) ----------
+   El tema el decideix ib-theme.js: segueix el sistema o la tria desada. En fosc tradueix tots els colors
+   de la pàgina; aquí només hi ha el botó i els retocs que no són de color. */
+.ib-theme-btn{position:absolute;top:50%;right:max(var(--ib-gutter),env(safe-area-inset-right,0px));transform:translateY(-50%);inline-size:40px;block-size:40px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;background:none;color:#6b6b66;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .2s ease}
+.ib-theme-btn:hover{color:#141414}
+.ib-theme-btn:focus-visible{outline:1.5px solid currentColor;outline-offset:2px}
+.ib-theme-btn svg{display:block}
+@media print{.ib-theme-btn{display:none}}
+/* les fotos i miniatures, una mica apagades perquè no enlluernin de nit */
+html[data-theme="dark"] img:not([src$="logo-dark.png"]),
+html[data-theme="dark"] .ib-card-media{filter:brightness(.88) contrast(1.03)}
+html[data-theme="dark"] .ib-card-media img{filter:none}

@@ -41,6 +41,12 @@ El sistema infogràfic existeix perquè es faci servir. Per a cada article nou:
 
 `node scripts/check.mjs` falla si un article nou no té `pla-visual.md`, si hi cita peces que no existeixen o si té un mapa regional sense relleu; també avisa dels colors fora de la paleta.
 
+## Mode fosc
+
+- `web/assets/ib-theme.js` ha d'anar **el primer de tot al `<head>`** de cada pàgina (just després de `<meta charset>`, sense `defer`). Segueix el tema del sistema o el que tria el lector amb el botó de la barra (sol/lluna), desat a `localStorage`.
+- En fosc, tradueix sol tots els colors en el moment de pintar-los: fulls d'estil, atributs SVG, estils en línia, canvas (`fillStyle`, `strokeStyle`, degradats i `putImageData`). **Els articles es continuen escrivint amb els colors clars de sempre**; no hi posis colors foscos ni `prefers-color-scheme` a mà. Les lectures (`getAttribute`, `getPropertyValue`, `getComputedStyle`) tornen el color clar original.
+- Comprova cada article nou també en fosc (Playwright amb `colorScheme:'dark'`): text llegible, gràfics amb contrast i cap fons clar que enlluerni.
+
 ## Regles que l'editor no negocia
 
 - **Mirada antropològica i transcultural:** sempre que el tema toqui l'experiència humana (hàbits, societat, història, clima viscut, economia, cos o ment), no et quedis en una explicació purament tècnica o descriptiva ni donis per «natural» el costum occidental modern. Obre i entrellaça l'article amb etnografia verificada, història cultural i contrast entre societats (p. ex. com el dormitori solitari és una raresa històrica, o com altres cultures usen el riure com a tribunal o ritu).
