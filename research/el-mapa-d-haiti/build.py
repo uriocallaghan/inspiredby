@@ -46,7 +46,7 @@ for key in order:
 unused = [k for k in S if k not in order]
 if unused: print("Fonts sense cap cita:", unused)
 
-desc = "El 2010, Port-au-Prince gairebé no sortia als mapes d'internet. En un mes, sis-centes persones, sobretot de fora d'Haití, el van dibuixar. De la Missió 4636 al konbit: com treballen milers de desconeguts."
+desc = "Quan un terratrèmol va destruir Port-au-Prince el 2010, la ciutat gairebé no sortia als mapes d'internet. En un mes, sis-centes persones, sobretot de fora d'Haití, la van dibuixar carrer a carrer i els equips d'ajuda se'n van servir. Ningú no els havia contractat: com treballen milers de desconeguts."
 head = f'''<!doctype html>
 <html lang="ca">
 <head>
