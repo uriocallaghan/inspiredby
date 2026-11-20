@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-14aadca9a35a";
+const CACHE_NAME = "ib-offline-02f7545d6368";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -176,6 +176,15 @@ const LOCAL_ASSETS = [
   "/articles/virus-i-bacteris/index.html",
   "/articles/virus-i-bacteris/thumb.webp",
   "/articles/virus-i-bacteris/virus-i-bacteris.js",
+  "/articles/xifrat-extrem-a-extrem/",
+  "/articles/xifrat-extrem-a-extrem/article.css",
+  "/articles/xifrat-extrem-a-extrem/article.js",
+  "/articles/xifrat-extrem-a-extrem/cites.js",
+  "/articles/xifrat-extrem-a-extrem/cover.html",
+  "/articles/xifrat-extrem-a-extrem/cover.jpg",
+  "/articles/xifrat-extrem-a-extrem/dades.js",
+  "/articles/xifrat-extrem-a-extrem/index.html",
+  "/articles/xifrat-extrem-a-extrem/thumb.webp",
   "/assets/apple-touch-icon.png",
   "/assets/article.css",
   "/assets/fonts/helveticaneueltpro-bd.woff",

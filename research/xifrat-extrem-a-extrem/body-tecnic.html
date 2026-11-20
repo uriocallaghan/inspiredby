@@ -1,0 +1,182 @@
+<!-- ==================== 1. QUÈ VOL DIR «D'EXTREM A EXTREM» ==================== -->
+<section class="col">
+  <h2 class="sh">Postals, sobres i caixes fortes</h2>
+  <p>Quan envies un missatge, no viatja directament del teu mòbil al de l'altra persona. Passa per la wifi del bar on prens el cafè, per l'operador de telefonia, per uns quants cables d'internet i per l'ordinador d'una empresa —el servidor de WhatsApp, de Signal, de Gmail— que el guarda i el reparteix com una oficina de correus. Cada una d'aquestes parades és una mà que toca la teva carta.</p>
+  <p>Xifrar vol dir convertir el text en un garbuix que només es pot tornar a llegir amb una clau. La pregunta important no és si un missatge va xifrat, sinó <b>qui té la clau</b>. I aquí hi ha tres respostes molt diferents. Baixa per veure-les.</p>
+</section>
+
+<section class="scrolly" id="s-cami">
+  <div class="steps">
+    <div class="step" data-s="clar"><div class="step-in">
+      <span class="when">Sense xifrar</span>
+      <p><b>Una postal.</b> Durant els primers anys d'internet, gran part del que circulava ho feia en clar: qui controlava la wifi, l'operador o el servidor podia llegir-ho tot, com el carter que gira la postal. Els punts vermells són missatges que es poden llegir; viatgen a poc a poc perquè els vegis passar per cada mà.</p>
+    </div></div>
+    <div class="step" data-s="tls"><div class="step-in">
+      <span class="when">Xifrat en trànsit</span>
+      <p><b>Un furgó blindat entre oficines de correus.</b> Avui gairebé tot el trànsit web viatja xifrat de tram en tram (és el cadenat del navegador, el protocol TLS). La wifi i l'operador ja només veuen soroll blau. Però el sobre s'obre a l'oficina central: el <b>servidor de l'empresa</b> desxifra el missatge, el pot llegir i guardar, i el torna a xifrar per enviar-lo.[[eff-sdd.1]]</p>
+      <p class="note">Així funcionen, per defecte, el correu de Gmail o els missatges directes de moltes xarxes socials: protegits dels lladres del camí, no de qui els porta.</p>
+    </div></div>
+    <div class="step" data-s="e2e"><div class="step-in">
+      <span class="when">D'extrem a extrem</span>
+      <p><b>Un sobre que només pot obrir la destinatària.</b> El missatge es xifra dins del teu mòbil amb una clau que només té el mòbil de l'altra persona. El servidor el porta, però per a ell és un bloc de soroll: no el pot llegir ni que vulgui, ni que un jutge l'hi demani, ni que un pirata entri a les seves màquines.[[eff-sdd.2]]</p>
+    </div></div>
+    <div class="step" data-s="meta"><div class="step-in">
+      <span class="when">El que el sobre no amaga</span>
+      <p><b>El sobre porta adreça.</b> Encara que el contingut sigui secret, el servidor ha de saber a qui ha de lliurar el paquet. Qui parla amb qui, quan, quantes vegades, des d'on i quant ocupa cada missatge són <b>metadades</b>, i sovint diuen tant com el text. Ho veurem més avall.</p>
+    </div></div>
+    <div class="step" data-s="ext"><div class="step-in">
+      <span class="when">Els extrems</span>
+      <p><b>El missatge és llegible on es llegeix.</b> El xifrat d'extrem a extrem protegeix el camí, no els extrems: si algú té el teu mòbil desbloquejat, hi ha instal·lat un programa espia o fa una captura de pantalla, veu el mateix que tu. Les matemàtiques són sòlides; les persones i els aparells, no tant.</p>
+    </div></div>
+  </div>
+  <div class="graphic"><div class="gbox">
+    <div class="vh">
+      <div><strong>Qui pot llegir el teu missatge?</strong><span>El mateix missatge, cinc parades i tres maneres de xifrar-lo</span></div>
+      <div class="lgs" id="cami-lg"></div>
+    </div>
+    <div class="plot" id="cami-viz"></div>
+    <p class="src" id="gc-1"><b>Esquema.</b> <a class="gs" href="#g-1">Fonts i dades del gràfic&nbsp;→</a></p>
+  </div></div>
+</section>
+
+<!-- ==================== 2. EL PROBLEMA DE LA CLAU ==================== -->
+<section class="col">
+  <h2 class="sh">El problema impossible: compartir un secret a crits</h2>
+  <p>Durant gairebé tota la història, xifrar tenia una trampa. Per llegir el missatge, la destinatària necessitava la mateixa clau que l'havia tancat, i aquesta clau s'havia de fer arribar d'alguna manera: en mà, amb un missatger de confiança, en una valisa diplomàtica. Si la clau es podia interceptar pel camí, el secret no valia res. Per parlar en secret amb algú, primer t'hi havies d'haver trobat en secret.</p>
+  <p>El 1976, dos investigadors de la Universitat de Stanford, <b>Whitfield Diffie</b> i <b>Martin Hellman</b>, van publicar un article que començava amb una frase tan tranquil·la com explosiva: «Som a les portes d'una revolució en la criptografia».[[dh1976.1]] Hi descrivien com dues persones que no s'han vist mai poden acordar una clau secreta parlant en un canal on tothom les escolta. Sembla un truc de màgia. L'analogia que s'explica a totes les classes és la de les pintures.</p>
+</section>
+
+<section class="scrolly" id="s-colors">
+  <div class="steps">
+    <div class="step" data-s="public"><div class="step-in">
+      <span class="when">Pas 1</span>
+      <p><b>Un color que tothom coneix.</b> L'Anna i el Bernat es posen d'acord, en públic, en un color de base: el groc. L'Eva, que escolta tota la conversa, també el coneix.</p>
+    </div></div>
+    <div class="step" data-s="secret"><div class="step-in">
+      <span class="when">Pas 2</span>
+      <p><b>Un color que no surt mai de casa.</b> Cadascun tria un color secret: l'Anna, vermell; el Bernat, blau. No l'envien ni el diuen a ningú.</p>
+    </div></div>
+    <div class="step" data-s="send"><div class="step-in">
+      <span class="when">Pas 3</span>
+      <p><b>Intercanvien barreges.</b> Cadascun barreja el seu secret amb el groc i envia el pot a l'altre. L'Eva en fa una còpia: ara té el groc, el groc amb vermell i el groc amb blau. La clau de tot és que <b>barrejar és fàcil i desbarrejar és pràcticament impossible</b>: ningú no sap separar una pintura en els colors que la formen.</p>
+    </div></div>
+    <div class="step" data-s="final"><div class="step-in">
+      <span class="when">Pas 4</span>
+      <p><b>El mateix color, als dos costats.</b> L'Anna afegeix el seu vermell a la barreja que li ha enviat el Bernat; el Bernat afegeix el seu blau a la de l'Anna. Tots dos obtenen groc + vermell + blau: <b>el mateix color</b>, sense haver-lo enviat mai. Aquest és el secret compartit, la clau que farà servir la conversa.</p>
+    </div></div>
+    <div class="step" data-s="eva"><div class="step-in">
+      <span class="when">Pas 5</span>
+      <p><b>L'Eva ho té tot i no té res.</b> Si barreja les dues còpies, li surt groc + groc + vermell + blau: li sobra un groc, i no el sap treure. Per obtenir la clau hauria de desbarrejar una de les pintures, i això és justament el que no es pot fer.</p>
+    </div></div>
+  </div>
+  <div class="graphic"><div class="gbox">
+    <div class="vh">
+      <div><strong>La pintura que no es pot desbarrejar</strong><span>L'intercanvi de claus de Diffie i Hellman explicat amb colors</span></div>
+    </div>
+    <div class="plot" id="colors-viz"></div>
+    <p class="src" id="gc-2"><b>Esquema</b> (analogia, no el càlcul). <a class="gs" href="#g-2">Fonts i dades del gràfic&nbsp;→</a></p>
+  </div></div>
+</section>
+
+<section class="col">
+  <p>Els ordinadors no barregen pintura: fan servir operacions matemàtiques que són fàcils en un sentit i molt difícils a l'inrevés. La que van proposar Diffie i Hellman s'entén amb un rellotge. Imagina un rellotge de 23 hores. Partint de l'1, multipliques per 5 una vegada i una altra, i cada vegada que passes de 23 tornes a començar (com quan sumes hores i passes de mitjanit). Fer <i>n</i> salts és fàcil. Però si algú et diu només on has acabat, endevinar quants salts has fet obliga a provar-los un per un: els salts no segueixen cap ordre visible.[[dh1976.2]]</p>
+</section>
+
+<figure class="fig wide" id="f-rellotge">
+  <div class="vh">
+    <div><strong>El rellotge de 23 hores</strong><span>Mou els secrets: l'Anna i el Bernat sempre arriben a la mateixa clau, i l'Eva només veu on acaba cada camí</span></div>
+    <div class="lgs" id="rell-lg"></div>
+  </div>
+  <div class="plot" id="rell-viz"></div>
+  <div class="ctlrow">
+    <div class="rng-wrap"><label for="rell-a">Secret de l'Anna</label><input class="rng" type="range" id="rell-a" min="1" max="22" value="6"><output id="rell-a-o" for="rell-a">6</output></div>
+    <div class="rng-wrap"><label for="rell-b">Secret del Bernat</label><input class="rng" type="range" id="rell-b" min="1" max="22" value="15"><output id="rell-b-o" for="rell-b">15</output></div>
+  </div>
+  <p class="calc" id="rell-calc" aria-live="polite"></p>
+  <figcaption class="src" id="gc-3"><b>Càlcul real</b> amb nombres petits (mòdul 23, base 5). <a class="gs" href="#g-3">Fonts i dades del gràfic&nbsp;→</a></figcaption>
+</figure>
+
+<section class="col">
+  <p>Amb 23 posicions, l'Eva troba el secret en un instant. El truc funciona perquè a la vida real el rellotge és descomunal. Signal i WhatsApp fan servir una variant moderna amb corbes el·líptiques, la funció X25519, on el «rellotge» té uns 2<sup>252</sup> punts: un 7 seguit de 75 xifres.[[x25519.1]] Provar-les una per una no és lent: és físicament impossible.</p>
+  <p class="note">Hi ha una postdata d'espies. El 1997, el servei d'intel·ligència britànic GCHQ va revelar que tres dels seus matemàtics, James Ellis, Clifford Cocks i Malcolm Williamson, havien arribat a idees equivalents entre el 1969 i el 1975, però el descobriment havia quedat classificat com a secret d'estat.[[gchq.1]] La invenció que ha permès a milers de milions de persones tenir secrets va néixer, ella mateixa, en secret.</p>
+</section>
+
+<!-- ==================== 3. COM DE SEGUR ÉS SEGUR ==================== -->
+<section class="col">
+  <h2 class="sh">Com de segur és «segur»?</h2>
+  <p>Un xifrat modern no s'amaga: es publica. Ja el 1883, el lingüista i criptògraf <b>Auguste Kerckhoffs</b> va escriure que un sistema no ha d'exigir el secret i que ha de poder caure en mans de l'enemic sense problemes.[[kerckhoffs.1]] Tota la seguretat ha de descansar en la clau. És una idea contraintuïtiva i molt potent: com que tothom pot estudiar el mètode, milers d'experts l'ataquen durant anys abans que ningú hi confiï. El protocol de Signal és públic, el seu codi és obert i ha estat analitzat formalment per criptògrafs acadèmics, que no hi han trobat defectes de disseny greus.[[cohn.1]]</p>
+  <p>Així, l'única manera d'entrar per la força és provar claus. I aquí és on els números s'escapen de qualsevol intuïció. Cada bit que afegeixes a la clau <b>duplica</b> el nombre de combinacions. Una clau de 56 bits va ser l'estàndard dels Estats Units durant dues dècades; el 1998, una màquina construïda per l'Electronic Frontier Foundation per menys de 250.000 dòlars en va trobar una en 56 hores.[[eff-des.1]] Una clau de 128 bits no és «una mica més llarga»: té 2<sup>72</sup> vegades més combinacions, gairebé cinc mil trilions de vegades més.</p>
+</section>
+
+<figure class="fig wide" id="f-claus">
+  <div class="vh">
+    <div><strong>Quantes claus cal provar?</strong><span>Combinacions possibles, de 1 a 10<sup>80</sup>. Passa per cada punt per veure quant es trigaria a provar-les totes</span></div>
+    <div class="lgs" id="claus-lg"></div>
+  </div>
+  <div class="plot" id="claus-viz"></div>
+  <figcaption class="src" id="gc-4"><b>Càlcul exacte</b> de combinacions; el temps suposa un trilió (10<sup>18</sup>) de proves per segon. <a class="gs" href="#g-4">Fonts i dades del gràfic&nbsp;→</a></figcaption>
+</figure>
+
+<section class="col">
+  <p>Si un ordinador pogués provar un trilió de claus per segon —molt més del que fa cap màquina real—, recórrer totes les de 128 bits li costaria uns deu bilions d'anys, unes 780 vegades l'edat de l'univers.[[planck.1]] Per a 256 bits, el número ja no té cap sentit humà. Per això els criptògrafs diuen que els bons xifrats no es trenquen: <b>se'ls esquiva</b>. S'ataca el mòbil, la persona, la còpia de seguretat, el programari mal escrit. Mai la matemàtica de cara.</p>
+</section>
+
+<!-- ==================== 4. UNA CLAU PER A CADA MISSATGE ==================== -->
+<section class="col">
+  <h2 class="sh">Una clau nova a cada missatge</h2>
+  <p>Hi ha un perill més subtil. Imagina que algú grava durant anys tots els teus missatges xifrats, sense poder-los llegir, i un dia et roba el mòbil i en copia la clau. Si totes les converses anaven tancades amb la mateixa clau, de cop les pot obrir totes, també les de fa cinc anys.</p>
+  <p>El protocol de Signal —que és també la base del xifrat de WhatsApp—[[wa-wp.1]] ho evita amb un mecanisme anomenat <b>doble trinquet</b> (<i lang="en">double ratchet</i>), dissenyat per Trevor Perrin i Moxie Marlinspike.[[dr.1]] Com el trinquet d'una clau anglesa, només gira cap endavant. Cada missatge es xifra amb una clau nova, que surt de l'anterior amb una operació que no es pot desfer, i la vella s'esborra. Qui roba la clau d'avui no pot tornar enrere: el passat queda protegit (els criptògrafs en diuen <i>forward secrecy</i>).[[dr.2]] I a cada torn de la conversa, els dos mòbils fan un nou intercanvi de Diffie-Hellman i barregen pintura fresca: qui hagi copiat l'estat del mòbil en perd el fil al cap de poc. La conversa <b>es cura sola</b>.[[dr.3]]</p>
+</section>
+
+<figure class="fig wide" id="f-trinquet">
+  <div class="vh">
+    <div><strong>Què perds si et roben la clau</strong><span>Toca un missatge: en aquell moment algú copia l'estat del mòbil. Compara els tres sistemes</span></div>
+    <div class="lgs" id="trinq-lg"></div>
+  </div>
+  <div class="seg" id="trinq-seg" role="group" aria-label="Sistema de claus">
+    <button type="button" aria-pressed="false" data-k="una">Una clau per sempre</button>
+    <button type="button" aria-pressed="false" data-k="simple">Clau nova a cada missatge</button>
+    <button type="button" aria-pressed="true" data-k="doble">Doble trinquet (Signal)</button>
+  </div>
+  <div class="plot" id="trinq-viz"></div>
+  <figcaption class="src" id="gc-5"><b>Esquema</b> del protocol, amb una conversa d'exemple. <a class="gs" href="#g-5">Fonts i dades del gràfic&nbsp;→</a></figcaption>
+</figure>
+
+<!-- ==================== 5. QUANT AGUANTA UN SECRET ==================== -->
+<section class="col">
+  <h2 class="sh">Quant temps aguanta un secret</h2>
+  <p>La història del xifrat és una cursa de relleus entre qui amaga i qui busca. Els espartans enrotllaven una tira de cuir en un bastó i hi escrivien de llarg; desenrotllada, era una filera de lletres sense sentit, i només un bastó del mateix gruix la tornava a ordenar.[[plutarc.1]] Juli Cèsar canviava cada lletra per la que hi ha tres llocs més enllà.[[suetoni.1]] Aquestes xifres de substitució van aguantar fins que un savi de Bagdad, <b>al-Kindi</b>, al segle IX, va tenir una idea senzillíssima: comptar. En qualsevol llengua hi ha lletres que surten molt més que d'altres; si al text xifrat un signe apareix sovint, segurament amaga la lletra més freqüent.[[alkindi.1]]</p>
+  <p>Des d'aleshores, cada xifrat ha tingut data de caducitat. El 1586, la reina <b>Maria Estuard</b>, presonera a Anglaterra, va aprovar en una carta xifrada un complot per matar Isabel I. El criptògraf de la reina, Thomas Phelippes, la va desxifrar, i aquella carta la va dur al cadafal.[[maria.1]] Altres cartes seves, xifrades amb un sistema diferent, van resistir quatre segles i mig: un equip de criptògrafs les va desxifrar el 2023 amb l'ajuda d'ordinadors.[[lasry.1]]</p>
+</section>
+
+<figure class="fig wide" id="f-vides">
+  <div class="vh">
+    <div><strong>Quant temps aguanta un secret</strong><span>Cada barra va des que un sistema es comença a fer servir fins que algú el trenca, o fins avui</span></div>
+    <div class="lgs" id="vides-lg"></div>
+  </div>
+  <div class="plot" id="vides-viz"></div>
+  <figcaption class="src" id="gc-6"><b>Dades reals</b>; dates aproximades en els xifrats antics. <a class="gs" href="#g-6">Fonts i dades del gràfic&nbsp;→</a></figcaption>
+</figure>
+
+<section class="col">
+  <p>El gràfic té un patró clar. Els sistemes que depenien de mantenir en secret el mètode, o de l'enginy d'una màquina, van caure tots. Els que es basen en problemes matemàtics publicats i estudiats per tothom —Diffie-Hellman, RSA, AES— continuen drets després de mig segle d'atacs. Hi ha un cas extrem: el <b>bloc d'un sol ús</b>, una clau aleatòria tan llarga com el missatge que es fa servir una sola vegada. El 1949, Claude Shannon va demostrar matemàticament que és irrompible.[[shannon.1]] El problema és pràctic: cal fer arribar a l'altre una clau tan llarga com tot el que li diràs en la vida. I la perfecció depèn de les persones: quan els soviètics van reutilitzar fulls dels seus blocs durant la Segona Guerra Mundial, el contraespionatge nord-americà va poder llegir-ne una part a partir del 1943.[[venona.1]]</p>
+  <p>L'amenaça que es veu a l'horitzó és l'<b>ordinador quàntic</b>. El 1994, el matemàtic Peter Shor va demostrar que una màquina quàntica prou gran podria desfer el rellotge de Diffie-Hellman i trencar RSA en poc temps.[[shor.1]] Encara no existeix, però els serveis d'intel·ligència poden fer una cosa avui: <b>recollir ara i desxifrar després</b>, és a dir, guardar missatges xifrats esperant el dia que la màquina arribi.[[ncsc-pq.2]] Per això el 2023 Signal va afegir un segon intercanvi de claus resistent als ordinadors quàntics, el 2024 Apple ho va fer a iMessage, i el mateix any els Estats Units van publicar els primers estàndards postquàntics.[[pqxdh.1,pq3.1,nist-pq.1]] El 2025, Signal hi va sumar un tercer trinquet, també postquàntic.[[spqr.1]] El xifrat simètric, com AES, aguanta: n'hi ha prou de fer servir claus llargues.[[ncsc-pq.1]]</p>
+</section>
+
+<!-- ==================== 6. EL QUE EL XIFRAT NO AMAGA ==================== -->
+<section class="col">
+  <h2 class="sh">El que el xifrat no amaga</h2>
+  <p>Llavors, és segur del tot? La resposta honesta és que el xifrat d'extrem a extrem fa una sola cosa, i la fa extraordinàriament bé: impedir que qui porta el missatge el llegeixi. Tot el que queda fora d'aquest camí continua exposat.</p>
+  <p><b>Les metadades.</b> El sobre porta adreça. Qui parla amb qui, quan, quant de temps i des d'on continua visible per a l'empresa, i el mateix glossari del govern dels EUA ho diu: amb el xifrat d'extrem a extrem, la informació d'encaminament queda a la vista.[[nist-e2e.1]] No és un detall menor. «Matem gent basant-nos en metadades», va dir el 2014 Michael Hayden, que havia dirigit la NSA i la CIA.[[hayden.1]] Un estudi de la Universitat de Stanford va demanar a 823 voluntaris que cedissin el registre de trucades i missatges del mòbil, sense cap contingut: només amb això, els investigadors van poder deduir que un d'ells tenia una arrítmia cardíaca i que un altre s'havia comprat un rifle.[[mayer.1]] Per això importa tant què guarda cada empresa: Signal, per exemple, assegura que davant d'un jutge només pot lliurar quan es va crear un compte i quan es va connectar per última vegada.[[signal-bb.1]] Dues aplicacions poden xifrar el contingut igual de bé i saber coses molt diferents de tu.</p>
+  <p><b>Els aparells.</b> Si algú infecta el teu mòbil, llegeix els missatges després que s'hagin desxifrat, com si mirés per sobre de la teva espatlla. El programa espia Pegasus, venut a governs, ho aconseguia fins i tot sense que la víctima toqués res.[[pegasus.1]]</p>
+  <p><b>Les còpies de seguretat.</b> Molta gent fa còpia de les converses al núvol, i durant anys aquestes còpies no anaven xifrades d'extrem a extrem. Apple ho va canviar el 2022 amb una opció anomenada protecció avançada de dades;[[adp.1]] el 2025, el govern britànic li va exigir una porta d'accés i Apple va preferir retirar l'opció al Regne Unit abans que obrir-la.[[adp-uk.1,adp-uk.2]]</p>
+  <p><b>Les persones.</b> El març de 2025, alts càrrecs del govern dels Estats Units van discutir un atac militar al Iemen en un grup de Signal on algú havia afegit per error el director d'una revista.[[signalgate.1]] El xifrat va funcionar perfectament: el periodista era un dels «extrems».</p>
+</section>
+
+<!-- ==================== 7. LA PORTA DEL DARRERE ==================== -->
+<section class="col">
+  <h2 class="sh">Una porta del darrere només per als bons</h2>
+  <p>Des que el xifrat fort va arribar al públic, els governs han intentat tenir-hi una clau. El 1993, la Casa Blanca va presentar el <b>Clipper Chip</b>, un xip per als telèfons que xifrava les converses però deixava una còpia de cada clau en dipòsit per a la policia.[[clipper.1]] No va arrelar. Dos anys abans, l'enginyer Phil Zimmermann havia publicat gratuïtament PGP, un programa de xifrat per al correu, i va passar tres anys investigat pel govern dels Estats Units.[[zimmermann.1]] El 2016, l'FBI va voler obligar Apple a escriure un programa per obrir l'iPhone d'un dels autors de l'atemptat de San Bernardino; Apple s'hi va negar i el cas es va tancar quan l'FBI va entrar al telèfon per un altre camí.[[apple-fbi.1]]</p>
+  <p>Avui el debat és a Europa. El 2022, la Comissió Europea va proposar un reglament contra l'abús sexual infantil que permetria obligar les aplicacions a escanejar els missatges privats abans que es xifressin, dins del mateix mòbil. Centenars de científics s'hi han oposat en cartes obertes, i el Consell de la UE va fixar el 2025 una posició sense escaneig obligatori; a finals del 2026, la negociació continua.[[csa.1,csa-letter.1]] El Regne Unit ja va aprovar el 2023 una llei que permet exigir-ho.[[osa.1]]</p>
+  <p>L'argument tècnic dels criptògrafs és sempre el mateix, i és difícil de rebatre: <b>no hi ha cap porta que només puguin obrir els bons</b>. Una clau mestra és un objectiu per a tots els lladres i espies del món, i una manera d'escanejar els missatges dins del mòbil és un forat que algú altre pot aprofitar.[[doormats.1]] La realitat ho va il·lustrar amb ironia el desembre de 2024: després que un grup d'espionatge xinès s'infiltrés en les grans operadores de telefonia dels Estats Units, l'agència de ciberseguretat del govern nord-americà va recomanar als seus alts càrrecs que fessin servir «només comunicacions xifrades d'extrem a extrem», com Signal.[[cisa.1]]</p>
+</section>

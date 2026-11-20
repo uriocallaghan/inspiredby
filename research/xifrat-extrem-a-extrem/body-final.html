@@ -1,0 +1,41 @@
+
+<section class="col">
+  <h2 class="sh">Paraules clau</h2>
+  <dl class="gl">
+    <dt>Xifrar</dt><dd>Transformar un text en un garbuix que només es pot tornar a llegir amb una clau.</dd>
+    <dt>Xifrat en trànsit</dt><dd>El missatge va protegit en cada tram del camí, però el servidor que el porta el desxifra i el pot llegir (és el cas de TLS, el cadenat del navegador).</dd>
+    <dt>Xifrat d'extrem a extrem</dt><dd>El missatge es xifra al dispositiu de qui l'envia i només el pot desxifrar el dispositiu de qui el rep. Ningú al mig, ni l'empresa, té la clau.</dd>
+    <dt>Clau pública i clau privada</dt><dd>Parell de claus en què una es pot ensenyar a tothom i l'altra no surt mai del dispositiu. Permeten acordar secrets sense haver-se vist mai.</dd>
+    <dt>Intercanvi de Diffie-Hellman</dt><dd>Mètode del 1976 perquè dues persones acordin una clau secreta parlant en públic. Es basa en una operació fàcil de fer i molt difícil de desfer.</dd>
+    <dt>Força bruta</dt><dd>Provar totes les claus possibles una per una. Amb claus de 128 bits o més, és impossible a la pràctica.</dd>
+    <dt>Doble trinquet</dt><dd>Mecanisme del protocol Signal que canvia la clau a cada missatge i renova el secret a cada torn de la conversa.</dd>
+    <dt>Secret cap enrere (<i>forward secrecy</i>)</dt><dd>Si et roben la clau d'avui, els missatges d'ahir continuen protegits.</dd>
+    <dt>Metadades</dt><dd>Les dades sobre un missatge, no el contingut: qui, a qui, quan, des d'on, quant ocupa.</dd>
+    <dt>Criptografia postquàntica</dt><dd>Xifrats dissenyats per resistir un futur ordinador quàntic, que podria trencar Diffie-Hellman i RSA.</dd>
+    <dt>Secret públic</dt><dd>En antropologia, allò que tothom sap però que no es pot dir obertament (Taussig).</dd>
+    <dt>Integritat contextual</dt><dd>La idea de Helen Nissenbaum que la privacitat consisteix que la informació circuli segons les normes del context on es va compartir.</dd>
+  </dl>
+</section>
+
+<section class="col fn" id="fonts">
+  <h2>Dades i fonts</h2>
+  <h3>Metodologia</h3>
+  <p>Les afirmacions tècniques venen de les especificacions oficials (Signal, WhatsApp, NIST, RFC de l'IETF), d'articles revisats (Diffie i Hellman 1976, Shannon 1949, Cohn-Gordon et al. 2020, Mayer et al. 2016) i de documents de governs i institucions (CISA, NCSC, Consell de la UE, Casa Blanca). Les afirmacions antropològiques i filosòfiques venen de les obres originals; quan només se n'ha pogut llegir el resum o la descripció de l'editorial (Altman 1977, Gregor 1977, Taussig 1999), el text es limita al que hi diu. Les cites en altres llengües són traduccions pròpies. Els gràfics 1, 2 i 5 són <b>esquemes</b> que expliquen un mecanisme; el 3 és un <b>càlcul real</b> amb nombres petits; el 4 combina <b>càlculs exactes</b> amb una hipòtesi de velocitat que es diu explícitament; el 6 i el 7 són <b>dades reals</b>. Totes les URL i els DOI es van comprovar el 20 de novembre de 2026. Sobre la proposta europea d'escaneig de missatges, l'article descriu l'estat de la negociació en aquesta data; pot canviar.</p>
+
+  <h3>Els gràfics</h3>
+  <ul class="gfs">
+    <li id="g-1"><b class="gt"><a class="bk" href="#gc-1" aria-label="Torna al gràfic">↑</a> Qui pot llegir el teu missatge?</b><b>Esquema.</b> Les cinc parades són una simplificació del camí real d'un missatge (n'hi pot haver moltes més). El comportament de cada mode segueix les definicions de l'EFF (xifrat en trànsit i d'extrem a extrem) i del NIST (les dades d'encaminament queden visibles).[[eff-sdd.1,eff-sdd.2,nist-e2e.1]] La velocitat dels punts és il·lustrativa: un missatge real triga mil·lisegons.</li>
+    <li id="g-2"><b class="gt"><a class="bk" href="#gc-2" aria-label="Torna al gràfic">↑</a> La pintura que no es pot desbarrejar</b><b>Esquema</b> de l'intercanvi de claus de Diffie i Hellman (1976) amb l'analogia habitual de les pintures. Els cercles translúcids es barregen per multiplicació, com la pintura; és una analogia, no el càlcul.[[dh1976.1]]</li>
+    <li id="g-3"><b class="gt"><a class="bk" href="#gc-3" aria-label="Torna al gràfic">↑</a> El rellotge de 23 hores</b><b>Càlcul real</b> de l'intercanvi de Diffie-Hellman amb mòdul 23 i base 5: cada salt multiplica per 5 i torna a començar en passar de 23 (aritmètica modular). Les posicions públiques i la clau comuna es calculen al navegador. A la pràctica, X25519 treballa amb un grup d'uns 2<sup>252</sup> elements.[[dh1976.2,x25519.1]]</li>
+    <li id="g-4"><b class="gt"><a class="bk" href="#gc-4" aria-label="Torna al gràfic">↑</a> Quantes claus cal provar?</b><b>Càlcul exacte</b> del nombre de combinacions: 10<sup>4</sup> (PIN), 95<sup>8</sup> ≈ 6,6 × 10<sup>15</sup> (contrasenya de 8 caràcters ASCII imprimibles), 2<sup>56</sup> (DES), 2<sup>128</sup> i 2<sup>256</sup> (AES).[[fips46.1,fips197.1,eff-des.1]] Referències: segons des del Big Bang (13.800 milions d'anys) i àtoms de l'univers observable (uns 7 × 10<sup>79</sup>, càlcul propi a partir dels barions dels paràmetres de Planck, arrodonit a «uns 10<sup>80</sup>»).[[planck.1]] Fixa't que 2<sup>256</sup> és unes 600 vegades <i>menys</i> que el nombre d'àtoms, al contrari del que es diu sovint. El temps del hover suposa un trilió (10<sup>18</sup>) de proves per segon, molt per sobre de qualsevol màquina real; és una hipòtesi, no una mesura.</li>
+    <li id="g-5"><b class="gt"><a class="bk" href="#gc-5" aria-label="Torna al gràfic">↑</a> Què perds si et roben la clau</b><b>Esquema</b> del doble trinquet segons l'especificació de Signal, amb una conversa d'exemple de dotze missatges. L'atacant és passiu: copia l'estat del mòbil un cop i després només escolta. Amb el doble trinquet, pot llegir la tanda de missatges en curs i la resposta següent, perquè coneix la clau privada de trinquet vigent; quan el mòbil robat torna a enviar amb una clau Diffie-Hellman nova, la conversa es recupera. Un atacant actiu que es fes passar per l'altre extrem és un cas diferent.[[dr.1,dr.2,dr.3]]</li>
+    <li id="g-6"><b class="gt"><a class="bk" href="#gc-6" aria-label="Torna al gràfic">↑</a> Quant temps aguanta un secret</b><b>Dades reals</b>, amb dates aproximades per als xifrats antics. Cèsar (segle I aC, Suetoni) fins a l'anàlisi de freqüències d'al-Kindi (segle IX, representat el 850); les xifres de Maria Estuard (cartes del 1578–1586) fins al desxiframent de Phelippes (1586); Vigenère (tractat de 1586) fins a Kasiski (1863); el bloc d'un sol ús (patent de Vernam, 1919), demostrat irrompible per Shannon (1949); Enigma (marina alemanya, 1926) fins a Rejewski (desembre de 1932); Diffie-Hellman (1976), DES (1977) fins a la màquina de l'EFF (1998), RSA (1978), AES (2001) i el doble trinquet de Signal (2016). La part del 0 al 1500 de l'eix està comprimida.[[suetoni.1,alkindi.1,maria.1,vigenere.1,kasiski.1,vernam.1,shannon.1,enigma.1,dh1976.1,fips46.1,eff-des.1,rsa.1,fips197.1,dr.1]]</li>
+    <li id="g-7"><b class="gt"><a class="bk" href="#gc-7" aria-label="Torna al gràfic">↑</a> L'efecte desanimador</b><b>Dades reals</b> de Penney (2016): visites mensuals a 48 articles de la Wikipedia en anglès sobre temes que el Departament de Seguretat Nacional dels EUA considerava sensibles. El maig de 2013 sumaven 2.960.778 visites; després de juny de 2013, la caiguda immediata va ser de 995.085 (més d'un 30 %). Sense l'article sobre Hamas, que es comportava de manera atípica, la caiguda és del 25 %, amb una base diferent. Cada cercle és un 1 % de la base corresponent.[[penney.1]]</li>
+  </ul>
+
+  <h3>Fonts</h3>
+  <p class="nt-i">Cada número del text porta a la seva font. La fletxa (↑) et torna al punt on llegies.</p>
+  <ol class="fts">
+<!--FONTS-->
+  </ol>
+</section>

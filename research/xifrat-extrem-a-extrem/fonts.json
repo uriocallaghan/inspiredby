@@ -1,0 +1,430 @@
+{
+ "eff-sdd": {
+  "ref": "Electronic Frontier Foundation. «What Should I Know About Encryption?». <i>Surveillance Self-Defense</i>. <a href=\"https://ssd.eff.org/module/what-should-i-know-about-encryption\">ssd.eff.org</a>",
+  "claims": [
+   "El xifrat en trànsit (TLS) protegeix el missatge fins al servidor, que el pot llegir",
+   "Amb el xifrat d'extrem a extrem ningú, ni els servidors de l'aplicació, pot llegir el missatge"
+  ]
+ },
+ "nist-e2e": {
+  "ref": "NIST Computer Security Resource Center. «End-to-end encryption», glossari (de NIST SP 800-12 Rev. 1). <a href=\"https://csrc.nist.gov/glossary/term/end_to_end_encryption\">csrc.nist.gov</a>",
+  "claims": [
+   "Amb xifrat d'extrem a extrem, les dades d'encaminament continuen visibles"
+  ]
+ },
+ "wa-wp": {
+  "ref": "WhatsApp. <i>WhatsApp Encryption Overview. Technical white paper</i>, versió 10 (30-10-2026). <a href=\"https://www.whatsapp.com/security/WhatsApp-Security-Whitepaper.pdf\">whatsapp.com (PDF)</a>",
+  "claims": [
+   "WhatsApp es basa en el protocol Signal, amb claus Curve25519 i una clau AES-256 per missatge",
+   "Ni WhatsApp ni Meta poden accedir al contingut; les converses amb empreses que fan servir la Cloud API no es consideren d'extrem a extrem"
+  ]
+ },
+ "wa-2016": {
+  "ref": "WhatsApp. «end-to-end encryption», blog oficial, 5-4-2016. <a href=\"https://blog.whatsapp.com/end-to-end-encryption\">blog.whatsapp.com</a>",
+  "claims": [
+   "Xifrat d'extrem a extrem complet a WhatsApp el 5 d'abril de 2016, amb més de mil milions d'usuaris"
+  ]
+ },
+ "meta-2025": {
+  "ref": "Meta Platforms. <i>First Quarter 2025 Results Conference Call</i>, transcripció oficial, 30-4-2025. <a href=\"https://s21.q4cdn.com/399680738/files/doc_financials/2025/q1/Transcripts/META-Q1-2025-Earnings-Call-Transcript-1.pdf\">investor.atmeta.com (PDF)</a>",
+  "claims": [
+   "WhatsApp té més de 3.000 milions d'usuaris actius al mes"
+  ]
+ },
+ "dh1976": {
+  "ref": "Diffie, W., &amp; Hellman, M. E. (1976). «New Directions in Cryptography». <i>IEEE Transactions on Information Theory</i>, 22(6), 644–654. DOI: <a href=\"https://doi.org/10.1109/TIT.1976.1055638\">10.1109/TIT.1976.1055638</a> · Còpia: <a href=\"https://ee.stanford.edu/~hellman/publications/24.pdf\">ee.stanford.edu</a>",
+  "claims": [
+   "Primera proposta pública de criptografia de clau pública i d'intercanvi de claus en un canal obert; frase inicial «We stand today on the brink of a revolution in cryptography»",
+   "L'intercanvi es basa en una exponenciació modular fàcil de calcular i difícil de desfer (el logaritme discret)"
+  ]
+ },
+ "rsa": {
+  "ref": "Rivest, R. L., Shamir, A., &amp; Adleman, L. (1978). «A Method for Obtaining Digital Signatures and Public-Key Cryptosystems». <i>Communications of the ACM</i>, 21(2), 120–126. DOI: <a href=\"https://doi.org/10.1145/359340.359342\">10.1145/359340.359342</a>",
+  "claims": [
+   "Primer sistema pràctic de xifrat i signatura de clau pública (RSA)"
+  ]
+ },
+ "gchq": {
+  "ref": "IEEE History Center. «Milestones: Invention of Public-key Cryptography, 1969–1975» (Milestone 104). <a href=\"https://ethw.org/Milestones:Invention_of_Public-key_Cryptography,_1969_-_1975\">ethw.org</a> · Ellis, J. H. (1999). «The History of Non-Secret Encryption». <i>Cryptologia</i>, 23(3), 267–273. DOI: <a href=\"https://doi.org/10.1080/0161-119991887919\">10.1080/0161-119991887919</a>",
+  "claims": [
+   "Ellis, Cocks i Williamson, del GCHQ, van arribar a la criptografia de clau pública entre el 1969 i el 1975, i va quedar en secret fins al 1997"
+  ]
+ },
+ "x25519": {
+  "ref": "Langley, A., Hamburg, M., &amp; Turner, S. (2016). <i>RFC 7748: Elliptic Curves for Security</i>. IRTF. <a href=\"https://www.rfc-editor.org/rfc/rfc7748\">rfc-editor.org</a> · Bernstein, D. J. (2006). «Curve25519: New Diffie-Hellman Speed Records». <i>PKC 2006</i>, LNCS 3958, 207–228. DOI: <a href=\"https://doi.org/10.1007/11745853_14\">10.1007/11745853_14</a>",
+  "claims": [
+   "La funció X25519 fa Diffie-Hellman sobre la corba Curve25519, el punt base de la qual té un ordre d'uns 2<sup>252</sup>, amb una seguretat lleugerament per sota dels 128 bits"
+  ]
+ },
+ "kerckhoffs": {
+  "ref": "Kerckhoffs, A. (1883). «La cryptographie militaire». <i>Journal des sciences militaires</i>, vol. IX, gener de 1883, p. 12. Facsímil: <a href=\"https://www.petitcolas.net/kerckhoffs/crypto_militaire_1.pdf\">petitcolas.net</a>",
+  "claims": [
+   "«Il faut qu'il n'exige pas le secret»: el sistema ha de poder caure en mans de l'enemic sense inconvenient"
+  ]
+ },
+ "cohn": {
+  "ref": "Cohn-Gordon, K., Cremers, C., Dowling, B., Garratt, L., &amp; Stebila, D. (2020). «A Formal Security Analysis of the Signal Messaging Protocol». <i>Journal of Cryptology</i>, 33(4), 1914–1983. DOI: <a href=\"https://doi.org/10.1007/s00145-020-09360-1\">10.1007/s00145-020-09360-1</a> · Preprint: <a href=\"https://eprint.iacr.org/2016/1013\">eprint.iacr.org/2016/1013</a>",
+  "claims": [
+   "Primera anàlisi formal del protocol Signal: «no major flaws in the design»"
+  ]
+ },
+ "eff-des": {
+  "ref": "Electronic Frontier Foundation (1998). «Frequently Asked Questions about the EFF DES Cracker» i comunicat de premsa del 17-7-1998. <a href=\"https://w2.eff.org/Privacy/Crypto/Crypto_misc/DESCracker/HTML/19980716_eff_des_faq.html\">w2.eff.org</a>",
+  "claims": [
+   "La màquina DES Cracker de l'EFF, de menys de 250.000 dòlars, va trobar una clau DES de 56 bits en 56 hores el juliol de 1998"
+  ]
+ },
+ "fips197": {
+  "ref": "NIST (2001, actualitzat 2023). <i>FIPS 197: Advanced Encryption Standard (AES)</i>. DOI: <a href=\"https://doi.org/10.6028/NIST.FIPS.197-upd1\">10.6028/NIST.FIPS.197-upd1</a>",
+  "claims": [
+   "L'estàndard AES (26-11-2001) té claus de 128, 192 i 256 bits"
+  ]
+ },
+ "planck": {
+  "ref": "Planck Collaboration (2020). «Planck 2018 results. VI. Cosmological parameters». <i>Astronomy &amp; Astrophysics</i>, 641, A6. DOI: <a href=\"https://doi.org/10.1051/0004-6361/201833910\">10.1051/0004-6361/201833910</a>",
+  "claims": [
+   "Edat de l'univers d'uns 13.800 milions d'anys (taula 2) i paràmetres per estimar uns 10<sup>80</sup> àtoms a l'univers observable (càlcul propi)"
+  ]
+ },
+ "dr": {
+  "ref": "Perrin, T., &amp; Marlinspike, M. (2016; revisió 4, 2025). <i>The Double Ratchet Algorithm</i>. Signal. <a href=\"https://signal.org/docs/specifications/doubleratchet/\">signal.org/docs</a>",
+  "claims": [
+   "Algorisme de doble trinquet dissenyat per Trevor Perrin i Moxie Marlinspike: una clau nova per a cada missatge",
+   "Secret cap enrere (<i>forward security</i>): les claus passades semblen aleatòries a qui roba la clau actual",
+   "Recuperació després d'una intrusió (<i>break-in recovery</i>): les claus futures tornen a ser segures quan entra entropia nova"
+  ]
+ },
+ "pqxdh": {
+  "ref": "Kret, E. (2023). «Quantum Resistance and the Signal Protocol». Signal Blog, 19-9-2023. <a href=\"https://signal.org/blog/pqxdh/\">signal.org/blog/pqxdh</a>",
+  "claims": [
+   "Signal combina X25519 amb el xifrat postquàntic Kyber (PQXDH) contra un futur ordinador quàntic"
+  ]
+ },
+ "spqr": {
+  "ref": "Connell, G., &amp; Schmidt, R. (2025). «Signal Protocol and Post-Quantum Ratchets». Signal Blog, 2-10-2025. <a href=\"https://signal.org/blog/spqr/\">signal.org/blog/spqr</a>",
+  "claims": [
+   "Signal hi afegeix un trinquet postquàntic (SPQR, amb ML-KEM 768): el «triple trinquet»"
+  ]
+ },
+ "pq3": {
+  "ref": "Apple Security Engineering and Architecture (2024). «iMessage with PQ3: The new state of the art in quantum-secure messaging at scale». Apple Security Research, 21-2-2024. <a href=\"https://security.apple.com/blog/imessage-pq3/\">security.apple.com</a>",
+  "claims": [
+   "iMessage incorpora xifrat postquàntic (PQ3) amb iOS 17.4, el 2024"
+  ]
+ },
+ "shor": {
+  "ref": "Shor, P. W. (1997). «Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer». <i>SIAM Journal on Computing</i>, 26(5), 1484–1509. DOI: <a href=\"https://doi.org/10.1137/S0097539795293172\">10.1137/S0097539795293172</a>",
+  "claims": [
+   "Un ordinador quàntic prou gran factoritzaria enters i calcularia logaritmes discrets en temps polinòmic, cosa que trencaria RSA i Diffie-Hellman"
+  ]
+ },
+ "ncsc-pq": {
+  "ref": "National Cyber Security Centre (2024). «Next steps in preparing for post-quantum cryptography», versió 2.0. <a href=\"https://www.ncsc.gov.uk/whitepaper/next-steps-preparing-for-post-quantum-cryptography\">ncsc.gov.uk</a>",
+  "claims": [
+   "La criptografia simètrica (AES) no queda afectada de manera significativa pels ordinadors quàntics",
+   "«Recollir ara, desxifrar després»: guardar dades avui per desxifrar-les quan hi hagi un ordinador quàntic"
+  ]
+ },
+ "nist-pq": {
+  "ref": "NIST (2024). «NIST Releases First 3 Finalized Post-Quantum Encryption Standards», 13-8-2024. <a href=\"https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards\">nist.gov</a>",
+  "claims": [
+   "Primers estàndards postquàntics (FIPS 203, 204 i 205), publicats el 13 d'agost de 2024"
+  ]
+ },
+ "hayden": {
+  "ref": "Cole, D. (2014). «Michael Hayden: “We Kill People Based on Metadata”». <i>Just Security</i>, 10-5-2014. <a href=\"https://www.justsecurity.org/10311/michael-hayden-kill-people-based-metadata/\">justsecurity.org</a>",
+  "claims": [
+   "Michael Hayden, exdirector de la NSA i de la CIA: «We kill people based on metadata» (debat a la Universitat Johns Hopkins, abril de 2014)"
+  ]
+ },
+ "mayer": {
+  "ref": "Mayer, J., Mutchler, P., &amp; Mitchell, J. C. (2016). «Evaluating the privacy properties of telephone metadata». <i>PNAS</i>, 113(20), 5536–5541. DOI: <a href=\"https://doi.org/10.1073/pnas.1508081113\">10.1073/pnas.1508081113</a>",
+  "claims": [
+   "Amb les metadades de 823 voluntaris (251.788 trucades i 1.234.231 SMS) es van deduir dades sensibles, com una arrítmia cardíaca o la compra d'un rifle"
+  ]
+ },
+ "pegasus": {
+  "ref": "Amnesty International Security Lab (2021). «Forensic Methodology Report: How to catch NSO Group's Pegasus», 18-7-2021. <a href=\"https://www.amnesty.org/en/latest/research/2021/07/forensic-methodology-report-how-to-catch-nso-groups-pegasus/\">amnesty.org</a>",
+  "claims": [
+   "El programa espia Pegasus infecta mòbils fins i tot amb atacs «zero-click», sense cap acció de la víctima"
+  ]
+ },
+ "adp": {
+  "ref": "Apple (2022). «Apple advances user security with powerful new data protections». Apple Newsroom, 7-12-2022. <a href=\"https://www.apple.com/newsroom/2022/12/apple-advances-user-security-with-powerful-new-data-protections/\">apple.com</a>",
+  "claims": [
+   "Amb la protecció avançada de dades, 23 categories de dades d'iCloud, incloses les còpies de seguretat, passen a tenir xifrat d'extrem a extrem"
+  ]
+ },
+ "adp-uk": {
+  "ref": "Klosowski, T., &amp; Crocker, A. (2025). «Cornered by the UK's Demand for an Encryption Backdoor, Apple Turns Off Its Strongest Security Setting». EFF, 21-2-2025. <a href=\"https://www.eff.org/deeplinks/2025/02/cornered-uks-demand-encryption-backdoor-apple-turns-its-strongest-security-setting\">eff.org</a> · Apple Support. «Apple can no longer offer Advanced Data Protection in the United Kingdom to new users». <a href=\"https://support.apple.com/en-us/122234\">support.apple.com</a> · Chan, K. (2025). Associated Press, 19-8-2025, «Gabbard says UK scraps demand…». <a href=\"https://www.yahoo.com/news/articles/gabbard-says-uk-scraps-demand-103711923.html\">AP via Yahoo</a>",
+  "claims": [
+   "El febrer de 2025, Apple retira la protecció avançada de dades als nous usuaris del Regne Unit després d'una ordre del govern britànic que demanava accés a les dades xifrades",
+   "L'agost de 2025, els Estats Units anuncien que el Regne Unit retira la demanda"
+  ]
+ },
+ "signalgate": {
+  "ref": "PBS NewsHour (2025). «Top Trump officials accidentally texted U.S. war plans to journalist Jeffrey Goldberg», 24-3-2025. <a href=\"https://www.pbs.org/newshour/amp/show/top-trump-officials-accidentally-texted-u-s-war-plans-to-journalist-jeffrey-goldberg\">pbs.org</a>",
+  "claims": [
+   "El març de 2025, alts càrrecs del govern dels EUA van afegir per error el periodista Jeffrey Goldberg a un xat de Signal on parlaven d'un atac al Iemen"
+  ]
+ },
+ "cisa": {
+  "ref": "CISA (2024; v2.0 2025). <i>Mobile Communications Best Practice Guidance</i>. <a href=\"https://www.cisa.gov/resources-tools/resources/mobile-communications-best-practice-guidance\">cisa.gov</a> · CISA i altres (2025). Avís AA25-239A. <a href=\"https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-239a\">cisa.gov</a>",
+  "claims": [
+   "Després de l'espionatge xinès a operadores de telecomunicacions (Salt Typhoon), la CISA recomana el desembre de 2024 «only use end-to-end encrypted communications», com Signal"
+  ]
+ },
+ "clipper": {
+  "ref": "The White House, Office of the Press Secretary (1993). «Statement by the Press Secretary», 16-4-1993. <a href=\"https://clintonwhitehouse6.archives.gov/1993/04/1993-04-16-press-release-on-clipper-chip-encryption-initiative.html\">clintonwhitehouse6.archives.gov</a>",
+  "claims": [
+   "El 1993 la Casa Blanca presenta el Clipper Chip, un xip de xifrat amb còpies de les claus en dipòsit per a les forces de seguretat"
+  ]
+ },
+ "zimmermann": {
+  "ref": "Zimmermann, P. «Background». <a href=\"https://philzimmermann.com/EN/background/background.html\">philzimmermann.com</a>",
+  "claims": [
+   "Phil Zimmermann publica PGP el 1991 i passa tres anys investigat pel govern dels EUA"
+  ]
+ },
+ "apple-fbi": {
+  "ref": "Cook, T. (2016). «A Message to Our Customers». Apple, 16-2-2016. <a href=\"https://www.apple.com/customer-letter/\">apple.com</a> · Abdollah, T. (2016). «Justice Department cracks iPhone, withdraws legal action against Apple». AP, 28-3-2016. <a href=\"https://www.pbs.org/newshour/nation/justice-department-cracks-iphone-withdraws-legal-action-against-apple\">pbs.org</a>",
+  "claims": [
+   "El 2016 l'FBI demana a Apple un programari per desbloquejar l'iPhone de l'autor de l'atemptat de San Bernardino; Apple s'hi nega i el govern acaba retirant la demanda"
+  ]
+ },
+ "doormats": {
+  "ref": "Abelson, H., Anderson, R., Bellovin, S. M., Benaloh, J., Blaze, M., Diffie, W., et al. (2015). «Keys under doormats: mandating insecurity by requiring government access to all data and communications». <i>Journal of Cybersecurity</i>, 1(1), 69–79. DOI: <a href=\"https://doi.org/10.1093/cybsec/tyv009\">10.1093/cybsec/tyv009</a>",
+  "claims": [
+   "Quinze criptògrafs i informàtics argumenten que obligar a donar accés excepcional al govern fa més insegurs els sistemes de tothom"
+  ]
+ },
+ "csa": {
+  "ref": "Consell de la Unió Europea. Nota de la Presidència 10499/26, 22-6-2026, i nota 11501/26, 7-7-2026, sobre la proposta de reglament per prevenir i combatre l'abús sexual infantil. <a href=\"https://data.consilium.europa.eu/doc/document/ST-10499-2026-INIT/en/pdf\">data.consilium.europa.eu</a> · eucrim. «CSA Regulation: Council Position Reached». <a href=\"https://eucrim.eu/news/csa-regulation-council-position-reached/\">eucrim.eu</a>",
+  "claims": [
+   "La Comissió Europea proposa el 2022 un reglament que permetria obligar a escanejar missatges privats; el Consell fixa posició el novembre de 2025 sense ordres de detecció obligatòries i les negociacions continuen el 2026"
+  ]
+ },
+ "csa-letter": {
+  "ref": "Carta oberta de científics sobre la proposta de reglament CSA (setembre de 2025). <a href=\"https://csa-scientist-open-letter.org/Sep2025\">csa-scientist-open-letter.org</a>",
+  "claims": [
+   "807 científics de 37 països signen contra l'escaneig obligatori de missatges"
+  ]
+ },
+ "osa": {
+  "ref": "Online Safety Act 2023 (c. 50), secció 121. <a href=\"https://www.legislation.gov.uk/ukpga/2023/50/section/121\">legislation.gov.uk</a>",
+  "claims": [
+   "La llei britànica de seguretat en línia (2023) permet a l'Ofcom exigir tecnologia d'escaneig també en comunicacions privades"
+  ]
+ },
+ "plutarc": {
+  "ref": "Plutarc. <i>Vida de Lisandre</i>, 19.5–6. Ed. Loeb Classical Library (1916), a LacusCurtius. <a href=\"https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Plutarch/Lives/Lysander*.html\">penelope.uchicago.edu</a>",
+  "claims": [
+   "L'escítala espartana: una tira enrotllada en un bastó que només es llegeix amb un bastó del mateix gruix"
+  ]
+ },
+ "suetoni": {
+  "ref": "Suetoni. <i>Vida del diví Juli</i>, 56.6. Ed. Loeb (1913), a LacusCurtius. <a href=\"https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Suetonius/12Caesars/Julius*.html\">penelope.uchicago.edu</a>",
+  "claims": [
+   "Cèsar escrivia en xifra canviant cada lletra per la que hi ha tres llocs més enllà (la D per la A)"
+  ]
+ },
+ "alkindi": {
+  "ref": "Ycart, B. (2013). «Letter counting: a stem cell for Cryptology, Quantitative Linguistics, and Statistics». <i>Historiographia Linguistica</i>, 40(3), 303–329. Preprint: <a href=\"https://arxiv.org/abs/1211.6847\">arxiv.org/abs/1211.6847</a>",
+  "claims": [
+   "Al-Kindi (c. 801–873) descriu l'anàlisi de freqüències de les lletres per trencar les xifres de substitució"
+  ]
+ },
+ "vigenere": {
+  "ref": "Vigenère, B. de (1586). <i>Traicté des chiffres, ou secrètes manières d'escrire</i>. París. Catàleg: <a href=\"https://hdl.handle.net/2268.1/9711\">Universitat de Lieja</a>",
+  "claims": [
+   "Blaise de Vigenère publica el seu tractat de xifres el 1586"
+  ]
+ },
+ "maria": {
+  "ref": "Bryson, A. (2022). «The Gallows Letter». British Library, 5-2-2022. <a href=\"https://www.bl.uk/stories/blogs/posts/the-gallows-letter\">bl.uk</a>",
+  "claims": [
+   "La carta xifrada de Maria Estuard a Babington (17-7-1586) la va desxifrar Thomas Phelippes, i va servir per condemnar-la"
+  ]
+ },
+ "lasry": {
+  "ref": "Lasry, G., Biermann, N., &amp; Tomokiyo, S. (2023). «Deciphering Mary Stuart's lost letters from 1578–1584». <i>Cryptologia</i>, 47(2), 101–202. DOI: <a href=\"https://doi.org/10.1080/01611194.2022.2160677\">10.1080/01611194.2022.2160677</a>",
+  "claims": [
+   "El 2023 es desxifren desenes de cartes perdudes de Maria Estuard escrites entre el 1578 i el 1584"
+  ]
+ },
+ "vernam": {
+  "ref": "Vernam, G. S. (1919). «Secret signaling system». Patent dels EUA 1.310.719, 22-7-1919. <a href=\"https://patents.google.com/patent/US1310719A/en\">patents.google.com</a>",
+  "claims": [
+   "Patent del xifrat de Vernam (1919), base del bloc d'un sol ús"
+  ]
+ },
+ "shannon": {
+  "ref": "Shannon, C. E. (1949). «Communication Theory of Secrecy Systems». <i>Bell System Technical Journal</i>, 28(4), 656–715. DOI: <a href=\"https://doi.org/10.1002/j.1538-7305.1949.tb00928.x\">10.1002/j.1538-7305.1949.tb00928.x</a>",
+  "claims": [
+   "Demostració que el bloc d'un sol ús és perfectament segur si la clau és tan llarga com el missatge, aleatòria i no es reutilitza"
+  ]
+ },
+ "kasiski": {
+  "ref": "Kasiski, F. W. (1863). <i>Die Geheimschriften und die Dechiffrir-Kunst</i>. Mittler. <a href=\"https://books.google.es/books?id=fB5dAAAAcAAJ\">Google Books</a> · National Cryptologic Foundation. «Rare German Cryptology Book by Kasiski». <a href=\"https://archive.cryptologicfoundation.org/community/cryptologic-history/museum-support/library.html/title/rare-german-cryptology-book-by-kasiski-posted-5-7-13-\">cryptologicfoundation.org</a>",
+  "claims": [
+   "Kasiski publica el 1863 el primer mètode per atacar les xifres polialfabètiques com la de Vigenère"
+  ]
+ },
+ "enigma": {
+  "ref": "Agencja Wywiadu (servei d'intel·ligència exterior de Polònia). «Enigma decryption». <a href=\"https://aw.gov.pl/en/history/enigma-decryption/183,Enigma-decryption.html\">aw.gov.pl</a> · IEEE Milestone. «First Breaking of Enigma Code by the Team of Polish Cipher Bureau, 1932–39». <a href=\"https://ieeemilestones.ethw.org/Milestone-Proposal:The_First_Breaking_of_Enigma_Code_by_the_Team_of_Polish_Cipher_Bureau,_1932-39\">ethw.org</a>",
+  "claims": [
+   "La marina alemanya fa servir Enigma des del 1926; el matemàtic polonès Marian Rejewski i el seu equip en desxifren els missatges per primer cop el desembre de 1932"
+  ]
+ },
+ "fips46": {
+  "ref": "NIST. <i>FIPS 46: Data Encryption Standard</i>, 15-1-1977. <a href=\"https://csrc.nist.gov/pubs/fips/46/final\">csrc.nist.gov</a>",
+  "claims": [
+   "L'estàndard DES es publica el 15 de gener de 1977"
+  ]
+ },
+ "venona": {
+  "ref": "Benson, R. L. <i>VENONA Historical Monograph #2: The 1942–43 New York–Moscow KGB Messages</i>. NSA, Center for Cryptologic History. <a href=\"https://theblackvault.com/documents/nsa/venona/monographs/monograph-2.html\">còpia a theblackvault.com</a> · U.S. Department of Energy, OpenNet. «Venona». <a href=\"https://www.osti.gov/opennet/manhattan-project-history/Events/1945-present/venona.htm\">osti.gov</a>",
+  "claims": [
+   "El 1943 el servei d'intel·ligència de l'exèrcit dels EUA comença a desxifrar missatges soviètics perquè s'havien reutilitzat fulls de blocs d'un sol ús"
+  ]
+ },
+ "signal-bb": {
+  "ref": "Signal. «Government Requests» (respostes a ordres judicials, 2016–2026). <a href=\"https://signal.org/bigbrother/\">signal.org/bigbrother</a>",
+  "claims": [
+   "Davant d'una ordre judicial, l'única informació que Signal diu que pot lliurar és la data de creació del compte i la de l'última connexió"
+  ]
+ },
+ "michel": {
+  "ref": "Michel, C., Schroer, C. G., Olbrich, S., et al. (2026). «Deciphering 4000-year-old cuneiform letters hidden in clay envelopes using a mobile X-ray computed tomography scanner». <i>npj Heritage Science</i>, 14, 303. DOI: <a href=\"https://doi.org/10.1038/s40494-026-02568-7\">10.1038/s40494-026-02568-7</a>",
+  "claims": [
+   "Les cartes paleoassíries anaven dins d'un sobre d'argila amb els noms i el segell del remitent, i el destinatari l'havia de trencar per llegir-les",
+   "Centenars de sobres de Kültepe/Kanesh (segles XIX–XVIII aC) s'han trobat intactes i avui es llegeixen per tomografia, com el que porta el segell d'una dona, Anna-anna",
+   "Els autors relacionen el sobre amb la confidencialitat a partir d'una llegenda sumèria de Sargon"
+  ]
+ },
+ "etcsl": {
+  "ref": "<i>The Electronic Text Corpus of Sumerian Literature</i>. «The Sargon legend», t.2.1.4, segment B, línies 53–56. <a href=\"https://etcsl.orinst.ox.ac.uk/cgi-bin/etcsl.cgi?text=t.2.1.4\">etcsl.orinst.ox.ac.uk</a>",
+  "claims": [
+   "A la llegenda, Sargon porta una tauleta que ordena la seva pròpia mort, en una època en què «posar les tauletes dins de sobres encara no existia»"
+  ]
+ },
+ "herodot": {
+  "ref": "Heròdot. <i>Històries</i>, 5.35. Trad. A. D. Godley, Loeb Classical Library (1920). <a href=\"https://www.perseus.tufts.edu/hopper/text?doc=Hdt.+5.35\">Perseus Digital Library</a>",
+  "claims": [
+   "Histieu rapa el cap del seu esclau de més confiança, hi marca el missatge i espera que li torni a créixer el cabell, perquè els camins estaven vigilats"
+  ]
+ },
+ "kamasutra": {
+  "ref": "Vatsyayana. <i>The Kama Sutra of Vatsyayana</i>. Trad. R. F. Burton i F. F. Arbuthnot. Kama Shastra Society, 1883, part I, cap. III (Project Gutenberg, núm. 27827). <a href=\"https://archive.org/details/thekamasutraofva27827gut\">archive.org</a>",
+  "claims": [
+   "Entre les 64 arts que recomana, la 44 és entendre i escriure en xifra"
+  ]
+ },
+ "simmel": {
+  "ref": "Simmel, G. (1906). «The Sociology of Secrecy and of Secret Societies». Trad. A. W. Small. <i>American Journal of Sociology</i>, 11(4), 441–498. DOI: <a href=\"https://doi.org/10.1086/211418\">10.1086/211418</a>",
+  "claims": [
+   "Tota relació es basa en el que sabem i no sabem de l'altre; el secret és «one of the greatest accomplishments of humanity» i obre «un segon món» al costat del visible (pp. 441, 462)",
+   "La modernitat fa més públic l'Estat i dona a l'individu una privacitat més completa (p. 469)"
+  ]
+ },
+ "bellman": {
+  "ref": "Bellman, B. L. (1984). <i>The Language of Secrecy: Symbols and Metaphors in Poro Ritual</i>. Rutgers University Press. DOI: <a href=\"https://doi.org/10.36019/9781978816800\">10.36019/9781978816800</a>",
+  "claims": [
+   "Els kpelle no tenen una paraula per a «secret»: diuen <i>ifa mo</i>, «no ho pots dir» (p. 43)",
+   "Amb la iniciació al Poro i al Sande s'aprèn a guardar un secret, i l'iniciat jura alhora parlar i no parlar (pp. 8, 43)",
+   "Les dones saben on són els nois iniciats, però no ho poden dir (p. 51)"
+  ]
+ },
+ "taussig": {
+  "ref": "Taussig, M. (1999). <i>Defacement: Public Secrecy and the Labor of the Negative</i>. Stanford University Press. Descripció de l'editorial: <a href=\"https://ignorancestudies.inist.fr/s/science-ignorance/item/5285\">ignorancestudies.inist.fr</a>",
+  "claims": [
+   "El «secret públic»: allò que se sap de manera general però no es pot dir fàcilment"
+  ]
+ },
+ "altman": {
+  "ref": "Altman, I. (1977). «Privacy Regulation: Culturally Universal or Culturally Specific?». <i>Journal of Social Issues</i>, 33(3), 66–84. DOI: <a href=\"https://doi.org/10.1111/j.1540-4560.1977.tb01883.x\">10.1111/j.1540-4560.1977.tb01883.x</a>",
+  "claims": [
+   "La regulació de la privacitat és universal, però cada cultura hi fa servir mecanismes propis"
+  ]
+ },
+ "gauvain": {
+  "ref": "Gauvain, M., &amp; Altman, I. (1982). «A Cross-Cultural Analysis of Homes». <i>Architecture &amp; Behaviour</i>, 2, 27–46 (p. 41).",
+  "claims": [
+   "Entre els hare del nord-oest del Canadà les portes no es tanquen de dia; de nit sí, i una xemeneia sense fum vol dir «no molesteu»",
+   "Algunes ciutats musulmanes de l'Àfrica occidental del segle XIV evitaven que les portes de les cases quedessin cara a cara"
+  ]
+ },
+ "gregor": {
+  "ref": "Gregor, T. (1977). <i>Mehinaku: The Drama of Daily Life in a Brazilian Indian Village</i>. University of Chicago Press. · Gregor, T. (1974). «Publicity, Privacy, and Mehinacu Marriage». <i>Ethnology</i>, 13(4), 333–349. DOI: <a href=\"https://doi.org/10.2307/3773050\">10.2307/3773050</a>",
+  "claims": [
+   "En un poble on gairebé tot es veu i se sent, els mehinaku han fet de la posada en escena i de la discreció un art"
+  ]
+ },
+ "nissenbaum": {
+  "ref": "Nissenbaum, H. (2004). «Privacy as Contextual Integrity». <i>Washington Law Review</i>, 79(1), 119–158. <a href=\"https://digitalcommons.law.uw.edu/wlr/vol79/iss1/10/\">digitalcommons.law.uw.edu</a>",
+  "claims": [
+   "La privacitat és integritat contextual: que la informació circuli segons les normes del context on es va compartir; no hi ha cap àmbit de la vida sense normes de flux d'informació"
+  ]
+ },
+ "solove": {
+  "ref": "Solove, D. J. (2007). «“I've Got Nothing to Hide” and Other Misunderstandings of Privacy». <i>San Diego Law Review</i>, 44, 745–772.",
+  "claims": [
+   "L'argument de «no tinc res a amagar» parteix de la idea errònia que la privacitat consisteix a amagar coses dolentes"
+  ]
+ },
+ "penney": {
+  "ref": "Penney, J. W. (2016). «Chilling Effects: Online Surveillance and Wikipedia Use». <i>Berkeley Technology Law Journal</i>, 31(1), 117–182. DOI: <a href=\"https://doi.org/10.15779/Z38SS13\">10.15779/Z38SS13</a> · <a href=\"https://www.btlj.org/data/articles2016/vol31/31_1/0117_0182_Penney_ChillingEffects_WEB.pdf\">btlj.org (PDF)</a>",
+  "claims": [
+   "Després de les revelacions de Snowden (juny de 2013), 48 articles de la Wikipedia sobre terrorisme perden de cop 995.085 visites mensuals sobre 2.960.778 (més d'un 30 %; un 25 % sense l'article atípic sobre Hamas), i la tendència canvia"
+  ]
+ },
+ "stimson": {
+  "ref": "Stimson, H. L., &amp; Bundy, M. (1948). <i>On Active Service in Peace and War</i>. Harper &amp; Brothers, p. 188. <a href=\"https://archive.org/details/in.ernet.dli.2015.506235\">archive.org</a>",
+  "claims": [
+   "El 1929 Stimson tanca l'oficina de desxifratge del Departament d'Estat; la frase «Gentlemen do not read each other's mail» apareix a les memòries de 1948, «com va dir més tard», i ell mateix hi admet que després va encoratjar aquesta feina en un altre departament"
+  ]
+ },
+ "bentham": {
+  "ref": "Bentham, J. (1791). <i>Panopticon; or, The Inspection-House</i>. Ed. M. Božovič, <i>The Panopticon Writings</i>, Verso, 1995.",
+  "claims": [
+   "El panòptic: un inspector que veu sense ser vist, «a new mode of obtaining power of mind over mind»"
+  ]
+ },
+ "foucault": {
+  "ref": "Foucault, M. (1975). <i>Surveiller et punir: naissance de la prison</i>. Gallimard. Trad. A. Sheridan, <i>Discipline and Punish</i>, cap. «Panopticism».",
+  "claims": [
+   "«La visibilitat és un parany»: el vigilat és vist però no veu, és objecte d'informació"
+  ]
+ },
+ "rogaway": {
+  "ref": "Rogaway, P. (2015). «The Moral Character of Cryptographic Work». IACR Cryptology ePrint Archive 2015/1162. <a href=\"https://web.cs.ucdavis.edu/~rogaway/papers/moral-fn.pdf\">web.cs.ucdavis.edu (PDF)</a>",
+  "claims": [
+   "«Cryptography rearranges power»: la criptografia decideix qui pot fer què",
+   "La privacitat és tant un bé social com individual, i la vigilància massiva tendeix a produir gent uniforme i dòcil"
+  ]
+ },
+ "warren": {
+  "ref": "Warren, S. D., &amp; Brandeis, L. D. (1890). «The Right to Privacy». <i>Harvard Law Review</i>, 4(5), 193–220. DOI: <a href=\"https://doi.org/10.2307/1321160\">10.2307/1321160</a>",
+  "claims": [
+   "El dret a la privacitat neix el 1890 com a reacció a la fotografia instantània i la premsa: el dret «a ser deixat en pau» (p. 195)"
+  ]
+ },
+ "dudh": {
+  "ref": "Nacions Unides (1948). <i>Declaració Universal dels Drets Humans</i>, art. 12. <a href=\"https://www.un.org/en/about-us/universal-declaration-of-human-rights\">un.org</a>",
+  "claims": [
+   "Ningú no pot patir interferències arbitràries en la seva vida privada, la família, el domicili o la correspondència"
+  ]
+ },
+ "laterà": {
+  "ref": "IV Concili del Laterà (1215), cànon 21. Trad. H. J. Schroeder (1937). <a href=\"https://sourcebooks.web.fordham.edu/basis/lateran4.asp\">Fordham Medieval Sourcebook</a>",
+  "claims": [
+   "El sacerdot no pot revelar el penitent «de paraula, per signes o de cap altra manera»"
+  ]
+ },
+ "hipocratic": {
+  "ref": "Jurament hipocràtic. Trad. M. North, National Library of Medicine (2002). <a href=\"https://www.nlm.nih.gov/hmd/topics/greek-medicine/index.html\">nlm.nih.gov</a>",
+  "claims": [
+   "El metge jura guardar en secret el que vegi o senti i no s'hagi de dir fora"
+  ]
+ }
+}
