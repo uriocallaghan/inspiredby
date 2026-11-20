@@ -153,7 +153,7 @@
 
   /* ---------- Decisions preses ---------- */
   const TL = [
-    ["21-11-2026", "<b>La descripció de portada s'entén sola</b> i diu la idea central de l'article: sense eufemismes («quan la terra va tremolar») ni referents que només s'expliquen dins. Es llegeix sense el títol i l'article, i un desconegut ha de saber què passa."],
+    ["21-11-2026", "<b>La descripció de portada és curta, s'entén sola i diu només la idea central</b>: sense eufemismes («quan la terra va tremolar»), sense referents que només s'expliquen dins i sense detalls (orígens, xifres secundàries, noms). Un desconegut, sense el títol ni l'article, ha de saber què passa."],
     ["21-11-2026", "<b>Text lleuger i ferm</b>: cap nom propi que no torni (només els protagonistes), cap paràgraf o gràfic que existeixi només per justificar l'altre, una idea una sola vegada, i cap matís de revisor dins el text. Si no es pot afirmar, no es posa; si la incertesa és el tema, es diu una vegada i al principi. Les discrepàncies entre fonts van a «Dades i fonts»."],
     ["20-11-2026", "<b>Miniatures de portada: sempre degradats</b>, mai il·lustracions de l'article. Si no n'hi ha de nous, es repeteix el d'un article antic perquè no es noti."],
     ["17-11-2026", "<b>La portada no es toca</b>: Helvetica Neue LT Pro i l'aspecte original. <b>Res d'«AI slop»</b>: cap rètol decoratiu, índex numerat, «Pròximament» ni text de farciment."],
