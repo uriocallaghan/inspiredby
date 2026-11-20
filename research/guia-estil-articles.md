@@ -1,6 +1,6 @@
 # Guia d'estil dels articles d'Inspired by Magazine
 
-Resum de totes les normes del projecte: `web/guidelines/index.html` (/guidelines). Model de referència: **«El Niño i La Niña»** (`web/articles/el-nino/index.html`). Llegeix-lo sencer abans de començar: text, estructura i codi dels gràfics. Altres exemples fets amb la mateixa base: `web/articles/calendari-cosmic/` i `web/articles/de-que-mor-el-mon/`.
+Model de referència: **«El Niño i La Niña»** (`web/articles/el-nino/index.html`). Llegeix-lo sencer abans de començar: text, estructura i codi dels gràfics. Altres exemples fets amb la mateixa base: `web/articles/calendari-cosmic/` i `web/articles/de-que-mor-el-mon/`.
 
 La revista: *articles visuals per entendre el món*. Cada article explica una qüestió complexa de manera molt visual, maca i fàcil d'entendre. L'autor és molt exigent amb dues coses: **que tot sigui cert** i **que no sembli fet per una IA** (res de farciment, rètols decoratius, frases buides o dades inventades).
 

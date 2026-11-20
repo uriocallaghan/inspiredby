@@ -157,7 +157,7 @@ ol.fts li.on,ul.gfs li.on{border-left-color:var(--warm)}
 .fn a.bk:hover{color:var(--ink)}
 .fn .us{display:block;font-size:12.5px;line-height:1.45;color:var(--muted);margin-top:3px}
 .fn .us span{transition:background-color .4s}
-.fn .us span.on{background:#FDF1C4;color:var(--ink)}
+.fn .us span.on{background:rgba(251,227,142,.5);color:var(--ink)}
 .src a.gs{color:var(--ink);font-weight:600;text-decoration:none;white-space:nowrap;border-radius:2px;padding:1px 2px}
 .src a.gs:hover,.src a.gs:focus-visible{background:#FBE38E}
 .meta a.dl-f{color:inherit;text-decoration:underline;text-decoration-color:var(--hair);text-underline-offset:3px}

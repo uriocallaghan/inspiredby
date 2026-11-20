@@ -1,6 +1,6 @@
 # Sistema infogràfic d'Inspired by Magazine
 
-Com han de ser els gràfics de tots els articles nous. Llegeix-ho sencer abans de dibuixar res, juntament amb `research/guia-estil-articles.md` (text, dades i estructura de l'article). Resum de totes les normes del projecte: `web/guidelines/index.html`.
+Com han de ser els gràfics de tots els articles nous. Llegeix-ho sencer abans de dibuixar res, juntament amb `research/guia-estil-articles.md` (text, dades i estructura de l'article).
 
 - **Mostrari viu:** `web/sistema/index.html`, publicat a https://inspiredby.uriocallaghan.com/sistema/. Cada peça hi és dibuixada i funciona.
 - **Codi comú:** `web/assets/ib-viz.js` (objecte global `IBV`): colors, escales, text amb halo, anotacions, llegendes, tooltip tàctil, mapes. Es carrega després de d3 7.9.0 (i de `topojson-client@3.1.0` si hi ha mapes).

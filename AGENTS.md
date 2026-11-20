@@ -11,19 +11,24 @@ Revista web d'articles visuals per entendre el món, en català. Llegeix aquest 
 
 ## Què hi ha
 
-- `web/`: la web que es publica (estàtica, sense build). `web/articles.json` és el catàleg únic dels articles que genera `web/index.html` (la portada); `web/articles/<slug>/` els articles; `web/assets/` el codi i els estils comuns; `web/sistema/` el sistema infogràfic; `web/guidelines/` la pàgina amb totes les normes.
+- `web/`: la web que es publica (estàtica, sense build). `web/articles.json` és el catàleg únic dels articles que genera `web/index.html` (la portada); `web/articles/<slug>/` els articles; `web/assets/` el codi i els estils comuns; `web/sistema/` el sistema infogràfic; `web/guidelines/` la pàgina visual de normes de l'editor.
 - `scripts/`: eines de sistema (`sync-home.mjs` regenera la portada des de `web/articles.json`, `check.mjs` valida tot el conjunt).
 - `research/`: dades, fonts i validacions de cada article, i les guies.
 - `site/`: còpia de la web original del 2020–2021. **No la toquis.**
 
 ## Guies obligatòries
 
-0. **`web/guidelines/index.html`** (https://inspiredby.uriocallaghan.com/guidelines/): el resum de **totes** les normes del projecte en una sola pàgina (publicació, mirada, to, rigor, cites i fonts, estructura, gràfics, mòbil, portada, comprovacions). Llegeix-la primer.
 1. `research/guia-estil-articles.md`: com s'escriu un article, rigor de dades, cites, estructura i proves.
 2. `research/sistema-infografic.md`: com han de ser els gràfics (principis, paleta, hover, lleugeresa) i les peces IB-01 a IB-59. Mostrari viu: `web/sistema/` (https://inspiredby.uriocallaghan.com/sistema/).
 3. `research/guia-mobil.md`: adaptació a mòbil (alçada dels gràfics enganxats, gràfics verticals, etiquetes, tacte).
 
-**Quan l'editor fixa o canvia una norma**, escriu-la alhora a `web/guidelines/index.html` i a la guia detallada que toqui (i aquí si és una regla bàsica), al mateix commit. Cap norma ha de viure només en una conversa.
+**Aquest fitxer i les guies de `research/` són la teva font.** `web/guidelines/` (https://inspiredby.uriocallaghan.com/guidelines/) és la pàgina visual de l'editor: hi veu les normes amb exemples, la llista de decisions preses i els punts pendents de decidir. No cal que la llegeixis per fer un article, però **quan l'editor fixa o canvia una norma**:
+
+1. Escriu-la aquí (si és bàsica) i a la guia detallada que toqui, amb la data («decisió de l'editor, DD-MM-AAAA»).
+2. Actualitza `web/guidelines/`: afegeix-la a «Decisions que ja has pres» (`TL` a `guidelines.js`), treu de «Per decidir» (`DEC`) el punt que hagi resolt i, si cal, l'exemple visual.
+3. Si trobes dues normes que es contradiuen, no en triïs una pel teu compte: afegeix-ho a «Per decidir» amb les dues cites i el fitxer d'on surten, i avisa l'editor.
+
+Tot al mateix commit. Cap norma ha de viure només en una conversa.
 
 ## Els gràfics surten del sistema, no de zero
 
