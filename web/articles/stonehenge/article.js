@@ -129,9 +129,9 @@
     const PEOPLE = [];
     { const A = S3.AX*Math.PI/180, ex = Math.sin(A), ey = Math.cos(A), nx = Math.cos(A), ny = -Math.sin(A), rr = IBV.rng(9);
       for(let i=0;i<7;i++){ const d = 9 + i*2.4 + rr()*.8, o = (i%2 ? .7 : -.7) + (rr()-.5)*.4;
-        PEOPLE.push({x:d*ex + o*nx, y:d*ey + o*ny, pose:"camina", az:S3.AX+180, k:i*1.7, h:1.6 + rr()*.2, walk:{d0:d, o, ex, ey, nx, ny}}); }
-      [[2.6,S3.AX+150],[2.9,S3.AX+200],[3.4,S3.AX+172]].forEach(([r,b],i) => { const [x,y] = S3.pol(r,b); PEOPLE.push({x, y, pose:"mira", az:S3.AX+180, h:1.62 + i*.06}); });
-      const [px,py] = S3.pol(20.5, S3.AX+28); PEOPLE.push({x:px, y:py, pose:"dret", az:S3.AX+250, h:1.7}); }
+        PEOPLE.push({x:d*ex + o*nx, y:d*ey + o*ny, pose:i===2 ? "porta" : "camina", az:S3.AX+180, k:i*1.7, h:i===4 ? 1.15 : 1.55 + rr()*.18, pel:["llarg","monyo","curt"][i%3], capa:i%2===0, walk:{d0:d, o, ex, ey, nx, ny}}); }
+      [[2.6,S3.AX+150],[2.9,S3.AX+200],[3.4,S3.AX+172]].forEach(([r,b],i) => { const [x,y] = S3.pol(r,b); PEOPLE.push({x, y, pose:"mira", az:S3.AX+180, h:1.58 + i*.06, pel:["llarg","curt","monyo"][i], capa:i!==1}); });
+      const [px,py] = S3.pol(20.5, S3.AX+28); PEOPLE.push({x:px, y:py, pose:"dret", az:S3.AX+250, h:1.7, pel:"monyo", capa:true}); }
     let W = 0, H = 0, ctx = null, hits = [], drag = false, tween = null, lastT = 0;
     segBind(fig.querySelector(".seg"), "k", k => {
       const from = Object.assign({}, view), to = VIEWS[k];
@@ -452,7 +452,7 @@
     }
     function figure(x, y, s, ph, col){
       // silueta estirant la corda, inclinada endavant i d'esquena a la pedra
-      S3.drawSil(ctx, x, y, 1.7*s, "estira", ph, 1, col);
+      S3.drawSil(ctx, x, y, 1.7*s, "estira", ph, 1, col, {pel:["llarg","curt","monyo"][Math.floor(Math.abs(Math.sin(x*12.9+y*7.1))*3)]});
     }
     function draw(t){
       if(!ctx) return;
@@ -617,10 +617,10 @@
       tEl.textContent = ST[cur].t;
     }
     function personSvg(g, x, y, s, pulling, still){
-      const p = d3.path();
-      const pose = pulling ? "estira" : still ? "dret" : "palanca", r = S3.silhouette(p, x, y, 1.75*s, pose, pulling ? .8 : 0, pulling ? -1 : 1);
-      g.append("path").attr("d", p.toString()).attr("fill", C.ink).attr("fill-opacity", .88);
-      if(pose === "palanca") g.append("line").attr("x1", r.hand[0] - .35*s).attr("y1", r.hand[1] - .5*s).attr("x2", x + 1.15*s).attr("y2", y + .12*s)
+      const pose = pulling ? "estira" : still ? "dret" : "palanca", r = S3.silPaths(x, y, 1.75*s, pose, pulling ? .8 : 0, pulling ? -1 : 1, {pel: still ? "monyo" : ["llarg","curt"][Math.round(x)%2], capa: still});
+      const pg = g.append("g").attr("opacity", .88); r.paths.forEach(d => pg.append("path").attr("d", d).attr("fill", C.ink));
+      const lx2 = x + 1.45*s, ly2 = y + .1*s;
+      if(pose === "palanca") g.append("line").attr("x1", r.hand[0] - .45*(lx2 - r.hand[0])).attr("y1", r.hand[1] - .45*(ly2 - r.hand[1])).attr("x2", lx2).attr("y2", ly2)
         .attr("stroke", C.ink2).attr("stroke-width", Math.max(1.2, .07*s)).attr("stroke-linecap","round");
     }
     function go(i){
