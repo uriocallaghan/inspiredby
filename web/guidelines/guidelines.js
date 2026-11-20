@@ -153,6 +153,7 @@
 
   /* ---------- Decisions preses ---------- */
   const TL = [
+    ["20-11-2026", "<b>Miniatures de portada: sempre degradats</b>, mai il·lustracions de l'article. Si no n'hi ha de nous, es repeteix el d'un article antic perquè no es noti."],
     ["17-11-2026", "<b>La portada no es toca</b>: Helvetica Neue LT Pro i l'aspecte original. <b>Res d'«AI slop»</b>: cap rètol decoratiu, índex numerat, «Pròximament» ni text de farciment."],
     ["18-11-2026", "<b>Només tres colors</b>: vermell, blau i groc, amb els seus tons. Mai text en groc."],
     ["19-11-2026", "<b>Cercles translúcids, mai anells concèntrics</b> tipus diana."],
