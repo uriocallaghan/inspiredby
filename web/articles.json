@@ -49,47 +49,47 @@
   },
   {
     "slug": "jesus-i-els-quatre-evangelis",
-    "title": "Una vida, quatre evangelis",
-    "desc": "Quan Pau escrivia als corintis, cap dels quatre evangelis existia encara, però ja es recordava l'últim sopar. Quatre relats que discrepen sobre Jesús de Natzaret.",
+    "title": "Jesús no va escriure res",
+    "desc": "Jesús no va deixar cap llibre. Unes cartes, quatre relats i dues frases d'historiadors antics permeten seguir-ne el rastre.",
     "category": "Història",
     "minutes": 20,
     "thumbAlt": "Dues esferes abstractes superposades en taronja, rosa i blau cel."
   },
   {
     "slug": "el-nino",
-    "title": "El Niño i La Niña",
-    "desc": "Cada pocs anys, un tros del Pacífic s'escalfa uns graus i a l'altra punta del món hi ha inundacions, incendis i sequeres. Com mou un canvi oceànic mig planeta.",
+    "title": "El Niño i La Niña, les dues cares del Pacífic",
+    "desc": "Cada pocs anys, un tros del Pacífic s'escalfa uns quants graus, i un vaivé de vents i aigua porta pluges i sequeres a mig món.",
     "category": "Clima",
     "minutes": 18,
     "thumbAlt": "Fusió abstracta de blau cobalt, taronja intens i rosa suau."
   },
   {
     "slug": "calendari-cosmic",
-    "title": "El calendari còsmic",
-    "desc": "Durant gairebé tota la història del cosmos no hem existit. Si comprimim del Big Bang fins avui en un any, els humans hauríem arribat el 31 de desembre al vespre.",
+    "title": "Arribats a última hora",
+    "desc": "Si la història de l'univers durés un any, cada segon valdria 437 anys. Nosaltres hi apareixem el 31 de desembre al vespre.",
     "category": "Cosmos",
     "minutes": 8,
     "thumbAlt": "Forma abstracta ascendent en taronja viu, verd oliva i magenta."
   },
   {
     "slug": "de-que-mor-el-mon",
-    "title": "De què mor el món?",
-    "desc": "De guerres? De gana? Si al món només hi visquessin cent persones, de què moririen segons les dades més recents? Avui mor més gent per suïcidi que per homicidi.",
+    "title": "De què mor el món: el cor, abans que la guerra",
+    "desc": "Entre el que temem i el que ens mata hi ha molta distància. Una de cada tres morts al món és cardiovascular; el càncer és la segona causa.",
     "category": "Societat",
     "minutes": 7,
     "thumbAlt": "Volum orgànic abstracte en verd oliva, blau petroli, lila i taronja."
   },
   {
     "slug": "migracio-vertical",
-    "title": "La gran migració de cada nit",
-    "desc": "Cada vespre milers de milions d'animals pugen del fons marí per menjar i baixen abans de l'alba. Passa cada dia a tots els oceans, i ho vam descobrir per error.",
+    "title": "La migració més gran de la Terra passa cada nit",
+    "desc": "El 1942, un sonar de l'armada nord-americana va trobar un fons marí on no n'hi havia cap. Era una capa d'animals que puja i baixa amb la llum del sol.",
     "category": "Oceà",
     "minutes": 15,
     "thumbAlt": "Grup d'esferes translúcides flotants en corall, violeta i rosa."
   },
   {
     "slug": "virus-i-bacteris",
-    "title": "La guerra invisible",
+    "title": "La guerra entre virus i bacteris",
     "desc": "En cada gota de mar, centenars de milers de virus ataquen bacteris que es defensen sense treva. D'aquesta guerra invisible, la ciència en va treure el CRISPR.",
     "category": "Biologia",
     "minutes": 18,
@@ -97,8 +97,8 @@
   },
   {
     "slug": "pols-del-sahara",
-    "title": "La pols que adoba l'Amazònia",
-    "desc": "El vent s'enduu cada any milions de tones de pols del Sàhara fins a Amèrica. Una part cau sobre l'Amazònia i li porta el fòsfor que la pluja s'emporta.",
+    "title": "La pols del Sàhara alimenta l'Amazònia",
+    "desc": "El vent s'endú cada any milions de tones de pols del Sàhara fins a Amèrica. Una part cau sobre l'Amazònia i li porta el fòsfor que la pluja s'emporta.",
     "category": "Planeta",
     "minutes": 15,
     "thumbAlt": "Cercles concèntrics difuminats en taronja, groc i rosa sobre gris clar."
@@ -106,7 +106,7 @@
   {
     "slug": "cinta-transportadora",
     "title": "La cinta transportadora de l'Atlàntic",
-    "desc": "Un corrent invisible porta calor al nord i aigua freda al sud a quilòmetres de fondària. Mou catorze cops l'aigua de tots els rius junts, i pot estar afeblint-se.",
+    "desc": "Benjamin Franklin ja en va veure la meitat visible, el corrent del Golf. L'altra meitat torna pel fons del mar, i l'aigua pot trigar segles a tornar a la superfície.",
     "category": "Clima",
     "minutes": 18,
     "thumbAlt": "Corrent abstracte de blau profund i taronja càlid entrellaçats."
