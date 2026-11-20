@@ -1,6 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <rect width="512" height="512" fill="#FF8800"/>
-  <circle cx="256" cy="256" r="196" fill="#FFCC00"/>
-  <circle cx="256" cy="256" r="136" fill="#FFE400"/>
-  <circle cx="256" cy="256" r="76" fill="#FFF300"/>
+  <!-- Icona de la PWA: la marca del logo (quatre franges) sobre blanc, cantons lleugerament arrodonits.
+       Marca de 288 px centrada: cap a la zona segura de les icones maskable (r 205 px). -->
+  <defs><clipPath id="m"><rect x="112" y="112" width="288" height="288" rx="10"/></clipPath></defs>
+  <rect width="512" height="512" fill="#FFFFFF"/>
+  <g clip-path="url(#m)">
+    <rect x="112" y="112" width="72" height="288" fill="#FFF300"/>
+    <rect x="184" y="112" width="72" height="288" fill="#FFE400"/>
+    <rect x="256" y="112" width="72" height="288" fill="#FFCC00"/>
+    <rect x="328" y="112" width="72" height="288" fill="#FF8800"/>
+  </g>
 </svg>
