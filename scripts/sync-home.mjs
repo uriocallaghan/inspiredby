@@ -88,15 +88,8 @@ function renderGridCard(a, idx) {
 export function renderFooterHtml(prefix = "") {
   const home = prefix || "./";
   return `<footer class="ib-foot">
-  <div class="ib-foot-in">
-    <a class="ib-foot-logo" href="${home}"><img src="${prefix}assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
-    <nav class="ib-foot-nav" aria-label="Peu de pàgina">
-      <a href="${home}">Portada</a>
-      <a href="${prefix}per-penjar/">Articles per penjar</a>
-    </nav>
-    <p class="ib-foot-tag">Articles visuals per entendre el món.</p>
-    <p class="ib-foot-copy">© 2020–2026 Inspired by Magazine</p>
-  </div>
+  <p class="ib-foot-id"><a href="${home}">Inspired by Magazine</a><span>© 2026</span></p>
+  <a class="ib-foot-link" href="${prefix}per-penjar/">Articles per penjar</a>
 </footer>`;
 }
 

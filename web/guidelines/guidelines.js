@@ -169,7 +169,7 @@
     ["20-11-2026", "<b>Títols dels articles menys apretats</b>: el h1 en STIXGeneral passa d'un espaiat de −0,068 em a −0,04 em; tancat, però amb les lletres separades."],
     ["20-11-2026", "<b>Mode fosc a tota la web</b>: segueix el tema del sistema o el botó de sol/lluna de la barra. Els articles s'escriuen només en clar; <code>assets/ib-theme.js</code> tradueix tots els colors, i cada article nou l'ha de carregar el primer al <code>&lt;head&gt;</code> (<code>check.mjs</code> ho exigeix)."],
     ["20-11-2026", "<b>Articles per penjar</b>: els articles a mig fer (<code>\"draft\": true</code> a <code>articles.json</code>) no surten a la portada; es llisten a la pàgina «Articles per penjar», enllaçada des del peu. Només passen a la portada quan l'editor ho diu."],
-    ["20-11-2026", "<b>Peu de pàgina editorial i mínim</b>, igual a tota la web: logo, «Portada» i «Articles per penjar», el lema i el copyright. Cap llista d'articles."],
+    ["20-11-2026", "<b>Peu de pàgina brutalment mínim</b>, igual a tota la web: una sola fila en sans serif, a una sola mida (13 px), alineada amb la línia superior. A l'esquerra «Inspired by Magazine» i l'any; a la dreta «Articles per penjar». Sense logo, sense lema i sense llista d'articles."],
     ["Sense data", "<b>Mirada antropològica i transcultural</b> en tot tema humà. <b>Res inventat</b>: cada xifra amb font primària verificada. <b>Es publica des de <code>main</code></b>, a Netlify, sense publicar a mà."]
 ];
   document.getElementById("tl").innerHTML = TL.map(t => `<li><span class="d">${t[0]}</span><span class="x">${t[1]}</span></li>`).join("");
