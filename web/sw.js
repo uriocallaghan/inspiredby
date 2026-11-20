@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-6f283772de8e";
+const CACHE_NAME = "ib-offline-453e88c20331";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -101,6 +101,8 @@ const LOCAL_ASSETS = [
   "/articles/l-ultim-sopar/img/huguet-mnac.jpg",
   "/articles/l-ultim-sopar/img/leonardo-cenacolo.jpg",
   "/articles/l-ultim-sopar/img/leonardo-cmp.jpg",
+  "/articles/l-ultim-sopar/img/pompeia-banquet.jpg",
+  "/articles/l-ultim-sopar/img/ravenna-cena.jpg",
   "/articles/l-ultim-sopar/img/ravenna-sopar.jpg",
   "/articles/l-ultim-sopar/img/veronese-1573.jpg",
   "/articles/l-ultim-sopar/img/windsor-felip.jpg",
