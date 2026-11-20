@@ -95,16 +95,31 @@
 
     /* ---------------- a dalt: l'obra d'època de cada pas (cap persona inventada) ---------------- */
     const ART = [
-      { src: "img/pompeia-banquet.jpg", alt: "Fresc de Pompeia amb comensals reclinats en llits al voltant d'una tauleta rodona, servits per un noi",
+      { k: "pompeia", alt: "Fresc de Pompeia amb comensals reclinats en llits al voltant d'una tauleta rodona, servits per un noi",
         cap: "Banquet reclinat, fresc de Pompeia, c. 50 dC (Nàpols, MANN 120031) · foto ArchaiOptix, CC BY-SA 4.0",
         capM: "Pompeia, c. 50 dC · ArchaiOptix, CC BY-SA 4.0" },
-      { src: "img/ravenna-cena.jpg", alt: "Mosaic de Sant'Apollinare Nuovo amb Jesús i els apòstols reclinats en semicercle",
+      { k: "ravenna", alt: "Mosaic de Sant'Apollinare Nuovo amb Jesús i els apòstols reclinats en semicercle",
         cap: "Sant'Apollinare Nuovo, Ravenna, c. 500–526", capM: "Sant'Apollinare Nuovo, c. 500–526" },
-      { src: "img/castagno-1447.jpg", alt: "Fresc de Castagno amb els apòstols darrere la taula i Judes sol al davant",
+      { k: "castagno", alt: "Fresc de Castagno amb els apòstols darrere la taula i Judes sol al davant",
         cap: "Andrea del Castagno, Cenacolo di Sant'Apollonia, Florència, 1447", capM: "Castagno, Florència, 1447" },
-      { src: "img/leonardo-cmp.jpg", alt: "Mural de Leonardo amb els tretze comensals al mateix costat de la taula",
+      { k: "leonardo", alt: "Mural de Leonardo amb els tretze comensals al mateix costat de la taula",
         cap: "Leonardo da Vinci, Il Cenacolo, Milà, 1495–1498", capM: "Leonardo, Milà, 1495–1498" }
     ];
+    // Fotos lleugeres: WebP retallat a la proporció del marc (1200 px escriptori, 720 px mòbil),
+    // una miniatura de 48 px dins el codi que surt a l'instant, i precàrrega dels altres passos.
+    const LQ = { pompeia: "data:image/webp;base64,UklGRgABAABXRUJQVlA4IPQAAAAwBgCdASowABEAPwFurlArJqQisBqoAWAgCUAYIe5U4Fb0F5k4czBBQrpkP4cC0lBRDUume4vhECrgAP2vgUYxz369W3C8LAF093MyMAkyikxF7bPmLNnNkPszcdG1RjTzqOUrkQUjRQQVDPRn/wRetdwozkjsCXerX7xQxXR7XsK1/TdWBecMD9cilZRgq/dh6ycuxzQatDTd8d4bm8mCRcrLVH1wkxBWWoBx5NF2F0wS56CNq25ZTm6bozNKtqzwwcD4YyZlekkx0K8eqxkSEU7hjsc224asTIS66TISCMNAN8vqHf+SfoUfSv5Dlkn/yAAA", ravenna: "data:image/webp;base64,UklGRtIAAABXRUJQVlA4IMYAAAAQBgCdASowABEAPwFor1CrJaQisBqoAWAgCWUA0M2rdElOyB8efm1it9KYpBMJvpHIQ9jK/Wr7HMAA9wZ8/mJJmpx/O1XDx4Uql0yqXBhUTohm4obaVHbzGTy33lLfyyMSZe7ZOzVU7L5bKyhi0AmnAjzrO8hjftfXAabNAqJ1makvqXjNNOvq1VKM3v0YD/KXzeu9GCvMiN6w2WIGhI5LCOIi3G3eSTQxNw91Z+3K+BbNzdR2eXIvg6OT9t2qc9ylsmIAAAA=", castagno: "data:image/webp;base64,UklGRgoBAABXRUJQVlA4IP4AAABQBgCdASowABEAPwF0rE+rJ6QiMBqoAWAgCUAWoDP6YAAnNl4Z9sJWKwJqEyJScsxmSDOHfjekha5/oAD88LIpAGJnsZLdHJ5++Wi20G2KWPV6xZnMksoXZ3rYFeeww8CijDSdia9tr4SLBBBh0f9lnobpVbaCeYN2Qrc9QHYRtUMQm2tRlS23jIYug9JTl6dwtA+a6ZzWiHJL6TAhhiRumbzR27socdyZ1cx3w/H8gGAriK1a9r0kgqHD0GdlvEjlmT07L43J3NoCp7T3eQWcn4Q9f1XYG5fapEC7zhe4JOkBQ4YsSIL+NbL1RAx57ABWJXvytOc5MmbcxuQAAA==", leonardo: "data:image/webp;base64,UklGRrgAAABXRUJQVlA4IKwAAAAwBQCdASowABEAPwFyrE+rJyQiMBqoAWAgCWcAw6w0IMk7PxnEa1A6MZgsTNqfhQHLAAD+7L6HAZNI93yjDUmLVmFLoyWYbIG0EK8xuW9vyHp9l6dbn8p6H/jAD/kdF8AxQHetOramAFwkmddziK8wsioz5CvrfIEqLDqZTl6LMaro++ATIHBYbkmHKfAg8dme+Ztm5sNO2hmJLv9751e3gq+qmZrTaWBFEIAA" };
+    const ART_CACHE = {}, ART_OK = {};
+    const artSrc = (a, wpx) => `img/v1/${a.k}-${wpx * Math.min(2, window.devicePixelRatio || 1) > 760 ? 1200 : 720}.webp`;
+    function artLoad(src){
+      if(!ART_CACHE[src]) ART_CACHE[src] = new Promise(res => {
+        const im = new Image(); im.decoding = "async";
+        const done = () => { ART_OK[src] = true; res(true); };
+        im.onload = () => Promise.race([im.decode ? im.decode().catch(() => {}) : null, new Promise(r => setTimeout(r, 120))]).then(done);
+        im.onerror = () => res(false);
+        im.src = src;
+      });
+      return ART_CACHE[src];
+    }
 
     let curStep = 0, updFn = null;
 
@@ -208,8 +223,23 @@
         if(animate) old.transition().duration(dur(450)).style("opacity", 0).remove(); else old.remove();
         const art = ART[idx], capH = 20, ih = hFr - capH;
         const outer = gEl.append("g").attr("class", "fz");
-        outer.append("image").attr("href", art.src).attr("x", 0).attr("y", 0).attr("width", w).attr("height", ih)
+        const src = artSrc(art, w);
+        const full = outer.append("image").attr("x", 0).attr("y", 0).attr("width", w).attr("height", ih)
           .attr("preserveAspectRatio", "xMidYMid slice").attr("role", "img").attr("aria-label", art.alt);
+        if(ART_OK[src]){ full.attr("href", src); }
+        else {
+          const lq = outer.insert("image", "image").attr("href", LQ[art.k]).attr("x", 0).attr("y", 0).attr("width", w).attr("height", ih)
+            .attr("preserveAspectRatio", "xMidYMid slice").style("filter", "blur(5px)").attr("aria-hidden", "true");
+          full.style("opacity", 0);
+          artLoad(src).then(() => {
+            full.attr("href", src).style("transition", V.reduced ? null : "opacity 260ms ease");
+            full.node().getBoundingClientRect();            // força l'estil inicial perquè la transició CSS arrenqui
+            full.style("opacity", 1);
+            setTimeout(() => lq.remove(), 400);
+          });
+        }
+        // quan la del pas actual és a punt, es carreguen les dels altres passos
+        artLoad(src).then(() => ART.forEach(a => artLoad(artSrc(a, w))));
         V.t(outer, 0, ih + 14, mob ? art.capM : art.cap, { size: 11, fill: C.muted });
         if(animate) outer.style("opacity", 0).transition().delay(dur(200)).duration(dur(700)).style("opacity", 1);
       }
