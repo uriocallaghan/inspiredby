@@ -114,13 +114,6 @@ sup.nr a:hover,sup.nr a:focus-visible{background:#FBE38E;color:var(--ink)}
 .step sup.nr a{color:var(--warm)}
 .fn h2{font-family:var(--sans);font-size:15px;font-weight:700;color:var(--ink);margin:30px 0 10px}
 .fn .nt-i{font-size:13.5px;color:var(--ink-2)}
-ol.nts{padding-left:2.1em;margin:0}
-ol.nts li{margin:0 0 .25em;padding:5px 8px 5px 4px;border-left:2px solid transparent;scroll-margin-top:30vh;transition:border-color .4s;color:var(--ink-2)}
-ol.nts li::marker{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
-ol.nts li.on{border-left-color:var(--warm)}
-ol.nts a.bk{text-decoration:none;font-weight:700;color:var(--warm);display:inline-block;min-width:24px;min-height:24px;text-align:center}
-ol.nts a.bk:hover{color:var(--ink)}
-ol.nts a.fr{text-decoration:none;color:var(--ink);font-weight:600}
 ol.fts li{scroll-margin-top:30vh;transition:background-color .4s;padding:2px 4px}
 .npop{position:absolute;z-index:20;max-width:340px;background:var(--paper);border:1px solid var(--hair);padding:9px 12px 10px;font-family:var(--sans);font-size:13px;line-height:1.45;color:var(--ink-2);pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s}
 .npop.on{opacity:1;transform:none}
@@ -129,7 +122,7 @@ ol.fts li{scroll-margin-top:30vh;transition:background-color .4s;padding:2px 4px
 
 @media (prefers-reduced-motion: no-preference){
   sup.nr a.flash{animation:nrflash 1.6s ease-out}
-  ol.nts li.on,ol.fts li.on{animation:liflash 2.4s ease-out}
+  ol.fts li.on{animation:liflash 2.4s ease-out}
 }
 @keyframes nrflash{0%,35%{background:#F5C518;color:var(--ink)}100%{background:transparent}}
 @keyframes liflash{0%,30%{background:#FDF1C4}100%{background:transparent}}
@@ -158,3 +151,27 @@ ol.fts li{scroll-margin-top:30vh;transition:background-color .4s;padding:2px 4px
   .oven-readout{grid-template-columns:1fr;gap:8px}
   .ctlrow .rng-wrap{flex-basis:100%;min-width:0}
 }
+
+/* Dades i fonts: una sola llista. Cada número del text porta a la font; la fletxa torna al text. */
+.fn h2{font-size:18px;margin:0 0 4px}
+.fn h3{font-family:var(--sans);font-size:15px;font-weight:700;color:var(--ink);margin:28px 0 10px}
+ol.fts{padding-left:2.1em;margin:0}
+ul.gfs{list-style:none;padding-left:0;margin:0}
+ol.fts li,ul.gfs li{margin:0 0 .35em;padding:5px 8px 5px 4px;border-left:2px solid transparent;scroll-margin-top:30vh;transition:border-color .4s;color:var(--ink-2)}
+ol.fts li::marker{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+ol.fts li.on,ul.gfs li.on{border-left-color:var(--warm)}
+.fn a.bk{text-decoration:none;font-weight:700;color:var(--warm);display:inline-block;min-width:24px;min-height:24px;text-align:center}
+.fn a.bk:hover{color:var(--ink)}
+.fn .us{display:block;font-size:12.5px;line-height:1.45;color:var(--muted);margin-top:3px}
+.fn .us span{transition:background-color .4s}
+.fn .us span.on{background:#FDF1C4;color:var(--ink)}
+.src a.gs{color:var(--ink);font-weight:600;text-decoration:none;white-space:nowrap;border-radius:2px;padding:1px 2px}
+.src a.gs:hover,.src a.gs:focus-visible{background:#FBE38E}
+.meta a.dl-f{color:inherit;text-decoration:underline;text-decoration-color:var(--hair);text-underline-offset:3px}
+.meta a.dl-f:hover{color:var(--ink)}
+.npop .q{display:block;color:var(--ink);margin-bottom:5px}
+@media (prefers-reduced-motion:no-preference){
+  ul.gfs li.on{animation:liflash 2.4s ease-out}
+  .src a.gs.flash{animation:nrflash 1.6s ease-out}
+}
+.fn .gt{display:block;color:var(--ink);margin-bottom:2px}
