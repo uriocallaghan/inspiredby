@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { loadArticles, renderHomeHtml, renderServiceWorker } from "./sync-home.mjs";
+import { loadArticles, renderHomeHtml, renderDraftsHtml, renderServiceWorker, footerPages, withFooter, draftArticles } from "./sync-home.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const WEB_DIR = path.join(ROOT, "web");
@@ -46,6 +46,17 @@ try {
   if (expectedHome !== actualHome) {
     errors.push("web/index.html no coincideix amb web/articles.json. Executa: node scripts/sync-home.mjs");
   }
+  const draftsPath = path.join(WEB_DIR, "per-penjar", "index.html");
+  const actualDrafts = fs.existsSync(draftsPath) ? fs.readFileSync(draftsPath, "utf8") : "";
+  if (renderDraftsHtml(articles) !== actualDrafts) {
+    errors.push("web/per-penjar/index.html no coincideix amb web/articles.json. Executa: node scripts/sync-home.mjs");
+  }
+  for (const [rel, prefix] of footerPages()) {
+    const html = fs.readFileSync(path.join(WEB_DIR, rel), "utf8");
+    const next = withFooter(html, prefix);
+    if (next === null) errors.push(`web/${rel} no té el peu comú <footer class="ib-foot">.`);
+    else if (next !== html) errors.push(`web/${rel} té un peu antic. Executa: node scripts/sync-home.mjs`);
+  }
   const expectedSw = renderServiceWorker(articles);
   const actualSw = fs.existsSync(SW_PATH) ? fs.readFileSync(SW_PATH, "utf8") : "";
   if (expectedSw !== actualSw) {
@@ -71,7 +82,7 @@ const diskSet = new Set(diskSlugs);
 
 for (const slug of diskSlugs) {
   if (!jsonSet.has(slug)) {
-    errors.push(`Article orfe a web/articles/${slug}/ que no apareix a web/articles.json (ni a la portada).`);
+    errors.push(`Article orfe a web/articles/${slug}/ que no apareix a web/articles.json (ni a la portada ni a per-penjar).`);
   }
 }
 for (const slug of jsonSlugs) {
@@ -184,7 +195,7 @@ for (const slug of jsonSlugs) {
 
 // ---------- Mode fosc: assets/ib-theme.js el primer al <head> de cada pàgina ----------
 const THEME_PAGES = [
-  "index.html", "404.html", "sistema/index.html", "guidelines/index.html",
+  "index.html", "404.html", "sistema/index.html", "guidelines/index.html", "per-penjar/index.html",
   ...fs.readdirSync(ARTICLES_DIR, { withFileTypes: true }).filter(d => d.isDirectory()).map(d => `articles/${d.name}/index.html`)
 ];
 for (const rel of THEME_PAGES) {
@@ -214,7 +225,7 @@ if (warnings.length) {
 if (errors.length) fail(errors);
 
 console.log(`OK · Sistema verificat:`);
-console.log(`  - Portada sincronitzada: web/index.html <-> web/articles.json (${articles.length} articles, 0 orfes)`);
+console.log(`  - Portada sincronitzada: web/index.html <-> web/articles.json (${articles.length - draftArticles(articles).length} a la portada, ${draftArticles(articles).length} per penjar, 0 orfes)`);
 console.log(`  - Actius per article verificats: ${articles.length}/${articles.length} amb index.html, thumb.webp vàlid i cover.jpg`);
 console.log(`  - Sintaxi JS correcta: ${jsFiles.length} fitxers comprovats`);
 console.log(`  - Mode fosc: ib-theme.js el primer al <head> de ${THEME_PAGES.length} pàgines`);

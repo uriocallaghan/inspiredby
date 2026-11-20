@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-fa668caeefb0";
+const CACHE_NAME = "ib-offline-a50f04272e14";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -305,7 +305,9 @@ const LOCAL_ASSETS = [
   "/assets/logo.png",
   "/assets/scrolly.js",
   "/index.html",
-  "/manifest.webmanifest"
+  "/manifest.webmanifest",
+  "/per-penjar/",
+  "/per-penjar/index.html"
 ];
 const EXTERNAL_ASSETS = [
   "https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js",

@@ -8,6 +8,7 @@ const WEB_DIR = path.join(ROOT, "web");
 const CATALOG_PATH = path.join(WEB_DIR, "articles.json");
 const HOME_PATH = path.join(WEB_DIR, "index.html");
 const SW_PATH = path.join(WEB_DIR, "sw.js");
+const DRAFTS_PATH = path.join(WEB_DIR, "per-penjar", "index.html");
 
 const EXTERNAL_PRECACHE = [
   "https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js",
@@ -81,10 +82,35 @@ function renderGridCard(a, idx) {
 }
 
 /**
- * Genera el codi HTML complet de web/index.html a partir de web/articles.json.
+ * Peu de pàgina comú de tota la web. `prefix` és el camí fins a l'arrel ("", "../" o "../../").
+ * `node scripts/sync-home.mjs` l'aplica a totes les pàgines de web/ (portada, articles, sistema, guies).
  */
-export function renderHomeHtml(articles) {
-  validateArticles(articles);
+export function renderFooterHtml(prefix = "") {
+  const home = prefix || "./";
+  return `<footer class="ib-foot">
+  <div class="ib-foot-in">
+    <a class="ib-foot-logo" href="${home}"><img src="${prefix}assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+    <nav class="ib-foot-nav" aria-label="Peu de pàgina">
+      <a href="${home}">Portada</a>
+      <a href="${prefix}per-penjar/">Articles per penjar</a>
+    </nav>
+    <p class="ib-foot-tag">Articles visuals per entendre el món.</p>
+    <p class="ib-foot-copy">© 2020–2026 Inspired by Magazine</p>
+  </div>
+</footer>`;
+}
+
+export const publishedArticles = articles => articles.filter(a => !a.draft);
+export const draftArticles = articles => articles.filter(a => a.draft);
+
+/**
+ * Genera el codi HTML complet de web/index.html a partir de web/articles.json.
+ * Els articles amb "draft": true no hi surten: van a web/per-penjar/.
+ */
+export function renderHomeHtml(allArticles) {
+  validateArticles(allArticles);
+  const articles = publishedArticles(allArticles);
+  if (articles.length < 2) throw new Error("La portada necessita com a mínim 2 articles publicats (sense \"draft\").");
   const diptych = articles.slice(0, 2);
   const grid = articles.slice(2);
   const ogSlug = escapeHtml(articles[0].slug);
@@ -134,13 +160,82 @@ ${gridHtml}
   </section>
 </main>
 
-<footer class="ib-foot">
-  <a href="./"><img src="assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
-</footer>
+${renderFooterHtml("")}
 <script src="assets/ib.js" defer></script>
 </body>
 </html>
 `;
+}
+
+/**
+ * Genera web/per-penjar/index.html: els articles amb "draft": true, que encara s'estan fent.
+ * No surten a la portada i la pàgina no s'indexa.
+ */
+export function renderDraftsHtml(allArticles) {
+  const drafts = draftArticles(allArticles);
+  const cards = drafts.map((a, i) => renderGridCard(a, i)
+    .replace(/href="articles\//g, 'href="../articles/')
+    .replace(/src="articles\//g, 'src="../articles/')).join("\n\n");
+  const body = drafts.length
+    ? `    <div class="ib-grid">\n${cards}\n    </div>`
+    : `    <p class="ib-drafts-empty">Ara mateix no hi ha cap article a mig fer.</p>`;
+  return `<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<script src="../assets/ib-theme.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Articles per penjar · Inspired by Magazine</title>
+<meta name="description" content="Articles que encara s'estan fent.">
+<meta name="robots" content="noindex">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#FCFCFA">
+<link rel="icon" sizes="192x192" href="../assets/icon192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+<link rel="preload" href="../assets/fonts/helveticaneueltpro-md.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/helveticaneueltpro-roman.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/ib.css">
+</head>
+<body class="ib-home ib-drafts">
+
+<header class="ib-bar ib-bar--sticky">
+  <a href="../" aria-label="Inspired by Magazine"><img src="../assets/logo.png" alt="Inspired by Magazine" width="1600" height="192"></a>
+</header>
+
+<main class="ib-page">
+  <header class="ib-drafts-head">
+    <h1>Articles per penjar</h1>
+    <p>Articles que encara s'estan fent. Les dades, els gràfics i el text poden canviar abans de publicar-se.</p>
+  </header>
+
+  <section class="ib-collection" aria-label="Articles per penjar">
+${body}
+  </section>
+</main>
+
+${renderFooterHtml("../")}
+<script src="../assets/ib.js" defer></script>
+</body>
+</html>
+`;
+}
+
+/** Pàgines de web/ que porten el peu comú, amb el prefix fins a l'arrel. La portada i per-penjar el generen sols. */
+export function footerPages() {
+  const pages = [["sistema/index.html", "../"], ["guidelines/index.html", "../"]];
+  const dir = path.join(WEB_DIR, "articles");
+  for (const d of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (d.isDirectory() && !d.name.startsWith(".")) pages.push([`articles/${d.name}/index.html`, "../../"]);
+  }
+  return pages.filter(([rel]) => fs.existsSync(path.join(WEB_DIR, rel)));
+}
+
+const FOOTER_RE = /<footer class="ib-foot">[\s\S]*?<\/footer>/;
+
+/** Torna l'HTML amb el peu comú; null si la pàgina no té cap <footer class="ib-foot">. */
+export function withFooter(html, prefix) {
+  if (!FOOTER_RE.test(html)) return null;
+  return html.replace(FOOTER_RE, () => renderFooterHtml(prefix));
 }
 
 function collectFiles(dir, baseDir, acc = []) {
@@ -164,7 +259,9 @@ export function renderServiceWorker(articles) {
     "/index.html",
     "/404.html",
     "/manifest.webmanifest",
-    "/articles.json"
+    "/articles.json",
+    "/per-penjar/",
+    "/per-penjar/index.html"
   ]);
 
   for (const url of collectFiles(path.join(WEB_DIR, "assets"), WEB_DIR)) {
@@ -289,21 +386,36 @@ if (isMain) {
   const checkMode = process.argv.includes("--check");
   const articles = loadArticles();
   const nextHtml = renderHomeHtml(articles);
-  const currentHtml = fs.existsSync(HOME_PATH) ? fs.readFileSync(HOME_PATH, "utf8") : "";
-  const nextSw = renderServiceWorker(articles);
-  const currentSw = fs.existsSync(SW_PATH) ? fs.readFileSync(SW_PATH, "utf8") : "";
+  const nextDrafts = renderDraftsHtml(articles);
+  const read = f => fs.existsSync(f) ? fs.readFileSync(f, "utf8") : "";
+  const footerChanges = [];
+  for (const [rel, prefix] of footerPages()) {
+    const file = path.join(WEB_DIR, rel);
+    const html = read(file);
+    const next = withFooter(html, prefix);
+    if (next === null) console.warn(`AVÍS: web/${rel} no té <footer class="ib-foot">.`);
+    else if (next !== html) footerChanges.push([file, next]);
+  }
 
   if (checkMode) {
-    if (nextHtml !== currentHtml || nextSw !== currentSw) {
-      console.error("ERROR: web/index.html o web/sw.js no estan sincronitzats. Executa: node scripts/sync-home.mjs");
+    const stale = [];
+    if (nextHtml !== read(HOME_PATH)) stale.push("web/index.html");
+    if (nextDrafts !== read(DRAFTS_PATH)) stale.push("web/per-penjar/index.html");
+    if (renderServiceWorker(articles) !== read(SW_PATH)) stale.push("web/sw.js");
+    for (const [file] of footerChanges) stale.push(path.relative(ROOT, file));
+    if (stale.length) {
+      console.error(`ERROR: no estan sincronitzats (${stale.join(", ")}). Executa: node scripts/sync-home.mjs`);
       process.exit(1);
     }
-    console.log(`OK: web/index.html i web/sw.js sincronitzats (${articles.length} articles).`);
+    console.log(`OK: portada, per-penjar, peus i sw.js sincronitzats (${articles.length} articles).`);
   } else {
     fs.writeFileSync(HOME_PATH, nextHtml, "utf8");
-    // Recalculate SW hash after writing updated index.html so hash matches disk
-    const finalSw = renderServiceWorker(articles);
-    fs.writeFileSync(SW_PATH, finalSw, "utf8");
-    console.log(`Generat web/index.html (${articles.length} articles) i web/sw.js (cache offline complet).`);
+    fs.mkdirSync(path.dirname(DRAFTS_PATH), { recursive: true });
+    fs.writeFileSync(DRAFTS_PATH, nextDrafts, "utf8");
+    for (const [file, html] of footerChanges) fs.writeFileSync(file, html, "utf8");
+    // El hash del SW es calcula després d'escriure-ho tot perquè coincideixi amb el disc
+    fs.writeFileSync(SW_PATH, renderServiceWorker(articles), "utf8");
+    const drafts = draftArticles(articles).length;
+    console.log(`Generat web/index.html (${articles.length - drafts} articles), web/per-penjar/ (${drafts}), ${footerChanges.length} peus actualitzats i web/sw.js.`);
   }
 }

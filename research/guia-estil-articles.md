@@ -60,11 +60,11 @@ La revista: *articles visuals per entendre el món*. Cada article explica una q�
 - Portada per a la revista: crea `web/articles/<slug>/cover.html` (SVG de 1680×720 fet amb codi, sense text, amb la paleta de l'article) i genera'n `cover.jpg`:
   `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu --hide-scrollbars --window-size=1680,720 --screenshot=cover.png file://…/cover.html` i converteix-lo amb `sips -s format jpeg cover.png --out cover.jpg`.
 - Miniatura 4:5 de portada: afegeix `web/articles/<slug>/thumb.webp`. La miniatura de portada (`thumb.webp`, 800×1000) és sempre una de les imatges de degradat de la casa, mai una il·lustració feta per a l'article; si no n'hi ha cap de nova, es reutilitza la d'un article antic (dels del final de `web/articles.json`, lluny dels nous a la portada) perquè la repetició no es noti (decisió de l'editor, 20-11-2026)., registra l'article a `web/articles.json` i regenera `web/index.html` executant `node scripts/sync-home.mjs`.
-- **Tots els articles de `web/articles/` han de sortir sempre a la portada.** No modifiquis el disseny o CSS de la portada, altres articles ni els fitxers compartits (`web/assets/*`) sense explicar-ho.
+- **Tots els articles de `web/articles/` han de sortir a la web: a la portada o, amb `"draft": true` a `web/articles.json`, a «Articles per penjar» (`web/per-penjar/`, enllaçada des del peu)** (decisió de l'editor, 20-11-2026). Un article passa a la portada només quan l'editor ho diu. El peu de pàgina és comú i el posa `sync-home.mjs`: a l'article n'hi ha prou amb un `<footer class="ib-foot"></footer>`. No modifiquis el disseny o CSS de la portada, altres articles ni els fitxers compartits (`web/assets/*`) sense explicar-ho.
 
 ## 5. Proves
 
-- `node scripts/check.mjs` (valida la sincronia portada ↔ `web/articles.json` ↔ `web/articles/`, els fitxers obligatoris i el `node --check` de tots els `.js`).
+- `node scripts/check.mjs` (valida la sincronia portada i «per penjar» ↔ `web/articles.json` ↔ `web/articles/`, el peu comú, els fitxers obligatoris i el `node --check` de tots els `.js`).
 - Serveix la carpeta `web/` amb el teu propi port (`python3 -m http.server <port> --directory "<ruta>/web"`) i atura'l en acabar.
 - Pots fer servir el navegador integrat (eines `mcp__Claude_Browser__*`) **només en una pestanya pròpia** (`tabs_create` i passa sempre el teu `tabId`); no toquis les altres pestanyes. Si no està disponible, fes servir Chrome headless (`--screenshot`, `--dump-dom`, `--enable-logging=stderr`).
 - Recorre tots els passos del scroll i totes les interaccions; zero errors a la consola; zero desbordaments horitzontals.

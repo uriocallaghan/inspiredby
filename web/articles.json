@@ -5,7 +5,8 @@
     "desc": "El 1976, una canoa hawaiana va arribar a Tahití sense instruments, guiada per un navegant d'una petita illa de Micronèsia. Com es troba una illa llegint estrelles, onades i ocells.",
     "category": "Antropologia i història",
     "minutes": 23,
-    "thumbAlt": "Brúixola estel·lar amb punts grocs de sortida d'estrelles, una línia vermella i una de blava, i la ruta vermella d'una canoa sobre fons blanc."
+    "thumbAlt": "Brúixola estel·lar amb punts grocs de sortida d'estrelles, una línia vermella i una de blava, i la ruta vermella d'una canoa sobre fons blanc.",
+    "draft": true
   },
   {
     "slug": "el-forat-de-l-ozo",
@@ -13,7 +14,8 @@
     "desc": "Una capa de tres mil·límetres, un forat que ningú no veu i 198 parts que es van posar d'acord. Com vam començar a reparar l'ozó, per què encara cal paciència i què queda per fer.",
     "category": "Ciència i societat",
     "minutes": 23,
-    "thumbAlt": "Globus de l'hemisferi sud vist des de sota, amb el forat d'ozó en vermell al centre envoltat d'un anell blau."
+    "thumbAlt": "Globus de l'hemisferi sud vist des de sota, amb el forat d'ozó en vermell al centre envoltat d'un anell blau.",
+    "draft": true
   },
   {
     "slug": "la-malaltia-que-vam-esborrar",
@@ -29,7 +31,8 @@
     "desc": "Londres, 1854: més de cinc-centes morts en deu dies al voltant d'una bomba del Soho. No el va aturar cap mapa: un metge que preguntava casa per casa, un capellà i una ciutat que no se'ls va creure.",
     "category": "Història i ciència",
     "minutes": 25,
-    "thumbAlt": "Mapa de carrers del Soho de Londres amb punts vermells de morts de còlera al voltant d'una bomba d'aigua, sobre carrers ressaltats en groc."
+    "thumbAlt": "Mapa de carrers del Soho de Londres amb punts vermells de morts de còlera al voltant d'una bomba d'aigua, sobre carrers ressaltats en groc.",
+    "draft": true
   },
   {
     "slug": "ciencia-entre-enemics",
@@ -37,7 +40,8 @@
     "desc": "En plena guerra freda, els rivals van congelar les disputes sobre l'Antàrtida i la van reservar a la pau i a la ciència. Del Tractat al CERN, l'estació espacial i SESAME: què aconsegueix la ciència entre enemics, i què no.",
     "category": "Història i ciència",
     "minutes": 23,
-    "thumbAlt": "L'Antàrtida vista des del pol Sud amb sectors translúcids vermells, blaus i grocs i punts de les estacions científiques."
+    "thumbAlt": "L'Antàrtida vista des del pol Sud amb sectors translúcids vermells, blaus i grocs i punts de les estacions científiques.",
+    "draft": true
   },
   {
     "slug": "les-llavors-de-leningrad",
@@ -45,7 +49,8 @@
     "desc": "Durant el setge de Leningrad, els botànics de l'institut de Vavílov van custodiar la seva gran col·lecció de llavors mentre morien de gana. Què hi ha de cert en la història, i què en queda avui a Svalbard.",
     "category": "Història i ciència",
     "minutes": 22,
-    "thumbAlt": "Espiral de llavors ovalades translúcides en groc, vermell, blau i gris sobre fons blanc."
+    "thumbAlt": "Espiral de llavors ovalades translúcides en groc, vermell, blau i gris sobre fons blanc.",
+    "draft": true
   },
   {
     "slug": "la-llengua-que-van-inventar-uns-nens",
@@ -53,7 +58,8 @@
     "desc": "Entre finals dels setanta i principis dels vuitanta, infants, adolescents i joves sords de Managua van fer néixer una llengua de signes nova a partir dels signes de casa. Què ens explica sobre el llenguatge i sobre ser sord.",
     "category": "Antropologia i llenguatge",
     "minutes": 21,
-    "thumbAlt": "Centenars de punts vermells en espiral, units per fils blaus de converses, sobre una taca groga clara."
+    "thumbAlt": "Centenars de punts vermells en espiral, units per fils blaus de converses, sobre una taca groga clara.",
+    "draft": true
   },
   {
     "slug": "el-mapa-d-haiti",
@@ -69,7 +75,8 @@
     "desc": "Cada missatge de WhatsApp o Signal viatja tancat amb una clau que no té ni l'empresa que el porta. Com funciona el xifrat d'extrem a extrem, fins on és segur i què diu de nosaltres saber callar.",
     "category": "Tecnologia i antropologia",
     "minutes": 20,
-    "thumbAlt": "Rellotge de 23 posicions travessat per fils vermells i blaus sobre taques difuminades de groc, vermell i blau."
+    "thumbAlt": "Rellotge de 23 posicions travessat per fils vermells i blaus sobre taques difuminades de groc, vermell i blau.",
+    "draft": true
   },
   {
     "slug": "l-ultim-sopar",
@@ -93,7 +100,8 @@
     "desc": "Un pa pla nascut abans de l'agricultura, un fruit andí que Europa va témer com a verí i una búfala de l'Índia. Com el pa de carrer de Nàpols va conquerir tot el planeta.",
     "category": "Antropologia i història",
     "minutes": 19,
-    "thumbAlt": "Forma ovalada difuminada en taronja, groc i rosa sobre fons crema."
+    "thumbAlt": "Forma ovalada difuminada en taronja, groc i rosa sobre fons crema.",
+    "draft": true
   },
   {
     "slug": "per-que-riem",
@@ -101,7 +109,8 @@
     "desc": "Riem trenta cops més acompanyats que sols, i gairebé mai per un acudit. Dels duels inuit als grans simis: quan un reflex animal esdevé pacte i tribunal.",
     "category": "Antropologia i biologia",
     "minutes": 17,
-    "thumbAlt": "Composició abstracta d'esferes càlides taronges i roses sobre fons clar."
+    "thumbAlt": "Composició abstracta d'esferes càlides taronges i roses sobre fons clar.",
+    "draft": true
   },
   {
     "slug": "per-que-dormim",
@@ -109,7 +118,8 @@
     "desc": "El dormitori solitari és una raresa històrica. De les fregates que dormen volant a les fogueres del Kalahari i l'inemuri japonès: com modela cada cultura el son.",
     "category": "Antropologia i biologia",
     "minutes": 19,
-    "thumbAlt": "Composició abstracta difuminada de tons rosa i daurat suau."
+    "thumbAlt": "Composició abstracta difuminada de tons rosa i daurat suau.",
+    "draft": true
   },
   {
     "slug": "el-jesus-historic",
@@ -173,7 +183,8 @@
     "desc": "El vent s'endú cada any milions de tones de pols del Sàhara fins a Amèrica. Una part cau sobre l'Amazònia i li porta el fòsfor que la pluja s'emporta.",
     "category": "Planeta",
     "minutes": 15,
-    "thumbAlt": "Cercles concèntrics difuminats en taronja, groc i rosa sobre gris clar."
+    "thumbAlt": "Cercles concèntrics difuminats en taronja, groc i rosa sobre gris clar.",
+    "draft": true
   },
   {
     "slug": "cinta-transportadora",
@@ -189,6 +200,7 @@
     "desc": "Cada any aboquem a l'aire més de 40.000 milions de tones de CO₂, però menys de la meitat s'hi queda. Seguim la resta fins al fons del mar i les fulles dels boscos.",
     "category": "Clima",
     "minutes": 17,
-    "thumbAlt": "Esfera orgànica abstracta de tons taronja, blau, lila i verd oliva."
+    "thumbAlt": "Esfera orgànica abstracta de tons taronja, blau, lila i verd oliva.",
+    "draft": true
   }
 ]
