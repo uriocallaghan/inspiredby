@@ -86,3 +86,13 @@ Correccions aplicades i verificades a la font:
 - Apartat «La cara fosca» (coerció i abusos en la vacunació, Greenough 1995, Bhattacharya 2004): retirat per decisió de l'editor (20-11-2026), amb les fonts i afirmacions que només hi servien (Fenner p. 493 i 783) i la frase de la metodologia sobre les històries oficials celebratòries.
 
 - Retirats per decisió de l'editor (20-11-2026), perquè canvien de tema: la frase que deia que les autoritats de Somàlia van amagar els casos el 1976 (Fenner p. 536) i el paràgraf sobre la mpox (nota descriptiva i comitès d'emergències de l'OMS), amb les fonts i afirmacions que només hi servien.
+
+## La veu d'Ali Maow Maalin (21-11-2026)
+
+Llegit sencer el 21-11-2026: Donnelly, J. (27-02-2006), *The Boston Globe* (còpia de l'Internet Archive del 14-10-2009; l'adreça original de boston.com ja no funciona) i BBC News (25-03-2008). Llegits també, com a segones mans: NPR/WNYC (Doucleff, 31-07-2013), GPEI (31-07-2013 i 26-09-2018) i Gavi (10-02-2021).
+- Paraules seves, de primera mà: *Globe* 2006 («I was scared of being vaccinated then. It looked like the shot hurt»; el que explica als pares que no volen vacunar; «I want to be able to see the last person with polio») i BBC 2008 («Somalia was the last country with smallpox. I wanted to help ensure that we would not be the last place with polio too»).
+- El *Globe* situa la malaltia el 1979: és un error (va ser el 1977, Fenner p. 1063). Escriu el nom «Mo'allim»; la BBC, «Moallim».
+- La causa de la mort, «malària complicada», ve del responsable de la lluita contra la pòlio a Somàlia, citat per l'NPR; l'OMS (GPEI 2013) només diu «malaltia sobtada». Gavi diu «complicacions de la malària».
+- Discrepàncies entre fonts que NO s'han fet servir: fi de l'epidèmia de pòlio (2005 a Gavi i GPEI 2018; 2008 a GPEI 2013); somàlia declarada lliure de pòlio (2007 a l'NPR; març del 2008 a la BBC, que és el que fa servir l'article).
+- No utilitzat perquè només és de segona mà: «Don't worry about that. Let's go» (GPEI 2018, relat de Mahamud Shire; la pàgina de l'OMS que hi enllaça ja no existeix).
+- Retirat: la frase «mai no l'havien vacunat amb èxit» (Fenner), perquè el seu propi relat és més precís: va fer veure que s'havia vacunat.

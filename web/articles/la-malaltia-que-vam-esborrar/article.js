@@ -254,7 +254,7 @@ function dot(g,p,o){ o=o||{};
 })();
 
 /* =====================================================================
-   V4 · MAP-03 · EL SETGE: PAÏSOS AMB VEROLA ENDÈMICA (scrolly, dades reals)
+   V4 · MAP-03 · EL CERCLE ES VA ESTRÈNYER: PAÏSOS AMB VEROLA ENDÈMICA (scrolly, dades reals)
    ===================================================================== */
 (function setge(){
   const box=$("#setge-viz"), stepsEl=$("#s-setge .steps"); if(!box)return;
