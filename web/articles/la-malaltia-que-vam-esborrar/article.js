@@ -1,6 +1,5 @@
 /* «La malaltia que vam esborrar» — gràfics (d3 7.9.0 + IBV, sistema infogràfic IB).
    V1 #s-mil     MAP-03 + MAP-12  Mil anys abans de la vacuna (scrolly)
-   V2 #f-deus    MAP-03 + MAP-12  Els déus de la verola
    V3 #f-casos   TIME-04          Casos notificats 1967–1977 (dades reals)
    V4 #s-setge   MAP-03           Països amb verola endèmica (scrolly, dades reals)
    V5 #f-anell   MAP-16           Vacunació massiva o en anell (simulació)
@@ -205,45 +204,6 @@ function dot(g,p,o){ o=o||{};
     el.__set(cur,true);
   });
   IB.scrolly(stepsEl,$("#s-mil .graphic"),i=>{ cur=i; if(box.__set)box.__set(i,false); });
-})();
-
-/* =====================================================================
-   V2 · MAP-03 + MAP-12 · ELS DÉUS DE LA VEROLA
-   ===================================================================== */
-(function deus(){
-  const box=$("#deus-viz"); if(!box)return;
-  const G=[
-    {k:"sitala",ll:[80.5,23.5],t:"Sitala Mata",s:"Índia",d:"deessa amb temples i santuaris a tot l'Índia, coneguda amb noms diferents segons la llengua; des del segle XVIII, lligada a la verola",a:"end"},
-    {k:"toushen",ll:[112,33],t:"T'ou-Shen Niang-Niang",s:"Xina",d:"«la dama que controla la verola»; la tradició la vincula a la monja que va ensenyar la variolació. Més temuda que estimada",a:"end",dy:22},
-    {k:"tametomo",ll:[137,36.5],t:"Tametomo",s:"Japó",d:"heroi del segle XII que havia vençut un dimoni de la verola; el seu retrat vermell es penjava a l'habitació dels malalts",a:"end",dy:-22},
-    {k:"sopona",ll:[3.35,7.4],t:"Sopona",s:"ioruba (Nigèria, Benín, Togo)",d:"déu de la verola dels ioruba; els seus sacerdots tenien cura dels santuaris i, segons les fonts de l'OMS, practicaven la variolació. Els britànics en van prohibir el culte el 1907",a:"end"},
-    {k:"omolu",ll:[-40,-10],t:"Omolu / Obaluaiê",s:"Brasil",d:"els ioruba esclavitzats van portar Sopona a Brasil, on es va transformar en Omolu o Obaluaiê",a:"end"},
-    {k:"nicasi",ll:[4.03,49.26],t:"Sant Nicasi",s:"Reims",d:"bisbe de Reims del segle V; una de les dues tradicions sobre la seva vida diu que havia superat la verola. Patró dels malalts a l'edat mitjana",a:"end"}
-  ];
-  V.mount(box,(el,w)=>{
-    const mob=w<640;
-    const {p,h}=worldProj(w,mob?w*.62:Math.min(w*.56,560));
-    d3.select(el).selectAll("svg").remove();
-    const s=V.svg(el,w,h,"Mapa del món amb sis figures religioses associades a la verola: Sitala a l'Índia, T'ou-Shen Niang-Niang a la Xina, Tametomo al Japó, Sopona entre els ioruba, Omolu al Brasil i sant Nicasi a Reims."), path=d3.geoPath(p);
-    s.style("overflow","hidden");
-    const gl=s.append("g"), ga=s.append("g"), gp=s.append("g");
-    V.world().then(W=>drawLand(gl,path,W));
-    // el viatge de Sopona a Brasil
-    const it=d3.geoInterpolate(G[3].ll,G[4].ll), seg=d3.range(0,41).map(i=>p(it(i/40)));
-    const arc=ga.append("path").attr("d",d3.line().curve(d3.curveCatmullRom)(seg)).attr("fill","none").attr("stroke",C.red).attr("stroke-width",1.2).attr("stroke-dasharray","4 3").attr("stroke-opacity",.8);
-    const nodes=gp.selectAll("g").data(G).join("g").attr("transform",d=>`translate(${p(d.ll)})`).style("opacity",0);
-    nodes.append("circle").attr("r",mob?12:18).attr("fill",C.red).attr("fill-opacity",.24).style("mix-blend-mode",BLEND);
-    nodes.append("circle").attr("r",2.6).attr("fill",C.ink);
-    nodes.each(function(d){ const n=d3.select(this), q=p(d.ll), a=mob?(q[0]>w*.6?"end":q[0]<w*.4?"start":d.a):d.a, dx=a==="end"?-(mob?12:20):(mob?12:20), dy=d.dy||0;
-      V.t(n,dx,dy-2,mob?d.t.replace("T'ou-Shen Niang-Niang","T'ou-Shen").replace("Omolu / Obaluaiê","Omolu"):d.t,{anchor:a,size:mob?11.5:12.5,weight:700,halo:3});
-      if(!mob)V.t(n,dx,dy+13,d.s,{anchor:a,size:11.5,fill:C.ink2,italic:true,halo:3}); });
-    V.onView(el,instant=>{ nodes.transition().duration(instant?0:600).delay((d,i)=>instant?0:i*140).style("opacity",1);
-      if(!instant){ const L=arc.node().getTotalLength(); arc.attr("stroke-dasharray",`${L} ${L}`).attr("stroke-dashoffset",L).transition().delay(900).duration(1600).attr("stroke-dashoffset",0).on("end",()=>arc.attr("stroke-dasharray","4 3")); } });
-    const tp=V.tip(el), hit=s.append("rect").attr("width",w).attr("height",h).attr("fill","transparent");
-    V.hover(hit.node(),(ev,[x,y])=>{ const b=d3.least(G,d=>{ const q=p(d.ll); return (q[0]-x)**2+(q[1]-y)**2; }), q=p(b.ll);
-      if((q[0]-x)**2+(q[1]-y)**2>2500){ tp.hide(); V.focus(nodes,null); return; }
-      V.focus(nodes,d=>d===b); tp.show(`<b>${b.t}</b> (${b.s}) · ${b.d}`); },()=>{ tp.hide(); V.focus(nodes,null); });
-  });
 })();
 
 /* =====================================================================

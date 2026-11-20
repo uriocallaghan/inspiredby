@@ -6,7 +6,6 @@ Font principal: Fenner, Henderson, Arita, Ježek i Ladnyi (1988), *Smallpox and 
 
 - **V1 · `#s-mil` (scrolly 1) · MAP-03 + MAP-12 (punts i arcs de flux sobre el món):** «Mil anys abans de la vacuna». Mapa del món en Equal Earth (sense relleu: és un mapa del món sencer). Passos: Xina (variolació per insuflació, muntanya Emei), Índia (*tika*, Bengala), Àfrica i Boston (Onesimus i Cotton Mather, 1721), Constantinoble → Londres (Mary Wortley Montagu, 1721), Berkeley (Jenner, 1796) i la ruta de l'expedició Balmis-Salvany (1803–1806, arcs amb partícules lentes que representen la cadena de nens). *Dades:* llocs i dates reals (Fenner; Boylston 2012; Tuells i Ramírez 2011); el traçat marítim és esquemàtic.
 
-- **V2 · `#f-deus` · MAP-03 (punts translúcids) + MAP-12 (un arc):** «Els déus de la verola». Món en terra plana (sense relleu: món). Sitala (Índia), T'ou-Shen Niang-Niang (Xina), Tametomo i el color vermell (Japó), Sopona (ioruba: Nigèria, Benín, Togo) i el seu viatge a Brasil com a Omolu/Obaluaiê, i sant Nicasi (Reims). Hover i toc: què era cada figura. *Dades:* etnografia citada a Fenner; localització orientativa.
 
 - **V3 · `#f-casos` · TIME-04 (corrent apilat) amb dades reals:** «El riu dels casos notificats, 1967–1977». Capes per país (Índia, Bangladesh, Pakistan, Etiòpia, Indonèsia, Brasil, Somàlia, resta), hover per any. Anotacions: el pic del 1974 (més de 218.000 casos notificats, perquè ara es buscaven) i el 1% de casos notificats abans del programa. *Dades:* OMS (1988) via Our World in Data, contrastat amb Fenner.
 
@@ -19,3 +18,5 @@ Font principal: Fenner, Henderson, Arita, Ježek i Ladnyi (1988), *Smallpox and 
 - **V7 · `#f-mans` · SCALE-02 (quadrats d'escala niats):** «Les mans i les dosis». Dos modes (`.seg`): dosis donades (URSS > 1.400 milions, 1958–1979; fons voluntari de l'OMS 407 milions, de 27 països; EUA > 190 milions) i persones (més de 130.000 treballadors a l'Índia; 12.000 a Bangladesh; 687 persones de l'OMS de 73 països). *Dades:* reals (Fenner).
 
 - **V8 · `#f-agulla` · HOW-01 (esquema) + PART-01 (reixa d'unitats):** «Una agulla de dues puntes». Dibuix a escala de l'agulla bifurcada (50 mm) amb la gota entre les puntes, i una reixa que mostra quantes vacunacions surten de la mateixa quantitat de vacuna amb el mètode antic (0,01 ml) i amb l'agulla (0,0025 ml): quatre vegades més. Botó per alternar. *Dades:* reals (Fenner, cap. 11); el dibuix és esquemàtic.
+
+- **V2 (retirat, 20-11-2026):** «Els déus de la verola» (MAP-03 + MAP-12) i tot l'apartat «Déus per a una malaltia» s'han tret de l'article per decisió de l'editor. Els números V3–V8 es mantenen.
