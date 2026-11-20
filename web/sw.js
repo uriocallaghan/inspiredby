@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-505b1e5df68f";
+const CACHE_NAME = "ib-offline-14aadca9a35a";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -196,6 +196,7 @@ const LOCAL_ASSETS = [
   "/assets/ib-gent.js",
   "/assets/ib-theme.js",
   "/assets/ib-viz.js",
+  "/assets/ib-voyager.js",
   "/assets/ib.css",
   "/assets/ib.js",
   "/assets/icon-512.png",

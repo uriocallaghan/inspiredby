@@ -164,6 +164,7 @@
     ["20-11-2026", "<b>El verd és el quart color, el de la natura</b>: per dibuixar vegetació i, com a categoria, només si la categoria és natura viva (bosc, conreus, espais naturals). Mai per a text."],
     ["20-11-2026", "<b>El sistema s'ordena per l'ús</b>: vuit famílies amb codis en anglès (<code>TIME</code>, <code>MAP</code>, <code>SCALE</code>, <code>SPREAD</code>, <code>PART</code>, <code>LINK</code>, <code>HOW</code>, <code>CASE</code>), de la peça més bàsica a la més creativa, en una sola pàgina amb enllaços a cada secció. Els noms de les peces, en anglès i en català."],
     ["20-11-2026", "<b>Cites d'un sol clic</b>: el número porta directament a la font; l'entradeta i els peus de gràfic només enllacen a «Dades i fonts»."],
+    ["20-11-2026", "<b>Les persones, amb la referència Voyager</b>: el cap de l'home de la placa Pioneer/Voyager, vestit i posat segons el context amb la mateixa línia (<code>IBVOY</code>, <code>assets/ib-voyager.js</code>). Les siluetes petites d'<code>IBGENT</code> queden per donar escala dins de maquetes i paisatges."],
     ["Sense data", "<b>Mirada antropològica i transcultural</b> en tot tema humà. <b>Res inventat</b>: cada xifra amb font primària verificada. <b>Es publica des de <code>main</code></b>, a Netlify, sense publicar a mà."]
   ];
   document.getElementById("tl").innerHTML = TL.map(t => `<li><span class="d">${t[0]}</span><span class="x">${t[1]}</span></li>`).join("");
