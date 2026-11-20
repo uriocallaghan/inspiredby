@@ -1,0 +1,215 @@
+# Fonts i verificació · Ciència entre enemics
+
+Generat per `fonts_md.py` a partir de `fonts.py`. DOI comprovats a Crossref i URL comprovades el 20-11-2026 (cerncourier.com va respondre 503 en la segona comprovació; la primera lectura de la pàgina va ser correcta). Cites literals de les pàgines o documents oberts.
+
+## Mites i matisos
+
+- **Correccions dels revisors (20-11-2026):** el Tractat congela les reclamacions, no «reparteix» el continent; geopolítica afegida (NSC 5520, NSC 5804/1, R-7, retirada de la Xina, centres de dades); vot = ciència + consens; crítica del Sud global; CRAMRA; límits de la diplomàcia científica; dades d'estacions recomptades (6 sense població, 9 tancades).
+- **No s'han fet servir (no verificats):** l'assassinat d'Alimohammadi com a membre del Consell de SESAME (no hi ha font independent que el vinculi a SESAME), el naixement d'Emilio Palma (Atlas Obscura no accessible), la interdependència tècnica dels segments de l'EEI, la pressió de Rosgeo, les desigualtats a la pràctica de les inspeccions, la filiació dels autors de la resposta a Wehi.- **«La prohibició minera caduca el 2048»: fals.** L'art. 25 del Protocol només permet demanar una conferència de revisió passats 50 anys; la prohibició continua sense un règim alternatiu en vigor.
+- **Participants de l'Any Geofísic:** 67 països (NASA, NOAA). El nombre de persones varia molt entre fonts i no s'ha fet servir.
+- **Navegants maoris a l'Antàrtida:** debat obert (Wehi 2021 contra Anderson et al. 2021); l'article dona totes dues posicions.
+- **Noruega:** no defineix meridians; el mapa dibuixa el sector entre 20° O i 45° E (límits dels veïns) i ho diu.
+- **Població de les estacions:** màxima declarada a COMNAP (estiu), no població d'hivern.
+- **No s'han fet servir** per falta de font primària oberta: el rècord de −89,2 °C de Vostok (la pàgina de l'OMM no carrega sense JavaScript), el paper de Malàisia a la resolució 38/77 (només fonts secundàries), la idea que l'Antàrtida és «l'únic continent sense pobles indígenes».
+
+## Fonts
+
+- **launius** · Launius, R. D. «Sputnik and the Origins of the Space Age». NASA History Office. nasa.gov/history/sputnik
+  - Hi recolza: Recepció a l'ambaixada soviètica de Washington el 4 d'octubre de 1957, al final d'una conferència de l'Any Geofísic sobre coets i satèl·lits; Lloyd Berkner hi anuncia el Spútnik i felicita els col·legues soviètics
+  - Cita / lloc: «the reception on Friday, 4 October 1957, at the Soviet Union's Embassy in Washington» · «a little before 6:00 p.m.» · Berkner: «I wish to congratulate our Soviet colleagues on their achievement» · «the Soviet announcement that evening changed the course of the Cold War» · conferència CSAGI «to develop protocols for sharing scientific data and findings» (Introduction).
+- **nasaigy** · Uri, J. (16-05-2022). «70 Years Ago: Scientists Establish the International Geophysical Year». NASA History. nasa.gov
+  - Hi recolza: L'Any Geofísic Internacional (1957–1958): 18 mesos, 11 disciplines i 67 nacions, de 23 a l'inici
+  - Hi recolza: Els Estats Units van anunciar el 29 de juliol de 1955 que llançarien satèl·lits per a l'Any Geofísic; la Unió Soviètica ho va anunciar quatre dies després
+  - Hi recolza: Es van crear els Centres Mundials de Dades per fer els resultats àmpliament accessibles
+  - Cita / lloc: «The 18-month effort took place in 1957 and 1958» · «11 science disciplines … 67 nations» · «The initial ranks of 23 nations … eventually expanded to 67» · «When the United States announced on July 29, 1955 … the Soviet Union responded four days later» · «establishment of World Data Centers to make the results widely accessible».
+- **noaaigy** · NOAA Global Monitoring Laboratory. «IGY History». gml.noaa.gov (taula de Wilson, J. T., 1961, I.G.Y.: The Year of the New Moons, Knopf)
+  - Hi recolza: Dotze països amb estacions a l'Antàrtida i a les illes properes durant l'Any Geofísic: 36 bases al continent o a les plataformes de gel i 19 a les illes (55 en total)
+  - Cita / lloc: Taula «IGY Stations» (Wilson 1961): Argentina 3/5, Austràlia 2/1, Bèlgica 1/0, Xile 2/2, França 2/1, Japó 1/0, Nova Zelanda 1/1, Noruega 1/0, Sud-àfrica 0/3, Regne Unit 9/6, EUA 6/0, EUA/NZ 1/0, URSS 7/0; «Total Bases during IGY: 36 19».
+- **atstreaty** · Secretaria del Tractat Antàrtic. «The Antarctic Treaty». ats.aq
+  - Hi recolza: Signat a Washington l'1 de desembre de 1959 pels dotze països actius a l'Antàrtida durant l'Any Geofísic; avui en són part 58 països
+  - Hi recolza: Set signataris tenen reclamacions territorials, de vegades superposades; els altres no en reconeixen cap; els Estats Units i Rússia mantenen una «base de reclamació»
+  - Cita / lloc: «signed in Washington on 1 December 1959 by the twelve countries whose scientists had been active in and around Antarctica during the International Geophysical Year» · «The total number of Parties to the Treaty is now 58» · «seven countries … with territorial claims, sometimes overlapping. Other countries do not recognize any claims. The US and Russia maintain a “basis of claim”».
+- **tractat** · The Antarctic Treaty (Washington, 1 de desembre de 1959). Text oficial a la Secretaria del Tractat Antàrtic. documents.ats.aq
+  - Hi recolza: Article I: l'Antàrtida s'utilitzarà només per a fins pacífics; queden prohibides les bases militars, les maniobres i les proves d'armes, però es pot fer servir personal i material militar per a la recerca o altres fins pacífics
+  - Hi recolza: Article II: la llibertat d'investigació científica, tal com es va aplicar durant l'Any Geofísic, continuarà
+  - Hi recolza: Article III: «en la mesura que sigui factible i practicable», s'intercanviaran científics entre expedicions i estacions, i les observacions i els resultats es posaran lliurement a disposició
+  - Hi recolza: Article IV: cap activitat no crearà drets de sobirania, i no es podrà fer cap reclamació nova mentre el Tractat estigui en vigor
+  - Hi recolza: Article V: queden prohibides les explosions nuclears i l'abocament de residus radioactius
+  - Hi recolza: Article VI: s'aplica al sud del paral·lel 60° S, incloses les plataformes de gel
+  - Hi recolza: Article VII: les parts consultives poden designar observadors, i totes les zones i estacions estaran obertes en tot moment a la seva inspecció
+  - Hi recolza: Article IX.2: els països que s'hi adhereixen poden participar en les reunions consultives mentre demostrin el seu interès «conduint una activitat de recerca científica substancial», com establir una estació o enviar una expedició
+  - Cita / lloc: Art. I «Antarctica shall be used for peaceful purposes only»; II «Freedom of scientific investigation … as applied during the International Geophysical Year, shall continue»; III.1(b)(c) «scientific personnel shall be exchanged … scientific observations and results … shall be exchanged and made freely available»; IV; V.1 «Any nuclear explosions in Antarctica and the disposal there of radioactive waste material shall be prohibited»; VI «south of 60º South Latitude, including all ice shelves»; VII.3 «open at all times to inspection»; IX.2 «conducting substantial scientific research activity there, such as the establishment of a scientific station or the despatch of a scientific expedition».
+- **atsparts** · Secretaria del Tractat Antàrtic. «Parties» (consulta del 20-11-2026). ats.aq/devAS/Parties
+  - Hi recolza: 58 parts: els 12 signataris originals, amb estatus consultiu permanent, i 46 adhesions; 29 parts consultives (17 per reconeixement de la seva activitat) i 29 no consultives
+  - Hi recolza: Dates d'entrada en vigor del Tractat (23 de juny de 1961), d'adhesió, d'estatus consultiu i d'entrada en vigor del Protocol per a cada país; el Protocol va entrar en vigor el 14 de gener de 1998
+  - Cita / lloc: «Since 1959, 46 other countries have acceded … Seventeen of the acceding countries have had their activities … recognized … there are now twenty-nine Consultative Parties … The other 29 Non-Consultative Parties» · taula de dates desada a raw/ats-parties-2026-11-20.html i ats-parts.json. Espanya: 31 Mar 1982 / 21 Sep 1988.
+- **protocol** · Protocol on Environmental Protection to the Antarctic Treaty (Madrid, 4 d'octubre de 1991). Text oficial. documents.ats.aq
+  - Hi recolza: Article 2: l'Antàrtida, designada «reserva natural consagrada a la pau i a la ciència»
+  - Hi recolza: Article 7: prohibida qualsevol activitat relacionada amb els recursos minerals que no sigui recerca científica
+  - Hi recolza: Article 25: es pot modificar en qualsevol moment segons l'article XII del Tractat; passats 50 anys de l'entrada en vigor, qualsevol part consultiva pot demanar una conferència de revisió; la prohibició minera continua si no hi ha en vigor un règim legal vinculant que la substitueixi; si una modificació no entra en vigor en tres anys, qualsevol part se'n pot retirar
+  - Hi recolza: Article 21: obert a la signatura a Madrid el 4 d'octubre de 1991
+  - Cita / lloc: Art. 2 «designate Antarctica as a natural reserve, devoted to peace and science» · Art. 7 «Any activity relating to mineral resources, other than scientific research, shall be prohibited» · Art. 25.2 «after the expiration of 50 years … a conference shall be held» · Art. 25.5(a) «the prohibition on Antarctic mineral resource activities contained therein shall continue unless there is in force a binding legal regime» · Art. 21 «open for signature at Madrid on the 4th of October 1991». Entrada en vigor el 14-01-1998: taula de l'ATS.
+- **aat** · Australian Antarctic Program. «The Australian Antarctic Territory (AAT)». antarctica.gov.au
+  - Hi recolza: Territori Antàrtic Australià: al sud del 60° S, entre els 45° E i els 160° E, excepte entre els 136° i els 142° E (Terra Adèlia, francesa); prop del 42 % de l'Antàrtida
+  - Cita / lloc: «all islands and territory situated south of the 60 degree south latitude and lying between the 160 degree east longitude and the 45 degree east longitude, except for between the 136 degree longitude and the 142 degree longitude (which is the French Adelie land) … about 42% of Antarctica».
+- **bat** · Govern del Regne Unit. «British Antarctic Territory». gov.uk · British Antarctic Territory. «About the Territory». britishantarcticterritory.org.uk
+  - Hi recolza: Territori Antàrtic Britànic: al sud del 60° S, entre els 20° i els 80° O; reclamacions en suspens per l'article IV
+  - Hi recolza: No hi ha població permanent al Territori
+  - Cita / lloc: gov.uk: «between longitude 20 degrees West and 80 degrees West» · britishantarcticterritory.org.uk: «There is no permanent population in the Territory».
+- **arg** · Ministeri d'Afers Exteriors de l'Argentina, Direcció Nacional de l'Antàrtic. «Sector Antártico Argentino». cancilleria.gob.ar
+  - Hi recolza: Sector Antàrtic Argentí: entre el paral·lel 60° S, el pol i els meridians 25° i 74° O
+  - Cita / lloc: «definido por el paralelo 60º Sur y el Polo Sur, y los meridianos 25º y 74º de longitud Oeste».
+- **chl** · República de Xile. Llei 21.255, Estatut Xilè Antàrtic (Diario Oficial, 17-09-2020), art. 2. diariooficial.interior.gob.cl
+  - Hi recolza: Territori Xilè Antàrtic: entre els meridians 53° i 90° O, segons el decret 1.747 de 1940
+  - Cita / lloc: Llei 21.255, art. 2: «los meridianos 53º longitud Oeste de Greenwich y 90º longitud Oeste de Greenwich, conforme lo dispuso el decreto supremo N° 1.747, de 1940».
+- **nzl** · Ordre en Consell del 30 de juliol de 1923 (Ross Dependency). The London Gazette, núm. 32849, p. 5211. thegazette.co.uk
+  - Hi recolza: Dependència de Ross: entre els 160° E i els 150° O, al sud del 60° S
+  - Cita / lloc: «between the 160th degree of East Longitude and the 150th degree of West Longitude, which are situated south of the 60th degree of South Latitude» · «At the Court at Buckingham Palace, the 30th day of July, 1923».
+- **nor** · Gjelsvik, T., & Njåstad, B. «Dronning Maud Land». Store norske leksikon. snl.no
+  - Hi recolza: La Terra de la Reina Maud (unes 2,7 milions de km²) limita a l'oest amb la Terra de Coats i a l'est amb la Terra d'Enderby
+  - Cita / lloc: «I vest grenser Dronning Maud Land mot Coats Land og i øst mot Enderby Land» · «cirka 2,7 millioner kvadratkilometer». No hi ha meridians: el mapa fa servir els límits dels veïns i ho diu al peu.
+- **comnap** · COMNAP (Council of Managers of National Antarctic Programs). «Antarctic Facilities» (dades de novembre del 2024). comnap.aq · fitxer: Facilities_Nov2024.csv
+  - Hi recolza: Recompte propi del fitxer de COMNAP: 82 estacions al sud del 60° S, de 29 països (9 tancades temporalment; 73 obertes, de 28 països); 42 de tot l'any i 40 d'estiu; capacitat màxima declarada de 5.037 persones, sumant les 76 que la declaren
+  - Hi recolza: L'estació més antiga del catàleg és l'Orcadas argentina, amb data de fundació 1904
+  - Cita / lloc: Facilities_Nov2024.csv (desat a raw/comnap-facilities-nov2024.csv): 114 instal·lacions; filtre Type=Station i latitud ≤ −60 → 82 (42 Year-Round, 40 Seasonal), 29 operadors; suma de «Peak Population» = 5.037 (6 sense dada, 76 la declaren); 9 «Temporarily Closed» (totes d'estiu); 73 obertes de 28 països (4.876); Orcadas, «Year Established» 1904. Correcció: «Zhongshan Skiway» amb latitud positiva (69,624) → −69,624 (és una pista, no afecta els recomptes).
+- **midwinter** · Govern del Regne Unit (21-06-2013). «Celebrating Mid-Winter's Day in British Antarctic Territory». gov.uk
+  - Hi recolza: Pel solstici d'hivern les estacions antàrtiques s'envien felicitacions entre elles; a les britàniques, regals fets a mà i pel·lícules; la tradició es remunta als primers exploradors, com Scott
+  - Cita / lloc: «Antarctic stations relay mid-winter greetings to each other and, on British stations, it is traditional for home-made presents to be exchanged and films to be watched».
+- **un** · Assemblea General de les Nacions Unides. Resolució 38/77, «Question of Antarctica» (15-12-1983). documents.un.org
+  - Hi recolza: L'ONU encarrega un estudi complet sobre l'Antàrtida, recordant la declaració dels Països No Alineats de Nova Delhi (1983); el text repeteix la fórmula del preàmbul del Tractat: «en interès de tota la humanitat», només fins pacífics
+  - Cita / lloc: Resolució 38/77 (pàgina 69 del recull oficial, llegida com a imatge): «Affirming the conviction that, in the interest of all mankind, Antarctica should continue forever to be used exclusively for peaceful purposes» · «Recalling the relevant paragraphs of the Economic Declaration adopted by the Seventh Conference of Heads of State or Government of Non-Aligned Countries, held at New Delhi» · «1. Requests the Secretary-General to prepare a comprehensive, factual and objective study». 97a sessió plenària, 15-12-1983.
+- **rs** · The Royal Society i AAAS (2010). New Frontiers in Science Diplomacy. Londres: The Royal Society. royalsociety.org
+  - Hi recolza: Tres dimensions de la diplomàcia científica: ciència en la diplomàcia, diplomàcia per a la ciència i ciència per a la diplomàcia; l'informe presenta la ciència, en positiu, com a «font» de poder tou
+  - Cita / lloc: «informing foreign policy objectives with scientific advice (science in diplomacy); facilitating international science cooperation (diplomacy for science); using science cooperation to improve international relations between countries (science for diplomacy)» · «Science is a source of what Joseph Nye … terms ‘soft power’» (Summary).
+- **petit** · Petit, J. R., et al. (1999). «Climate and atmospheric history of the past 420,000 years from the Vostok ice core, Antarctica». Nature, 399, 429–436. DOI: 10.1038/20859
+  - Hi recolza: Projecte conjunt de Rússia, França i els Estats Units a l'estació russa de Vostok (78° S, 106° E, 3.488 m, −55 °C de mitjana)
+  - Hi recolza: El gener del 1998 es va arribar als 3.623 m, el nucli de gel més profund extret fins aleshores; es va aturar uns 120 m sobre el llac subglacial per no contaminar-lo; per sota dels 3.311 m el registre pot estar alterat
+  - Hi recolza: El CO₂ i el metà estan estretament correlacionats amb la temperatura en quatre cicles glacials; les concentracions actuals «semblen» no tenir precedent en 420.000 anys
+  - Cita / lloc: «The ice-drilling project undertaken in the framework of a long-term collaboration between Russia, the United States and France at the Russian Vostok station in East Antarctica (78° S, 106° E, elevation 3,488 m, mean temperature −55 °C)» · «In January 1998, the Vostok project yielded the deepest ice core ever recovered, reaching a depth of 3,623 m» · «Drilling then stopped ~120 m above the surface of the Vostok lake» · «Present-day atmospheric burdens of these two important greenhouse gases seem to have been unprecedented during the past 420,000 years» · Agraïments: «This work is part of a joint project between Russia, France and USA … drillers from the St Petersburg Mining Institute … RAE, IFRTP … Division of Polar Programs (NSF)». Afiliacions: LGGE (Saint-Martin-d'Hères, Grenoble), LSCE (Saclay), AARI (Sant Petersburg), Institut de Geografia (Moscou), Princeton, Miami.
+- **vostokdata** · Petit, J. R., et al. (2001). Vostok Ice Core Data for 420,000 Years. IGBP PAGES / World Data Center for Paleoclimatology, Data Contribution Series 2001-076. NOAA. ncei.noaa.gov
+  - Hi recolza: Sèries de deuteri i temperatura (3.311 mesures, fins als 3.310 m) i de CO₂ (283 mesures) de Vostok
+  - Cita / lloc: deutnat.txt: 3.311 files (0–3.310 m, edat GT4 fins a 422.766 anys), ΔT de −9,39 a +3,23 °C; co2nat.txt: 283 mesures, 182,2–298,7 ppm.
+- **mlo** · NOAA Global Monitoring Laboratory. «Mauna Loa CO₂ annual mean data» (fitxer del 19-11-2026). gml.noaa.gov
+  - Hi recolza: Mitjana anual del CO₂ a Mauna Loa el 2025: 427,35 ppm
+  - Cita / lloc: «2025   427.35     0.12» (fitxer creat el 19-11-2026).
+- **cern** · CERN. «Our Stakeholders: Member States». home.cern (consulta del 20-11-2026)
+  - Hi recolza: La Convenció del CERN, signada el 1953 per 12 estats europeus fundadors, va entrar en vigor el 29 de setembre de 1954
+  - Hi recolza: Avui, 25 estats membres i 11 associats; cronologia completa d'entrades i sortides (Iugoslàvia fins al 1961, Espanya del 1961 al 1969 i des del 1983)
+  - Hi recolza: Hi col·laboren estats no membres com l'Iran, Palestina, la Xina o els Estats Units; Israel n'és membre des del 2014
+  - Cita / lloc: «The CERN Convention was signed in 1953 by 12 founding European Member States and entered into force on 29 September 1954» · «CERN is governed and primarily funded by its 25 Member States. Together with 11 Associate Member States» · cronologia: Yugoslavia (until 1961), Spain (1961–1969), Spain (1983), Czechoslovakia (1992–1993), Israel (2014) … · col·laboradors no membres: «China … Iran … Palestine … United States».
+- **courier** · Tyurin, N. (01-11-2003). «Forty years of high-energy physics in Protvino». CERN Courier. cerncourier.com
+  - Hi recolza: Acord de cooperació científica i tècnica entre el CERN i el Comitè Estatal de l'URSS per a l'Ús de l'Energia Atòmica, signat el 4 de juliol de 1967, per a l'accelerador de Serpukhov, el més gran en construcció a l'època
+  - Cita / lloc: «The agreement concerning scientific and technical co-operation between CERN and the State Committee of the USSR on the Utilization of Atomic Energy (4 July 1967)» · «The construction of the biggest proton accelerator in the world».
+- **web** · CERN. «The birth of the Web». home.cern
+  - Hi recolza: Tim Berners-Lee va inventar el web el 1989 al CERN, per compartir informació entre científics d'universitats i instituts de tot el món
+  - Hi recolza: El 30 d'abril de 1993, el CERN va posar el programari del web al domini públic
+  - Cita / lloc: «Tim Berners-Lee, a British scientist, invented the World Wide Web (WWW) in 1989, while working at CERN … to meet the demand for automated information-sharing between scientists in universities and institutes around the world» · «On 30 April 1993, CERN put the World Wide Web software in the public domain».
+- **cernru** · CERN (15-12-2023). «CERN Council decides to conclude cooperation with Russia and Belarus in 2024». home.cern
+  - Hi recolza: La cooperació institucional va acabar el 27 de juny de 2024 amb Bielorússia i el 30 de novembre de 2024 amb Rússia; continuen els científics d'aquestes nacionalitats afiliats per altres vies
+  - Cita / lloc: «The cooperation will come to an end on 27 June 2024 for the Republic of Belarus and on 30 November 2024 for the Russian Federation … Relations continue with scientists of Russian or Belarusian nationality otherwise affiliated with CERN».
+- **physicstoday** · Feder, T. (2024). «With no end in sight for the war in Ukraine, CERN ceases cooperation with Russia». Physics Today. DOI: 10.1063/pt.srnc.mxyb
+  - Hi recolza: Abans de la invasió d'Ucraïna, uns 1.000 científics d'unes quantes desenes d'instituts russos treballaven al CERN; a finals del 2024, l'acord amb l'Institut Conjunt de Recerca Nuclear de Dubna seguia vigent
+  - Cita / lloc: «Before Russia invaded Ukraine, about 1000 scientists from a few dozen institutes in Russia worked at CERN … (JINR) in Dubna, about 130 km north of Moscow … has a separate cooperation agreement with CERN that remains active».
+- **issfacts** · NASA. «International Space Station Facts and Figures». nasa.gov
+  - Hi recolza: Cinc agències espacials de 15 països operen l'estació; ocupada sense interrupció des del novembre del 2000; 16 voltes a la Terra al dia
+  - Cita / lloc: «An international partnership of five space agencies from 15 countries operates the International Space Station» · «continuously occupied since November 2000» · «the space station makes 16 orbits of Earth».
+- **issvis** · NASA. «Space Station Visitors by Country» (consulta del 20-11-2026). nasa.gov
+  - Hi recolza: 298 persones de 26 països han visitat l'estació: 174 dels Estats Units, 66 de Rússia, 11 del Japó, 10 del Canadà… i una d'Espanya (Pedro Duque)
+  - Cita / lloc: «298 individuals from 26 countries have visited the International Space Station» · recomptes per país (EUA 174, Rússia 66, Japó 11, Canadà 10, Itàlia 6, França 5, Alemanya 4, Aràbia Saudita 2, EAU 2, Suècia 2, 16 països amb 1; Espanya: Pedro Duque). Suma comprovada: 298.
+- **asp** · Uri, J. (17-07-2020). «45 Years Ago: Historic Handshake in Space». NASA History. nasa.gov
+  - Hi recolza: El 17 de juliol de 1975, una nau Apollo i una Soiuz es van acoblar en òrbita; les tripulacions es van donar la mà, van menjar juntes i van fer experiments conjunts; segons la NASA, va contribuir a l'èxit de Shuttle-Mir i l'estació espacial
+  - Cita / lloc: «July 17, 1975 … an American spacecraft docked with a Soviet capsule in Earth orbit» · «opened the hatches between the two spacecraft, shook hands, shared meals, held press conferences, and conducted joint science experiments» · «contributed to the success of future programs such as Shuttle-Mir and the International Space Station».
+- **nac** · NASA Advisory Council, Human Exploration and Operations Committee (octubre del 2022). «International Space Station Status». nasa.gov
+  - Hi recolza: Acord de tripulació integrada del 2022 per garantir presència russa i nord-americana a l'estació si falla una de les dues naus; primera rotació: Frank Rubio a la Soiuz 68S i Anna Kikina a la Crew-5
+  - Cita / lloc: «Soyuz 68S Launch/Dock (integrated crew)» · «SpaceX-Crew5 Launch/Dock (integrated crew)» · tripulació: «NASA astronaut Frank Rubio … Roscosmos cosmonauts … Anna Kikina».
+- **sesame** · SESAME. «What is SESAME?» sesame.org.jo i «Members, Associate Members & Observers of SESAME» sesame.org.jo
+  - Hi recolza: Font de llum de sincrotró inaugurada a Allan (Jordània) el 16 de maig de 2017, sota els auspicis de la UNESCO i segons el model del CERN; anell de 133 m i 2,5 GeV
+  - Hi recolza: Membres: Xipre, Egipte, l'Iran, Israel, Jordània, el Pakistan, Palestina i Turquia; Alemanya, associada; 19 observadors
+  - Cita / lloc: «officially opened in Allan (Jordan) on 16 May 2017» · «set up on the model of CERN» · «under the auspices of UNESCO» · «2.5 GeV synchrotron light source (133m in circumference)» · «subjects ranging from medicine and biology … to … archaeology» · «The current Members are Cyprus, Egypt, Iran (Islamic Republic of), Israel, Jordan, Pakistan, Palestine, and Türkiye. The current Associate Member is Germany» i 19 observadors.
+- **merton** · Merton, R. K. (1973 [1942]). «The Normative Structure of Science». A The Sociology of Science (pp. 267–278). Chicago: University of Chicago Press. Original: «Science and Technology in a Democratic Order», Journal of Legal and Political Sociology, 1 (1942), 115–126.
+  - Hi recolza: Quatre imperatius de l'ethos de la ciència, que Merton presenta com a normes morals: universalisme, «comunisme», desinterès i escepticisme organitzat
+  - Hi recolza: Universalisme: l'acceptació d'una afirmació no depèn de la raça, la nacionalitat, la religió o la classe de qui la fa
+  - Hi recolza: «Comunisme»: els resultats de la ciència són producte de la col·laboració social, s'assignen a la comunitat i constitueixen una herència comuna
+  - Cita / lloc: «Four sets of institutional imperatives—universalism, communism, disinterestedness, organized skepticism» · «his race, nationality, religion, class, and personal qualities are as such irrelevant» · «The substantive findings of science are a product of social collaboration and are assigned to the community. They constitute a common heritage» · «limited to that of recognition and esteem» · nota de la p. 267: «Originally published as “Science and Technology in a Democratic Order,” Journal of Legal and Political Sociology 1 (1942): 115-26».
+- **wehi** · Wehi, P. M., et al. (2022, en línia 2021). «A short scan of Māori journeys to Antarctica». Journal of the Royal Society of New Zealand, 52(5), 587–598. DOI: 10.1080/03036758.2021.1917633
+  - Hi recolza: Les connexions maoris amb l'Antàrtida: dels primers navegants de la tradició a la participació en la ciència actual i la representació del coneixement maori (mātauranga)
+  - Cita / lloc: Resum (OpenAlex): «narratives of under-represented groups and their connection to Antarctica remain poorly documented and acknowledged» · «first voyagers through to involvement in recent science projects, as well as representations of mātauranga in carving and weaving».
+- **anderson** · Anderson, A., O'Regan, T., Parata-Goodall, P., Stevens, M., & Tau, T. M. (2022, en línia 2021). «On the improbability of pre-European Polynesian voyages to Antarctica: a response to Priscilla Wehi and colleagues». Journal of the Royal Society of New Zealand, 52(5), 599–605. DOI: 10.1080/03036758.2021.1973517
+  - Hi recolza: La resposta argumenta que no hi ha tradicions convincents de navegació a l'Antàrtida i que l'arqueologia no troba viatges polinesis al sud d'uns 50° S
+  - Cita / lloc: Resum (OpenAlex): «there are no compelling traditions of Antarctic voyaging» · «archaeological evidence of Polynesian voyaging does not extend south of about 50° South» · «Antarctic voyaging by pre-European Polynesians seems most unlikely».
+- **nsc5520** · NASA History Office. «US Announcement—July 1955» (comentari del document sobre l'NSC 5520). nasa.gov/history/sputnik
+  - Hi recolza: L'NSC 5520 (1955) recomanava un satèl·lit científic per a l'Any Geofísic i, alhora, desenvolupar satèl·lits de reconeixement; el Consell de Seguretat Nacional el va aprovar el 26 de maig de 1955
+  - Cita / lloc: «NSC 5520 … recommended the creation of a scientific satellite program as part of the International Geophysical Year as well as the development of satellites for reconnaissance purposes … approved the IGY satellite on May 26, 1955».
+- **frus** · Foreign Relations of the United States, 1958–1960, vol. II, document 269: «NSC 5804/1, Statement of U.S. Policy on Antarctica» (Washington, 8 de març de 1958). history.state.gov
+  - Hi recolza: La presència d'expedicions científiques soviètiques de l'Any Geofísic era «motiu de preocupació»; la gran activitat soviètica podia donar base a una reclamació soviètica; la política anterior preveia fer reclamacions nord-americanes
+  - Hi recolza: El 1958, els Estats Units consideraven sense reclamar el sector entre els 90° i els 150° O i la zona cap al pol del sector noruec, entre els 45° E i els 20° O
+  - Hi recolza: El 1956, la delegació de l'Índia va intentar portar la qüestió de l'Antàrtida a l'Assemblea General de l'ONU
+  - Cita / lloc: «The presence in the area of Soviet scientific expeditions in connection with the IGY is cause for concern» · «extensive Soviet activity in the area at the present time might give color to possible Soviet claims» · «two extensive unclaimed sectors: one extending between 90° and 150° West longitude, and the other poleward of the Norwegian claim between 45° East and 20° West» · «At the 1956 session of the United Nations General Assembly, the Indian Delegation sought to have the question of Antarctica placed on the agenda». Washington, 8-03-1958.
+- **siddiqi** · Siddiqi, A. A. «Korolev, Sputnik, and the International Geophysical Year». NASA History Office. nasa.gov/history/sputnik
+  - Hi recolza: L'R-7, el primer míssil balístic intercontinental soviètic, encarregat el 1954, va ser el coet que va llançar el Spútnik el 4 d'octubre de 1957
+  - Cita / lloc: «on 20 May 1954 … the Soviet government formally tasked Korolev's Design Bureau to develop the first Soviet intercontinental ballistic missile (ICBM), the R-7» · llançament del 4-10-1957: «The five engines of the R-7 generated about 398 tons of thrust at launch».
+- **wang** · Wang, Z., & Zhang, J. (2010). «China and the International Geophysical Year». A R. D. Launius, J. R. Fleming i D. H. DeVorkin (eds.), Globalizing Polar Science (Palgrave Macmillan). DOI: 10.1057/9780230114654_9
+  - Hi recolza: La República Popular de la Xina es va retirar de l'Any Geofísic quan els organitzadors van admetre Taiwan el 1957; el Departament d'Estat dels EUA havia impulsat la candidatura de Taiwan
+  - Cita / lloc: «the only exception being the withdrawal of the People's Republic of China (PRC) from the endeavor when the IGY organizers admitted Taiwan in 1957 … the U.S. State Department played a central role in the controversy by prompting Taiwan to apply» (p. 1 del capítol, PDF de l'autor).
+- **turchetti** · Turchetti, S. (2026). «The World United in Studying Itself? Data and the Coloniality of the International Geophysical Year, 1957–1958». Isis, 117(1), 98–119. DOI: 10.1086/739487
+  - Hi recolza: Uns quants països científicament desenvolupats van aconseguir allotjar tots els centres de dades de l'Any Geofísic i van esquivar les propostes de repartir-los perquè les dades fossin més accessibles
+  - Cita / lloc: Resum: «the representatives of a few scientifically developed countries lobbied to host all the IGY data centers and deliberately evaded calls to make data more widely available».
+- **berkner** · «Science and Foreign Relations: The Berkner Report» (1950). Physics Today, 3(8). DOI: 10.1063/1.3066973 · Needell, A. A. (2000). Science, Cold War and the American State: Lloyd V. Berkner and the Balance of Professional Ideals. Amsterdam: Harwood.
+  - Hi recolza: El 1950, Lloyd Berkner va elaborar per al Departament d'Estat l'informe «Science and Foreign Relations», sobre la ciència en la política exterior dels EUA
+  - Cita / lloc: Physics Today, 1-08-1950: «Science and Foreign Relations — The Berkner Report» (DOI comprovat). Needell 2000: catàleg (Open Library).
+- **mitroff** · Mitroff, I. I. (1974). «Norms and Counter-Norms in a Select Group of the Apollo Moon Scientists: A Case Study of the Ambivalence of Scientists». American Sociological Review, 39(4), 579–595. DOI: 10.2307/2094423
+  - Hi recolza: Estudi dels científics de les missions Apollo: hi conviuen les normes de Merton i unes «contranormes» oposades
+  - Cita / lloc: Títol i metadades (Crossref): «Norms and Counter-Norms in a Select Group of the Apollo Moon Scientists: A Case Study of the Ambivalence of Scientists».
+- **ferrada** · Ferrada, L. V. (20-08-2026). «The 2026 Deadlock Over Consultative Status Under the Antarctic Treaty». Opinio Juris. opiniojuris.org
+  - Hi recolza: A la reunió consultiva d'Hiroshima (maig del 2026), Bielorússia, el Canadà i Turquia van demanar l'estatus consultiu i no el van obtenir; la regla del consens permet a cada part consultiva bloquejar una admissió
+  - Cita / lloc: «At the XLVIII Antarctic Treaty Consultative Meeting (ATCM), held in Hiroshima from 11 to 21 May 2026, Belarus, Canada, and Türkiye applied for consultative status … None was admitted» · «the consensus requirement means that each existing Consultative Party can block admission».
+- **howkins** · Howkins, A. (2008). «Defending polar empire: opposition to India's proposal to raise the ‘Antarctic Question’ at the United Nations in 1956». Polar Record, 44(1), 35–44. DOI: 10.1017/S0032247407006766
+  - Hi recolza: El 1956, l'Índia va proposar portar la «qüestió antàrtica» a l'ONU; la Commonwealth britànica i l'Amèrica Llatina s'hi van oposar juntes, tot i disputar-se la península
+  - Cita / lloc: Resum: «the international response to India's 1956 proposal to raise the ‘Antarctic Question’ at the United Nations … uneasy alliance … between the British Commonwealth and Latin America in opposition».
+- **unpv** · Nacions Unides, Primera Comissió. Acta resumida de la 42a sessió (28-11-1983), A/C.1/38/PV.42. documents.un.org
+  - Hi recolza: La «Qüestió de l'Antàrtida» va entrar per primer cop a l'agenda de l'Assemblea General el 1983, a petició d'Antigua i Barbuda i de Malàisia
+  - Cita / lloc: «the question of Antarctica has been included in the agenda of the General Assembly for the first time at this session» · «Antigua and Barbuda, and Malaysia, another small State, submitted the request for inclusion of this item jointly» (28-11-1983).
+- **beck** · Beck, P. J. (1986). «Antarctica at the United Nations, 1985: the end of consensus?». Polar Record, 23, 159–166. DOI: 10.1017/S0032247400028345
+  - Hi recolza: El 1985, l'Assemblea General va aprovar tres resolucions, una de les quals demanava excloure la Sud-àfrica de l'apartheid del sistema del Tractat; les potències del Tractat no van participar en les votacions
+  - Cita / lloc: Resum: «three resolutions … the exclusion of South Africa from the Antarctic Treaty System. The Antarctic Treaty powers … did not participate in the UN votes on the three resolutions».
+- **aumadrid** · Australian Antarctic Program. «The Madrid Protocol». antarctica.gov.au
+  - Hi recolza: La Convenció sobre activitats minerals (CRAMRA) es va adoptar a Wellington el juny del 1988; el 22 de maig de 1989 Austràlia va anunciar que no la signaria, i l'agost del 1989 França es va sumar a la proposta de prohibir la mineria
+  - Hi recolza: La prohibició minera és indefinida; només es pot treure per acord unànime de les parts consultives o en una conferència de revisió, i sempre amb un règim legal en vigor
+  - Cita / lloc: «CRAMRA, adopted in June 1988 by a Special Antarctic Treaty Consultative Meeting in Wellington» · «On 22 May 1989 … Hawke, announced that Australia was opposed to mining in Antarctica and would not sign» · «The initiative became a joint one with the then Prime Minister of France, Mr Michel Rocard, in August 1989» · «prohibits mining indefinitely» · «either by the unanimous agreement of the Consultative Parties, or at a review conference».
+- **cia** · CIA. The World Factbook, «Antarctica» (edició del 2019, còpia de l'Internet Archive). web.archive.org
+  - Hi recolza: L'Antàrtida no té habitants indígenes; hi ha estacions de recerca de tot l'any i d'estiu
+  - Cita / lloc: «no indigenous inhabitants, but there are both permanent and summer-only staffed research stations» (còpia del 12-12-2019).
+- **taaf** · Terres australes et antarctiques françaises. «Présentation des TAAF» (Académie des sciences d'outre-mer, 2026). academieoutremer.fr
+  - Hi recolza: La Terra Adèlia: sector del continent antàrtic entre els 136° i els 142° de longitud est
+  - Cita / lloc: «Secteur angulaire du continent antarctique compris entre le 136 ° et le 142 ° de longitude est».
+- **jinr** · Joint Institute for Nuclear Research. «About JINR». jinr.ru
+  - Hi recolza: L'Institut Conjunt de Recerca Nuclear de Dubna es va crear amb la convenció signada el 26 de març de 1956 per onze estats fundadors
+  - Cita / lloc: «established under the Convention signed on 26 March 1956 by eleven founding States».
+- **krige** · Krige, J. (2006). American Hegemony and the Postwar Reconstruction of Science in Europe. Cambridge (Mass.): MIT Press.
+  - Hi recolza: El paper dels Estats Units en la reconstrucció de la ciència europea de la postguerra
+  - Cita / lloc: Catàleg (Open Library: MIT Press, 2006). Només se'n fa servir el tema, que diu el títol.
+- **wolf** · Caltech, Office of Research Compliance. «Wolf Amendment for NASA Funding and Work With JPL». researchpolicy.caltech.edu
+  - Hi recolza: Des del 2011, per una llei del Congrés, la NASA no pot finançar cap col·laboració bilateral amb el govern xinès ni amb entitats xineses
+  - Cita / lloc: «Since 2011, as a result of an act of Congress, NASA has been prohibited from funding any work that involves bilateral participation, collaboration, or coordination with the government of China».
+- **russiaiss** · Speed, R. (26-07-2022). «Russia's new space chief confirms it will leave ISS after 2024». The Register. theregister.com · Wall, M. (27-07-2022). «Russia will stay in ISS program at least until 2028: report». Space.com. space.com
+  - Hi recolza: El 26 de juliol de 2022, el nou cap de Roscosmos va anunciar que Rússia deixaria l'estació «després del 2024»; l'endemà, segons la NASA, Rússia es quedaria fins que tingués estació pròpia, no abans del 2028
+  - Cita / lloc: The Register: «New boss Yuri Borisov today confirmed a post-2024 withdrawal» (26-07-2022) · Space.com: «intends to remain an ISS partner at least until its own space station is up and running, a milestone that's not expected until 2028 at the earliest» (Reuters, citant Kathy Lueders, NASA).
+- **rungius21** · Rungius, C., Flink, T., & Riedel, S. (2022). «SESAME – a synchrotron light source in the Middle East: an international research infrastructure in the making». Open Research Europe, 1, 51. DOI: 10.12688/openreseurope.13362.2
+  - Hi recolza: SESAME és al nord d'Amman; el seu gran esforç diplomàtic continua sent aconseguir el pressupost anual, i la composició de membres enfrontats complica el suport
+  - Hi recolza: «Paradoxalment», SESAME serà més eficaç com a diplomàcia científica si no intenta ser-ho a qualsevol preu
+  - Cita / lloc: Resum: «an international state-of-the-art synchrotron users' facility in the north of Amman» · conclusions: «The biggest diplomatic effort still remains in securing the yearly budget» · «the specific member constellation … seems to have complicated the negotiation of (financial) support» · «Paradoxically, SESAME will be most effective in its science diplomacy effort if it does not try to be a science diplomacy effort at all costs».
+- **rungius20** · Rungius, C., & Flink, T. (2020). «Romancing science for global solutions: on narratives and interpretative schemas of science diplomacy». Humanities and Social Sciences Communications, 7. DOI: 10.1057/s41599-020-00585-w
+  - Hi recolza: El discurs de la diplomàcia científica idealitza i mitifica la ciència com a col·laborativa i pacificadora, i confon ideals i normes amb la realitat
+  - Cita / lloc: Resum: «interpretative schemas that idealize and mythify science as overall collaborative, rationalizing and complexity-reducing are problematic … the discourse misconceives ideals and norms for real…».
+- **mongabay** · Mongabay (novembre del 2025). «Antarctic conservation summit closes with stalemate on MPAs, krill fishing rules». news.mongabay.com
+  - Hi recolza: La comissió de conservació dels recursos marins antàrtics (CCAMLR) fa anys que no aprova tres grans àrees marines protegides; el 2025, pels vetos de Rússia i la Xina en un sistema de consens
+  - Cita / lloc: «CCAMLR has considered proposals to establish three large MPAs annually for years but has failed to pass them under its consensus-based decision-making process. This year was the same, due to vetoes of MPA proposals by Russia and China».
+- **jones** · Jones, N. (2012). «Russians celebrate Vostok victory». Nature, 482, 287. DOI: 10.1038/482287a
+  - Hi recolza: El febrer del 2012, l'equip rus va perforar fins al llac Vostok
+  - Cita / lloc: Nature 482, 287 (14-02-2012): «Russians celebrate Vostok victory. Team finally drills into biggest Antarctic subglacial lake».
+- **lorius** · Lorius, C., Jouzel, J., Ritz, C., Merlivat, L., Barkov, N. I., Korotkevich, Y. S., & Kotlyakov, V. M. (1985). «A 150,000-year climatic record from Antarctic ice». Nature, 316, 591–596. DOI: 10.1038/316591a0
+  - Hi recolza: Primer gran resultat del nucli de Vostok, signat per científics francesos i soviètics en plena guerra freda
+  - Cita / lloc: Autors i afiliacions (OpenAlex): CNRS i CEA (França), Institut de Recerca Àrtica i Antàrtica i Institut de Geografia (URSS); citat a la fitxa NOAA de Vostok.
+- **orcadas** · Ministeri d'Afers Exteriors de l'Argentina, Direcció Nacional de l'Antàrtic. «Base Orcadas». cancilleria.gob.ar
+  - Hi recolza: Inaugurada l'1 d'abril de 1903 per l'expedició escocesa de William Speirs Bruce, va passar a mans argentines el 22 de febrer de 1904
+  - Cita / lloc: «Fue inaugurada el 1 de abril de 1903 por la Expedición Antártica Escocesa de William Speirs Bruce y el 22 de febrero de 1904 pasó a manos argentinas».

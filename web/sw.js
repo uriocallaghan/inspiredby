@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-4c658c2bd37b";
+const CACHE_NAME = "ib-offline-05030860c298";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -10,6 +10,16 @@ const LOCAL_ASSETS = [
   "/articles/calendari-cosmic/cover.jpg",
   "/articles/calendari-cosmic/index.html",
   "/articles/calendari-cosmic/thumb.webp",
+  "/articles/ciencia-entre-enemics/",
+  "/articles/ciencia-entre-enemics/antartida.js",
+  "/articles/ciencia-entre-enemics/article.css",
+  "/articles/ciencia-entre-enemics/article.js",
+  "/articles/ciencia-entre-enemics/cites.js",
+  "/articles/ciencia-entre-enemics/cover.html",
+  "/articles/ciencia-entre-enemics/cover.jpg",
+  "/articles/ciencia-entre-enemics/dades.js",
+  "/articles/ciencia-entre-enemics/index.html",
+  "/articles/ciencia-entre-enemics/thumb.webp",
   "/articles/cinta-transportadora/",
   "/articles/cinta-transportadora/article.css",
   "/articles/cinta-transportadora/cinta-transportadora.js",

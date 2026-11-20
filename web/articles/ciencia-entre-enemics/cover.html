@@ -1,0 +1,24 @@
+<!doctype html><html lang="ca"><meta charset="utf-8"><title>Ciència entre enemics</title>
+<!-- Portada i miniatura: l'Antàrtida vista des del pol, amb els set sectors reclamats (vermell, blau i groc translúcids)
+     i les 82 estacions de COMNAP (punts). Sense text. cover.jpg: ?w=1680&h=720 · thumb.webp: ?w=800&h=1000 -->
+<style>html,body{margin:0;background:#fff}svg{display:block}</style>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="antartida.js"></script>
+<script src="dades.js"></script>
+<script>
+const q=new URLSearchParams(location.search), W=+q.get("w")||1680, H=+q.get("h")||720, D=window.CE_DATA;
+const s=d3.select("body").append("svg").attr("width",W).attr("height",H);
+s.append("rect").attr("width",W).attr("height",H).attr("fill","#fff");
+const RIM=d3.geoCircle().center([0,-90]).radius(30)();
+const R=Math.min(W,H)*(W>H?.62:.47);
+const proj=d3.geoAzimuthalEqualArea().rotate([0,90,0]).clipAngle(34).fitExtent([[W/2-R,H/2-R],[W/2+R,H/2+R]],RIM), path=d3.geoPath(proj);
+function ring(l0,l1){ const pts=[[l0,-89.999]]; for(let l=l0;l<=l1;l+=1)pts.push([l,-60]); pts.push([l1,-60],[l1,-89.999],[l0,-89.999]);
+  let g={type:"Polygon",coordinates:[pts]}; if(d3.geoArea(g)>2*Math.PI)g={type:"Polygon",coordinates:[pts.slice().reverse()]}; return g; }
+s.append("path").attr("d",path(window.CE_ANT)).attr("fill","#ECEBE8");
+const COL={"Argentina":"#C8442A","Xile":"#C8442A","Regne Unit":"#C8442A","França":"#F5C518"};
+D.claims.forEach(([n,a,b])=>s.append("path").attr("d",path(ring(a,b))).attr("fill",COL[n]||"#2C5DA8").attr("fill-opacity",n==="França"?.6:(COL[n]?.22:.13)).attr("stroke","#fff").attr("stroke-width",2).style("mix-blend-mode","multiply"));
+s.append("path").attr("d",path(RIM)).attr("fill","none").attr("stroke","#121212").attr("stroke-width",1.4).attr("stroke-dasharray","5 5");
+D.st.forEach(d=>{ const p=proj([d.lon,d.lat]); s.append("circle").attr("cx",p[0]).attr("cy",p[1]).attr("r",Math.max(W,H)/300).attr("fill",d.s?"#C8442A":"#2C5DA8").attr("stroke","#fff").attr("stroke-width",1); });
+</script>
+</body></html>
