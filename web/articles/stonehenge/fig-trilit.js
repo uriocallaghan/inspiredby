@@ -228,7 +228,7 @@
       if(S.kDig > .02){ const a = S.kDig;
         person(X1+.1, "cavar", {z:-DEPTH, ph:ph*1.5, a, dir:-1, pel:"llarg"});
         person(X1-2.0, "cavar", {z:-DEPTH*1.3/2.4, ph:ph*1.5+1.7, a, dir:1, h:1.62});
-        if(!mob) person(X1+4.4, "porta", {ph:ph, a, dir:1, capa:true, h:1.66});
+        if(!mob) person(X1+4.4, "porta", {ph:.6, a, dir:1, capa:true, h:1.66});
         [0,1].forEach(i => person(xl + .7 + i*.9, "dret", {ph:0, a:a*.95, dir:1, back:i===1, h:1.6+i*.06, pel:["llarg","monyo"][i]}));
       }
       // pas 2: palanques a la cua i contrapès que corre per sobre de la pedra
@@ -241,7 +241,7 @@
         ctx.restore();
         const tq = F1(LEN-.2, WD/2), hx = X1 - LEN*Math.cos(S.a1*D2R) - 1.3;
         ctx.save(); ctx.globalAlpha = a; rope([tq, [hx - 3*.9 - .3, 1.05]], .1); ctx.restore();
-        [0,1,2,3].forEach(i => person(hx - i*.9, "estira", {a, dir:-1, back:i%2===1, ph:ph+i, h:1.6+i%2*.07, pel:["curt","llarg","monyo"][i%3]}));
+        [0,1,2,3].forEach(i => person(hx - i*.9, "estira", {a, dir:-1, back:i%2===1, ph:i, h:1.6+i%2*.07, pel:["curt","llarg","monyo"][i%3]}));
       }
       // pas 3: bastidor en A, cordes i dues files de gent estirant; dos homes piquen el rebliment
       if(S.kRope > .02){ const a = S.kRope, top = F1(LEN, WD/2), apex = [X1-3.8, 6.6];
@@ -253,8 +253,8 @@
         rope([F1(LEN-.25, WD), apex, [x0 - nRow*.85, 1.15]], .08);
         rope([F1(LEN*.7, WD), [x0 - nRow*.85 + .3, 1.0]], .15);
         ctx.restore();
-        for(let i=0;i<nRow;i++){ person(x0 - i*.85 + .42, "estira", {a:a*.9, dir:-1, back:true, h:1.52 + (i*7%3)*.05, ph:ph+i, pel:["llarg","curt","monyo"][i%3]}); }
-        for(let i=0;i<nRow;i++){ person(x0 - i*.85, "estira", {a, dir:-1, h:1.62 + (i*5%3)*.05, ph:ph+i*1.3, pel:["curt","monyo","llarg"][i%3], capa:i===2}); }
+        for(let i=0;i<nRow;i++){ person(x0 - i*.85 + .42, "estira", {a:a*.9, dir:-1, back:true, h:1.52 + (i*7%3)*.05, ph:i, pel:["llarg","curt","monyo"][i%3]}); }
+        for(let i=0;i<nRow;i++){ person(x0 - i*.85, "estira", {a, dir:-1, h:1.62 + (i*5%3)*.05, ph:i*1.3, pel:["curt","monyo","llarg"][i%3], capa:i===2}); }
         person(X1-2.5, "picar", {a, dir:1, ph:ph*2+1.4, h:1.6, pel:"llarg"});
       }
       // pas 4: dues persones a dalt de la torre fan pujar la llinda amb palanques; una altra porta troncs
@@ -262,7 +262,7 @@
         [-1, 1].forEach(sd => { const x = cx + sd*(cribW/2 - .4), r = person(x, "palanca", {a, z:zt, dir:-sd, h:1.62});
           ctx.save(); ctx.globalAlpha = a; const e = P([cx + sd*(LW/2 - .3), S.lz + .05]);
           ctx.beginPath(); ctx.moveTo(r.hand[0] + sd*.4*m, r.hand[1] + .3*m); ctx.lineTo(e[0], e[1]); ctx.strokeStyle = mix(WOOD, INK, .5); ctx.lineWidth = Math.max(1.6, .1*m); ctx.stroke(); ctx.restore(); });
-        person(cx - cribW/2 - 1.6, "porta", {a, ph, dir:1, capa:true}); person(cx + cribW/2 + 1.4, "mira", {a, dir:-1, back:true, pel:"monyo"});
+        person(cx - cribW/2 - 1.6, "porta", {a, ph:.6, dir:1, capa:true}); person(cx + cribW/2 + 1.4, "mira", {a, dir:-1, back:true, pel:"monyo"});
       }
       // pas 5: algú mira el trílit acabat
       if(S.kFin > .02){ person(X1-3.4, "mira", {a:S.kFin, dir:1, pel:"monyo", capa:true}); person(X1-4.3, "dret", {a:S.kFin, dir:1, back:true, h:1.55, pel:"llarg"}); }

@@ -57,7 +57,7 @@
     // enquadrament per a cada tria: pedra i persones sempre a la mateixa escala entre elles; la càmera s'hi acosta o s'allunya
     function viewFor(st, r){
       const L = layout(st, r), zMax = L.crews[L.crews.length-1].z, zMin = Math.min(-1.2, L.crews[0].z);
-      const xR = d3.max(L.crews, c => c.x0 + (c.cnt - 1)*L.gapX + c.z*KX) + 1.2, xL = Math.min(-1.8, zMin*KX - 1.5);
+      const xR = d3.max(L.crews, c => c.x0 + (c.cnt - 1)*L.gapX + c.z*KX) + 2.6,   /* hi cap la punta de corda que queda a terra */ xL = Math.min(-1.8, zMin*KX - 1.5);
       const tall = Math.max(1.9, st.h + 1.05), dz = (zMax - zMin)*KZ;
       const pw = (W - 16)/(xR - xL), ph = (H - 48)/(dz + tall);
       const k = Math.min(pw, ph, mob ? 30 : 52);
@@ -197,8 +197,7 @@
       const s = cur, Lay = layout(s, rate), w = Lay.w;
       const el = IBV.reduced ? 1e9 : now() - t0;
       const slideIn = IBV.reduced ? 0 : -(1 - d3.easeCubicOut(clamp(el/900, 0, 1)))*2.5;
-      // avançament: a poc a poc, com al jardí d'UCL (el ritme exacte no està verificat; només hi ha moviment)
-      const shift = IBV.reduced ? 0 : t/1000*.32;
+      const shift = 0;   // escena quieta: la gent fa força, però no s'anima cap pas
       const xEnd = (W - OX)/ppm + 2, xStart = -OX/ppm - 4;
       const zMin = Lay.crews[0].z, zMax = Lay.crews[Lay.crews.length-1].z;
       grass(Math.min(-4, zMin - 2), Math.max(w + 4, zMax + 2), xStart, xEnd, shift);
@@ -216,21 +215,57 @@
         if(cw.z < w/2 && !st.done) drawStone();
         const dim = hov != null && hov !== "pedra" && hov !== cw.i;
         const a = dim ? .48 : 1;
-        // corda: del morro del trineu fins a la darrera persona de la fila
-        const hy = .95;                      // alçada de les mans d'una persona que estira inclinada
-        const xa = cw.x0 + slideIn*.0, xLast = xa + (cw.cnt - 1)*Lay.gapX;
-        const pF = P(...front), pA = P(xa - .4, hy, cw.z), pL = P(xLast + .5, hy*.92, cw.z);
-        ctx.beginPath(); ctx.moveTo(pF[0], pF[1]); ctx.quadraticCurveTo((pF[0] + pA[0])/2, (pF[1] + pA[1])/2 + 2, pA[0], pA[1]); ctx.lineTo(pL[0], pL[1]);
-        ctx.strokeStyle = IBV.alpha("#7A5A3A", .55*a); ctx.lineWidth = hov === cw.i ? 1.3 : .8; ctx.stroke();
-        const hpx = 1.7*ppm*clamp(1 - (cw.z - w/2)*.014, .8, 1.15);
-        for(let k = 0; k < cw.cnt; k++){
-          const id = offs[cw.i] + k; if(id >= appear) continue;
+        // persones quietes, totes estirant (sense pas animat): primer es calcula on té les mans cadascuna
+        const hpx = 1.7*ppm*clamp(1 - (cw.z - w/2)*.014, .8, 1.15), xa = cw.x0;
+        const ppl = d3.range(cw.cnt).map(k => {
+          const id = offs[cw.i] + k;
           const rr = Math.abs(Math.sin(id*12.9898)*43758.5453) % 1, rr2 = Math.abs(Math.sin(id*78.233)*12345.678) % 1;
-          const x = xa + k*Lay.gapX + (rr - .5)*.3, [sx, sy] = P(x, 0, cw.z + (k%2 ? .32 : -.32) + (rr2 - .5)*.2);
-          const fresh = clamp((el - id*5)/350, 0, 1);
+          const x = xa + k*Lay.gapX + (rr - .5)*.3, [sx, sy] = P(x, 0, cw.z + (k%2 ? .14 : -.14) + (rr2 - .5)*.1);
+          const hh = hpx*(.88 + rr*.16), ph = rr*6.28, o = {pel: ["llarg","curt","monyo"][Math.floor(rr2*3)], capa: rr > .82};
+          const hand = S3.silhouette(d3.path(), sx, sy, hh, "estira", ph, 1, o).hand;
+          return {id, sx, sy, hh, ph, o, hand, x};
+        });
+        ppl.forEach(p => {
+          if(p.id >= appear) return;
+          const fresh = clamp((el - p.id*5)/350, 0, 1);
           const col = hov === cw.i ? C.vermell : IBV.alpha(C.ink, (.5 + .38*(1 - (cw.z - zMin)/Math.max(1, zMax - zMin)))*a*fresh);
-          S3.drawSil(ctx, sx, sy, hpx*(.88 + rr*.16), "estira", t/620 + rr*6.28, 1, col, {pel: ["llarg","curt","monyo"][Math.floor(rr2*3)], capa: rr > .82});
+          S3.drawSil(ctx, p.sx, p.sy, p.hh, "estira", p.ph, 1, col, p.o);
+        });
+        // corda de fibra: lligada al morro del trineu, passa per les mans de cada persona amb una mica de panxa
+        // entre mans, i la punta sobrant cau a terra darrere de l'últim
+        const nRope = Lay.crews.length, rk = nRope > 1 ? cw.i/(nRope - 1) : .5;
+        const anc = P(s.l + .2 + slideIn, sl.top - .1, .1 + rk*(w - .2));
+        const hands = ppl.filter(p => p.id < appear).map(p => p.hand);
+        const thick = clamp(.04*ppm, .7, 2.2), rc = hov === cw.i ? C.vermell : IBV.alpha("#7A5A3A", .8*a);
+        // punts de pas de la corda: ancoratge, mans (amb una panxa a mig camí de cada tram) i punta sobrant a terra;
+        // una corba Catmull-Rom hi passa de manera contínua, com una corda de fibra tibant però feixuga
+        const pts = [anc];
+        let prev = anc;
+        hands.forEach((h, i) => {
+          const d = Math.hypot(h[0] - prev[0], h[1] - prev[1]), sag = i ? Math.min(d*.07, .1*ppm) : Math.min(d*.06, .45*ppm);
+          if(!i && d > 3*ppm) [.33, .66].forEach(u => pts.push([prev[0] + (h[0] - prev[0])*u, prev[1] + (h[1] - prev[1])*u + sag*4*u*(1 - u)]));
+          else pts.push([(prev[0] + h[0])/2, (prev[1] + h[1])/2 + sag]);
+          pts.push(h); prev = h;
+        });
+        // la resta de la corda (la de qui encara no l'ha agafada, i la punta sobrant) és estesa a terra
+        const rest = ppl.slice(hands.length), wig = k => Math.sin(k*2.3 + cw.i)*.12;
+        if(rest.length){
+          const x0 = hands.length ? ppl[hands.length - 1].x + .45 : Math.max(s.l + 1.4, rest[0].x - 1.2);
+          if(!hands.length){ const m = P((s.l + x0)/2 + .3, 0, cw.z*.6); pts.push(m); }
+          pts.push(P(x0, hands.length ? .3 : 0, cw.z + wig(0)));
+          rest.forEach((p, k) => pts.push(P(p.x + .3, 0, cw.z + wig(k + 1))));
         }
+        {
+          // punta lliure: arrugada a terra darrere de l'últim
+          const lx = ppl[ppl.length - 1].x;
+          if(!rest.length) pts.push(P(lx + .55, .35, cw.z + .05));
+          pts.push(P(lx + .9, 0, cw.z + .12), P(lx + 1.5, 0, cw.z - .12), P(lx + 1.9, 0, cw.z + .2), P(lx + 1.75, 0, cw.z + .45));
+        }
+        const line = d3.line().curve(d3.curveCatmullRom.alpha(.5)).context(ctx);
+        const rope = () => { ctx.beginPath(); line(pts); };
+        rope(); ctx.lineCap = "round"; ctx.lineJoin = "round";
+        ctx.strokeStyle = rc; ctx.lineWidth = hov === cw.i ? thick + .5 : thick; ctx.stroke();
+        if(thick > 1.3){ rope(); ctx.setLineDash([1.2, 2.2]); ctx.strokeStyle = IBV.alpha("#E9DCC6", .7*a); ctx.lineWidth = thick*.45; ctx.stroke(); ctx.setLineDash([]); }
       });
       drawStone();
       // cotes en gravat: llargada i gruix de la pedra

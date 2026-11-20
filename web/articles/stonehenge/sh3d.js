@@ -86,17 +86,36 @@
     const G = [];
     const circ = (r, from, to, n) => { const p=[]; for(let i=0;i<=n;i++){ const b=from+(to-from)*i/n; p.push([...pol(r,b),0]); } return p; };
     const gapNE = [AX-9, AX+9];
-    // fossat (dues línies) i talús, oberts a l'entrada NE i a l'entrada petita del sud
-    [[56.5,"ditch"],[53.2,"ditch"],[50.4,"bank"],[47.8,"bank"]].forEach(([r,k]) => {
-      G.push({k, ph:[1,9], pts:circ(r, gapNE[1], 157, 70)});
-      G.push({k, ph:[1,9], pts:circ(r, 163, 360+gapNE[0], 90)});
+    // El fossat es va cavar a trossos amb pics de banya: ni el fossat ni el talús són cercles perfectes.
+    // Cada vora té una ondulació lenta comuna (el traçat del conjunt) i una de pròpia, més petita; el fossat,
+    // a més, un festó curt dels segments de cavar. Els caps de cada tram s'arrodoneixen a les entrades.
+    const wob = (b, k, seed, amp) => { let v = 0; k.forEach((f, i) => { v += Math.sin(f*b*D2R + seed*(i + 1)*1.7)/(i + 1); }); return v*amp; };
+    const rAt = (r, b, own, ditch) => r + wob(b, [3,5,8], 1, .55) + wob(b, [7,13], own, .22) + (ditch ? wob(b, [38], own, .18) : 0);
+    const ring = (r, from, to, own, ditch) => { const p = [], n = Math.max(8, Math.round((to - from)/1.2)); for(let i=0;i<=n;i++){ const bb = from + (to - from)*i/n; p.push([...pol(rAt(r, bb, own, ditch), bb), 0]); } return p; };
+    const cap = (r0, r1, bb, dirSign, o0, o1, ditch) => {           // tancament arrodonit d'un tram (de la vora de dins a la de fora)
+      const p = [], ra = rAt(r0, bb, o0, ditch), rb = rAt(r1, bb, o1, ditch), rm = (ra + rb)/2, hw = (rb - ra)/2;
+      for(let i=0;i<=8;i++){ const u = Math.PI*i/8, rr = rm - hw*Math.cos(u), db = dirSign*Math.sin(u)*hw*1.1/rm/D2R; p.push([...pol(rr, bb + db), 0]); }
+      return p; };
+    const segs = [[gapNE[1], 157], [163, 360 + gapNE[0]]];
+    [[53.2, 56.5, "ditch", 2, 3], [47.8, 50.4, "bank", 4, 5]].forEach(([r0, r1, k, o0, o1]) => {
+      const ditch = k === "ditch";
+      segs.forEach(([f, t]) => {
+        G.push({k, ph:[1,9], pts: ring(r0, f, t, o0, ditch)});
+        G.push({k, ph:[1,9], pts: ring(r1, f, t, o1, ditch)});
+        G.push({k, ph:[1,9], pts: cap(r0, r1, f, -1, o0, o1, ditch)});
+        G.push({k, ph:[1,9], pts: cap(r0, r1, t, 1, o0, o1, ditch)});
+      });
     });
-    // traces d'arqueòleg (hachures) radials sobre el talús i el pendent del fossat
-    [["bank",47.8,50.4],["ditch",53.2,56.5]].forEach(([k,r0,r1]) => {
-      const hach = [];
-      for(let b=0;b<360;b+=1.6){ if((b > gapNE[0] && b < gapNE[1]) || (b > 157 && b < 163)) continue;
-        const L = (Math.round(b/1.6)%2) ? .55 : 1, [x0,y0] = pol(r0,b), [x1,y1] = pol(r0+(r1-r0)*L,b);
-        hach.push([[x0,y0,0],[x1,y1,0]]); }
+    // hachures de pendent: traços irregulars (espai, llargada i inclinació variables), no una escala graduada
+    [["bank", 47.8, 50.4, 4, 5, 11], ["ditch", 53.2, 56.5, 2, 3, 23]].forEach(([k, r0, r1, o0, o1, sd]) => {
+      const hach = [], rn = IBV.rng(sd);
+      segs.forEach(([f, t]) => {
+        for(let bb = f + 1.2; bb < t - 1.2; bb += 1.1 + rn()*1.6){
+          const ra = rAt(r0, bb, o0, k === "ditch"), rb = rAt(r1, bb, o1, k === "ditch"), L = .3 + rn()*.6, tw = (rn() - .5)*.8;
+          const [x0, y0] = pol(ra + (rb - ra)*rn()*.15, bb), [x1, y1] = pol(ra + (rb - ra)*L, bb + tw);
+          hach.push([[x0, y0, 0], [x1, y1, 0]]);
+        }
+      });
       G.push({k, ph:[1,9], hach});
     });
     // forats Aubrey (56)
@@ -105,13 +124,87 @@
         // forats Y (30) i Z (29), fase 5
     for(let i=0;i<30;i++){ const b=AX+6+i*12, [x,y]=pol(27,b); G.push({k:"yz", ph:[5,9], c:[x,y,0], r:.9}); }
     for(let i=0;i<29;i++){ const b=AX+12+i*12, [x,y]=pol(19.6,b); G.push({k:"yz", ph:[5,9], c:[x,y,0], r:.8}); }
-    // Avinguda: dos talussos paral·lels cap al NE (fase 3); el primer tram recte d'uns 530 m
-    const ua = AX*D2R, ex = Math.sin(ua), ey = Math.cos(ua), nx = Math.cos(ua), ny = -Math.sin(ua);
-    [-1,1].forEach(s => [6,15].forEach(o => {
-      const p=[]; for(let d=54; d<=560; d+=13) p.push([d*ex + s*o*nx, d*ey + s*o*ny, 0]);
-      G.push({k:"avenue", ph:[3,9], pts:p});
-    }));
+    // Avinguda (fase 3): dos talussos amb fossat per fora cap al NE. El fossat de l'Avinguda neix tocant el fossat
+    // del recinte (no hi entra) i s'obre una mica; els talussos comencen just fora, amb el cap arrodonit.
+    // Cap vora és una recta: segueix el terreny amb una ondulació lenta (la mateixa per a les dues vores d'un costat).
+    // Eix de l'Avinguda: recte cap al NE uns 530 m i, al fons de Stonehenge Bottom, gira cap a l'est (cap a l'Avon).
+    // Damunt d'aquest eix, una ondulació lenta de pocs metres: és un terraplè de terra, no una regla.
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const AXIS = (() => { const out = []; let x = 0, y = 0, hd = AX;
+      for(let d = 0; d <= 760; d += 4){
+        const turn = d > 470 ? 42*d3.easeCubicInOut(clamp((d - 470)/200, 0, 1)) : 0;
+        const h = (AX + turn + Math.sin(d/110 + .4)*1.2 + Math.sin(d/43 + 1.9)*.5)*D2R;
+        out.push({d, x, y, h}); x += 4*Math.sin(h); y += 4*Math.cos(h); hd = h; }
+      void hd; return out; })();
+    const L2 = (d, o) => { const q = AXIS[Math.min(AXIS.length - 1, Math.max(0, Math.round(d/4)))]; return [q.x + o*Math.cos(q.h), q.y - o*Math.sin(q.h), 0]; };
+    [-1, 1].forEach(sd => {
+      const side = d => Math.sin(d/47 + sd*1.3)*.5 + Math.sin(d/19 + sd*.7)*.18;
+      const edge = (o, d0, flare, own) => {
+        const p = [];
+        for(let d = Math.ceil(d0/4)*4; d <= 760; d += 4){
+          const u = clamp((d - d0)/flare, 0, 1), e = u*u*(3 - 2*u);
+          p.push(L2(d, sd*((o - 2.2*(1 - e)) + side(d)*e + Math.sin(d/23 + own)*.15*e)));
+        }
+        return p;
+      };
+      // fossat: neix sobre la vora de fora del fossat del recinte (no hi entra) i s'obre fins als 15 m de l'eix
+      const o0 = 15 - 2.2, d0 = Math.sqrt(Math.max(0, rAt(56.5, AX + sd*Math.asin(o0/56.5)/D2R, 3, true)**2 - o0*o0));
+      const dt = edge(15, d0, 26, sd*2); dt.unshift(L2(d0, sd*o0));
+      G.push({k:"avenue", ph:[3,9], pts: dt});
+      // talús: comença just fora del fossat del recinte
+      G.push({k:"avenue", ph:[3,9], pts: edge(6, 59.5, 18, sd*5)});
+    });
     return G;
+  }
+
+  /* ---------- 1b. Stonehenge avui: el mateix model, amb les pedres que encara són dretes ---------- */
+  // Recompte d'Historic England (fitxa 1010140) i English Heritage: del cercle de sarsens queden 17 pilars drets
+  // (i 8 de caiguts o desplaçats) i 6 llindes al seu lloc; de les pedres blaves del cercle, 11 dretes i 17 caigudes o
+  // soques; de la ferradura, 6 dretes, 3 soques i 2 caigudes. Dels trílits (no verificat en fonts obertes, és
+  // l'estat que mostren les fotografies): 51–52, 53–54 i 57–58 (redreçat el 1958) són sencers; del Gran Trílit només queda dreta la pedra 56 (la 55 i la llinda són a terra, sobre l'Altar), i del
+  // 59–60 només la 60. QUINES pedres concretes cauen és aproximat (el recompte és exacte, la tria de posicions no).
+  function todayModel(model){
+    const UP = new Set([1,2,3,4,5,6,7,10,11,16,21,22,23,27,28,29,30]);          // pilars drets del cercle
+    const FALLEN = [8,9,12,14,15,19,25,26];                                         // caiguts o desplaçats (posició aproximada)
+    const LINT = new Set([29,30,1,5,6,21]);                                         // llinda n = sobre els pilars n i n+1
+    const BC_UP = [1,6,11,16,21,26,31,36,41,46,51], BC_LOW = [0,3,8,9,14,18,23,28,29,33,38,43,44,48,53,57,58];
+    const out = [], rnd = IBV.rng(1901), RS = 15.0;
+    const lie = (s, b, dr, extra) => Object.assign({}, s, {x: pol(RS + dr, b)[0], y: pol(RS + dr, b)[1], rot: b + (extra||0), w: s.h, t: s.w, h: Math.min(s.t, 1.1), z0: 0, taper: .95, lean: [0,0], __c: null, F: null, seed: s.seed + 3});
+    let tri = {};
+    model.forEach(s => {
+      if(s.ph[1] < 9) return;                                                      // escena de la fase 4, arcs Q/R, forats Aubrey
+      if(s.g === "sarsen"){
+        const n = +s.id.slice(1), b = Math.atan2(s.x, s.y)*R2D;
+        if(UP.has(n)) out.push(s);
+        else if(FALLEN.includes(n)) out.push(lie(s, b, s.h/2 + .6, (rnd() - .5)*30));
+        return;
+      }
+      if(s.g === "llinda"){ const n = +s.id.slice(1); if(LINT.has(n)) out.push(s);
+        else if(n === 14 || n === 8){ const bm = (s.arc[0] + s.arc[1])/2; out.push(Object.assign({}, s, {arc: null, x: pol(RS + 3, bm)[0], y: pol(RS + 3, bm)[1], rot: bm + 90 + (rnd() - .5)*40, z0: 0, __c: null, F: null})); }
+        return; }
+      if(s.g === "trilit"){
+        const k = +s.id.slice(1), i = (tri[k] = (tri[k]||0) + 1) - 1;             // i: 0 i 1 pilars, 2 llinda
+        if(k !== 2 && k !== 4) { out.push(s); return; }
+        const b = Math.atan2(s.x, s.y)*R2D;
+        if(k === 2 && i === 0){ const a = lie(s, b + 180, -RS - 1.5, 90); a.x = s.x*.35; a.y = s.y*.35; out.push(a); }   // la 55, a terra cap al centre
+        else if(k === 2 && i === 2){ out.push(Object.assign({}, s, {lintel: true, arc: null, x: s.x*.45, y: s.y*.45, z0: 0, rot: s.rot + 25, __c: null, F: null})); }
+        else if(k === 4 && i === 0){ const a = lie(s, b, 0, 90); a.x = s.x*.7; a.y = s.y*.7; out.push(a); }
+        else if(k === 4 && i === 2){ out.push(Object.assign({}, s, {lintel: true, arc: null, x: s.x*.62, y: s.y*.62, z0: 0, rot: s.rot - 30, __c: null, F: null})); }
+        else out.push(s);
+        return;
+      }
+      if(s.g === "blava"){
+        const r = rnd();
+        if(s.id.startsWith("bc")) { const i = +s.id.slice(2);                      // 11 dretes, 17 caigudes o soques
+          if(BC_UP.includes(i)) out.push(s); else if(BC_LOW.includes(i)) out.push(Object.assign({}, s, {h: .35, __c: null, F: null})); }
+        else if(s.id.startsWith("bh")) { const i = +s.id.slice(2);                 // 6 dretes, 5 soques o caigudes
+          if([3,5,8,10,13,15].includes(i)) out.push(s); else if([1,7,11,16,17].includes(i)) out.push(Object.assign({}, s, {h: .35, __c: null, F: null})); }
+        void r; return;
+      }
+      if(s.g === "station"){ if(s.id === "st0") out.push(s); else if(s.id === "st2") out.push(Object.assign({}, s, {h: .7, __c: null, F: null})); return; }
+      out.push(s);                                                                   // Altar, Pedra del Taló, Pedra de la Matança
+    });
+    return out;
   }
 
   /* ---------- 2. Geometria: cada pedra és una pila d'anells (secció amb cantells arrodonits) ---------- */
@@ -486,9 +579,10 @@
     // cap a on mira, a la pantalla
     const ahead = cam.p([pp.x + Math.sin((pp.az||0)*D2R), pp.y + Math.cos((pp.az||0)*D2R), 0]);
     const dir = ahead && ahead[0] < f[0] ? -1 : 1;
-    const ph = (pp.pose === "camina" || pp.pose === "porta") ? (t/420 + (pp.k||0)) : (pp.pose === "picar" || pp.pose === "cavar") ? (t/260 + (pp.k||0)) : (pp.pose === "estira" ? t/600 + (pp.k||0) : 0);
+    // qui camina o estira queda quiet (un pas animat sense avançar semblava caminar al lloc); només les eines es mouen
+    const ph = (pp.pose === "picar" || pp.pose === "cavar") ? (t/260 + (pp.k||0)) : (pp.k||0);
     const r = drawSil(ctx, f[0], f[1], h, pp.pose||"dret", ph, dir, IBV.alpha(C.ink, pp.a||.88), pp);
-    if(pp.rope){ const an = cam.p(pp.rope); if(an){ ctx.beginPath(); ctx.moveTo(an[0], an[1]); ctx.lineTo(r.hand[0], r.hand[1]); ctx.strokeStyle = IBV.alpha(C.ink2, .9); ctx.lineWidth = Math.max(.6, h*.012); ctx.stroke(); } }
+    if(pp.rope){ const an = cam.p(pp.rope); if(an){ const L = Math.hypot(r.hand[0]-an[0], r.hand[1]-an[1]); ctx.beginPath(); ctx.moveTo(an[0], an[1]); ctx.quadraticCurveTo((an[0]+r.hand[0])/2, (an[1]+r.hand[1])/2 + L*.07, r.hand[0], r.hand[1]); ctx.lineCap = "round"; ctx.strokeStyle = IBV.alpha("#7A5A3A", .9); ctx.lineWidth = Math.max(.7, h*.018); ctx.stroke(); } }
   }
   function drawPerson(ctx, cam, at){ drawPerson3(ctx, cam, {x:at[0], y:at[1], pose:"dret", az:AX+200}, 0); }
 
@@ -514,5 +608,5 @@
     trineu:"Reconstrucció: no se'n coneix cap resta"
   };
 
-  window.SH3D = {TINT, AX, pol, buildModel, buildGround, camera, orbit, render, dragOrbit, drawPerson, silhouette, silPaths, drawSil, GROUPS, PAPER, D2R, R2D};
+  window.SH3D = {TINT, AX, pol, buildModel, todayModel, buildGround, camera, orbit, render, dragOrbit, drawPerson, silhouette, silPaths, drawSil, GROUPS, PAPER, D2R, R2D};
 })();

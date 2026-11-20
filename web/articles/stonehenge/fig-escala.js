@@ -84,15 +84,18 @@
       ring(gD, fD, ...R(42), gapsD, {sw:.75});
       ring(gD, fD, ...R(57.6), gapsD, {sw:.75});
       // riu Avon cap al SE (direcció, no traçat)
-      { const a = fD(...polm(DW/2 + 6, 133)), b = fD(...polm(DW/2 + (mob?26:44), 133));
+      { const a = fD(...polm(DW/2 + 6, 133)), b = fD(...polm(DW/2 + (mob?36:44), 133));
         gD.append("path").attr("d", `M${a}L${b}`).attr("stroke", IBV.alpha(C.blau,.7)).attr("stroke-width",1).attr("marker-end",null);
-        IBV.t(gD, b[0] + (mob?-4:4), b[1] + 12, "cap a l'Avon", {size:11, italic:true, fill:C.blau, anchor: mob?"end":"start", halo:true}); }
+        // al mòbil, l'etiqueta s'arrecera al marge dret, fora del talús
+        IBV.t(gD, mob ? w - 6 : b[0] + 4, b[1] + (mob ? 14 : 12), "cap a l'Avon", {size:11, italic:true, fill:C.blau, anchor: mob?"end":"start", halo:true}); }
       gD.append("text").attr("x", cx).attr("y", cy - D0/2 - 30).attr("text-anchor","middle").attr("font-size", 12.5).attr("font-weight",700).attr("fill",ink).text("Durrington Walls").call(IBV.halo);
       IBV.t(gD, cx, cy - D0/2 - 15, `${F0(490)} × ${F0(468)} m · c. 2500 aC`, {size:11.5, anchor:"middle", fill:ink2, halo:true}).attr("dy", -1);
 
       // ---------- quatre plantes de ~110 m i Göbekli D dins de Durrington ----------
       const o = 66;
-      const cells = { stonehenge:[-o, o], woodhenge:[o, o], brodgar:[-o, -o], waunmawn:[o, -o], gobekli:[0, 0] };
+      // al mòbil, la fila de dalt baixa una mica i la de baix s'aparta perquè hi càpiguen els noms sense tocar cap anell
+      const cells = mob ? { stonehenge:[-o, 64], woodhenge:[o, 64], brodgar:[-o, -74], waunmawn:[o, -74], gobekli:[0, -5] }
+                        : { stonehenge:[-o, o], woodhenge:[o, o], brodgar:[-o, -o], waunmawn:[o, -o], gobekli:[0, 0] };
       const lab = [];
 
       // Stonehenge: fossat, talús, forats Aubrey, Station Stones i pedres de la fase 4
@@ -130,7 +133,7 @@
       // Waun Mawn: cercle desmantellat i discutit, de diàmetre «idèntic» al fossat de Stonehenge
       function drawWaun(g, f, s){
         ring(g, f, 55, 55, [], {sw:.8, dash:"3 3", stroke:ink2});
-        IBV.t(g, ...f(0, 0), "en debat", {size:11, italic:true, anchor:"middle", fill:C.muted, halo:true}).attr("dy", 4);
+        IBV.t(g, ...f(0, 0), "en debat", {size:11, italic:true, anchor:"middle", fill:C.muted, halo:true}).attr("dy", mob ? 12 : 4);
       }
       // Göbekli Tepe, recinte D: ~14 m d'interior; dos pilars en T centrals (fins a 5,5 m d'alt); mur i pilars perimetrals esquemàtics
       function drawGobekli(g, f, s){
@@ -147,10 +150,14 @@
         DRAW[id](g, P(ox, oy, sc), sc);
         const d = E[id], top = my > 0;
         if(id === "gobekli"){
-          const tx = ox + (mob ? 0 : 0), ty = oy + 24;
-          lab.push({g, x:tx, y:ty - 4, anchor:"middle", lines:[[`${d.curt} · 14 m`, true, ink]]});
+          // al mòbil, el nom va a la dreta del cercle petit, al buit entre Woodhenge i Waun Mawn
+          if(mob) lab.push({g, x:ox + 11, y:oy + 4, anchor:"start", lines:[[`${d.curt} · 14 m`, true, ink]]});
+          else lab.push({g, x:ox, y:oy + 20, anchor:"middle", lines:[[`${d.curt} · 14 m`, true, ink]]});
+        } else if(mob && !top){
+          // fila de baix al mòbil: el nom dins del cercle (Brodgar i Waun Mawn tenen el centre buit)
+          lab.push({g, x:ox, y:oy + (id === "waunmawn" ? -4 : 4), anchor:"middle", lines:[[d.curt, true, ink]]});
         } else {
-          const rr = (id==="brodgar" ? 71 : 56)*sc, ty = top ? oy - rr - (mob ? 18 : 22) : oy + rr + (mob ? 13 : 16);
+          const rr = (id==="brodgar" ? 71 : 56)*sc, ty = top ? oy - rr - (mob ? 8 : 22) : oy + rr + 16;
           lab.push({g, x:ox, y:ty, anchor:"middle", lines: mob ? [[d.curt, true, id==="stonehenge"?C.vermell:ink]] : [[d.curt, true, id==="stonehenge"?C.vermell:ink], [`${F0(d.d)} m · ${d.data}`]]});
         }
       });

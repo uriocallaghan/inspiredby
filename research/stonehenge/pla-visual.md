@@ -54,3 +54,11 @@ L'editor va trobar massa simples els gràfics plans. Cada un viu ara en un fitxe
 - **V10 (`fig-escala.js`):** plantes reals en línia fina a la mateixa escala, posades dins de Durrington Walls, amb una lupa ×7 del cercle de sarsens i de Göbekli D.
 - **V11 (`fig-mon.js`):** cronologia amb una icona de línia per a cada tradició, la pedra més gran de cada lloc i els dos intervals (Göbekli → Stonehenge, Stonehenge → avui).
 - **V12 (`fig-mirall.js`):** sis vinyetes d'interpretació sobre l'eix trencat i, a sota, set carrils amb l'estat físic de les pedres (caigudes i redreçaments); en vertical al mòbil.
+
+## Tercera passada (20-11-2026): realisme i mòbil
+
+- **V4 (`fig-moure.js`):** cordes de fibra que passen per les mans de cada persona amb una mica de panxa entre mans, punta sobrant arrugada a terra i, mentre la gent apareix, la corda encara estesa a terra. Les persones ja no fan el pas animat (semblava que caminessin sense avançar): són quietes, fent força. El terra tampoc no llisca.
+- **V1 / V6 (`sh3d.js`):** el fossat i el talús ja no són cercles perfectes (ondulació lenta i festó dels segments de cavar, caps arrodonits a les entrades); les hachures de pendent són irregulars i ja no semblen una escala graduada. L'Avinguda neix tocant la vora de fora del fossat, s'obre de mica en mica, serpenteja uns metres i, passats uns 470 m, gira cap a l'est com el traçat real cap a l'Avon. Les cordes de la colla de la maqueta fan panxa. Ningú camina al lloc (només es mouen les eines de picar i cavar).
+- **V5 (`fig-trilit.js`):** les colles que estiren i el portador són quiets.
+- **V7 (`article-b.js`):** amb «Avui», la maqueta mostra Stonehenge com és ara (`SH3D.todayModel`): 17 dels 30 pilars i 6 de les 30 llindes del cercle, 11 pedres blaves dretes al cercle i 6 a la ferradura (Historic England 1010140). La tria de quines pedres concretes cauen és aproximada (dit al peu). Té sentit perquè l'alineació del solstici encara funciona avui (l'azimut només es mou uns 3° per l'obliqüitat) i el lector compara el monument sencer amb la ruïna.
+- **V10 (`fig-escala.js`):** al mòbil, les plantes de dins de Durrington Walls s'han recol·locat perquè els noms no toquin cap anell (Brodgar i Waun Mawn amb el nom a dins, Göbekli D al costat) i «cap a l'Avon» va al marge dret.

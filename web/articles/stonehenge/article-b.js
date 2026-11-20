@@ -114,6 +114,7 @@
     const rng = document.getElementById("cel-rng"), rngVal = document.getElementById("cel-rng-val");
     const outAz = document.getElementById("cel-az"), outMsg = document.getElementById("cel-msg");
     let era = "-2500", day = 355, ev = "set", body = "sol";
+    const TODAY = S3.todayModel(MODEL);
     const PRE = {hivern:{day:355, ev:"set", body:"sol"}, estiu:{day:172, ev:"rise", body:"sol"}, equinocci:{day:80, ev:"set", body:"sol"}, lluna:{day:355, ev:"rise", body:"lluna"}};
     segBind(fig.querySelector(".cel-presets"), "k", k => { ({day,ev,body} = PRE[k]); rng.value = day; rng.disabled = body==="lluna"; upd(); });
     segBind(fig.querySelector(".cel-era"), "era", v => { era = v; upd(); });
@@ -131,7 +132,11 @@
       const eye = [...S3.pol(36, e.az+180), 10], tg = [...S3.pol(85, e.az), 0];
       const cam = S3.camera({eye, target:tg, fov:mob?56:44, cy:.56}, W, H);
       const sky = [{az:e.az, alt:.9, c:e.c}];
-      S3.render(ctx, W, H, cam, MODEL, GROUND, {phase:4, horizon:true, sky, beam:{az:e.az, w:1.1, a:body==="lluna"?0:.24}});
+      // «Avui» mostra el monument tal com és ara (pilars i llindes caigudes); el 2500 aC, la reconstrucció sencera
+      const today = era === "2026";
+      S3.render(ctx, W, H, cam, today ? TODAY : MODEL, GROUND, {phase: today ? 9 : 4, horizon:true, sky, beam:{az:e.az, w:1.1, a:body==="lluna"?0:.24},
+        groundAppear: today ? (gd => gd.k === "yz" ? 0 : 1) : null});
+      ctext(ctx, 10, H - 12, today ? "Stonehenge avui: 17 dels 30 pilars i 6 de les 30 llindes encara al seu lloc" : "Reconstrucció cap al 2500–2200 aC", {size: mob ? 10.5 : 11.5, fill: C.ink2});
       const q = sky[0].screen;
       if(q){
         const txt = body==="lluna" ? "Sortida extrema de la Lluna" : (ev==="rise" ? "Sortida del Sol" : "Posta del Sol");
