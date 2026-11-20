@@ -24,7 +24,7 @@
           var nd=dy>0?1:-1;
           if(nd!==dir){dir=nd;acc=Math.abs(dy)}else{acc+=Math.abs(dy)}
           if(dir===1&&acc>=10&&!hidden){hidden=true;bar.classList.add('ib-bar--hidden')}
-          else if(dir===-1&&acc>=6&&hidden){hidden=false;bar.classList.remove('ib-bar--hidden')}
+          else if(dir===-1&&acc>=24&&hidden){hidden=false;bar.classList.remove('ib-bar--hidden')}
         }
       }
     }
