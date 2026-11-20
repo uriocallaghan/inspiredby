@@ -37,8 +37,8 @@
 
 .graphic .gbox{padding:0 4px}
 .graphic .src{margin-top:6px}
-#s-taula .plot{min-height:410px}
-#s-mur .plot{min-height:420px}
+#s-taula .plot{min-height:492px}
+#s-mur .plot{min-height:480px}
 
 /* Comparador interactiu MAP-15: Leonardo vs Giampietrino + capa SVG */
 .cmp-wrap{position:relative;width:100%}
