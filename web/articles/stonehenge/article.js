@@ -196,7 +196,7 @@
       ({ctx} = IBV.canvas(container, W, H, "Recreació en línia de Stonehenge cap al 2200 aC: el cercle de 30 sarsens amb llindes, cinc trílits en ferradura, les pedres blaves, l'Altar, la Pedra del Taló i el fossat circular amb els 56 forats Aubrey. Es pot girar arrossegant."));
       const cv = container.querySelector("canvas.ibv");
       container.appendChild(container.querySelector(".tip.ibv-dock") || document.createElement("div"));
-      S3.dragOrbit(cv, dx => { auto = false; drag = true; az -= dx*.35; hoverId = null; tp.hide(); draw(); }, () => { drag = false; });
+      S3.dragOrbit(cv, dx => { auto = false; drag = true; az += dx*.35; hoverId = null; tp.hide(); draw(); }, () => { drag = false; });
       cv.addEventListener("pointermove", ev => {
         if(drag) return;
         const r = cv.getBoundingClientRect(), x = ev.clientX - r.left, y = ev.clientY - r.top;
