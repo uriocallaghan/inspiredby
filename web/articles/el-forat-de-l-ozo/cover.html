@@ -1,0 +1,32 @@
+<!doctype html><html lang="ca"><meta charset="utf-8"><title>Com vam començar a tancar el forat de l'ozó</title>
+<!-- Portada i miniatura: la mitjana d'octubre de l'ozó sobre l'hemisferi sud (KNMI/TEMIS MSR-2), sense text.
+     cover.jpg: ?w=1680&h=720 (cinc octubres: 1979, 1987, 1997, 2006, 2025) · thumb.webp: ?w=800&h=1000 (2006) -->
+<style>html,body{margin:0;background:#fff}canvas{display:block}</style>
+<canvas id="c"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="ozo-octubre.js"></script>
+<script>
+const q=new URLSearchParams(location.search), W=+q.get("w")||1680, H=+q.get("h")||720;
+const c=document.getElementById("c"); c.width=W; c.height=H; const x=c.getContext("2d");
+x.fillStyle="#fff"; x.fillRect(0,0,W,H);
+const G=window.OZ_OCT, s=atob(G.b64), a=new Uint8Array(s.length); for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i);
+const N=G.nx*G.ny;
+function val(yi,lon,lat){ const fy=(lat-G.lat0)/G.dlat; if(fy<0||fy>G.ny-1)return NaN; const fx=(((lon+180)%360)+360)%360/G.dlon;
+  const j=Math.floor(fy), v=fy-j, j1=Math.min(j+1,G.ny-1), i=Math.floor(fx)%G.nx, u=fx-Math.floor(fx), i1=(i+1)%G.nx, o=yi*N, Q=(jj,ii)=>a[o+jj*G.nx+ii]*2+60;
+  return (Q(j,i)*(1-u)+Q(j,i1)*u)*(1-v)+(Q(j1,i)*(1-u)+Q(j1,i1)*u)*v; }
+const RED=d3.scaleLinear([100,150,200,220],["#7A2312","#C8442A","#E07A5F","#E9A391"]).clamp(true);
+const BLU=d3.scaleSequential(d3.piecewise(d3.interpolateLab,["#F6F4F0","#2C5DA8",d3.lab("#2C5DA8").darker(1.5).formatHex()])).domain([200,460]).clamp(true);
+const col=du=>d3.rgb(du<220?RED(du):BLU(du));
+function globe(yr,cx,cy,R){
+  const proj=d3.geoOrthographic().rotate([0,90,0]).scale(R/Math.sin(56*Math.PI/180)).translate([cx,cy]).clipAngle(90);
+  const im=x.getImageData(0,0,W,H), d=im.data, yi=yr-G.y0;
+  for(let py=Math.floor(cy-R);py<cy+R;py++)for(let px=Math.floor(cx-R);px<cx+R;px++){
+    if(px<0||py<0||px>=W||py>=H)continue; const r=Math.hypot(px-cx,py-cy); if(r>R)continue; const ll=proj.invert([px,py]); const du=val(yi,ll[0],ll[1]); if(du!==du)continue;
+    const k=(py*W+px)*4, cc=col(du), f=Math.min(1,Math.max(0,(R-r)/(R*.28)));
+    d[k]=255+(cc.r-255)*f; d[k+1]=255+(cc.g-255)*f; d[k+2]=255+(cc.b-255)*f; }
+  x.putImageData(im,0,0);
+}
+if(W>H){ const yrs=[1979,1987,1997,2006,2025], R=Math.min(H*.42,W/yrs.length*.46); yrs.forEach((y,i)=>globe(y,W*(i+.5)/yrs.length,H/2,R)); }
+else globe(2006,W/2,H/2,W*.62);
+</script>
+</html>

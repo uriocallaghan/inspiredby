@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-bd255fa781c5";
+const CACHE_NAME = "ib-offline-4ab8578cffd9";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -33,6 +33,16 @@ const LOCAL_ASSETS = [
   "/articles/de-que-mor-el-mon/index.html",
   "/articles/de-que-mor-el-mon/morts.js",
   "/articles/de-que-mor-el-mon/thumb.webp",
+  "/articles/el-forat-de-l-ozo/",
+  "/articles/el-forat-de-l-ozo/article.css",
+  "/articles/el-forat-de-l-ozo/article.js",
+  "/articles/el-forat-de-l-ozo/cites.js",
+  "/articles/el-forat-de-l-ozo/cover.html",
+  "/articles/el-forat-de-l-ozo/cover.jpg",
+  "/articles/el-forat-de-l-ozo/dades.js",
+  "/articles/el-forat-de-l-ozo/index.html",
+  "/articles/el-forat-de-l-ozo/ozo-octubre.js",
+  "/articles/el-forat-de-l-ozo/thumb.webp",
   "/articles/el-jesus-historic/",
   "/articles/el-jesus-historic/article.css",
   "/articles/el-jesus-historic/article.js",
