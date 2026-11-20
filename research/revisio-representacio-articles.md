@@ -17,7 +17,27 @@ Quatre lectors independents han llegit els 23 articles (tots menys «La malaltia
 - **De què mor el món:** obertura sense «animals africans» (retocs de la sessió «text lleuger i ferm»), «mitjanes del món sencer» i entradeta.
 - **Cinta transportadora, El Niño, Calendari còsmic:** retocs de nom i de blocs; l'altra sessió també va treure fites del calendari.
 
-**Pendent de font o de decisió de l'editor** (no s'ha pogut resoldre sense afegir fets nous):
+**Segona tanda (fonts trobades i aplicades, 21-11-2026).** Quatre lectors van buscar fonts verificables per als punts pendents i s'han aplicat amb cita:
+
+- **Jesús no va escriure res:** «els jueus» de Joan explicat amb la Pontifícia Comissió Bíblica (2001) i Felix Just; qui va detenir Jesús (BCI: grans sacerdots i notables; a Joan, també soldats romans i guardes dels sacerdots i fariseus); els canviadors del Temple (Bible Odyssey); Herodes Antipes («fill d'Herodes el Gran i aliat de Roma», Britannica) en lloc de «príncep jueu»; recomanació de *The Jewish Annotated New Testament*.
+- **El Jesús històric:** Nostra aetate (1965) a l'apartat de la creu.
+- **L'últim sopar:** la iconografia de Judes lligada visualment als jueus (Mellinkoff, 1982) i l'estereotip dels jueus traïdors i cobdiciosos (USHMM).
+- **Virus i bacteris:** Tom Patterson i Steffanie Strathdee, amb el comunicat de la Universitat de Califòrnia a San Diego (2017).
+- **De què mor el món:** diarrea i aigua (IHME, OMS, JMP) sense el «la majoria» no recolzat; tuberculosi amb context; només un terç de les morts es notifiquen amb la causa (OMS, 2026).
+- **Stonehenge:** Ramilisonina amb la seva institució i «en parts de Madagascar», khasi en present (Mitri, 2019), Sumba amb Adams (xarxa de favors, però també dependents d'un noble) i «poble en festa» com a hipòtesi.
+- **El Niño:** «cap a Nadal» (les fonts peruanes diuen que el corrent es nota després de Nadal) i «els mariners de Paita» amb Takahashi (IGP, 2014) citant Carrillo (1892).
+
+**Encara pendent** (les fonts no ho permeten o cal decidir):
+
+- L'article «L'últim sopar» diu que Judes té «un gat o un dimoni» a la pintura mural de la Seu d'Urgell i al fresc de Castagno: les fonts que s'han pogut llegir no ho confirmen (la fitxa del Museu de Vic diu que aquella pintura és al museu, no a la catedral, i no parla de gat). Cal verificar-ho o treure-ho.
+- «sordes» a Leonardo: al passatge del «preceptor sense llengua» l'original diu *muti* («muts»); «sordo» surt a un altre text. Cal decidir com es tradueix.
+- Veronese: el vocabulari de la font acadèmica és «dwarf»; cap centre no fa servir «persones amb nanisme» per a aquest quadre.
+- Stonehenge: «sense escriptura, sense palaus…»; el text de Parker Pearson i Ramilisonina (1998) és de pagament i no s'ha pogut llegir.
+- El Jesús històric: fonts molt occidentals per al Congo, Etiòpia, Mèxic i el Japó; Nostra aetate només s'ha citat amb extractes de la frase.
+- Cinta transportadora: què suposen els monsons per als països afectats. Calendari còsmic: fites d'altres tradicions a l'últim tram.
+- Algunes fonts noves (Bible Odyssey, Felix Just, Mellinkoff via JHOM, comunicat de la UCSD) s'han llegit en pàgines web; el text complet de Mellinkoff (1993) i de Schooley (2017) no.
+
+**Pendent (llista inicial, abans de la segona tanda)** (no s'ha pogut resoldre sense afegir fets nous):
 
 - «els jueus» de Joan (71 vegades): només s'ha deixat el terme grec; cal una font que digui que designa sobretot els dirigents de Jerusalem o Judea.
 - Iconografia de Judes i antisemitisme; neteja del Temple i els canviadors de moneda; qui deté Jesús; Herodes Antipes; Nostra aetate (1965); cap veu jueva moderna a les fonts de «Jesús no va escriure res».
