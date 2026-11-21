@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-7fc21f012b34";
+const CACHE_NAME = "ib-offline-be0df494995a";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -288,6 +288,7 @@ const LOCAL_ASSETS = [
   "/assets/fonts/hnltpro-text-roman.woff",
   "/assets/fonts/hnltpro-text-roman.woff2",
   "/assets/ib-3d.js",
+  "/assets/ib-fx.js",
   "/assets/ib-gent.js",
   "/assets/ib-lang.js",
   "/assets/ib-theme.js",

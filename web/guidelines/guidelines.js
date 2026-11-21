@@ -153,7 +153,7 @@
 
   /* ---------- Decisions preses ---------- */
   const TL = [
-    ["21-11-2026", "<b>Lectura enfocada</b>: als paràgrafs llargs del cos (4 línies o més), les paraules que encara són per sota del 62 % de la pantalla surten fluixes (0,2) i s'encenen una a una, en ordre de lectura, en pujar; la transició és contínua, sense retard, i curta (unes 2 línies), perquè es vegi clar on és el tall. És sistema: ho fa <code>assets/ib.js</code> a tots els articles, sense tocar-los. No s'aplica a l'scrolly, als peus de gràfic ni a «Dades i fonts», ni amb «reduir el moviment»."],
+    ["21-11-2026", "<b>Lectura enfocada, amb menú d'efectes</b>: als paràgrafs llargs, el text de la part baixa de la pantalla surt fluix (0,2) i s'encén paraula per paraula en pujar, sense retard. A l'esquerra de la barra hi ha un menú (icona d'espurna) per triar: sense efecte, opacitat (per defecte) o tres variants de partícules (pols, remolí, espurnes), en què el text de sota és una boira caòtica que puja i forma les lletres. És sistema: ho fa <code>assets/ib-fx.js</code> a tots els articles, sense tocar-los. No s'aplica a l'scrolly, als peus de gràfic ni a «Dades i fonts», ni amb «reduir el moviment»."],
     ["21-11-2026", "<b>El temps de lectura es calcula, no s'escriu</b>: com Medium, unes 265 paraules per minut (la mitjana d'un adult, segons la seva pàgina d'ajuda), sense ajust per gràfics. Compta el cos de l'article, sense peus de gràfic ni «Dades i fonts». És una estimació; la referència científica (Brysbaert, 2019) dona 238 par/min en anglès. El calcula <code>sync-home.mjs</code>."],
     ["21-11-2026", "<b>El tema el decideix el dispositiu</b>: la web es veu en clar o en fosc segons el dispositiu, sense botó de sol/lluna a la barra."],
     ["21-11-2026", "<b>La descripció de portada és curta, s'entén sola i diu només la idea central</b>: sense eufemismes («quan la terra va tremolar»), sense referents que només s'expliquen dins i sense detalls (orígens, xifres secundàries, noms). Un desconegut, sense el títol ni l'article, ha de saber què passa."],
@@ -182,6 +182,10 @@
 
   /* ---------- Per decidir ---------- */
   const DEC = [
+    { id:"efecte", t:"Quin efecte de lectura es queda per defecte",
+      why:"Hi ha cinc opcions al menú de l'esquerra de la barra, en prova. Cal decidir quin és el definitiu i si el menú es manté o desapareix.",
+      q:[["Lectura enfocada: opacitat per defecte, amb menú per canviar-la o desactivar-la (decisió de l'editor, 21-11-2026)", "AGENTS.md i research/guia-estil-articles.md, §3"]],
+      o:["Un sol efecte per a tothom (el que triïs), sense menú", "Opacitat per defecte i el menú es manté, amb les partícules com a opció", "Partícules per defecte (la variant que triïs) i opacitat com a alternativa"] },
     { id:"anells", t:"Anells concèntrics: la peça MAP-04 encara en fa servir",
       why:"Vas decidir que mai anells concèntrics, però al sistema encara hi ha una peça i una eina que en dibuixen.",
       q:[["Cercles translúcids, MAI anells concèntrics (decisió de l'editor, 19-11-2026)", "research/sistema-infografic.md, §1"],

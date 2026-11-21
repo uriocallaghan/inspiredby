@@ -39,6 +39,14 @@
     var sc = document.createElement("script"); sc.src = src; sc.defer = true; (document.head || root).appendChild(sc);
   })();
 
+  // efectes de lectura (assets/ib-fx.js): menu a l'esquerra de la barra, només als articles
+  (function(){
+    if (!/\/articles\//.test(location.pathname)) return;
+    var me = document.currentScript, src = me && me.src ? me.src.replace(/ib-theme\.js(\?.*)?$/, "ib-fx.js") : null;
+    if (!src) return;
+    var sc = document.createElement("script"); sc.src = src; sc.defer = true; (document.head || root).appendChild(sc);
+  })();
+
   if (!dark) return;
 
   /* ===================================================================================== */

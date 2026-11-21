@@ -64,7 +64,15 @@ Quan es talla text, es treuen també les cites `<sup class="nr">` que quedin òr
 
 ### Lectura enfocada (decisió de l'editor, 21-11-2026)
 
-Als paràgrafs llargs del cos (`section.col > p`, 4 línies o més), les paraules que són per sota del 62 % de la pantalla surten a 0,2 d'opacitat i s'encenen una a una, en ordre de lectura, a mesura que pugen. La transició és contínua i curta (unes 2 línies, 15–20 paraules), sense retard CSS: l'opacitat segueix l'scroll a l'instant, sense esglaons. Mai un degradat que travessi el text. Ho fa `web/assets/ib.js` per a tots els articles embolicant cada paraula en un `span.ib-w` i canviant-ne l'opacitat: no cal fer res a l'article ni posar-hi classes. Queden fora l'scrolly (`.step`, que ja té el seu efecte), els peus de gràfic, les notes, «Dades i fonts», la impressió i «reduir el moviment». Si un paràgraf no ho ha de tenir, posa-li una classe (només s'apliquen els `<p>` sense classe o amb `.dl`).
+Ho fa `web/assets/ib-fx.js` per a tots els articles (el carrega `ib-theme.js` a les pàgines d'`/articles/`); no cal fer res a l'article ni posar-hi classes. Només s'apliquen als paràgrafs llargs del cos (`section.col > p` sense classe o amb `.dl`, 170 caràcters o més i 4 línies o més). Queden fora l'scrolly (`.step`, que ja té el seu efecte), els peus de gràfic, les notes, «Dades i fonts», la impressió i «reduir el moviment» (per defecte, sense efecte). Si un paràgraf no l'ha de tenir, posa-li una classe.
+
+**Menú d'efectes**, a l'esquerra de la barra (icona d'espurna, mateix patró que el selector d'idioma). La tria es desa al dispositiu (`localStorage`, clau `ib-fx`):
+
+- **Sense efecte**: res.
+- **Opacitat** (per defecte): les paraules per sota del 62 % de la pantalla surten a 0,2 i s'encenen una a una, en ordre de lectura, en pujar; la transició és contínua, sense retard, i dura unes 2 línies.
+- **Partícules: pols / remolí / espurnes**: per sota del 60 % de la pantalla el text és una boira caòtica de partícules que, en pujar, convergeix cap a la silueta de les lletres; al final, el text real pren el relleu. Pols: punts que tremolen; remolí: les partícules giren en tancar-se; espurnes: traços verticals que pugen.
+
+**Com és de lleuger (no ho trenquis):** cada paraula va en un `span.ib-w` (embolicat un sol cop en carregar: embolicar en ple scroll feia saltar la pàgina) i només se'n canvia l'opacitat; les partícules van en **un sol `<canvas>` fix**, dibuixades amb `fillRect`, i la posició depèn només de l'scroll (cap simulació per partícula). Els punts de cada paraula es mostregen un sol cop, desats per tipus de lletra + text. Només es remesura si canvia l'**amplada** (al mòbil `resize` també salta quan la barra del navegador s'amaga). El canvas fa servir el color de text de mode clar (`#121212`) i `ib-theme.js` el tradueix en fosc; no hi llegeixis el color de `getComputedStyle`, que en fosc ja és el traduït i es tornaria a traduir. Comprovat amb la CPU frenada 4×: 60 fps amb les quatre opcions.
 
 ### Mòbil i accessibilitat
 
