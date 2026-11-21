@@ -255,7 +255,7 @@ function scaleBar(g,proj,lon,lat,km,x,y){
   const pre=ways.filter(d=>d.h<0), post=ways.filter(d=>d.h>=0);   // post ja és en ordre d'hora
   const HMAX=31*24;
   let tH=HMAX, playing=false, raf=0, mapApi=null, serApi=null;
-  const FRESH=14;   // hores que una via nova es queda en vermell
+  const FRESH=14;   // hores que una via nova es queda en vermell viu (després queda en vermell clar)
   const nUpTo=h=>d3.bisector(d=>d.h).right(post,h);
   const kmDay=D.papRoadKm, t0i=Math.round((Date.UTC(2010,0,12)-Date.parse(D.papT0+"T00:00:00Z"))/864e5); // índex del 12 de gener
   const usersH=D.haiti.users, t0u=Math.round((Date.UTC(2010,0,12)-Date.parse(D.haiti.t0+"T00:00:00Z"))/864e5);
@@ -269,14 +269,14 @@ function scaleBar(g,proj,lon,lat,km,x,y){
     const {ctx:rc}=mkCanvas(st,w,h,null);
     relleu59(rc,proj,w,h,window.PAP_DEM,{iso:[100,200,300,400,500,600,700,800,900,1000,1100],fade:"neso",fadeK:.05});
     // capa 2: carrers, redibuixada
-    const {c:cv,ctx,dpr}=mkCanvas(st,w,h,`Mapa de Port-au-Prince amb les ${f0(ways.length)} vies d'OpenStreetMap: ${pre.length} existien abans del terratrèmol (en blau) i ${f0(post.length)} es van afegir en els 31 dies següents (en vermell quan són noves i en gris després).`);
+    const {c:cv,ctx,dpr}=mkCanvas(st,w,h,`Mapa de Port-au-Prince amb les ${f0(ways.length)} vies d'OpenStreetMap: ${pre.length} existien abans del terratrèmol (en blau) i ${f0(post.length)} es van afegir en els 31 dies següents (en vermell viu les hores després d'afegir-les i en vermell clar després).`);
     // capa auxiliar: vies «velles» acumulades (es dibuixen incrementalment)
     const acc=document.createElement("canvas"); acc.width=cv.width; acc.height=cv.height; const ax=acc.getContext("2d"); ax.scale(dpr,dpr);
     const P=ways.map(d=>{ const p=new Path2D(); d.pts.forEach((q,i)=>{ const xy=proj(q); if(i)p.lineTo(xy[0],xy[1]); else p.moveTo(xy[0],xy[1]); }); return p; });
     const idx=new Map(ways.map((d,i)=>[d,i]));
     let accN=0;
-    const lwOld=mob?.5:.6, lwNew=mob?1:1.25;
-    function addOld(n){ ax.strokeStyle=V.alpha(C.ink,.5); ax.lineWidth=lwOld; ax.lineJoin="round"; ax.lineCap="round";
+    const lwOld=mob?.5:.6, lwNew=mob?1.4:1.8;
+    function addOld(n){ ax.strokeStyle=V.alpha(C.red,.38); ax.lineWidth=lwOld; ax.lineJoin="round"; ax.lineCap="round";
       for(let i=accN;i<n;i++)ax.stroke(P[idx.get(post[i])]); accN=n; }
     function resetOld(){ ax.setTransform(1,0,0,1,0,0); ax.clearRect(0,0,acc.width,acc.height); ax.setTransform(dpr,0,0,dpr,0,0); accN=0; }
     const preP=new Path2D(); pre.forEach(d=>preP.addPath(P[idx.get(d)]));
@@ -285,7 +285,7 @@ function scaleBar(g,proj,lon,lat,km,x,y){
       if(nOld<accN)resetOld(); addOld(nOld);
       ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0,0,cv.width,cv.height); ctx.drawImage(acc,0,0); ctx.setTransform(dpr,0,0,dpr,0,0);
       ctx.lineJoin="round"; ctx.lineCap="round";
-      for(let i=nOld;i<nAll;i++){ const a=1-(h0-post[i].h)/FRESH; ctx.strokeStyle=V.alpha(C.red,.35+.6*a); ctx.lineWidth=lwOld+(lwNew-lwOld)*a; ctx.stroke(P[idx.get(post[i])]); }
+      for(let i=nOld;i<nAll;i++){ const a=1-(h0-post[i].h)/FRESH; ctx.strokeStyle=V.alpha(C.red,.38+.62*a); ctx.lineWidth=lwOld+(lwNew-lwOld)*a; ctx.stroke(P[idx.get(post[i])]); }
       ctx.strokeStyle=V.alpha(C.blue,.95); ctx.lineWidth=mob?1.1:1.4; ctx.stroke(preP);
       return nAll;
     };
