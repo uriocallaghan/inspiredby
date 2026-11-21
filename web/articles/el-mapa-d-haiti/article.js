@@ -138,12 +138,47 @@ function scaleBar(g,proj,lon,lat,km,x,y){
     const h=Math.round(mob?Math.min(w*.78,vh*.40):Math.min(w*.8,vh*.74));
     const st=stage(el,h);
     const proj=d3.geoMercator().fitExtent([[mob?2:10,mob?4:10],[w-(mob?2:10),h-(mob?4:10)]],{type:"MultiPoint",coordinates:[[-74.5,17.98],[-71.62,20.1]]});
-    const {ctx}=mkCanvas(st,w,h,"Mapa físic d'Haití en relleu, amb la falla d'Enriquillo–Plantain Garden, l'epicentre del terratrèmol del 12 de gener de 2010 a 25 km a l'oest de Port-au-Prince i les principals ciutats afectades.");
+    const {c:rcv,ctx}=mkCanvas(st,w,h,"Globus terrestre centrat al Carib que s'acosta fins al mapa físic d'Haití en relleu, amb la falla d'Enriquillo–Plantain Garden, l'epicentre del terratrèmol del 12 de gener de 2010 a 25 km a l'oest de Port-au-Prince i les principals ciutats afectades.");
     relleu59(ctx,proj,w,h,window.HT_DEM,{fade:"e",iso:[500,1000,1500,2000]});
     // frontera amb la República Dominicana (Natural Earth 1:110 m)
     V.world().then(W=>{ const p=d3.geoPath(proj,ctx); ctx.save(); ctx.setLineDash([3,3]); ctx.strokeStyle=V.alpha(C.ink2,.55); ctx.lineWidth=.8;
       ctx.beginPath(); p(W.borders); ctx.stroke(); ctx.restore(); }).catch(()=>{});
-    const s=overlay(st,w,h), g=s.append("g");
+    // capa del globus (pas 0): el món en terra plana (MAP-19/MAP-18) que fa zoom fins a l'illa
+    const {c:wcv,ctx:wc}=mkCanvas(st,w,h,null);
+    const s=overlay(st,w,h), g0=s.append("g"), g=s.append("g");
+    const ROT=[72.4,-19], R0=Math.min(w,h)/2-(mob?6:10);
+    const gProj=d3.geoOrthographic().rotate(ROT).clipAngle(90).precision(.3);
+    const tProj=d3.geoOrthographic().rotate(ROT).fitExtent([[mob?2:10,mob?4:10],[w-(mob?2:10),h-(mob?4:10)]],{type:"MultiPoint",coordinates:[[-74.5,17.98],[-71.62,20.1]]});
+    const K0=R0, K1=tProj.scale(), T0=[w/2,h/2], T1=tProj.translate(), grat=d3.geoGraticule().step([15,15])();
+    let Wd=null, HTI=null, z=cur>=1?1:0, zt=null;
+    function paint(){
+      const e=d3.easeCubicInOut(z), k=Math.exp(Math.log(K0)+(Math.log(K1)-Math.log(K0))*e);
+      gProj.scale(k).translate([T0[0]+(T1[0]-T0[0])*e,T0[1]+(T1[1]-T0[1])*e]);
+      const wa=Wd?1-clamp((e-.72)/.28,0,1):0, ra=Wd?clamp((e-.6)/.4,0,1):1;
+      wcv.style.opacity=wa; rcv.style.opacity=ra; g.style("opacity",ra); g0.style("opacity",Wd?1-clamp(e*3,0,1):0);
+      wc.clearRect(0,0,w,h); if(!Wd||wa<=0)return;
+      const p=d3.geoPath(gProj,wc);
+      wc.globalAlpha=1-e; wc.strokeStyle=C.hair; wc.lineWidth=.55; wc.beginPath(); p(grat); wc.stroke(); wc.globalAlpha=1;
+      wc.fillStyle=C.land; wc.beginPath(); p(Wd.land); wc.fill();
+      wc.strokeStyle=C.landEdge; wc.lineWidth=.6; wc.beginPath(); p(Wd.borders); wc.stroke();
+      if(HTI){ wc.fillStyle=C.red; wc.beginPath(); p(HTI); wc.fill(); }
+      wc.strokeStyle=C.hair; wc.lineWidth=1; wc.beginPath(); p({type:"Sphere"}); wc.stroke();
+    }
+    function zoomTo(t,instant){
+      if(zt){ zt.stop(); zt=null; }
+      if(instant||V.reduced||!Wd){ z=t; paint(); return; }
+      const z0=z, T=1900*Math.abs(t-z0); if(T<1){ z=t; paint(); return; }
+      zt=d3.timer(el=>{ const q=Math.min(1,el/T); z=z0+(t-z0)*q; paint(); if(q>=1){ zt.stop(); zt=null; } });
+    }
+    V.world().then(W=>{ Wd=W; HTI=W.countries.features.find(f=>+f.id===332)||null;
+      // noms del globus (posicions fixes en la vista inicial)
+      const gp=d3.geoOrthographic().rotate(ROT).scale(K0).translate(T0);
+      [["Amèrica del Nord",[-100,43]],["Amèrica del Sud",[-60,-10]],["Oceà Atlàntic",[-40,33]],["Oceà Pacífic",[-112,6]]].forEach(([t,ll])=>{ const q=gp(ll);
+        V.t(g0,q[0],q[1],t,{italic:t.startsWith("Oceà"),size:mob?11:12.5,fill:C.muted,anchor:"middle",halo:2.5}); });
+      const hp=gp([-72.6,19.0]);
+      g0.append("circle").attr("cx",hp[0]).attr("cy",hp[1]).attr("r",mob?8:11).attr("fill","none").attr("stroke",C.red).attr("stroke-width",1.2);
+      V.note(g0,{x:hp[0]+3,y:hp[1]-3,tx:hp[0]+(mob?30:56),ty:hp[1]+(mob?30:46),anchor:"start",lines:[["Haití",true],[mob?"al mar Carib":"a l'illa de l'Espanyola, al mar Carib"]],size:mob?11.5:12.5});
+      paint(); }).catch(()=>{ Wd=null; paint(); });
     // noms de context
     const ctxLab=[["Haití",[-72.2,19.12],13.5],["República Dominicana",[-71.85,19.25],12,"R. Dominicana"],["Mar Carib",[-73.4,17.98+.12],12.5],["Oceà Atlàntic",[-73.0,20.02],12.5],["Golf de la Gonâve",[-73.35,18.95],11.5]];
     ctxLab.forEach(([t,ll,sz,ts])=>{ if(mob&&t==="Golf de la Gonâve")return; const p=proj(ll); V.t(g,p[0]-(mob&&ts?14:0),p[1],mob&&ts?ts:t,{italic:t!=="Haití",serif:t==="Haití",weight:t==="Haití"?600:400,size:mob?Math.min(sz,11.5):sz,fill:t==="Haití"?C.ink2:C.muted,anchor:"middle",halo:2.5}); });
@@ -179,18 +214,19 @@ function scaleBar(g,proj,lon,lat,km,x,y){
     el.__set=(k,instant)=>{
       const T=instant||V.reduced?0:700;
       const vis=(sel,on)=>sel.interrupt().transition().duration(T).style("opacity",on?1:0);
-      vis(L.fault,k>=1&&k<=2); vis(L.epi,k>=1&&k<=2); vis(L.city,k>=2); vis(L.box,k>=2&&k<=2);
-      vis(L.ppl,k>=3);
-      L.ppl.selectAll("circle").interrupt().transition().duration(T).delay(d=>T?(d.i<N0?d.i*6:(k>=4?Math.min(1400,(d.i-N0)*2.2):0)):0)
-        .attr("opacity",d=>k>=4||d.i<N0?1:0);
+      zoomTo(k>=1?1:0,instant);
+      vis(L.fault,k>=2&&k<=3); vis(L.epi,k>=2&&k<=3); vis(L.city,k>=3); vis(L.box,k===3);
+      vis(L.ppl,k>=4);
+      L.ppl.selectAll("circle").interrupt().transition().duration(T).delay(d=>T?(d.i<N0?d.i*6:(k>=5?Math.min(1400,(d.i-N0)*2.2):0)):0)
+        .attr("opacity",d=>k>=5||d.i<N0?1:0);
       pTxt.selectAll("*").remove();
-      if(k>=3){
-        const lines=k>=4?[[`${f0(N1)} persones`,true,C.red],["en els 31 dies després del sisme"],[`(en blau, les ${N0} de l'any anterior)`]]
+      if(k>=4){
+        const lines=k>=5?[[`${f0(N1)} persones`,true,C.red],["en els 31 dies després del sisme"],[`(en blau, les ${N0} de l'any anterior)`]]
                          :[[`${N0} persones`,true,C.blue],["van editar Haití a OpenStreetMap"],["en tot l'any anterior"]];
-        const yy=k>=4?yEnd:gy0+Math.ceil(N0/cols)*gap+(mob?10:14);
+        const yy=k>=5?yEnd:gy0+Math.ceil(N0/cols)*gap+(mob?10:14);
         V.lines(pTxt,gx0,yy+2,lines,{size:mob?11.5:12.5,halo:3});
       }
-      if(T&&k>=1&&k<=2){ pulse.selectAll("circle.pl").attr("r",0).transition().duration(1400).ease(d3.easeCubicOut).attr("r",(d,i)=>R*[1,.66,.36][i]); }
+      if(T&&k>=2&&k<=3){ pulse.selectAll("circle.pl").attr("r",0).transition().duration(1400).ease(d3.easeCubicOut).attr("r",(d,i)=>R*[1,.66,.36][i]); }
     };
     el.__set(cur,true);
     V.onView(el,instant=>{ if(instant)return; st.style.opacity=0; d3.select(st).transition().duration(800).style("opacity",1); });
