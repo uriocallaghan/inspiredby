@@ -44,9 +44,9 @@
   if(!document.querySelector('.ib-article'))return;
   if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   if(!('IntersectionObserver' in window))return;
-  var MIN_LINES=4,EDGE=.64,BAND=1,FLOOR=.08; /* tall al 64 % de la pantalla; transicio d'1 linia */
+  var MIN_LINES=4,EDGE=.62,BAND=2.2,FLOOR=.08; /* tall al 62 % de la pantalla; transicio de 2,2 linies */
   var st=document.createElement('style');
-  st.textContent='.ib-w{transition:opacity .12s linear}@media print{.ib-w{opacity:1!important}}';
+  st.textContent='.ib-w{transition:opacity .2s linear}@media print{.ib-w{opacity:1!important}}';
   document.head.appendChild(st);
   var paras=[],vis=new Set(),ticking=false;
   function wrap(node){
@@ -95,7 +95,7 @@
       for(var i=0;i<ws.length;i++){
         var w=ws[i],t=end?0:Math.min(1,Math.max(0,(top+w.y-start)/z));
         t=t*t*(3-2*t);
-        var o=Math.round((1-t*(1-FLOOR))*40)/40;
+        var o=Math.round((1-t*(1-FLOOR))*100)/100;
         if(o!==w.o){w.o=o;w.el.style.opacity=o===1?'':o}
       }
     });

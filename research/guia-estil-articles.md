@@ -64,7 +64,7 @@ Quan es talla text, es treuen també les cites `<sup class="nr">` que quedin òr
 
 ### Lectura enfocada (decisió de l'editor, 21-11-2026)
 
-Als paràgrafs llargs del cos (`section.col > p`, 4 línies o més), les paraules que són per sota del 64 % de la pantalla surten a 0,08 d'opacitat i s'encenen una a una, en ordre de lectura, a mesura que pugen. La transició és curta (1 línia, unes 8–10 paraules): el tall s'ha de veure clar. Mai un degradat que travessi el text. Ho fa `web/assets/ib.js` per a tots els articles embolicant cada paraula en un `span.ib-w` i canviant-ne l'opacitat: no cal fer res a l'article ni posar-hi classes. Queden fora l'scrolly (`.step`, que ja té el seu efecte), els peus de gràfic, les notes, «Dades i fonts», la impressió i «reduir el moviment». Si un paràgraf no ho ha de tenir, posa-li una classe (només s'apliquen els `<p>` sense classe o amb `.dl`).
+Als paràgrafs llargs del cos (`section.col > p`, 4 línies o més), les paraules que són per sota del 62 % de la pantalla surten a 0,08 d'opacitat i s'encenen una a una, en ordre de lectura, a mesura que pugen. La transició és suau però curta (unes 2 línies, 15–20 paraules): el tall s'ha de veure, sense esglaons. Mai un degradat que travessi el text. Ho fa `web/assets/ib.js` per a tots els articles embolicant cada paraula en un `span.ib-w` i canviant-ne l'opacitat: no cal fer res a l'article ni posar-hi classes. Queden fora l'scrolly (`.step`, que ja té el seu efecte), els peus de gràfic, les notes, «Dades i fonts», la impressió i «reduir el moviment». Si un paràgraf no ho ha de tenir, posa-li una classe (només s'apliquen els `<p>` sense classe o amb `.dl`).
 
 ### Mòbil i accessibilitat
 
