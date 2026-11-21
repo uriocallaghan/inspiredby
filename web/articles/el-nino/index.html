@@ -294,7 +294,7 @@ dl.gl dd{margin:0;color:var(--ink-2)}
     <p class="kicker">Clima</p>
     <h1>El Niño i La Niña</h1>
     <p class="dek">Cada pocs anys, un tros del Pacífic s'escalfa uns quants graus. I a l'altra punta del món hi ha inundacions, incendis i sequeres.</p>
-    <p class="meta"><span id="rt">15 min de lectura</span> · Dades: NOAA Climate Prediction Center · Actualitzat el 17 de novembre de 2026</p>
+    <p class="meta">11 min de lectura · Dades: NOAA Climate Prediction Center · Actualitzat el 17 de novembre de 2026</p>
   </header>
 
   <section class="intro col">
@@ -1254,10 +1254,6 @@ document.getElementById("oReplay").addEventListener("click",()=>{oSeed=(oSeed*48
  fig.querySelectorAll(".ch-tg button").forEach(b=>b.addEventListener("click",()=>set(+b.dataset.c)));set(0);
  if(!matchMedia("(prefers-reduced-motion: reduce)").matches){let done=false;new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!done){done=true;setTimeout(()=>set(1),1600)}}),{threshold:.6}).observe(fig)}
 })();
-/* ---------- reading time ---------- */
-(()=>{const n=[...document.querySelectorAll("h1,h2,.dek,p,li,dt,dd,figcaption")].filter(e=>!e.closest(".card")).reduce((a,e)=>a+(e.textContent.match(/[\p{L}\p{N}·'’]+/gu)||[]).length,0);
- const figs=document.querySelectorAll("canvas,.cycle,#chain").length;let sec=n/218*60;for(let i=0;i<figs;i++)sec+=Math.max(3,12-i);
- const el=document.getElementById("rt");if(el)el.textContent=Math.max(1,Math.round(sec/60))+" min de lectura"})();
 /* ---------- Niño regions ---------- */
 const zc=document.getElementById("zones"),zx=zc.getContext("2d");
 function layoutZones(){const w=zc.parentElement.clientWidth;if(!w)return;const m=mob(),fs=m?11:12.5,fsS=Math.max(11,fs-1),E0=140,E1=292,LA0=13,LA1=-21;
