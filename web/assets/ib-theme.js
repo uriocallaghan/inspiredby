@@ -64,6 +64,12 @@
     }
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addButton); else addButton();
+  // selector d'idioma (assets/ib-lang.js), al costat del botó de tema
+  (function(){
+    var me = document.currentScript, src = me && me.src ? me.src.replace(/ib-theme\.js(\?.*)?$/, "ib-lang.js") : null;
+    if (!src) return;
+    var sc = document.createElement("script"); sc.src = src; sc.defer = true; (document.head || root).appendChild(sc);
+  })();
 
   if (!dark) return;
 
