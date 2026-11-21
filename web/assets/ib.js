@@ -44,9 +44,9 @@
   if(!document.querySelector('.ib-article'))return;
   if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   if(!('IntersectionObserver' in window))return;
-  var MIN_LINES=4,EDGE=.62,BAND=2.2,FLOOR=.08; /* tall al 62 % de la pantalla; transicio de 2,2 linies */
+  var MIN_LINES=4,EDGE=.62,BAND=2.2,FLOOR=.2; /* tall al 62 % de la pantalla; transicio de 2,2 linies */
   var st=document.createElement('style');
-  st.textContent='.ib-w{transition:opacity .2s linear}@media print{.ib-w{opacity:1!important}}';
+  st.textContent='@media print{.ib-w{opacity:1!important}}';
   document.head.appendChild(st);
   var paras=[],vis=new Set(),ticking=false;
   function wrap(node){
