@@ -153,7 +153,7 @@
 
   /* ---------- Decisions preses ---------- */
   const TL = [
-    ["21-11-2026", "<b>Lectura enfocada</b>: als paràgrafs llargs del cos (4 línies o més), les línies que encara són al 35 % inferior de la pantalla surten més fluixes (fins a 0,25) i s'encenen en pujar. És sistema: ho fa <code>assets/ib.js</code> a tots els articles, sense tocar-los. No s'aplica a l'scrolly, als peus de gràfic ni a «Dades i fonts», ni amb «reduir el moviment»."],
+    ["21-11-2026", "<b>Lectura enfocada</b>: als paràgrafs llargs del cos (4 línies o més), cada línia que encara és al 22 % inferior de la pantalla surt més fluixa (fins a 0,28), amb un to pla per línia (cap degradat dins la línia), i s'encén en pujar. És sistema: ho fa <code>assets/ib.js</code> a tots els articles, sense tocar-los. No s'aplica a l'scrolly, als peus de gràfic ni a «Dades i fonts», ni amb «reduir el moviment»."],
     ["21-11-2026", "<b>El temps de lectura es calcula, no s'escriu</b>: com Medium, unes 265 paraules per minut (la mitjana d'un adult, segons la seva pàgina d'ajuda), sense ajust per gràfics. Compta el cos de l'article, sense peus de gràfic ni «Dades i fonts». És una estimació; la referència científica (Brysbaert, 2019) dona 238 par/min en anglès. El calcula <code>sync-home.mjs</code>."],
     ["21-11-2026", "<b>El tema el decideix el dispositiu</b>: la web es veu en clar o en fosc segons el dispositiu, sense botó de sol/lluna a la barra."],
     ["21-11-2026", "<b>La descripció de portada és curta, s'entén sola i diu només la idea central</b>: sense eufemismes («quan la terra va tremolar»), sense referents que només s'expliquen dins i sense detalls (orígens, xifres secundàries, noms). Un desconegut, sense el títol ni l'article, ha de saber què passa."],
