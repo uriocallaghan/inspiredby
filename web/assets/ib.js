@@ -44,7 +44,7 @@
   if(!document.querySelector('.ib-article'))return;
   if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   if(!('IntersectionObserver' in window))return;
-  var MIN_LINES=4,ZONE=.24,FLOOR=.12;
+  var MIN_LINES=4,EDGE=.76,BAND=1.4,FLOOR=.12; /* tall al 76 % de la pantalla; transicio d'1,4 linies */
   var st=document.createElement('style');
   st.textContent='.ib-w{transition:opacity .12s linear}@media print{.ib-w{opacity:1!important}}';
   document.head.appendChild(st);
@@ -88,10 +88,10 @@
   }
   function upd(){
     ticking=false;
-    var h=innerHeight,z=h*ZONE,start=h-z,d=document.documentElement;
+    var h=innerHeight,start=h*EDGE,d=document.documentElement;
     var end=d.scrollHeight-h-scrollY<4;
     vis.forEach(function(p){
-      var top=p.getBoundingClientRect().top,ws=p._ws||[];
+      var top=p.getBoundingClientRect().top,ws=p._ws||[],z=p._lh*BAND;
       for(var i=0;i<ws.length;i++){
         var w=ws[i],t=end?0:Math.min(1,Math.max(0,(top+w.y-start)/z));
         t=t*t*(3-2*t);
