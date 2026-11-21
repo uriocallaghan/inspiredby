@@ -1393,14 +1393,4 @@ window.VIB={C,SSF,RM,clamp,lerp,ease,sm,fmtN,txt,lead,addWashGrad,canvasWash,dra
     }
   }
 })();
-
-/* ================= temps de lectura ================= */
-(()=>{
-  const n=[...document.querySelectorAll("h1,h2,.dek,p,li,dt,dd,figcaption")]
-    .filter(e=>!e.closest(".fn"))
-    .reduce((a,e)=>a+(e.textContent.match(/[\p{L}\p{N}·'’]+/gu)||[]).length,0);
-  const figs=document.querySelectorAll("figure.fig,.scrolly").length;
-  let sec=n/218*60; for(let i=0;i<figs;i++)sec+=Math.max(3,12-i);
-  const el=document.getElementById("rt"); if(el)el.textContent=Math.max(1,Math.round(sec/60))+" min de lectura";
-})();
 })();

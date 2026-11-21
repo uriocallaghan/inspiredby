@@ -4,7 +4,7 @@
     "title": "Navegar sense mapa",
     "desc": "El 1976, una canoa hawaiana va arribar a Tahití sense instruments, guiada per un navegant d'una petita illa de Micronèsia. Com es troba una illa llegint estrelles, onades i ocells.",
     "category": "Antropologia i història",
-    "minutes": 23,
+    "minutes": 16,
     "thumbAlt": "Brúixola estel·lar amb punts grocs de sortida d'estrelles, una línia vermella i una de blava, i la ruta vermella d'una canoa sobre fons blanc.",
     "draft": true
   },
@@ -13,7 +13,7 @@
     "title": "Com vam començar a tancar el forat de l'ozó",
     "desc": "Una capa de tres mil·límetres, un forat que ningú no veu i 198 parts que es van posar d'acord. Com vam començar a reparar l'ozó, per què encara cal paciència i què queda per fer.",
     "category": "Ciència i societat",
-    "minutes": 23,
+    "minutes": 14,
     "thumbAlt": "Globus de l'hemisferi sud vist des de sota, amb el forat d'ozó en vermell al centre envoltat d'un anell blau.",
     "draft": true
   },
@@ -22,7 +22,7 @@
     "title": "La malaltia que vam esborrar",
     "desc": "El 1967, la verola afectava entre 10 i 15 milions de persones l'any. Deu anys després, es va registrar l'últim cas natural. Com es fa desaparèixer una malaltia?",
     "category": "Història i salut",
-    "minutes": 18,
+    "minutes": 10,
     "thumbAlt": "Mapa del món en gris clar amb els 31 països on la verola era endèmica el 1967, en vermell."
   },
   {
@@ -30,7 +30,7 @@
     "title": "El mapa que no va aturar el còlera",
     "desc": "Londres, 1854: més de cinc-centes morts en deu dies al voltant d'una bomba del Soho. No el va aturar cap mapa: un metge que preguntava casa per casa, un capellà i una ciutat que no se'ls va creure.",
     "category": "Història i ciència",
-    "minutes": 25,
+    "minutes": 14,
     "thumbAlt": "Mapa de carrers del Soho de Londres amb punts vermells de morts de còlera al voltant d'una bomba d'aigua, sobre carrers ressaltats en groc.",
     "draft": true
   },
@@ -39,7 +39,7 @@
     "title": "Ciència entre enemics",
     "desc": "En plena guerra freda, els rivals van congelar les disputes sobre l'Antàrtida i la van reservar a la pau i a la ciència. Del Tractat al CERN, l'estació espacial i SESAME: què aconsegueix la ciència entre enemics, i què no.",
     "category": "Història i ciència",
-    "minutes": 23,
+    "minutes": 13,
     "thumbAlt": "L'Antàrtida vista des del pol Sud amb sectors translúcids vermells, blaus i grocs i punts de les estacions científiques.",
     "draft": true
   },
@@ -48,7 +48,7 @@
     "title": "Els científics que van morir de gana al costat de les llavors",
     "desc": "Durant el setge de Leningrad, els botànics de l'institut de Vavílov van custodiar la seva gran col·lecció de llavors mentre morien de gana. Què hi ha de cert en la història, i què en queda avui a Svalbard.",
     "category": "Història i ciència",
-    "minutes": 22,
+    "minutes": 13,
     "thumbAlt": "Espiral de llavors ovalades translúcides en groc, vermell, blau i gris sobre fons blanc.",
     "draft": true
   },
@@ -57,7 +57,7 @@
     "title": "La llengua que va néixer en un pati de Managua",
     "desc": "Entre finals dels setanta i principis dels vuitanta, infants, adolescents i joves sords de Managua van fer néixer una llengua de signes nova a partir dels signes de casa. Què ens explica sobre el llenguatge i sobre ser sord.",
     "category": "Antropologia i llenguatge",
-    "minutes": 21,
+    "minutes": 12,
     "thumbAlt": "Centenars de punts vermells en espiral, units per fils blaus de converses, sobre una taca groga clara.",
     "draft": true
   },
@@ -66,7 +66,7 @@
     "title": "Qui va dibuixar el mapa d'Haití?",
     "desc": "Quan un terratrèmol va destruir Port-au-Prince el 2010, la ciutat gairebé no sortia als mapes d'internet. En un mes, sis-centes persones la van dibuixar carrer a carrer, sense cap encàrrec.",
     "category": "Antropologia i societat",
-    "minutes": 18,
+    "minutes": 10,
     "thumbAlt": "Xarxa de carrers de Port-au-Prince dibuixada en línies vermelles i grises sobre fons clar."
   },
   {
@@ -74,7 +74,7 @@
     "title": "El sobre que ningú no pot obrir",
     "desc": "Cada missatge de WhatsApp o Signal viatja tancat amb una clau que no té ni l'empresa que el porta. Com funciona el xifrat d'extrem a extrem, fins on és segur i què diu de nosaltres saber callar.",
     "category": "Tecnologia i antropologia",
-    "minutes": 20,
+    "minutes": 18,
     "thumbAlt": "Rellotge de 23 posicions travessat per fils vermells i blaus sobre taques difuminades de groc, vermell i blau.",
     "draft": true
   },
@@ -83,7 +83,7 @@
     "title": "L'últim sopar de Leonardo",
     "desc": "Tretze homes en filera, estovalles de lli, gots de vidre i cap anyell. L'últim sopar de Leonardo no encaixa amb la Jerusalem del segle I: què va ser realment aquell sopar?",
     "category": "Antropologia i història",
-    "minutes": 16,
+    "minutes": 14,
     "thumbAlt": "Forma orgànica difuminada en rosa, verd oliva i taronja sobre fons crema."
   },
   {
@@ -91,7 +91,7 @@
     "title": "Per què van aixecar Stonehenge?",
     "desc": "Els druides no el van construir. L'arqueologia recent el llegeix com un monument als avantpassats: la pedra per als morts, la fusta per als vius.",
     "category": "Antropologia i arqueologia",
-    "minutes": 18,
+    "minutes": 12,
     "thumbAlt": "Forma orgànica difuminada en taronja, rosa i verd sobre degradat verd i crema."
   },
   {
@@ -99,7 +99,7 @@
     "title": "El viatge de la pizza",
     "desc": "Un pa pla nascut abans de l'agricultura, un fruit andí que Europa va témer com a verí i una búfala de l'Índia. Com el pa de carrer de Nàpols va conquerir tot el planeta.",
     "category": "Antropologia i història",
-    "minutes": 19,
+    "minutes": 14,
     "thumbAlt": "Forma ovalada difuminada en taronja, groc i rosa sobre fons crema.",
     "draft": true
   },
@@ -108,7 +108,7 @@
     "title": "Per què riem?",
     "desc": "Riem trenta cops més acompanyats que sols, i gairebé mai per un acudit. Dels duels inuit als grans simis: quan un reflex animal esdevé pacte i tribunal.",
     "category": "Antropologia i biologia",
-    "minutes": 17,
+    "minutes": 11,
     "thumbAlt": "Composició abstracta d'esferes càlides taronges i roses sobre fons clar.",
     "draft": true
   },
@@ -117,7 +117,7 @@
     "title": "Per què dormim?",
     "desc": "El dormitori solitari és una raresa històrica. De les fregates que dormen volant a les fogueres del Kalahari i l'inemuri japonès: com modela cada cultura el son.",
     "category": "Antropologia i biologia",
-    "minutes": 19,
+    "minutes": 12,
     "thumbAlt": "Composició abstracta difuminada de tons rosa i daurat suau.",
     "draft": true
   },
@@ -126,7 +126,7 @@
     "title": "Qui era realment Jesús?",
     "desc": "No es deia Jesús, va néixer uns anys «abans de Crist» i cap text antic no descriu la seva cara. Què en sap la història, com l'ha pintat cada cultura i com el veuen les altres religions.",
     "category": "Història i arqueologia",
-    "minutes": 13,
+    "minutes": 12,
     "thumbAlt": "Degradat abstracte d'horitzó amb verd fosc a la base i cel càlid."
   },
   {
@@ -142,7 +142,7 @@
     "title": "El Niño i La Niña, les dues cares del Pacífic",
     "desc": "Cada pocs anys, un tros del Pacífic s'escalfa uns quants graus, i un vaivé de vents i aigua porta pluges i sequeres a mig món.",
     "category": "Clima",
-    "minutes": 18,
+    "minutes": 11,
     "thumbAlt": "Fusió abstracta de blau cobalt, taronja intens i rosa suau."
   },
   {
@@ -150,7 +150,7 @@
     "title": "Arribats a última hora",
     "desc": "Si la història de l'univers durés un any, cada segon valdria 437 anys. Nosaltres hi apareixem el 31 de desembre al vespre.",
     "category": "Cosmos",
-    "minutes": 8,
+    "minutes": 4,
     "thumbAlt": "Forma abstracta ascendent en taronja viu, verd oliva i magenta."
   },
   {
@@ -158,7 +158,7 @@
     "title": "De què mor el món: el cor, abans que la guerra",
     "desc": "Entre el que temem i el que ens mata hi ha molta distància. Una de cada tres morts al món és cardiovascular; el càncer és la segona causa.",
     "category": "Societat",
-    "minutes": 7,
+    "minutes": 4,
     "thumbAlt": "Volum orgànic abstracte en verd oliva, blau petroli, lila i taronja."
   },
   {
@@ -166,7 +166,7 @@
     "title": "La migració més gran de la Terra passa cada nit",
     "desc": "El 1942, un sonar de l'armada nord-americana va trobar un fons marí on no n'hi havia cap. Era una capa d'animals que puja i baixa amb la llum del sol.",
     "category": "Oceà",
-    "minutes": 11,
+    "minutes": 8,
     "thumbAlt": "Grup d'esferes translúcides flotants en corall, violeta i rosa."
   },
   {
@@ -174,7 +174,7 @@
     "title": "La guerra entre virus i bacteris",
     "desc": "En cada gota de mar, centenars de milers de virus ataquen bacteris que es defensen sense treva. D'aquesta guerra invisible, la ciència en va treure el CRISPR.",
     "category": "Biologia",
-    "minutes": 17,
+    "minutes": 13,
     "thumbAlt": "Forma orgànica abstracta de tons rosa, taronja i verd oliva."
   },
   {
@@ -182,7 +182,7 @@
     "title": "La pols del Sàhara alimenta l'Amazònia",
     "desc": "El vent s'endú cada any milions de tones de pols del Sàhara fins a Amèrica. Una part cau sobre l'Amazònia i li porta el fòsfor que la pluja s'emporta.",
     "category": "Planeta",
-    "minutes": 15,
+    "minutes": 11,
     "thumbAlt": "Cercles concèntrics difuminats en taronja, groc i rosa sobre gris clar.",
     "draft": true
   },
@@ -191,7 +191,7 @@
     "title": "La cinta transportadora de l'Atlàntic",
     "desc": "El corrent del Golf és només la meitat visible d'una gran cinta transportadora que recorre tot l'Atlàntic, i els científics discuteixen si s'està afeblint.",
     "category": "Clima",
-    "minutes": 15,
+    "minutes": 11,
     "thumbAlt": "Corrent abstracte de blau profund i taronja càlid entrellaçats."
   },
   {
@@ -199,7 +199,7 @@
     "title": "On va el CO₂ que emetem",
     "desc": "Cada any aboquem a l'aire més de 40.000 milions de tones de CO₂, però menys de la meitat s'hi queda. Seguim la resta fins al fons del mar i les fulles dels boscos.",
     "category": "Clima",
-    "minutes": 17,
+    "minutes": 13,
     "thumbAlt": "Esfera orgànica abstracta de tons taronja, blau, lila i verd oliva.",
     "draft": true
   }

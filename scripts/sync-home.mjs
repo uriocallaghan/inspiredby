@@ -374,10 +374,50 @@ export function loadArticles(catalogPath = CATALOG_PATH) {
   return JSON.parse(fs.readFileSync(catalogPath, "utf8"));
 }
 
+/* Temps de lectura (decisió de l'editor, 21-11-2026): mateix criteri que Medium, que a la
+   seva pàgina d'ajuda (help.medium.com, «Read time») diu que es calcula amb unes 265 paraules
+   per minut, la mitjana d'un adult. Sense ajust per gràfics (Medium no publica el valor del
+   seu ajust per imatges). Es compten les paraules del cos de l'article: no hi entren els
+   peus de gràfic ni «Dades i fonts» (ni, als articles antics, «Metodologia» i «Fonts»). */
+export const WORDS_PER_MINUTE = 265;
+
+export function readingMinutes(html) {
+  let s = html.slice(Math.max(0, html.search(/<body/i)));
+  const ends = [/id="fonts"/, /id="sources"/, /<b>Metodologia\.<\/b>/, /<b>Fonts\.<\/b>/]
+    .map(re => s.search(re)).filter(i => i >= 0);
+  if (ends.length) s = s.slice(0, Math.min(...ends));
+  s = s
+    .replace(/<(script|style|svg|noscript|figcaption)\b[\s\S]*?<\/\1>/gi, " ")
+    .replace(/<p class="src"[\s\S]*?<\/p>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ");
+  const words = (s.match(/[\p{L}\p{N}·'’]+/gu) || []).length;
+  return Math.max(1, Math.round(words / WORDS_PER_MINUTE));
+}
+
+const META_RE = /(<p class="meta">(?:<span id="rt">)?)\d+( min de lectura)/;
+
+/** Posa a cada article el temps calculat. Torna els fitxers d'article amb la capçalera corregida. */
+export function applyReadingTime(articles) {
+  const changes = [];
+  for (const a of articles) {
+    const file = path.join(WEB_DIR, "articles", a.slug, "index.html");
+    if (!fs.existsSync(file)) continue;
+    const html = fs.readFileSync(file, "utf8");
+    a.minutes = readingMinutes(html);
+    const next = html.replace(META_RE, (_, pre, post) => `${pre}${a.minutes}${post}`);
+    if (next !== html) changes.push([file, next]);
+  }
+  return changes;
+}
+
 const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isMain) {
   const checkMode = process.argv.includes("--check");
   const articles = loadArticles();
+  const catalogBefore = fs.readFileSync(CATALOG_PATH, "utf8");
+  const metaChanges = applyReadingTime(articles);
+  const nextCatalog = JSON.stringify(articles, null, 2) + "\n";
   const nextHtml = renderHomeHtml(articles);
   const nextDrafts = renderDraftsHtml(articles);
   const read = f => fs.existsSync(f) ? fs.readFileSync(f, "utf8") : "";
@@ -392,6 +432,8 @@ if (isMain) {
 
   if (checkMode) {
     const stale = [];
+    if (nextCatalog !== catalogBefore) stale.push("web/articles.json (minutes)");
+    for (const [file] of metaChanges) stale.push(path.relative(ROOT, file));
     if (nextHtml !== read(HOME_PATH)) stale.push("web/index.html");
     if (nextDrafts !== read(DRAFTS_PATH)) stale.push("web/per-penjar/index.html");
     if (renderServiceWorker(articles) !== read(SW_PATH)) stale.push("web/sw.js");
@@ -402,6 +444,8 @@ if (isMain) {
     }
     console.log(`OK: portada, per-penjar, peus i sw.js sincronitzats (${articles.length} articles).`);
   } else {
+    if (nextCatalog !== catalogBefore) fs.writeFileSync(CATALOG_PATH, nextCatalog, "utf8");
+    for (const [file, html] of metaChanges) fs.writeFileSync(file, html, "utf8");
     fs.writeFileSync(HOME_PATH, nextHtml, "utf8");
     fs.mkdirSync(path.dirname(DRAFTS_PATH), { recursive: true });
     fs.writeFileSync(DRAFTS_PATH, nextDrafts, "utf8");
