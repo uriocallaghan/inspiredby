@@ -16,7 +16,7 @@
   try { var s = localStorage.getItem(KEY); if (s && LANGS.some(function(l){ return l.code === s && !l.off; })) current = s; } catch (e) {}
 
   var css = [
-    ".ib-lang{position:absolute;top:0;bottom:0;display:flex;align-items:center;right:calc(max(var(--ib-gutter,24px),env(safe-area-inset-right,0px)) + 44px);font-family:var(--ib-hn,'Helvetica Neue LT Pro','Helvetica Neue',Helvetica,Arial,sans-serif)}",
+    ".ib-lang{position:absolute;top:0;bottom:0;display:flex;align-items:center;right:calc(max(var(--ib-gutter,24px),env(safe-area-inset-right,0px)) - 8px);font-family:var(--ib-hn,'Helvetica Neue LT Pro','Helvetica Neue',Helvetica,Arial,sans-serif)}",
     ".ib-lang-btn{inline-size:40px;block-size:40px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;background:none;color:#6b6b66;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .2s ease}",
     ".ib-lang-btn:hover,.ib-lang.is-open .ib-lang-btn{color:#141414}",
     ".ib-lang-btn:focus-visible{outline:1.5px solid currentColor;outline-offset:2px}",

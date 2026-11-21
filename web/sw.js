@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-c0be3e7f46ec";
+const CACHE_NAME = "ib-offline-e3edf9aae318";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",

@@ -44,7 +44,7 @@ El sistema infogràfic existeix perquè es faci servir. Per a cada article nou:
 
 ## Mode fosc
 
-- `web/assets/ib-theme.js` ha d'anar **el primer de tot al `<head>`** de cada pàgina (just després de `<meta charset>`, sense `defer`). Segueix el tema del sistema o el que tria el lector amb el botó de la barra (sol/lluna), desat a `localStorage`.
+- `web/assets/ib-theme.js` ha d'anar **el primer de tot al `<head>`** de cada pàgina (just després de `<meta charset>`, sense `defer`). Segueix sempre el tema del dispositiu (clar o fosc), sense cap botó a la barra (decisió de l'editor, 21-11-2026).
 - En fosc, tradueix sol tots els colors en el moment de pintar-los: fulls d'estil, atributs SVG, estils en línia, canvas (`fillStyle`, `strokeStyle`, degradats i `putImageData`). **Els articles es continuen escrivint amb els colors clars de sempre**; no hi posis colors foscos ni `prefers-color-scheme` a mà. Les lectures (`getAttribute`, `getPropertyValue`, `getComputedStyle`) tornen el color clar original.
 - Comprova cada article nou també en fosc (Playwright amb `colorScheme:'dark'`): text llegible, gràfics amb contrast i cap fons clar que enlluerni.
 - Els canvas ocults que es llegeixen amb `getImageData` (màscares de terra o d'identitat per al hover) es queden en clar; un canvas ocult que es copia amb `drawImage` a un de visible es tradueix. Els modes de fusió `multiply`/`darken` passen a `screen`/`lighten`. Detalls i límits: `research/sistema-infografic.md`, §2 «Mode fosc».

@@ -153,7 +153,11 @@
 
   /* ---------- Decisions preses ---------- */
   const TL = [
+<<<<<<< Updated upstream
     ["21-11-2026", "<b>El temps de lectura es calcula, no s'escriu</b>: com Medium, unes 265 paraules per minut (la mitjana d'un adult, segons la seva pàgina d'ajuda), sense ajust per gràfics. Compta el cos de l'article, sense peus de gràfic ni «Dades i fonts». És una estimació; la referència científica (Brysbaert, 2019) dona 238 par/min en anglès. El calcula <code>sync-home.mjs</code>."],
+=======
+    ["21-11-2026", "<b>El tema el decideix el dispositiu</b>: la web es veu en clar o en fosc segons el dispositiu, sense botó de sol/lluna a la barra."],
+>>>>>>> Stashed changes
     ["21-11-2026", "<b>La descripció de portada és curta, s'entén sola i diu només la idea central</b>: sense eufemismes («quan la terra va tremolar»), sense referents que només s'expliquen dins i sense detalls (orígens, xifres secundàries, noms). Un desconegut, sense el títol ni l'article, ha de saber què passa."],
     ["21-11-2026", "<b>Text lleuger i ferm</b>: cap nom propi que no torni (només els protagonistes), cap paràgraf o gràfic que existeixi només per justificar l'altre, una idea una sola vegada, i cap matís de revisor dins el text. Si no es pot afirmar, no es posa; si la incertesa és el tema, es diu una vegada i al principi. Les discrepàncies entre fonts van a «Dades i fonts»."],
     ["20-11-2026", "<b>Miniatures de portada: sempre degradats</b>, mai il·lustracions de l'article. Si no n'hi ha de nous, es repeteix el d'un article antic perquè no es noti."],
@@ -170,7 +174,7 @@
     ["20-11-2026", "<b>Cites d'un sol clic</b>: el número porta directament a la font; l'entradeta i els peus de gràfic només enllacen a «Dades i fonts»."],
     ["20-11-2026", "<b>Persones d'època: l'obra real, no un dibuix inventat</b>. En escenes històriques es mostra la pintura, el fresc o el mosaic d'època (amb font i llicència) i la informació va al gràfic. La figura «Voyager» (<code>IBVOY</code>) és una estètica moderna: només per a temes contemporanis."],
     ["20-11-2026", "<b>Títols dels articles menys apretats</b>: el h1 en STIXGeneral passa d'un espaiat de −0,068 em a −0,04 em; tancat, però amb les lletres separades."],
-    ["20-11-2026", "<b>Mode fosc a tota la web</b>: segueix el tema del sistema o el botó de sol/lluna de la barra. Els articles s'escriuen només en clar; <code>assets/ib-theme.js</code> tradueix tots els colors, i cada article nou l'ha de carregar el primer al <code>&lt;head&gt;</code> (<code>check.mjs</code> ho exigeix)."],
+    ["20-11-2026", "<b>Mode fosc a tota la web</b>: segueix el tema del sistema. Els articles s'escriuen només en clar; <code>assets/ib-theme.js</code> tradueix tots els colors, i cada article nou l'ha de carregar el primer al <code>&lt;head&gt;</code> (<code>check.mjs</code> ho exigeix)."],
     ["20-11-2026", "<b>Articles per penjar</b>: els articles a mig fer (<code>\"draft\": true</code> a <code>articles.json</code>) no surten a la portada; es llisten a la pàgina «Articles per penjar», enllaçada des del peu. Només passen a la portada quan l'editor ho diu."],
     ["20-11-2026", "<b>Peu de pàgina brutalment mínim</b>, igual a tota la web: una sola fila en sans serif, a una sola mida (13 px), alineada amb la línia superior. A l'esquerra «Inspired by Magazine» i l'any; a la dreta «Articles per penjar». Sense logo, sense lema i sense llista d'articles."],
     ["20-11-2026", "<b>Cap missatge que doni peu al racisme o a un neocolonialisme condescendent</b>. Mai «un X de [país]» com a rètol d'una persona; les persones, amb nom i com a subjecte de la frase; país o regió, no «l'Àfrica»; persones, no «casos» ni «propagadors»; cap història de rescat. Es revisa sobretot la descripció de portada, l'entradeta, el títol i els intertítols. Guia: <code>research/guia-representacio.md</code>."],

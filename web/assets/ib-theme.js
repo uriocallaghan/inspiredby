@@ -9,33 +9,19 @@
 (function(){
   "use strict";
   var KEY = "ib-theme", root = document.documentElement;
-  var stored = null;
-  try { stored = localStorage.getItem(KEY); } catch (e) {}
+  // el tema el decideix només el dispositiu (decisió de l'editor, 21-11-2026): sense botó ni tria desada
+  try { localStorage.removeItem(KEY); } catch (e) {}
   var mq = window.matchMedia ? matchMedia("(prefers-color-scheme: dark)") : null;
-  var dark = stored === "dark" || (stored !== "light" && !!(mq && mq.matches));
+  var dark = !!(mq && mq.matches);
   root.setAttribute("data-theme", dark ? "dark" : "light");
 
   function reloadKeepingPlace(){
     try { sessionStorage.setItem("ib-theme-y", String(scrollY)); } catch (e) {}
     location.reload();
   }
-  window.IBTheme = {
-    dark: dark,
-    set: function(mode){
-      try { if (mode === "auto") localStorage.removeItem(KEY); else localStorage.setItem(KEY, mode); } catch (e) {}
-      reloadKeepingPlace();
-    },
-    toggle: function(){
-      var next = dark ? "light" : "dark";
-      // si el sistema ja demana el que triem, tornem a «automàtic»
-      var sys = mq && mq.matches ? "dark" : "light";
-      this.set(next === sys ? "auto" : next);
-    }
-  };
-  if (mq && mq.addEventListener) mq.addEventListener("change", function(){
-    var s = null; try { s = localStorage.getItem(KEY); } catch (e) {}
-    if (!s) reloadKeepingPlace();
-  });
+  window.IBTheme = { dark: dark };
+  // si el dispositiu canvia de tema (p. ex. de dia a nit), la pàgina el segueix
+  if (mq && mq.addEventListener) mq.addEventListener("change", reloadKeepingPlace);
   // tornar al mateix punt després de canviar de tema
   try {
     var y = sessionStorage.getItem("ib-theme-y");
@@ -46,24 +32,6 @@
     }
   } catch (e) {}
 
-  /* ---------- botó de tema a la barra ---------- */
-  var ICON_MOON = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20.2 14.6A8.4 8.4 0 0 1 9.4 3.8a8.4 8.4 0 1 0 10.8 10.8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>';
-  var ICON_SUN = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M5.4 18.6 7 17M17 7l1.6-1.6"/></g></svg>';
-  function addButton(){
-    var bars = document.querySelectorAll(".ib-bar");
-    for (var i = 0; i < bars.length; i++) {
-      if (bars[i].querySelector(".ib-theme-btn")) continue;
-      var b = document.createElement("button");
-      b.type = "button";
-      b.className = "ib-theme-btn";
-      b.setAttribute("aria-label", dark ? "Mode clar" : "Mode fosc");
-      b.title = dark ? "Mode clar" : "Mode fosc";
-      b.innerHTML = dark ? ICON_SUN : ICON_MOON;
-      b.addEventListener("click", function(){ window.IBTheme.toggle(); });
-      bars[i].appendChild(b);
-    }
-  }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addButton); else addButton();
   // selector d'idioma (assets/ib-lang.js), al costat del botó de tema
   (function(){
     var me = document.currentScript, src = me && me.src ? me.src.replace(/ib-theme\.js(\?.*)?$/, "ib-lang.js") : null;

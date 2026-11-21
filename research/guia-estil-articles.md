@@ -83,7 +83,7 @@ Quan es talla text, es treuen també les cites `<sup class="nr">` que quedin òr
 - Serveix la carpeta `web/` amb el teu propi port (`python3 -m http.server <port> --directory "<ruta>/web"`) i atura'l en acabar.
 - Pots fer servir el navegador integrat (eines `mcp__Claude_Browser__*`) **només en una pestanya pròpia** (`tabs_create` i passa sempre el teu `tabId`); no toquis les altres pestanyes. Si no està disponible, fes servir Chrome headless (`--screenshot`, `--dump-dom`, `--enable-logging=stderr`).
 - Recorre tots els passos del scroll i totes les interaccions; zero errors a la consola; zero desbordaments horitzontals.
-- **Repeteix-ho en mode fosc** (Playwright amb `colorScheme: 'dark'`, o el botó de sol/lluna de la barra) a 1440×900 i a 390×844: cap text fosc sobre fons fosc, cap fons o panell clar que enlluerni, tooltips llegibles, i les categories i rampes de cada gràfic encara es distingeixen.
+- **Repeteix-ho en mode fosc** (Playwright amb `colorScheme: 'dark'`, o posant el dispositiu en fosc) a 1440×900 i a 390×844: cap text fosc sobre fons fosc, cap fons o panell clar que enlluerni, tooltips llegibles, i les categories i rampes de cada gràfic encara es distingeixen.
 
 ## 6. Informe final
 
