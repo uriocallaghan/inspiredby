@@ -62,6 +62,10 @@ Quan es talla text, es treuen també les cites `<sup class="nr">` que quedin òr
 - Llegendes petites en sans, peus de figura en gris (`.cap` / `figcaption`).
 - Cada article: **mínim dues seccions de scroll o figures animades i dues figures interactives**, més d'altres de dades. Que siguin precises (escales, unitats, eixos) i boniques.
 
+### Lectura enfocada (decisió de l'editor, 21-11-2026)
+
+Als paràgrafs llargs del cos (`section.col > p`, 4 línies o més), les línies que són al 35 % inferior de la pantalla surten amb menys opacitat (mínim 0,25) i s'encenen a mesura que pugen. Ho fa `web/assets/ib.js` per a tots els articles amb una màscara CSS: no cal fer res a l'article ni posar-hi classes. Queden fora l'scrolly (`.step`, que ja té el seu efecte), els peus de gràfic, les notes, «Dades i fonts», la impressió i «reduir el moviment». Si un paràgraf no ho ha de tenir, posa-li una classe (només s'apliquen els `<p>` sense classe o amb `.dl`).
+
 ### Mòbil i accessibilitat
 
 - Sota 900 px: el gràfic es queda enganxat a dalt (ocupa com a màxim ~50 % de l'alçada) i els passos passen per sota (ja ho fa `article.css`). Etiquetes que no hi caben → amaga-les o fes-les numerades. **Cap scroll horitzontal.**
