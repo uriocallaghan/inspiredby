@@ -64,7 +64,7 @@ Quan es talla text, es treuen també les cites `<sup class="nr">` que quedin òr
 
 ### Lectura enfocada (decisió de l'editor, 21-11-2026)
 
-Als paràgrafs llargs del cos (`section.col > p`, 4 línies o més), cada línia que és al 22 % inferior de la pantalla surt amb menys opacitat (mínim 0,28) i s'encén a mesura que puja. Cada línia té un to pla: mai un degradat que la travessi. Ho fa `web/assets/ib.js` per a tots els articles amb una màscara CSS: no cal fer res a l'article ni posar-hi classes. Queden fora l'scrolly (`.step`, que ja té el seu efecte), els peus de gràfic, les notes, «Dades i fonts», la impressió i «reduir el moviment». Si un paràgraf no ho ha de tenir, posa-li una classe (només s'apliquen els `<p>` sense classe o amb `.dl`).
+Als paràgrafs llargs del cos (`section.col > p`, 4 línies o més), les paraules que són al 24 % inferior de la pantalla surten amb menys opacitat (mínim 0,12) i s'encenen una a una, en ordre de lectura, a mesura que pugen. Mai un degradat que travessi el text. Ho fa `web/assets/ib.js` per a tots els articles embolicant cada paraula en un `span.ib-w` i canviant-ne l'opacitat: no cal fer res a l'article ni posar-hi classes. Queden fora l'scrolly (`.step`, que ja té el seu efecte), els peus de gràfic, les notes, «Dades i fonts», la impressió i «reduir el moviment». Si un paràgraf no ho ha de tenir, posa-li una classe (només s'apliquen els `<p>` sense classe o amb `.dl`).
 
 ### Mòbil i accessibilitat
 

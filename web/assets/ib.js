@@ -36,47 +36,68 @@
   upd();
 })();
 
-/* Lectura enfocada: als paragrafs llargs del cos, cada linia que encara es a la
-   part baixa de la pantalla surt mes fluixa i s'encén en pujar. Una mascara CSS
-   amb un to pla per linia (cap degradat dins la linia); no parteix el text ni
-   toca colors, aixi que el mode fosc no hi intervé. */
+/* Lectura enfocada: als paragrafs llargs del cos, les paraules que encara son a
+   la part baixa de la pantalla surten mes fluixes i s'encenen una a una, en
+   ordre de lectura, a mesura que pugen. Cada paraula va en un <span> i en canvia
+   nomes l'opacitat (no colors), aixi que el mode fosc no hi intervé. */
 (function(){
   if(!document.querySelector('.ib-article'))return;
   if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   if(!('IntersectionObserver' in window))return;
-  var MK=CSS.supports('mask-image','linear-gradient(#000,#000)')?'maskImage':CSS.supports('-webkit-mask-image','linear-gradient(#000,#000)')?'webkitMaskImage':null;
-  if(!MK)return;
-  var MIN_LINES=4,ZONE=.22,FLOOR=.28;
+  var MIN_LINES=4,ZONE=.24,FLOOR=.12;
   var st=document.createElement('style');
-  st.textContent='@media print{.ib-reveal{-webkit-mask-image:none!important;mask-image:none!important}}';
+  st.textContent='.ib-w{transition:opacity .12s linear}@media print{.ib-w{opacity:1!important}}';
   document.head.appendChild(st);
-  var all=[],vis=new Set(),ticking=false;
+  var paras=[],vis=new Set(),ticking=false;
+  function wrap(node){
+    for(var c=node.firstChild;c;){
+      var nx=c.nextSibling;
+      if(c.nodeType===3){
+        var parts=c.nodeValue.split(/(\s+)/);
+        if(parts.length>1||c.nodeValue.trim()){
+          var f=document.createDocumentFragment();
+          parts.forEach(function(t){
+            if(!t)return;
+            if(/^\s+$/.test(t)){f.appendChild(document.createTextNode(t));return}
+            var sp=document.createElement('span');sp.className='ib-w';sp.textContent=t;f.appendChild(sp);
+          });
+          node.replaceChild(f,c);
+        }
+      }else if(c.nodeType===1&&!/^(SVG|CANVAS|IMG|BR)$/i.test(c.nodeName)){wrap(c)}
+      c=nx;
+    }
+  }
+  function measure(p){
+    var r=p.getBoundingClientRect(),lh=p._lh;
+    p._ws=Array.prototype.map.call(p.querySelectorAll('.ib-w'),function(w){
+      var q=w.getBoundingClientRect();
+      var line=Math.floor((q.top+q.height/2-r.top)/lh);
+      var fx=r.width?(q.left+q.width/2-r.left)/r.width:0;
+      return {el:w,y:(line+.15+.7*fx)*lh,o:-1};
+    });
+  }
   function pick(){
     document.querySelectorAll('section.col:not(.fn) > p:not([class]),section.col:not(.fn) > p.dl').forEach(function(p){
-      var lh=parseFloat(getComputedStyle(p).lineHeight)||28;
-      p._lh=lh;
-      var on=p.offsetHeight>=lh*MIN_LINES-2;
-      p.classList.toggle('ib-reveal',on);
-      if(!on){p.style[MK]='';p._m=''}
-      if(on&&all.indexOf(p)<0){all.push(p);io.observe(p)}
+      var lh=parseFloat(getComputedStyle(p).lineHeight)||28;p._lh=lh;
+      if(!p._ib){
+        if(p.offsetHeight<lh*MIN_LINES-2)return;
+        p._ib=1;wrap(p);paras.push(p);io.observe(p);
+      }
     });
+    paras.forEach(measure);
   }
   function upd(){
     ticking=false;
     var h=innerHeight,z=h*ZONE,start=h-z,d=document.documentElement;
     var end=d.scrollHeight-h-scrollY<4;
     vis.forEach(function(p){
-      if(!p.classList.contains('ib-reveal'))return;
-      var r=p.getBoundingClientRect(),lh=p._lh,n=Math.max(1,Math.round(r.height/lh)),stops=[],dim=false;
-      for(var i=0;i<n;i++){
-        var y=r.top+(i+.5)*lh,t=end?0:Math.min(1,Math.max(0,(y-start)/z));
+      var top=p.getBoundingClientRect().top,ws=p._ws||[];
+      for(var i=0;i<ws.length;i++){
+        var w=ws[i],t=end?0:Math.min(1,Math.max(0,(top+w.y-start)/z));
         t=t*t*(3-2*t);
-        var o=Math.round((1-t*(1-FLOOR))*50)/50;if(o<1)dim=true;
-        var y0=i*lh,y1=i===n-1?r.height+lh:(i+1)*lh;
-        stops.push('rgba(0,0,0,'+o+') '+y0.toFixed(1)+'px','rgba(0,0,0,'+o+') '+y1.toFixed(1)+'px');
+        var o=Math.round((1-t*(1-FLOOR))*40)/40;
+        if(o!==w.o){w.o=o;w.el.style.opacity=o===1?'':o}
       }
-      var m=dim?'linear-gradient(to bottom,'+stops.join(',')+')':'';
-      if(m!==p._m){p._m=m;p.style[MK]=m}
     });
   }
   function req(){if(!ticking){ticking=true;requestAnimationFrame(upd)}}
@@ -88,6 +109,7 @@
   addEventListener('scroll',req,{passive:true});
   var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(init,150)});
   addEventListener('load',init);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(init);
 })();
 
 /* Register Service Worker for offline-first PWA support. */
