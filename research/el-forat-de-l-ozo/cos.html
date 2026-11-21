@@ -18,14 +18,18 @@
 
 <figure class="fig wide" id="f-gruix">
   <div class="vh">
-    <div><strong>Tres mil·límetres</strong><span>Gruix que tindria tot l'ozó d'una columna d'aire si es comprimís a la superfície. Tria un any per veure el mínim típic del forat aquella primavera</span></div>
+    <div><strong>Tres mil·límetres</strong><span>Cada punt és la mateixa quantitat d'ozó: primer escampat per l'aire, on és de debò, i després comprimit a la pressió del terra. Tria un any per veure el mínim típic del forat aquella primavera</span></div>
+  </div>
+  <div class="seg" data-seg="gruix" role="group" aria-label="Vista">
+    <button type="button" aria-pressed="true" data-k="aire">A l'aire</button>
+    <button type="button" aria-pressed="false" data-k="comp">Comprimit</button>
   </div>
   <div class="plot" id="gruix-viz"></div>
   <div class="ctlrow">
     <div class="rng-wrap"><label for="gruix-rng">Primavera de <b id="gruix-y">2006</b></label><input type="range" class="rng" id="gruix-rng" min="0" max="45" step="1" value="27" aria-valuetext="2006"></div>
   </div>
   <p class="ctlrow out" id="gruix-out" aria-live="polite"></p>
-  <figcaption class="src" id="gc-1"><b>Dades reals</b>, dibuixades a aproximadament 20 vegades la mida real (14 al mòbil). <a class="gs" href="#g-1">Fonts i dades del gràfic&nbsp;→</a></figcaption>
+  <figcaption class="src" id="gc-1"><b>Dades reals</b>: comprimit, a 20 vegades la mida real (14 al mòbil); a l'aire, l'altura és un esquema. <a class="gs" href="#g-1">Fonts i dades del gràfic&nbsp;→</a></figcaption>
 </figure>
 
 <section class="col">
@@ -60,7 +64,7 @@
   <div class="graphic"><div class="gbox">
     <div class="vh">
       <div><strong>Com el clor es menja l'ozó</strong><span>Tall de l'atmosfera, de terra a 50 km d'altura</span></div>
-      <div class="lgs" id="clor-lg"><div class="ibv-lg"><div class="ibv-lg-cat"><span><svg width="12" height="10"><circle cx="5" cy="5" r="3" fill="#2C5DA8" fill-opacity=".6"/></svg>&nbsp;Ozó</span><span><svg width="12" height="10"><circle cx="5" cy="5" r="3" fill="#4A4A4A"/></svg>&nbsp;CFC</span><span><svg width="12" height="10"><circle cx="5" cy="5" r="3" fill="#C8442A"/></svg>&nbsp;Clor alliberat</span></div></div></div>
+      <div class="lgs" id="clor-lg"><div class="ibv-lg"><div class="ibv-lg-cat"><span><svg width="16" height="12" aria-hidden="true"><g fill="#2C5DA8" fill-opacity=".75"><circle cx="8" cy="4" r="2.2"/><circle cx="4.6" cy="7.4" r="2.2"/><circle cx="11.4" cy="7.4" r="2.2"/></g></svg>&nbsp;Ozó</span><span><svg width="16" height="12" aria-hidden="true"><circle cx="8" cy="6" r="2.1" fill="#4A4A4A"/><circle cx="4" cy="3.6" r="1.7" fill="#C8442A"/><circle cx="12" cy="3.6" r="1.7" fill="#C8442A"/><circle cx="4" cy="8.4" r="1.7" fill="#C9C9C9"/><circle cx="12" cy="8.4" r="1.7" fill="#C9C9C9"/></svg>&nbsp;CFC</span><span><svg width="16" height="12" aria-hidden="true"><circle cx="8" cy="6" r="5.5" fill="#C8442A" fill-opacity=".18"/><circle cx="8" cy="6" r="2.6" fill="#C8442A"/></svg>&nbsp;Clor lliure</span></div></div></div>
     </div>
     <div class="plot" id="clor-viz"></div>
     <p class="src" id="gc-2"><b>Esquema</b>, no a escala. <a class="gs" href="#g-2">Fonts i dades del gràfic&nbsp;→</a></p>
@@ -132,7 +136,7 @@
   <div class="plot" id="paisos-viz"></div>
   <div class="ctlrow" id="paisos-ctl">
     <button type="button" class="playb" id="paisos-play">Reprodueix →</button>
-    <span class="out">Fins al <b id="paisos-y">2019</b></span>
+    <span class="out">Fins al <b id="paisos-y">2019</b>: <b id="paisos-n">198</b> parts</span>
   </div>
   <figcaption class="src" id="gc-4"><b>Dades reals</b> de les Nacions Unides. Al mapa no hi caben els estats més petits; a la cronologia hi són tots. <a class="gs" href="#g-4">Fonts i dades del gràfic&nbsp;→</a></figcaption>
 </figure>
@@ -155,7 +159,7 @@
   </div>
   <div class="plot" id="cfc-viz"></div>
   <div class="plot" id="odgi-viz"></div>
-  <figcaption class="src" id="gc-5"><b>Dades reals</b> de la NOAA. La barra de sota mesura el camí fet pel clor i el brom sobre l'Antàrtida. <a class="gs" href="#g-5">Fonts i dades del gràfic&nbsp;→</a></figcaption>
+  <figcaption class="src" id="gc-5"><b>Dades reals</b> de la NOAA. L'esfera de sota mesura el camí fet pel clor i el brom sobre l'Antàrtida. <a class="gs" href="#g-5">Fonts i dades del gràfic&nbsp;→</a></figcaption>
 </figure>
 
 <section class="col">
@@ -173,7 +177,7 @@
     <div><strong>El món que vam evitar</strong><span>Ozó mitjà entre 60° S i 60° N observat cada any, i la simulació sense Protocol</span></div>
   </div>
   <div class="plot" id="evitat-viz"></div>
-  <figcaption class="src" id="gc-6"><b>Dades reals</b> (línia blava) i <b>simulació</b> (punts vermells; la línia discontínua només els uneix). <a class="gs" href="#g-6">Fonts i dades del gràfic&nbsp;→</a></figcaption>
+  <figcaption class="src" id="gc-6"><b>Dades reals</b> (línia blava) i <b>simulació</b> (punts vermells; la línia discontínua i l'àrea només els uneixen). <a class="gs" href="#g-6">Fonts i dades del gràfic&nbsp;→</a></figcaption>
 </figure>
 
 <section class="col">
@@ -189,7 +193,7 @@
 
 <figure class="fig wide" id="f-anys">
   <div class="vh">
-    <div><strong>Cada octubre, un mapa</strong><span>Mitjana d'octubre de l'ozó sobre l'hemisferi sud, any per any; a sota, la mida i la profunditat del forat segons la NASA</span></div>
+    <div><strong>Cada octubre, un mapa</strong><span>Mitjana d'octubre de l'ozó sobre l'hemisferi sud, any per any; a sota, els 47 octubres, amb l'àrea del forat segons la NASA (en vermell)</span></div>
     <div class="lgs" id="anys-lg"></div>
   </div>
   <div class="plot" id="anys-viz"></div>
@@ -198,7 +202,7 @@
     <div class="rng-wrap"><label for="anys-rng">Octubre de <b id="anys-y">2025</b></label><input type="range" class="rng" id="anys-rng" min="1979" max="2025" step="1" value="2025" aria-valuetext="Octubre de 2025"></div>
   </div>
   <div class="plot" id="anys-ser"></div>
-  <figcaption class="src" id="gc-7"><b>Dades reals.</b> Toca la sèrie per anar a un any. <a class="gs" href="#g-7">Fonts i dades del gràfic&nbsp;→</a></figcaption>
+  <figcaption class="src" id="gc-7"><b>Dades reals.</b> Toca un dels mapes petits per veure'l gran. <a class="gs" href="#g-7">Fonts i dades del gràfic&nbsp;→</a></figcaption>
 </figure>
 
 <section class="col">

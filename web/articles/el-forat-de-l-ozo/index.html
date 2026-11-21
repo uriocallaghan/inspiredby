@@ -33,7 +33,7 @@
 <header class="open col">
   <h1>Com vam començar a tancar el forat de l'ozó</h1>
   <p class="dek">Un gas inofensiu dins de les neveres, una capa de tres mil·límetres que ningú no veu i un forat que va aparèixer sobre l'Antàrtida. Com uns quants científics, diplomàtics i empreses, i al final 198 parts del món, es van posar d'acord per protegir el cel, per què la feina encara no s'ha acabat i què ens diu això del que encara no hem resolt.</p>
-  <p class="meta">14 min de lectura · <a class="dl-f" href="#fonts">Dades i fonts&nbsp;↓</a> · Actualitzat el 20 de novembre de 2026</p>
+  <p class="meta">15 min de lectura · <a class="dl-f" href="#fonts">Dades i fonts&nbsp;↓</a> · Actualitzat el 20 de novembre de 2026</p>
 </header>
 
 <section class="intro col">
@@ -50,14 +50,18 @@
 
 <figure class="fig wide" id="f-gruix">
   <div class="vh">
-    <div><strong>Tres mil·límetres</strong><span>Gruix que tindria tot l'ozó d'una columna d'aire si es comprimís a la superfície. Tria un any per veure el mínim típic del forat aquella primavera</span></div>
+    <div><strong>Tres mil·límetres</strong><span>Cada punt és la mateixa quantitat d'ozó: primer escampat per l'aire, on és de debò, i després comprimit a la pressió del terra. Tria un any per veure el mínim típic del forat aquella primavera</span></div>
+  </div>
+  <div class="seg" data-seg="gruix" role="group" aria-label="Vista">
+    <button type="button" aria-pressed="true" data-k="aire">A l'aire</button>
+    <button type="button" aria-pressed="false" data-k="comp">Comprimit</button>
   </div>
   <div class="plot" id="gruix-viz"></div>
   <div class="ctlrow">
     <div class="rng-wrap"><label for="gruix-rng">Primavera de <b id="gruix-y">2006</b></label><input type="range" class="rng" id="gruix-rng" min="0" max="45" step="1" value="27" aria-valuetext="2006"></div>
   </div>
   <p class="ctlrow out" id="gruix-out" aria-live="polite"></p>
-  <figcaption class="src" id="gc-1"><b>Dades reals</b>, dibuixades a aproximadament 20 vegades la mida real (14 al mòbil). <a class="gs" href="#g-1">Fonts i dades del gràfic&nbsp;→</a></figcaption>
+  <figcaption class="src" id="gc-1"><b>Dades reals</b>: comprimit, a 20 vegades la mida real (14 al mòbil); a l'aire, l'altura és un esquema. <a class="gs" href="#g-1">Fonts i dades del gràfic&nbsp;→</a></figcaption>
 </figure>
 
 <section class="col">
@@ -92,7 +96,7 @@
   <div class="graphic"><div class="gbox">
     <div class="vh">
       <div><strong>Com el clor es menja l'ozó</strong><span>Tall de l'atmosfera, de terra a 50 km d'altura</span></div>
-      <div class="lgs" id="clor-lg"><div class="ibv-lg"><div class="ibv-lg-cat"><span><svg width="12" height="10"><circle cx="5" cy="5" r="3" fill="#2C5DA8" fill-opacity=".6"/></svg>&nbsp;Ozó</span><span><svg width="12" height="10"><circle cx="5" cy="5" r="3" fill="#4A4A4A"/></svg>&nbsp;CFC</span><span><svg width="12" height="10"><circle cx="5" cy="5" r="3" fill="#C8442A"/></svg>&nbsp;Clor alliberat</span></div></div></div>
+      <div class="lgs" id="clor-lg"><div class="ibv-lg"><div class="ibv-lg-cat"><span><svg width="16" height="12" aria-hidden="true"><g fill="#2C5DA8" fill-opacity=".75"><circle cx="8" cy="4" r="2.2"/><circle cx="4.6" cy="7.4" r="2.2"/><circle cx="11.4" cy="7.4" r="2.2"/></g></svg>&nbsp;Ozó</span><span><svg width="16" height="12" aria-hidden="true"><circle cx="8" cy="6" r="2.1" fill="#4A4A4A"/><circle cx="4" cy="3.6" r="1.7" fill="#C8442A"/><circle cx="12" cy="3.6" r="1.7" fill="#C8442A"/><circle cx="4" cy="8.4" r="1.7" fill="#C9C9C9"/><circle cx="12" cy="8.4" r="1.7" fill="#C9C9C9"/></svg>&nbsp;CFC</span><span><svg width="16" height="12" aria-hidden="true"><circle cx="8" cy="6" r="5.5" fill="#C8442A" fill-opacity=".18"/><circle cx="8" cy="6" r="2.6" fill="#C8442A"/></svg>&nbsp;Clor lliure</span></div></div></div>
     </div>
     <div class="plot" id="clor-viz"></div>
     <p class="src" id="gc-2"><b>Esquema</b>, no a escala. <a class="gs" href="#g-2">Fonts i dades del gràfic&nbsp;→</a></p>
@@ -164,7 +168,7 @@
   <div class="plot" id="paisos-viz"></div>
   <div class="ctlrow" id="paisos-ctl">
     <button type="button" class="playb" id="paisos-play">Reprodueix →</button>
-    <span class="out">Fins al <b id="paisos-y">2019</b></span>
+    <span class="out">Fins al <b id="paisos-y">2019</b>: <b id="paisos-n">198</b> parts</span>
   </div>
   <figcaption class="src" id="gc-4"><b>Dades reals</b> de les Nacions Unides. Al mapa no hi caben els estats més petits; a la cronologia hi són tots. <a class="gs" href="#g-4">Fonts i dades del gràfic&nbsp;→</a></figcaption>
 </figure>
@@ -187,7 +191,7 @@
   </div>
   <div class="plot" id="cfc-viz"></div>
   <div class="plot" id="odgi-viz"></div>
-  <figcaption class="src" id="gc-5"><b>Dades reals</b> de la NOAA. La barra de sota mesura el camí fet pel clor i el brom sobre l'Antàrtida. <a class="gs" href="#g-5">Fonts i dades del gràfic&nbsp;→</a></figcaption>
+  <figcaption class="src" id="gc-5"><b>Dades reals</b> de la NOAA. L'esfera de sota mesura el camí fet pel clor i el brom sobre l'Antàrtida. <a class="gs" href="#g-5">Fonts i dades del gràfic&nbsp;→</a></figcaption>
 </figure>
 
 <section class="col">
@@ -205,7 +209,7 @@
     <div><strong>El món que vam evitar</strong><span>Ozó mitjà entre 60° S i 60° N observat cada any, i la simulació sense Protocol</span></div>
   </div>
   <div class="plot" id="evitat-viz"></div>
-  <figcaption class="src" id="gc-6"><b>Dades reals</b> (línia blava) i <b>simulació</b> (punts vermells; la línia discontínua només els uneix). <a class="gs" href="#g-6">Fonts i dades del gràfic&nbsp;→</a></figcaption>
+  <figcaption class="src" id="gc-6"><b>Dades reals</b> (línia blava) i <b>simulació</b> (punts vermells; la línia discontínua i l'àrea només els uneixen). <a class="gs" href="#g-6">Fonts i dades del gràfic&nbsp;→</a></figcaption>
 </figure>
 
 <section class="col">
@@ -221,7 +225,7 @@
 
 <figure class="fig wide" id="f-anys">
   <div class="vh">
-    <div><strong>Cada octubre, un mapa</strong><span>Mitjana d'octubre de l'ozó sobre l'hemisferi sud, any per any; a sota, la mida i la profunditat del forat segons la NASA</span></div>
+    <div><strong>Cada octubre, un mapa</strong><span>Mitjana d'octubre de l'ozó sobre l'hemisferi sud, any per any; a sota, els 47 octubres, amb l'àrea del forat segons la NASA (en vermell)</span></div>
     <div class="lgs" id="anys-lg"></div>
   </div>
   <div class="plot" id="anys-viz"></div>
@@ -230,7 +234,7 @@
     <div class="rng-wrap"><label for="anys-rng">Octubre de <b id="anys-y">2025</b></label><input type="range" class="rng" id="anys-rng" min="1979" max="2025" step="1" value="2025" aria-valuetext="Octubre de 2025"></div>
   </div>
   <div class="plot" id="anys-ser"></div>
-  <figcaption class="src" id="gc-7"><b>Dades reals.</b> Toca la sèrie per anar a un any. <a class="gs" href="#g-7">Fonts i dades del gràfic&nbsp;→</a></figcaption>
+  <figcaption class="src" id="gc-7"><b>Dades reals.</b> Toca un dels mapes petits per veure'l gran. <a class="gs" href="#g-7">Fonts i dades del gràfic&nbsp;→</a></figcaption>
 </figure>
 
 <section class="col">
@@ -272,13 +276,13 @@
 
   <h3>Els gràfics</h3>
   <ul class="gfs">
-    <li id="g-1"><b class="gt"><a class="bk" href="#gc-1" aria-label="Torna al gràfic">↑</a> Tres mil·límetres</b><b>Dades reals.</b> Gruix d'una capa d'ozó pur a 0 °C i 1 atmosfera: 1 unitat Dobson (DU) = 0,01 mm.<sup class="nr"><a href="#font-13" id="c104" data-c="u13-1">13</a></sup> La tercera barra és el «mínim» anual de la NASA: la mitjana dels valors mínims diaris entre el 21 de setembre i el 16 d'octubre, no el valor més baix mai mesurat; per exemple, el 2006 dona 98 DU, mentre que els globus de la NOAA van mesurar 92 DU sobre el pol Sud.<sup class="nr"><a href="#font-23" id="c105" data-c="u23-1">23</a></sup><sup class="nr"><a href="#font-10" id="c106" data-c="u10-2">10</a></sup> El valor més baix de la sèrie és el del 1994 (92,3 DU). Les barres es dibuixen aproximadament 20 vegades més grans que la mida real (14 vegades al mòbil), amb el regle a la mateixa escala.</li>
+    <li id="g-1"><b class="gt"><a class="bk" href="#gc-1" aria-label="Torna al gràfic">↑</a> Tres mil·límetres</b><b>Dades reals.</b> Gruix d'una capa d'ozó pur a 0 °C i 1 atmosfera: 1 unitat Dobson (DU) = 0,01 mm.<sup class="nr"><a href="#font-13" id="c104" data-c="u13-1">13</a></sup> La tercera columna és el «mínim» anual de la NASA: la mitjana dels valors mínims diaris entre el 21 de setembre i el 16 d'octubre, no el valor més baix mai mesurat; per exemple, el 2006 dona 98 DU, mentre que els globus de la NOAA van mesurar 92 DU sobre el pol Sud.<sup class="nr"><a href="#font-23" id="c105" data-c="u23-1">23</a></sup><sup class="nr"><a href="#font-10" id="c106" data-c="u10-2">10</a></sup> El valor més baix de la sèrie és el del 1994 (92,3 DU). Cada punt representa la mateixa quantitat d'ozó (mitja unitat Dobson; una al mòbil), de manera que el nombre de punts és proporcional a l'ozó. Comprimides, les columnes es dibuixen 20 vegades més grans que la mida real (14 vegades al mòbil), amb el regle a la mateixa escala, i al costat hi ha les tres a mida real. Escampat a l'aire, l'altura dels punts és un esquema que segueix la forma general de la capa, no un perfil mesurat.</li>
     <li id="g-2"><b class="gt"><a class="bk" href="#gc-2" aria-label="Torna al gràfic">↑</a> Com el clor es menja l'ozó</b><b>Esquema</b>, no a escala. Altura del màxim d'ozó (uns 32 km),<sup class="nr"><a href="#font-11" id="c107" data-c="u11-1">11</a></sup> cicle catalític del clor<sup class="nr"><a href="#font-16" id="c108" data-c="u16-1">16</a></sup><sup class="nr"><a href="#font-19" id="c109" data-c="u19-1">19</a></sup> i paper dels núvols estratosfèrics polars entre 10 i 20 km.<sup class="nr"><a href="#font-2" id="c110" data-c="u2-2">2</a></sup> Les partícules són il·lustratives.</li>
-    <li id="g-3"><b class="gt"><a class="bk" href="#gc-3" aria-label="Torna al gràfic">↑</a> Quaranta-set primaveres sobre l'Antàrtida</b><b>Dades reals.</b> Mitjana d'octubre de l'ozó total de la reanàlisi multisensor MSR-2 del KNMI (TEMIS), que combina els satèl·lits TOMS, SBUV, GOME, SCIAMACHY, OMI i GOME-2, a 0,5°; aquí s'ha fet la mitjana per cel·les d'1,5° de latitud per 3° de longitud al sud de 36° S.<sup class="nr"><a href="#font-22" id="c111" data-c="u22-1">22</a></sup> La línia vermella és la isolínia de 220 DU, el llindar de la NASA.<sup class="nr"><a href="#font-14" id="c112" data-c="u14-1">14</a></sup> Les àrees citades als passos són les de la NASA (mitjana del 7 de setembre al 13 d'octubre), que és una altra manera de mesurar el forat.<sup class="nr"><a href="#font-23" id="c113" data-c="u23-1">23</a></sup> Costes: Natural Earth 1:110 m. Projecció ortogràfica centrada al pol Sud (sense relleu: és un mapa d'un hemisferi).</li>
+    <li id="g-3"><b class="gt"><a class="bk" href="#gc-3" aria-label="Torna al gràfic">↑</a> Quaranta-set primaveres sobre l'Antàrtida</b><b>Dades reals.</b> Mitjana d'octubre de l'ozó total de la reanàlisi multisensor MSR-2 del KNMI (TEMIS), que combina els satèl·lits TOMS, SBUV, GOME, SCIAMACHY, OMI i GOME-2, a 0,5°; aquí s'ha fet la mitjana per cel·les d'1,5° de latitud per 3° de longitud al sud de 36° S.<sup class="nr"><a href="#font-22" id="c111" data-c="u22-1">22</a></sup> Franges de 20 DU i isolínies fines cada 40 DU; la línia vermella és la isolínia de 220 DU, el llindar de la NASA.<sup class="nr"><a href="#font-14" id="c112" data-c="u14-1">14</a></sup> En el darrer pas, el contorn discontinu és el de l'octubre del 2006. Les àrees citades als passos són les de la NASA (mitjana del 7 de setembre al 13 d'octubre), que és una altra manera de mesurar el forat.<sup class="nr"><a href="#font-23" id="c113" data-c="u23-1">23</a></sup> Costes: Natural Earth 1:110 m. Projecció ortogràfica centrada al pol Sud (sense relleu: és un mapa d'un hemisferi).</li>
     <li id="g-4"><b class="gt"><a class="bk" href="#gc-4" aria-label="Torna al gràfic">↑</a> 198 parts</b><b>Dades reals.</b> Data de ratificació, acceptació, aprovació, adhesió o successió de cada part, segons la Col·lecció de Tractats de l'ONU (consultada el 20-11-2026).<sup class="nr"><a href="#font-6" id="c114" data-c="u6-2">6</a></sup> Per a les successions (per exemple, estats sorgits de Iugoslàvia o de Txecoslovàquia), la data és la de la notificació. Noms en català. El mapa (Natural Earth 1:110 m, projecció Equal Earth) no mostra els estats més petits ni la Unió Europea; la cronologia els inclou tots.</li>
-    <li id="g-5"><b class="gt"><a class="bk" href="#gc-5" aria-label="Torna al gràfic">↑</a> El que diu l'aire</b><b>Dades reals.</b> Mitjana anual de les mitjanes mensuals globals de CFC-11 i CFC-12 del programa HATS de la NOAA (anys amb almenys 10 mesos; 1978–2025).<sup class="nr"><a href="#font-40" id="c115" data-c="u40-1">40</a></sup> Anotacions: final de la producció mundial de CFC el 2010<sup class="nr"><a href="#font-41" id="c116" data-c="u41-1">41</a></sup> i alentiment del 2013–2018.<sup class="nr"><a href="#font-41" id="c117" data-c="u41-1">41</a></sup><sup class="nr"><a href="#font-44" id="c118" data-c="u44-1">44</a></sup> La barra és l'índex de gasos que destrueixen l'ozó per a l'Antàrtida (ODGI-A) de la NOAA: 100 al màxim i 0 al nivell del 1980, que la NOAA situa cap al 2070; el valor de 71,6 correspon a principis del 2024.<sup class="nr"><a href="#font-54" id="c119" data-c="u54-1">54</a></sup></li>
+    <li id="g-5"><b class="gt"><a class="bk" href="#gc-5" aria-label="Torna al gràfic">↑</a> El que diu l'aire</b><b>Dades reals.</b> Mitjana anual de les mitjanes mensuals globals de CFC-11 i CFC-12 del programa HATS de la NOAA (anys amb almenys 10 mesos; 1978–2025).<sup class="nr"><a href="#font-40" id="c115" data-c="u40-1">40</a></sup> Anotacions: final de la producció mundial de CFC el 2010<sup class="nr"><a href="#font-41" id="c116" data-c="u41-1">41</a></sup> i alentiment del 2013–2018.<sup class="nr"><a href="#font-41" id="c117" data-c="u41-1">41</a></sup><sup class="nr"><a href="#font-44" id="c118" data-c="u44-1">44</a></sup> L'esfera és l'índex de gasos que destrueixen l'ozó per a l'Antàrtida (ODGI-A) de la NOAA: 100 al màxim i 0 al nivell del 1980, que la NOAA situa cap al 2070; l'agulla recorre els valors de principis de cada any, del 2001 (100) al 2024 (71,6).<sup class="nr"><a href="#font-54" id="c119" data-c="u54-1">54</a></sup></li>
     <li id="g-6"><b class="gt"><a class="bk" href="#gc-6" aria-label="Torna al gràfic">↑</a> El món que vam evitar</b><b>Dades reals i simulació.</b> Línia blava: ozó total mitjà anual entre 60° S i 60° N, en % respecte de la mitjana del 1979–1981, calculat per a aquest article amb les 564 mitjanes mensuals de la reanàlisi MSR-2 del KNMI (ponderades per l'àrea).<sup class="nr"><a href="#font-22" id="c120" data-c="u22-1">22</a></sup> L'avaluació de 2022, amb una altra referència (1964–1980) i altres dades, dona un 2 % per sota el 2017–2020<sup class="nr"><a href="#font-9" id="c121" data-c="u9-3">9</a></sup> i el retorn al valor del 1980 cap al 2040 per a aquesta franja de latituds (cercle buit).<sup class="nr"><a href="#font-9" id="c122" data-c="u9-1">9</a></sup> El mínim del 1993 coincideix amb els anys posteriors a l'erupció del Pinatubo.<sup class="nr"><a href="#font-28" id="c123" data-c="u28-2">28</a></sup> Punts vermells: resultats de la simulació «sense Protocol» de Newman et al. (2009), que es refereixen a l'ozó mitjà de tot el planeta: −17 % el 2020 i −67 % el 2065 respecte del 1980; la línia discontínua només els uneix.<sup class="nr"><a href="#font-47" id="c124" data-c="u47-1">47</a></sup> Les dates de retorn per a l'Àrtic (cap al 2045) i l'Antàrtida (cap al 2066) no són mitjanes globals i no es dibuixen.</li>
-    <li id="g-7"><b class="gt"><a class="bk" href="#gc-7" aria-label="Torna al gràfic">↑</a> Cada octubre, un mapa</b><b>Dades reals.</b> El mapa és el mateix del gràfic 3 (MSR-2, mitjana d'octubre).<sup class="nr"><a href="#font-22" id="c125" data-c="u22-1">22</a></sup> La sèrie és la de la NASA Ozone Watch: àrea mitjana del forat del 7 de setembre al 13 d'octubre (barres) i ozó mínim del 21 de setembre al 16 d'octubre (línia), a partir dels satèl·lits TOMS, OMI i OMPS; el 1995 no hi ha dades.<sup class="nr"><a href="#font-23" id="c126" data-c="u23-1">23</a></sup> La barra discontínua del 2026 és l'estimació arrodonida que va publicar la NASA el novembre del 2026.<sup class="nr"><a href="#font-10" id="c127" data-c="u10-1">10</a></sup></li>
+    <li id="g-7"><b class="gt"><a class="bk" href="#gc-7" aria-label="Torna al gràfic">↑</a> Cada octubre, un mapa</b><b>Dades reals.</b> El mapa és el mateix del gràfic 3 (MSR-2, mitjana d'octubre).<sup class="nr"><a href="#font-22" id="c125" data-c="u22-1">22</a></sup> Els 47 mapes petits són el mateix camp, un per octubre. La barra vermella de sota de cada un és l'àrea mitjana del forat de la NASA Ozone Watch, del 7 de setembre al 13 d'octubre, sobre un màxim de 27 milions de km²; en passar-hi per sobre surt també l'ozó mínim del 21 de setembre al 16 d'octubre (satèl·lits TOMS, OMI i OMPS; el 1995 no hi ha dades).<sup class="nr"><a href="#font-23" id="c126" data-c="u23-1">23</a></sup> El contorn discontinu del mapa gran és el de l'octubre del 2006, l'any del forat més gran.</li>
   </ul>
 
   <h3>Fonts</h3>
