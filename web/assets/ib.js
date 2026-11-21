@@ -44,7 +44,7 @@
   if(!document.querySelector('.ib-article'))return;
   if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   if(!('IntersectionObserver' in window))return;
-  var MIN_LINES=4,EDGE=.76,BAND=1.4,FLOOR=.12; /* tall al 76 % de la pantalla; transicio d'1,4 linies */
+  var MIN_LINES=4,EDGE=.64,BAND=1,FLOOR=.08; /* tall al 64 % de la pantalla; transicio d'1 linia */
   var st=document.createElement('style');
   st.textContent='.ib-w{transition:opacity .12s linear}@media print{.ib-w{opacity:1!important}}';
   document.head.appendChild(st);
