@@ -145,6 +145,9 @@ function scaleBar(g,proj,lon,lat,km,x,y){
       ctx.beginPath(); p(W.borders); ctx.stroke(); ctx.restore(); }).catch(()=>{});
     // capa del globus (pas 0): el món en terra plana (MAP-19/MAP-18) que fa zoom fins a l'illa
     const {c:wcv,ctx:wc}=mkCanvas(st,w,h,null);
+    st.insertBefore(wcv,rcv); // el globus va a sota: el relleu hi creix a sobre i el cobreix
+    rcv.style.transformOrigin="0 0"; rcv.style.willChange="transform,opacity";
+    const C0=[-73.06,19.04], m0=proj(C0);
     const s=overlay(st,w,h), g0=s.append("g"), g=s.append("g");
     const ROT=[72.4,-19], R0=Math.min(w,h)/2-(mob?6:10);
     const gProj=d3.geoOrthographic().rotate(ROT).clipAngle(90).precision(.3);
@@ -154,20 +157,24 @@ function scaleBar(g,proj,lon,lat,km,x,y){
     function paint(){
       const e=d3.easeCubicInOut(z), k=Math.exp(Math.log(K0)+(Math.log(K1)-Math.log(K0))*e);
       gProj.scale(k).translate([T0[0]+(T1[0]-T0[0])*e,T0[1]+(T1[1]-T0[1])*e]);
-      const wa=Wd?1-clamp((e-.72)/.28,0,1):0, ra=Wd?clamp((e-.6)/.4,0,1):1;
-      wcv.style.opacity=wa; rcv.style.opacity=ra; g.style("opacity",ra); g0.style("opacity",Wd?1-clamp(e*3,0,1):0);
+      // el relleu viatja amb el globus: mateixa escala i mateix punt d'ancoratge, i es fon a sobre mentre creix
+      const sc=k/K1, o=gProj(C0), tx=o[0]-sc*m0[0], ty=o[1]-sc*m0[1], id=!Wd||e>=.999;
+      rcv.style.transform=id?"":`translate(${tx}px,${ty}px) scale(${sc})`;
+      g.attr("transform",id?null:`translate(${tx},${ty}) scale(${sc})`);
+      const wa=Wd?1-clamp((e-.4)/.4,0,1):0, ra=Wd?clamp((e-.25)/.4,0,1):1;
+      wcv.style.opacity=wa; rcv.style.opacity=ra; g.style("opacity",Wd?clamp((e-.8)/.2,0,1):1); g0.style("opacity",Wd?1-clamp(e*3,0,1):0);
       wc.clearRect(0,0,w,h); if(!Wd||wa<=0)return;
       const p=d3.geoPath(gProj,wc);
       wc.globalAlpha=1-e; wc.strokeStyle=C.hair; wc.lineWidth=.55; wc.beginPath(); p(grat); wc.stroke(); wc.globalAlpha=1;
       wc.fillStyle=C.land; wc.beginPath(); p(Wd.land); wc.fill();
       wc.strokeStyle=C.landEdge; wc.lineWidth=.6; wc.beginPath(); p(Wd.borders); wc.stroke();
-      if(HTI){ wc.fillStyle=C.red; wc.beginPath(); p(HTI); wc.fill(); }
+      if(HTI){ wc.globalAlpha=1-clamp((e-.15)/.3,0,1); wc.fillStyle=C.red; wc.beginPath(); p(HTI); wc.fill(); wc.globalAlpha=1; }
       wc.strokeStyle=C.hair; wc.lineWidth=1; wc.beginPath(); p({type:"Sphere"}); wc.stroke();
     }
     function zoomTo(t,instant){
       if(zt){ zt.stop(); zt=null; }
       if(instant||V.reduced||!Wd){ z=t; paint(); return; }
-      const z0=z, T=1900*Math.abs(t-z0); if(T<1){ z=t; paint(); return; }
+      const z0=z, T=2200*Math.abs(t-z0); if(T<1){ z=t; paint(); return; }
       zt=d3.timer(el=>{ const q=Math.min(1,el/T); z=z0+(t-z0)*q; paint(); if(q>=1){ zt.stop(); zt=null; } });
     }
     V.world().then(W=>{ Wd=W; HTI=W.countries.features.find(f=>+f.id===332)||null;
