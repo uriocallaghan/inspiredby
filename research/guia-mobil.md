@@ -19,7 +19,9 @@ A partir d'aquestes mides reals, regeixen tres regles innegociables:
 
 ## 2. Pressupost d'alçada del `.scrolly` en mòbil (`< 900 px`)
 
-Quan el gràfic queda enganxat a dalt (`position: sticky; top: 0`), cada píxel que ocupa el `.graphic` es resta directament de l'espai de lectura.
+Quan el gràfic queda enganxat a dalt, cada píxel que ocupa el `.graphic` es resta directament de l'espai de lectura.
+
+**La barra superior dels articles es queda sempre visible i el gràfic s'enganxa just a sota** (decisió de l'editor, 22-11-2026): `.graphic` fa `top: var(--ib-top)` (63 px: 3 de la barra de progrés + 60 de la barra) i, en escriptori, `height: calc(100dvh - var(--ib-top))`. Ho posen `assets/article.css` i `assets/ib.css`; si un article escriu el seu propi `.graphic` sticky, ha de fer servir `var(--ib-top)`, mai `top: 0`, o la barra el tapa. Compta aquests 63 px com a espai perdut quan calculis l'alçada del gràfic en mòbil.
 
 ### Límits obligatoris
 

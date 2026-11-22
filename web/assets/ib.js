@@ -1,7 +1,10 @@
-/* Reading progress + show-on-scroll-up navigation bar for article pages. */
+/* Reading progress + navigation bar for article pages.
+   HIDE_BAR=false: the bar stays visible so it never covers sticky graphics
+   (editor decision, 22-11-2026); set to true to restore hide-on-scroll-down. */
+var HIDE_BAR=false;
 (function(){
   var prog=document.getElementById('ibProgress');
-  var bar=document.querySelector('.ib-article .ib-bar');
+  var bar=HIDE_BAR?document.querySelector('.ib-article .ib-bar'):null;
   if(!prog&&!bar)return;
   var ticking=false,lastY=Math.max(0,scrollY),dir=0,acc=0,hidden=false;
   function upd(){

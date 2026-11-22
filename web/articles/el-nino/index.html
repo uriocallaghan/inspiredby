@@ -71,7 +71,7 @@ h1{font-family:var(--serif-display);font-weight:400;font-size:clamp(50px,6.8vw,7
 .step b{font-weight:600}
 .k-w{color:var(--warm);font-weight:600}.k-c{color:var(--cold);font-weight:600}.k-d{color:var(--dry);font-weight:600}.k-r{color:var(--cold);font-weight:600}
 
-.graphic{position:sticky;top:0;height:100vh;height:100dvh;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.graphic{position:sticky;top:var(--ib-top,0px);height:calc(100vh - var(--ib-top,0px));height:calc(100dvh - var(--ib-top,0px));display:flex;flex-direction:column;justify-content:center;min-width:0}
 .gbox{margin:0 auto;width:100%}
 .ghead{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:nowrap;margin-bottom:14px;font-family:var(--sans);letter-spacing:0}
 .state{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
@@ -173,7 +173,7 @@ dl.gl dd{margin:0;color:var(--ink-2)}
   .dek{font-size:20px}
   .scrolly{display:flex;flex-direction:column}
   .graphic{order:-1}
-  .graphic{height:auto;top:0;z-index:2;background:var(--paper);padding-block:6px 4px;border-bottom:1px solid var(--hair)}
+  .graphic{height:auto;top:var(--ib-top,0px);z-index:2;background:var(--paper);padding-block:6px 4px;border-bottom:1px solid var(--hair)}
   .steps{padding-bottom:35dvh}
   .step{min-height:75dvh;align-items:flex-end;padding-bottom:8dvh}
   .step:first-child{min-height:55dvh}
