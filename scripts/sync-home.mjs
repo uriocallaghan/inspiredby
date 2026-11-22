@@ -25,6 +25,12 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;");
 }
 
+// Cap paraula orfe: l'última paraula de la descripció va enganxada a la
+// penúltima amb un espai que no es parteix, perquè mai quedi sola en una línia.
+function noOrphan(value) {
+  return String(value).replace(/\s+(\S+)\s*$/, "\u00a0$1");
+}
+
 function validateArticles(articles) {
   if (!Array.isArray(articles) || articles.length < 2) {
     throw new Error("web/articles.json ha de contenir com a mínim 2 articles.");
@@ -59,7 +65,7 @@ function renderDiptychCard(a) {
     `      <div class="ib-diptych-body">`,
     `        <div class="ib-diptych-copy">`,
     `          <h2>${escapeHtml(a.title)}</h2>`,
-    `          <p class="ib-card-desc">${escapeHtml(a.desc)}</p>`,
+    `          <p class="ib-card-desc">${escapeHtml(noOrphan(a.desc))}</p>`,
     `        </div>`,
     `        <span class="ib-card-meta"><span>${escapeHtml(a.category)} · ${a.minutes} min</span><span class="ib-card-arrow" aria-hidden="true">→</span></span>`,
     `      </div>`,
@@ -75,7 +81,7 @@ function renderGridCard(a, idx) {
     `          <img src="articles/${escapeHtml(a.slug)}/thumb.webp" alt="${escapeHtml(a.thumbAlt)}" width="800" height="1000"${lazyAttr} decoding="async">`,
     `        </div>`,
     `        <h2>${escapeHtml(a.title)}</h2>`,
-    `        <p class="ib-card-desc">${escapeHtml(a.desc)}</p>`,
+    `        <p class="ib-card-desc">${escapeHtml(noOrphan(a.desc))}</p>`,
     `        <span class="ib-card-meta"><span>${escapeHtml(a.category)} · ${a.minutes} min</span><span class="ib-card-arrow" aria-hidden="true">→</span></span>`,
     `      </a>`
   ].join("\n");
