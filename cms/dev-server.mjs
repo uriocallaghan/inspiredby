@@ -37,6 +37,7 @@ const ADMIN_HEADERS = {
   "x-frame-options": "DENY", "referrer-policy": "same-origin", "cross-origin-opener-policy": "same-origin", "x-robots-tag": "noindex, nofollow", "cache-control": "no-store"
 };
 
+const frozen = new Map();
 http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   if (url.pathname === "/api/cms/dev-login" && req.method === "POST") {
@@ -44,6 +45,13 @@ http.createServer(async (req, res) => {
     const token = await seal({ sub: "dev", email: "editor@localhost", name: "Editor (local)", picture: "", iat: now, exp: now + 43200, v: "1", sid: randomId(6) }, env.CMS_SESSION_SECRET);
     res.writeHead(200, { "set-cookie": cookie(SESSION_COOKIE, token, 43200), "content-type": "application/json" });
     return res.end("{}");
+  }
+  // proves: «congela» la versió publicada d'una pàgina, com quan Netlify encara no ha publicat l'últim commit
+  if (url.pathname === "/api/cms/dev-freeze" && req.method === "POST") {
+    const rel = (url.searchParams.get("path") || "/").replace(/\/?$/, "/") + "index.html";
+    const f = path.join(DIR, "web", rel);
+    if (fs.existsSync(f)) frozen.set(rel, fs.readFileSync(f));
+    res.writeHead(200, { "content-type": "application/json" }); return res.end(JSON.stringify({ frozen: [...frozen.keys()] }));
   }
   if (url.pathname === "/api/cms/config") { res.writeHead(200, { "content-type": "application/json" }); return res.end('{"login":"dev"}'); }
   if (url.pathname.startsWith("/api/cms/")) {
@@ -67,6 +75,7 @@ http.createServer(async (req, res) => {
     res.writeHead(404); return res.end("404");
   }
   const headers = { "content-type": TYPES[path.extname(file)] || "application/octet-stream", "cache-control": "no-cache" };
+  if (frozen.has(p)) { res.writeHead(200, headers); return res.end(frozen.get(p)); }
   if (url.pathname.startsWith("/admin")) Object.assign(headers, ADMIN_HEADERS);
   res.writeHead(200, headers);
   fs.createReadStream(file).pipe(res);

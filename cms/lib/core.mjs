@@ -52,7 +52,7 @@ function blocksFor(target, src) {
   return target.home ? homeBlocks(src) : articleBlocks(src);
 }
 function publicBlock(b) {
-  return b.plain ? { id: b.id, tag: b.tag, text: decodeEntities(b.html), plain: true } : { id: b.id, tag: b.tag, html: b.html };
+  return b.plain ? { id: b.id, tag: b.tag, text: decodeEntities(b.html), plain: true, slug: b.slug, field: b.field } : { id: b.id, tag: b.tag, html: b.html };
 }
 
 export async function listPages(repo) {

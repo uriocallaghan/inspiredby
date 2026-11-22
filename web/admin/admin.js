@@ -247,6 +247,7 @@
     persistDraft();
     loading(true);
     closeComposer(); hideSelPill();
+    $("notice").hidden = true;
     S.bound.clear(); S.pending.clear(); S.conflicts.clear(); S.page = null; S.pageId = page; S.staleTries = 0;
     updateCounts();
     $("pageLabel").textContent = S.pages.find(p => p.page === page)?.title || "…";
@@ -324,30 +325,69 @@
     const cands = [...doc.body.querySelectorAll(sel)].filter(el => !el.closest("footer, .ib-bar, svg, button, nav, template, label"));
     const candText = cands.map(el => norm(el.textContent));
     const tpl = doc.createElement("template");
-    let ptr = 0, unbound = 0;
-    for (const b of S.page.blocks) {
-      let text;
-      if (b.plain) text = norm(b.text);
-      else { tpl.innerHTML = b.html; text = norm(tpl.content.textContent); }
-      let found = -1;
+    const blocks = S.page.blocks;
+    const at = new Array(blocks.length).fill(-1); // bloc → element de la pàgina
+    const taken = new Set();
+    const textOfBlock = b => { if (b.plain) return norm(b.text); tpl.innerHTML = b.html; return norm(tpl.content.textContent); };
+
+    // 1) pel text, en ordre: el cas normal (la pàgina publicada és igual que GitHub)
+    let ptr = 0;
+    blocks.forEach((b, k) => {
+      const text = textOfBlock(b);
       for (let i = ptr; i < cands.length; i++) {
-        if (cands[i].localName === b.tag && candText[i] === text && !cands[i].dataset.ibc) { found = i; break; }
+        if (!taken.has(i) && cands[i].localName === b.tag && candText[i] === text) { at[k] = i; taken.add(i); ptr = i + 1; return; }
       }
-      if (found < 0) { unbound++; continue; }
-      ptr = found + 1;
-      const el = cands[found];
+    });
+    // 2) si la pàgina publicada encara és una versió anterior (la web s'està publicant, o el navegador en té
+    //    una còpia vella), el bloc es busca pel seu lloc i s'hi posa el text de GitHub, que és el que mana.
+    let refreshed = 0;
+    const fill = (k, i) => {
+      const b = blocks[k], el = cands[i];
+      if (b.plain) el.textContent = b.text; else el.innerHTML = b.html;
+      at[k] = i; taken.add(i); refreshed++;
+    };
+    if (home) {
+      // portada: cada bloc és el títol o la descripció d'una targeta concreta
+      blocks.forEach((b, k) => {
+        if (at[k] >= 0 || !b.slug) return;
+        const i = cands.findIndex((el, j) => !taken.has(j) && el.closest("a")?.getAttribute("href") === `articles/${b.slug}/` &&
+          (b.field === "title" ? el.localName === "h2" : el.matches("p.ib-card-desc")));
+        if (i >= 0) fill(k, i);
+      });
+    } else {
+      // article: entre dos blocs ja trobats, si queden tants elements lliures com blocs i són del mateix tipus, van a la par
+      let k = 0;
+      while (k < blocks.length) {
+        if (at[k] >= 0) { k++; continue; }
+        let e = k; while (e < blocks.length && at[e] < 0) e++;
+        const lo = k > 0 ? at[k - 1] : -1, hi = e < blocks.length ? at[e] : cands.length;
+        const fits = [];
+        for (let i = lo + 1; i < hi; i++) if (!taken.has(i) && !cands[i].querySelector("p, li, h1, h2, h3, h4, h5, h6, dt, dd, figcaption")) fits.push(i);
+        const run = blocks.slice(k, e);
+        if (fits.length === run.length && run.every((b, j) => cands[fits[j]].localName === b.tag)) run.forEach((b, j) => fill(k + j, fits[j]));
+        k = e;
+      }
+    }
+
+    let unbound = 0;
+    blocks.forEach((b, k) => {
+      if (at[k] < 0) { unbound++; return; }
+      const el = cands[at[k]];
       let orig;
       if (b.plain) orig = norm(b.text);
       else {
+        tpl.innerHTML = b.html;
         orig = serialize(tpl.content);
         if (serialize(el) !== orig) el.innerHTML = b.html; // el JS de la pàgina l'havia retocat: es torna a la font
       }
       el.dataset.ibc = String(b.id);
       if (b.plain) el.dataset.plain = "1";
       S.bound.set(b.id, { b, el, orig });
-    }
+    });
     S.unbound = unbound;
+    S.refreshed = refreshed;
     applyMode();
+    if (refreshed && !S.pending.size) notice(`La web publicada encara no té l'última versió de GitHub: ${refreshed === 1 ? "1 bloc mostra" : refreshed + " blocs mostren"} ja el text de GitHub, que és el que edites.`, "blue");
   }
 
   function applyMode() {
