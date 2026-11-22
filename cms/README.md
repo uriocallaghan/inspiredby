@@ -2,6 +2,13 @@
 
 Editor de text propi a `https://inspiredbymagazine.com/admin/`. Serveix per fer canvis petits de text (paraules, frases, títols, descripcions de la portada) i per deixar comentaris a l'agent, sense passar per Claude Code.
 
+## Eines de la barra
+
+- **Punter (V), per defecte:** navegues com a la web. Clicar una targeta o un enllaç a un article l'obre dins l'editor; les àncores fan scroll; els enllaços de fora s'obren en una pestanya nova.
+- **Text (T):** cada paràgraf, títol o peu es pot editar clicant-hi. Negreta i cursiva, desfer i refer.
+- **Comentari (C):** subratlles text i hi deixes una nota per a l'agent. (Amb qualsevol eina, si selecciones text surt la pastilla «Comenta».)
+- **Publica (⌘S):** revisió paraula a paraula i commit a `main`.
+
 ## Com funciona
 
 ```

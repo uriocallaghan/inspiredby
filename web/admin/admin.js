@@ -20,6 +20,7 @@
   const draftKey = page => `ibcms:draft:${page || "/"}`;
 
   const ICON = {
+    pointer: '<path d="M5 3.5l13 6.2-5.6 1.7-2.3 5.6z"/><path d="M12.6 11.6l5.2 5.2"/>',
     pages: '<rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/>',
     chev: '<path d="M6 9l6 6 6-6"/>',
     text: '<path d="M5 7V5h14v2"/><path d="M12 5v14"/><path d="M9 19h6"/>',
@@ -82,7 +83,7 @@
     page: null,          // dades del servidor de la pàgina oberta
     pageId: "",
     head: null,
-    mode: "edit",        // "edit" | "comment"
+    mode: "point",       // "point" (navegar, per defecte) | "edit" | "comment"
     doc: null, win: null,
     bound: new Map(),    // id → { b, el, orig }
     pending: new Map(),  // id → { id, from, to }
@@ -133,7 +134,8 @@
     $("dock").innerHTML = `
       <button class="tb tb-page" id="bPages" type="button" aria-haspopup="dialog" aria-expanded="false" data-tip="Pàgines">${svg("pages")}<span class="lbl" id="pageLabel">…</span><span class="dot" id="syncDot"></span>${svg("chev", 'class="chev"')}</button>
       <span class="sep"></span>
-      <button class="tb" id="bEdit" type="button" aria-pressed="true" data-tip="Edita el text  E">${svg("text")}</button>
+      <button class="tb" id="bPoint" type="button" aria-pressed="true" data-tip="Navega  V">${svg("pointer")}</button>
+      <button class="tb" id="bEdit" type="button" aria-pressed="false" data-tip="Edita el text  T">${svg("text")}</button>
       <button class="tb" id="bComment" type="button" aria-pressed="false" data-tip="Subratlla i comenta  C">${svg("comment")}</button>
       <span class="sep wide-only"></span>
       <button class="tb wide-only" id="bBold" type="button" data-tip="Negreta  ⌘B">${svg("bold")}</button>
@@ -148,8 +150,9 @@
     $("bPages").onclick = () => togglePop("popPages");
     $("bComments").onclick = () => togglePop("popComments");
     $("bMe").onclick = () => togglePop("popMe");
-    $("bEdit").onclick = () => setMode("edit");
-    $("bComment").onclick = () => { if (S.sel) openComposer(); else setMode(S.mode === "comment" ? "edit" : "comment"); };
+    $("bPoint").onclick = () => setMode("point");
+    $("bEdit").onclick = () => setMode(S.mode === "edit" ? "point" : "edit");
+    $("bComment").onclick = () => { if (S.sel) openComposer(); else setMode(S.mode === "comment" ? "point" : "comment"); };
     for (const [id, cmd] of [["bBold", "bold"], ["bItalic", "italic"], ["bUndo", "undo"], ["bRedo", "redo"]]) {
       const b = $(id);
       b.addEventListener("mousedown", e => e.preventDefault()); // que no es perdi la selecció dins l'iframe
@@ -298,7 +301,7 @@
       const st = doc.createElement("style"); st.id = "ibc-css"; st.textContent = FRAME_CSS; doc.head.appendChild(st);
       try { doc.execCommand("styleWithCSS", false, false); } catch {}
       // cap enllaç no navega mentre s'edita; cap formulari s'envia
-      doc.addEventListener("click", e => { if (e.target.closest("a[href]")) e.preventDefault(); onFrameClick(e); }, true);
+      doc.addEventListener("click", onFrameLink, true);
       doc.addEventListener("submit", e => e.preventDefault(), true);
       doc.addEventListener("input", onInput);
       doc.addEventListener("keydown", onFrameKey);
@@ -361,6 +364,7 @@
         el.removeAttribute("contenteditable");
       }
     }
+    $("bPoint")?.setAttribute("aria-pressed", String(S.mode === "point"));
     $("bEdit")?.setAttribute("aria-pressed", String(S.mode === "edit"));
     $("bComment")?.setAttribute("aria-pressed", String(S.mode === "comment"));
     for (const id of ["bBold", "bItalic"]) if ($(id)) $(id).disabled = S.mode !== "edit" || S.page?.page === "";
@@ -371,6 +375,7 @@
     hideSelPill(); closeComposer();
     applyMode();
     if (m === "comment") toast("Selecciona un tros de text per comentar-lo.", { ms: 2400 });
+    if (m === "edit") toast("Clica qualsevol paràgraf per editar-lo.", { ms: 2000 });
   }
 
   /* ---------- serialitzar (mateixa llista que el servidor: cms/lib/html.mjs) ---------- */
@@ -424,6 +429,25 @@
     if (el && el.dataset.plain && mod && /^[biu]$/i.test(e.key)) { e.preventDefault(); return; }
     if (!el) onGlobalKey(e);
   }
+  /** Amb el punter, els enllaços funcionen: un article o la portada s'obren dins l'editor, una àncora fa
+      scroll, i la resta (altres pàgines, webs de fora) s'obre en una pestanya nova. Amb les altres eines, cap
+      enllaç navega (es clica per escriure o per seleccionar). */
+  function onFrameLink(e) {
+    const a = e.target.closest("a[href]");
+    if (!a) { onFrameClick(e); return; }
+    if (S.mode !== "point" || e.button > 0) { e.preventDefault(); onFrameClick(e); return; }
+    const raw = a.getAttribute("href") || "";
+    if (raw.startsWith("#")) return; // àncores dins la mateixa pàgina: deixa fer
+    let u;
+    try { u = new URL(a.href); } catch { e.preventDefault(); return; }
+    e.preventDefault();
+    if (u.origin === location.origin) {
+      const m = /^\/(?:index\.html)?$/.test(u.pathname) ? "" : (/^\/(articles\/[a-z0-9-]+\/)(?:index\.html)?$/.exec(u.pathname) || [])[1];
+      if (m !== undefined && (m === "" || S.pages.some(p => p.page === m))) { go(m); return; }
+    }
+    window.open(u.href, "_blank", "noopener");
+  }
+
   function onPaste(e) {
     const el = e.target?.closest?.("[data-ibc]");
     if (!el) return;
@@ -933,7 +957,8 @@
     if (mod || e.altKey) return;
     const t = e.target;
     if (t && (t.isContentEditable || /^(input|textarea|select)$/i.test(t.tagName))) return;
-    if (e.key === "e" || e.key === "E") setMode("edit");
+    if (e.key === "v" || e.key === "V") setMode("point");
+    else if (e.key === "t" || e.key === "T" || e.key === "e" || e.key === "E") setMode("edit");
     else if (e.key === "c" || e.key === "C") { if (S.sel) openComposer(); else setMode("comment"); }
     else if (e.key === "/" ) { e.preventDefault(); togglePop("popPages"); }
   }
