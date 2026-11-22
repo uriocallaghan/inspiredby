@@ -153,6 +153,7 @@
 
   /* ---------- Decisions preses ---------- */
   const TL = [
+    ["22-11-2026", "<b>CMS propi per editar el text</b> a <code>/admin/</code>: login amb Google (només el compte de l'editor), barra inferior mínima, edició directa sobre la pàgina i comentaris subratllats per a l'agent. <b>Mana <code>main</code> a GitHub</b>: el CMS hi fa commits que combinen paràgraf a paràgraf amb els de Claude Code, i si tots dos han tocat el mateix paràgraf, l'editor tria. Quan l'agent fa la feina d'un comentari, l'esborra i desapareix del CMS."],
     ["22-11-2026", "<b>La barra superior es queda sempre visible</b> als articles (ja no s'amaga en baixar) i els gràfics enganxats s'aturen just a sota, de manera que la barra no en talla mai la part de dalt."],
     ["22-11-2026", "<b>La introducció entra directament al tema</b>: des de la primera frase parla del que tracta l'article, en dos o tres paràgrafs curts. Res d'obrir amb l'anècdota d'un personatge secundari (un testimoni, un viatger, un científic) que no és el tema. Una persona només hi surt si té sentit: el lector la coneix o és qui va descobrir, mesurar o crear allò de què parla l'article (Darwin i la pols del Sahara, la corba de Keeling). Corregits: <i>L'últim sopar</i>, <i>Stonehenge</i>, <i>El viatge de la pizza</i> i <i>Xifrat d'extrem a extrem</i>."],
     ["22-11-2026", "<b>Per ara, només «Opacitat»</b>: el menú d'efectes de la barra s'amaga i tothom llegeix amb l'efecte d'opacitat. Les variants de partícules (pols, remolí, fum) es queden al codi, apagades, per si es tornen a provar."],

@@ -1,0 +1,26 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8011",
+        "--directory",
+        "web"
+      ],
+      "port": 8011
+    },
+    {
+      "name": "cms",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "cms/dev-server.mjs",
+        "8788"
+      ],
+      "port": 8788
+    }
+  ]
+}

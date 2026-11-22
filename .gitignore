@@ -2,3 +2,4 @@
 .netlify/
 node_modules/
 research/**/raw/*.pdf
+.claude/settings.local.json

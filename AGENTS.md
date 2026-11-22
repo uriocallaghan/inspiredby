@@ -9,10 +9,22 @@ Revista web d'articles visuals per entendre el món, en català. Llegeix aquest 
 - **Treballa directament a `main`.** Fes `git pull origin main` abans de començar, verifica en local, fes commit i `git push origin main` perquè es publiqui de seguida sense deixar branques obertes. Només crea una branca i una PR si l'editor t'ho demana explícitament.
 - No reescriguis l'historial de `main` ni facis `push --force` a `main`.
 
+## El CMS de l'editor: qui mana i com no trepitjar-se
+
+L'editor edita el text de la web i deixa comentaris des de https://inspiredbymagazine.com/admin/ (CMS propi, login amb Google, només el seu compte; detall a `cms/README.md`). **El CMS fa commits directament a `main` de GitHub**, amb l'autor «Editor (CMS)», igual que tu. Per tant:
+
+- **`main` a GitHub és l'única versió que mana.** La teva còpia local pot anar endarrerida: el CMS hi escriu en qualsevol moment. Abans de tocar res, `git pull --rebase origin main` (el hook `scripts/cms-sync.sh` ja ho fa sol en obrir la sessió i t'avisa a cada missatge si hi ha commits nous). Si t'avisa que el fitxer ha canviat al disc, torna'l a llegir abans d'editar-lo.
+- **Mai no tornis a escriure un text vell per sobre d'un canvi del CMS.** Si en un rebase hi ha un conflicte de text en un paràgraf, mana la redacció del CMS (és l'editor qui l'ha escrit a mà), tret que l'editor et digui el contrari. Res de `push --force`, res de `checkout --theirs/--ours` a cegues.
+- `node scripts/check.mjs` falla si la còpia local va per darrere d'`origin/main`.
+- El CMS només canvia l'interior de paràgrafs, títols, llistes i peus (i, a la portada, `title` i `desc` d'`articles.json`); no toca cap altra línia. Després de cada push, el workflow `.github/workflows/sync.yml` executa `sync-home.mjs` i fa un commit «Sincronia automàtica» si cal (temps de lectura, portada, `sw.js`).
+- **Comentaris per a l'agent**: l'editor subratlla text al CMS i hi deixa una nota. Viuen a `cms/comentaris.json` (a GitHub, no a la web). `node scripts/comentaris.mjs` els llista amb fitxer i línia. Quan l'editor et demani que els revisis i n'hagis fet un, esborra'l amb `node scripts/comentaris.mjs resol <id>` **al mateix commit que la correcció**: així desapareix sol del CMS. No resolguis cap comentari que no hagis fet de debò.
+- Si canvies l'estructura d'un article (classes, etiquetes dels paràgrafs), el CMS ho continua llegint sol; no cal fer res. No posis cap `data-` especial per al CMS.
+
 ## Què hi ha
 
 - `web/`: la web que es publica (estàtica, sense build). `web/articles.json` és el catàleg únic dels articles que genera `web/index.html` (la portada) i `web/per-penjar/` (els articles a mig fer); `web/articles/<slug>/` els articles; `web/assets/` el codi i els estils comuns; `web/sistema/` el sistema infogràfic; `web/guidelines/` la pàgina visual de normes de l'editor.
 - `scripts/`: eines de sistema (`sync-home.mjs` regenera la portada, la pàgina «Articles per penjar», el peu comú de totes les pàgines i `sw.js` des de `web/articles.json`, `check.mjs` valida tot el conjunt).
+- `cms/` i `netlify/functions/cms.mjs`: el CMS de l'editor (API, seguretat, proves a `cms/test/`, servidor local `node cms/dev-server.mjs`). `web/admin/`: la seva interfície. `cms/comentaris.json`: comentaris de l'editor per a l'agent.
 - `research/`: dades, fonts i validacions de cada article, i les guies.
 - `site/`: còpia de la web original del 2020–2021. **No la toquis.**
 

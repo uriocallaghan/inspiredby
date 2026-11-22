@@ -216,6 +216,26 @@ for (const rel of THEME_PAGES) {
   }
 }
 
+// 9. Sincronia amb el CMS de l'editor (/admin/): l'editor fa commits directament a main.
+//    Si la còpia local va per darrere d'origin/main, hi ha text de l'editor que no tens: no es pot publicar.
+try {
+  execFileSync("git", ["fetch", "-q", "origin", "main"], { cwd: ROOT, stdio: "ignore", timeout: 15000 });
+  const behind = +execFileSync("git", ["rev-list", "--count", "HEAD..origin/main"], { cwd: ROOT, encoding: "utf8" }).trim();
+  if (behind > 0) {
+    const log = execFileSync("git", ["log", "--format=%h %an: %s", "HEAD..origin/main"], { cwd: ROOT, encoding: "utf8" }).trim().split("\n").slice(0, 8);
+    errors.push(`La còpia local va ${behind} commits per darrere d'origin/main (canvis del CMS de l'editor o d'una altra sessió). Fes git pull --rebase origin main abans de publicar; en un conflicte de text, mana la versió del CMS.\n     ${log.join("\n     ")}`);
+  }
+} catch { warnings.push("No s'ha pogut comprovar si hi ha canvis nous a origin/main (sense xarxa?). Fes git pull --rebase origin main abans de fer push."); }
+
+// 10. Comentaris del CMS: el fitxer ha de ser vàlid
+{
+  const cf = path.join(ROOT, "cms", "comentaris.json");
+  if (fs.existsSync(cf)) {
+    try { const c = JSON.parse(fs.readFileSync(cf, "utf8")); if (!Array.isArray(c.comentaris)) throw 0; }
+    catch { errors.push("cms/comentaris.json no és JSON vàlid (ha de tenir una llista «comentaris»)."); }
+  }
+}
+
 if (warnings.length) {
   console.warn("\nAVISOS DEL SISTEMA INFOGRÀFIC (no bloquegen; articles anteriors al 19-11-2026 o colors):");
   for (const w of warnings) console.warn(" - " + w);

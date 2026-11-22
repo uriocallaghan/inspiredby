@@ -12,7 +12,10 @@
   // el tema el decideix només el dispositiu (decisió de l'editor, 21-11-2026): sense botó ni tria desada
   try { localStorage.removeItem(KEY); } catch (e) {}
   var mq = window.matchMedia ? matchMedia("(prefers-color-scheme: dark)") : null;
-  var dark = !!(mq && mq.matches);
+  // dins de l'editor (web/admin/, iframe «ib-cms-frame») la pàgina es pinta en clar i sense efectes de lectura:
+  // així el text que s'edita és exactament el de la font, sense colors traduïts ni paraules embolcallades
+  var CMS = window.name === "ib-cms-frame";
+  var dark = !CMS && !!(mq && mq.matches);
   root.setAttribute("data-theme", dark ? "dark" : "light");
 
   function reloadKeepingPlace(){
@@ -21,7 +24,7 @@
   }
   window.IBTheme = { dark: dark };
   // si el dispositiu canvia de tema (p. ex. de dia a nit), la pàgina el segueix
-  if (mq && mq.addEventListener) mq.addEventListener("change", reloadKeepingPlace);
+  if (mq && mq.addEventListener && !CMS) mq.addEventListener("change", reloadKeepingPlace);
   // tornar al mateix punt després de canviar de tema
   try {
     var y = sessionStorage.getItem("ib-theme-y");
@@ -41,7 +44,7 @@
 
   // efectes de lectura (assets/ib-fx.js): menu a l'esquerra de la barra, només als articles
   (function(){
-    if (!/\/articles\//.test(location.pathname)) return;
+    if (CMS || !/\/articles\//.test(location.pathname)) return;
     var me = document.currentScript, src = me && me.src ? me.src.replace(/ib-theme\.js(\?.*)?$/, "ib-fx.js") : null;
     if (!src) return;
     var sc = document.createElement("script"); sc.src = src; sc.defer = true; (document.head || root).appendChild(sc);

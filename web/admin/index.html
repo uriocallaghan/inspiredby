@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="same-origin">
+<meta name="theme-color" content="#0a0a0a">
+<title>Editor · Inspired by</title>
+<link rel="icon" sizes="192x192" href="../assets/icon192.png">
+<link rel="stylesheet" href="admin.css">
+<script src="admin.js" defer></script>
+</head>
+<body>
+
+<main class="login" id="login" hidden>
+  <div class="login-card">
+    <img class="login-logo" src="../assets/logo-dark.png" alt="Inspired by Magazine" width="1600" height="192">
+    <h1>Editor</h1>
+    <p class="login-sub">Entra amb el teu compte de Google per editar el text de la web.</p>
+    <div class="login-btn" id="gbtn"></div>
+    <button class="btn btn-primary" id="devlogin" type="button" hidden>Entra (mode local)</button>
+    <p class="login-err" id="loginErr" role="alert"></p>
+  </div>
+</main>
+
+<div class="app" id="app" hidden>
+  <iframe id="frame" name="ib-cms-frame" title="Pàgina en edició"></iframe>
+  <div class="loading" id="loading" aria-hidden="true"><span></span></div>
+  <div class="notice" id="notice" role="status" hidden></div>
+  <div class="selpill" id="selpill" hidden><button type="button" class="chip" id="selComment"></button></div>
+
+  <nav class="dock" id="dock" aria-label="Eines de l'editor"></nav>
+
+  <section class="pop" id="popPages" hidden aria-label="Pàgines">
+    <div class="pop-head"><input type="search" id="pageSearch" placeholder="Cerca una pàgina…" autocomplete="off" spellcheck="false"></div>
+    <div class="pop-hist" id="pageHist"></div>
+    <ul class="pop-list" id="pageList"></ul>
+  </section>
+
+  <section class="pop" id="popComments" hidden aria-label="Comentaris">
+    <div class="pop-title"><span>Comentaris per a l'agent</span><span class="muted" id="cCount"></span></div>
+    <p class="pop-help">Subratlla un tros de text i digues què cal revisar. Quan l'agent ho hagi fet, el comentari desapareix sol.</p>
+    <ul class="pop-list clist" id="cList"></ul>
+  </section>
+
+  <section class="pop pop-me" id="popMe" hidden aria-label="Compte">
+    <div class="me-row"><img id="meImg" alt="" referrerpolicy="no-referrer" width="32" height="32"><div><b id="meName"></b><span id="meMail"></span></div></div>
+    <a class="menu-item" id="openLive" target="_blank" rel="noopener">Obre la pàgina publicada<span>↗</span></a>
+    <a class="menu-item" id="openGit" target="_blank" rel="noopener">Historial a GitHub<span>↗</span></a>
+    <button class="menu-item" id="logout" type="button">Tanca la sessió</button>
+  </section>
+
+  <div class="composer" id="composer" hidden>
+    <blockquote id="composerQuote"></blockquote>
+    <textarea id="composerNote" rows="3" placeholder="Què ha de revisar l'agent?" maxlength="4000"></textarea>
+    <div class="composer-foot">
+      <span class="muted kbd-hint">⌘↵ per enviar</span>
+      <button class="btn btn-ghost" id="composerCancel" type="button">Cancel·la</button>
+      <button class="btn btn-primary" id="composerSend" type="button">Comenta</button>
+    </div>
+  </div>
+</div>
+
+<div class="sheet-wrap" id="sheetWrap" hidden>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <header class="sheet-head"><h2 id="sheetTitle"></h2><button class="icon-btn" id="sheetClose" type="button" aria-label="Tanca"></button></header>
+    <p class="sheet-sub" id="sheetSub"></p>
+    <div class="sheet-body" id="sheetBody"></div>
+    <footer class="sheet-foot" id="sheetFoot"></footer>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

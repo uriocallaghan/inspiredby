@@ -1,0 +1,4 @@
+{
+  "llegeix-me": "Comentaris de l'editor fets al CMS (/admin/). Cada comentari assenyala un tros de text d'una pàgina (cita, amb el text d'abans i de després) i diu què cal revisar (nota). Quan l'agent ha fet la feina que demana un comentari, l'esborra amb «node scripts/comentaris.mjs resol <id>» al mateix commit que la correcció; així desapareix del CMS.",
+  "comentaris": []
+}

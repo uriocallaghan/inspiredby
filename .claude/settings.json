@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [ { "type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/scripts/cms-sync.sh\" inici", "timeout": 30 } ] }
+    ],
+    "UserPromptSubmit": [
+      { "hooks": [ { "type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/scripts/cms-sync.sh\" prompt", "timeout": 20 } ] }
+    ]
+  }
+}
