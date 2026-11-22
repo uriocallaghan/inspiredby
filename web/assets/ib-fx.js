@@ -24,8 +24,11 @@
   ];
   var reduce = false;
   try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+  /* MENU: per ara el menu esta amagat i tothom te «Opacitat» (decisio de l'editor, 22-11-2026). Les particules
+     es queden al codi, apagades: posa MENU = true per tornar a ensenyar la icona i deixar triar. */
+  var MENU = false;
   var mode = reduce ? "off" : "fade";
-  try { var sv = localStorage.getItem(KEY); if (sv && MODES.some(function(m){ return m.id === sv; })) mode = sv; } catch (e) {}
+  if (MENU) { try { var sv = localStorage.getItem(KEY); if (sv && MODES.some(function(m){ return m.id === sv; })) mode = sv; } catch (e) {} }
 
   /* ----------------------------- parametres ----------------------------- */
   var MIN_CHARS = 170, MIN_LINES = 4;
@@ -429,7 +432,7 @@
 
   function init(){
     if (!document.querySelector(".ib-article")) return;
-    var bars = document.querySelectorAll(".ib-bar"); for (var i = 0; i < bars.length; i++) build(bars[i]);
+    if (MENU) { var bars = document.querySelectorAll(".ib-bar"); for (var i = 0; i < bars.length; i++) build(bars[i]); }
     if (!("IntersectionObserver" in window)) return;
     start();
   }

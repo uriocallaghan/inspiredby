@@ -66,7 +66,7 @@ Quan es talla text, es treuen també les cites `<sup class="nr">` que quedin òr
 
 Ho fa `web/assets/ib-fx.js` per a tots els articles (el carrega `ib-theme.js` a les pàgines d'`/articles/`); no cal fer res a l'article ni posar-hi classes. Només s'apliquen als paràgrafs llargs del cos (`section.col > p` sense classe o amb `.dl`, 170 caràcters o més i 4 línies o més). Queden fora l'scrolly (`.step`, que ja té el seu efecte), els peus de gràfic, les notes, «Dades i fonts», la impressió i «reduir el moviment» (per defecte, sense efecte). Si un paràgraf no l'ha de tenir, posa-li una classe.
 
-**Menú d'efectes**, a l'esquerra de la barra (icona d'espurna, mateix patró que el selector d'idioma). La tria es desa al dispositiu (`localStorage`, clau `ib-fx`):
+**Per ara, només «Opacitat» i cap menú** (decisió de l'editor, 22-11-2026): la icona i el menú estan amagats i tothom té «Opacitat», sigui quina sigui la tria que tingués desada. El codi de les partícules es queda a `ib-fx.js`, apagat: `MENU = true` torna a ensenyar el menú. Com era el menú quan estava actiu: **menú d'efectes**, a l'esquerra de la barra (icona d'espurna, mateix patró que el selector d'idioma). La tria es desa al dispositiu (`localStorage`, clau `ib-fx`):
 
 - **Sense efecte**: res.
 - **Opacitat** (per defecte): les paraules per sota del 62 % de la pantalla surten a 0,2 i s'encenen una a una, en ordre de lectura, en pujar; la transició és contínua, sense retard, i dura unes 2 línies.
