@@ -21,8 +21,6 @@
 
   const ICON = {
     pointer: '<path d="M5 3.5l13 6.2-5.6 1.7-2.3 5.6z"/><path d="M12.6 11.6l5.2 5.2"/>',
-    pages: '<rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/>',
-    chev: '<path d="M6 9l6 6 6-6"/>',
     text: '<path d="M5 7V5h14v2"/><path d="M12 5v14"/><path d="M9 19h6"/>',
     comment: '<path d="M5 5.5h14a1.5 1.5 0 0 1 1.5 1.5v8a1.5 1.5 0 0 1-1.5 1.5h-7l-4.5 3.5v-3.5H5A1.5 1.5 0 0 1 3.5 15V7A1.5 1.5 0 0 1 5 5.5z"/>',
     bold: '<path d="M7 5h6a3.5 3.5 0 0 1 0 7H7z"/><path d="M7 12h7a3.5 3.5 0 0 1 0 7H7z"/>',
@@ -132,8 +130,6 @@
   /* ---------- barra inferior ---------- */
   function buildDock() {
     $("dock").innerHTML = `
-      <button class="tb tb-page" id="bPages" type="button" aria-haspopup="dialog" aria-expanded="false" data-tip="Pàgines">${svg("pages")}<span class="lbl" id="pageLabel">…</span><span class="dot" id="syncDot"></span>${svg("chev", 'class="chev"')}</button>
-      <span class="sep"></span>
       <button class="tb" id="bPoint" type="button" aria-pressed="true" data-tip="Navega  V">${svg("pointer")}</button>
       <button class="tb" id="bEdit" type="button" aria-pressed="false" data-tip="Edita el text  T">${svg("text")}</button>
       <button class="tb" id="bComment" type="button" aria-pressed="false" data-tip="Subratlla i comenta  C">${svg("comment")}</button>
@@ -147,7 +143,6 @@
       <button class="tb tb-avatar" id="bMe" type="button" aria-expanded="false" data-tip="Compte"><img id="avatar" alt="" referrerpolicy="no-referrer" hidden>${svg("user", 'id="avatarFallback"')}</button>
       <button class="publish" id="bPublish" type="button" disabled data-tip="Revisa i publica  ⌘S">${svg("up")}<span class="t">Publica</span><span class="n" id="pubN"></span></button>`;
     for (const b of $("dock").querySelectorAll("[data-tip]")) if (!b.hasAttribute("aria-label")) b.setAttribute("aria-label", b.dataset.tip.split("  ")[0]);
-    $("bPages").onclick = () => togglePop("popPages");
     $("bComments").onclick = () => togglePop("popComments");
     $("bMe").onclick = () => togglePop("popMe");
     $("bPoint").onclick = () => setMode("point");
@@ -178,7 +173,7 @@
   }
 
   /* ---------- popovers ---------- */
-  const POPS = { popPages: "bPages", popComments: "bComments", popMe: "bMe" };
+  const POPS = { popComments: "bComments", popMe: "bMe" };
   function closePops(except) {
     for (const [p, b] of Object.entries(POPS)) {
       if (p === except) continue;
@@ -194,7 +189,6 @@
     $(id).hidden = !open;
     $(POPS[id]).setAttribute("aria-expanded", String(open));
     $(POPS[id]).classList.toggle("is-open", open);
-    if (open && id === "popPages") { renderPages(); setTimeout(() => { if (matchMedia("(hover: hover)").matches) $("pageSearch").focus(); }, 30); }
     if (open && id === "popComments") renderComments();
   }
   document.addEventListener("pointerdown", e => {
@@ -203,33 +197,6 @@
   });
 
   /* ---------- pàgines ---------- */
-  function hasDraft(page) { const d = store.get(draftKey(page)); return !!(d && d.edits && d.edits.length); }
-  function renderPages() {
-    const q = norm($("pageSearch").value).toLowerCase();
-    const list = S.pages.filter(p => !q || p.title.toLowerCase().includes(q));
-    $("pageList").innerHTML = list.map(p => `
-      <li><button type="button" data-page="${esc(p.page)}" ${p.page === S.pageId ? 'aria-current="page"' : ""}>
-        <span class="t">${esc(p.title)}</span>
-        ${hasDraft(p.page) ? '<span class="pend" title="Canvis sense publicar"></span>' : ""}
-        ${p.comments ? `<span class="cnt">${p.comments}</span>` : ""}
-        ${p.draft ? '<span class="tag">per penjar</span>' : ""}
-      </button></li>`).join("") || '<li class="empty">Cap pàgina amb aquest nom</li>';
-    const h = (S.page?.history || []).slice(0, 3);
-    $("pageHist").innerHTML = h.length ? `<div class="h"><b>Últimes versions a GitHub</b></div>` + h.map(c =>
-      `<div class="h"><b>${esc(/CMS/.test(c.author) ? "Tu (CMS)" : c.author || "")}</b><span>${esc(c.message.replace(/^CMS: /, ""))}</span><time>${esc(ago(c.date))}</time></div>`).join("") : "";
-  }
-  $("pageSearch").addEventListener("input", renderPages);
-  $("pageSearch").addEventListener("keydown", e => {
-    if (e.key === "Enter") { const b = $("pageList").querySelector("button"); if (b) b.click(); }
-    if (e.key === "Escape") closePops();
-  });
-  $("pageList").addEventListener("click", e => {
-    const b = e.target.closest("button[data-page]");
-    if (!b) return;
-    closePops();
-    go(b.dataset.page);
-  });
-
   function go(page) {
     const h = "#" + (page || "/");
     if (location.hash !== h) location.hash = h; else openPage(page);
@@ -250,13 +217,11 @@
     $("notice").hidden = true;
     S.bound.clear(); S.pending.clear(); S.conflicts.clear(); S.page = null; S.pageId = page; S.staleTries = 0;
     updateCounts();
-    $("pageLabel").textContent = S.pages.find(p => p.page === page)?.title || "…";
     let data;
     try { data = await api("page", { page }); }
     catch (e) { loading(false); if (e.status !== 401) toast(e.message, { error: true }); return; }
     if (seq !== openSeq) return;
     S.page = data; S.head = data.head;
-    $("pageLabel").textContent = data.page === "" ? "Portada" : data.title;
     document.title = `${data.page === "" ? "Portada" : data.title} · Editor`;
     $("openLive").href = "/" + data.page;
     $("openGit").href = `https://github.com/uriocallaghan/inspiredby/commits/main/${data.file}`;
@@ -1000,7 +965,6 @@
     if (e.key === "v" || e.key === "V") setMode("point");
     else if (e.key === "t" || e.key === "T" || e.key === "e" || e.key === "E") setMode("edit");
     else if (e.key === "c" || e.key === "C") { if (S.sel) openComposer(); else setMode("comment"); }
-    else if (e.key === "/" ) { e.preventDefault(); togglePop("popPages"); }
   }
   document.addEventListener("keydown", onGlobalKey);
 

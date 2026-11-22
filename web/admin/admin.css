@@ -74,9 +74,6 @@ kbd { font: 500 11px/1 var(--font); color: var(--muted); padding: 2px 5px; borde
 .tb:disabled { opacity: .35; pointer-events: none; }
 .tb:focus-visible, .btn:focus-visible, .icon-btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
 .tb svg { width: 18px; height: 18px; flex: none; }
-.tb-page { max-width: 260px; padding: 0 10px 0 9px; color: var(--text); font-weight: 500; }
-.tb-page .lbl { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.tb-page .chev { width: 12px; height: 12px; color: var(--muted); }
 .badge { position: absolute; top: 3px; right: 3px; min-width: 15px; height: 15px; padding: 0 4px; border-radius: 8px; background: var(--yellow); color: #111;
   font: 600 10px/15px var(--font); text-align: center; pointer-events: none; }
 .badge:empty { display: none; }
@@ -217,9 +214,7 @@ kbd { font: 500 11px/1 var(--font); color: var(--muted); padding: 2px 5px; borde
 @media (max-width: 640px) {
   .dock { left: 8px; right: 8px; transform: none; justify-content: space-between; bottom: max(8px, env(safe-area-inset-bottom)); border-radius: 18px; animation-name: fade; }
   .tb { min-width: 40px; height: 40px; }
-  .tb-page { padding: 0 8px; }
-  .tb-page .lbl { display: none; }
-  .wide-only, .sep.wide-only { display: none; }
+      .wide-only, .sep.wide-only { display: none; }
   .publish { height: 40px; padding: 0 12px; }
   .publish .t { display: none; }
   [data-tip]::after { display: none; }
