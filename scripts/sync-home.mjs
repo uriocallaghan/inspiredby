@@ -87,9 +87,22 @@ function renderGridCard(a, idx) {
  */
 export function renderFooterHtml(prefix = "") {
   const home = prefix || "./";
+  const sis = `${prefix}sistema/`, gui = `${prefix}guidelines/`;
+  const col = (href, title, links) => `  <nav class="ib-foot-col" aria-label="${title}">
+    <a class="ib-foot-h" href="${href}">${title}</a>
+    <ul>
+${links.map(([h, t]) => `      <li><a href="${h}">${t}</a></li>`).join("\n")}
+    </ul>
+  </nav>`;
   return `<footer class="ib-foot">
-  <p class="ib-foot-id"><a href="${home}">Inspired by Magazine</a><span>© 2026</span></p>
-  <a class="ib-foot-link" href="${prefix}per-penjar/">Articles per penjar</a>
+  <div class="ib-foot-id">
+    <a href="${home}">Inspired by Magazine</a>
+    <p>Articles visuals per entendre el món.</p>
+    <p>© 2026</p>
+  </div>
+${col(home, "Revista", [[home, "Portada"], [`${prefix}per-penjar/`, "Articles per penjar"]])}
+${col(sis, "Sistema infogràfic", [[`${sis}#principis`, "Principis"], [`${sis}#colors`, "Colors"], [`${sis}#tipografia`, "Tipografia"], [`${sis}#components`, "Components"], [`${sis}#peces`, "Les 76 peces"]])}
+${col(gui, "Normes", [[`${gui}#anatomia`, "Com és un article"], [`${gui}#to`, "El to"], [`${gui}#cites`, "Les cites"], [`${gui}#mobil`, "El mòbil"], [`${gui}#preses`, "Decisions preses"], [`${gui}#decidir`, "Per decidir"]])}
 </footer>`;
 }
 

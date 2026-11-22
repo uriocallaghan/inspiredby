@@ -33,13 +33,18 @@
 .ib-article .ib-bar.ib-bar--hidden:not(:focus-within){transform:translateY(calc(-100% - 4px));transition:transform .28s cubic-bezier(.4,0,1,1)}
 
 /* ---------- unified footer ---------- */
-.ib-foot{box-sizing:border-box;margin:0 auto;max-inline-size:1360px;inline-size:calc(100% - max(var(--ib-gutter),env(safe-area-inset-left,0px)) - max(var(--ib-gutter),env(safe-area-inset-right,0px)));padding-block:20px calc(28px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--ib-grey);display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 24px;font-family:var(--ib-hn);font-weight:400;font-size:.8125rem;line-height:1.4;letter-spacing:0;color:#787872;text-align:start}
+.ib-foot{box-sizing:border-box;margin:clamp(16px,3dvh,40px) auto 0;max-inline-size:1360px;inline-size:calc(100% - max(var(--ib-gutter),env(safe-area-inset-left,0px)) - max(var(--ib-gutter),env(safe-area-inset-right,0px)));padding-block:28px calc(36px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--ib-grey);display:grid;grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr));gap:28px 32px;font-family:var(--ib-hn);font-weight:400;font-size:.8125rem;line-height:1.45;letter-spacing:0;color:#787872;text-align:start}
 .ib-foot *{font:inherit;letter-spacing:inherit;margin:0;padding:0}
+.ib-foot ul{list-style:none;display:grid;gap:6px}
 .ib-foot a{color:#787872;text-decoration:none;border:0;background:none;transition:color .2s ease}
 .ib-foot a:hover,.ib-foot a:focus-visible{color:#141414}
-.ib-foot .ib-foot-id a{color:#141414;font-weight:500}
-.ib-foot .ib-foot-id a:hover,.ib-foot .ib-foot-id a:focus-visible{color:#787872}
-.ib-foot .ib-foot-id span{margin-inline-start:.9em}
+.ib-foot .ib-foot-id{display:grid;gap:4px;align-content:start}
+.ib-foot .ib-foot-id a,.ib-foot .ib-foot-h{color:#141414;font-weight:500}
+.ib-foot .ib-foot-id a{font-size:1rem;margin-block-end:2px}
+.ib-foot .ib-foot-h{display:inline-block;margin-block-end:10px}
+.ib-foot .ib-foot-id a:hover,.ib-foot .ib-foot-id a:focus-visible,.ib-foot .ib-foot-h:hover,.ib-foot .ib-foot-h:focus-visible{color:#787872}
+@media (max-width:900px){.ib-foot{grid-template-columns:repeat(3,minmax(0,1fr))}.ib-foot .ib-foot-id{grid-column:1/-1}}
+@media (max-width:560px){.ib-foot{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 20px}}
 
 /* ---------- articles per penjar (web/per-penjar/) ---------- */
 .ib-drafts-head{padding-block:clamp(36px,5dvh,56px) 0}
