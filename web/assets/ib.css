@@ -20,14 +20,15 @@
 }
 
 /* ---------- unified navigation bar (home + all articles) ---------- */
-.ib-bar{position:relative;z-index:25;height:60px;background:rgba(252,252,250,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid #ecece7;display:flex;align-items:center;justify-content:center}
+.ib-bar{position:relative;z-index:25;height:var(--ib-bar-h,60px);background:rgba(252,252,250,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid #ecece7;display:flex;align-items:center;justify-content:center}
 .ib-bar--sticky{position:sticky;top:0}
 .ib-bar a{display:flex;align-items:center;align-self:stretch;padding:0 24px;line-height:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .ib-bar img{height:19px;width:auto;display:block}
 .ib-progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:30;pointer-events:none;background:var(--ib-grey)}
 .ib-progress span{display:block;height:100%;width:100%;transform-origin:0 50%;transform:scaleX(0);background:#474747}
 
-.ib-article{--ib-top:63px} /* progress (3px) + bar (60px): sticky graphics stick below the bar */
+:root{--ib-bar-h:60px}
+.ib-article{--ib-top:calc(3px + var(--ib-bar-h))} /* progress (3px) + bar: sticky graphics stick right below the bar */
 .ib-article .ib-bar{position:sticky;top:3px;margin-top:3px;transition:transform .42s cubic-bezier(.2,.8,.2,1)}
 .ib-article .ib-bar.ib-bar--hidden:not(:focus-within){transform:translateY(calc(-100% - 4px));transition:transform .28s cubic-bezier(.4,0,1,1)}
 
@@ -108,7 +109,7 @@ body.ib-article{margin:0;background:var(--ib-paper)}
 
 @media (max-width:600px){
   :root{--ib-gutter:20px}
-  .ib-bar{height:56px}
+  :root{--ib-bar-h:56px}
   .ib-bar img{height:18px}
   .ib-diptych{padding-block:24px 0;gap:48px;border-bottom:0}
   .ib-diptych-card{grid-template-columns:minmax(0,1fr);gap:16px}
