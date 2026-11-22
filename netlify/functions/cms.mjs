@@ -11,7 +11,8 @@ const env = {
   CMS_SESSION_SECRET: process.env.CMS_SESSION_SECRET,
   CMS_SESSION_VERSION: process.env.CMS_SESSION_VERSION,
   CMS_ORIGIN: ORIGIN,
-  CMS_COMMIT_EMAIL: process.env.CMS_COMMIT_EMAIL
+  CMS_COMMIT_EMAIL: process.env.CMS_COMMIT_EMAIL,
+  CMS_REQUIRED_ROLE: process.env.CMS_REQUIRED_ROLE
 };
 const SITE = ORIGIN.split(",")[0].trim();
 

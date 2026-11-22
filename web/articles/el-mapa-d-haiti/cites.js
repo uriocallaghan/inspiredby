@@ -56,7 +56,7 @@
     const li=document.getElementById(a.getAttribute("href").slice(1)); if(!li)return;
     const c=li.cloneNode(true); c.querySelectorAll("a.bk,.us").forEach(n=>n.remove());
     const u=a.dataset.c&&document.getElementById(a.dataset.c);
-    pop.innerHTML=(u?`<span class="q">${u.innerHTML}</span>`:"")+`<b>${a.textContent}</b> · ${c.innerHTML}<span class="k">Clica per anar a la font</span>`;
+    pop.innerHTML=(u?`<span class="q">${u.innerHTML}</span>`:"")+`<b>${a.textContent.replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[ch])}</b> · ${c.innerHTML}<span class="k">Clica per anar a la font</span>`;
     const r=a.getBoundingClientRect(), W=document.documentElement.clientWidth;
     pop.style.left="0px"; pop.style.top="0px"; pop.classList.add("on");
     const pw=pop.offsetWidth, ph=pop.offsetHeight;

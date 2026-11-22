@@ -227,3 +227,8 @@ kbd { font: 500 11px/1 var(--font); color: var(--muted); padding: 2px 5px; borde
   .kbd-hint { visibility: hidden; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* estats de publicació */
+.tag.warn { color: #111; background: var(--yellow); border-color: var(--yellow); }
+.publish.has-conflict { box-shadow: 0 0 0 2px var(--red); }
+.sheet-wrap.is-busy .sheet-foot .btn:not(.btn-primary), .sheet-wrap.is-busy .lnk, .sheet-wrap.is-busy #sheetClose { opacity: .4; pointer-events: none; }

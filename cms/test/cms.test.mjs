@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 import { articleBlocks, homeBlocks, sanitizeInline, InvalidHtml } from "../lib/html.mjs";
 import { seal, unseal, b64url, identityUser, AuthError, SESSION_COOKIE } from "../lib/auth.mjs";
 import { fsRepo } from "../lib/fsrepo.mjs";
-import { savePage, loadPage, addComment, deleteComment, HttpError } from "../lib/core.mjs";
+import { savePage, loadPage, addComment, deleteComment, HttpError, safeForCommit } from "../lib/core.mjs";
 import { createHandler } from "../lib/handler.mjs";
 import { RepoConflict, githubRepo } from "../lib/github.mjs";
 
@@ -51,7 +51,7 @@ test("la portada dona títol i descripció de cada targeta", () => {
 });
 
 test("el sanejador accepta format en línia i rebutja la resta", () => {
-  const ok = ['Text <b>fort</b> i <i lang="en">cursiva</i>', 'Nota<sup class="nr"><a href="#font-1" id="c1" data-c="u1">1</a></sup>', "a&nbsp;b<br>c"];
+  const ok = ['Text <b>fort</b> i <i lang="en">cursiva</i>', 'Nota<sup class="nr"><a href="#font-1" id="c1" data-c="u1-1">1</a></sup>', "a&nbsp;b<br>c"];
   for (const h of ok) assert.equal(sanitizeInline(h), h);
   const bad = ["<script>alert(1)</script>", '<a href="javascript:alert(1)">x</a>', '<a href="java&#115;cript:x">x</a>', '<img src=x onerror="alert(1)">',
     '<b onclick="x()">x</b>', "<div>x</div>", "<b>x", "x</b>", "<!-- x -->", '<span style="background:url(x)">x</span>', "<svg><script>x</script></svg>", "a < b"];
@@ -75,12 +75,14 @@ test("sessió xifrada: vàlida, manipulada, amb una altra clau i caducada", asyn
 function fakeIdentity() {
   const exp = s => b64url(new TextEncoder().encode(JSON.stringify({ alg: "HS256" }))) + "." + b64url(new TextEncoder().encode(JSON.stringify({ exp: Math.floor(Date.now() / 1000) + s }))) + ".sig";
   const users = {
-    [exp(3600) + "a"]: { id: "u1", email: "Editor@example.com", confirmed_at: "2026-01-01", user_metadata: { full_name: "Editor", avatar_url: "https://lh3.googleusercontent.com/x" } },
+    [exp(3600) + "a"]: { id: "u1", email: "Editor@example.com", confirmed_at: "2026-01-01", app_metadata: { roles: ["editor"] }, user_metadata: { full_name: "Editor", avatar_url: "https://lh3.googleusercontent.com/x" } },
     [exp(3600) + "b"]: { id: "u2", email: "altre@example.com", confirmed_at: "2026-01-01", user_metadata: {} },
-    [exp(60) + "c"]: { id: "u1", email: "editor@example.com", confirmed_at: "2026-01-01", user_metadata: {} }
+    [exp(60) + "c"]: { id: "u1", email: "editor@example.com", confirmed_at: "2026-01-01", app_metadata: { roles: ["editor"] }, user_metadata: {} },
+    [exp(3600) + "d"]: { id: "u1", email: "editor@example.com", confirmed_at: "2026-01-01", app_metadata: {}, user_metadata: {} }
   };
   const tokens = Object.keys(users);
   const calls = [];
+  const used = new Set();
   const fetchImpl = async (url, opts = {}) => {
     calls.push(url);
     if (url.endsWith("/user")) {
@@ -88,11 +90,19 @@ function fakeIdentity() {
       return u ? new Response(JSON.stringify(u)) : new Response("{}", { status: 401 });
     }
     if (url.endsWith("/token")) {
-      return /refresh_token=r1/.test(opts.body) ? new Response(JSON.stringify({ access_token: tokens[0], refresh_token: "r2" })) : new Response("{}", { status: 400 });
+      // r1 (el de l'URL) → un token a punt de caducar; r2 → un de bo. Cada refresh token només serveix un cop.
+      const m = /refresh_token=(r\d)/.exec(opts.body || "");
+      if (!m || used.has(m[1])) return new Response("{}", { status: 400 });
+      used.add(m[1]);
+      if (m[1] === "r1") return new Response(JSON.stringify({ access_token: tokens[2], refresh_token: "r2" }));
+      if (m[1] === "r2") return new Response(JSON.stringify({ access_token: tokens[0], refresh_token: "r3" }));
+      if (m[1] === "r3") return new Response(JSON.stringify({ access_token: tokens[0], refresh_token: "r4" }));
+      return new Response("{}", { status: 400 });
     }
+    if (url.endsWith("/logout")) return new Response(null, { status: 204 });
     return new Response("{}", { status: 404 });
   };
-  return { fetchImpl, good: tokens[0], other: tokens[1], expiring: tokens[2], calls };
+  return { fetchImpl, good: tokens[0], other: tokens[1], expiring: tokens[2], calls, users };
 }
 
 test("Identity: només val un token que Identity reconegui", async () => {
@@ -141,6 +151,7 @@ test("API: login només per al compte autoritzat, i la galeta és segura", async
   const k = apiKit();
   assert.equal((await k.login("fals".repeat(10))).status, 401);
   assert.equal((await k.login(k.id.other)).status, 403);
+  assert.equal((await k.login(Object.keys(k.id.users)[3])).status, 403, "el correu bo sense el rol editor no entra");
   assert.equal(k.jar()[SESSION_COOKIE], undefined);
   const ok = await k.login();
   assert.equal(ok.status, 200);
@@ -149,15 +160,16 @@ test("API: login només per al compte autoritzat, i la galeta és segura", async
   assert.match(sc, /HttpOnly/); assert.match(sc, /Secure/); assert.match(sc, /SameSite=Strict/);
   assert.ok(!sc.includes(k.id.good.split(".")[0]), "el token d'Identity viatja xifrat");
   assert.equal((await k.call("pages")).status, 200);
-  assert.equal(k.seen.at(-1), k.id.good, "el repositori rep el token d'Identity (Git Gateway)");
+  assert.equal(k.seen.at(-1), k.id.good, "el repositori rep el token d'Identity renovat (Git Gateway)");
+  assert.equal((await k.login()).status, 401, "el refresh token que ha passat per l'URL ja no serveix");
   assert.equal((await k.call("logout")).status, 200);
   assert.equal((await k.call("pages")).status, 401);
 });
 
 test("API: el token d'Identity es renova sol abans que caduqui", async () => {
   const k = apiKit();
-  assert.equal((await k.login(k.id.expiring, "r1")).status, 200);
-  const r = await k.call("pages");
+  assert.equal((await k.login(k.id.good, "r1")).status, 200); // en entrar ja es renova (r1 → token curt + r2)
+  const r = await k.call("pages"); // el token curt es renova sol (r2 → bo)
   assert.equal(r.status, 200);
   assert.equal(k.seen.at(-1), k.id.good, "s'ha fet servir el token renovat");
   assert.ok(r.res.headers.getSetCookie().some(c => c.startsWith(SESSION_COOKIE)), "la galeta s'ha tornat a escriure");
@@ -222,7 +234,7 @@ test("desar: si Claude Code ha canviat EL MATEIX paràgraf, conflicte i no es to
   const src = fs.readFileSync(path.join(dir, rel), "utf8");
   repo.externalWrite(rel, src.replace(b.html, "Versió de Claude."));
   const mid = fs.readFileSync(path.join(dir, rel), "utf8");
-  await assert.rejects(savePage(repo, { page: `articles/${SLUG}/`, edits: [{ id: b.id, from: b.html, to: "Versió de l'editor." }] }, { author }),
+  await assert.rejects(savePage(repo, { page: `articles/${SLUG}/`, edits: [editOf(p, b.id, "Versió de l'editor.")] }, { author }),
     e => e instanceof HttpError && e.status === 409 && e.extra.conflicts[0].theirs.html === "Versió de Claude.");
   assert.equal(fs.readFileSync(path.join(dir, rel), "utf8"), mid);
 });
@@ -259,15 +271,97 @@ test("portada: el títol es desa a articles.json i a index.html", async () => {
   assert.ok(cat.some(a => a.title === "Títol nou & <prova>"));
 });
 
-test("comentaris: s'afegeixen al fitxer per a l'agent i es treuen", async () => {
+test("comentaris: un fitxer per comentari, es llisten per pàgina i es treuen", async () => {
   const { dir, repo } = tmpRepo();
-  const r = await addComment(repo, { page: `articles/${SLUG}/`, quote: "duel de cançons", prefix: "Els convocava a un ", suffix: " (nith", note: "Comprova la font" }, { author });
-  assert.match(r.comment.id, /^c-[a-z0-9]+$/);
-  const data = JSON.parse(fs.readFileSync(path.join(dir, "cms/comentaris.json"), "utf8"));
-  assert.equal(data.comentaris[0].fitxer, `web/articles/${SLUG}/index.html`);
-  const p = await loadPage(repo, `articles/${SLUG}/`);
-  assert.equal(p.comments.length, 1);
+  const r = await addComment(repo, { page: `articles/${SLUG}/`, quote: "duel de cançons", prefix: "Els convocava a un ", suffix: " (nith", note: "Comprova la font [skip ci]" }, { author });
+  assert.match(r.comment.id, /^c-[a-z0-9]{4,16}$/);
+  const f = path.join(dir, `cms/comentaris/${SLUG}--${r.comment.id}.json`);
+  assert.equal(JSON.parse(fs.readFileSync(f, "utf8")).fitxer, `web/articles/${SLUG}/index.html`);
+  await addComment(repo, { page: "", quote: "x", note: "a la portada" }, { author });
+  fs.writeFileSync(path.join(dir, `cms/comentaris/${SLUG}--c-trencat1.json`), "{no és json"); // un fitxer trencat no ho atura
+  repo.touch("x");
+  assert.equal((await loadPage(repo, `articles/${SLUG}/`)).comments.length, 1);
+  assert.equal((await loadPage(repo, "")).comments.length, 1);
   await deleteComment(repo, { id: r.comment.id }, { author });
+  assert.ok(!fs.existsSync(f));
   assert.equal((await loadPage(repo, `articles/${SLUG}/`)).comments.length, 0);
-  await assert.rejects(addComment(repo, { page: `articles/${SLUG}/`, quote: "x", note: "" }, { author }), e => e.status === 400);
+  assert.equal((await deleteComment(repo, { id: r.comment.id }, { author })).removed, false, "treure'n un que ja no hi és no falla");
+  await assert.rejects(addComment(repo, { page: `articles/${SLUG}/`, quote: "x", note: "  " }, { author }), e => e.status === 400);
+  await assert.rejects(deleteComment(repo, { id: "../../web/index" }, { author }), e => e.status === 400);
+});
+
+test("commits: el text de l'editor no pot fer saltar el desplegament", () => {
+  assert.ok(!/\[skip/i.test(safeForCommit("hola [skip ci] i [skip netlify] i [ci skip]")));
+  assert.ok(!/\n/.test(safeForCommit("a\nb")));
+});
+
+/* Fitxer d'article sintètic per a casos límit */
+function synthRepo(body) {
+  const { dir, repo } = tmpRepo();
+  const rel = `web/articles/${SLUG}/index.html`;
+  fs.writeFileSync(path.join(dir, rel), `<!doctype html><html><head><title>x</title></head><body><main>\n${body}\n</main><footer class="ib-foot"><p>peu</p></footer></body></html>`);
+  repo.touch(rel);
+  return { dir, repo, rel, read: () => fs.readFileSync(path.join(dir, rel), "utf8"), write: s => repo.externalWrite(rel, s) };
+}
+const editOf = (p, id, to) => {
+  const i = p.blocks.findIndex(b => b.id === id), b = p.blocks[i];
+  return { id, tag: b.tag, from: b.html, to, prev: p.blocks[i - 1]?.html ?? null, next: p.blocks[i + 1]?.html ?? null, dup: p.blocks.filter(x => x.html === b.html).length > 1 };
+};
+
+test("blocs idèntics: l'edició va al de la mateixa posició, encara que Claude n'afegeixi a dalt", async () => {
+  const k = synthRepo(`<p>U</p>\n<h2>Repetit</h2>\n<p>A</p>\n<h2>Repetit</h2>\n<p>B</p>`);
+  const p = await loadPage(k.repo, `articles/${SLUG}/`);
+  const second = p.blocks.filter(b => b.html === "Repetit")[1];
+  k.write(k.read().replace("<p>U</p>", "<p>Nou 1</p><p>Nou 2</p><p>U</p>"));
+  await savePage(k.repo, { page: `articles/${SLUG}/`, edits: [editOf(p, second.id, "Segon editat")] }, { author });
+  assert.match(k.read(), /<h2>Repetit<\/h2>\n<p>A<\/p>\n<h2>Segon editat<\/h2>/);
+});
+
+test("blocs idèntics: si Claude ha reescrit el que editaves, conflicte (no s'escriu a l'altre)", async () => {
+  const k = synthRepo(`<h2>Repetit</h2>\n<p>A</p>\n<h2>Repetit</h2>\n<p>B</p>`);
+  const p = await loadPage(k.repo, `articles/${SLUG}/`);
+  const second = p.blocks.filter(b => b.html === "Repetit")[1];
+  k.write(k.read().replace(/<h2>Repetit<\/h2>\n<p>B<\/p>/, "<h2>Reescrit per Claude</h2>\n<p>B</p>"));
+  const before = k.read();
+  await assert.rejects(savePage(k.repo, { page: `articles/${SLUG}/`, edits: [editOf(p, second.id, "Editor")] }, { author }), e => e.status === 409);
+  assert.equal(k.read(), before);
+});
+
+test("conflicte amb un paràgraf inserit a dalt: «la de GitHub» és el paràgraf que toca, no el del mateix número", async () => {
+  const k = synthRepo(`<p>Primer paràgraf de prova amb unes quantes paraules.</p>\n<p>Segon paràgraf que l'editor vol canviar avui mateix.</p>\n<p>Tercer paràgraf i final.</p>`);
+  const p = await loadPage(k.repo, `articles/${SLUG}/`);
+  k.write(k.read().replace("<p>Primer", "<p>Un paràgraf totalment nou de Claude sobre una altra cosa.</p>\n<p>Primer").replace("l'editor vol canviar avui mateix", "l'editor vol canviar avui mateix, retocat per Claude"));
+  await assert.rejects(savePage(k.repo, { page: `articles/${SLUG}/`, edits: [editOf(p, 1, "Versió de l'editor.")] }, { author }),
+    e => e.status === 409 && /retocat per Claude/.test(e.extra.conflicts[0].theirs.html));
+  // i si el paràgraf ja no existeix, no se'n proposa cap d'aliè
+  k.write(k.read().replace(/<p>Segon[^<]*<\/p>/, ""));
+  await assert.rejects(savePage(k.repo, { page: `articles/${SLUG}/`, edits: [editOf(p, 1, "Versió de l'editor.")] }, { author }),
+    e => e.status === 409 && e.extra.conflicts[0].theirs === null);
+});
+
+test("paràgraf buit: es rebutja, no es publica <p></p>", async () => {
+  const k = synthRepo(`<p>Hola</p>`);
+  const p = await loadPage(k.repo, `articles/${SLUG}/`);
+  await assert.rejects(savePage(k.repo, { page: `articles/${SLUG}/`, edits: [editOf(p, 0, "")] }, { author }), e => e.status === 400);
+  await assert.rejects(savePage(k.repo, { page: `articles/${SLUG}/`, edits: [editOf(p, 0, "<b> </b>")] }, { author }), e => e.status === 400);
+});
+
+test("portada: si Claude ha canviat el títol a articles.json (sense regenerar), conflicte", async () => {
+  const { dir, repo } = tmpRepo();
+  const p = await loadPage(repo, "");
+  const b = p.blocks.find(x => x.plain && x.tag === "h2");
+  const cat = JSON.parse(fs.readFileSync(path.join(dir, "web/articles.json"), "utf8"));
+  cat.find(a => a.slug === b.slug).title = "TÍTOL NOU DE CLAUDE";
+  repo.externalWrite("web/articles.json", JSON.stringify(cat, null, 2) + "\n");
+  await assert.rejects(savePage(repo, { page: "", edits: [{ id: b.id, tag: "h2", from: b.text, to: "Editor" }] }, { author }), e => e.status === 409);
+  assert.ok(fs.readFileSync(path.join(dir, "web/articles.json"), "utf8").includes("TÍTOL NOU DE CLAUDE"));
+});
+
+test("enllaços: cap truc d'entitats per colar javascript:", () => {
+  for (const h of ['<a href="javascript&colon;alert(1)">x</a>', '<a href="java&Tab;script:alert(1)">x</a>', '<a href="&#106avascript:alert(1)">x</a>',
+    '<a href="data:text/html,x">x</a>', '<a href="//evil.com">x</a>', '<a href="JAVASCRIPT:x">x</a>', '<a href=" javascript:x">x</a>',
+    '<span style="position:fixed">x</span>', '<a data-x="1">x</a>', '<a id="a" id="b">x</a>', '<a target="_top">x</a>'])
+    assert.throws(() => sanitizeInline(h), InvalidHtml, h);
+  for (const h of ['<a href="https://a.com/?a=1&amp;b=2">x</a>', '<a href="../el-nino/">x</a>', '<a href="mailto:a@b.c">m</a>', '<a href="https://x" target="_blank" rel="noopener">x</a>'])
+    assert.equal(sanitizeInline(h), h);
 });

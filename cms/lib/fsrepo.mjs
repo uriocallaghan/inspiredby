@@ -16,11 +16,17 @@ export function fsRepo(dir) {
       const f = path.join(dir, p);
       return fs.existsSync(f) ? fs.readFileSync(f, "utf8") : null;
     },
+    async listDir(p, ref) {
+      if (ref !== head) throw new Error(`fsRepo només llegeix el head (${ref} ≠ ${head})`);
+      const d = path.join(dir, p);
+      return fs.existsSync(d) ? fs.readdirSync(d, { withFileTypes: true }).filter(x => x.isFile()).map(x => ({ name: x.name })) : [];
+    },
     async commit({ parent, files, message, author }) {
       if (parent !== head) throw new RepoConflict("not fast-forward");
       lastWrite = Date.now();
       for (const f of files) {
         const full = path.join(dir, f.path);
+        if (f.content === null) { fs.rmSync(full, { force: true }); continue; }
         fs.mkdirSync(path.dirname(full), { recursive: true });
         fs.writeFileSync(full, f.content, "utf8");
       }

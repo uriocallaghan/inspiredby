@@ -195,17 +195,29 @@ export function decodeEntities(s) {
 
 /* ---------- sanejador d'HTML en línia ---------- */
 
-const ALLOWED_ATTRS = new Set(["class", "id", "href", "title", "lang", "dir", "rel", "target", "datetime", "translate", "style", "role", "value", "cite"]);
-function attrAllowed(name) {
-  return ALLOWED_ATTRS.has(name) || /^data-[a-z0-9_.-]+$/.test(name) || /^aria-[a-z]+$/.test(name);
-}
-function safeUrl(v) {
-  const s = decodeEntities(v).replace(/[\u0000- \u007f-\u009f]/g, "").toLowerCase();
-  return !/^(javascript|vbscript|data|file):/.test(s);
-}
-function safeStyle(v) {
-  const s = decodeEntities(v).toLowerCase();
-  return !/url\s*\(|expression\s*\(|@import|javascript:|behavior\s*:|-moz-binding|[<>]/.test(s);
+/* Atributs permesos: exactament els que fan servir els articles (cites, enllaços, idioma). Res de style, de
+   on*, ni de data-* genèrics: el JS de les pàgines llegeix alguns atributs i no se'n pot posar cap de nou. */
+const ATTR_RULES = {
+  href: v => safeUrl(v),
+  class: v => /^[A-Za-z0-9_ -]{0,80}$/.test(v),
+  id: v => /^[A-Za-z][A-Za-z0-9_-]{0,60}$/.test(v),
+  "data-c": v => /^[A-Za-z0-9_-]{0,40}$/.test(v),
+  lang: v => /^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$/.test(v),
+  "aria-label": v => !/[<>]/.test(v) && v.length <= 200,
+  title: v => !/[<>]/.test(v) && v.length <= 200,
+  target: v => v === "_blank",
+  rel: v => /^(noopener|noreferrer|nofollow)( (noopener|noreferrer|nofollow))*$/.test(v)
+};
+export const ALLOWED_ATTR_NAMES = Object.keys(ATTR_RULES);
+
+/** Enllaços: només http(s), mailto, àncores i camins relatius. Cap entitat dins l'URL tret de &amp;
+    (el navegador en descodifica moltes més que nosaltres: &colon;, &Tab;, &#106 sense punt i coma...). */
+export function safeUrl(v) {
+  if (/[\u0000-\u001f\u007f-\u009f\s<>"`\\]/.test(v)) return false;
+  if (/&(?!amp;)/i.test(v)) return false;
+  const u = v.replace(/&amp;/gi, "&");
+  if (/^[a-z][a-z0-9+.-]*:/i.test(u)) return /^(https?:\/\/|mailto:)/i.test(u);
+  return !/^\/\//.test(u); // //domini.com: protocol relatiu, fora
 }
 
 export class InvalidHtml extends Error {}
@@ -233,10 +245,13 @@ export function sanitizeInline(html, { maxLength = 20000 } = {}) {
     if (!open) throw new InvalidHtml("Hi ha un «<» que no és una etiqueta permesa.");
     const name = open[1];
     if (!INLINE_TAGS.has(name)) throw new InvalidHtml(`Etiqueta no permesa: <${name}>.`);
+    const seen = new Set();
     for (const a of parseAttrs(open[2])) {
-      if (!attrAllowed(a.name)) throw new InvalidHtml(`Atribut no permès: ${a.name}.`);
-      if ((a.name === "href" || a.name === "cite") && !safeUrl(a.value)) throw new InvalidHtml("Enllaç no permès.");
-      if (a.name === "style" && !safeStyle(a.value)) throw new InvalidHtml("Estil no permès.");
+      const rule = Object.hasOwn(ATTR_RULES, a.name) ? ATTR_RULES[a.name] : null;
+      if (!rule) throw new InvalidHtml(`Atribut no permès: ${a.name}.`);
+      if (seen.has(a.name)) throw new InvalidHtml(`Atribut repetit: ${a.name}.`);
+      seen.add(a.name);
+      if (!rule(a.value)) throw new InvalidHtml(a.name === "href" ? "Enllaç no permès." : `Valor no permès a ${a.name}.`);
     }
     if (!VOID.has(name)) stack.push(name);
     i = lt + open[0].length;

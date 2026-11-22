@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-983d569c8d15";
+const CACHE_NAME = "ib-offline-b6d9b75cfe08";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -361,7 +361,7 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.protocol !== "http:" && url.protocol !== "https:") return;
   // l'editor (/admin/), la seva API i les pàgines que s'hi editen van sempre a la xarxa, mai a la memòria cau
-  if (url.origin === self.location.origin && (url.pathname.startsWith("/admin") || url.pathname.startsWith("/api/") || url.searchParams.has("ib-cms"))) return;
+  if (url.origin === self.location.origin && (url.pathname.startsWith("/admin") || url.pathname.startsWith("/api/") || url.pathname.startsWith("/.netlify/") || url.searchParams.has("ib-cms"))) return;
   if (url.hostname === "accounts.google.com") return;
 
   if (request.mode === "navigate") {

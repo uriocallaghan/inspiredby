@@ -29,8 +29,8 @@ if [ "$BEHIND" -gt 0 ]; then
   fi
 fi
 
-if [ "$MODE" = "inici" ] && [ -f cms/comentaris.json ]; then
-  N=$(node -e 'try{console.log(require("./cms/comentaris.json").comentaris.length)}catch(e){console.log(0)}' 2>/dev/null)
+if [ "$MODE" = "inici" ] && [ -d cms/comentaris ]; then
+  N=$(ls cms/comentaris 2>/dev/null | grep -c -- '--c-.*\.json$')
   if [ "${N:-0}" -gt 0 ]; then
     echo "L'editor té $N comentaris pendents al CMS per a l'agent (node scripts/comentaris.mjs per veure'ls). No els resolguis si no t'ho demana."
   fi

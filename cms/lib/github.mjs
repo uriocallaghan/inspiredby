@@ -33,7 +33,6 @@ export function githubRepo({ token, repo, base, branch = "main", fetchImpl = fet
   }
   async function json(path, opts) {
     const res = await api(path, opts);
-    if (res.status === 409 || res.status === 422) throw new RepoConflict(`GitHub ${res.status}`);
     if (!res.ok) throw new RepoError(`GitHub ${res.status} a ${path.split("?")[0]}`);
     return res.json();
   }
@@ -64,11 +63,20 @@ export function githubRepo({ token, repo, base, branch = "main", fetchImpl = fet
       }
       return text;
     },
-    /** commit amb diversos fitxers sobre `parent`; llança RepoConflict si main ja no és `parent`. */
+    /** fitxers d'una carpeta en un commit ([] si no existeix) */
+    async listDir(path, ref) {
+      const res = await api(`/contents/${enc(path)}?ref=${encodeURIComponent(ref)}`);
+      if (res.status === 404) return [];
+      if (!res.ok) throw new RepoError(`GitHub ${res.status} en llistar ${path}`);
+      const list = await res.json();
+      return Array.isArray(list) ? list.filter(x => x && x.type === "file" && typeof x.name === "string").map(x => ({ name: x.name })) : [];
+    },
+    /** commit amb diversos fitxers (content: null esborra el fitxer) sobre `parent`; llança RepoConflict si main ja no és `parent`. */
     async commit({ parent, files, message, author }) {
       const parentCommit = await json(`/git/commits/${parent}`);
       const tree = [];
       for (const f of files) {
+        if (f.content === null) { tree.push({ path: f.path, mode: "100644", type: "blob", sha: null }); continue; } // esborrar
         const blob = await json(`/git/blobs`, { method: "POST", body: { content: f.content, encoding: "utf-8" } });
         tree.push({ path: f.path, mode: "100644", type: "blob", sha: blob.sha });
       }
@@ -77,7 +85,10 @@ export function githubRepo({ token, repo, base, branch = "main", fetchImpl = fet
         method: "POST",
         body: { message, tree: newTree.sha, parents: [parent], author: { ...author, date: new Date().toISOString() } }
       });
-      await json(`/git/refs/heads/${encodeURIComponent(branch)}`, { method: "PATCH", body: { sha: commit.sha, force: false } });
+      // només aquí un 409/422 vol dir «main s'ha mogut» (no és fast-forward): es torna a provar des de l'últim main
+      const res = await api(`/git/refs/heads/${encodeURIComponent(branch)}`, { method: "PATCH", body: { sha: commit.sha, force: false } });
+      if (res.status === 409 || res.status === 422) throw new RepoConflict(`GitHub ${res.status}`);
+      if (!res.ok) throw new RepoError(`GitHub ${res.status} en actualitzar ${branch}`);
       return commit.sha;
     },
     /** últims commits que han tocat un fitxer (per ensenyar «qui ho ha canviat» a l'editor) */

@@ -3,3 +3,4 @@
 node_modules/
 research/**/raw/*.pdf
 .claude/settings.local.json
+__pycache__/

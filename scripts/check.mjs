@@ -227,14 +227,60 @@ try {
   }
 } catch { warnings.push("No s'ha pogut comprovar si hi ha canvis nous a origin/main (sense xarxa?). Fes git pull --rebase origin main abans de fer push."); }
 
-// 10. Comentaris del CMS: el fitxer ha de ser vàlid
+// 10. Comentaris del CMS (cms/comentaris/, un fitxer per comentari): tots han de ser JSON vàlid
 {
-  const cf = path.join(ROOT, "cms", "comentaris.json");
-  if (fs.existsSync(cf)) {
-    try { const c = JSON.parse(fs.readFileSync(cf, "utf8")); if (!Array.isArray(c.comentaris)) throw 0; }
-    catch { errors.push("cms/comentaris.json no és JSON vàlid (ha de tenir una llista «comentaris»)."); }
+  const cd = path.join(ROOT, "cms", "comentaris");
+  if (fs.existsSync(cd)) {
+    for (const f of fs.readdirSync(cd)) {
+      if (!f.endsWith(".json")) continue;
+      if (!/^[a-z0-9-]+--c-[a-z0-9]+\.json$/.test(f)) { errors.push(`cms/comentaris/${f}: nom no vàlid (ha de ser <slug>--<id>.json).`); continue; }
+      try { const c = JSON.parse(fs.readFileSync(path.join(cd, f), "utf8")); if (!c || typeof c.nota !== "string" || typeof c.cita !== "string") throw 0; }
+      catch { errors.push(`cms/comentaris/${f} no és un comentari vàlid.`); }
+    }
   }
 }
+
+// 12. Scripts externs amb integritat (SRI): la mateixa web serveix l'editor; un CDN compromès no hi pot executar res
+for (const rel of THEME_PAGES.concat(fs.readdirSync(ARTICLES_DIR).map(d => `articles/${d}/cover.html`)).filter(r => fs.existsSync(path.join(WEB_DIR, r)))) {
+  const html = fs.readFileSync(path.join(WEB_DIR, rel), "utf8");
+  for (const tag of html.match(/<script\b[^>]*\bsrc="https?:\/\/[^"]+"[^>]*>/g) || []) {
+    if (!/\bintegrity="sha(256|384|512)-/.test(tag) || !/\bcrossorigin="anonymous"/.test(tag))
+      errors.push(`web/${rel}: script extern sense integrity/crossorigin (${(tag.match(/src="([^"]+)"/) || [])[1]}). Copia l'etiqueta d'un article que ja el tingui.`);
+  }
+}
+
+// 11. Articles generats amb un script (research/<slug>/build.py, build-cites.py o scripts/page.py): si el
+//     script es torna a executar, reescriu index.html des de research/ i esborraria el que l'editor hagi canviat
+//     al CMS. Aquí es comprova que cap línia que l'editor hi va posar (i que encara és a origin/main) hagi desaparegut.
+try {
+  const git = (...a) => execFileSync("git", a, { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+  const base = (() => { try { git("rev-parse", "--verify", "-q", "origin/main"); return "origin/main"; } catch { return "HEAD"; } })();
+  const RESEARCH = path.join(ROOT, "research");
+  for (const slug of fs.existsSync(RESEARCH) ? fs.readdirSync(RESEARCH) : []) {
+    const gen = ["build.py", "build-cites.py", "scripts/page.py"].find(f => fs.existsSync(path.join(RESEARCH, slug, f)));
+    const rel = `web/articles/${slug}/index.html`;
+    if (!gen || !fs.existsSync(path.join(ROOT, rel))) continue;
+    const since = +(git("log", "-1", "--format=%ct", base, "--", `research/${slug}`).trim() || 0);
+    const cms = git("log", base, "--author=Editor (CMS)", "--format=%H %ct", "--", rel).trim().split("\n").filter(Boolean)
+      .map(l => l.split(" ")).filter(([, t]) => +t > since).map(([h]) => h);
+    if (!cms.length) continue;
+    const onMain = new Set(git("show", `${base}:${rel}`).split("\n").map(l => l.trim()));
+    const local = fs.readFileSync(path.join(ROOT, rel), "utf8");
+    const keep = new Set();
+    for (const h of cms) {
+      for (const l of git("show", h, "--format=", "-U0", "--", rel).split("\n")) {
+        if (l.startsWith("+") && !l.startsWith("+++")) { const t = l.slice(1).trim(); if (t.length > 20 && onMain.has(t)) keep.add(t); }
+      }
+    }
+    const lost = [...keep].filter(t => !local.includes(t));
+    if (lost.length) {
+      errors.push(`${rel}: ${lost.length} ${lost.length === 1 ? "línia escrita per l'editor al CMS ha desaparegut" : "línies escrites per l'editor al CMS han desaparegut"} (segurament s'ha tornat a executar research/${slug}/${gen}). ` +
+        `Porta primer els canvis del CMS a research/${slug}/ (git log --author="Editor (CMS)" -p -- ${rel}) i torna a generar. Primera línia perduda:\n     ${lost[0].slice(0, 160)}`);
+    } else {
+      warnings.push(`${rel}: l'editor l'ha canviat al CMS després de l'última edició de research/${slug}/. Abans de tornar a executar ${gen}, porta-hi aquests canvis.`);
+    }
+  }
+} catch (e) { warnings.push("No s'ha pogut comprovar si s'han perdut canvis del CMS als articles generats: " + e.message.split("\n")[0]); }
 
 if (warnings.length) {
   console.warn("\nAVISOS DEL SISTEMA INFOGRÀFIC (no bloquegen; articles anteriors al 19-11-2026 o colors):");

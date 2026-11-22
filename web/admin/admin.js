@@ -69,7 +69,7 @@
     }
     let data = {};
     try { data = await res.json(); } catch {}
-    if (res.status === 401 && route !== "me" && route !== "login") { showLogin("La sessió ha caducat. Torna a entrar; els canvis sense publicar es mantenen."); }
+    if (res.status === 401 && route !== "me" && route !== "login" && $("login").hidden) { persistDraft(); showLogin("La sessió ha caducat. Torna a entrar; els canvis sense publicar es mantenen."); }
     if (!res.ok) throw new ApiError(res.status, data);
     return data;
   }
@@ -109,6 +109,7 @@
     } catch (e) { showLogin(e.message); return true; }
   }
   async function showLogin(msg = "") {
+    closeSheet(); closeComposer();
     $("app").hidden = true;
     $("login").hidden = false;
     $("loginErr").textContent = msg;
@@ -120,6 +121,7 @@
       $("devlogin").onclick = async () => { await fetch("/api/cms/dev-login", { method: "POST", headers: { "x-ib-cms": "1" } }); boot(); };
       return;
     }
+    $("gbtn").disabled = false;
     $("gbtn").onclick = () => {
       try { sessionStorage.setItem("ibcms:back", location.hash); } catch {}
       $("gbtn").disabled = true;
@@ -185,7 +187,7 @@
   function togglePop(id) {
     const open = $(id).hidden;
     closePops(id);
-    closeComposer();
+    if (id !== "popComments") closeComposer();
     $(id).hidden = !open;
     $(POPS[id]).setAttribute("aria-expanded", String(open));
     $(POPS[id]).classList.toggle("is-open", open);
@@ -201,10 +203,25 @@
     const h = "#" + (page || "/");
     if (location.hash !== h) location.hash = h; else openPage(page);
   }
-  addEventListener("hashchange", () => openPage(pageFromHash()));
+  addEventListener("hashchange", () => {
+    const page = pageFromHash();
+    if (page === S.pageId && S.page) return;
+    // mentre es publica no es pot canviar de pàgina (el que s'envia és d'aquesta)
+    if (S.busy) { history.replaceState(null, "", "#" + (S.pageId || "/")); toast("Espera que acabi de publicar."); return; }
+    openPage(page);
+  });
   function pageFromHash() {
-    const h = decodeURIComponent(location.hash.slice(1));
-    return h === "/" || h === "" ? "" : h.replace(/^\//, "");
+    let h = "";
+    try { h = decodeURIComponent(location.hash.slice(1)); } catch { return ""; }
+    h = h === "/" || h === "" ? "" : h.replace(/^\//, "");
+    if (/^articles\/[a-z0-9-]+$/.test(h)) h += "/";
+    return h;
+  }
+  /** Pàgina editable a partir d'un camí de la web ("/" o "/articles/x/"); null si no n'és cap. */
+  function pageFromPath(pathname) {
+    if (/^\/(?:index\.html)?$/.test(pathname)) return "";
+    const m = /^\/(articles\/[a-z0-9-]+\/)(?:index\.html)?$/.exec(pathname);
+    return m && S.pages.some(p => p.page === m[1]) ? m[1] : null;
   }
 
   /* ---------- obrir una pàgina ---------- */
@@ -213,13 +230,21 @@
     const seq = ++openSeq;
     persistDraft();
     loading(true);
-    closeComposer(); hideSelPill();
+    // res de la pàgina d'abans no pot quedar viu: ni edició, ni selecció, ni fulls oberts, ni conflictes
+    closeComposer(); hideSelPill(); closeSheet(); closePops();
+    S.sel = null; S.composerSel = null; S.review = null; S.conflictInfo = null; S._conflictPage = null; S.freshBlocks = null;
+    unbindDoc();
     $("notice").hidden = true;
-    S.bound.clear(); S.pending.clear(); S.conflicts.clear(); S.page = null; S.pageId = page; S.staleTries = 0;
+    S.bound.clear(); S.pending.clear(); S.conflicts.clear(); S.page = null; S.pageId = page; S.staleTries = 0; S.headChangedAt = 0;
     updateCounts();
     let data;
     try { data = await api("page", { page }); }
-    catch (e) { loading(false); if (e.status !== 401) toast(e.message, { error: true }); return; }
+    catch (e) {
+      if (seq !== openSeq) return;
+      loading(false);
+      if (e.status !== 401) notice(esc(e.message), "red", { label: "Torna-ho a provar", run: () => openPage(page) });
+      return;
+    }
     if (seq !== openSeq) return;
     S.page = data; S.head = data.head;
     document.title = `${data.page === "" ? "Portada" : data.title} · Editor`;
@@ -236,13 +261,48 @@
 
   function loading(on) { $("loading").classList.toggle("on", on); }
 
+  /** Carrega una pàgina a l'iframe sense afegir cap entrada a l'historial (així «enrere» és sempre de l'editor). */
+  let frameWait = null;
+  const pathOf = page => "/" + page;
+  function framePath() {
+    try { return $("frame").contentWindow.location.pathname.replace(/index\.html$/, ""); } catch { return null; }
+  }
   function loadFrame(url) {
     return new Promise(resolve => {
       const f = $("frame");
-      const done = () => { f.removeEventListener("load", done); resolve(); };
-      f.addEventListener("load", done);
-      f.src = url + (url.includes("?") ? "&" : "?") + "ib-cms=" + Date.now();
+      if (frameWait) { clearTimeout(frameWait.t); frameWait.resolve(); } // una càrrega anterior que ja no compta
+      // només compta la càrrega de la pàgina demanada (no una de l'historial que arribi pel mig)
+      frameWait = { path: url, resolve, t: setTimeout(() => { if (frameWait && frameWait.resolve === resolve) { frameWait = null; resolve(); } }, 20000) };
+      const full = url + (url.includes("?") ? "&" : "?") + "ib-cms=" + Date.now();
+      try { f.contentWindow.location.replace(full); } catch { f.src = full; }
     });
+  }
+  // Qualsevol càrrega de l'iframe passa per aquí. Si no l'ha demanada l'editor (un enllaç que s'escapa, un
+  // script de la pàgina, l'historial), es torna a posar l'editor d'acord amb el que es veu.
+  $("frame").addEventListener("load", () => {
+    let path = framePath();
+    if (frameWait && path === frameWait.path) { const w = frameWait; frameWait = null; clearTimeout(w.t); w.resolve(); return; }
+    if (frameWait) {
+      // ha arribat una altra pàgina (p. ex. de l'historial) en lloc de la demanada: es torna a demanar
+      if ((frameWait.retries = (frameWait.retries || 0) + 1) <= 3) {
+        try { $("frame").contentWindow.location.replace(frameWait.path + "?ib-cms=" + Date.now()); } catch {}
+      }
+      return;
+    }
+    unbindDoc();
+    if (path === null) return;
+    const page = pageFromPath(path || "");
+    if (page === null) { notice("Aquesta pàgina no es pot editar. Torna enrere o ves a un article.", "amber", { label: "Torna a la portada", run: () => go("") }); return; }
+    if (page !== S.pageId) { if (S.busy) return; go(page); return; }
+    // la mateixa pàgina s'ha tornat a carregar: es tornen a posar els canvis sense publicar a sobre
+    if (S.page) { persistDraft(); S.pending.clear(); bindAll(); restoreDraft({ quiet: true }); paintComments(); updateCounts(); }
+  });
+  /** Treu l'edició del document que hi hagi a l'iframe (abans de canviar de pàgina o si es perd). */
+  function unbindDoc() {
+    try {
+      if (S.doc) for (const el of S.doc.querySelectorAll("[data-ibc]")) { el.removeAttribute("contenteditable"); el.removeAttribute("data-ibc"); }
+    } catch {}
+    S.doc = null; S.win = null; S.bound.clear();
   }
 
   /* ---------- l'iframe: estils i comportament d'edició ---------- */
@@ -261,7 +321,9 @@
 
   function bindAll() {
     const doc = $("frame").contentDocument, win = $("frame").contentWindow;
-    if (!doc || !doc.body) return;
+    if (!doc || !doc.body || !S.page) return;
+    // mai aparellar els blocs d'una pàgina amb una altra que s'hagi colat a l'iframe
+    if (framePath() !== pathOf(S.page.page)) { S.unbound = S.page.blocks.length; S.doc = null; return; }
     S.doc = doc; S.win = win;
     if (!doc.getElementById("ibc-css")) {
       const st = doc.createElement("style"); st.id = "ibc-css"; st.textContent = FRAME_CSS; doc.head.appendChild(st);
@@ -270,6 +332,12 @@
       doc.addEventListener("click", onFrameLink, true);
       doc.addEventListener("submit", e => e.preventDefault(), true);
       doc.addEventListener("input", onInput);
+      // mòbil: molts teclats no envien keydown «Enter», només beforeinput; tampoc es pot deixar caure res
+      doc.addEventListener("beforeinput", e => {
+        if (!e.target.closest?.("[data-ibc]")) return;
+        if (S.busy || S.mode !== "edit") { e.preventDefault(); return; }
+        if (/^(insertParagraph|insertLineBreak|insertFromDrop|insertFromPasteAsQuotation)$/.test(e.inputType)) e.preventDefault();
+      });
       doc.addEventListener("keydown", onFrameKey);
       doc.addEventListener("paste", onPaste);
       doc.addEventListener("drop", e => e.preventDefault());
@@ -306,7 +374,11 @@
     // 2) si la pàgina publicada encara és una versió anterior (la web s'està publicant, o el navegador en té
     //    una còpia vella), el bloc es busca pel seu lloc i s'hi posa el text de GitHub, que és el que mana.
     let refreshed = 0;
+    // el lloc només serveix si la gran majoria ja coincideix pel text (si no, potser no és la mateixa pàgina)
+    const matched = at.filter(x => x >= 0).length;
+    const trustPlace = blocks.length > 0 && matched / blocks.length >= 0.6;
     const fill = (k, i) => {
+      if (!trustPlace) return;
       const b = blocks[k], el = cands[i];
       if (b.plain) el.textContent = b.text; else el.innerHTML = b.html;
       at[k] = i; taken.add(i); refreshed++;
@@ -338,16 +410,17 @@
     blocks.forEach((b, k) => {
       if (at[k] < 0) { unbound++; return; }
       const el = cands[at[k]];
-      let orig;
+      let orig, opt = null;
       if (b.plain) orig = norm(b.text);
       else {
         tpl.innerHTML = b.html;
-        orig = serialize(tpl.content);
-        if (serialize(el) !== orig) el.innerHTML = b.html; // el JS de la pàgina l'havia retocat: es torna a la font
+        opt = serOpts(b.html);
+        orig = serialize(tpl.content, opt);
+        if (serialize(el, opt) !== orig) el.innerHTML = b.html; // el JS de la pàgina l'havia retocat: es torna a la font
       }
       el.dataset.ibc = String(b.id);
       if (b.plain) el.dataset.plain = "1";
-      S.bound.set(b.id, { b, el, orig });
+      S.bound.set(b.id, { b, el, orig, opt, idx: k });
     });
     S.unbound = unbound;
     S.refreshed = refreshed;
@@ -361,7 +434,7 @@
     doc.documentElement.classList.toggle("ibc-edit", S.mode === "edit");
     doc.documentElement.classList.toggle("ibc-comment", S.mode === "comment");
     for (const { el, b } of S.bound.values()) {
-      if (S.mode === "edit") {
+      if (S.mode === "edit" && !S.busy) {
         try { el.contentEditable = b.plain ? "plaintext-only" : "true"; } catch { el.contentEditable = "true"; }
         el.spellcheck = false; // el corrector només s'encén al paràgraf que s'edita (vegeu focusin)
         el.setAttribute("lang", el.closest("[lang]")?.getAttribute("lang") || "ca");
@@ -385,29 +458,47 @@
 
   /* ---------- serialitzar (mateixa llista que el servidor: cms/lib/html.mjs) ---------- */
   const INLINE = new Set(["a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn", "em", "i", "kbd", "mark", "q", "s", "samp", "small", "span", "strong", "sub", "sup", "time", "u", "var", "wbr"]);
-  const ATTRS = new Set(["class", "id", "href", "title", "lang", "dir", "rel", "target", "datetime", "translate", "style", "role", "value", "cite"]);
-  const attrOk = n => ATTRS.has(n) || /^data-[a-z0-9_.-]+$/.test(n) || /^aria-[a-z]+$/.test(n);
+  // mateixa llista que el servidor (cms/lib/html.mjs, ATTR_RULES): el que no hi és, el navegador ho perd en desar
+  const ATTRS = new Set(["href", "class", "id", "data-c", "lang", "aria-label", "title", "target", "rel"]);
+  const attrOk = n => ATTRS.has(n);
   const escText = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/ /g, "&nbsp;");
   const escAttr = s => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  function serialize(node) {
+  /** HTML net d'un bloc. Opcions (segons com era el bloc a la font, perquè el que no canvia no es toqui):
+      keepSpan: hi havia <span> sense atributs (amb estil propi a l'article) → es conserven; si no, són del navegador.
+      keepNbsp: hi havia espais durs → es conserven; si no, els que hi posa el navegador en escriure tornen a ser espais.
+      collapse: no hi havia espais repetits → dos espais seguits (en esborrar una paraula) queden en un. */
+  function serialize(node, opt = {}) {
     let out = "";
     for (const c of node.childNodes) {
-      if (c.nodeType === 3) { out += escText(c.data); continue; }
+      if (c.nodeType === 3) {
+        let t = c.data;
+        if (!opt.keepNbsp) t = t.replace(/\u00a0/g, " ");
+        if (opt.collapse) t = t.replace(/ {2,}/g, " ");
+        out += escText(t);
+        continue;
+      }
       if (c.nodeType !== 1) continue;
       const t = c.localName;
-      const attrs = [...c.attributes].filter(a => attrOk(a.name) && !(a.name === "style" && /url\s*\(|expression|@import|javascript:/i.test(a.value)));
-      if (!INLINE.has(t) || (t === "span" && !attrs.length)) { out += serialize(c); continue; } // el navegador de vegades hi posa <div>, <font> o <span> buits
+      const attrs = [...c.attributes].filter(a => attrOk(a.name));
+      if (!INLINE.has(t) || (t === "span" && !attrs.length && !opt.keepSpan)) { out += serialize(c, opt); continue; } // el navegador de vegades hi posa <div>, <font> o <span> buits
       const a = attrs.map(x => ` ${x.name}="${escAttr(x.value)}"`).join("");
       if (t === "br" || t === "wbr") { out += `<${t}${a}>`; continue; }
-      const inner = serialize(c);
+      const inner = serialize(c, opt);
       if (!inner && t !== "a") continue; // format buit que queda després d'esborrar
       out += `<${t}${a}>${inner}</${t}>`;
     }
-    return out;
+    return opt.collapse ? out.replace(/ {2,}/g, " ") : out;
+  }
+  function serOpts(html) {
+    return { keepSpan: /<span>/.test(html), keepNbsp: /&nbsp;|&#160;|\u00a0/.test(html), collapse: !/\s{2,}/.test(html) };
   }
   function currentValue(entry) {
     if (entry.b.plain) return norm(entry.el.textContent);
-    return serialize(entry.el).replace(/(<br>)+$/, "");
+    let v = serialize(entry.el, entry.opt || {}).replace(/(<br>)+$/, "");
+    // vores: sense espais nous al principi o al final que no hi fossin
+    if (!/^\s/.test(entry.orig)) v = v.replace(/^(\s|&nbsp;)+/, "");
+    if (!/\s$/.test(entry.orig)) v = v.replace(/(\s|&nbsp;)+$/, "");
+    return v;
   }
 
   /* ---------- editar ---------- */
@@ -424,12 +515,13 @@
     if (!S.pending.has(id)) { S.conflicts.delete(id); el.classList.remove("ibc-conflict"); }
     updateCounts();
     persistDraftSoon();
+    afterPendingChange();
   }
   function onFrameKey(e) {
     const el = e.target?.closest?.("[data-ibc]");
     const mod = e.metaKey || e.ctrlKey;
     if (mod && e.key.toLowerCase() === "s") { e.preventDefault(); openPublish(); return; }
-    if (el && e.key === "Enter") { e.preventDefault(); return; } // cada bloc és un sol paràgraf
+    if (el && e.key === "Enter" && !e.isComposing) { e.preventDefault(); return; } // cada bloc és un sol paràgraf
     if (el && e.key === "Escape") { el.blur(); return; }
     if (el && el.dataset.plain && mod && /^[biu]$/i.test(e.key)) { e.preventDefault(); return; }
     if (!el) onGlobalKey(e);
@@ -450,7 +542,7 @@
       const m = /^\/(?:index\.html)?$/.test(u.pathname) ? "" : (/^\/(articles\/[a-z0-9-]+\/)(?:index\.html)?$/.exec(u.pathname) || [])[1];
       if (m !== undefined && (m === "" || S.pages.some(p => p.page === m))) { go(m); return; }
     }
-    window.open(u.href, "_blank", "noopener");
+    if (/^(https?|mailto):$/.test(u.protocol)) window.open(u.href, "_blank", "noopener");
   }
 
   function onPaste(e) {
@@ -471,25 +563,82 @@
     if (edits.length) store.set(draftKey(S.page.page), { at: Date.now(), edits });
     else store.del(draftKey(S.page.page));
   }
-  function restoreDraft() {
+  /** Torna a posar els canvis guardats al navegador. Primer al mateix bloc (mateix número i mateix text d'origen);
+      si no, a un altre bloc amb el mateix text d'origen. El que no es pot col·locar NO s'esborra: va a «canvis
+      apartats», d'on l'editor el pot copiar o descartar. */
+  function restoreDraft({ quiet = false } = {}) {
     const d = store.get(draftKey(S.page.page));
     if (!d || !Array.isArray(d.edits) || !d.edits.length) return;
-    let ok = 0, lost = 0;
+    let ok = 0;
+    const lost = [];
+    const entries = [...S.bound.values()];
+    const fromOf = x => (x.b.plain ? x.b.text : x.b.html);
     for (const e of d.edits) {
-      const entry = [...S.bound.values()].find(x => (x.b.plain ? x.b.text : x.b.html) === e.from && !S.pending.has(x.b.id));
-      if (!entry) { lost++; continue; }
-      if (entry.b.plain) entry.el.textContent = e.to; else entry.el.innerHTML = e.to;
-      S.pending.set(entry.b.id, { id: entry.b.id, from: e.from, to: currentValue(entry) });
-      entry.el.classList.add("ibc-dirty");
-      ok++;
+      if (!e || typeof e.from !== "string" || typeof e.to !== "string") continue;
+      const entry = entries.find(x => x.b.id === e.id && fromOf(x) === e.from && !S.pending.has(x.b.id))
+        || entries.find(x => fromOf(x) === e.from && !S.pending.has(x.b.id));
+      if (!entry) { lost.push(e); continue; }
+      if (entry.b.plain) entry.el.textContent = e.to;
+      else { const t = S.doc.createElement("template"); t.innerHTML = e.to; entry.el.replaceChildren(...serializeToNodes(t.content, entry.opt)); }
+      const to = currentValue(entry);
+      if (to !== entry.orig) { S.pending.set(entry.b.id, { id: entry.b.id, from: e.from, to }); entry.el.classList.add("ibc-dirty"); ok++; }
     }
+    if (lost.length) setAside(lost);
     updateCounts();
     persistDraft();
-    if (ok) toast(`Recuperats ${ok} ${ok === 1 ? "canvi" : "canvis"} sense publicar.`);
-    if (lost) notice(`${lost} ${lost === 1 ? "canvi guardat no s'ha pogut recuperar" : "canvis guardats no s'han pogut recuperar"}: aquell text ha canviat a GitHub mentrestant.`, "amber");
+    if (ok && !quiet) toast(`Recuperats ${ok} ${ok === 1 ? "canvi" : "canvis"} sense publicar.`);
+    if (lost.length) notice(`${lost.length === 1 ? "Un canvi guardat no s'ha pogut" : lost.length + " canvis guardats no s'han pogut"} tornar a posar: aquell text ha canviat a GitHub. No s'ha perdut res.`, "amber", { label: "Mostra'ls", run: showAside });
   }
+  /** Passa el text (ja net) per un <template> i en torna els nodes: res del draft s'executa ni s'hi cola. */
+  function serializeToNodes(frag, opt) {
+    const t = S.doc.createElement("template");
+    t.innerHTML = serialize(frag, opt || {});
+    return [...t.content.childNodes];
+  }
+
+  /* canvis apartats: el que no s'ha pogut aplicar, per no perdre mai el text de l'editor */
+  const asideKey = page => `ibcms:apartats:${page || "/"}`;
+  function setAside(items) {
+    if (!S.page) return;
+    const cur = store.get(asideKey(S.page.page)) || [];
+    for (const e of items) if (!cur.some(x => x.to === e.to)) cur.push({ to: e.to, from: e.from, at: Date.now() });
+    store.set(asideKey(S.page.page), cur.slice(-50));
+  }
+  function showAside() {
+    const list = (S.page && store.get(asideKey(S.page.page))) || [];
+    if (!list.length) { toast("No hi ha cap canvi apartat."); return; }
+    openSheet({
+      title: list.length === 1 ? "Un canvi apartat" : `${list.length} canvis apartats`,
+      sub: "Aquests textos no s'han pogut posar al seu lloc perquè el paràgraf ha canviat a GitHub. Copia el que vulguis i enganxa'l on toqui.",
+      body: list.map((e, i) => `<div class="chg"><div class="chg-head"><span>${esc(ago(new Date(e.at).toISOString()))}</span>
+        <button class="lnk" type="button" data-copy-aside="${i}">Copia</button><button class="lnk" type="button" data-drop-aside="${i}">Descarta</button></div>
+        <div class="diff">${esc(textOf(e.to, !/<[a-z]/i.test(e.to)))}</div></div>`).join(""),
+      foot: [{ label: "Tanca", run: closeSheet }]
+    });
+  }
+  $("sheetBody").addEventListener("click", async e => {
+    const c = e.target.closest("[data-copy-aside],[data-drop-aside],[data-copy-mine]");
+    if (!c || !S.page) return;
+    if (c.dataset.copyMine !== undefined) {
+      const m = S.pending.get(+c.dataset.copyMine) || S.conflictInfo?.get(+c.dataset.copyMine);
+      const txt = m ? textOf(m.to || m.mine || "", !/<[a-z]/i.test(m.to || m.mine || "")) : "";
+      try { await navigator.clipboard.writeText(txt); toast("Copiat."); } catch { toast("No s'ha pogut copiar.", { error: true }); }
+      return;
+    }
+    const list = store.get(asideKey(S.page.page)) || [];
+    const i = +(c.dataset.copyAside ?? c.dataset.dropAside);
+    if (!list[i]) return;
+    if (c.dataset.copyAside !== undefined) {
+      try { await navigator.clipboard.writeText(textOf(list[i].to, !/<[a-z]/i.test(list[i].to))); toast("Copiat."); } catch { toast("No s'ha pogut copiar.", { error: true }); }
+    } else {
+      list.splice(i, 1);
+      if (list.length) store.set(asideKey(S.page.page), list); else store.del(asideKey(S.page.page));
+      if (list.length) showAside(); else { closeSheet(); toast("Descartat."); }
+    }
+  });
   addEventListener("beforeunload", e => { persistDraft(); if (S.pending.size) { e.preventDefault(); e.returnValue = ""; } });
   addEventListener("pagehide", persistDraft);
+  addEventListener("pageshow", () => { if ($("gbtn")) $("gbtn").disabled = false; }); // en tornar enrere des de Google
 
   function updateCounts() {
     const n = S.pending.size;
@@ -516,6 +665,11 @@
     n.hidden = false;
   }
   function setSync() {
+    const pb = $("bPublish");
+    if (pb) {
+      pb.classList.toggle("has-conflict", S.conflicts.size > 0);
+      pb.dataset.tip = S.busy ? "Publicant…" : S.conflicts.size ? "Hi ha blocs en conflicte: torna a publicar per triar" : "Revisa i publica  ⌘S";
+    }
     const d = $("syncDot");
     if (!d) return;
     d.className = "dot";
@@ -528,37 +682,56 @@
   }
 
   async function poll() {
-    if (!S.page || S.busy || document.hidden) return;
+    if (!S.page || S.busy || document.hidden || $("app").hidden) return;
+    const seq = openSeq, page = S.page.page;
+    const still = () => seq === openSeq && S.page && S.page.page === page && !S.busy;
     let r;
     try { r = await api("head"); } catch { return; }
+    if (!still()) return;
     if (!r.head || r.head === S.head) {
-      if (S.unbound && !S.pending.size && S.staleTries < 12) { S.staleTries++; refreshFrame(); }
+      // blocs sense aparellar: la web encara s'està publicant. Es torna a mirar uns minuts després d'un canvi,
+      // mai mentre s'escriu, se selecciona o es comenta (recarregar ho esborraria)
+      const quiet = !S.pending.size && !S.sel && $("composer").hidden && $("sheetWrap").hidden;
+      if (S.unbound && quiet && S.staleTries < 8 && Date.now() - (S.headChangedAt || 0) < 6 * 60000) { S.staleTries++; refreshFrame(); }
       return;
     }
     let fresh;
-    try { fresh = await api("page", { page: S.pageId }); } catch { return; }
-    if (fresh.page !== S.pageId) return;
-    const same = JSON.stringify(fresh.blocks) === JSON.stringify(S.page.blocks);
+    try { fresh = await api("page", { page }); } catch { return; }
+    if (!still() || fresh.page !== page) return;
+    S.head = fresh.head; S.headChangedAt = Date.now(); S.staleTries = 0;
+    const current = S.freshBlocks || S.page.blocks;
+    const same = JSON.stringify(fresh.blocks) === JSON.stringify(current);
     const sameComments = JSON.stringify(fresh.comments) === JSON.stringify(S.page.comments);
-    S.head = fresh.head;
-    S.page = { ...fresh, blocks: same ? S.page.blocks : fresh.blocks };
+    S.page = { ...fresh, blocks: S.page.blocks, history: fresh.history }; // els blocs aparellats no es canvien mentre hi hagi canvis pendents
     if (!sameComments) {
       // l'agent ha resolt (o algú ha afegit) comentaris: es repinten sols
-      const pg = S.pages.find(p => p.page === S.pageId); if (pg) pg.comments = (fresh.comments || []).length;
+      const pg = S.pages.find(p => p.page === page); if (pg) pg.comments = (fresh.comments || []).length;
       paintComments(); updateCounts();
       if (!$("popComments").hidden) renderComments();
     }
     if (same) return;
-    if (S.pending.size) {
+    S.freshBlocks = fresh.blocks;
+    if (S.pending.size || !$("sheetWrap").hidden || !$("composer").hidden) {
       notice("Hi ha una versió nova d'aquesta pàgina a GitHub (Claude Code o una altra pestanya). En publicar, els teus canvis s'hi combinaran.", "amber");
       return;
     }
+    await applyFresh();
+  }
+  /** Passa a la versió nova de GitHub (quan no hi ha res pendent que depengui de la vella). */
+  async function applyFresh() {
+    if (!S.freshBlocks || S.pending.size || S.busy) return;
+    S.page = { ...S.page, blocks: S.freshBlocks }; S.freshBlocks = null;
     notice("Hi ha una versió nova d'aquesta pàgina a GitHub. Carregant-la…", "blue");
     await refreshFrame();
   }
+  /** Quan s'han desfet tots els canvis pendents, si hi havia una versió nova esperant, s'aplica. */
+  function afterPendingChange() { if (!S.pending.size && S.freshBlocks) applyFresh(); }
   async function refreshFrame() {
+    if (!S.page) return;
+    const seq = openSeq, page = S.page.page;
     const y = S.win ? S.win.scrollY : 0;
-    await loadFrame("/" + S.page.page);
+    await loadFrame("/" + page);
+    if (seq !== openSeq || !S.page || S.page.page !== page) return;
     bindAll(); paintComments();
     try { S.win.scrollTo(0, y); } catch {}
     updateCounts();
@@ -614,25 +787,42 @@
     setTimeout(() => $("sheetFoot").querySelector(".btn-primary")?.focus(), 30);
   }
   function closeSheet() { $("sheetWrap").hidden = true; }
-  $("sheetClose").onclick = closeSheet;
-  $("sheetWrap").addEventListener("pointerdown", e => { if (e.target === $("sheetWrap")) closeSheet(); });
+  $("sheetClose").onclick = () => { if (!S.busy) closeSheet(); };
+  $("sheetWrap").addEventListener("pointerdown", e => { if (e.target === $("sheetWrap") && !S.busy) closeSheet(); });
+
+  const KIND = { h1: "Títol", h2: "Intertítol", h3: "Intertítol", h4: "Intertítol", li: "Element de llista", figcaption: "Peu", dt: "Terme", dd: "Definició", blockquote: "Cita", td: "Cel·la", th: "Cel·la" };
+  function kindOf(entry) {
+    if (!entry) return "Bloc";
+    if (entry.b.plain) return entry.b.tag === "h2" ? "Títol de la targeta" : "Descripció de la targeta";
+    return KIND[entry.b.tag] || "Paràgraf";
+  }
+  /** El que s'envia per a cada canvi: el text d'abans, el nou i els blocs veïns (per trobar-lo encara que la
+      pàgina hagi canviat, i per no confondre'l mai amb un bloc idèntic). */
+  function payload(e, blocks = S.page.blocks) {
+    const i = blocks.findIndex(b => b.id === e.id);
+    const c = b => (b ? (b.plain ? b.text : b.html) : null);
+    const b = blocks[i];
+    return { id: e.id, tag: b?.tag, from: e.from, to: e.to, prev: c(blocks[i - 1]), next: c(blocks[i + 1]), dup: !!b && blocks.filter(x => c(x) === c(b)).length > 1 };
+  }
 
   function openPublish() {
-    if (!S.pending.size || S.busy) return;
-    const items = [...S.pending.values()].sort((a, b) => a.id - b.id);
+    if (!S.pending.size || S.busy || !S.page) return;
+    const items = [...S.pending.values()].sort((a, b) => a.id - b.id).map(e => ({ ...e }));
+    const empty = items.filter(e => !textOf(e.to, S.bound.get(e.id)?.b.plain).trim());
+    // el que es revisa és exactament el que es publica (i de quina pàgina)
+    S.review = { seq: openSeq, page: S.page.page, items };
     const body = items.map(e => {
       const entry = S.bound.get(e.id);
-      const tag = !entry ? "Bloc" : entry.b.plain ? (entry.b.tag === "h2" ? "Títol de la targeta" : "Descripció de la targeta")
-        : ({ h1: "Títol", h2: "Intertítol", h3: "Intertítol", li: "Element de llista", figcaption: "Peu", dt: "Terme", dd: "Definició" }[entry.b.tag] || "Paràgraf");
       const fo = formatOnly(e, entry);
+      const isEmpty = empty.includes(e);
       return `<div class="chg" data-id="${e.id}">
-        <div class="chg-head"><span>${tag}</span>${fo ? '<span class="tag">només format</span>' : ""}
+        <div class="chg-head"><span>${kindOf(entry)}</span>${isEmpty ? '<span class="tag warn">buit</span>' : fo ? '<span class="tag">només format</span>' : ""}
           <button class="lnk" type="button" data-go="${e.id}">Mostra</button><button class="lnk" type="button" data-undo="${e.id}">Desfés</button></div>
         <div class="diff">${diffHtml(textOf(e.from, entry?.b.plain), textOf(e.to, entry?.b.plain))}</div></div>`;
     }).join("");
     openSheet({
       title: `Publica ${items.length} ${items.length === 1 ? "canvi" : "canvis"}`,
-      sub: "Es desa a GitHub com un commit (on també ho veu Claude Code) i la web s'actualitza en un minut.",
+      sub: empty.length ? "Hi ha un bloc buit: escriu-hi alguna cosa o desfés el canvi abans de publicar." : "Es desa a GitHub com un commit (on també ho veu Claude Code) i la web s'actualitza en un minut.",
       body,
       foot: [
         { label: "Descarta-ho tot", cls: "btn-danger", grow: true, run: discardAll },
@@ -640,16 +830,22 @@
         { label: "Publica", cls: "btn-primary", id: "doPublish", run: publish }
       ]
     });
+    if (empty.length) $("doPublish").disabled = true;
   }
   $("sheetBody").addEventListener("click", e => {
     const u = e.target.closest("[data-undo]"), g = e.target.closest("[data-go]");
-    if (u) {
+    if (u && !S.busy) {
       const id = +u.dataset.undo;
       revert(id);
+      if (S.review) S.review.items = S.review.items.filter(x => x.id !== id);
       u.closest(".chg").remove();
-      if (!S.pending.size) closeSheet(); else $("sheetTitle").textContent = `Publica ${S.pending.size} ${S.pending.size === 1 ? "canvi" : "canvis"}`;
+      if (!S.pending.size || !S.review?.items.length) closeSheet();
+      else {
+        $("sheetTitle").textContent = `Publica ${S.review.items.length} ${S.review.items.length === 1 ? "canvi" : "canvis"}`;
+        if (!$("sheetBody").querySelector(".tag.warn") && $("doPublish")) { $("doPublish").disabled = false; $("sheetSub").textContent = "Es desa a GitHub com un commit (on també ho veu Claude Code) i la web s'actualitza en un minut."; }
+      }
     }
-    if (g) { closeSheet(); reveal(S.bound.get(+g.dataset.go)?.el); }
+    if (g && !S.busy) { closeSheet(); reveal(S.bound.get(+g.dataset.go)?.el); }
   });
   function revert(id) {
     const entry = S.bound.get(id);
@@ -659,11 +855,11 @@
     }
     S.pending.delete(id); S.conflicts.delete(id);
     updateCounts(); persistDraft();
+    afterPendingChange();
   }
   function discardAll(e) {
     const b = e?.currentTarget;
     if (b && !b.dataset.sure) { b.dataset.sure = "1"; b.textContent = "Segur? Torna a clicar"; return; } // sense diàlegs del navegador
-    if (!b && !confirm(`Segur? Es perdran ${S.pending.size} canvis sense publicar.`)) return;
     for (const id of [...S.pending.keys()]) revert(id);
     closeSheet();
     toast("Canvis descartats.");
@@ -673,38 +869,53 @@
     el.scrollIntoView({ block: "center", behavior: "smooth" });
     el.animate([{ boxShadow: "0 0 0 6px rgba(44,93,168,.45)" }, { boxShadow: "0 0 0 0 rgba(44,93,168,0)" }], { duration: 1200, easing: "ease-out" });
   }
+  function setBusy(on) {
+    S.busy = on;
+    applyMode(); // mentre es publica, res no és editable (el que s'hi escrivís es perdria)
+    $("sheetWrap").classList.toggle("is-busy", on);
+    setSync();
+  }
 
   async function publish() {
-    if (S.busy || !S.pending.size) return;
-    S.busy = true; setSync();
+    const R = S.review;
+    if (S.busy || !R || R.seq !== openSeq || R.page !== S.page?.page || !R.items.length) return;
+    setBusy(true);
     const btn = $("doPublish"); if (btn) { btn.disabled = true; btn.textContent = "Publicant…"; }
-    const edits = [...S.pending.values()];
     try {
-      const r = await api("save", { page: S.page.page, edits });
-      afterSave(r.page);
+      const r = await api("save", { page: R.page, edits: R.items.map(e => payload(e)) });
+      afterSave(r.page, R.items);
       closeSheet();
       $("notice").hidden = true;
       toast(r.unchanged ? "No hi havia res a canviar." : "Publicat. La web s'actualitza en un minut.");
     } catch (e) {
       if (e.status === 409 && e.body?.conflicts) { closeSheet(); showConflicts(e.body); }
-      else { toast(e.message, { error: true, ms: 6000 }); if (btn) { btn.disabled = false; btn.textContent = "Publica"; } }
+      else {
+        toast(e.message, { error: true, ms: 6000 });
+        if (e.body?.id !== undefined) S.bound.get(e.body.id)?.el.classList.add("ibc-conflict");
+        if (btn) { btn.disabled = false; btn.textContent = "Publica"; }
+      }
     } finally {
-      S.busy = false; setSync();
+      setBusy(false);
     }
   }
-  /** Després de desar: el text de la pàgina ja és el nou; es tornen a aparellar els blocs amb la versió de GitHub. */
-  function afterSave(page) {
-    const keepConflicts = new Map([...S.pending].filter(([id]) => S.conflicts.has(id)));
-    S.page = page; S.head = page.head;
-    S.pending = keepConflicts;
+  /** Després de desar: la pàgina ja diu el text nou; es tornen a aparellar els blocs amb la versió del commit.
+      Només surten de «pendents» els canvis que s'han enviat i que no s'han tornat a tocar. */
+  function afterSave(page, sent) {
+    const sentTo = new Map(sent.map(e => [e.id, e.to]));
+    const still = [...S.pending.values()].filter(e => sentTo.get(e.id) !== e.to);
+    S.page = page; S.head = page.head; S.freshBlocks = null;
+    S.pending = new Map(); S.conflicts = new Set(); S.conflictInfo = null; S.review = null;
+    persistDraft();
     bindAll();
-    for (const [id] of keepConflicts) S.bound.get(id)?.el.classList.add("ibc-dirty", "ibc-conflict");
-    persistDraft(); paintComments(); updateCounts();
+    if (still.length) { store.set(draftKey(page.page), { at: Date.now(), edits: still }); restoreDraft({ quiet: true }); }
+    paintComments(); updateCounts();
   }
 
   function showConflicts(body) {
-    // la versió nova de GitHub: el que no és conflicte es tornarà a enviar igual
     S.conflicts = new Set(body.conflicts.map(c => c.id));
+    S.conflictInfo = new Map(body.conflicts.map(c => [c.id, c]));
+    S._conflictPage = body.page;
+    S.resolved = new Map();
     for (const id of S.conflicts) S.bound.get(id)?.el.classList.add("ibc-conflict");
     setSync();
     const html = body.conflicts.map(c => {
@@ -713,59 +924,66 @@
       const plain = entry?.b.plain;
       const theirs = c.theirs ? (c.theirs.plain ? c.theirs.text : textOf(c.theirs.html)) : null;
       const base = mine ? textOf(mine.from, plain) : "";
+      const what = c.why === "ambiguous" ? "Hi ha dos blocs iguals i no es pot saber segur quin era el teu." : theirs === null ? "Aquest bloc ja no hi és (o ha canviat tant que no es pot reconèixer)." : "";
       return `<div class="chg vs" data-c="${c.id}">
-        <div><b>Ara a GitHub (algú altre l'ha canviat)</b><div class="diff">${theirs !== null ? diffHtml(base, theirs) : "<span class='muted'>Aquest bloc ja no hi és.</span>"}</div></div>
+        <div><b>${kindOf(entry)} · ara a GitHub</b><div class="diff">${theirs !== null ? diffHtml(base, theirs) : `<span class='muted'>${what}</span>`}</div></div>
         <div><b>El teu canvi</b><div class="diff">${diffHtml(base, textOf(mine?.to || c.mine, plain))}</div></div>
-        <div class="row"><button class="btn btn-ghost" type="button" data-keep="theirs">Queda't la de GitHub</button>${theirs !== null ? `<button class="btn btn-primary" type="button" data-keep="mine">Queda't el meu</button>` : ""}</div>
+        <div class="row"><button class="btn btn-ghost" type="button" data-copy-mine="${c.id}">Copia el meu text</button>
+          <button class="btn btn-ghost" type="button" data-keep="theirs">${theirs !== null ? "Queda't la de GitHub" : "Deixa-ho estar"}</button>${theirs !== null ? `<button class="btn btn-primary" type="button" data-keep="mine">Queda't el meu</button>` : ""}</div>
       </div>`;
     }).join("");
     openSheet({
-      title: body.conflicts.length === 1 ? "Un paràgraf ha canviat mentre l'editaves" : `${body.conflicts.length} paràgrafs han canviat mentre els editaves`,
-      sub: "No s'ha publicat res. Tria quina versió es queda per a cada un; la resta de canvis es publicaran junts.",
+      title: body.conflicts.length === 1 ? "Un bloc ha canviat mentre l'editaves" : `${body.conflicts.length} blocs han canviat mentre els editaves`,
+      sub: "No s'ha publicat res. Tria què es queda per a cada un; després es publiquen tots junts.",
       body: html,
       foot: [{ label: "Decideix-ho després", run: closeSheet }]
     });
-    S._conflictPage = body.page;
   }
   $("sheetBody").addEventListener("click", async e => {
     const k = e.target.closest("[data-keep]");
-    if (!k) return;
+    if (!k || S.busy || !S.conflictInfo) return;
     const box = k.closest("[data-c]");
     const id = +box.dataset.c;
-    const c = S._conflictPage;
+    const info = S.conflictInfo.get(id);
     const mine = S.pending.get(id);
-    const theirs = c && c.blocks.find(b => b.id === id);
+    if (!info) return;
     if (k.dataset.keep === "theirs") {
+      if (mine) setAside([mine]); // el text de l'editor no es perd mai: queda a «canvis apartats»
       S.pending.delete(id);
-    } else if (mine && theirs) {
-      // el meu text sobre la versió nova: ara el «from» és el que hi ha a GitHub
-      S.pending.set(id, { ...mine, from: theirs.plain ? theirs.text : theirs.html });
+    } else if (mine && info.theirs) {
+      // el meu text sobre el bloc que hi ha ara a GitHub (amb els seus veïns d'ara)
+      S.resolved.set(id, payload({ id: info.theirs.id, from: info.theirs.plain ? info.theirs.text : info.theirs.html, to: mine.to }, S._conflictPage.blocks));
     }
     S.conflicts.delete(id);
     box.remove();
-    if (!$("sheetBody").querySelector("[data-c]")) {
-      closeSheet();
-      // es torna a carregar la pàgina amb la versió nova i, si queden canvis, es publiquen
-      const pend = [...S.pending.values()];
-      if (k.dataset.keep === "theirs" && !pend.length) { await refreshAfterConflict(); toast("Fet: es queda la versió de GitHub."); return; }
-      if (pend.length) {
-        S.busy = true; setSync();
-        try {
-          const r = await api("save", { page: S.page.page, edits: pend });
-          S.pending.clear();
-          await refreshAfterConflict(r.page);
-          toast("Publicat. La web s'actualitza en un minut.");
-        } catch (err) {
-          if (err.status === 409 && err.body?.conflicts) showConflicts(err.body); else toast(err.message, { error: true });
-        } finally { S.busy = false; setSync(); }
-      }
-    }
+    if ($("sheetBody").querySelector("[data-c]")) return;
+    closeSheet();
+    const seq = openSeq, page = S.page.page;
+    const edits = [...S.pending.values()].filter(x => !S.conflictInfo.has(x.id)).map(x => payload(x)).concat([...S.resolved.values()]);
+    if (!edits.length) { await refreshAfterConflict(); toast("Fet: es queda la versió de GitHub."); return; }
+    setBusy(true);
+    try {
+      const r = await api("save", { page, edits });
+      if (seq !== openSeq) return;
+      await refreshAfterConflict(r.page, [], { published: true });
+      toast("Publicat. La web s'actualitza en un minut.");
+    } catch (err) {
+      if (seq !== openSeq) return;
+      if (err.status === 409 && err.body?.conflicts) {
+        // ha tornat a canviar mentre triaves: res publicat; tot queda com a canvis pendents sobre la versió nova
+        await refreshAfterConflict(err.body.page, [...S.resolved.values()].map(x => ({ id: x.id, from: x.from, to: x.to })));
+        notice("Ha tornat a canviar a GitHub mentre triaves. No s'ha publicat res; revisa-ho i torna a publicar.", "amber");
+      } else toast(err.message, { error: true });
+    } finally { setBusy(false); }
   });
-  async function refreshAfterConflict(page) {
-    S.pending.clear(); S.conflicts.clear();
+  /** Torna a carregar la pàgina (versió nova) i hi torna a posar els canvis que encara no s'han publicat. */
+  async function refreshAfterConflict(page, carry = [], { published = false } = {}) {
+    const keep = published ? [] : [...S.pending.values()].filter(x => !S.conflictInfo?.has(x.id) && !S.resolved?.has(x.id));
     if (page) { S.page = page; S.head = page.head; } else { S.page = await api("page", { page: S.pageId }); S.head = S.page.head; }
-    persistDraft();
+    S.pending.clear(); S.conflicts.clear(); S.conflictInfo = null; S.resolved = null; S.freshBlocks = null;
+    store.set(draftKey(S.page.page), { at: Date.now(), edits: [...keep, ...carry] });
     await refreshFrame();
+    restoreDraft({ quiet: true });
   }
 
   /* ---------- comentaris ---------- */
@@ -855,6 +1073,10 @@
     const card = e.target.closest("[data-cid]");
     if (card) focusComment(card.dataset.cid);
   });
+  $("cList").addEventListener("keydown", e => {
+    const card = e.target.closest("[data-cid]");
+    if (card && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); focusComment(card.dataset.cid); }
+  });
   function focusComment(id) {
     S.activeComment = id;
     paintComments(); renderComments();
@@ -939,10 +1161,12 @@
   $("composerSend").onclick = sendComment;
   async function sendComment() {
     const sel = S.composerSel, note = $("composerNote").value.trim();
-    if (!sel || !note) { $("composerNote").focus(); return; }
+    if (!sel || !note || !S.page) { $("composerNote").focus(); return; }
+    const seq = openSeq, page = S.page.page;
     $("composerSend").disabled = true;
     try {
-      const r = await api("comment", { page: S.page.page, quote: sel.quote, prefix: sel.prefix, suffix: sel.suffix, note });
+      const r = await api("comment", { page, quote: sel.quote, prefix: sel.prefix, suffix: sel.suffix, note });
+      if (seq !== openSeq || !S.page) { toast("Comentari desat per a l'agent."); return; }
       S.page.comments = [...(S.page.comments || []), r.comment];
       const pg = S.pages.find(p => p.page === S.pageId); if (pg) pg.comments = S.page.comments.length;
       closeComposer();
@@ -958,13 +1182,14 @@
   function onGlobalKey(e) {
     const mod = e.metaKey || e.ctrlKey;
     if (mod && e.key.toLowerCase() === "s") { e.preventDefault(); openPublish(); return; }
-    if (e.key === "Escape") { closePops(); closeComposer(); closeSheet(); hideSelPill(); return; }
+    if (e.key === "Escape") { closePops(); closeComposer(); if (!S.busy) closeSheet(); hideSelPill(); return; }
     if (mod || e.altKey) return;
     const t = e.target;
     if (t && (t.isContentEditable || /^(input|textarea|select)$/i.test(t.tagName))) return;
-    if (e.key === "v" || e.key === "V") setMode("point");
-    else if (e.key === "t" || e.key === "T" || e.key === "e" || e.key === "E") setMode("edit");
-    else if (e.key === "c" || e.key === "C") { if (S.sel) openComposer(); else setMode("comment"); }
+    if (!$("sheetWrap").hidden || $("app").hidden) return; // ni amb un full obert ni a la pantalla de login
+    if (e.key === "v" || e.key === "V") { e.preventDefault(); setMode("point"); }
+    else if (e.key === "t" || e.key === "T" || e.key === "e" || e.key === "E") { e.preventDefault(); setMode("edit"); }
+    else if (e.key === "c" || e.key === "C") { e.preventDefault(); if (S.sel) openComposer(); else setMode("comment"); }
   }
   document.addEventListener("keydown", onGlobalKey);
 
@@ -972,8 +1197,10 @@
   if (window.visualViewport) {
     const vv = window.visualViewport;
     const fit = () => {
+      if (vv.scale > 1.05) return; // fer zoom amb els dits no és el teclat
       const kb = Math.max(0, innerHeight - vv.height - vv.offsetTop);
       $("dock").style.bottom = kb > 80 ? `${kb + 8}px` : "";
+      if (innerWidth <= 640) $("composer").style.bottom = kb > 80 ? `${kb + 70}px` : "";
     };
     vv.addEventListener("resize", fit); vv.addEventListener("scroll", fit);
   }
