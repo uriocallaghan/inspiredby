@@ -92,3 +92,20 @@ h3.fam{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px;font-family
 @media (max-width:700px){h3.fam{font-size:24px;margin-top:80px}}
 .sw.sw4{grid-template-columns:repeat(4,minmax(0,1fr))}
 @media (max-width:700px){.sw.sw4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* MAP-20 · Globus amb parades (22-11-2026) */
+.m20{position:relative}
+.m20-q{position:absolute;left:0;bottom:64px;width:min(28%,320px);text-shadow:0 0 4px var(--paper),0 0 2px var(--paper)}
+.m20-k{margin:0 0 8px;font-family:var(--sans);font-size:13.5px;font-weight:700;color:#C8442A;font-variant-numeric:tabular-nums}
+.m20-k span{font-weight:400;color:var(--ink-2)}
+.m20-t{margin:0;font-family:var(--serif);font-size:24px;line-height:1.25;letter-spacing:-.01em;color:var(--ink);min-height:4.8em}
+.m20-pg{position:absolute;left:0;bottom:12px;display:flex;align-items:center;gap:2px}
+.m20-pg button{border:0;background:none;padding:0;cursor:pointer;color:var(--ink-2);font:15px var(--sans);min-width:28px;min-height:32px}
+.m20-pg button.d::before{content:"";display:block;width:8px;height:8px;margin:auto;border-radius:50%;border:1px solid var(--ink-2)}
+.m20-pg button.d[aria-pressed="true"]::before{background:var(--ink);border-color:var(--ink)}
+@media (max-width:639px){
+  .m20-q{position:static;width:auto;margin-top:6px}
+  .m20-t{font-size:19px;min-height:5em}
+  .m20-pg{position:static;margin-top:6px}
+  .m20-pg button{min-width:36px;min-height:44px}
+}

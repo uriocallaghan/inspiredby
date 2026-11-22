@@ -19,7 +19,7 @@ Revista web d'articles visuals per entendre el món, en català. Llegeix aquest 
 ## Guies obligatòries
 
 1. `research/guia-estil-articles.md`: com s'escriu un article, rigor de dades, cites, estructura i proves.
-2. `research/sistema-infografic.md`: com han de ser els gràfics (principis, paleta, hover, lleugeresa) i les 73 peces, ordenades en vuit famílies per l'ús: `TIME` (quan), `MAP` (on), `SCALE` (com de gran), `SPREAD` (com es distribueix), `PART` (de què està fet), `LINK` (què connecta amb què), `HOW` (com funciona) i `CASE` (comparar casos). Codis en anglès amb número (`MAP-01`); els antics `IB-xx` ja no valen (equivalències a `research/sistema-codis.json`). Mostrari viu: `web/sistema/` (https://inspiredbymagazine.com/sistema/).
+2. `research/sistema-infografic.md`: com han de ser els gràfics (principis, paleta, hover, lleugeresa) i les 76 peces, ordenades en vuit famílies per l'ús: `TIME` (quan), `MAP` (on), `SCALE` (com de gran), `SPREAD` (com es distribueix), `PART` (de què està fet), `LINK` (què connecta amb què), `HOW` (com funciona) i `CASE` (comparar casos). Codis en anglès amb número (`MAP-01`); els antics `IB-xx` ja no valen (equivalències a `research/sistema-codis.json`). Mostrari viu: `web/sistema/` (https://inspiredbymagazine.com/sistema/).
 3. `research/guia-mobil.md`: adaptació a mòbil (alçada dels gràfics enganxats, gràfics verticals, etiquetes, tacte).
 4. `research/guia-representacio.md`: com parlem de persones, pobles i llocs perquè res no doni peu al racisme ni a un neocolonialisme condescendent (rètols, agència, especificitat, llenguatge de la malaltia, fonts) i llista de comprovació.
 

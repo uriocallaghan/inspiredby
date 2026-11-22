@@ -4,7 +4,7 @@ Com han de ser els gràfics de tots els articles nous. Llegeix-ho sencer abans d
 
 - **Mostrari viu:** `web/sistema/index.html`, publicat a https://inspiredbymagazine.com/sistema/. Cada peça hi és dibuixada i funciona.
 - **Codi comú:** `web/assets/ib-viz.js` (objecte global `IBV`): colors, escales, text amb halo, anotacions, llegendes, tooltip tàctil, mapes. Es carrega després de d3 7.9.0 (i de `topojson-client@3.1.0` si hi ha mapes).
-- **Codi de cada peça:** un bloc per peça, marcat amb el número: TIME-02 a CASE-05 a `web/sistema/sistema.js`, MAP-17 a MAP-18 a `mapes-a.js`, MAP-19 a MAP-09 i MAP-01 a `mapes-b.js`, SCALE-04 a TIME-05 a `creatives-a.js` i CASE-09 a PART-07 a `creatives-b.js` (cadascun amb el seu `.css` i el seu fitxer de dades). Copia el bloc que necessitis al JS de l'article i canvia-hi les dades.
+- **Codi de cada peça:** un bloc per peça, marcat amb el número: TIME-02 a CASE-05 a `web/sistema/sistema.js`, MAP-17 a MAP-18 a `mapes-a.js`, MAP-19 a MAP-09 i MAP-01 a `mapes-b.js`, SCALE-04 a TIME-05 a `creatives-a.js`, CASE-09 a PART-07 a `creatives-b.js`, MAP-20 i MAP-21 a `map-new.js` (dades a `dades-map-new.js`, generades amb `research/sistema/build-peces-22-11.py`) i SPREAD-08 a `spread-new.js` (cadascun amb el seu `.css` i el seu fitxer de dades). Copia el bloc que necessitis al JS de l'article i canvia-hi les dades.
 - **Model de qualitat:** «El Niño i La Niña» (`web/articles/el-nino/`). **Model per als mapes regionals:** «Jesús i els quatre evangelis» (`web/articles/jesus-i-els-quatre-evangelis/`), que ha donat lloc a MAP-01.
 
 Quan planifiquis un article, anomena els gràfics pel número: «MAP-06 per al mapa de l'anomalia, TIME-02 per a la sèrie de 1950–2026, HOW-01 per al tall».
@@ -164,6 +164,7 @@ Números en català: coma decimal, punt de milers, signe menys tipogràfic. `IBV
 | C-06 | Eixos i quadrícula | `IBV.gridY(g,y,x0,x1,ticks,f,{zero,unit})`, `IBV.axisX(g,x,y0,ticks,f)` | Sense línia d'eix. Quadrícula `grid`, valors a sobre de la línia, unitat al valor de dalt, zero en tinta. |
 | C-07 | Controls | `.rng` (lliscant), `.seg` (botons de segment), `.playb` (Reprodueix) d'`article.css` | Sota el gràfic, separats per una línia. `aria-valuetext` llegible al lliscant. `.playb{padding:6px 0}` per tocar-lo amb el dit. |
 | C-08 | Tooltip | `const tp=IBV.tip(container)` + `IBV.hover(node,onMove,onLeave)` | Blanc amb vora fina, sense ombra. Negreta per a qui és, xifres tabulars. S'obre amb un toc i no es tanca en aixecar el dit. |
+| C-09 | Lectura amb rampa | `IBV.rampRead(p,{interp,n,text})` dins de `tp.show(…)` | Mini rampa de 10 graons dins la línia de lectura, plena fins on arriba el valor (`p` de 0 a 1; si l'escala és log, la posició la calcula qui crida). Mai una caixa flotant: va a la línia fixa de sota. |
 
 Altres eines: `IBV.mount(el, draw)` (dibuixa i redibuixa quan canvia l'amplada), `IBV.svg(el,w,h,ariaLabel)`, `IBV.canvas(el,w,h,ariaLabel)`, `IBV.t(g,x,y,text,{size,weight,anchor,italic,serif,halo})`, `IBV.lines(...)`, `IBV.rings(g,cx,cy,n,step,color,o)` (anells concèntrics finíssims estil *A sea of sand and sickness*), `IBV.polarGrid(g,cx,cy,R,rings,spokes,o)` (retícula polar de 0,5 px estil *Typology demand* i *Parcs nacionals*), `IBV.cloud(ctx,pts,color,o)` (boira orgànica de punts en canvas estil *Fair and square?*), `IBV.world()` (promesa amb `land`, `countries` i `borders` de world-atlas 110m), `IBV.rng(seed)` i `IBV.gauss(r)` per a esquemes repetibles.
 
@@ -201,14 +202,14 @@ Els gràfics han de ser molt lleugers i fluids, també en un mòbil normal.
 
 ## 5. Peces
 
-Hi ha 73 peces en **vuit famílies**, ordenades per la pregunta que respon el gràfic. Els codis són en anglès (prefix de família i número) i dins de cada família van **de la més bàsica a la més creativa**. Totes tenen animació d'entrada (`IBV.onView`) i estat de hover (`IBV.focus` + tooltip). Al pla visual, cita-les pel codi («V2 · MAP-01 + MAP-11»). Els codis antics `IB-xx` ja no valen: les equivalències són a `research/sistema-codis.json`.
+Hi ha 76 peces en **vuit famílies**, ordenades per la pregunta que respon el gràfic. Els codis són en anglès (prefix de família i número) i dins de cada família van **de la més bàsica a la més creativa**. Totes tenen animació d'entrada (`IBV.onView`) i estat de hover (`IBV.focus` + tooltip). Al pla visual, cita-les pel codi («V2 · MAP-01 + MAP-11»). Els codis antics `IB-xx` ja no valen: les equivalències són a `research/sistema-codis.json`.
 
 | Família | Pregunta | Peces |
 |---|---|---|
 | `TIME` · Temps | Quan passa: sèries, cicles i cronologies | 15 |
-| `MAP` · Mapes | On passa | 19 |
+| `MAP` · Mapes | On passa | 21 |
 | `SCALE` · Escala | Com de gran és, comparat amb una altra cosa | 6 |
-| `SPREAD` · Distribució | Quina forma tenen les dades | 7 |
+| `SPREAD` · Distribució | Quina forma tenen les dades | 8 |
 | `PART` · Parts d'un total | De què està fet | 7 |
 | `LINK` · Relacions i fluxos | Què connecta amb què | 5 |
 | `HOW` · Com funciona | Per dins i pas a pas | 5 |
@@ -261,6 +262,8 @@ On passa.
 | **MAP-17** | Circle cartogram · Cartograma de cercles | Del mapa als cercles: cada país es converteix en un cercle d'àrea proporcional al valor i una simulació de forces els separa sense allunyar-los gaire del seu lloc. | Dades reals | Àrea del cercle proporcional al valor; clau de mida dins del gràfic; Els cercles surten del seu país i hi tornen; Etiqueta només els cercles que caben; la resta, al tooltip | `sistema/mapes-a.js` |
 | **MAP-18** | Spinning globe · Globus que gira | El planeta en projecció ortogràfica, que gira sol com la Terra i es pot arrossegar amb el ratolí o el dit. | Dades reals | Gir lent (un tomb cada 40 s); s'atura en passar-hi, en arrossegar i amb prefers-reduced-motion; Gratícula de 15° en gris finíssim, costa en tinta clara; Arrossegar en horitzontal a mòbil, perquè la pàgina continuï fent scroll | `sistema/mapes-a.js` |
 | **MAP-19** | Wind field · Camp de vent animat | Milers de partícules que es deixen portar pel vent i deixen una estela que s'esvaeix. | Simulació | Canvas, 1.500–4.000 partícules d'1 px amb estela de 10–14 punts; Un sol to (rampa seqüencial blava) per a la velocitat; En passar-hi, les partícules baixen a 0,3 i surt la línia de corrent en tinta; Botó per aturar el moviment; amb moviment reduït, estela fixa | `sistema/mapes-b.js` |
+| **MAP-20** | Globe with stops · Globus amb parades | «D'on venen, lloc per lloc?» Globus gran retallat per baix, un punt per cada N unitats dins de cada país; cada parada gira el globus fins a un lloc, l'encén, en traça l'arc fins al destí i hi posa una frase en serif | Recompte per país + 4–7 parades amb una frase verificada | Context en gris, parada en vermell, destí en anell blau; gir d'1,5 s, avança sol cada 7,5 s fins que el lector toca; una frase per parada, i si és d'una persona, amb el seu nom (mai «un X de [país]»); dins d'un `.scrolly`, una parada per pas | `sistema/map-new.js` (22-11-2026: «What 81,000 people want from AI», Anthropic) |
+| **MAP-21** | Linked map and series · Mapa i sèrie lligats | «On i quan?» Mapa pla de cercles translúcids (MAP-03) i, a sota, la sèrie del total amb barres; passar per un any posa el mapa en aquell any i passar per un país en dibuixa la sèrie en vermell | Valor per lloc i període | Mateix color als dos; el país apuntat, en vermell als dos; només 3–4 pics anotats amb l'any i el lloc; l'any gran i pàl·lid dins del mapa; llegenda de mida que canvia amb l'escala; regional, sobre MAP-01 | `sistema/map-new.js` (22-11-2026: «Dead/Missing migrants, Americas», J. Luengo-Cabrera) |
 
 ### SCALE · Escala
 
@@ -288,6 +291,7 @@ Quina forma tenen les dades.
 | **SPREAD-05** | Hex mosaic · Mosaic hexagonal | «On és més alt un valor segons dues variables?» | Molts punts amb un valor | Hexàgons amb rampa divergent centrada a la mitjana; mínim 5 casos per hexàgon; zones amb línia puntejada i nom en cursiva. | «The sweet spot» (FiveThirtyEight) |
 | **SPREAD-06** | Density topography · Topografia de densitat | «On s'agrupen i com es toquen els grups?» | Punts x/y | `d3.contourDensity`, 20–30 nivells de 0,7 px, rampa a la línia, la corba exterior més gruixuda. | «Building strategy»; Senezh |
 | **SPREAD-07** | Moving bubbles · Bombolles en moviment | Una dispersió que es mou amb el temps: cada bombolla és un lloc, la mida és la població i l'any passa gran i pàl·lid al fons. | Dades d'exemple generades | Àrea proporcional; bombolles a 0,55 amb contorn fosc; L'any en serif gran, en el gris de la quadrícula; Cada camí deixa una estela fina translúcida permanent i el hover hi marca cada any i cada dècada | `sistema/creatives-b.js` |
+| **SPREAD-08** | Probability ladder · Escala de probabilitats | «Quin resultat té cada cas?» Una fila per cas, una columna per resultat ordenat (posició, escons, ronda) i la probabilitat a cada cel·la; les gairebé zero no es dibuixen i en queda una escala | Distribució de resultats per cas (simulació o pronòstic publicat) | Rampa blava amb arrel quadrada i, a l'altra banda del llindar, la mateixa en vermell; cel·les < 0,5 % en blanc; número dins només si hi cap; files per posició esperada que es mouen en canviar de moment; font i nombre de simulacions al peu | `sistema/spread-new.js` (22-11-2026: «Premier league table, predicting 2016/17») |
 
 ### PART · Parts d'un total
 

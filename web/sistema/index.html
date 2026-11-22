@@ -5,7 +5,7 @@
 <script src="../assets/ib-theme.js"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Sistema infogràfic · Inspired by Magazine</title>
-<meta name="description" content="Principis, colors, components i les setanta-tres peces infogràfiques, ordenades per famílies, que fan servir els articles d'Inspired by Magazine.">
+<meta name="description" content="Principis, colors, components i les setanta-sis peces infogràfiques, ordenades per famílies, que fan servir els articles d'Inspired by Magazine.">
 <meta name="robots" content="noindex">
 <link rel="icon" sizes="192x192" href="../assets/icon192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,14 +30,14 @@
   <header class="open lead">
     <p class="kicker">Ús intern</p>
     <h1>Sistema infogràfic</h1>
-    <p class="dek">Com són els gràfics de la revista: deu principis, els colors i la tipografia, els components de cada figura i setanta-tres peces animades, amb nom i número, per construir els articles nous.</p>
+    <p class="dek">Com són els gràfics de la revista: deu principis, els colors i la tipografia, els components de cada figura i setanta-sis peces animades, amb nom i número, per construir els articles nous.</p>
     <p class="meta">Model: «El Niño i La Niña» i una selecció de referències de premsa i disseny · Codi: <code>assets/ib-viz.js</code> · Guia per a agents: <code>research/sistema-infografic.md</code> · 18 de novembre de 2026</p>
   </header>
 
   <ol class="toc" aria-label="Contingut">
     <li class="fam"><a href="#principis">Principis</a></li>
     <li><a href="#colors">Colors</a> · <a href="#tipografia">Tipografia</a></li>
-    <li><a href="#components">Components C-01 a C-08</a></li>
+    <li><a href="#components">Components C-01 a C-09</a></li>
     <li class="fam"><a href="#fam-time"><b>TIME</b>Temps</a></li>
     <li><a href="#time-01"><b>TIME-01</b>Annotated series</a></li>
     <li><a href="#time-02"><b>TIME-02</b>Year bundle</a></li>
@@ -74,6 +74,8 @@
     <li><a href="#map-17"><b>MAP-17</b>Circle cartogram</a></li>
     <li><a href="#map-18"><b>MAP-18</b>Spinning globe</a></li>
     <li><a href="#map-19"><b>MAP-19</b>Wind field</a></li>
+    <li><a href="#map-20"><b>MAP-20</b>Globe with stops</a></li>
+    <li><a href="#map-21"><b>MAP-21</b>Linked map and series</a></li>
     <li class="fam"><a href="#fam-scale"><b>SCALE</b>Escala</a></li>
     <li><a href="#scale-01"><b>SCALE-01</b>Threshold scale</a></li>
     <li><a href="#scale-02"><b>SCALE-02</b>Nested squares</a></li>
@@ -89,6 +91,7 @@
     <li><a href="#spread-05"><b>SPREAD-05</b>Hex mosaic</a></li>
     <li><a href="#spread-06"><b>SPREAD-06</b>Density topography</a></li>
     <li><a href="#spread-07"><b>SPREAD-07</b>Moving bubbles</a></li>
+    <li><a href="#spread-08"><b>SPREAD-08</b>Probability ladder</a></li>
     <li class="fam"><a href="#fam-part"><b>PART</b>Parts d'un total</a></li>
     <li><a href="#part-01"><b>PART-01</b>Unit grid</a></li>
     <li><a href="#part-02"><b>PART-02</b>Waterfall</a></li>
@@ -213,11 +216,14 @@
     <section class="pc" id="c-08"><div class="pc-h"><span class="pc-n">C-08</span><h4>Tooltip</h4></div>
       <p class="pc-d">Requadre blanc amb vora fina, sense ombra. Negreta per a qui és, números tabulars. S'obre també amb un toc.</p>
       <div class="plot" data-c="8"></div></section>
+    <section class="pc" id="c-09"><div class="pc-h"><span class="pc-n">C-09</span><h4>Lectura amb rampa</h4></div>
+      <p class="pc-d">Dins la línia de lectura, una mini rampa de deu graons plena fins on arriba el valor: es veu de seguida si és molt o poc sense mirar la llegenda.</p>
+      <div class="plot" data-c="9" style="min-height:0"></div></section>
   </div>
 
   <!-- ===================== PECES ===================== -->
   <h2 class="part" id="peces">Peces</h2>
-  <p class="part-d">73 maneres de mostrar dades, ordenades en vuit famílies segons la pregunta que responen: quan (<code>TIME</code>), on (<code>MAP</code>), com de gran (<code>SCALE</code>), com es distribueix (<code>SPREAD</code>), de què està fet (<code>PART</code>), què connecta amb què (<code>LINK</code>), com funciona (<code>HOW</code>) i com es comparen molts casos (<code>CASE</code>). Dins de cada família van de la més bàsica a la més creativa. Al pla visual, cita-les pel codi («V2 · MAP-01 + MAP-11»). Les que porten dades reals ho diuen al peu; la resta fan servir dades d'exemple.</p>
+  <p class="part-d">76 maneres de mostrar dades, ordenades en vuit famílies segons la pregunta que responen: quan (<code>TIME</code>), on (<code>MAP</code>), com de gran (<code>SCALE</code>), com es distribueix (<code>SPREAD</code>), de què està fet (<code>PART</code>), què connecta amb què (<code>LINK</code>), com funciona (<code>HOW</code>) i com es comparen molts casos (<code>CASE</code>). Dins de cada família van de la més bàsica a la més creativa. Al pla visual, cita-les pel codi («V2 · MAP-01 + MAP-11»). Les que porten dades reals ho diuen al peu; la resta fan servir dades d'exemple.</p>
   <nav class="famnav" aria-label="Famílies"><a href="#fam-time">TIME</a><a href="#fam-map">MAP</a><a href="#fam-scale">SCALE</a><a href="#fam-spread">SPREAD</a><a href="#fam-part">PART</a><a href="#fam-link">LINK</a><a href="#fam-how">HOW</a><a href="#fam-case">CASE</a></nav>
 
   <h3 class="fam" id="fam-time"><span class="fam-c">TIME</span>Temps<span class="fam-q">Quan passa: sèries, cicles i cronologies</span></h3>
@@ -517,6 +523,22 @@
     <p class="src"><b>Simulació</b>, no dades reals: un camp de vent idealitzat (una franja de vents de l'oest que ondula, dues borrasques, un anticicló i vents de l'est al sud) per mostrar la forma. Partícules dibuixades en canvas. Mapa: Natural Earth (world-atlas 110m).</p>
     <div class="pc-r"><div><h5>Per a</h5><p>Qualsevol camp vectorial: vent, corrents marins, migracions, fluxos de gent sobre un territori.</p></div><div><h5>Regles</h5><ul><li>Canvas, 1.500–4.000 partícules d'1 px amb estela de 10–14 punts.</li><li>Un sol to (rampa seqüencial blava) per a la velocitat.</li><li>En passar-hi, les partícules baixen a 0,3 i surt la línia de corrent en tinta.</li><li>Botó per aturar el moviment; amb moviment reduït, estela fixa.</li></ul></div><div><h5>Ve de</h5><p>«Wind Map» (Viégas i Wattenberg, 2012); earth.nullschool.net.</p></div></div>
   </section>
+  <section class="pc" id="map-20">
+    <div class="pc-h"><span class="pc-n">MAP-20</span><h4>Globe with stops<small> · Globus amb parades</small></h4></div>
+    <p class="pc-d">Un globus gran, retallat per baix, amb un punt per cada N unitats repartit dins de cada país. Cada parada gira el globus fins a un lloc, l'encén en vermell, en traça l'arc fins al destí i hi posa al costat una frase en serif. Les parades avancen soles i s'aturen quan el lector toca el globus o tria una parada.</p>
+    <div class="vh"><div><strong>Llavors de tot el món, guardades a l'Àrtic</strong><span>Mostres dipositades a la Volta de Svalbard, pel país de la seu de cada institució · cada punt, 500 mostres</span></div></div>
+    <div class="plot" data-p="map-20"></div>
+    <p class="src"><b>Dades reals.</b> Seed Portal de NordGen, llista de dipositants consultada el 20-11-2026: 135 institucions i 1.417.961 mostres. Cada país té com a mínim un punt, encara que n'hagi dipositat menys de 500; els punts es reparteixen a l'atzar dins del país i no diuen d'on ve cada llavor. Singapur (7 mostres) no hi surt perquè el mapa és massa simplificat per dibuixar-lo. Retirades d'ICARDA: seedvault.no. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Obrir un article o una secció amb un fenomen mundial explicat lloc per lloc: d'on venen, on passa, qui ho fa. Funciona dins d'un <code>.scrolly</code>, amb una parada per pas.</p></div><div><h5>Regles</h5><ul><li>Punts en gris per al context i en vermell per a la parada; el destí, anell blau.</li><li>Una frase per parada, en serif, amb el lloc i la xifra a sobre en negreta. Si la frase és d'una persona, va amb el seu nom: mai «un X de [país]» com a rètol (guia de representació).</li><li>Gir d'1,5 s entre parades; avança sol cada 7,5 s fins que el lector hi toca; amb moviment reduït, sense gir.</li><li>Sense relleu: és un mapa del món.</li></ul></div><div><h5>Ve de</h5><p>«What 81,000 people want from AI» (Anthropic) i els globus de punts de les onades de calor; MAP-18 i MAP-05.</p></div></div>
+  </section>
+  <section class="pc" id="map-21">
+    <div class="pc-h"><span class="pc-n">MAP-21</span><h4>Linked map and series<small> · Mapa i sèrie lligats</small></h4></div>
+    <p class="pc-d">A dalt, un mapa de cercles translúcids (MAP-03); a sota, la sèrie del total amb els pics anotats. Els dos parlen: passar per un any posa el mapa en aquell any i passar per un país en dibuixa la sèrie en vermell sobre la del total.</p>
+    <div class="vh"><div><strong>Setanta-sis anys de còlera</strong><span>Casos notificats a l'OMS per país i any, 1949–2024</span></div><div class="lgs" data-lg="map-21"></div></div>
+    <div class="plot" data-p="map-21"></div>
+    <p class="src"><b>Dades reals.</b> OMS, casos de còlera notificats per país i any, via Our World in Data (actualització del 18-08-2026). Són casos <b>notificats</b>: molts països no notifiquen cada any i l'OMS calcula que els reals són molts més. Cada cercle és al centre del país. Els estats petits que el mapa no dibuixa (Comores, Maldives, Singapur i illes del Pacífic, entre d'altres) compten a les barres però no hi tenen cercle. Mapa: Natural Earth (world-atlas 110m).</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Quan importen alhora el lloc i el moment: epidèmies, desastres, migracions, conflictes.</p></div><div><h5>Regles</h5><ul><li>Mapa i sèrie amb el mateix color; el país apuntat, en vermell als dos.</li><li>Només 3–4 pics anotats, amb l'any i el lloc que més en va tenir.</li><li>L'any apuntat, gran i pàl·lid dins del mapa; la llegenda de mida canvia amb l'escala.</li><li>Sense relleu: és un mapa del món. Si és regional, va sobre MAP-01.</li></ul></div><div><h5>Ve de</h5><p>«Dead/Missing migrants, Americas» (J. Luengo-Cabrera, dades de l'OIM) i el mapa de cercles per municipi amb filtre.</p></div></div>
+  </section>
 
   <h3 class="fam" id="fam-scale"><span class="fam-c">SCALE</span>Escala<span class="fam-q">Com de gran és, comparat amb una altra cosa</span></h3>
   <section class="pc" id="scale-01">
@@ -634,6 +656,15 @@
       <div class="ibx-rng"><span class="ibx-rng-l">Any</span><input class="rng" type="range" min="1980" max="2026" step="1" value="1980" data-rng="54" aria-label="Any" aria-valuetext="1980"><output data-out="54">1980</output></div></div>
     <p class="src"><b>Dades d'exemple generades</b>, només per mostrar la forma. Els noms dels llocs són genèrics.</p>
     <div class="pc-r"><div><h5>Per a</h5><p>Com es mouen molts casos en dues variables alhora al llarg del temps: països, ciutats, empreses.</p></div><div><h5>Regles</h5><ul><li>Àrea proporcional; bombolles a 0,55 amb contorn fosc.</li><li>L'any en serif gran, en el gris de la quadrícula.</li><li>Cada bombolla deixa una estela fina translúcida mentre es mou; en passar-hi, s'hi marquen els punts per any i cada dècada.</li></ul></div><div><h5>Ve de</h5><p>Gapminder (Hans Rosling).</p></div></div>
+  </section>
+  <section class="pc" id="spread-08">
+    <div class="pc-h"><span class="pc-n">SPREAD-08</span><h4>Probability ladder<small> · Escala de probabilitats</small></h4></div>
+    <p class="pc-d">Una fila per cas i una columna per resultat ordenat (posició, escons, ronda). Cada cel·la diu amb quina probabilitat passa; les que són gairebé zero no es dibuixen, i l'escala que queda diu d'un cop d'ull qui ho té decidit i qui no. Un llindar parteix les columnes.</p>
+    <div class="vh"><div><strong>Qui baixarà?</strong><span>Probabilitat que cada equip acabi en cada posició, en 3.000 temporades simulades</span></div></div>
+    <div class="plot" data-p="spread-08"></div>
+    <div class="ctlbar"><div class="seg" role="group" aria-label="Moment" data-seg="spread-08"><button aria-pressed="true" data-k="0">Abans de començar</button><button aria-pressed="false" data-k="1">A mitja temporada</button></div></div>
+    <p class="src"><b>Simulació amb dades d'exemple</b>, només per mostrar la forma: una lliga inventada de 16 equips amb una força assignada a cadascun, 3.000 temporades jugades a l'atzar (gols de Poisson). «A mitja temporada» fixa la primera volta i simula la segona.</p>
+    <div class="pc-r"><div><h5>Per a</h5><p>Qualsevol pronòstic amb resultats ordenats: posicions d'una lliga, escons d'una elecció, ronda on cau cada equip, rànquings amb incertesa.</p></div><div><h5>Regles</h5><ul><li>Rampa blava amb arrel quadrada; a l'altra banda del llindar, la mateixa rampa en vermell.</li><li>Cel·les per sota del 0,5 %, en blanc; el número dins de la cel·la només si hi cap.</li><li>Files ordenades per la posició esperada; en canviar de moment, les files es mouen al lloc nou.</li><li>La font del pronòstic i el nombre de simulacions, sempre al peu.</li></ul></div><div><h5>Ve de</h5><p>«Premier league table, predicting 2016/17» i les taules de probabilitat de FiveThirtyEight.</p></div></div>
   </section>
 
   <h3 class="fam" id="fam-part"><span class="fam-c">PART</span>Parts d'un total<span class="fam-q">De què està fet</span></h3>
@@ -908,6 +939,9 @@
 <script src="how-rays.js"></script>
 <script src="scale-new.js"></script>
 <script src="time-new.js"></script>
+<script src="dades-map-new.js"></script>
+<script src="map-new.js"></script>
+<script src="spread-new.js"></script>
 <script src="../assets/ib.js"></script>
 </body>
 </html>

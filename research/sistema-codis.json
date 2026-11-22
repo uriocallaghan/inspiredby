@@ -281,6 +281,20 @@
    "family": "MAP"
   },
   {
+   "code": "MAP-20",
+   "old": null,
+   "en": "Globe with stops",
+   "ca": "Globus amb parades",
+   "family": "MAP"
+  },
+  {
+   "code": "MAP-21",
+   "old": null,
+   "en": "Linked map and series",
+   "ca": "Mapa i sèrie lligats",
+   "family": "MAP"
+  },
+  {
    "code": "SCALE-01",
    "old": "IB-10",
    "en": "Threshold scale",
@@ -369,6 +383,13 @@
    "old": "IB-54",
    "en": "Moving bubbles",
    "ca": "Bombolles en moviment",
+   "family": "SPREAD"
+  },
+  {
+   "code": "SPREAD-08",
+   "old": null,
+   "en": "Probability ladder",
+   "ca": "Escala de probabilitats",
    "family": "SPREAD"
   },
   {

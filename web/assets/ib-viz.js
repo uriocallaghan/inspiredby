@@ -223,6 +223,17 @@
       hide(){ n.style.opacity=0; }
     };
   }
+  // C-09 · Lectura amb rampa: una mini rampa de n graons dins la línia de lectura, plena fins on arriba el valor.
+  // rampRead(p,{interp,n,text}) → HTML. p entre 0 i 1 (la posició del valor a la seva escala, lineal o log, la calcula qui crida).
+  // Exemple: tp.show(`<b>Iemen</b> · 1.032.481 casos ${IBV.rampRead(.92,{interp:IBV.seqInterp(IBV.C.blue),text:"9 de 10"})}`)
+  function rampRead(p,o){
+    o=o||{}; const n=o.n||10, ip=o.interp||seqInterp(C.blue);
+    p=Math.max(0,Math.min(1,+p||0));
+    const k=p>0?Math.max(1,Math.round(p*n)):0;
+    let h=`<span class="ibv-rr" aria-hidden="true" style="display:inline-flex;gap:1px;vertical-align:-1px;margin:0 6px 0 8px">`;
+    for(let i=0;i<n;i++) h+=`<i style="display:inline-block;width:5px;height:10px;background:${i<k?d3.color(ip(.18+.82*(i+.5)/n)).formatHex():C.grid}"></i>`;
+    return h+"</span>"+(o.text?`<span style="color:${C.muted}">${o.text}</span>`:"");
+  }
   function hover(target,onMove,onLeave){
     const sel=d3.select(target);
     const pt=ev=>d3.pointer(ev,target);
@@ -307,6 +318,6 @@
   }
 
   window.IBV={C,CAT,CAT6,DIV,div,seq,seqInterp,heat,heatInterp,HEAT,alpha,SANS,SERIF,FS,fmt,loc,signed,MES,MES1,rng,gauss,
-    mount,svg,canvas,t,halo,lines,note,box,rule,gridY,axisX,legendRamp,legendSize,legendCat,tip,hover,world,reduced,
+    mount,svg,canvas,t,halo,lines,note,box,rule,gridY,axisX,legendRamp,legendSize,legendCat,tip,rampRead,hover,world,reduced,
     DUR,EASE,onView,loop,focus,rings,polarGrid,cloud};
 })();
