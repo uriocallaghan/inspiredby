@@ -6,7 +6,7 @@
      fade   opacitat: el text de la part baixa de la pantalla surt fluix i s'encen paraula per paraula
      dust   particules: pols caotica que puja i forma les lletres
      swirl  particules: remolí que es tanca sobre les lletres
-     spark  particules: espurnes (traços verticals) que pugen i es concreten en les lletres
+     smoke  particules: fum, cintes ondulades d'un mateix corrent que es calma sobre les lletres
    Cost: cada paraula va en un <span>; les particules es dibuixen en UN sol canvas fix, en un sol traç, i
    la posicio depèn de l'scroll (sense simulacio per particula). Els punts de cada paraula es mostregen un
    sol cop (per tipus de lletra + text) i es desen. Nomes canvia opacitat i canvas: cap color, aixi que el
@@ -20,7 +20,7 @@
     { id: "fade",  name: "Opacitat" },
     { id: "dust",  name: "Partícules: pols" },
     { id: "swirl", name: "Partícules: remolí" },
-    { id: "spark", name: "Partícules: espurnes" }
+    { id: "smoke", name: "Partícules: fum" }
   ];
   var reduce = false;
   try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
@@ -31,9 +31,8 @@
   var MIN_CHARS = 170, MIN_LINES = 4;
   var EDGE = .62, BAND = 2.2, FLOOR = .2;          /* opacitat: tall al 62 %, transicio de 2,2 linies */
   var P_EDGE = .60, P_BAND_MIN = 150, P_BAND_K = .30; /* particules: tall al 60 %, formacio en ~30 % de pantalla */
-  var TX = .2;                                       /* part final de la formacio on el text real pren el relleu */
+  var TX = .2, LOW = .15;                            /* LOW: opacitat relativa de la boira mes llunyana */                                       /* part final de la formacio on el text real pren el relleu */
   var STEP_K = 8, STEP_MIN = 1.7, STEP_MAX = 2.6;    /* mostreig: un punt cada font/9 px */
-  var LOOP_MS = 40;                                  /* cadencia del tremolor quan no hi ha scroll (~25 fps) */
 
   /* ----------------------------- estat ----------------------------- */
   var paras = [], vis = new Set(), ticking = false, wrapped = false, fontsReady = false;
@@ -41,19 +40,18 @@
   /* color del text de mode clar (--ink d'article.css): en fosc, ib-theme el tradueix en assignar-lo al canvas.
      No es llegeix de getComputedStyle, que en fosc ja torna el color traduit i es tornaria a traduir. */
   var INK = "#121212";
-  var tick = 0, loopId = 0, lastLoop = 0, drawn = 0, lastW = 0;
+  var loopId = 0, drawn = 0, lastW = 0;
   var io = null, fontCache = new WeakMap(), samples = Object.create(null), sc = null, scx = null;
   var queue = [], qi = 0, qTimer = 0, budget = 0;
 
-  /* taules precalculades: aleatoris deterministes i sinus, perque cada frame sigui nomes aritmetica */
-  var R = new Float32Array(4096), SIN = new Float32Array(256), COS = new Float32Array(256);
+  /* aleatoris deterministes precalculats: cada punt te sempre els mateixos */
+  var R = new Float32Array(4096);
   (function(){
     var s = 1234567;
     for (var i = 0; i < 4096; i++) { s = (s * 1664525 + 1013904223) >>> 0; R[i] = (s / 4294967296) * 2 - 1; }
-    for (var j = 0; j < 256; j++) { SIN[j] = Math.sin(j * Math.PI / 128); COS[j] = Math.cos(j * Math.PI / 128); }
   })();
 
-  function isParticles(){ return mode === "dust" || mode === "swirl" || mode === "spark"; }
+  function isParticles(){ return mode === "dust" || mode === "swirl" || mode === "smoke"; }
   function smooth(t){ return t * t * (3 - 2 * t); }
   function clamp01(t){ return t < 0 ? 0 : t > 1 ? 1 : t; }
 
@@ -203,9 +201,10 @@
     var end = d.scrollHeight - h - scrollY < 4, kind = mode;
     cx.clearRect(0, 0, cw, ch);
     var nPts = 0;
-    cx.fillStyle = INK; cx.globalAlpha = kind === "spark" ? .6 : kind === "swirl" ? .8 : .9;
-    var AX = kind === "spark" ? 20 : kind === "swirl" ? 54 : 40;
-    var AY = kind === "spark" ? 95 : kind === "swirl" ? 78 : 64;
+    cx.fillStyle = INK;
+    var A0 = kind === "smoke" ? .8 : .9, T = performance.now() / 1000;
+    var AX = kind === "smoke" ? 46 : kind === "swirl" ? 54 : 40;
+    var AY = kind === "smoke" ? 84 : kind === "swirl" ? 78 : 64;
     budget = 40;
     vis.forEach(function(p){
       var ws = p._ws; if (!ws || !ws.length) return;
@@ -223,24 +222,38 @@
           if (o !== w.o) { w.o = o; w.el.style.opacity = o === 1 ? "" : o; }
           continue;
         }
-        o = t >= TX ? 0 : Math.round(smooth((TX - t) / TX) * 20) / 20;
+        /* fos encreuat continu: el text real entra al mateix ritme que les particules se'n van */
+        var f = smooth(t >= TX ? 1 : t / TX);
+        o = Math.round((1 - f) * 100) / 100;
         if (o !== w.o) { w.o = o; w.el.style.opacity = o === 1 ? "" : o; }
-        var Y0 = top + w.top; if (Y0 > h + 4) continue;
-        var X0 = left + w.x, k = Math.pow(t, 1.35), s = w.s, pts = s.p, n = s.n, base = w.id;
-        if (t < .03) continue;
-        var stride = k > .55 ? 2 : 1;
-        for (var j = 0; j < n; j += stride) {
+        var Y0 = top + w.top; if (Y0 > h + 4 || f < .01) continue;
+        /* les paraules que encara son a baix de tot neixen de mica en mica */
+        var em = smooth(clamp01((h - Y0) / 90));
+        if (em < .01) continue;
+        /* lluny, la boira es molt fluixa (LOW); s'enfosqueix en acostar-se a la franja on es formen les lletres */
+        var g = 1 - smooth(clamp01((t - TX) / (1 - TX)));
+        cx.globalAlpha = A0 * (LOW + (1 - LOW) * g) * f * em;
+        var X0 = left + w.x, k = smooth(t), s = w.s, pts = s.p, n = s.n, base = w.id;
+        var thin = .5 * smooth(clamp01((k - .35) / .65)), amp = 2.2 * k, ang = k * 2.4;
+        for (var j = 0; j < n; j++) {
           var idx = (base + j) & 4095, rx = R[idx], ry = R[(idx + 1777) & 4095];
-          var wx = SIN[(tick * 3 + idx) & 255] * 2.2 * k, wy = SIN[(tick * 2 + idx * 5 + 64) & 255] * 2.2 * k;
-          var ox = rx * AX * k, oy = (ry * .4 + .6) * AY * k;
+          /* la boira s'aclareix de manera continua (cada punt te el seu llindar): cap salt de densitat */
+          if (R[(idx + 911) & 4095] * .5 + .5 < thin) continue;
+          var wx = Math.sin(T * 1.3 + idx * .37) * amp, wy = Math.sin(T * 1.1 + idx * .61 + 1.7) * amp;
+          var ox, oy;
+          if (kind === "smoke") {
+            /* tots els punts segueixen el mateix corrent: depen de la posicio, no del punt (cintes de fum) */
+            var gx = X0 + pts[2 * j], gy = Y0 + pts[2 * j + 1];
+            ox = AX * k * Math.sin(gy * .028 + gx * .009 + T * .55) + rx * 6 * k;
+            oy = AY * k * (.55 + .45 * Math.sin(gx * .021 - gy * .012 - T * .4)) + ry * 6 * k;
+          } else { ox = rx * AX * k; oy = (ry * .4 + .6) * AY * k; }
           if (kind === "swirl") {
-            var ai = (((rx > 0 ? 1 : -1) * k * 2.4 * 40.7) | 0) & 255, cs = COS[ai], sn = SIN[ai], vx = ox, vy = oy;
+            var a2 = (rx > 0 ? ang : -ang), cs = Math.cos(a2), sn = Math.sin(a2), vx = ox, vy = oy;
             ox = vx * cs - vy * sn; oy = vx * sn + vy * cs;
           }
           var x = X0 + pts[2 * j] + ox + wx, y = Y0 + pts[2 * j + 1] + oy + wy;
           if (y > h) continue;
-          if (kind === "spark") cx.fillRect(x, y, 1, 1 + k * 16 * (.3 + .7 * Math.abs(ry)));
-          else cx.fillRect(x, y, 1.6, 1.6);
+          cx.fillRect(x, y, 1.6, 1.6);
           nPts++;
         }
       }
@@ -254,13 +267,16 @@
     if (mode === "off") return;
     if (isParticles()) renderParticles(); else renderFade();
   }
-  function req(){ if (!ticking) { ticking = true; requestAnimationFrame(render); } }
+  function req(){
+    if (isParticles()) { startLoop(); return; } /* en particules, el bucle pinta cada frame (moviment continu) */
+    if (!ticking) { ticking = true; requestAnimationFrame(render); }
+  }
 
   /* tremolor lleuger de les particules sense scroll: ~25 fps, nomes mentre n'hi ha de visibles */
-  function loop(ts){
+  function loop(){
     loopId = 0;
     if (!isParticles() || document.hidden) return;
-    if (ts - lastLoop >= LOOP_MS) { lastLoop = ts; tick++; renderParticles(); }
+    renderParticles();
     if (drawn > 0) loopId = requestAnimationFrame(loop);
   }
   function startLoop(){ if (!loopId && isParticles() && !document.hidden) loopId = requestAnimationFrame(loop); }
