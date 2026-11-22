@@ -11,7 +11,7 @@
   /* ---------- Anatomia d'un article ---------- */
   const ANAT = {
     cap: ["Capçalera", "Títol, una entradeta que planteja la pregunta i una línia amb els minuts de lectura i l'enllaç «Dades i fonts ↓». Cap llista d'autors ni de fonts aquí dalt."],
-    dl:  ["Primer paràgraf", "Comença amb una història o una imatge concreta (els pescadors del Perú, un duel de cançons inuit), amb caplletra. Res de frases generals sobre «el món d'avui»."],
+    dl:  ["Primer paràgraf", "Entra directament al tema: des de la primera frase parla del que tracta l'article, en dos o tres paràgrafs curts. Pot ser una imatge concreta del mateix fenomen (el mar del Perú que s'escalfa, un duel de cançons inuit), amb caplletra. Res d'anècdotes d'un personatge secundari ni de frases generals sobre «el món d'avui»."],
     scr: ["Secció de scroll", "El gràfic queda enganxat i els passos de text van passant al costat (a sota al mòbil). Cada pas canvia el gràfic: una capa, un zoom, una anotació. Mínim dues per article."],
     fig: ["Figura interactiva", "Un gràfic del sistema infogràfic, animat en entrar i amb hover. El peu només diu què és (dades reals, esquema o simulació) i enllaça a les seves fonts."],
     nt:  ["Nota lateral", "Curiositats i matisos en cursiva, al marge del text. Mai fonts: les fonts són a «Dades i fonts»."],
@@ -153,6 +153,7 @@
 
   /* ---------- Decisions preses ---------- */
   const TL = [
+    ["22-11-2026", "<b>La introducció entra directament al tema</b>: des de la primera frase parla del que tracta l'article, en dos o tres paràgrafs curts. Res d'obrir amb l'anècdota d'un personatge secundari (un testimoni, un viatger, un científic) que no és el tema i no torna. Primer cas corregit: <i>L'últim sopar</i>, que obria amb el nebot del prior mirant Leonardo pintar."],
     ["22-11-2026", "<b>Per ara, només «Opacitat»</b>: el menú d'efectes de la barra s'amaga i tothom llegeix amb l'efecte d'opacitat. Les variants de partícules (pols, remolí, fum) es queden al codi, apagades, per si es tornen a provar."],
     ["21-11-2026", "<b>Lectura enfocada, amb menú d'efectes</b>: als paràgrafs llargs, el text de la part baixa de la pantalla surt fluix (0,2) i s'encén paraula per paraula en pujar, sense retard. A l'esquerra de la barra hi ha un menú (icona d'espurna) per triar: sense efecte, opacitat (per defecte) o tres variants de partícules (pols, remolí, fum), en què el text de sota és una boira caòtica, molt fluixa, que s'enfosqueix i forma les lletres en pujar. És sistema: ho fa <code>assets/ib-fx.js</code> a tots els articles, sense tocar-los. No s'aplica a l'scrolly, als peus de gràfic ni a «Dades i fonts», ni amb «reduir el moviment»."],
     ["21-11-2026", "<b>El temps de lectura es calcula, no s'escriu</b>: com Medium, unes 265 paraules per minut (la mitjana d'un adult, segons la seva pàgina d'ajuda), sense ajust per gràfics. Compta el cos de l'article, sense peus de gràfic ni «Dades i fonts». És una estimació; la referència científica (Brysbaert, 2019) dona 238 par/min en anglès. El calcula <code>sync-home.mjs</code>."],
