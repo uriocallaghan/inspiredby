@@ -6,7 +6,7 @@
      fade   opacitat: el text de la part baixa de la pantalla surt fluix i s'encen paraula per paraula
      dust   particules: pols caotica que puja i forma les lletres
      swirl  particules: remolí que es tanca sobre les lletres
-     smoke  particules: fum, cintes ondulades d'un mateix corrent que es calma sobre les lletres
+     smoke  particules: fum, cada punt deriva pel seu compte (fase i frequencia propies) fins a posar-se a la lletra
    Cost: cada paraula va en un <span>; les particules es dibuixen en UN sol canvas fix, en un sol traç, i
    la posicio depèn de l'scroll (sense simulacio per particula). Els punts de cada paraula es mostregen un
    sol cop (per tipus de lletra + text) i es desen. Nomes canvia opacitat i canvas: cap color, aixi que el
@@ -203,8 +203,8 @@
     var nPts = 0;
     cx.fillStyle = INK;
     var A0 = kind === "smoke" ? .8 : .9, T = performance.now() / 1000;
-    var AX = kind === "smoke" ? 46 : kind === "swirl" ? 54 : 40;
-    var AY = kind === "smoke" ? 84 : kind === "swirl" ? 78 : 64;
+    var AX = kind === "smoke" ? 62 : kind === "swirl" ? 66 : 60;
+    var AY = kind === "smoke" ? 92 : kind === "swirl" ? 96 : 90;
     budget = 40;
     vis.forEach(function(p){
       var ws = p._ws; if (!ws || !ws.length) return;
@@ -240,15 +240,16 @@
           /* la boira s'aclareix de manera continua (cada punt te el seu llindar): cap salt de densitat */
           if (R[(idx + 911) & 4095] * .5 + .5 < thin) continue;
           var wx = Math.sin(T * 1.3 + idx * .37) * amp, wy = Math.sin(T * 1.1 + idx * .61 + 1.7) * amp;
+          /* desplacament gran i gairebe simetric (de -0,55 a +1,15 AY): les files es barregen i no queda cap patro */
           var ox, oy;
           if (kind === "smoke") {
-            /* tots els punts segueixen el mateix corrent: depen de la posicio, no del punt (cintes de fum) */
-            var gx = X0 + pts[2 * j], gy = Y0 + pts[2 * j + 1];
-            ox = AX * k * Math.sin(gy * .028 + gx * .009 + T * .55) + rx * 6 * k;
-            oy = AY * k * (.55 + .45 * Math.sin(gx * .021 - gy * .012 - T * .4)) + ry * 6 * k;
-          } else { ox = rx * AX * k; oy = (ry * .4 + .6) * AY * k; }
+            /* fum: cada punt deriva pel seu compte, amb fase i frequencia propies (cap ona comuna) */
+            var arx = rx < 0 ? -rx : rx, ary = ry < 0 ? -ry : ry;
+            ox = AX * k * Math.sin(T * (.31 + .5 * ary) + rx * 9.7);
+            oy = AY * k * (.3 + .85 * Math.sin(T * (.23 + .4 * arx) + ry * 8.3));
+          } else { ox = rx * AX * k; oy = (ry * .85 + .3) * AY * k; }
           if (kind === "swirl") {
-            var a2 = (rx > 0 ? ang : -ang), cs = Math.cos(a2), sn = Math.sin(a2), vx = ox, vy = oy;
+            var a2 = (rx > 0 ? ang : -ang) * (.4 + (ry < 0 ? -ry : ry)), cs = Math.cos(a2), sn = Math.sin(a2), vx = ox, vy = oy;
             ox = vx * cs - vy * sn; oy = vx * sn + vy * cs;
           }
           var x = X0 + pts[2 * j] + ox + wx, y = Y0 + pts[2 * j + 1] + oy + wy;
