@@ -11,7 +11,7 @@ Revista web d'articles visuals per entendre el món, en català. Llegeix aquest 
 
 ## El CMS de l'editor: qui mana i com no trepitjar-se
 
-L'editor edita el text de la web i deixa comentaris des de https://inspiredbymagazine.com/admin/ (CMS propi, login amb Google, només el seu compte; detall a `cms/README.md`). **El CMS fa commits directament a `main` de GitHub**, amb l'autor «Editor (CMS)», igual que tu. Per tant:
+L'editor edita el text de la web i deixa comentaris des de https://inspiredbymagazine.com/admin/ (CMS propi, login amb Google a través de Netlify Identity, només el seu compte; escriu a GitHub amb Git Gateway; detall a `cms/README.md`). **El CMS fa commits directament a `main` de GitHub**, amb l'autor «Editor (CMS)», igual que tu. Per tant:
 
 - **`main` a GitHub és l'única versió que mana.** La teva còpia local pot anar endarrerida: el CMS hi escriu en qualsevol moment. Abans de tocar res, `git pull --rebase origin main` (el hook `scripts/cms-sync.sh` ja ho fa sol en obrir la sessió i t'avisa a cada missatge si hi ha commits nous). Si t'avisa que el fitxer ha canviat al disc, torna'l a llegir abans d'editar-lo.
 - **Mai no tornis a escriure un text vell per sobre d'un canvi del CMS.** Si en un rebase hi ha un conflicte de text en un paràgraf, mana la redacció del CMS (és l'editor qui l'ha escrit a mà), tret que l'editor et digui el contrari. Res de `push --force`, res de `checkout --theirs/--ours` a cegues.

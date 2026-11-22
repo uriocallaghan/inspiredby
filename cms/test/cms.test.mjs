@@ -6,11 +6,11 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { articleBlocks, homeBlocks, sanitizeInline, InvalidHtml } from "../lib/html.mjs";
-import { sign, verify, b64url, verifyGoogleIdToken, _resetGoogleKeys, AuthError, SESSION_COOKIE, NONCE_COOKIE } from "../lib/auth.mjs";
+import { seal, unseal, b64url, identityUser, AuthError, SESSION_COOKIE } from "../lib/auth.mjs";
 import { fsRepo } from "../lib/fsrepo.mjs";
 import { savePage, loadPage, addComment, deleteComment, HttpError } from "../lib/core.mjs";
 import { createHandler } from "../lib/handler.mjs";
-import { RepoConflict } from "../lib/github.mjs";
+import { RepoConflict, githubRepo } from "../lib/github.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const SLUG = "per-que-riem";
@@ -60,105 +60,127 @@ test("el sanejador accepta format en línia i rebutja la resta", () => {
 
 /* ---------- sessió i Google ---------- */
 
-test("sessió signada: vàlida, manipulada i caducada", async () => {
-  const t = await sign({ a: 1, exp: Math.floor(Date.now() / 1000) + 60 }, SECRET);
-  assert.equal((await verify(t, SECRET)).a, 1);
-  assert.equal(await verify(t.replace(/^./, c => (c === "e" ? "f" : "e")), SECRET), null);
-  assert.equal(await verify(t, "y".repeat(40)), null);
-  const old = await sign({ a: 1, exp: Math.floor(Date.now() / 1000) - 1 }, SECRET);
-  assert.equal(await verify(old, SECRET), null);
+test("sessió xifrada: vàlida, manipulada, amb una altra clau i caducada", async () => {
+  const t = await seal({ a: 1, at: "secret-token", exp: Math.floor(Date.now() / 1000) + 60 }, SECRET);
+  assert.equal((await unseal(t, SECRET)).a, 1);
+  assert.ok(!t.includes("secret"), "el token d'Identity no es veu a la galeta");
+  const flipped = t.slice(0, 30) + (t[30] === "A" ? "B" : "A") + t.slice(31);
+  assert.equal(await unseal(flipped, SECRET), null);
+  assert.equal(await unseal(t, "y".repeat(40)), null);
+  const old = await seal({ a: 1, exp: Math.floor(Date.now() / 1000) - 1 }, SECRET);
+  assert.equal(await unseal(old, SECRET), null);
 });
 
-async function googleKit() {
-  const kp = await crypto.subtle.generateKey({ name: "RSASSA-PKCS1-v1_5", modulusLength: 2048, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, true, ["sign", "verify"]);
-  const jwk = { ...(await crypto.subtle.exportKey("jwk", kp.publicKey)), kid: "k1", use: "sig", alg: "RS256" };
-  const fetchImpl = async url => {
-    assert.equal(url, "https://www.googleapis.com/oauth2/v3/certs");
-    return new Response(JSON.stringify({ keys: [jwk] }), { headers: { "cache-control": "max-age=100" } });
+/* Netlify Identity de mentida: /user torna l'usuari del token; /token renova; Git Gateway no s'usa aquí. */
+function fakeIdentity() {
+  const exp = s => b64url(new TextEncoder().encode(JSON.stringify({ alg: "HS256" }))) + "." + b64url(new TextEncoder().encode(JSON.stringify({ exp: Math.floor(Date.now() / 1000) + s }))) + ".sig";
+  const users = {
+    [exp(3600) + "a"]: { id: "u1", email: "Editor@example.com", confirmed_at: "2026-01-01", user_metadata: { full_name: "Editor", avatar_url: "https://lh3.googleusercontent.com/x" } },
+    [exp(3600) + "b"]: { id: "u2", email: "altre@example.com", confirmed_at: "2026-01-01", user_metadata: {} },
+    [exp(60) + "c"]: { id: "u1", email: "editor@example.com", confirmed_at: "2026-01-01", user_metadata: {} }
   };
-  const enc = new TextEncoder();
-  async function token(claims, header = { alg: "RS256", kid: "k1", typ: "JWT" }) {
-    const now = Math.floor(Date.now() / 1000);
-    const body = { iss: "https://accounts.google.com", aud: "client-1", sub: "111", email: "editor@example.com", email_verified: true, iat: now, exp: now + 600, nonce: "n1", ...claims };
-    const data = `${b64url(enc.encode(JSON.stringify(header)))}.${b64url(enc.encode(JSON.stringify(body)))}`;
-    const sig = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", kp.privateKey, enc.encode(data));
-    return `${data}.${b64url(sig)}`;
-  }
-  return { fetchImpl, token };
+  const tokens = Object.keys(users);
+  const calls = [];
+  const fetchImpl = async (url, opts = {}) => {
+    calls.push(url);
+    if (url.endsWith("/user")) {
+      const u = users[(opts.headers?.authorization || "").replace("Bearer ", "")];
+      return u ? new Response(JSON.stringify(u)) : new Response("{}", { status: 401 });
+    }
+    if (url.endsWith("/token")) {
+      return /refresh_token=r1/.test(opts.body) ? new Response(JSON.stringify({ access_token: tokens[0], refresh_token: "r2" })) : new Response("{}", { status: 400 });
+    }
+    return new Response("{}", { status: 404 });
+  };
+  return { fetchImpl, good: tokens[0], other: tokens[1], expiring: tokens[2], calls };
 }
 
-test("ID token de Google: només si signatura, audiència, emissor, nonce i correu verificat quadren", async () => {
-  _resetGoogleKeys();
-  const { fetchImpl, token } = await googleKit();
-  const opts = { clientId: "client-1", nonce: "n1", fetchImpl };
-  assert.equal((await verifyGoogleIdToken(await token({}), opts)).email, "editor@example.com");
-  for (const claims of [{ aud: "altre" }, { iss: "https://evil.example" }, { nonce: "n2" }, { email_verified: false }, { exp: 1000 }]) {
-    await assert.rejects(verifyGoogleIdToken(await token(claims), opts), AuthError, JSON.stringify(claims));
-  }
-  await assert.rejects(verifyGoogleIdToken(await token({}, { alg: "none", kid: "k1" }), opts), AuthError);
-  const t = await token({});
-  const forged = t.split(".").slice(0, 1).join(".") + "." + b64url(new TextEncoder().encode(JSON.stringify({ email: "x" }))) + "." + t.split(".")[2];
-  await assert.rejects(verifyGoogleIdToken(forged, opts), AuthError);
+test("Identity: només val un token que Identity reconegui", async () => {
+  const id = fakeIdentity();
+  const u = await identityUser(id.good, { identityUrl: "https://site.test/.netlify/identity", fetchImpl: id.fetchImpl });
+  assert.equal(u.id, "u1");
+  await assert.rejects(identityUser("x".repeat(40), { identityUrl: "https://site.test/.netlify/identity", fetchImpl: id.fetchImpl }), AuthError);
+  await assert.rejects(identityUser(undefined, { identityUrl: "https://site.test/.netlify/identity", fetchImpl: id.fetchImpl }), AuthError);
 });
 
 /* ---------- API ---------- */
 
 function apiKit(env = {}) {
   const { dir, repo } = tmpRepo();
-  return googleKit().then(g => {
-    _resetGoogleKeys();
-    const E = { GOOGLE_CLIENT_ID: "client-1", CMS_ALLOWED_EMAILS: "editor@example.com", CMS_SESSION_SECRET: SECRET, CMS_ORIGIN: "https://site.test", ...env };
-    const handle = createHandler({ env: E, getRepo: () => repo, fetchImpl: g.fetchImpl, log: { warn() {}, error() {} } });
-    let jar = {};
-    async function call(route, body = {}, { origin = "https://site.test", headers = {} } = {}) {
-      const res = await handle(new Request(`https://site.test/api/cms/${route}`, {
-        method: "POST",
-        headers: { "content-type": "application/json", "x-ib-cms": "1", origin, cookie: Object.entries(jar).map(([k, v]) => `${k}=${v}`).join("; "), ...headers },
-        body: JSON.stringify(body)
-      }));
-      for (const c of res.headers.getSetCookie()) {
-        const [kv] = c.split(";"); const k = kv.slice(0, kv.indexOf("=")); const v = kv.slice(kv.indexOf("=") + 1);
-        if (/Max-Age=0/.test(c)) delete jar[k]; else jar[k] = v;
-      }
-      return { status: res.status, body: await res.json(), res };
+  const id = fakeIdentity();
+  const E = { CMS_ALLOWED_EMAILS: "editor@example.com", CMS_SESSION_SECRET: SECRET, CMS_ORIGIN: "https://site.test", ...env };
+  const seen = [];
+  const handle = createHandler({ env: E, getRepo: s => { seen.push(s.at); return repo; }, fetchImpl: id.fetchImpl, log: { warn() {}, error() {} } });
+  let jar = {};
+  async function call(route, body = {}, { origin = "https://site.test", headers = {} } = {}) {
+    const res = await handle(new Request(`https://site.test/api/cms/${route}`, {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-ib-cms": "1", origin, cookie: Object.entries(jar).map(([k, v]) => `${k}=${v}`).join("; "), ...headers },
+      body: JSON.stringify(body)
+    }));
+    for (const c of res.headers.getSetCookie()) {
+      const [kv] = c.split(";"); const k = kv.slice(0, kv.indexOf("=")); const v = kv.slice(kv.indexOf("=") + 1);
+      if (/Max-Age=0/.test(c)) delete jar[k]; else jar[k] = v;
     }
-    async function login(claims = {}) {
-      const { nonce } = (await call("nonce")).body;
-      return call("login", { credential: await g.token({ nonce, ...claims }) });
-    }
-    return { dir, repo, call, login, jar: () => jar, token: g.token };
-  });
+    return { status: res.status, body: await res.json(), res };
+  }
+  const login = (token = id.good, rt = "r1") => call("login", { access_token: token, refresh_token: rt });
+  return { dir, repo, call, login, id, seen, jar: () => jar, handleEnv: E };
 }
 
 test("API: sense sessió, d'un altre origen o sense capçalera, no s'hi entra", async () => {
-  const k = await apiKit();
+  const k = apiKit();
   assert.equal((await k.call("pages")).status, 401);
-  assert.equal((await k.call("nonce", {}, { origin: "https://evil.test" })).status, 403);
-  assert.equal((await k.call("nonce", {}, { headers: { "x-ib-cms": "" } })).status, 403);
-  assert.equal((await k.call("nonce", {}, { headers: { "sec-fetch-site": "cross-site" } })).status, 403);
+  assert.equal((await k.call("config", {}, { origin: "https://evil.test" })).status, 403);
+  assert.equal((await k.call("config", {}, { headers: { "x-ib-cms": "" } })).status, 403);
+  assert.equal((await k.call("config", {}, { headers: { "sec-fetch-site": "cross-site" } })).status, 403);
+  assert.equal((await k.call("config", {}, { headers: { "content-type": "text/plain" } })).status, 403);
 });
 
 test("API: login només per al compte autoritzat, i la galeta és segura", async () => {
-  const k = await apiKit();
-  assert.equal((await k.login({ email: "altre@example.com" })).status, 403);
+  const k = apiKit();
+  assert.equal((await k.login("fals".repeat(10))).status, 401);
+  assert.equal((await k.login(k.id.other)).status, 403);
   assert.equal(k.jar()[SESSION_COOKIE], undefined);
   const ok = await k.login();
   assert.equal(ok.status, 200);
+  assert.equal(ok.body.me.email, "editor@example.com");
   const sc = ok.res.headers.getSetCookie().find(c => c.startsWith(SESSION_COOKIE));
   assert.match(sc, /HttpOnly/); assert.match(sc, /Secure/); assert.match(sc, /SameSite=Strict/);
-  assert.equal(k.jar()[NONCE_COOKIE], undefined, "el nonce és d'un sol ús");
+  assert.ok(!sc.includes(k.id.good.split(".")[0]), "el token d'Identity viatja xifrat");
   assert.equal((await k.call("pages")).status, 200);
-  // el mateix token no es pot tornar a fer servir sense un nonce nou
+  assert.equal(k.seen.at(-1), k.id.good, "el repositori rep el token d'Identity (Git Gateway)");
   assert.equal((await k.call("logout")).status, 200);
   assert.equal((await k.call("pages")).status, 401);
 });
 
+test("API: el token d'Identity es renova sol abans que caduqui", async () => {
+  const k = apiKit();
+  assert.equal((await k.login(k.id.expiring, "r1")).status, 200);
+  const r = await k.call("pages");
+  assert.equal(r.status, 200);
+  assert.equal(k.seen.at(-1), k.id.good, "s'ha fet servir el token renovat");
+  assert.ok(r.res.headers.getSetCookie().some(c => c.startsWith(SESSION_COOKIE)), "la galeta s'ha tornat a escriure");
+});
+
 test("API: si es treu el correu de la llista, la sessió deixa de valer", async () => {
-  const k = await apiKit();
+  const k = apiKit();
   await k.login();
-  const k2 = createHandler({ env: { GOOGLE_CLIENT_ID: "client-1", CMS_ALLOWED_EMAILS: "una-altra@example.com", CMS_SESSION_SECRET: SECRET, CMS_ORIGIN: "https://site.test" }, getRepo: () => k.repo });
+  const k2 = createHandler({ env: { ...k.handleEnv, CMS_ALLOWED_EMAILS: "una-altra@example.com" }, getRepo: () => k.repo, fetchImpl: k.id.fetchImpl });
   const res = await k2(new Request("https://site.test/api/cms/pages", { method: "POST", headers: { "content-type": "application/json", "x-ib-cms": "1", origin: "https://site.test", cookie: `${SESSION_COOKIE}=${k.jar()[SESSION_COOKIE]}` }, body: "{}" }));
   assert.equal(res.status, 401);
+});
+
+test("Git Gateway: llegeix fitxers encara que torni el JSON de GitHub en lloc del fitxer cru", async () => {
+  const content = "<p>Hola, món</p>\n";
+  const fetchImpl = async url => {
+    assert.ok(url.startsWith("https://site.test/.netlify/git/github/contents/web/index.html?ref="));
+    return new Response(JSON.stringify({ type: "file", path: "web/index.html", sha: "abc", encoding: "base64", content: Buffer.from(content).toString("base64") }), { headers: { "content-type": "application/json" } });
+  };
+  const r = githubRepo({ token: "jwt", base: "https://site.test/.netlify/git/github", fetchImpl });
+  assert.equal(await r.readFile("web/index.html", "sha1"), content);
+  const raw = githubRepo({ token: "jwt", base: "https://x", fetchImpl: async () => new Response('[{"slug":"a"}]', { headers: { "content-type": "application/vnd.github.raw+json" } }) });
+  assert.equal(await raw.readFile("web/articles.json", "s"), '[{"slug":"a"}]');
 });
 
 /* ---------- desar i combinar ---------- */

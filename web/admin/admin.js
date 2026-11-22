@@ -94,44 +94,38 @@
     staleTries: 0
   };
 
-  /* ---------- login ---------- */
-  let gisLoaded = null;
-  function loadGis() {
-    if (gisLoaded) return gisLoaded;
-    gisLoaded = new Promise((resolve, reject) => {
-      const s = document.createElement("script");
-      s.src = "https://accounts.google.com/gsi/client";
-      s.async = true; s.onload = resolve; s.onerror = () => reject(new Error("No s'ha pogut carregar Google."));
-      document.head.appendChild(s);
-    });
-    return gisLoaded;
+  /* ---------- login (Netlify Identity amb Google) ---------- */
+  // Identity torna a la portada amb #access_token=…; ib-theme.js ho reenvia aquí. El token s'envia una sola
+  // vegada al servidor (que el comprova i el guarda xifrat en una galeta HttpOnly) i s'esborra de l'URL.
+  async function takeIdentityReturn() {
+    if (!/^#(access_token|error)=/.test(location.hash)) return false;
+    const q = new URLSearchParams(location.hash.slice(1));
+    let back = "";
+    try { back = sessionStorage.getItem("ibcms:back") || ""; sessionStorage.removeItem("ibcms:back"); } catch {}
+    history.replaceState(null, "", "/admin/" + back);
+    if (q.get("error")) { showLogin(q.get("error_description") || "No s'ha pogut entrar."); return true; }
+    try {
+      await api("login", { access_token: q.get("access_token"), refresh_token: q.get("refresh_token") });
+      return false;
+    } catch (e) { showLogin(e.message); return true; }
   }
   async function showLogin(msg = "") {
     $("app").hidden = true;
     $("login").hidden = false;
     $("loginErr").textContent = msg;
-    try {
-      const { nonce, clientId } = await api("nonce");
-      if (clientId === "dev" && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
-        $("devlogin").hidden = false;
-        $("devlogin").onclick = async () => { await fetch("/api/cms/dev-login", { method: "POST", headers: { "x-ib-cms": "1" } }); boot(); };
-        return;
-      }
-      await loadGis();
-      google.accounts.id.initialize({
-        client_id: clientId, nonce, auto_select: true, itp_support: true, use_fedcm_for_prompt: true, cancel_on_tap_outside: false,
-        callback: async r => {
-          $("loginErr").textContent = "";
-          try { await api("login", { credential: r.credential }); boot(); }
-          catch (e) { $("loginErr").textContent = e.message; showLogin(e.message); }
-        }
-      });
-      const w = Math.min(320, $("gbtn").clientWidth || 320);
-      google.accounts.id.renderButton($("gbtn"), { theme: "filled_black", size: "large", shape: "pill", text: "continue_with", locale: "ca", width: w });
-      if (!msg) google.accounts.id.prompt();
-    } catch (e) {
-      $("loginErr").textContent = e.message;
+    let cfg = { login: "identity" };
+    try { cfg = await api("config"); } catch (e) { $("loginErr").textContent = e.message; }
+    if (cfg.login === "dev" && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+      $("gbtn").hidden = true;
+      $("devlogin").hidden = false;
+      $("devlogin").onclick = async () => { await fetch("/api/cms/dev-login", { method: "POST", headers: { "x-ib-cms": "1" } }); boot(); };
+      return;
     }
+    $("gbtn").onclick = () => {
+      try { sessionStorage.setItem("ibcms:back", location.hash); } catch {}
+      $("gbtn").disabled = true;
+      location.href = "/.netlify/identity/authorize?provider=google";
+    };
   }
 
   /* ---------- barra inferior ---------- */
@@ -166,7 +160,7 @@
     $("selComment").innerHTML = `${svg("comment")}<span>Comenta</span>`;
     $("selComment").addEventListener("mousedown", e => e.preventDefault());
     $("selComment").onclick = openComposer;
-    $("logout").onclick = async () => { await api("logout").catch(() => {}); try { google.accounts.id.disableAutoSelect(); } catch {} location.reload(); };
+    $("logout").onclick = async () => { await api("logout").catch(() => {}); location.reload(); };
   }
 
   function exec(cmd) {
@@ -958,6 +952,7 @@
 
   /* ---------- arrencada ---------- */
   async function boot() {
+    if (await takeIdentityReturn()) return;
     let me;
     try { me = (await api("me")).me; }
     catch (e) { if (e.status === 401) return showLogin(); $("login").hidden = false; $("loginErr").textContent = e.message; return; }

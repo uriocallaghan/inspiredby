@@ -1,7 +1,7 @@
 /* CMS · servidor local per provar l'editor sense tocar GitHub.
    node cms/dev-server.mjs [port]
    Copia web/ i cms/comentaris.json a una carpeta temporal i hi fa els «commits»: el repositori real no es toca.
-   El login de Google se substitueix per un botó «Entra (mode local)» que només existeix aquí. */
+   El login de Netlify Identity se substitueix per un botó «Entra (mode local)» que només existeix aquí. */
 import http from "node:http";
 import fs from "node:fs";
 import os from "node:os";
@@ -9,7 +9,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHandler } from "./lib/handler.mjs";
 import { fsRepo } from "./lib/fsrepo.mjs";
-import { sign, cookie, SESSION_COOKIE, randomId } from "./lib/auth.mjs";
+import { seal, cookie, SESSION_COOKIE, randomId } from "./lib/auth.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PORT = +(process.argv[2] || process.env.PORT || 8788);
@@ -23,7 +23,6 @@ const repo = fsRepo(DIR);
 // si algú toca la còpia a mà (p. ex. node scripts/comentaris.mjs --dir …), és com un push nou
 fs.watch(DIR, { recursive: true }, (_, f) => { if (f && /\.(html|json)$/.test(f)) repo.touch(f.split(path.sep).join("/")); });
 const env = {
-  GOOGLE_CLIENT_ID: "dev",
   CMS_ALLOWED_EMAILS: "editor@localhost",
   CMS_SESSION_SECRET: randomId(32),
   CMS_ORIGIN: `http://localhost:${PORT},http://127.0.0.1:${PORT}`
@@ -34,18 +33,19 @@ const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": 
   ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp", ".svg": "image/svg+xml", ".woff2": "font/woff2", ".webmanifest": "application/manifest+json", ".csv": "text/csv", ".geojson": "application/json", ".bin": "application/octet-stream" };
 // mateixes capçaleres que web/netlify.toml posa a /admin/*
 const ADMIN_HEADERS = {
-  "content-security-policy": "default-src 'self'; script-src 'self' https://accounts.google.com/gsi/client; style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; frame-src 'self' https://accounts.google.com/gsi/; connect-src 'self' https://accounts.google.com/gsi/; img-src 'self' data: https://*.googleusercontent.com; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
-  "x-frame-options": "DENY", "referrer-policy": "same-origin", "cross-origin-opener-policy": "same-origin-allow-popups", "x-robots-tag": "noindex, nofollow", "cache-control": "no-store"
+  "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; frame-src 'self'; connect-src 'self'; img-src 'self' data: https:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+  "x-frame-options": "DENY", "referrer-policy": "same-origin", "cross-origin-opener-policy": "same-origin", "x-robots-tag": "noindex, nofollow", "cache-control": "no-store"
 };
 
 http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   if (url.pathname === "/api/cms/dev-login" && req.method === "POST") {
     const now = Math.floor(Date.now() / 1000);
-    const token = await sign({ sub: "dev", email: "editor@localhost", name: "Editor (local)", picture: "", iat: now, exp: now + 43200, v: "1", sid: randomId(6) }, env.CMS_SESSION_SECRET);
+    const token = await seal({ sub: "dev", email: "editor@localhost", name: "Editor (local)", picture: "", iat: now, exp: now + 43200, v: "1", sid: randomId(6) }, env.CMS_SESSION_SECRET);
     res.writeHead(200, { "set-cookie": cookie(SESSION_COOKIE, token, 43200), "content-type": "application/json" });
     return res.end("{}");
   }
+  if (url.pathname === "/api/cms/config") { res.writeHead(200, { "content-type": "application/json" }); return res.end('{"login":"dev"}'); }
   if (url.pathname.startsWith("/api/cms/")) {
     const chunks = [];
     for await (const c of req) chunks.push(c);

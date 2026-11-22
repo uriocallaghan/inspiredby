@@ -6,8 +6,8 @@ Editor de text propi a `https://inspiredbymagazine.com/admin/`. Serveix per fer 
 
 ```
 navegador (/admin/)  ──POST /api/cms/*──▶  Netlify Function (netlify/functions/cms.mjs)
-   iframe amb la pàgina real                  ├─ comprova la sessió (galeta signada) i l'origen
-   + barra inferior                           ├─ llegeix i escriu a GitHub (main) amb un token que només viu aquí
+   iframe amb la pàgina real                  ├─ comprova la sessió (galeta xifrada) i l'origen
+   + barra inferior                           ├─ llegeix i escriu a GitHub (main) a través de Git Gateway de Netlify
                                               └─ cada desat = 1 commit «Editor (CMS)» a main
                                                         │
 GitHub main ──▶ Netlify publica la web  ◀───────────────┘
@@ -22,35 +22,20 @@ GitHub main ──▶ Netlify publica la web  ◀──────────�
 
 ## Seguretat
 
-- Login amb **Google Identity Services**. El servidor comprova la signatura RS256 del token amb les claus públiques de Google, l'emissor, l'audiència (el nostre client ID), la caducitat, el correu verificat i un **nonce d'un sol ús**.
-- Només entren els correus de `CMS_ALLOWED_EMAILS` (i, si hi és, l'identificador fix de Google de `CMS_ALLOWED_SUBS`). Si un correu se'n treu, les sessions obertes deixen de valer a l'instant.
-- Sessió: galeta `__Host-ib_cms` **HttpOnly, Secure, SameSite=Strict**, signada amb HMAC-SHA256, 12 hores. Canviar `CMS_SESSION_VERSION` tanca totes les sessions.
+- **Login: Netlify Identity amb Google** (les credencials de Google les posa Netlify: no cal Google Cloud). Registre **només per invitació**: ningú més no es pot crear un compte.
+- Identity torna a la portada amb el token a l'URL (`#access_token=…`); `assets/ib-theme.js` el passa a `/admin/`, que l'envia una sola vegada al servidor i l'esborra de l'URL. El servidor pregunta a Identity de qui és el token i només deixa entrar els correus de `CMS_ALLOWED_EMAILS`. Si un correu se'n treu, les sessions obertes deixen de valer a l'instant.
+- Sessió: galeta `__Host-ib_cms` **HttpOnly, Secure, SameSite=Strict**, **xifrada** (AES-256-GCM), 12 hores. Dins hi ha el token d'Identity, que el servidor renova sol cada hora; el JavaScript de la pàgina no el veu mai. Canviar `CMS_SESSION_VERSION` tanca totes les sessions.
+- **Escriptura a GitHub: Git Gateway de Netlify.** La funció crida `/.netlify/git/github/*` amb el token d'Identity de l'editor; Netlify hi posa el seu accés a GitHub. Ningú no ha de crear cap token de GitHub. (Si algun dia es defineix `GITHUB_TOKEN`, es fa servir aquest en lloc de Git Gateway.)
 - Cada petició: només `POST` JSON amb la capçalera `X-IB-CMS` i `Origin` igual al domini (contra CSRF). Les respostes no es guarden mai en memòria cau (tampoc al service worker).
-- El **token de GitHub** només el té la funció (variable d'entorn de Netlify); el navegador no el veu mai. Ha de ser *fine-grained*, només d'aquest repositori i només amb permís *Contents: read and write*.
 - L'HTML que arriba es valida al servidor: només etiquetes en línia d'una llista tancada, sense `on*`, sense `javascript:`, sense `<script>`/`<style>`; text pla a la portada. Els camins de fitxer es construeixen al servidor (cap camí arbitrari).
-- `/admin/` porta CSP estricta, `frame-ancestors 'none'`, `noindex`. Cap dependència externa al servidor (només Web Crypto).
+- `/admin/` porta CSP estricta (cap script de fora), `frame-ancestors 'none'`, `noindex`. Cap dependència externa al servidor (només Web Crypto).
 
-## Posar-lo en marxa (una sola vegada)
+## Configuració a Netlify (ja feta el 22-11-2026)
 
-1. **Google Cloud Console** → APIs i serveis → Credencials → *Crea credencials* → *ID de client d'OAuth* → tipus *Aplicació web*.
-   - Orígens de JavaScript autoritzats: `https://inspiredbymagazine.com`
-   - (no cal cap URI de redirecció)
-   - Copia l'**ID de client** (acaba en `.apps.googleusercontent.com`).
-2. **GitHub** → Settings → Developer settings → *Fine-grained personal access tokens* → *Generate new token*.
-   - Repository access: *Only select repositories* → `uriocallaghan/inspiredby`
-   - Permissions → Repository → *Contents: Read and write* (res més).
-3. **Netlify** → el lloc `inspiredby-magazine` → Site configuration → Environment variables (àmbit *Functions*):
-
-   | Variable | Valor |
-   |---|---|
-   | `GOOGLE_CLIENT_ID` | l'ID de client del pas 1 |
-   | `CMS_ALLOWED_EMAILS` | el teu correu de Google |
-   | `CMS_SESSION_SECRET` | 48+ caràcters aleatoris (`openssl rand -base64 48`) |
-   | `GITHUB_TOKEN` | el token del pas 2 (marca-la com a secreta) |
-   | `CMS_ORIGIN` | `https://inspiredbymagazine.com` (opcional, és el valor per defecte) |
-   | `CMS_ALLOWED_SUBS` | opcional: el teu identificador fix de Google, per blindar-ho encara més |
-
-4. Torna a publicar (Deploys → *Trigger deploy*) perquè la funció agafi les variables. Obre `/admin/`.
+- Identity activat al lloc `inspiredby-magazine`, amb Google com a proveïdor extern i registre només per invitació.
+- Git Gateway activat (Identity → Services → Git Gateway) sobre `uriocallaghan/inspiredby`.
+- Variables d'entorn: `CMS_ALLOWED_EMAILS` (el correu de l'editor) i `CMS_SESSION_SECRET` (aleatori). Opcionals: `CMS_ORIGIN` (per defecte `https://inspiredbymagazine.com`), `CMS_ALLOWED_SUBS`, `CMS_SESSION_VERSION`.
+- Per donar accés a una altra persona: invitar-la a Identity **i** afegir el seu correu a `CMS_ALLOWED_EMAILS`.
 
 ## Provar-lo en local
 

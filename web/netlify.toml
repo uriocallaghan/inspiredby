@@ -32,10 +32,10 @@
 [[headers]]
   for = "/admin/*"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://accounts.google.com/gsi/client; style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; frame-src 'self' https://accounts.google.com/gsi/; connect-src 'self' https://accounts.google.com/gsi/; img-src 'self' data: https://*.googleusercontent.com; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; frame-src 'self'; connect-src 'self'; img-src 'self' data: https:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
     X-Frame-Options = "DENY"
     Referrer-Policy = "same-origin"
-    Cross-Origin-Opener-Policy = "same-origin-allow-popups"
+    Cross-Origin-Opener-Policy = "same-origin"
     X-Content-Type-Options = "nosniff"
     X-Robots-Tag = "noindex, nofollow"
     Cache-Control = "no-store"

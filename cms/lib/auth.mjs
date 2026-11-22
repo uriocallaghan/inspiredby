@@ -1,18 +1,18 @@
-/* CMS · seguretat: login amb Google, sessió signada i protecció contra peticions d'altres webs.
+/* CMS · seguretat: login amb Netlify Identity (Google), sessió xifrada i protecció contra peticions d'altres webs.
    Sense dependències: només Web Crypto (Node 18+ i Netlify Functions).
 
-   - Google: el navegador rep un ID token (JWT RS256) de Google Identity Services. Aquí se'n comprova la
-     signatura amb les claus públiques de Google, l'emissor, l'audiència (el nostre client ID), la caducitat,
-     el nonce d'un sol ús i que el correu sigui l'autoritzat (CMS_ALLOWED_EMAILS, opcionalment CMS_ALLOWED_SUBS).
-   - Sessió: galeta __Host- HttpOnly, Secure, SameSite=Strict, signada amb HMAC-SHA256 (CMS_SESSION_SECRET).
-     Canviar CMS_SESSION_VERSION tanca totes les sessions obertes.
+   - Login: Netlify Identity amb Google (credencials de Google de Netlify: no cal Google Cloud). El navegador
+     torna amb un access token d'Identity; el servidor el comprova preguntant-li a Identity qui és (/user)
+     i només deixa entrar els correus de CMS_ALLOWED_EMAILS (opcionalment, també l'id fix de CMS_ALLOWED_SUBS).
+   - Sessió: galeta __Host- HttpOnly, Secure, SameSite=Strict, XIFRADA amb AES-256-GCM (clau derivada de
+     CMS_SESSION_SECRET). Hi viu el token d'Identity, que serveix per escriure a GitHub a través de Git Gateway;
+     el JavaScript de la pàgina no el pot llegir. Canviar CMS_SESSION_VERSION tanca totes les sessions.
    - Cada petició: sessió vàlida + capçalera X-IB-CMS + Origin igual al domini (CMS_ORIGIN). */
 
 const enc = new TextEncoder();
 const dec = new TextDecoder();
 
 export const SESSION_COOKIE = "__Host-ib_cms";
-export const NONCE_COOKIE = "__Host-ib_cms_n";
 export const SESSION_HOURS = 12;
 
 export function b64url(bytes) {
@@ -33,30 +33,35 @@ export function randomId(bytes = 16) {
   return b64url(crypto.getRandomValues(new Uint8Array(bytes)));
 }
 
+/* ---------- sessió xifrada ---------- */
+
 const keyCache = new Map();
-async function hmacKey(secret) {
+async function aesKey(secret) {
   if (!secret || secret.length < 32) throw new Error("CMS_SESSION_SECRET ha de tenir com a mínim 32 caràcters.");
   if (!keyCache.has(secret)) {
-    keyCache.set(secret, crypto.subtle.importKey("raw", enc.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign", "verify"]));
+    keyCache.set(secret, (async () => {
+      const raw = await crypto.subtle.digest("SHA-256", enc.encode("ib-cms-session:" + secret));
+      return crypto.subtle.importKey("raw", raw, { name: "AES-GCM" }, false, ["encrypt", "decrypt"]);
+    })());
   }
   return keyCache.get(secret);
 }
 
-/** Galeta signada: base64url(json).base64url(hmac). */
-export async function sign(payload, secret) {
-  const body = b64url(enc.encode(JSON.stringify(payload)));
-  const sig = await crypto.subtle.sign("HMAC", await hmacKey(secret), enc.encode(body));
-  return `${body}.${b64url(sig)}`;
+/** Xifra i autentica: base64url(iv | xifrat+etiqueta). */
+export async function seal(payload, secret) {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, await aesKey(secret), enc.encode(JSON.stringify(payload))));
+  const out = new Uint8Array(iv.length + ct.length);
+  out.set(iv); out.set(ct, iv.length);
+  return b64url(out);
 }
-/** Torna el contingut si la signatura és bona i no ha caducat; si no, null. */
-export async function verify(token, secret, now = Date.now()) {
-  if (typeof token !== "string" || token.length > 4096) return null;
-  const parts = token.split(".");
-  if (parts.length !== 2) return null;
+/** Torna el contingut si és autèntic i no ha caducat; si no, null. */
+export async function unseal(token, secret, now = Date.now()) {
+  if (typeof token !== "string" || token.length < 40 || token.length > 3800) return null;
   try {
-    const ok = await crypto.subtle.verify("HMAC", await hmacKey(secret), b64urlDecode(parts[1]), enc.encode(parts[0]));
-    if (!ok) return null;
-    const payload = JSON.parse(dec.decode(b64urlDecode(parts[0])));
+    const bytes = b64urlDecode(token);
+    const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: bytes.slice(0, 12) }, await aesKey(secret), bytes.slice(12));
+    const payload = JSON.parse(dec.decode(pt));
     if (!payload || typeof payload.exp !== "number" || payload.exp * 1000 < now) return null;
     return payload;
   } catch {
@@ -78,63 +83,47 @@ export function cookie(name, value, maxAgeSeconds) {
   return `${name}=${value}; Path=/; Max-Age=${Math.max(0, Math.floor(maxAgeSeconds))}; HttpOnly; Secure; SameSite=Strict`;
 }
 
-/* ---------- Google ---------- */
-
-const GOOGLE_JWKS = "https://www.googleapis.com/oauth2/v3/certs";
-const GOOGLE_ISS = new Set(["accounts.google.com", "https://accounts.google.com"]);
-let jwks = { keys: null, until: 0 };
-
-async function googleKeys(fetchImpl, now) {
-  if (jwks.keys && jwks.until > now) return jwks.keys;
-  const res = await fetchImpl(GOOGLE_JWKS);
-  if (!res.ok) throw new Error("No s'han pogut llegir les claus de Google.");
-  const { keys } = await res.json();
-  const age = /max-age=(\d+)/.exec(res.headers.get("cache-control") || "");
-  jwks = { keys, until: now + Math.min(+(age?.[1] || 3600), 6 * 3600) * 1000 };
-  return keys;
-}
-export function _resetGoogleKeys() { jwks = { keys: null, until: 0 }; }
+/* ---------- Netlify Identity ---------- */
 
 export class AuthError extends Error {}
 
-/** Comprova un ID token de Google. Torna el contingut (sub, email...) o llança AuthError. */
-export async function verifyGoogleIdToken(idToken, { clientId, nonce, fetchImpl = fetch, now = Date.now() }) {
-  if (!clientId) throw new AuthError("Falta GOOGLE_CLIENT_ID.");
-  if (typeof idToken !== "string" || idToken.length > 8192) throw new AuthError("Token no vàlid.");
-  const parts = idToken.split(".");
-  if (parts.length !== 3) throw new AuthError("Token no vàlid.");
-  let header, payload;
-  try {
-    header = JSON.parse(dec.decode(b64urlDecode(parts[0])));
-    payload = JSON.parse(dec.decode(b64urlDecode(parts[1])));
-  } catch { throw new AuthError("Token no vàlid."); }
-  if (header.alg !== "RS256" || typeof header.kid !== "string") throw new AuthError("Algorisme no permès.");
-  const keys = await googleKeys(fetchImpl, now);
-  let jwk = keys.find(k => k.kid === header.kid);
-  if (!jwk) { _resetGoogleKeys(); jwk = (await googleKeys(fetchImpl, now)).find(k => k.kid === header.kid); }
-  if (!jwk) throw new AuthError("Clau de Google desconeguda.");
-  const key = await crypto.subtle.importKey("jwk", { kty: jwk.kty, n: jwk.n, e: jwk.e, alg: "RS256", ext: true },
-    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, false, ["verify"]);
-  const ok = await crypto.subtle.verify("RSASSA-PKCS1-v1_5", key, b64urlDecode(parts[2]), enc.encode(`${parts[0]}.${parts[1]}`));
-  if (!ok) throw new AuthError("Signatura no vàlida.");
-  const t = Math.floor(now / 1000);
-  if (!GOOGLE_ISS.has(payload.iss)) throw new AuthError("Emissor no vàlid.");
-  const aud = Array.isArray(payload.aud) ? payload.aud : [payload.aud];
-  if (!aud.includes(clientId)) throw new AuthError("Audiència no vàlida.");
-  if (typeof payload.exp !== "number" || payload.exp + 60 < t) throw new AuthError("El token ha caducat.");
-  if (typeof payload.iat === "number" && payload.iat - 300 > t) throw new AuthError("Token del futur.");
-  if (payload.email_verified !== true && payload.email_verified !== "true") throw new AuthError("Correu no verificat.");
-  if (!nonce || payload.nonce !== nonce) throw new AuthError("Nonce no vàlid. Torna-ho a provar.");
-  return payload;
+/** Caducitat (segons) d'un JWT, sense comprovar-ne la signatura (només per saber quan renovar-lo). */
+export function jwtExp(token) {
+  try { return JSON.parse(dec.decode(b64urlDecode(String(token).split(".")[1]))).exp || 0; } catch { return 0; }
 }
 
-/** Només el compte (o comptes) autoritzat. Si CMS_ALLOWED_SUBS hi és, també ha de coincidir l'identificador fix de Google. */
-export function isAllowed(payload, env) {
+/** Pregunta a Netlify Identity de qui és el token. Si el token és fals o ha caducat, Identity respon 401. */
+export async function identityUser(accessToken, { identityUrl, fetchImpl = fetch }) {
+  if (typeof accessToken !== "string" || accessToken.length < 20 || accessToken.length > 4096) throw new AuthError("Token no vàlid.");
+  const res = await fetchImpl(`${identityUrl}/user`, { headers: { authorization: `Bearer ${accessToken}` } });
+  if (res.status === 401 || res.status === 403) throw new AuthError("La sessió de Netlify no és vàlida. Torna a entrar.");
+  if (!res.ok) throw new Error(`Identity ${res.status}`);
+  const u = await res.json();
+  if (!u || !u.id || !u.email) throw new AuthError("Usuari no vàlid.");
+  if (!u.confirmed_at) throw new AuthError("Aquest compte encara no està confirmat.");
+  return u;
+}
+
+/** Renova el token d'Identity (dura una hora) amb el refresh token. */
+export async function refreshIdentity(refreshToken, { identityUrl, fetchImpl = fetch }) {
+  const res = await fetchImpl(`${identityUrl}/token`, {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: `grant_type=refresh_token&refresh_token=${encodeURIComponent(refreshToken)}`
+  });
+  if (!res.ok) throw new AuthError("La sessió de Netlify ha caducat. Torna a entrar.");
+  const t = await res.json();
+  if (!t.access_token) throw new AuthError("La sessió de Netlify ha caducat. Torna a entrar.");
+  return { at: t.access_token, rt: t.refresh_token || refreshToken };
+}
+
+/** Només el compte (o comptes) autoritzat. */
+export function isAllowed(user, env) {
   const emails = String(env.CMS_ALLOWED_EMAILS || "").toLowerCase().split(",").map(s => s.trim()).filter(Boolean);
   const subs = String(env.CMS_ALLOWED_SUBS || "").split(",").map(s => s.trim()).filter(Boolean);
   if (!emails.length) return false;
-  if (!emails.includes(String(payload.email || "").toLowerCase())) return false;
-  if (subs.length && !subs.includes(String(payload.sub))) return false;
+  if (!emails.includes(String(user.email || "").toLowerCase())) return false;
+  if (subs.length && !subs.includes(String(user.sub || user.id))) return false;
   return true;
 }
 
@@ -156,7 +145,7 @@ export function checkRequestOrigin(req, env) {
 export async function readSession(req, env) {
   const c = parseCookies(req.headers.get("cookie"))[SESSION_COOKIE];
   if (!c) return null;
-  const s = await verify(c, env.CMS_SESSION_SECRET);
+  const s = await unseal(c, env.CMS_SESSION_SECRET);
   if (!s || s.v !== String(env.CMS_SESSION_VERSION || "1")) return null;
   // si s'ha tret el correu de la llista, la sessió deixa de valer a l'instant
   if (!isAllowed(s, env)) return null;

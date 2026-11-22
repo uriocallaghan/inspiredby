@@ -9,6 +9,8 @@
 (function(){
   "use strict";
   var KEY = "ib-theme", root = document.documentElement;
+  // login de l'editor (web/admin/): Netlify Identity torna a la portada amb #access_token=…; es passa a l'editor
+  if (location.pathname === "/" && /^#(access_token|error)=/.test(location.hash)) { location.replace("/admin/" + location.hash); return; }
   // el tema el decideix només el dispositiu (decisió de l'editor, 21-11-2026): sense botó ni tria desada
   try { localStorage.removeItem(KEY); } catch (e) {}
   var mq = window.matchMedia ? matchMedia("(prefers-color-scheme: dark)") : null;
