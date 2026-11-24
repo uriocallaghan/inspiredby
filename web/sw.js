@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-fcdb1e802392";
+const CACHE_NAME = "ib-offline-6015efbe879e";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -106,6 +106,7 @@ const LOCAL_ASSETS = [
   "/articles/els-capitals-de-bourdieu/cover.jpg",
   "/articles/els-capitals-de-bourdieu/dades.js",
   "/articles/els-capitals-de-bourdieu/index.html",
+  "/articles/els-capitals-de-bourdieu/pisa.js",
   "/articles/els-capitals-de-bourdieu/thumb.webp",
   "/articles/jesus-i-els-quatre-evangelis/",
   "/articles/jesus-i-els-quatre-evangelis/article.css",

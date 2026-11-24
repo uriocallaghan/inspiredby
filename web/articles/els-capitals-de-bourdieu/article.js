@@ -1,10 +1,9 @@
-/* «Els quatre capitals de Pierre Bourdieu» · cinc gràfics del sistema infogràfic
-   V1 · LINK-05 + LINK-03 (scrolly, esquema): els capitals sobre l'eix de la liquiditat, el simbòlic com a
-        reconeixement de tots i els arcs de conversió
-   V2 · PART-01 en gira-sol (dades reals): 1.000 joves per categoria, els que entren a la universitat en blau (Les Héritiers)
-   V3 · SPREAD-02 sobre trama de punts (scrolly, esquema): el quiasme de l'espai social (La Distinction)
+/* «Els quatre capitals de Pierre Bourdieu» · gràfics del sistema infogràfic
+   V2 · PART-01 en gira-sol (dades reals): 1.000 fills per categoria, els que entren a la universitat en blau (Les Héritiers)
+   V6 · SPREAD-04 (dades reals): PISA 2022, un punt per alumne, origen socioeconòmic i nota de matemàtiques
+   V3 · SPREAD-02 + LINK-02 (scrolly, esquema): el mapa sencer de l'espai social (La Distinction)
    V4 · CASE-09 (dades reals): flors de dades, un pètal per obra musical (La Distinction)
-   V5 · SPREAD-03 + PART-01 (dades reals): eixam de 100 punts, un per cada 1 % de la població (Savage et al., 2013) */
+   V5 · CASE-09 + PART-01 (dades reals): set classes, set variables de la taula 6 (Savage et al., 2013) */
 (function(){
 "use strict";
 const V = IBV, C = V.C, D = window.BOURDIEU_DATA;
@@ -43,166 +42,6 @@ function layers(container, w, h, label){
   svg.style("position", "absolute").style("left", 0).style("top", 0);
   return {ctx, svg};
 }
-
-/* =========================================================================
-   V1 · LINK-05 + LINK-03 (scrolly, 5 passos): les quatre monedes sobre l'eix de la liquiditat
-   Cercles translúcids plans sobre un eix bipolar: a l'esquerra, el que es transfereix
-   a l'instant; a la dreta, el que exigeix anys. El capital cultural surt en els seus
-   tres estats, cadascun al seu lloc de l'eix. El simbòlic no és un cercle més: és el
-   reconeixement que pot tenir qualsevol d'ells (una clau sobre tots). Al pas 5, arcs de
-   conversió amb fletxa i punts que hi circulen a poc a poc.
-   ========================================================================= */
-(function(){
-  const el = $("#cap-viz"), stepsEl = $("#s-capitals .steps"), gEl = $("#s-capitals .graphic");
-  if(!el) return;
-  const lg = $("#cap-lg");
-  if(lg) V.legendCat(lg, [
-    {c: C.red, t: "Econòmic", a: .5},
-    {c: C.blue, t: "Cultural (tres estats)", a: .5},
-    {c: C.yellow, t: "Social", a: .7},
-    {c: C.ink, t: "Simbòlic: el reconeixement", kind: "line", w: 1.2}
-  ]);
-
-  const NODES = [
-    {id: "eco", fam: "eco", k: "", n: "Econòmic", s: "diners, patrimoni", m: "Econòmic", c: C.red, x: .07,
-     dock: "<b>Capital econòmic</b> · diners, patrimoni i propietats: es transfereix gairebé a l'instant"},
-    {id: "obj", fam: "cul", k: "Cultural", n: "Objectivat", s: "llibres, obres", m: "Objectivat", c: C.blue, x: .29,
-     dock: "<b>Capital cultural objectivat</b> · llibres, instruments, quadres: es compren en un matí, però cal saber-los apreciar"},
-    {id: "soc", fam: "soc", k: "", n: "Social", s: "una xarxa que cal mantenir", m: "Social", c: C.yellow, x: .5,
-     dock: "<b>Capital social</b> · els recursos d'una xarxa duradora, que es manté amb temps, favors i invitacions"},
-    {id: "tit", fam: "cul", k: "Cultural", n: "Títols", s: "diplomes de l'Estat", m: "Títols", c: C.blue, x: .71,
-     dock: "<b>Capital cultural institucionalitzat</b> · els diplomes que certifica l'Estat: anys d'escola"},
-    {id: "inc", fam: "cul", k: "Cultural", n: "Incorporat", s: "parla, gust, desimboltura", m: "Incorporat", c: C.blue, x: .93,
-     dock: "<b>Capital cultural incorporat</b> · la fluïdesa, el gust i els codis apresos a casa: no es pot comprar en un matí"}
-  ];
-  const FLOWS = [
-    {from: "eco", to: "tit", t: "Diners → títols", d: "escoles i temps lliure", side: -1, per: 32000},
-    {from: "tit", to: "soc", t: "Títols → xarxa", d: "promocions, clubs", side: 1, per: 24000},
-    {from: "soc", to: "eco", t: "Xarxa → diners", d: "feines i oportunitats", side: 1, per: 24000}
-  ];
-  const TITLES = {
-    eco: ["1 · Capital econòmic", "El més líquid: es transfereix a l'instant"],
-    cul: ["2 · Capital cultural", "Tres estats, i com més s'incorpora al cos, més temps costa d'adquirir"],
-    soc: ["3 · Capital social", "Una xarxa que no es compra: es manté amb temps i favors"],
-    sim: ["4 · Capital simbòlic", "No és un capital més: és qualsevol dels altres quan es reconeix com a legítim"],
-    conv: ["5 · Les conversions", "Cada moneda es pot canviar per una altra, però no a la mateixa velocitat"]
-  };
-  const ON = {eco: ["eco"], cul: ["obj", "tit", "inc"], soc: ["soc"], sim: null, conv: null};
-  let curStep = "eco", applyStep = null;
-
-  V.mount(el, (container, w) => {
-    if(el.__loop){ el.__loop.stop(); el.__loop = null; }
-    const mob = w < 600;
-    const h = mob ? Math.round(Math.max(230, Math.min(window.innerHeight * .32, 270))) : 440;
-    const ml = mob ? 34 : 70, mr = mob ? 34 : 70;
-    const r = mob ? Math.min(30, (w - ml - mr) * .1) : Math.min(76, (w - ml - mr) * .105);
-    const ay = mob ? Math.round(h * .5) : Math.round(h * .52);
-    const X = u => ml + u * (w - ml - mr);
-    const P = {}; NODES.forEach(d => P[d.id] = {x: X(d.x), y: ay});
-
-    const svg = V.svg(container, w, h, "Esquema dels capitals de Pierre Bourdieu sobre un eix de liquiditat: a l'esquerra el capital econòmic, que es transfereix a l'instant; després el capital cultural objectivat (llibres), el capital social, els títols i, a la dreta, el capital cultural incorporat, que exigeix anys. El capital simbòlic és el reconeixement de qualsevol d'ells. Tres arcs mostren les conversions: diners en títols, títols en xarxa i xarxa en diners.");
-    const g = svg.append("g");
-
-    // Eix bipolar
-    const axG = g.append("g");
-    axG.append("line").attr("x1", X(0) - r * .6).attr("x2", X(1) + r * .6).attr("y1", ay).attr("y2", ay)
-      .attr("stroke", C.ink).attr("stroke-width", .7).attr("stroke-dasharray", "2 4").attr("stroke-opacity", .6);
-    const yb = ay + r + (mob ? 30 : 46);
-    V.t(axG, X(0) - r * .6, yb, mob ? "← A l'instant" : "← Es transfereix a l'instant", {size: mob ? 11 : 12, anchor: "start", fill: C.ink2});
-    V.t(axG, X(1) + r * .6, yb, mob ? "Exigeix anys →" : "Exigeix anys de dedicació →", {size: mob ? 11 : 12, anchor: "end", fill: C.ink2});
-
-    // Arcs de conversió (pas 5)
-    const arc = f => {
-      const a = P[f.from], b = P[f.to], sx = a.x + Math.sign(b.x - a.x) * r * .55, ex = b.x - Math.sign(b.x - a.x) * r * .55;
-      const span = Math.abs(ex - sx), lift = Math.min(mob ? 70 : 150, span * .45 + r * .9);
-      const y0 = ay + f.side * r * .78, cy = ay + f.side * (r * .78 + lift);
-      return {sx, ex, y0, cy, pt: u => { const v = 1 - u; return [v * v * sx + 2 * v * u * (sx + ex) / 2 + u * u * ex, v * v * y0 + 2 * v * u * cy + u * u * y0]; }};
-    };
-    const flG = g.append("g").style("opacity", 0);
-    const FL = FLOWS.map(f => {
-      const A = arc(f), col = NODES.find(d => d.id === f.from).c;
-      flG.append("path").attr("d", `M${A.sx},${A.y0}Q${(A.sx + A.ex) / 2},${A.cy} ${A.ex},${A.y0}`)
-        .attr("fill", "none").attr("stroke", C.ink2).attr("stroke-width", .9);
-      const e = A.pt(1), q = A.pt(.97), ang = Math.atan2(e[1] - q[1], e[0] - q[0]);
-      flG.append("path").attr("d", `M${e[0] - 6 * Math.cos(ang - .45)},${e[1] - 6 * Math.sin(ang - .45)}L${e[0]},${e[1]}L${e[0] - 6 * Math.cos(ang + .45)},${e[1] - 6 * Math.sin(ang + .45)}`)
-        .attr("fill", "none").attr("stroke", C.ink2).attr("stroke-width", .9);
-      const top = A.pt(.5);
-      if(!mob){
-        V.t(flG, top[0], top[1] + (f.side < 0 ? -20 : 18), f.t, {size: 12.5, weight: 700, anchor: "middle", halo: true});
-        V.t(flG, top[0], top[1] + (f.side < 0 ? -6 : 32), f.d, {size: 11.5, anchor: "middle", fill: C.ink2, halo: true});
-      }
-      const dots = d3.range(mob ? 4 : 6).map(k => flG.append("circle").attr("r", mob ? 2 : 2.6).attr("fill", col === C.yellow ? C.yellowDark : col).datum(k / (mob ? 4 : 6)));
-      return Object.assign({}, f, A, {dots});
-    });
-    function moveDots(t){ FL.forEach(f => f.dots.forEach(c => { const u = (c.datum() + t / f.per) % 1, p = f.pt(u); c.attr("cx", p[0]).attr("cy", p[1]); })); }
-    moveDots(0);
-
-    // Cercles translúcids plans (LINK-05)
-    const nG = g.selectAll("g.cap").data(NODES, d => d.id).join("g").attr("class", "cap")
-      .attr("transform", d => `translate(${P[d.id].x},${ay})`);
-    nG.append("circle").attr("class", "bg").attr("r", r).attr("fill", d => d.c).attr("fill-opacity", d => d.c === C.yellow ? .34 : .17)
-      .style("mix-blend-mode", "multiply");
-    const ring = nG.append("circle").attr("r", r).attr("fill", "none").attr("stroke", C.ink).attr("stroke-width", 1.3).style("opacity", 0);
-    nG.append("circle").attr("r", 2.4).attr("fill", C.ink);
-    nG.each(function(d, i){
-      const gr = d3.select(this);
-      if(mob){
-        const up = i % 2 === 0, y = up ? -r - 8 : r + 16;
-        V.t(gr, 0, y, d.m, {size: 11.5, weight: 700, anchor: "middle", halo: true});
-      } else {
-        if(d.k) V.t(gr, 0, -r * .18 - 6, d.k, {size: 11.5, anchor: "middle", fill: C.blue, halo: true});
-        V.t(gr, 0, d.k ? -r * .18 + 10 : -2, d.n, {size: 14, weight: 700, anchor: "middle", halo: true});
-        wrap(d.s, r * 1.6, 11.5).forEach((l, j) => V.t(gr, 0, (d.k ? -r * .18 + 26 : 14) + j * 13, l, {size: 11.5, anchor: "middle", fill: C.ink2, halo: true}));
-      }
-    });
-
-    // Capital simbòlic: una clau sobre tots, i cada cercle «reconegut» amb una vora fina
-    const simG = g.append("g").style("opacity", 0);
-    const by = ay - r - (mob ? 26 : 40);
-    simG.append("path").attr("d", `M${X(0) - r},${by + 9}L${X(0) - r},${by}L${X(1) + r},${by}L${X(1) + r},${by + 9}`)
-      .attr("fill", "none").attr("stroke", C.ink).attr("stroke-width", 1);
-    V.t(simG, (X(0) + X(1)) / 2, by - 8, mob ? "Simbòlic: qualsevol d'ells, reconegut" : "Capital simbòlic: qualsevol d'aquests capitals quan els altres el reconeixen com a honor, mèrit o autoritat",
-      {size: mob ? 11.5 : 12.5, weight: 700, anchor: "middle", halo: true});
-
-    applyStep = function(st, instant){
-      curStep = st;
-      const dur = instant || V.reduced ? 0 : 450;
-      const tEl = $("#cap-t"), sEl = $("#cap-s");
-      if(TITLES[st]){ if(tEl) tEl.textContent = TITLES[st][0]; if(sEl) sEl.textContent = TITLES[st][1]; }
-      const on = ON[st];
-      nG.transition().duration(dur).style("opacity", d => !on || on.includes(d.id) ? 1 : .32);
-      ring.transition().duration(dur).style("opacity", st === "sim" ? .85 : 0);
-      simG.transition().duration(dur).style("opacity", st === "sim" ? 1 : 0);
-      flG.transition().duration(dur).style("opacity", st === "conv" ? 1 : 0);
-    };
-
-    const restore = () => { const on = ON[curStep]; nG.interrupt().transition().duration(160).style("opacity", d => !on || on.includes(d.id) ? 1 : .32); };
-    const tp = V.tip(container);
-    svg.style("cursor", "pointer");
-    V.hover(svg.node(), (ev, [px, py]) => {
-      if(curStep === "conv"){
-        let best = null, bd = 1e9;
-        FL.forEach(f => d3.range(0, 1.01, .05).forEach(u => { const p = f.pt(u), d = Math.hypot(px - p[0], py - p[1]); if(d < bd){ bd = d; best = f; } }));
-        if(bd < 14){ V.focus(nG, d => d.id === best.from || d.id === best.to); tp.show(`<b>${best.t}</b> · ${best.d}`); return; }
-      }
-      const d = d3.least(NODES, q => Math.abs(px - P[q.id].x));
-      if(d && Math.abs(px - P[d.id].x) < r && Math.abs(py - ay) < r * 1.2){ V.focus(nG, q => q === d); tp.show(curStep === "sim" ? `${d.dock} · reconegut, també és capital simbòlic` : d.dock); }
-      else if(curStep === "sim" && Math.abs(py - by) < 18){ restore(); tp.show("<b>Capital simbòlic</b> · honor, prestigi, autoritat: funciona perquè sembla desinteressat"); }
-      else { restore(); tp.hide(); }
-    }, () => { restore(); tp.hide(); });
-
-    applyStep(curStep, true);
-    if(!V.reduced) el.__loop = V.loop(container, t => { if(curStep === "conv") moveDots(t); });
-  });
-
-  if(stepsEl && gEl && window.IB && IB.scrolly){
-    IB.scrolly(stepsEl, gEl, (_, st) => {
-      const k = (st && st.dataset && st.dataset.s) || "eco";
-      curStep = k;
-      if(applyStep) applyStep(k, false);
-    });
-  }
-})();
 
 /* =========================================================================
    V2 · PART-01 en gira-sol (dades reals): 1.000 joves per categoria
@@ -304,11 +143,137 @@ function layers(container, w, h, label){
 })();
 
 /* =========================================================================
-   V3 · SPREAD-02 sobre trama de punts (scrolly, 4 passos): l'espai social
-   El fons és el model, no una decoració: a cada punt de la trama, el gris diu el
-   volum de capital i, en separar-se, el blau diu el capital cultural i el vermell
-   l'econòmic. D'aquí surt el quiasme de Bourdieu: cultura a dalt a l'esquerra,
-   diners a dalt a la dreta.
+   V6 · SPREAD-04 (dades reals): PISA 2022, un punt per alumne
+   Cada punt és un alumne de la mostra: a l'esquerra, menys capital econòmic, social
+   i cultural a casa (índex ESCS de l'OCDE); amunt, més nota de matemàtiques. A sobre,
+   la mitjana de cada quart socioeconòmic i la bretxa entre el primer i el darrer.
+   ========================================================================= */
+(function(){
+  const el = $("#pisa-viz"), P = window.BOURDIEU_PISA; if(!el || !P) return;
+  const lg = $("#pisa-lg");
+  if(lg) V.legendCat(lg, [{c: C.blue, t: "Un alumne de la mostra", a: .7}, {c: C.ink, t: "Mitjana de cada quart", kind: "line", w: 2}, {c: C.red, t: "Bretxa entre el primer i el darrer quart", kind: "line", w: 1.5}]);
+  const NAMES = {oecd: "Països de l'OCDE", esp: "Espanya", cat: "Catalunya"};
+  // reixa RLE -> Uint16Array
+  Object.values(P.views).forEach(v => {
+    if(v.g) return;
+    const g = new Uint16Array(P.xb[2] * P.yb[2]); let i = 0;
+    v.rle.forEach(t => { if(t < 0) i += -t; else g[i++] = t; });
+    v.g = g;
+  });
+  let view = "oecd", setView = null;
+
+  V.mount(el, (container, w) => {
+    const mob = w < 600;
+    const h = mob ? 360 : 470;
+    const m = mob ? {t: 22, r: 12, b: 40, l: 10} : {t: 26, r: 150, b: 46, l: 20};
+    const {ctx, svg} = layers(container, w, h, `Núvol de punts de PISA 2022: cada punt és un alumne, segons l'índex socioeconòmic i cultural de casa seva (horitzontal) i la nota de matemàtiques (vertical). Als països de l'OCDE, l'alumnat del quart més afavorit treu de mitjana ${f0(P.views.oecd.qmean[3] - P.views.oecd.qmean[0])} punts més que el del quart més desafavorit.`);
+    const X = d3.scaleLinear([P.xb[0], P.xb[1]], [m.l, w - m.r]).clamp(true);
+    const Y = d3.scaleLinear([P.yb[0], P.yb[1]], [h - m.b, m.t]).clamp(true);
+    const XS = d3.scaleLinear([-3.5, 3], [m.l, w - m.r]);   // finestra visible
+    const YS = d3.scaleLinear([150, 850], [h - m.b, m.t]);
+    const cwx = (P.xb[1] - P.xb[0]) / P.xb[2], cwy = (P.yb[1] - P.yb[0]) / P.yb[2];
+    const rnd = V.rng(2022);
+
+    let pts = null;
+    function build(v){
+      const g = P.views[v].g, arr = [];
+      for(let r = 0; r < P.yb[2]; r++) for(let c = 0; c < P.xb[2]; c++){
+        const n = g[r * P.xb[2] + c]; if(!n) continue;
+        const x0 = P.xb[0] + c * cwx, y0 = P.yb[0] + r * cwy;
+        for(let k = 0; k < n; k++) arr.push(XS(x0 + rnd() * cwx), YS(y0 + rnd() * cwy));
+      }
+      // ordre aleatori per a l'entrada
+      const n = arr.length / 2, ord = new Uint32Array(n);
+      for(let i = 0; i < n; i++) ord[i] = i;
+      for(let i = n - 1; i > 0; i--){ const j = Math.floor(rnd() * (i + 1)), t = ord[i]; ord[i] = ord[j]; ord[j] = t; }
+      return {xy: new Float32Array(arr), ord, n};
+    }
+    function draw(frac){
+      ctx.clearRect(0, 0, w, h);
+      const n = Math.floor(pts.n * (frac == null ? 1 : frac));
+      const a = Math.min(.55, .09 * Math.sqrt(280000 / pts.n)) * (mob ? 1.3 : 1);
+      ctx.fillStyle = C.blue; ctx.globalAlpha = a;
+      const s = (pts.n < 5000 ? 2.6 : pts.n < 50000 ? 1.6 : 1.2) * (mob ? .85 : 1);
+      for(let i = 0; i < n; i++){ const k = pts.ord[i]; const x = pts.xy[2 * k], y = pts.xy[2 * k + 1];
+        if(x < m.l || x > w - m.r || y < m.t || y > h - m.b) continue; ctx.fillRect(x - s / 2, y - s / 2, s, s); }
+      ctx.globalAlpha = 1;
+    }
+
+    const g = svg.append("g");
+    // eixos
+    [200, 300, 400, 500, 600, 700, 800].forEach((t, i, a) => {
+      g.append("line").attr("x1", m.l).attr("x2", w - m.r).attr("y1", YS(t)).attr("y2", YS(t)).attr("stroke", C.grid).attr("stroke-width", .6);
+      if(!mob || t % 200 === 0) V.t(g, m.l, YS(t) - 4, t + (i === a.length - 1 ? " punts de matemàtiques" : ""), {size: 11, anchor: "start", fill: C.muted, halo: 2});
+    });
+    (mob ? [-3, -2, -1, 0, 1, 2] : [-3, -2, -1, 0, 1, 2, 3]).forEach(t => V.t(g, XS(t), h - m.b + 16, String(t).replace("-", "−"), {size: 11, anchor: "middle", fill: t === 0 ? C.ink : C.muted}));
+    V.t(g, m.l, h - m.b + (mob ? 32 : 34), mob ? "← menys capital a casa" : "← Menys capital econòmic, social i cultural a casa", {size: 11.5, anchor: "start", fill: C.ink2});
+    V.t(g, w - m.r, h - m.b + (mob ? 32 : 34), mob ? "més →" : "més →  (índex ESCS de l'OCDE)", {size: 11.5, anchor: "end", fill: C.ink2});
+
+    const qG = g.append("g");
+    function drawQ(anim){
+      qG.selectAll("*").remove();
+      const v = P.views[view], qs = [-3.5].concat(v.q, [3]);
+      v.qmean.forEach((mu, k) => {
+        const x0 = XS(qs[k]) + 2, x1 = XS(qs[k + 1]) - 2, y = YS(mu);
+        if(k > 0) qG.append("line").attr("x1", XS(qs[k])).attr("x2", XS(qs[k])).attr("y1", m.t).attr("y2", h - m.b).attr("stroke", C.ink).attr("stroke-width", .6).attr("stroke-dasharray", "2 3").attr("stroke-opacity", .5);
+        qG.append("line").attr("class", "qm").attr("x1", x0).attr("x2", x1).attr("y1", y).attr("y2", y).attr("stroke", C.ink).attr("stroke-width", 2.2);
+        V.t(qG, (x0 + x1) / 2, y - 7, f0(mu), {size: mob ? 11.5 : 12.5, weight: 700, anchor: "middle", halo: 3});
+      });
+      // bretxa
+      const gap = v.qmean[3] - v.qmean[0], xg = mob ? XS(v.q[2]) + 14 : w - m.r + 14;
+      const y0 = YS(v.qmean[0]), y1 = YS(v.qmean[3]);
+      if(!mob){
+        qG.append("line").attr("x1", XS(qs[1]) - 2).attr("x2", xg).attr("y1", y0).attr("y2", y0).attr("stroke", C.red).attr("stroke-width", .8).attr("stroke-dasharray", "2 3");
+        qG.append("line").attr("x1", XS(3) - 2).attr("x2", xg).attr("y1", y1).attr("y2", y1).attr("stroke", C.red).attr("stroke-width", .8).attr("stroke-dasharray", "2 3");
+      }
+      qG.append("path").attr("d", `M${xg - 5},${y0}L${xg},${y0}L${xg},${y1}L${xg - 5},${y1}`).attr("fill", "none").attr("stroke", C.red).attr("stroke-width", 1.5);
+      V.t(qG, xg + 8, (y0 + y1) / 2 - 2, `${f0(gap)} punts`, {size: mob ? 12.5 : 15, weight: 700, fill: C.red, halo: 3});
+      if(!mob) V.lines(qG, xg + 8, (y0 + y1) / 2 + 15, [["entre el quart més"], ["desafavorit i el"], ["més afavorit"]], {size: 11.5, fill: C.ink2, halo: true});
+      V.t(qG, mob ? m.l + 4 : m.l + 8, m.t + 30, `${NAMES[view]} · ${f0(v.n)} alumnes`, {size: 12, weight: 700, halo: 3});
+      if(anim && !V.reduced) qG.style("opacity", 0).transition().delay(300).duration(600).style("opacity", 1);
+    }
+
+    pts = build(view);
+    drawQ(false);
+    if(!container.__seen && !V.reduced){
+      draw(0); qG.style("opacity", 0);
+      V.onView(container, inst => {
+        if(inst){ draw(1); qG.style("opacity", 1); return; }
+        const t0 = performance.now();
+        const tm = d3.timer(() => { const e = cl01((performance.now() - t0) / 1600); draw(d3.easeCubicOut(e)); if(e >= 1) tm.stop(); });
+        qG.transition().delay(1300).duration(600).style("opacity", 1);
+      });
+    } else draw(1);
+
+    setView = function(k){
+      view = k; pts = build(k);
+      if(V.reduced){ draw(1); drawQ(false); return; }
+      const t0 = performance.now();
+      const tm = d3.timer(() => { const e = cl01((performance.now() - t0) / 900); draw(d3.easeCubicOut(e)); if(e >= 1) tm.stop(); });
+      drawQ(true);
+    };
+
+    const tp = V.tip(container);
+    svg.style("cursor", "crosshair");
+    V.hover(svg.node(), (ev, [px, py]) => {
+      if(px < m.l || px > w - m.r || py < m.t || py > h - m.b){ tp.hide(); qG.selectAll("line.qm").attr("stroke-width", 2.2); return; }
+      const v = P.views[view], e = XS.invert(px), k = e <= v.q[0] ? 0 : e <= v.q[1] ? 1 : e <= v.q[2] ? 2 : 3;
+      const nm = ["El 25 % més desafavorit", "El segon quart", "El tercer quart", "El 25 % més afavorit"][k];
+      qG.selectAll("line.qm").attr("stroke-width", (d, i) => i === k ? 3.4 : 1.6);
+      tp.show(`<b>${nm}</b> (${NAMES[view]}) · nota mitjana de matemàtiques: <b>${f0(v.qmean[k])} punts</b>`);
+    }, () => { tp.hide(); qG.selectAll("line.qm").attr("stroke-width", 2.2); });
+  });
+
+  bindSeg("#f-pisa", k => { if(setView) setView(k); });
+})();
+
+/* =========================================================================
+   V3 · SPREAD-02 + LINK-02 (scrolly, 4 passos): l'espai social de La Distinction
+   El mapa de Bourdieu sencer: 24 professions i 22 pràctiques a la seva posició.
+   A sota, una trama de punts que dibuixa la definició dels eixos: el gris diu el
+   volum de capital i, en partir-se, el blau diu el capital cultural i el vermell
+   l'econòmic (el quiasme). En passar per una pràctica, fils fins fins a les tres
+   professions més properes: la correspondència entre posició i gust.
    ========================================================================= */
 (function(){
   const el = $("#esp-viz"), stepsEl = $("#s-espai .steps"), gEl = $("#s-espai .graphic");
@@ -317,29 +282,30 @@ function layers(container, w, h, label){
   if(lg) V.legendCat(lg, [
     {c: C.blue, t: "Capital cultural", a: .6},
     {c: C.red, t: "Capital econòmic", a: .6},
-    {c: C.ink, t: "Professions"}
+    {c: C.ink, t: "Professions"},
+    {c: C.ink2, t: "Pràctiques, en cursiva", kind: "none"}
   ]);
-  const PROFS = D.espai.professions, GUSTS = D.espai.gustos;
+  const PROFS = D.espai.professions, PRAC = D.espai.practiques;
   const TITLES = {
-    volum: ["Eix vertical · Volum global de capital", "Com més gros el punt, més capital de tota mena"],
+    volum: ["Eix vertical · Volum global de capital", "Com més gros el punt de la trama, més capital de tota mena"],
     estructura: ["Eix horitzontal · Estructura del capital", "El mateix volum es parteix: cultura a l'esquerra, diners a la dreta"],
-    gustos: ["El gust segueix les coordenades socials", "Música, esport i consum cauen sobre el mateix mapa que les professions"],
+    gustos: ["El gust segueix les coordenades socials", "Les pràctiques sobre el mateix mapa que les professions. Passa-hi per veure amb qui conviuen"],
     distincio: ["La mecànica de la distinció", "Quan un gust es popularitza, la frontera simbòlica puja"]
   };
-  const ST = {volum: {m: 0, f: 1}, estructura: {m: 1, f: 1}, gustos: {m: 1, f: .38}, distincio: {m: 1, f: .38}};
+  const ST = {volum: {m: 0, f: 1}, estructura: {m: 1, f: 1}, gustos: {m: 1, f: .42}, distincio: {m: 1, f: .42}};
   let curStep = "volum", applyStep = null;
   const fs = {m: 0, f: 1};
 
   V.mount(el, (container, w) => {
     const mob = w < 600;
-    const h = mob ? Math.round(Math.max(236, Math.min(window.innerHeight * .34, 290))) : 450;
-    const m = mob ? {t: 22, r: 10, b: 22, l: 10} : {t: 30, r: 24, b: 30, l: 24};
-    const {ctx, svg} = layers(container, w, h, "Esquema de l'espai social de La Distinction (Bourdieu, 1979). Una trama de punts mostra el volum de capital (de dalt a baix) i la seva composició: el blau, capital cultural, creix cap a dalt a l'esquerra; el vermell, capital econòmic, creix cap a dalt a la dreta. Sobre la trama, les professions i els gustos.");
-    const X = d3.scaleLinear([-1.05, 1.05], [m.l, w - m.r]);
-    const Y = d3.scaleLinear([-1.05, 1.05], [h - m.b, m.t]);
+    const h = mob ? Math.round(Math.max(250, Math.min(window.innerHeight * .36, 300))) : Math.round(Math.max(460, Math.min(600, window.innerHeight - 290)));
+    const m = mob ? {t: 22, r: 8, b: 22, l: 8} : {t: 30, r: 20, b: 30, l: 20};
+    const {ctx, svg} = layers(container, w, h, "L'espai social de La Distinction (Bourdieu, 1979): 24 professions i 22 pràctiques en dos eixos. Amunt, més capital; a l'esquerra, més capital cultural; a la dreta, més capital econòmic. Professors i artistes amb el piano i els escacs a dalt a l'esquerra; patrons amb el golf, l'equitació i el xampany a dalt a la dreta; obrers amb el futbol, la belote i el vi negre corrent a baix.");
+    const X = d3.scaleLinear([-1.02, 1.02], [m.l, w - m.r]);
+    const Y = d3.scaleLinear([-1.08, 1.08], [h - m.b, m.t]);
 
-    // Trama hexagonal
-    const sp = mob ? 12 : 16, rmax = sp * .44;
+    // Trama hexagonal (la definició dels eixos)
+    const sp = mob ? 12 : 15, rmax = sp * .42;
     const LAT = [];
     let row = 0;
     for(let y = m.t + 2; y <= h - m.b - 2; y += sp * .866, row++){
@@ -352,15 +318,15 @@ function layers(container, w, h, label){
       ctx.clearRect(0, 0, w, h);
       const mm = fs.m * fs.m * (3 - 2 * fs.m), F = fs.f;
       if(mm < .999){
-        ctx.fillStyle = C.ink2; ctx.globalAlpha = .3 * (1 - mm) * F; ctx.beginPath();
-        LAT.forEach(p => { const r = rmax * .78 * Math.sqrt(p.vol); if(r < .35) return; ctx.moveTo(p.x + r, p.y); ctx.arc(p.x, p.y, r, 0, TAU); });
+        ctx.fillStyle = C.ink2; ctx.globalAlpha = .24 * (1 - mm) * F; ctx.beginPath();
+        LAT.forEach(p => { const r = rmax * .8 * Math.sqrt(p.vol); if(r < .35) return; ctx.moveTo(p.x + r, p.y); ctx.arc(p.x, p.y, r, 0, TAU); });
         ctx.fill();
       }
       if(mm > .001){
         const off = sp * .2 * mm;
         ctx.globalCompositeOperation = "multiply";
         [[C.blue, "cul", -off], [C.red, "eco", off]].forEach(([c, k, o]) => {
-          ctx.fillStyle = c; ctx.globalAlpha = .46 * mm * F; ctx.beginPath();
+          ctx.fillStyle = c; ctx.globalAlpha = .36 * mm * F; ctx.beginPath();
           LAT.forEach(p => { const r = rmax * Math.sqrt(p[k]); if(r < .35) return; ctx.moveTo(p.x + o + r, p.y); ctx.arc(p.x + o, p.y, r, 0, TAU); });
           ctx.fill();
         });
@@ -370,48 +336,44 @@ function layers(container, w, h, label){
     }
 
     const g = svg.append("g");
-    // Eixos fins
-    g.append("line").attr("x1", X(0)).attr("x2", X(0)).attr("y1", m.t).attr("y2", h - m.b).attr("stroke", C.ink).attr("stroke-width", .7).attr("stroke-opacity", .55);
+    g.append("line").attr("x1", X(0)).attr("x2", X(0)).attr("y1", m.t).attr("y2", h - m.b).attr("stroke", C.ink).attr("stroke-width", .7).attr("stroke-opacity", .5);
     const axH = g.append("line").attr("x1", m.l).attr("x2", w - m.r).attr("y1", Y(0)).attr("y2", Y(0)).attr("stroke", C.ink).attr("stroke-width", .7).attr("stroke-opacity", .15);
     V.t(g, X(0), m.t - 9, "↑ Més capital", {size: mob ? 11 : 12, weight: 700, anchor: "middle", halo: true});
     V.t(g, X(0), h - m.b + 16, "↓ Menys capital", {size: mob ? 11 : 12, anchor: "middle", fill: C.muted, halo: true});
-    const lblCul = V.t(g, m.l, Y(0) + (mob ? 15 : -7), "← Més cultural", {size: mob ? 11 : 12, weight: 700, anchor: "start", fill: C.blue, halo: true}).style("opacity", 0);
-    const lblEco = V.t(g, w - m.r, Y(0) + (mob ? 15 : -7), "Més econòmic →", {size: mob ? 11 : 12, weight: 700, anchor: "end", fill: C.red, halo: true}).style("opacity", 0);
+    const lblCul = V.t(g, m.l, Y(0) + 15, "← Més cultural", {size: mob ? 11 : 12, weight: 700, anchor: "start", fill: C.blue, halo: true}).style("opacity", 0);
+    const lblEco = V.t(g, w - m.r, Y(0) + 15, "Més econòmic →", {size: mob ? 11 : 12, weight: 700, anchor: "end", fill: C.red, halo: true}).style("opacity", 0);
 
-    // Frontera de la distinció: on era i on és
-    const OLD = [[-1, .06], [-.4, .14], [.4, .12], [1, .04]], NEW = [[-1, .36], [-.4, .46], [.4, .44], [1, .34]];
+    // Frontera de la distinció (il·lustrativa): on era i on és
+    const OLD = [[-1, .1], [-.4, .2], [.4, .18], [1, .08]], NEW = [[-1, .4], [-.4, .5], [.4, .48], [1, .38]];
     const line = d3.line().x(d => X(d[0])).y(d => Y(d[1])).curve(d3.curveCatmullRom);
     const distG = g.append("g").style("opacity", 0);
     distG.append("path").attr("d", line(OLD)).attr("fill", "none").attr("stroke", C.ink2).attr("stroke-width", 1).attr("stroke-dasharray", "1.5 3.5").attr("stroke-linecap", "round");
     const newP = distG.append("path").attr("d", line(OLD)).attr("fill", "none").attr("stroke", C.red).attr("stroke-width", 1.8).attr("stroke-dasharray", "6 4");
-    const arrows = distG.append("g").style("opacity", 0);
-    [-.62, .62].forEach(u => {
-      arrows.append("line").attr("x1", X(u)).attr("x2", X(u)).attr("y1", Y(.16) - 2).attr("y2", Y(.4) + 6).attr("stroke", C.red).attr("stroke-width", .9);
-      arrows.append("path").attr("d", `M${X(u) - 4},${Y(.4) + 11}L${X(u)},${Y(.4) + 5}L${X(u) + 4},${Y(.4) + 11}`).attr("fill", "none").attr("stroke", C.red).attr("stroke-width", .9);
-    });
-    const newL = V.t(distG, X(.98), Y(.38) - 8, "Frontera de la distinció", {size: mob ? 11 : 12, weight: 700, anchor: "end", fill: C.red, halo: true}).style("opacity", 0);
-    if(!mob) V.t(distG, X(.98), Y(.04) + 16, "on era abans", {size: 11.5, italic: true, anchor: "end", fill: C.muted, halo: true});
+    const newL = V.t(distG, X(.99), Y(.42) - 8, "Frontera de la distinció", {size: mob ? 11 : 12, weight: 700, anchor: "end", fill: C.red, halo: true}).style("opacity", 0);
+    if(!mob) V.t(distG, X(.99), Y(.06) + 16, "on era abans", {size: 11.5, italic: true, anchor: "end", fill: C.muted, halo: true});
 
-    // Gustos
-    const gustG = g.append("g").style("opacity", 0);
-    GUSTS.forEach(gu => {
-      const col = gu.c === "blue" ? C.blue : gu.c === "red" ? C.red : gu.c === "yellow" ? C.yellow : C.ink2;
-      const gr = gustG.append("g").attr("transform", `translate(${X(gu.x)},${Y(gu.y)})`);
-      gr.append("circle").attr("r", mob ? 17 : 36).attr("fill", col).attr("fill-opacity", gu.c === "yellow" ? .5 : .2).style("mix-blend-mode", "multiply");
-      gr.append("circle").attr("r", mob ? 17 : 36).attr("fill", "none").attr("stroke", col === C.yellow ? C.yellowDark : col).attr("stroke-width", .8).attr("stroke-opacity", .6);
-      V.t(gr, 0, 4, mob ? gu.short : gu.n, {serif: true, italic: true, size: mob ? 12 : 14.5, anchor: gu.x < -.5 ? "start" : gu.x > .5 ? "end" : "middle", halo: 3})
-        .attr("x", gu.x < -.5 ? -(mob ? 12 : 26) : gu.x > .5 ? (mob ? 12 : 26) : 0);
+    // Fils de correspondència (hover sobre una pràctica)
+    const linkG = g.append("g");
+
+    // Pràctiques: cursiva serif, a la posició del mapa original
+    const prG = g.append("g").style("opacity", 0);
+    const prN = prG.selectAll("g.pr").data(PRAC).join("g").attr("class", "pr")
+      .attr("transform", d => `translate(${X(d.x)},${Y(d.y)})`).style("display", d => mob && !d.mob ? "none" : null);
+    prN.each(function(d){
+      const nud = {"comèdia musical": [-8, 5, "end"], "belote (cartes)": [-4, 22, "middle"]}[d.n] || [0, 5];
+      const col = d.x < -.12 ? C.blue : d.x > .12 ? C.red : C.ink2;
+      V.t(d3.select(this), nud[0], nud[1], d.n, {serif: true, italic: true, size: mob ? 13 : 16, anchor: nud[2] || (d.x > .7 ? "end" : d.x < -.7 ? "start" : "middle"), fill: col, halo: 3});
     });
 
-    // Professions
-    const pG = g.selectAll("g.prof").data(PROFS, d => d.id).join("g").attr("class", "prof")
+    // Professions: punt i nom
+    const pG = g.selectAll("g.prof").data(PROFS).join("g").attr("class", "prof")
       .attr("transform", d => `translate(${X(d.x)},${Y(d.y)})`);
-    pG.append("circle").attr("r", mob ? 3 : 3.8).attr("fill", C.ink).attr("stroke", C.paper).attr("stroke-width", 1.4);
+    pG.append("circle").attr("r", mob ? 2.6 : 3.2).attr("fill", C.ink).attr("stroke", C.paper).attr("stroke-width", 1.2);
     pG.each(function(d){
       if(mob && !d.mob) return;
-      const anc = d.x > .42 ? "end" : d.x < -.42 ? "start" : "middle";
-      const dx = anc === "end" ? -7 : anc === "start" ? 7 : 0, dy = anc === "middle" ? (d.y < -.7 ? 15 : -8) : 4;
-      V.t(d3.select(this), dx, dy, mob ? d.short : d.n, {size: mob ? 11 : 12, anchor: anc, fill: C.ink, halo: 3}).attr("class", "plab");
+      const anc = d.x > .6 ? "end" : d.x < -.6 ? "start" : "middle";
+      const dx = anc === "end" ? -6 : anc === "start" ? 6 : 0, dy = anc === "middle" ? -7 : 4;
+      V.t(d3.select(this), dx, dy, mob ? d.short : d.n, {size: mob ? 11 : 12, weight: 600, anchor: anc, halo: 3}).attr("class", "plab");
     });
 
     function animField(to, instant){
@@ -429,34 +391,49 @@ function layers(container, w, h, label){
       const tEl = $("#esp-t"), sEl = $("#esp-s");
       if(TITLES[st]){ if(tEl) tEl.textContent = TITLES[st][0]; if(sEl) sEl.textContent = TITLES[st][1]; }
       animField(ST[st], instant);
-      const split = st !== "volum";
-      axH.transition().duration(dur).attr("stroke-opacity", split ? .5 : .15);
+      const split = st !== "volum", taste = st === "gustos" || st === "distincio";
+      axH.transition().duration(dur).attr("stroke-opacity", split ? .45 : .15);
       lblCul.transition().duration(dur).style("opacity", split ? 1 : 0);
       lblEco.transition().duration(dur).style("opacity", split ? 1 : 0);
-      pG.transition().duration(dur).style("opacity", st === "gustos" || st === "distincio" ? .5 : 1);
-      if(mob) pG.selectAll(".plab").transition().duration(dur).style("opacity", st === "gustos" || st === "distincio" ? 0 : 1);
-      gustG.transition().duration(dur).style("opacity", st === "gustos" || st === "distincio" ? 1 : 0);
+      pG.transition().duration(dur).style("opacity", taste ? .55 : 1);
+      prG.transition().duration(dur).style("opacity", taste ? 1 : 0);
+      prN.transition().delay((d, i) => taste && dur ? i * 25 : 0).duration(dur).attr("transform", d => `translate(${X(d.x)},${Y(d.y)}) scale(${taste ? 1 : .6})`);
       distG.transition().duration(dur).style("opacity", st === "distincio" ? 1 : 0);
       const on = st === "distincio";
-      newP.interrupt().transition().delay(on && !dur ? 0 : on ? 350 : 0).duration(on && dur ? 1400 : 0).ease(EIO).attr("d", line(on ? NEW : OLD));
-      arrows.transition().delay(on && dur ? 900 : 0).duration(dur).style("opacity", on ? 1 : 0);
+      newP.interrupt().transition().delay(on && dur ? 350 : 0).duration(on && dur ? 1400 : 0).ease(EIO).attr("d", line(on ? NEW : OLD));
       newL.transition().delay(on && dur ? 1300 : 0).duration(dur).style("opacity", on ? 1 : 0);
+      linkG.selectAll("*").remove();
     };
 
+    const near = d => PROFS.map(p => ({p, d: Math.hypot(p.x - d.x, (p.y - d.y))})).sort((a, b) => a.d - b.d).slice(0, 3).map(o => o.p);
     const tp = V.tip(container);
     svg.style("cursor", "crosshair");
+    const reset = () => { linkG.selectAll("*").remove(); V.focus(pG, () => true); pG.style("opacity", curStep === "gustos" || curStep === "distincio" ? .55 : 1); prN.style("opacity", 1); tp.hide(); };
     V.hover(svg.node(), (ev, [px, py]) => {
-      const hit = d3.least(PROFS, d => Math.hypot(px - X(d.x), py - Y(d.y)));
-      const gh = (curStep === "gustos" || curStep === "distincio") ? d3.least(GUSTS, d => Math.hypot(px - X(d.x), py - Y(d.y))) : null;
-      const dP = hit ? Math.hypot(px - X(hit.x), py - Y(hit.y)) : 1e9, dG = gh ? Math.hypot(px - X(gh.x), py - Y(gh.y)) : 1e9;
-      if(dG < (mob ? 22 : 38) && dG < dP){ V.focus(pG, () => false); tp.show(`<b>${gh.n}</b> · gust associat a aquesta regió de l'espai social`); return; }
-      if(dP < 40){
-        V.focus(pG, d => d.id === hit.id);
-        const vol = hit.y > .35 ? "molt capital" : hit.y < -.35 ? "poc capital" : "capital intermedi";
-        const pol = hit.x < -.15 ? "sobretot cultural" : hit.x > .15 ? "sobretot econòmic" : "repartit entre tots dos";
-        tp.show(`<b>${hit.n}</b> · ${vol}, ${pol}`);
-      } else { V.focus(pG, null); tp.hide(); }
-    }, () => { V.focus(pG, null); tp.hide(); });
+      const taste = curStep === "gustos" || curStep === "distincio";
+      const vis = PRAC.filter(d => !mob || d.mob);
+      const pr = taste ? d3.least(vis, d => Math.hypot(px - X(d.x), py - Y(d.y))) : null;
+      const pf = d3.least(PROFS, d => Math.hypot(px - X(d.x), py - Y(d.y)));
+      const dPr = pr ? Math.hypot(px - X(pr.x), py - Y(pr.y)) : 1e9, dPf = Math.hypot(px - X(pf.x), py - Y(pf.y));
+      linkG.selectAll("*").remove();
+      if(pr && dPr < 30 && dPr <= dPf + 6){
+        const nb = near(pr);
+        nb.forEach(p => linkG.append("path").attr("d", `M${X(pr.x)},${Y(pr.y)}Q${(X(pr.x) + X(p.x)) / 2},${Math.min(Y(pr.y), Y(p.y)) - 18} ${X(p.x)},${Y(p.y)}`)
+          .attr("fill", "none").attr("stroke", C.ink).attr("stroke-width", .9).attr("stroke-opacity", .75));
+        pG.interrupt().style("opacity", p => nb.includes(p) ? 1 : .4);
+        prN.style("opacity", d => d === pr ? 1 : .5);
+        tp.show(`<i>${pr.n}</i> · al mapa, al costat de: <b>${nb.map(p => p.n.toLowerCase()).join(", ")}</b>`);
+        return;
+      }
+      if(dPf < 34){
+        pG.interrupt().style("opacity", p => p === pf ? 1 : .45);
+        const vol = pf.y > .35 ? "molt capital" : pf.y < -.35 ? "poc capital" : "capital intermedi";
+        const pol = pf.x < -.15 ? "sobretot cultural" : pf.x > .15 ? "sobretot econòmic" : "repartit entre tots dos";
+        tp.show(`<b>${pf.n}</b> · ${vol}, ${pol}`);
+        return;
+      }
+      reset();
+    }, reset);
 
     applyStep(curStep, true);
   });
@@ -606,113 +583,116 @@ function layers(container, w, h, label){
 })();
 
 /* =========================================================================
-   V5 · SPREAD-03 + PART-01 (dades reals): les set classes del Regne Unit
-   100 punts, un per cada 1 % de la població, que s'apleguen a la renda familiar
-   mitjana de la seva classe. El color diu el perfil de capitals.
+   V5 · CASE-09 + PART-01 (dades reals): les set classes del Regne Unit
+   Una flor per classe i set pètals, un per variable de la taula 6 de Savage et al.:
+   tres d'econòmiques (vermell), dues de culturals (blau) i dues de socials (groc).
+   La llargada és l'arrel del valor respecte a la classe més alta (cercle discontinu).
+   Sota terra, un punt per cada 1 % de la població.
    ========================================================================= */
 (function(){
   const el = $("#gbcs-viz"); if(!el) return;
-  const TONE = {elit: C.red, est: C.red, tec: C.yellow, nou: C.blue, eme: C.blue, tra: C.muted, pre: C.ghost};
-  const OP = {elit: .9, est: .42, tec: .9, nou: .88, eme: .42, tra: .82, pre: .82};
-  const NOTE = {elit: "alt en tots tres capitals", tec: "renda alta, poca cultura i xarxa", eme: "joves, molta cultura emergent", pre: "baix en tots tres capitals"};
+  const VARS = [
+    {k: "income", t: "Renda familiar", c: C.red, f: v => f0(v) + " £"},
+    {k: "sav", t: "Estalvis", c: C.red, f: v => f0(v) + " £"},
+    {k: "house", t: "Valor de l'habitatge", c: C.red, f: v => f0(v) + " £"},
+    {k: "hb", t: "Cultura «alta»", c: C.blue, f: v => f1(v)},
+    {k: "em", t: "Cultura emergent", c: C.blue, f: v => f1(v)},
+    {k: "cs", t: "Prestigi dels contactes", c: C.yellow, f: v => f1(v)},
+    {k: "cn", t: "Nombre de contactes", c: C.yellow, f: v => f1(v)}
+  ];
+  const NV = VARS.length, DATA = D.gbcs;
+  const MAX = {}; VARS.forEach(v => MAX[v.k] = d3.max(DATA, d => d[v.k]));
+  const EDGE = c => c === C.yellow ? "none" : c, FILL = (c, a) => V.alpha(c, (c === C.yellow ? .72 : .5) * (a == null ? 1 : a));
+  function petal(L){ const w = L * .3; return `M0,0C${w.toFixed(2)},${(-L * .3).toFixed(2)} ${(w * .85).toFixed(2)},${(-L * .82).toFixed(2)} 0,${(-L).toFixed(2)}C${(-w * .85).toFixed(2)},${(-L * .82).toFixed(2)} ${(-w).toFixed(2)},${(-L * .3).toFixed(2)} 0,0Z`; }
+
   const lg = $("#gbcs-lg");
-  if(lg) V.legendCat(lg, [
-    {c: C.red, t: "Alts en tots tres capitals"},
-    {c: C.yellow, t: "Diners sense cultura ni xarxa"},
-    {c: C.blue, t: "Renda modesta, cultura i xarxa"},
-    {c: C.muted, t: "Capitals baixos"}
-  ], {title: "Cada punt, l'1 % de la població"});
-  const DATA = D.gbcs;
+  if(lg){
+    const d = d3.select(lg).append("div").attr("class", "ibv-lg");
+    d.append("div").attr("class", "ibv-lg-t").text("Cada pètal, una variable (el cercle és la classe més alta)");
+    const W = 250, H = 132, cx = 125, cy = 68, L = 36, s = d.append("svg").attr("width", W).attr("height", H).style("overflow", "visible");
+    s.append("circle").attr("cx", cx).attr("cy", cy).attr("r", L).attr("fill", "none").attr("stroke", C.ghost).attr("stroke-dasharray", "1.5 3");
+    VARS.forEach((v, j) => {
+      const a = j * TAU / NV, ll = L * .85;
+      s.append("path").attr("transform", `translate(${cx},${cy}) rotate(${j * 360 / NV})`).attr("d", petal(ll)).attr("fill", FILL(v.c)).attr("stroke", EDGE(v.c)).attr("stroke-width", .8);
+      const rr = L + 6, x = cx + Math.sin(a) * rr, y = cy - Math.cos(a) * rr, sn = Math.sin(a);
+      s.append("text").attr("x", x).attr("y", y + (Math.cos(a) > .5 ? -1 : Math.cos(a) < -.5 ? 9 : 4)).attr("text-anchor", sn > .2 ? "start" : sn < -.2 ? "end" : "middle")
+        .attr("font-size", 11).attr("fill", C.ink2).text(v.t);
+    });
+    s.append("circle").attr("cx", cx).attr("cy", cy).attr("r", 2).attr("fill", C.ink);
+    V.legendCat(lg, [{c: C.red, t: "Econòmic", a: .6}, {c: C.blue, t: "Cultural", a: .6}, {c: C.yellow, t: "Social", a: .8}, {c: C.ink2, t: "1 punt = 1 % de la població"}]);
+  }
 
   V.mount(el, (container, w) => {
-    const mob = w < 600;
-    const r = mob ? 4.4 : 8.2;
-    const ml = mob ? 10 : 30, mr = mob ? 16 : 40;
-    const X = d3.scaleLinear([0, 95000], [ml, w - mr]);
-    // simulació de forces fixa (es calcula un sol cop per amplada)
-    const rnd = V.rng(2013);
-    const nodes = [];
-    DATA.forEach(d => d3.range(d.pop).forEach(() => nodes.push({d, x: X(d.income) + (rnd() - .5) * 6, y: (rnd() - .5) * 20})));
-    const sim = d3.forceSimulation(nodes)
-      .force("x", d3.forceX(n => X(n.d.income)).strength(.85))
-      .force("y", d3.forceY(0).strength(.07))
-      .force("c", d3.forceCollide(r + (mob ? .7 : 1.1)).iterations(3)).stop();
-    for(let i = 0; i < 320; i++) sim.tick();
-    const y0 = d3.min(nodes, n => n.y) - r, y1 = d3.max(nodes, n => n.y) + r;
-    const bandT = mob ? 40 : 58, bandB = mob ? 40 : 58, axisH = 34;
-    const off = bandT - y0;
-    nodes.forEach(n => { n.y += off; });
-    const h = Math.round(bandT + (y1 - y0) + bandB + axisH);
-    const yAxis = h - axisH + 4;
-
-    const svg = V.svg(container, w, h, "Cent punts, un per cada 1 % de la població britànica, agrupats segons la renda familiar mitjana de les set classes de Savage et al. (2013): el precariat (15 %) a 8.253 £, la classe obrera tradicional (14 %) a 13.305 £, els treballadors emergents de serveis (19 %) a 21.048 £, els nous treballadors acomodats (15 %) a 29.247 £, la classe mitjana tècnica (6 %) a 37.428 £, la classe mitjana establerta (25 %) a 47.184 £ i l'elit (6 %) a 89.082 £, sola a la dreta.");
+    const mob = w < 600, cols = mob ? 2 : (w < 980 ? 4 : 7), rowsN = Math.ceil(DATA.length / cols), cw = w / cols;
+    const R = Math.min(cw * .36, mob ? 62 : 64);
+    const stem = mob ? 30 : 38, dotR = mob ? 3 : 3.4, dotG = dotR * 2 + 2, perRow = 5;
+    const popH = Math.ceil(25 / perRow) * dotG;
+    const labH = 44;
+    const rowH = R * 2 + 14 + stem + 10 + popH + labH;
+    const h = rowsN * rowH + 4;
+    const svg = V.svg(container, w, h, "Set flors, una per classe social del Regne Unit (Savage et al., 2013). Cada flor té set pètals: renda, estalvis i valor de l'habitatge (econòmic), cultura «alta» i emergent (cultural), prestigi i nombre de contactes (social). L'elit té els pètals econòmics més llargs; la classe mitjana tècnica té molts estalvis però molt pocs contactes; els treballadors emergents de serveis tenen la cultura emergent més alta; el precariat té la flor més petita. Sota cada flor, un punt per cada 1 % de la població.");
     const g = svg.append("g");
-    // eix de renda
-    const ticks = mob ? [0, 40000, 80000] : [0, 20000, 40000, 60000, 80000];
-    ticks.forEach((t, i) => {
-      g.append("line").attr("x1", X(t)).attr("x2", X(t)).attr("y1", bandT - 10).attr("y2", yAxis).attr("stroke", t === 0 ? C.ink : C.grid).attr("stroke-width", t === 0 ? 1 : .6);
-      V.t(g, X(t), yAxis + 15, f0(t) + (i === ticks.length - 1 ? " £" : ""), {size: 11, anchor: "middle", fill: t === 0 ? C.ink : C.muted});
+    const L = d3.scaleSqrt([0, 1], [0, R]);
+    const pos = DATA.map((d, i) => {
+      const r = Math.floor(i / cols), inRow = Math.min(cols, DATA.length - r * cols), c = i % cols, x0 = (w - inRow * cw) / 2;
+      return {x: x0 + (c + .5) * cw, y: r * rowH + R + 8};
     });
-    V.t(g, w - mr, yAxis + 30, "Renda familiar mitjana a l'any →", {size: 11.5, anchor: "end", fill: C.ink2});
-
-    // etiquetes de classe, alternant a dalt i a baix i separades en horitzontal
-    const CL = DATA.map(d => {
-      const ns = nodes.filter(n => n.d === d);
-      return {d, cx: X(d.income), top: d3.min(ns, n => n.y) - r, bot: d3.max(ns, n => n.y) + r};
+    d3.range(rowsN).forEach(r => {
+      const yb = r * rowH + R * 2 + 8 + stem;
+      g.append("line").attr("x1", mob ? 0 : cw * .15).attr("x2", w - (mob ? 0 : cw * .15)).attr("y1", yb).attr("y2", yb).attr("stroke", C.hair);
     });
-    const sideOf = {pre: "b", tra: "t", eme: "b", nou: "t", tec: "b", est: "t", elit: "t"};
-    const showLab = d => !mob || ["pre", "eme", "est", "elit"].includes(d.id);
-    ["t", "b"].forEach(side => {
-      const arr = CL.filter(c => sideOf[c.d.id] === side && showLab(c.d)).sort((a, b) => a.cx - b.cx);
-      arr.forEach(c => { c.lw = Math.max(textW(c.d.short, mob ? 11.5 : 12.5, true), textW(`${f0(c.d.income)} £ · ${c.d.pop} %`, 11.5)) + 6; c.lx = c.cx; });
-      for(let i = 1; i < arr.length; i++){ const a = arr[i - 1], b = arr[i], minD = (a.lw + b.lw) / 2 + 10; if(b.lx - a.lx < minD) b.lx = a.lx + minD; }
-      for(let i = arr.length - 1; i >= 0; i--){ const c = arr[i], maxX = (i === arr.length - 1 ? w - 4 : arr[i + 1].lx - (arr[i + 1].lw + c.lw) / 2 - 10) - c.lw / 2; if(c.lx > maxX) c.lx = maxX; if(c.lx < c.lw / 2 + 2) c.lx = c.lw / 2 + 2; }
+    const fl = g.selectAll("g.fl").data(DATA, d => d.id).join("g").attr("class", "fl")
+      .attr("transform", (d, i) => `translate(${pos[i].x},${pos[i].y})`);
+    fl.append("line").attr("class", "stm").attr("y1", 0).attr("y2", R + stem).attr("stroke", C.ink2).attr("stroke-width", .9);
+    fl.append("circle").attr("r", R).attr("fill", "none").attr("stroke", C.ghost).attr("stroke-width", .8).attr("stroke-dasharray", "1.5 3");
+    const inner = fl.append("g").attr("class", "in");
+    const pts = inner.selectAll("path.pt").data(d => VARS.map((v, j) => ({v, j, d, p: d[v.k] / MAX[v.k]}))).join("path").attr("class", "pt")
+      .attr("transform", q => `rotate(${q.j * 360 / NV})`).attr("d", q => petal(Math.max(.5, L(q.p))))
+      .attr("fill", q => FILL(q.v.c)).attr("stroke", q => EDGE(q.v.c)).attr("stroke-width", .8).attr("stroke-linejoin", "round");
+    inner.append("circle").attr("r", 2.2).attr("fill", C.ink);
+    // població: un punt per 1 %
+    fl.each(function(d){
+      const gr = d3.select(this), y0 = R + stem + 10;
+      d3.range(d.pop).forEach(k => {
+        const cx = ((k % perRow) - (perRow - 1) / 2) * dotG, cy = y0 + Math.floor(k / perRow) * dotG + dotR;
+        gr.append("circle").attr("class", "pp").attr("cx", cx).attr("cy", cy).attr("r", dotR).attr("fill", C.ink2).attr("fill-opacity", .75);
+      });
+      const yl = y0 + popH + 16;
+      V.t(gr, 0, yl, d.short, {size: mob ? 12 : 12.5, weight: 700, anchor: "middle"});
+      V.t(gr, 0, yl + 15, `${d.pop} % · ${f0(d.income)} £`, {size: 11.5, anchor: "middle", fill: C.muted});
     });
-    const labG = g.selectAll("g.cl").data(CL.filter(c => showLab(c.d))).join("g").attr("class", "cl");
-    labG.each(function(c){
-      const gr = d3.select(this), top = sideOf[c.d.id] === "t";
-      const ly = top ? (mob ? 12 : 16) : h - axisH - bandB + (mob ? 22 : 26);
-      const ey = top ? c.top - 3 : c.bot + 3;
-      const lyEdge = top ? ly + (NOTE[c.d.id] && !mob ? 32 : 18) : ly - 14;
-      gr.append("path").attr("d", `M${c.cx},${ey}L${c.cx},${(ey + lyEdge) / 2}L${c.lx},${(ey + lyEdge) / 2}L${c.lx},${lyEdge}`)
-        .attr("fill", "none").attr("stroke", C.ghost).attr("stroke-width", .8);
-      V.t(gr, c.lx, ly, c.d.short, {size: mob ? 11.5 : 12.5, weight: 700, anchor: "middle", halo: true});
-      V.t(gr, c.lx, ly + 14, `${f0(c.d.income)} £ · ${c.d.pop} %`, {size: 11.5, anchor: "middle", fill: C.ink2, halo: true});
-      if(NOTE[c.d.id] && !mob) V.t(gr, c.lx, ly + 28, NOTE[c.d.id], {size: 11.5, italic: true, anchor: "middle", fill: C.muted, halo: true});
-    });
-
-    const dots = g.append("g").selectAll("circle").data(nodes).join("circle")
-      .attr("cx", n => n.x).attr("cy", n => n.y).attr("r", r)
-      .attr("fill", n => TONE[n.d.id]).attr("fill-opacity", n => OP[n.d.id])
-      .attr("stroke", n => n.d.id === "pre" ? C.muted : n.d.id === "tec" ? C.yellowDark : (n.d.id === "est" || n.d.id === "eme") ? TONE[n.d.id] : C.paper)
-      .attr("stroke-opacity", n => (n.d.id === "est" || n.d.id === "eme") ? .7 : 1).attr("stroke-width", n => n.d.id === "pre" || n.d.id === "tec" ? .7 : (n.d.id === "est" || n.d.id === "eme") ? .9 : 1);
 
     if(!container.__seen && !V.reduced){
-      const mx = X(d3.mean(DATA, d => d.income)), my = (bandT + h - axisH - bandB) / 2;
-      dots.attr("cx", () => mx + (rnd() - .5) * 60).attr("cy", () => my + (rnd() - .5) * 40).style("opacity", 0);
-      labG.style("opacity", 0);
+      pts.attr("transform", q => `rotate(${q.j * 360 / NV - 50}) scale(0.01)`);
+      fl.selectAll("circle.pp").style("opacity", 0);
       V.onView(container, inst => {
-        if(inst){ dots.attr("cx", n => n.x).attr("cy", n => n.y).style("opacity", 1); labG.style("opacity", 1); return; }
-        dots.transition().duration(300).style("opacity", 1);
-        dots.transition("mv").delay(n => 350 + DATA.indexOf(n.d) * 90 + rnd() * 160).duration(1300).ease(EIO).attr("cx", n => n.x).attr("cy", n => n.y);
-        labG.transition().delay(1500).duration(500).style("opacity", 1);
+        if(inst){ pts.attr("transform", q => `rotate(${q.j * 360 / NV})`); fl.selectAll("circle.pp").style("opacity", 1); return; }
+        pts.transition().delay(q => DATA.indexOf(q.d) * 110 + q.j * 60).duration(950).ease(d3.easeCubicOut).attr("transform", q => `rotate(${q.j * 360 / NV}) scale(1)`);
+        fl.each(function(d, i){ d3.select(this).selectAll("circle.pp").transition().delay((q, k) => 900 + i * 110 + k * 18).duration(250).style("opacity", 1); });
       });
     }
 
-    const del = d3.Delaunay.from(nodes, n => n.x, n => n.y);
     const tp = V.tip(container);
     svg.style("cursor", "pointer");
-    let curD = null;
+    const vg = g.append("g").style("pointer-events", "none");
+    let cur = null, curJ = -1;
+    function off(){ if(!cur) return; cur = null; curJ = -1; vg.selectAll("*").remove(); V.focus(fl, null); pts.attr("stroke", q => EDGE(q.v.c)).attr("stroke-width", .8); tp.hide(); }
     V.hover(svg.node(), (ev, [px, py]) => {
-      const n = nodes[del.find(px, py)];
-      if(!n || Math.hypot(px - n.x, py - n.y) > r * 3.2){ if(curD){ curD = null; V.focus(dots, null); V.focus(labG, null); } tp.hide(); return; }
-      if(curD !== n.d){
-        curD = n.d;
-        V.focus(dots, q => q.d === curD); V.focus(labG, c => c.d === curD);
-      }
-      const d = n.d;
-      tp.show(`<b>${d.label}</b> · ${d.pop} % de la població · renda familiar mitjana ${f0(d.income)} £ · ${d.tag}`);
-    }, () => { curD = null; V.focus(dots, null); V.focus(labG, null); tp.hide(); });
+      const i = d3.leastIndex(pos, p => Math.hypot(px - p.x, (py - p.y) * .7)), p = pos[i], d = DATA[i];
+      if(Math.abs(px - p.x) > cw / 2 || py < p.y - R - 10 || py > p.y + rowH - R - 8){ off(); return; }
+      let a = Math.atan2(px - p.x, -(py - p.y)); if(a < 0) a += TAU;
+      const j = Math.round(a / (TAU / NV)) % NV;
+      if(cur === d && curJ === j) return;
+      cur = d; curJ = j;
+      V.focus(fl, q => q === d);
+      pts.attr("stroke", q => q.d === d && q.j === j ? C.ink : EDGE(q.v.c)).attr("stroke-width", q => q.d === d && q.j === j ? 1.5 : .8);
+      vg.selectAll("*").remove();
+      const v = VARS[j], val = d[v.k], ang = j * TAU / NV, ll = L(val / MAX[v.k]) + 8;
+      const tx = p.x + Math.sin(ang) * ll, ty = p.y - Math.cos(ang) * ll, sn = Math.sin(ang);
+      V.t(vg, tx, ty + (Math.cos(ang) < -.5 ? 10 : 4), v.f(val), {size: 12.5, weight: 700, anchor: sn > .2 ? "start" : sn < -.2 ? "end" : "middle", halo: 3});
+      const rank = 1 + DATA.filter(q => q[v.k] > val).length;
+      tp.show(`<b>${d.label}</b> · ${v.t}: <b>${v.f(val)}</b> (posició ${rank} de 7) · ${d.tag}`);
+    }, off);
   });
 })();
 
