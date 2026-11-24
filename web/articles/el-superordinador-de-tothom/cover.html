@@ -1,0 +1,18 @@
+<!doctype html><html lang="ca"><meta charset="utf-8"><title>El superordinador que no existia</title>
+<!-- Portada: quadrats niats d'àrea proporcional (Summit, 10, 100 i 500 primers del TOP500, nov. 2019, en blau;
+     Folding@home, abril 2020, en vermell) sobre una pols de punts (ordinadors del món). Sense text. 1680×720. -->
+<style>html,body{margin:0;background:#fff}canvas{display:block}</style>
+<canvas id="c"></canvas>
+<script>
+const W=1680,H=720,c=document.getElementById("c"); c.width=W; c.height=H; const x=c.getContext("2d");
+x.fillStyle="#fff"; x.fillRect(0,0,W,H);
+// pols de punts
+x.fillStyle="rgba(18,18,18,.22)";
+for(let i=0;i<W;i+=5)for(let j=0;j<H;j+=5)x.fillRect(i,j,1.2,1.2);
+let s=7; const r=()=>{ s=(s*16807)%2147483647; return s/2147483647; };
+// quadrats niats a la cantonada inferior esquerra (àrea proporcional)
+const S=600, ox=W/2-S/2-120, oy=H-60, V=[[1646.9,"#2C5DA8",.05,1],[1010,"#C8442A",.16,2.4],[989,"#2C5DA8",.07,1],[520.2,"#2C5DA8",.08,1],[148.6,"#2C5DA8",.12,1]];
+V.forEach(([v,col,a,lw])=>{ const d=S*Math.sqrt(v/1646.9); x.globalAlpha=a; x.fillStyle=col; x.fillRect(ox,oy-d,d,d); x.globalAlpha=1; x.strokeStyle=col; x.lineWidth=lw; x.strokeRect(ox+.5,oy-d+.5,d,d); });
+// punts vermells escampats (els ordinadors voluntaris)
+for(let k=0;k<160;k++){ const px=ox+S+60+r()*(W-ox-S-120), py=60+r()*(H-120); x.fillStyle="#C8442A"; x.fillRect(px,py,5,5); x.strokeStyle="rgba(200,68,42,.35)"; x.beginPath(); x.arc(px+2.5,py+2.5,11,0,6.283); x.stroke(); }
+</script></html>

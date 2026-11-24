@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-e12a16a5475f";
+const CACHE_NAME = "ib-offline-c94a050c34e6";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -108,6 +108,15 @@ const LOCAL_ASSETS = [
   "/articles/el-nino/cover.jpg",
   "/articles/el-nino/index.html",
   "/articles/el-nino/thumb.webp",
+  "/articles/el-superordinador-de-tothom/",
+  "/articles/el-superordinador-de-tothom/article.css",
+  "/articles/el-superordinador-de-tothom/article.js",
+  "/articles/el-superordinador-de-tothom/cites.js",
+  "/articles/el-superordinador-de-tothom/cover.html",
+  "/articles/el-superordinador-de-tothom/cover.jpg",
+  "/articles/el-superordinador-de-tothom/dades.js",
+  "/articles/el-superordinador-de-tothom/index.html",
+  "/articles/el-superordinador-de-tothom/thumb.webp",
   "/articles/els-capitals-de-bourdieu/",
   "/articles/els-capitals-de-bourdieu/article.css",
   "/articles/els-capitals-de-bourdieu/article.js",

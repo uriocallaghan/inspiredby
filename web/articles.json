@@ -1,5 +1,14 @@
 [
   {
+    "slug": "el-superordinador-de-tothom",
+    "title": "El superordinador que no existia",
+    "desc": "La primavera del 2020, més d'un milió d'ordinadors van calcular junts per estudiar el coronavirus i van formar la xarxa de càlcul més gran que s'havia muntat mai. Per què tanta gent regala la força de la seva màquina?",
+    "category": "Ciència i societat",
+    "thumbAlt": "Imatge de degradat de la casa.",
+    "draft": true,
+    "minutes": 8
+  },
+  {
     "slug": "comptar-ocells",
     "title": "Comptar ocells",
     "desc": "Des del 1900, cada Nadal milers de persones surten a comptar ocells. Un segle de llibretes de voluntaris s'ha convertit en una de les millors maneres de veure com canvia el món.",
