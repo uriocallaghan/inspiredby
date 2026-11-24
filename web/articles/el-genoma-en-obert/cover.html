@@ -1,0 +1,25 @@
+<!doctype html><html lang="ca"><meta charset="utf-8"><title>El genoma que es va publicar en una nit</title>
+<!-- Portada de l'article: l'arbre filogenètic real del SARS-CoV-2 (mostra oberta de Nextstrain),
+     amb les branques en blau i, en vermell, les que surten del primer genoma publicat. Sense text.
+     cover.jpg: ?w=1680&h=720 -->
+<style>html,body{margin:0;background:#fff}canvas{display:block}</style>
+<canvas id="c"></canvas>
+<script src="dades.js"></script>
+<script>
+const q=new URLSearchParams(location.search), W=+q.get("w")||1680, H=+q.get("h")||720;
+const c=document.getElementById("c"); c.width=W; c.height=H; const x=c.getContext("2d");
+x.fillStyle="#fff"; x.fillRect(0,0,W,H);
+const N=window.GEN_DATA.tree.n;
+const t0=2019.9, t1=Math.max(...N.map(d=>d[1]));
+const m={t:Math.round(H*.07),r:Math.round(W*.04),b:Math.round(H*.07),l:Math.round(W*.04)};
+const X=v=>m.l+(W-m.l-m.r)*(v-t0)/(t1-t0), Y=v=>m.t+(H-m.t-m.b)*v;
+x.lineCap="round";
+for(let i=1;i<N.length;i++){
+  const n=N[i], p=N[n[0]];
+  const early=n[1]<2020.25;
+  x.lineWidth=Math.max(.5,(n[4]?.9:.6)*Math.max(W,H)/1680);
+  x.strokeStyle=early?"rgba(200,68,42,.9)":(n[4]?"rgba(44,93,168,.5)":"rgba(44,93,168,.28)");
+  x.beginPath(); x.moveTo(X(p[1]),Y(p[2])); x.lineTo(X(p[1]),Y(n[2])); x.lineTo(X(n[1]),Y(n[2])); x.stroke();
+}
+</script>
+</html>

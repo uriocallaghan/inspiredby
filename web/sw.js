@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-14f8aa164883";
+const CACHE_NAME = "ib-offline-b0fadfbb1f3c";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -63,6 +63,15 @@ const LOCAL_ASSETS = [
   "/articles/el-forat-de-l-ozo/index.html",
   "/articles/el-forat-de-l-ozo/ozo-octubre.js",
   "/articles/el-forat-de-l-ozo/thumb.webp",
+  "/articles/el-genoma-en-obert/",
+  "/articles/el-genoma-en-obert/article.css",
+  "/articles/el-genoma-en-obert/article.js",
+  "/articles/el-genoma-en-obert/cites.js",
+  "/articles/el-genoma-en-obert/cover.html",
+  "/articles/el-genoma-en-obert/cover.jpg",
+  "/articles/el-genoma-en-obert/dades.js",
+  "/articles/el-genoma-en-obert/index.html",
+  "/articles/el-genoma-en-obert/thumb.webp",
   "/articles/el-jesus-historic/",
   "/articles/el-jesus-historic/article.css",
   "/articles/el-jesus-historic/article.js",

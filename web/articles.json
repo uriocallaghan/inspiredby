@@ -1,5 +1,14 @@
 [
   {
+    "slug": "el-genoma-en-obert",
+    "title": "El genoma que es va publicar en una nit",
+    "desc": "L'11 de gener del 2020, un equip de Xangai va penjar en obert el genoma d'un virus nou, i dos dies després ja hi havia el protocol d'una prova per detectar-lo. És la història de com la ciència va aprendre a compartir les dades abans de publicar-les.",
+    "category": "Ciència i societat",
+    "thumbAlt": "Imatge de degradat de la casa.",
+    "draft": true,
+    "minutes": 11
+  },
+  {
     "slug": "el-cercle-del-kula",
     "title": "El cercle del kula",
     "desc": "A les illes de l'est de Papua Nova Guinea, la gent navega dies per donar collarets i braçalets de petxina que s'han de fer passar. Un segle després, encara discutim per què.",
