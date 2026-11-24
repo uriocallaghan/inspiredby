@@ -1,6 +1,6 @@
 /* «Els quatre capitals de Pierre Bourdieu» · cinc gràfics del sistema infogràfic
-   V1 · LINK-05 + LINK-03 (scrolly, esquema): tres camps de partícules (líquid, sedimentat, en xarxa),
-        l'aura puntejada del capital simbòlic i els canals de conversió amb partícules que canvien de color
+   V1 · LINK-05 + LINK-03 (scrolly, esquema): els capitals sobre l'eix de la liquiditat, el simbòlic com a
+        reconeixement de tots i els arcs de conversió
    V2 · PART-01 en gira-sol (dades reals): 1.000 joves per categoria, els que entren a la universitat en blau (Les Héritiers)
    V3 · SPREAD-02 sobre trama de punts (scrolly, esquema): el quiasme de l'espai social (La Distinction)
    V4 · CASE-09 (dades reals): flors de dades, un pètal per obra musical (La Distinction)
@@ -45,272 +45,154 @@ function layers(container, w, h, label){
 }
 
 /* =========================================================================
-   V1 · LINK-05 + LINK-03 (scrolly, 5 passos): les quatre monedes
-   Cada capital és un camp de partícules amb el seu comportament: l'econòmic gira
-   de pressa (líquid), el cultural gairebé no es mou (sedimentat) i el social és una
-   xarxa de nusos. El simbòlic no és un quart cercle: és l'aura que apareix al voltant
-   dels altres tres quan es reconeixen. Al pas 5, canals de conversió amb partícules
-   que canvien de color d'una moneda a l'altra.
+   V1 · LINK-05 + LINK-03 (scrolly, 5 passos): les quatre monedes sobre l'eix de la liquiditat
+   Cercles translúcids plans sobre un eix bipolar: a l'esquerra, el que es transfereix
+   a l'instant; a la dreta, el que exigeix anys. El capital cultural surt en els seus
+   tres estats, cadascun al seu lloc de l'eix. El simbòlic no és un cercle més: és el
+   reconeixement que pot tenir qualsevol d'ells (una clau sobre tots). Al pas 5, arcs de
+   conversió amb fletxa i punts que hi circulen a poc a poc.
    ========================================================================= */
 (function(){
   const el = $("#cap-viz"), stepsEl = $("#s-capitals .steps"), gEl = $("#s-capitals .graphic");
   if(!el) return;
   const lg = $("#cap-lg");
   if(lg) V.legendCat(lg, [
-    {c: C.red, t: "Econòmic: líquid"},
-    {c: C.blue, t: "Cultural: sedimentat"},
-    {c: C.yellow, t: "Social: en xarxa"},
-    {c: C.ink2, t: "Simbòlic: l'aura del reconeixement", a: .4}
+    {c: C.red, t: "Econòmic", a: .5},
+    {c: C.blue, t: "Cultural (tres estats)", a: .5},
+    {c: C.yellow, t: "Social", a: .7},
+    {c: C.ink, t: "Simbòlic: el reconeixement", kind: "line", w: 1.2}
   ]);
 
-  const CAPS = [
-    {id: "eco", name: "Econòmic", sub: "diners i patrimoni", c: C.red, ang: -150},
-    {id: "cul", name: "Cultural", sub: "cos, objectes i títols", c: C.blue, ang: -30},
-    {id: "soc", name: "Social", sub: "una xarxa duradora", c: C.yellow, ang: 90}
-  ];
-  const STATES = [
-    {n: "Incorporat", d: "parla, gust, desimboltura", x: 0, y: -.48, share: .5, below: false},
-    {n: "Objectivat", d: "llibres, obres", x: -.48, y: .36, share: .25, below: true},
-    {n: "Títols", d: "diplomes de l'Estat", x: .48, y: .36, share: .25, below: true}
+  const NODES = [
+    {id: "eco", fam: "eco", k: "", n: "Econòmic", s: "diners, patrimoni", m: "Econòmic", c: C.red, x: .07,
+     dock: "<b>Capital econòmic</b> · diners, patrimoni i propietats: es transfereix gairebé a l'instant"},
+    {id: "obj", fam: "cul", k: "Cultural", n: "Objectivat", s: "llibres, obres", m: "Objectivat", c: C.blue, x: .29,
+     dock: "<b>Capital cultural objectivat</b> · llibres, instruments, quadres: es compren en un matí, però cal saber-los apreciar"},
+    {id: "soc", fam: "soc", k: "", n: "Social", s: "una xarxa que cal mantenir", m: "Social", c: C.yellow, x: .5,
+     dock: "<b>Capital social</b> · els recursos d'una xarxa duradora, que es manté amb temps, favors i invitacions"},
+    {id: "tit", fam: "cul", k: "Cultural", n: "Títols", s: "diplomes de l'Estat", m: "Títols", c: C.blue, x: .71,
+     dock: "<b>Capital cultural institucionalitzat</b> · els diplomes que certifica l'Estat: anys d'escola"},
+    {id: "inc", fam: "cul", k: "Cultural", n: "Incorporat", s: "parla, gust, desimboltura", m: "Incorporat", c: C.blue, x: .93,
+     dock: "<b>Capital cultural incorporat</b> · la fluïdesa, el gust i els codis apresos a casa: no es pot comprar en un matí"}
   ];
   const FLOWS = [
-    {from: "eco", to: "cul", t: "Diners → títols", d: "escoles i temps lliure: anys", per: 34000},
-    {from: "cul", to: "soc", t: "Títols → xarxa", d: "promocions, clubs, col·legis", per: 26000},
-    {from: "soc", to: "eco", t: "Xarxa → diners", d: "feines i oportunitats", per: 21000}
+    {from: "eco", to: "tit", t: "Diners → títols", d: "escoles i temps lliure", side: -1, per: 32000},
+    {from: "tit", to: "soc", t: "Títols → xarxa", d: "promocions, clubs", side: 1, per: 24000},
+    {from: "soc", to: "eco", t: "Xarxa → diners", d: "feines i oportunitats", side: 1, per: 24000}
   ];
   const TITLES = {
-    eco: ["1 · Capital econòmic", "La moneda més líquida: circula de pressa i es mesura en xifres"],
-    cul: ["2 · Capital cultural", "Tres estats: incorporat al cos, objectivat en coses i certificat en títols"],
-    soc: ["3 · Capital social", "Els recursos d'una xarxa estable, que cal mantenir"],
-    sim: ["4 · Capital simbòlic", "L'aura que pren qualsevol capital quan els altres el reconeixen"],
+    eco: ["1 · Capital econòmic", "El més líquid: es transfereix a l'instant"],
+    cul: ["2 · Capital cultural", "Tres estats, i com més s'incorpora al cos, més temps costa d'adquirir"],
+    soc: ["3 · Capital social", "Una xarxa que no es compra: es manté amb temps i favors"],
+    sim: ["4 · Capital simbòlic", "No és un capital més: és qualsevol dels altres quan es reconeix com a legítim"],
     conv: ["5 · Les conversions", "Cada moneda es pot canviar per una altra, però no a la mateixa velocitat"]
   };
-  const DOCK = {
-    eco: "<b>Capital econòmic</b> · diners, patrimoni i propietats: el més líquid, canvia de mans en segons",
-    cul: "<b>Capital cultural</b> · incorporat (parla, gust), objectivat (llibres, obres) i institucionalitzat (títols)",
-    soc: "<b>Capital social</b> · els recursos d'una xarxa duradora, que es manté amb temps, favors i invitacions",
-    sim: "<b>Capital simbòlic</b> · qualsevol dels altres quan es percep com a honor, mèrit o autoritat"
-  };
-  const STEPS = {
-    eco:  {eco: 1, cul: .3, soc: .3, m: 0, halo: 0, flow: 0},
-    cul:  {eco: .3, cul: 1, soc: .3, m: 1, halo: 0, flow: 0},
-    soc:  {eco: .3, cul: .3, soc: 1, m: 0, halo: 0, flow: 0},
-    sim:  {eco: 1, cul: 1, soc: 1, m: 0, halo: 1, flow: 0},
-    conv: {eco: .85, cul: .85, soc: .85, m: 0, halo: .45, flow: 1}
-  };
-
+  const ON = {eco: ["eco"], cul: ["obj", "tit", "inc"], soc: ["soc"], sim: null, conv: null};
   let curStep = "eco", applyStep = null;
-  const cur = Object.assign({}, STEPS.eco), tgt = Object.assign({}, STEPS.eco);
-  let hov = null;
 
   V.mount(el, (container, w) => {
     if(el.__loop){ el.__loop.stop(); el.__loop = null; }
     const mob = w < 600;
-    const h = mob ? Math.round(Math.max(236, Math.min(window.innerHeight * .34, 290))) : Math.round(Math.max(470, Math.min(580, window.innerHeight - 330)));
-    const R = mob ? Math.min(50, (h - 12) / 5.3, w / 7.4) : Math.min(112, (h - 24) / 5.55, w / 7.6);
-    const rho = R * (mob ? 1.62 : 1.75), cx = w / 2, cy = h / 2 - rho / 4;
-    const P = {};
-    CAPS.forEach(k => { const a = k.ang * Math.PI / 180; P[k.id] = {x: cx + rho * Math.cos(a), y: cy + rho * Math.sin(a), c: k.c}; });
+    const h = mob ? Math.round(Math.max(230, Math.min(window.innerHeight * .32, 270))) : 440;
+    const ml = mob ? 34 : 70, mr = mob ? 34 : 70;
+    const r = mob ? Math.min(30, (w - ml - mr) * .1) : Math.min(76, (w - ml - mr) * .105);
+    const ay = mob ? Math.round(h * .5) : Math.round(h * .52);
+    const X = u => ml + u * (w - ml - mr);
+    const P = {}; NODES.forEach(d => P[d.id] = {x: X(d.x), y: ay});
 
-    const {ctx, svg} = layers(container, w, h, "Esquema dels capitals de Pierre Bourdieu: tres camps de partícules (econòmic en vermell, que circula de pressa; cultural en blau, gairebé immòbil; social en groc, una xarxa de nusos), una aura de punts grisos que representa el capital simbòlic i tres canals de conversió entre ells.");
-    const rnd = V.rng(1983);
-
-    // Partícules de cada capital
-    const ECO = d3.range(mob ? 95 : 180).map(() => {
-      const u = rnd();
-      return {r: R * .9 * Math.sqrt(.04 + .96 * u), a: rnd() * TAU, w: TAU / (19000 * (.55 + .9 * u))};
-    });
-    const pickState = () => { const q = rnd(); return q < STATES[0].share ? 0 : q < STATES[0].share + STATES[1].share ? 1 : 2; };
-    const CUL = d3.range(mob ? 95 : 180).map(() => {
-      const rr = R * .88 * Math.sqrt(rnd()), aa = rnd() * TAU, s = STATES[pickState()];
-      let tx = s.x * R + V.gauss(rnd) * R * .12, ty = s.y * R + V.gauss(rnd) * R * .1;
-      const d = Math.hypot(tx, ty); if(d > R * .9){ tx *= R * .9 / d; ty *= R * .9 / d; }
-      return {hx: Math.cos(aa) * rr, hy: Math.sin(aa) * rr, tx, ty, ph: rnd() * TAU, f: TAU / (7000 + rnd() * 6000), k: .6 + rnd() * .9};
-    });
-    const SOC = d3.range(mob ? 30 : 52).map(() => {
-      const rr = R * .84 * Math.sqrt(rnd()), aa = rnd() * TAU;
-      return {x: Math.cos(aa) * rr, y: Math.sin(aa) * rr, ph: rnd() * TAU, f: TAU / (9000 + rnd() * 7000), amp: 1.5 + rnd() * 2.5};
-    });
-    const SOCL = [];
-    SOC.forEach((p, i) => {
-      SOC.map((q, j) => ({j, d: Math.hypot(p.x - q.x, p.y - q.y)})).filter(o => o.j !== i)
-        .sort((a, b) => a.d - b.d).slice(0, 2).forEach(o => { if(!SOCL.some(l => (l[0] === o.j && l[1] === i))) SOCL.push([i, o.j]); });
-    });
-    // L'aura: punts de gravat al voltant de cada capital, més densos a prop del cercle
-    const HALO = [];
-    CAPS.forEach(k => {
-      d3.range(mob ? 230 : 440).forEach(() => {
-        const q = Math.pow(rnd(), 1.7);
-        HALO.push({id: k.id, r: R * (1.04 + .4 * q), a: rnd() * TAU, k: q, s: .55 + rnd() * .6});
-      });
-    });
-    HALO.sort((a, b) => a.k - b.k);
-
-    // Canals de conversió (corba quadràtica que s'obre cap enfora)
-    const FL = FLOWS.map(f => {
-      const A = P[f.from], B = P[f.to];
-      const mx = (A.x + B.x) / 2, my = (A.y + B.y) / 2;
-      const qx = mx + (mx - cx) * 1.15, qy = my + (my - cy) * 1.15;
-      const edge = (S, T) => { const d = Math.hypot(T[0] - S.x, T[1] - S.y); return [S.x + (T[0] - S.x) / d * R * 1.02, S.y + (T[1] - S.y) / d * R * 1.02]; };
-      const a = edge(A, [qx, qy]), b = edge(B, [qx, qy]);
-      const pt = u => { const v = 1 - u; return [v * v * a[0] + 2 * v * u * qx + u * u * b[0], v * v * a[1] + 2 * v * u * qy + u * u * b[1]]; };
-      const col = d3.range(13).map(i => d3.interpolateLab(A.c, B.c)(i / 12));
-      const parts = d3.range(mob ? 14 : 24).map(() => ({o: rnd(), s: .85 + rnd() * .3, off: (rnd() - .5) * (mob ? 5 : 9)}));
-      const samp = d3.range(31).map(i => pt(i / 30));
-      return Object.assign({}, f, {A, B, a, b, qx, qy, pt, col, parts, samp, mid: pt(.5)});
-    });
-
-    function draw(t){
-      ctx.clearRect(0, 0, w, h);
-      const A = id => cur[id] * (hov && hov !== "sim" && !hov.startsWith("f") ? (hov === id ? 1 : .5) : 1);
-      // 1. Aura simbòlica
-      if(cur.halo > .01){
-        const rot = t * TAU / 120000;
-        ctx.fillStyle = C.ink2;
-        const hA = hov === "sim" ? 1 : hov ? .55 : 1;
-        for(let i = 0; i < HALO.length; i++){
-          const p = HALO[i]; if(p.k > cur.halo) continue;
-          const c = P[p.id], a = p.a + rot * (p.id === "cul" ? -1 : 1);
-          ctx.globalAlpha = (.58 - .35 * p.k) * hA * Math.max(.4, cur[p.id]);
-          ctx.beginPath(); ctx.arc(c.x + Math.cos(a) * p.r, c.y + Math.sin(a) * p.r, p.s, 0, TAU); ctx.fill();
-        }
-        ctx.globalAlpha = 1;
-      }
-      // 2. Discos d'aquarel·la (sense vora dura)
-      ctx.globalCompositeOperation = "multiply";
-      CAPS.forEach(k => {
-        const p = P[k.id], a = A(k.id), y = k.c === C.yellow;
-        const gr = ctx.createRadialGradient(p.x, p.y, R * .1, p.x, p.y, R);
-        gr.addColorStop(0, V.alpha(k.c, (y ? .26 : .13) * a));
-        gr.addColorStop(.8, V.alpha(k.c, (y ? .2 : .09) * a));
-        gr.addColorStop(1, V.alpha(k.c, (y ? .06 : .025) * a));
-        ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(p.x, p.y, R, 0, TAU); ctx.fill();
-      });
-      ctx.globalCompositeOperation = "source-over";
-      // 3. Canals de conversió
-      if(cur.flow > .01){
-        FL.forEach((f, i) => {
-          const fa = cur.flow * (hov && hov.startsWith("f") ? (hov === "f" + i ? 1 : .45) : 1);
-          const gr = ctx.createLinearGradient(f.a[0], f.a[1], f.b[0], f.b[1]);
-          gr.addColorStop(0, V.alpha(f.A.c, .2 * fa)); gr.addColorStop(1, V.alpha(f.B.c, .2 * fa));
-          ctx.strokeStyle = gr; ctx.lineWidth = mob ? 9 : 16; ctx.lineCap = "round";
-          ctx.beginPath(); ctx.moveTo(f.a[0], f.a[1]); ctx.quadraticCurveTo(f.qx, f.qy, f.b[0], f.b[1]); ctx.stroke();
-          f.parts.forEach(p => {
-            const u = (p.o + t * p.s / f.per) % 1, fade = smooth(u, 0, .08) * smooth(1 - u, 0, .08);
-            if(fade < .02) return;
-            const h1 = f.pt(u), h0 = f.pt(Math.max(0, u - .025));
-            const nx = -(h1[1] - h0[1]), ny = h1[0] - h0[0], nl = Math.hypot(nx, ny) || 1;
-            const ox = nx / nl * p.off, oy = ny / nl * p.off;
-            const col = f.col[Math.round(u * 12)];
-            ctx.strokeStyle = col; ctx.fillStyle = col;
-            ctx.globalAlpha = .5 * fade * fa; ctx.lineWidth = 1.1;
-            ctx.beginPath(); ctx.moveTo(h0[0] + ox, h0[1] + oy); ctx.lineTo(h1[0] + ox, h1[1] + oy); ctx.stroke();
-            ctx.globalAlpha = .92 * fade * fa;
-            ctx.beginPath(); ctx.arc(h1[0] + ox, h1[1] + oy, mob ? 1.7 : 2.1, 0, TAU); ctx.fill();
-          });
-          ctx.globalAlpha = 1;
-        });
-      }
-      // 4. Econòmic: arcs curts que giren (líquid)
-      { const p = P.eco, a = A("eco");
-        ctx.strokeStyle = C.red; ctx.lineWidth = 1.05; ctx.lineCap = "round"; ctx.globalAlpha = .55 * a;
-        ctx.beginPath();
-        ECO.forEach(q => { const a1 = q.a + q.w * t, a0 = a1 - q.w * 900;
-          ctx.moveTo(p.x + Math.cos(a0) * q.r, p.y + Math.sin(a0) * q.r); ctx.arc(p.x, p.y, q.r, a0, a1); });
-        ctx.stroke();
-        ctx.fillStyle = C.red; ctx.globalAlpha = .9 * a; ctx.beginPath();
-        ECO.forEach(q => { const a1 = q.a + q.w * t, x = p.x + Math.cos(a1) * q.r, y = p.y + Math.sin(a1) * q.r;
-          ctx.moveTo(x + 1.3, y); ctx.arc(x, y, 1.3, 0, TAU); });
-        ctx.fill(); }
-      // 5. Cultural: grans gairebé quiets que es poden aplegar en tres estats
-      { const p = P.cul, a = A("cul"), m = cur.m * cur.m * (3 - 2 * cur.m);
-        ctx.fillStyle = C.blue; ctx.globalAlpha = .82 * a; ctx.beginPath();
-        CUL.forEach(q => { const j = Math.sin(q.ph + t * q.f) * .9;
-          const x = p.x + q.hx + (q.tx - q.hx) * m + j, y = p.y + q.hy + (q.ty - q.hy) * m + Math.cos(q.ph + t * q.f * .7) * .7;
-          ctx.rect(x - q.k, y - q.k, q.k * 2, q.k * 2); });
-        ctx.fill(); }
-      // 6. Social: nusos units
-      { const p = P.soc, a = A("soc");
-        const pos = SOC.map(q => [p.x + q.x + Math.cos(q.ph + t * q.f) * q.amp, p.y + q.y + Math.sin(q.ph + t * q.f * 1.3) * q.amp]);
-        ctx.strokeStyle = C.ink2; ctx.lineWidth = .7; ctx.globalAlpha = .38 * a; ctx.beginPath();
-        SOCL.forEach(l => { ctx.moveTo(pos[l[0]][0], pos[l[0]][1]); ctx.lineTo(pos[l[1]][0], pos[l[1]][1]); });
-        ctx.stroke();
-        ctx.fillStyle = C.yellow; ctx.strokeStyle = C.yellowDark; ctx.globalAlpha = a; ctx.lineWidth = .7;
-        pos.forEach(q => { ctx.beginPath(); ctx.arc(q[0], q[1], mob ? 2.2 : 2.9, 0, TAU); ctx.fill(); ctx.stroke(); }); }
-      ctx.globalAlpha = 1;
-    }
-
-    // Etiquetes (SVG)
+    const svg = V.svg(container, w, h, "Esquema dels capitals de Pierre Bourdieu sobre un eix de liquiditat: a l'esquerra el capital econòmic, que es transfereix a l'instant; després el capital cultural objectivat (llibres), el capital social, els títols i, a la dreta, el capital cultural incorporat, que exigeix anys. El capital simbòlic és el reconeixement de qualsevol d'ells. Tres arcs mostren les conversions: diners en títols, títols en xarxa i xarxa en diners.");
     const g = svg.append("g");
-    const nameG = g.selectAll("g.cap-n").data(CAPS, d => d.id).join("g").attr("class", "cap-n")
-      .attr("transform", d => `translate(${P[d.id].x},${P[d.id].y})`);
-    nameG.each(function(d){
-      const gr = d3.select(this);
-      V.t(gr, 0, mob ? 5 : 2, d.name, {serif: true, size: mob ? 15 : 21, anchor: "middle", halo: 4}).attr("class", "nm");
-      if(!mob) V.t(gr, 0, 20, d.sub, {size: 11.5, anchor: "middle", fill: C.ink2, halo: 3}).attr("class", "sb");
-    });
-    const stG = g.append("g").attr("transform", `translate(${P.cul.x},${P.cul.y})`).style("opacity", 0);
-    STATES.forEach(s => {
-      const y = s.y * R + (s.below ? R * .12 + 15 : -R * .1 - 8);
-      V.t(stG, s.x * R, y, s.n, {size: mob ? 11 : 12, weight: 700, anchor: "middle", halo: 3});
-    });
-    const flG = g.append("g").style("opacity", 0);
-    FL.forEach(f => {
-      const dx = f.mid[0] - cx, dy = f.mid[1] - cy, dl = Math.hypot(dx, dy) || 1;
-      const ox = f.mid[0] + dx / dl * (mob ? 14 : 24), oy = f.mid[1] + dy / dl * (mob ? 14 : 24);
-      const anc = dx > 30 ? "start" : dx < -30 ? "end" : "middle";
-      V.t(flG, ox, oy + (dy > 0 ? 10 : -2), f.t, {size: mob ? 11 : 12.5, weight: 700, anchor: anc, halo: 3});
-      if(!mob) V.t(flG, ox, oy + (dy > 0 ? 24 : 12), f.d, {size: 11.5, anchor: anc, fill: C.ink2, halo: 3});
-    });
-    const simG = g.append("g").style("opacity", 0);
-    if(!mob){
-      const s = P.soc;
-      V.note(simG, {x: s.x + R * 1.12, y: s.y - R * .55, tx: s.x + R * 1.75, ty: s.y - R * .2, kind: "curve", anchor: "start",
-        lines: [["L'aura simbòlica", true], ["honor, prestigi, autoritat:"], ["el mateix capital, reconegut"]], size: 12});
-    }
 
-    function applyNow(st){
-      const dur = V.reduced ? 0 : 420;
-      nameG.transition().duration(dur).style("opacity", d => STEPS[st][d.id] < .5 ? .55 : 1);
-      nameG.filter(d => d.id === "cul").selectAll(".sb").transition().duration(dur).style("opacity", st === "cul" ? 0 : 1);
-      nameG.filter(d => d.id === "cul").select(".nm").transition().duration(dur).attr("y", st === "cul" ? (mob ? 5 : 6) : (mob ? 5 : 2));
-      stG.transition().duration(dur).style("opacity", st === "cul" ? 1 : 0);
-      flG.transition().duration(dur).style("opacity", st === "conv" ? 1 : 0);
-      simG.transition().duration(dur).style("opacity", st === "sim" ? 1 : 0);
-    }
+    // Eix bipolar
+    const axG = g.append("g");
+    axG.append("line").attr("x1", X(0) - r * .6).attr("x2", X(1) + r * .6).attr("y1", ay).attr("y2", ay)
+      .attr("stroke", C.ink).attr("stroke-width", .7).attr("stroke-dasharray", "2 4").attr("stroke-opacity", .6);
+    const yb = ay + r + (mob ? 30 : 46);
+    V.t(axG, X(0) - r * .6, yb, mob ? "← A l'instant" : "← Es transfereix a l'instant", {size: mob ? 11 : 12, anchor: "start", fill: C.ink2});
+    V.t(axG, X(1) + r * .6, yb, mob ? "Exigeix anys →" : "Exigeix anys de dedicació →", {size: mob ? 11 : 12, anchor: "end", fill: C.ink2});
+
+    // Arcs de conversió (pas 5)
+    const arc = f => {
+      const a = P[f.from], b = P[f.to], sx = a.x + Math.sign(b.x - a.x) * r * .55, ex = b.x - Math.sign(b.x - a.x) * r * .55;
+      const span = Math.abs(ex - sx), lift = Math.min(mob ? 70 : 150, span * .45 + r * .9);
+      const y0 = ay + f.side * r * .78, cy = ay + f.side * (r * .78 + lift);
+      return {sx, ex, y0, cy, pt: u => { const v = 1 - u; return [v * v * sx + 2 * v * u * (sx + ex) / 2 + u * u * ex, v * v * y0 + 2 * v * u * cy + u * u * y0]; }};
+    };
+    const flG = g.append("g").style("opacity", 0);
+    const FL = FLOWS.map(f => {
+      const A = arc(f), col = NODES.find(d => d.id === f.from).c;
+      flG.append("path").attr("d", `M${A.sx},${A.y0}Q${(A.sx + A.ex) / 2},${A.cy} ${A.ex},${A.y0}`)
+        .attr("fill", "none").attr("stroke", C.ink2).attr("stroke-width", .9);
+      const e = A.pt(1), q = A.pt(.97), ang = Math.atan2(e[1] - q[1], e[0] - q[0]);
+      flG.append("path").attr("d", `M${e[0] - 6 * Math.cos(ang - .45)},${e[1] - 6 * Math.sin(ang - .45)}L${e[0]},${e[1]}L${e[0] - 6 * Math.cos(ang + .45)},${e[1] - 6 * Math.sin(ang + .45)}`)
+        .attr("fill", "none").attr("stroke", C.ink2).attr("stroke-width", .9);
+      const top = A.pt(.5);
+      if(!mob){
+        V.t(flG, top[0], top[1] + (f.side < 0 ? -20 : 18), f.t, {size: 12.5, weight: 700, anchor: "middle", halo: true});
+        V.t(flG, top[0], top[1] + (f.side < 0 ? -6 : 32), f.d, {size: 11.5, anchor: "middle", fill: C.ink2, halo: true});
+      }
+      const dots = d3.range(mob ? 4 : 6).map(k => flG.append("circle").attr("r", mob ? 2 : 2.6).attr("fill", col === C.yellow ? C.yellowDark : col).datum(k / (mob ? 4 : 6)));
+      return Object.assign({}, f, A, {dots});
+    });
+    function moveDots(t){ FL.forEach(f => f.dots.forEach(c => { const u = (c.datum() + t / f.per) % 1, p = f.pt(u); c.attr("cx", p[0]).attr("cy", p[1]); })); }
+    moveDots(0);
+
+    // Cercles translúcids plans (LINK-05)
+    const nG = g.selectAll("g.cap").data(NODES, d => d.id).join("g").attr("class", "cap")
+      .attr("transform", d => `translate(${P[d.id].x},${ay})`);
+    nG.append("circle").attr("class", "bg").attr("r", r).attr("fill", d => d.c).attr("fill-opacity", d => d.c === C.yellow ? .34 : .17)
+      .style("mix-blend-mode", "multiply");
+    const ring = nG.append("circle").attr("r", r).attr("fill", "none").attr("stroke", C.ink).attr("stroke-width", 1.3).style("opacity", 0);
+    nG.append("circle").attr("r", 2.4).attr("fill", C.ink);
+    nG.each(function(d, i){
+      const gr = d3.select(this);
+      if(mob){
+        const up = i % 2 === 0, y = up ? -r - 8 : r + 16;
+        V.t(gr, 0, y, d.m, {size: 11.5, weight: 700, anchor: "middle", halo: true});
+      } else {
+        if(d.k) V.t(gr, 0, -r * .18 - 6, d.k, {size: 11.5, anchor: "middle", fill: C.blue, halo: true});
+        V.t(gr, 0, d.k ? -r * .18 + 10 : -2, d.n, {size: 14, weight: 700, anchor: "middle", halo: true});
+        wrap(d.s, r * 1.6, 11.5).forEach((l, j) => V.t(gr, 0, (d.k ? -r * .18 + 26 : 14) + j * 13, l, {size: 11.5, anchor: "middle", fill: C.ink2, halo: true}));
+      }
+    });
+
+    // Capital simbòlic: una clau sobre tots, i cada cercle «reconegut» amb una vora fina
+    const simG = g.append("g").style("opacity", 0);
+    const by = ay - r - (mob ? 26 : 40);
+    simG.append("path").attr("d", `M${X(0) - r},${by + 9}L${X(0) - r},${by}L${X(1) + r},${by}L${X(1) + r},${by + 9}`)
+      .attr("fill", "none").attr("stroke", C.ink).attr("stroke-width", 1);
+    V.t(simG, (X(0) + X(1)) / 2, by - 8, mob ? "Simbòlic: qualsevol d'ells, reconegut" : "Capital simbòlic: qualsevol d'aquests capitals quan els altres el reconeixen com a honor, mèrit o autoritat",
+      {size: mob ? 11.5 : 12.5, weight: 700, anchor: "middle", halo: true});
 
     applyStep = function(st, instant){
       curStep = st;
+      const dur = instant || V.reduced ? 0 : 450;
       const tEl = $("#cap-t"), sEl = $("#cap-s");
       if(TITLES[st]){ if(tEl) tEl.textContent = TITLES[st][0]; if(sEl) sEl.textContent = TITLES[st][1]; }
-      Object.assign(tgt, STEPS[st]);
-      if(instant || V.reduced){ Object.assign(cur, tgt); draw(0); }
-      applyNow(st);
+      const on = ON[st];
+      nG.transition().duration(dur).style("opacity", d => !on || on.includes(d.id) ? 1 : .32);
+      ring.transition().duration(dur).style("opacity", st === "sim" ? .85 : 0);
+      simG.transition().duration(dur).style("opacity", st === "sim" ? 1 : 0);
+      flG.transition().duration(dur).style("opacity", st === "conv" ? 1 : 0);
     };
 
-    // Hover
+    const restore = () => { const on = ON[curStep]; nG.interrupt().transition().duration(160).style("opacity", d => !on || on.includes(d.id) ? 1 : .32); };
     const tp = V.tip(container);
     svg.style("cursor", "pointer");
-    const setHov = k => { if(hov === k) return; hov = k; if(V.reduced) draw(0); };
     V.hover(svg.node(), (ev, [px, py]) => {
-      if(cur.flow > .5){
+      if(curStep === "conv"){
         let best = null, bd = 1e9;
-        FL.forEach((f, i) => f.samp.forEach(s => { const d = Math.hypot(px - s[0], py - s[1]); if(d < bd){ bd = d; best = i; } }));
-        if(bd < 16){ setHov("f" + best); const f = FL[best]; tp.show(`<b>${f.t}</b> · ${f.d}`); return; }
+        FL.forEach(f => d3.range(0, 1.01, .05).forEach(u => { const p = f.pt(u), d = Math.hypot(px - p[0], py - p[1]); if(d < bd){ bd = d; best = f; } }));
+        if(bd < 14){ V.focus(nG, d => d.id === best.from || d.id === best.to); tp.show(`<b>${best.t}</b> · ${best.d}`); return; }
       }
-      const k = d3.least(CAPS, d => Math.hypot(px - P[d.id].x, py - P[d.id].y));
-      const dist = Math.hypot(px - P[k.id].x, py - P[k.id].y);
-      if(dist < R * 1.02){ setHov(k.id); tp.show(DOCK[k.id]); }
-      else if(dist < R * 1.45 && cur.halo > .3){ setHov("sim"); tp.show(DOCK.sim); }
-      else { setHov(null); tp.hide(); }
-    }, () => { setHov(null); tp.hide(); });
+      const d = d3.least(NODES, q => Math.abs(px - P[q.id].x));
+      if(d && Math.abs(px - P[d.id].x) < r && Math.abs(py - ay) < r * 1.2){ V.focus(nG, q => q === d); tp.show(curStep === "sim" ? `${d.dock} · reconegut, també és capital simbòlic` : d.dock); }
+      else if(curStep === "sim" && Math.abs(py - by) < 18){ restore(); tp.show("<b>Capital simbòlic</b> · honor, prestigi, autoritat: funciona perquè sembla desinteressat"); }
+      else { restore(); tp.hide(); }
+    }, () => { restore(); tp.hide(); });
 
     applyStep(curStep, true);
-    el.__loop = V.loop(container, (t, dt) => {
-      const k = 1 - Math.exp(-(dt || 16) / 260);
-      for(const key in tgt) cur[key] += (tgt[key] - cur[key]) * k;
-      draw(t);
-    });
+    if(!V.reduced) el.__loop = V.loop(container, t => { if(curStep === "conv") moveDots(t); });
   });
 
   if(stepsEl && gEl && window.IB && IB.scrolly){
