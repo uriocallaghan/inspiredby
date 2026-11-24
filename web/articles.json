@@ -1,5 +1,14 @@
 [
   {
+    "slug": "comptar-ocells",
+    "title": "Comptar ocells",
+    "desc": "Des del 1900, cada Nadal milers de persones surten a comptar ocells. Un segle de llibretes de voluntaris s'ha convertit en una de les millors maneres de veure com canvia el món.",
+    "category": "Natura i societat",
+    "thumbAlt": "Imatge de degradat de la casa.",
+    "draft": true,
+    "minutes": 7
+  },
+  {
     "slug": "els-capitals-de-bourdieu",
     "title": "Els quatre capitals de Pierre Bourdieu",
     "desc": "Els diners no expliquen sols qui ocupa cada lloc en una societat. Pierre Bourdieu va mostrar que juguem amb quatre formes de capital —econòmic, cultural, social i simbòlic— que s'hereten, es transformen entre si i decideixen des del gust musical fins a qui arriba a la universitat.",

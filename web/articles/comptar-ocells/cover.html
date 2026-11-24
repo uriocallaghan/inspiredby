@@ -1,0 +1,19 @@
+<!doctype html><html lang="ca"><meta charset="utf-8"><title>Comptar ocells</title>
+<!-- Portada de l'article: els cercles reals del recompte d'ocells de Nadal (temporada 2025–26), a escala, sense text.
+     cover.jpg: ?w=1680&h=720 -->
+<style>html,body{margin:0;background:#fff}canvas{display:block}</style>
+<canvas id="c"></canvas>
+<script src="dades.js"></script>
+<script>
+const q=new URLSearchParams(location.search), W=+q.get("w")||1680, H=+q.get("h")||720;
+const c=document.getElementById("c"); c.width=W; c.height=H; const x=c.getContext("2d");
+x.fillStyle="#fff"; x.fillRect(0,0,W,H);
+// projecció equirectangular amb correcció de latitud, centrada a Amèrica del Nord
+const lon0=-128, lon1=-60, lat0=22, lat1=56, kc=Math.cos(40*Math.PI/180);
+const k=Math.max(W/((lon1-lon0)*kc), H/(lat1-lat0));
+const P=(lon,lat)=>[W/2+(lon-(lon0+lon1)/2)*k*kc, H/2-(lat-(lat0+lat1)/2)*k];
+const rKm=12.05/111.2*k;
+x.globalCompositeOperation="multiply";
+window.OC.cercles.forEach(d=>{ const p=P(d[2],d[3]); x.beginPath(); x.arc(p[0],p[1],rKm,0,6.2832); x.fillStyle="rgba(200,68,42,.38)"; x.fill(); });
+</script>
+</html>

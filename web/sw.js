@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-6015efbe879e";
+const CACHE_NAME = "ib-offline-e5f76029ef26";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -28,6 +28,16 @@ const LOCAL_ASSETS = [
   "/articles/cinta-transportadora/dades.js",
   "/articles/cinta-transportadora/index.html",
   "/articles/cinta-transportadora/thumb.webp",
+  "/articles/comptar-ocells/",
+  "/articles/comptar-ocells/article.css",
+  "/articles/comptar-ocells/article.js",
+  "/articles/comptar-ocells/cites.js",
+  "/articles/comptar-ocells/cover.html",
+  "/articles/comptar-ocells/cover.jpg",
+  "/articles/comptar-ocells/dades.js",
+  "/articles/comptar-ocells/index.html",
+  "/articles/comptar-ocells/relleu-cat.js",
+  "/articles/comptar-ocells/thumb.webp",
   "/articles/de-que-mor-el-mon/",
   "/articles/de-que-mor-el-mon/cover.jpg",
   "/articles/de-que-mor-el-mon/index.html",
