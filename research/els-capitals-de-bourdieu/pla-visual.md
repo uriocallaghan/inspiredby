@@ -2,35 +2,37 @@
 
 Slug: `els-capitals-de-bourdieu`
 Paleta fixa dins tot l'article:
-- **Vermell** (`IBV.C.red` `#C8442A`): capital econòmic / protagonistes / bretxa més alta.
-- **Blau** (`IBV.C.blue` `#2C5DA8`): capital cultural / titulació i gust legítim.
+- **Vermell** (`IBV.C.red` `#C8442A`): capital econòmic (i els seus tons per a les classes riques en tot).
+- **Blau** (`IBV.C.blue` `#2C5DA8`): capital cultural, títols, accés a la universitat.
 - **Groc** (`IBV.C.yellow` `#F5C518`): capital social / gust mitjà (sempre en superfícies o punts, mai en text ni línies fines).
-- **Tinta i grisos** (`IBV.C.ink`, `ink2`, `muted`, `ghost`): capital simbòlic (el marc que legitima), context i eixos.
-- Cap mapa regional a l'article (no cal `MAP-01`).
+- **Tinta i grisos** (`IBV.C.ink`, `ink2`, `muted`, `ghost`): capital simbòlic (l'aura que legitima), context i eixos.
+- Cap mapa a l'article (no cal `MAP-01`).
+
+Revisió del 24-11-2026 (l'editor va trobar els gràfics «molt genèrics»): cap gràfic de barres ni de piruletes; cada forma segueix el fenomen.
 
 ## Llista de gràfics
 
-1. **V1 · LINK-05 + LINK-03 (`.scrolly`, 5 passos):** *Les quatre monedes i com es converteixen*.
-   - **Peça del sistema:** `LINK-05` (cercles translúcids `multiply` amb tipografia neta) combinat amb `LINK-03` (fluxos corbats amb partícules lentes, recorregut ~25 s, aturades amb `IBV.reduced`).
-   - **Per què aquesta forma:** els quatre capitals no són compartiments estancs, sinó reserves que se superposen i es transformen amb fricció. El scroll permet presentar-los d'un en un (econòmic, cultural en tres estats, social, simbòlic) i mostrar al cinquè pas els canals de conversió.
-   - **Dades:** esquema conceptual basat en Bourdieu (1983/1986, *The Forms of Capital*) i Bourdieu (1972/1980, *Le Sens pratique*). Declarat «Esquema» al peu.
+1. **V1 · LINK-05 + LINK-03 (`.scrolly`, 5 passos):** *Les quatre monedes*.
+   - **Forma:** tres discos d'aquarel·la (LINK-05) i, a dins, un camp de partícules per capital amb el seu comportament: l'econòmic gira (líquid), el cultural gairebé no es mou i s'aplega en els tres estats al pas 2 (sedimentat), el social és una xarxa de nusos units. El simbòlic no és un quart cercle sinó una aura de punts de gravat que apareix al voltant dels altres tres (pas 4). Al pas 5, canals de conversió LINK-03 amb partícules que canvien de color d'una moneda a l'altra, a poc a poc (21–34 s).
+   - **Per què:** la idea central de Bourdieu és que els capitals són monedes amb una liquiditat diferent i que el simbòlic és una manera de ser reconegut, no una quarta reserva.
+   - **Dades:** esquema (Bourdieu 1983/1986; 1972/1980). Declarat «Esquema» al peu.
 
-2. **V2 · CASE-01 (`.fig wide`, interactiu):** *Qui entrava a la universitat a França (1961–1962)*.
-   - **Peça del sistema:** `CASE-01` (barres ordenades de tija fina i cercle, protagonista en vermell, commutador `.seg` entre «Probabilitat (%)» i «Quantes vegades més que un fill d'obrer» amb transició animada).
-   - **Per què aquesta forma:** ordena set categories socioprofessionals amb una diferència de més de 80 vegades entre els extrems, fent visible la bretxa sense saturar. A mòbil (`w < 600`), etiqueta a sobre de la barra (`guia-mobil.md` §3).
-   - **Dades:** dades reals de Bourdieu i Passeron (1964), *Les Héritiers*, capítol 1 (estadístiques d'ensenyament superior a França, 1961–1962). Declarat «Dades reals» al peu.
+2. **V2 · PART-01 en gira-sol (`.fig wide`):** *Qui entrava a la universitat a França (1961–1962)*.
+   - **Forma:** set discos de 1.000 punts en fil·lotaxi; els fills que arriben a la universitat s'encenen en blau des del cor, de manera que l'àrea blava és la taxa. Arc anotat «42 vegades més probable» entre quadres superiors i obrers.
+   - **Per què:** «585 de cada 1.000» contra «14 de cada 1.000» es veu com a quantitat de persones, no com a llargada de barra.
+   - **Dades:** Bourdieu i Passeron (1964), *Les Héritiers*, cap. 1. Declarat «Dades reals».
 
-3. **V3 · SPREAD-02 (`.scrolly`, 4 passos):** *L'espai social de La Distinction*.
-   - **Peça del sistema:** `SPREAD-02` (núvol de punts en dos eixos amb protagonistes destacats i anotacions en colze).
-   - **Per què aquesta forma:** reprodueix fidelment el pla factorial de dos eixos de Bourdieu (vertical: volum global de capital; horitzontal: estructura entre capital cultural a l'esquerra i econòmic a la dreta), afegint-hi pas a pas les professions, els gustos i la frontera de la distinció.
-   - **Dades:** esquema basat en el plànol de l'anàlisi de correspondències múltiples de Bourdieu (1979), *La Distinction* (enquesta de 1963 i 1967–1968 a 1.217 persones). Declarat «Esquema» al peu.
+3. **V3 · SPREAD-02 sobre trama de punts (`.scrolly`, 4 passos):** *L'espai social de La Distinction*.
+   - **Forma:** trama hexagonal de punts on el gris (pas 1) diu el volum de capital i després es parteix en un punt blau (cultural) i un de vermell (econòmic) amb àrea proporcional; en surt sol el quiasme de Bourdieu. A sobre, professions (SPREAD-02), gustos en cercles translúcids i, al pas 4, la frontera de la distinció que puja des d'on era.
+   - **Per què:** el fons dibuixa la definició dels dos eixos (volum i estructura), que és el que costa d'entendre.
+   - **Dades:** esquema del pla factorial de *La Distinction* (1979). Declarat «Esquema».
 
-4. **V4 · CASE-02 (`.fig wide`, interactiu):** *Tres peces musicals, tres mons socials*.
-   - **Peça del sistema:** `CASE-02` (halteres / punts units per línia sobre escala comuna 0–70 %, amb selector `.seg` per veure totes tres peces o aïllar cada obra).
-   - **Per què aquesta forma:** permet llegir d'un sol cop la inversió exacta entre el *Danubi blau* (vermell, cau del 65 % al 3 %) i el *Clave ben temperat* de Bach (blau, puja de l'1 % al 21 %) a mesura que creix el capital escolar, mentre *Rhapsody in Blue* (groc) es manté al mig. A mòbil, nom del grup a sobre de cada fila.
-   - **Dades:** dades reals de l'enquesta de Bourdieu (1979), *La Distinction* (taules de preferències musicals segons classe social i titulació). Declarat «Dades reals» al peu.
+4. **V4 · CASE-09 (`.fig wide`, selector `.seg`):** *Tres peces musicals, tres mons socials*.
+   - **Forma:** cinc flors de dades amb tija, una per grup de classe i titulació; tres pètals per obra (Danubi blau en vermell, Rhapsody en groc, Bach en blau), llargada amb arrel quadrada, arc discontinu = 100 %.
+   - **Per què:** la inversió es veu com una flor que canvia de forma: el pètal vermell es pansa i el blau creix.
+   - **Dades:** *La Distinction* (1979), taules de preferències musicals. Declarat «Dades reals».
 
-5. **V5 · CASE-01 (`.fig wide`, interactiu):** *Les set classes del Regne Unit en tres capitals*.
-   - **Peça del sistema:** `CASE-01` (barres ordenades reordenables amb `.seg` entre «Renda familiar mitjana (£)» i «Pes a la població (%)», amb codi de color per perfil de capital i detall dels tres capitals al dock de hover).
-   - **Per què aquesta forma:** mostra per què la divisió en tres classes ja no explica una societat on hi ha grups rics però poc connectats (*classe mitjana tècnica*) i grups joves amb renda baixa però alt capital cultural emergent (*treballadors emergents de serveis*).
-   - **Dades:** dades reals de Savage et al. (2013), *Sociology* 47(2), taules 5 i 6 (mostra representativa nacional GfK i *Great British Class Survey*). Declarat «Dades reals» al peu.
+5. **V5 · SPREAD-03 + PART-01 (`.fig wide`):** *Les set classes del Regne Unit*.
+   - **Forma:** eixam de 100 punts (un per cada 1 % de la població) aplegats a la renda familiar mitjana de cada classe; color pel perfil de capitals. L'elit queda sola a la dreta.
+   - **Per què:** mostra alhora quanta gent hi ha a cada classe i com de lluny és dels altres, sense dues vistes.
+   - **Dades:** Savage et al. (2013), *Sociology* 47(2), taules 5 i 6. Declarat «Dades reals».
