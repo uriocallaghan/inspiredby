@@ -1,5 +1,14 @@
 [
   {
+    "slug": "els-capitals-de-bourdieu",
+    "title": "Els quatre capitals de Pierre Bourdieu",
+    "desc": "Els diners no expliquen sols qui ocupa cada lloc en una societat. Pierre Bourdieu va mostrar que juguem amb quatre formes de capital —econòmic, cultural, social i simbòlic— que s'hereten, es transformen entre si i decideixen des del gust musical fins a qui arriba a la universitat.",
+    "category": "Antropologia i societat",
+    "minutes": 9,
+    "thumbAlt": "Forma abstracta ascendent en taronja viu, verd oliva i magenta.",
+    "draft": true
+  },
+  {
     "slug": "navegar-sense-mapa",
     "title": "Navegar sense mapa",
     "desc": "El 1976, una canoa hawaiana va arribar a Tahití sense instruments, guiada per un navegant d'una petita illa de Micronèsia. Com es troba una illa llegint estrelles, onades i ocells.",

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<style>
+  html,body{margin:0;padding:0;width:1680px;height:720px;overflow:hidden;background:#FCFCFA}
+  svg{display:block;width:1680px;height:720px}
+</style>
+</head>
+<body>
+<svg viewBox="0 0 1680 720" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1680" height="720" fill="#FCFCFA"/>
+  <!-- Retícula fina de l'espai social -->
+  <g stroke="#DADADA" stroke-width="1" stroke-dasharray="4 6">
+    <line x1="840" y1="60" x2="840" y2="660"/>
+    <line x1="180" y1="360" x2="1500" y2="360"/>
+  </g>
+  <!-- Anell del capital simbòlic -->
+  <circle cx="840" cy="360" r="275" fill="none" stroke="#4A4A4A" stroke-width="1.5" stroke-dasharray="6 7" opacity="0.55"/>
+  <!-- Tres cercles translúcids dels capitals (paleta oficial) -->
+  <g style="mix-blend-mode:multiply">
+    <circle cx="675" cy="300" r="175" fill="#C8442A" fill-opacity="0.34"/>
+    <circle cx="1005" cy="300" r="175" fill="#2C5DA8" fill-opacity="0.34"/>
+    <circle cx="840" cy="450" r="165" fill="#F5C518" fill-opacity="0.48"/>
+  </g>
+  <!-- Arcs de conversió -->
+  <g fill="none" stroke-width="2" stroke-linecap="round" opacity="0.55">
+    <path d="M675,300 Q840,115 1005,300" stroke="#C8442A" stroke-dasharray="5 6"/>
+    <path d="M1005,300 Q1065,455 840,450" stroke="#2C5DA8" stroke-dasharray="5 6"/>
+    <path d="M840,450 Q615,455 675,300" stroke="#4A4A4A" stroke-dasharray="5 6"/>
+  </g>
+  <!-- Punts centrals i nodes satèl·lit -->
+  <circle cx="675" cy="300" r="6" fill="#121212"/>
+  <circle cx="1005" cy="300" r="6" fill="#121212"/>
+  <circle cx="840" cy="450" r="6" fill="#121212"/>
+  <circle cx="840" cy="360" r="3.5" fill="#121212"/>
+</svg>
+</body>
+</html>

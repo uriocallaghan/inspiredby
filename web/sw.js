@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-b6d9b75cfe08";
+const CACHE_NAME = "ib-offline-9ab8019c1f8c";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -98,6 +98,15 @@ const LOCAL_ASSETS = [
   "/articles/el-nino/cover.jpg",
   "/articles/el-nino/index.html",
   "/articles/el-nino/thumb.webp",
+  "/articles/els-capitals-de-bourdieu/",
+  "/articles/els-capitals-de-bourdieu/article.css",
+  "/articles/els-capitals-de-bourdieu/article.js",
+  "/articles/els-capitals-de-bourdieu/cites.js",
+  "/articles/els-capitals-de-bourdieu/cover.html",
+  "/articles/els-capitals-de-bourdieu/cover.jpg",
+  "/articles/els-capitals-de-bourdieu/dades.js",
+  "/articles/els-capitals-de-bourdieu/index.html",
+  "/articles/els-capitals-de-bourdieu/thumb.webp",
   "/articles/jesus-i-els-quatre-evangelis/",
   "/articles/jesus-i-els-quatre-evangelis/article.css",
   "/articles/jesus-i-els-quatre-evangelis/article.js",
