@@ -1,5 +1,14 @@
 [
   {
+    "slug": "el-cercle-del-kula",
+    "title": "El cercle del kula",
+    "desc": "A les illes de l'est de Papua Nova Guinea, la gent navega dies per donar collarets i braçalets de petxina que s'han de fer passar. Un segle després, encara discutim per què.",
+    "category": "Antropologia i història",
+    "thumbAlt": "Imatge de degradat de la casa.",
+    "draft": true,
+    "minutes": 10
+  },
+  {
     "slug": "el-superordinador-de-tothom",
     "title": "El superordinador que no existia",
     "desc": "La primavera del 2020, més d'un milió d'ordinadors van calcular junts per estudiar el coronavirus i van formar la xarxa de càlcul més gran que s'havia muntat mai. Per què tanta gent regala la força de la seva màquina?",

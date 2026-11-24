@@ -1,5 +1,5 @@
 /* Inspired by Magazine — Service Worker (generat per scripts/sync-home.mjs) */
-const CACHE_NAME = "ib-offline-29d46cbaea5f";
+const CACHE_NAME = "ib-offline-c337200d8d1f";
 const LOCAL_ASSETS = [
   "/",
   "/404.html",
@@ -43,6 +43,16 @@ const LOCAL_ASSETS = [
   "/articles/de-que-mor-el-mon/index.html",
   "/articles/de-que-mor-el-mon/morts.js",
   "/articles/de-que-mor-el-mon/thumb.webp",
+  "/articles/el-cercle-del-kula/",
+  "/articles/el-cercle-del-kula/article.css",
+  "/articles/el-cercle-del-kula/article.js",
+  "/articles/el-cercle-del-kula/cites.js",
+  "/articles/el-cercle-del-kula/cover.html",
+  "/articles/el-cercle-del-kula/cover.jpg",
+  "/articles/el-cercle-del-kula/dades.js",
+  "/articles/el-cercle-del-kula/index.html",
+  "/articles/el-cercle-del-kula/relleu-massim.js",
+  "/articles/el-cercle-del-kula/thumb.webp",
   "/articles/el-forat-de-l-ozo/",
   "/articles/el-forat-de-l-ozo/article.css",
   "/articles/el-forat-de-l-ozo/article.js",

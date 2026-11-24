@@ -1,0 +1,32 @@
+<!doctype html><html lang="ca"><meta charset="utf-8"><title>El cercle del kula</title>
+<!-- Portada de l'article: el relleu de l'arxipèlag Massim i el cercle del kula, amb collarets (vermell) en el sentit
+     del rellotge i braçalets (blau) en el contrari. Sense text. cover.jpg: ?w=1680&h=720 -->
+<style>html,body{margin:0;background:#fff}canvas{display:block}</style>
+<canvas id="c"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+<script src="relleu-massim.js"></script>
+<script src="dades.js"></script>
+<script>
+const q=new URLSearchParams(location.search), W=+q.get("w")||1680, H=+q.get("h")||720;
+const c=document.getElementById("c"); c.width=W; c.height=H; const x=c.getContext("2d");
+x.fillStyle="#fff"; x.fillRect(0,0,W,H);
+const D=window.KU_DEM, P=Object.fromEntries(KU_DATA.places.map(p=>[p.k,p]));
+const proj=d3.geoMercator().fitExtent([[0,H*.05],[W,H*.95]],{type:"MultiPoint",coordinates:[[151.9,-8.38],[151.9,-11.0]]});
+const xW=proj([D.lon0+.02,-9.6])[0], FADE=160;
+const s=atob(D.b64), k=(D.mx-D.mn)/254;
+const z=(lon,lat)=>{const i=Math.round((lon-D.lon0)/D.st-.5), j=Math.round((D.lat1-lat)/D.st-.5); if(i<0||j<0||i>=D.nx||j>=D.ny)return NaN; return s.charCodeAt(j*D.nx+i)*k+D.mn;};
+const im=x.getImageData(0,0,W,H), d=im.data, B=[[200,[236,234,229]],[500,[226,223,216]],[800,[216,212,204]],[Infinity,[204,199,190]]];
+for(let yy=0;yy<H;yy++)for(let xx=0;xx<W;xx++){ const ll=proj.invert([xx,yy]), zz=z(ll[0],ll[1]); if(!(zz>0))continue; const b=B.find(o=>zz<o[0])[1], i=(yy*W+xx)*4, f=Math.max(0,Math.min(1,(xx-xW)/FADE)); d[i]=255+(b[0]-255)*f;d[i+1]=255+(b[1]-255)*f;d[i+2]=255+(b[2]-255)*f; }
+x.putImageData(im,0,0);
+const pts=KU_DATA.ring.map(kk=>proj(P[kk].ll));
+const tmp=document.createElementNS("http://www.w3.org/2000/svg","path"); const sv=document.createElementNS("http://www.w3.org/2000/svg","svg"); sv.appendChild(tmp); document.body.appendChild(sv);
+tmp.setAttribute("d",d3.line().curve(d3.curveCatmullRomClosed.alpha(.5))(pts)); const L=tmp.getTotalLength();
+const pos=u=>{const p=tmp.getPointAtLength(((u%1)+1)%1*L); return [p.x,p.y];};
+const N=150;
+for(let i=0;i<N;i++){ const u=i/N; const a=pos(u-.001), b=pos(u+.001), dx=b[0]-a[0], dy=b[1]-a[1], l=Math.hypot(dx,dy)||1, nx=-dy/l, ny=dx/l, p=pos(u);
+  x.fillStyle="rgba(200,68,42,.85)"; x.beginPath(); x.arc(p[0]+nx*9,p[1]+ny*9,5.4,0,7); x.fill();
+  const p2=pos(u+.5/N); x.fillStyle="rgba(44,93,168,.85)"; x.beginPath(); x.arc(p2[0]-nx*9,p2[1]-ny*9,5.4,0,7); x.fill(); }
+KU_DATA.places.forEach(p=>{ const q=proj(p.ll); x.fillStyle="#121212"; x.beginPath(); x.arc(q[0],q[1],6,0,7); x.fill(); });
+sv.remove();
+</script>
+</html>
