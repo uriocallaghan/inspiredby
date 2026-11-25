@@ -1,6 +1,6 @@
 # CMS de l'editor
 
-Editor de text propi a `https://inspiredbymagazine.com/admin/`. Serveix per fer canvis petits de text (paraules, frases, títols, descripcions de la portada) i per deixar comentaris a l'agent, sense passar per Claude Code.
+Editor de text propi a `https://inspiredbymagazine.com/admin/`. Drecera: afegint `/admin` a l'URL d'un article (`/articles/<slug>/admin`) s'obre l'editor directament en aquell article. Serveix per fer canvis petits de text (paraules, frases, títols, descripcions de la portada) i per deixar comentaris a l'agent, sense passar per Claude Code.
 
 ## Eines de la barra
 

@@ -29,6 +29,20 @@
   directory = "../netlify/functions"
   node_bundler = "esbuild"
 
+# Drecera: afegir /admin a l'URL d'un article obre l'editor directament en aquell article
+# (decisió de l'editor, 25-11-2026). A la portada, /admin/ ja hi porta.
+[[redirects]]
+  from = "/articles/:slug/admin"
+  to = "/admin/#articles/:slug/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/articles/:slug/admin/"
+  to = "/admin/#articles/:slug/"
+  status = 302
+  force = true
+
 [[headers]]
   for = "/admin/*"
   [headers.values]

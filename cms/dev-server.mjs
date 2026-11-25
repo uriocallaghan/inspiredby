@@ -66,6 +66,8 @@ http.createServer(async (req, res) => {
     return res.end(Buffer.from(await r.arrayBuffer()));
   }
   let p = decodeURIComponent(url.pathname);
+  const sh = /^\/articles\/([a-z0-9-]+)\/admin\/?$/.exec(p);
+  if (sh) { res.writeHead(302, { location: `/admin/#articles/${sh[1]}/` }); return res.end(); }
   if (p.endsWith("/")) p += "index.html";
   // el codi de l'editor i els actius es llegeixen en directe del repositori; el contingut, de la còpia
   const base = /^\/(admin|assets)\//.test(p) ? path.join(ROOT, "web") : path.join(DIR, "web");
